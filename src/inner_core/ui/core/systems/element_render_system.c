@@ -16,7 +16,6 @@ void ElementRenderSystem(ecs_iter_t *it) {
     zox_field_in(MeshGPULink, meshGPULinks, 8)
     zox_field_in(UvsGPULink, uvsGPULinks, 9)
     zox_field_in(TextureGPULink, textureGPULinks, 10)
-    zox_field_in(MeshDirty, meshDirtys, 11)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Layer2D, layer2Ds, layer2D)
         if (layer2D->value != renderer_layer) continue;

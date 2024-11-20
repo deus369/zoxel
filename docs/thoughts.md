@@ -12,6 +12,8 @@ Make editor app, it should reload modules of C code onto the game engine part
 Make a damn start screen... what kind idk
 Make a logo splash - penguin
 Can we build parts of project at once instead of entire thing? .o files?
+use 6 textures and generate inside of vox based on those, make sure edges line up too by picking randomly or merging colors to best fit
+I need to make a no physics system where characters can just move around voxel position by position, use on outer chunks further from camera, or for different game modes
 
 - networking -
 run zoxel service on linode

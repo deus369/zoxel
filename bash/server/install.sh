@@ -6,7 +6,7 @@ GROUP="root"  # Change this to your desired group
 
 cat <<EOF | sudo tee /etc/systemd/system/$SERVICE_NAME > /dev/null
 [Unit]
-Description=Zoxel Web Shell Script
+Description=Zoxel Server
 After=network.target
 
 [Service]

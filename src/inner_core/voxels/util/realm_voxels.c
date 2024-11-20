@@ -5,6 +5,8 @@
 extern float3 game_sky_color;
 extern float3 game_sky_bottom_color;
 
+#include "block_vox_grass.c"
+
 float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, const float2 saturation_limits) {
     return (float3) {
         hue_limits.x + (hue_limits.y - hue_limits.x) * (rand() % 100) * 0.01f,
@@ -100,6 +102,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     // todo: make all spawn code like this instead of a for loop
     // dark block is  tasty
     voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
+    voxelLinks->value[zox_block_vox_grass - 1] = spawn_realm_block_vox_grass(world, zox_block_vox_grass);
 
     // dungeon block, spawns world block prefab first
     zox_neww(dungeon_block_world)
@@ -147,7 +150,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.color = generate_random_voxel_color();
             spawn_data.vox = vox_obsidian;
             spawn_data.bake_vox = 1;
-        } else if (i == zox_block_vox_grass - 1) {
+        } /*else if (i == zox_block_vox_grass - 1) {
             spawn_data.name = "grass";
             spawn_data.color = generate_random_voxel_color();
 #ifndef zox_disable_block_voxes
@@ -164,7 +167,8 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
 #endif
-        } else if (i == zox_block_vox_flower - 1) {
+        } */
+        else if (i == zox_block_vox_flower - 1) {
             spawn_data.name = "flower";
             spawn_data.color = generate_random_voxel_color();
 #ifndef zox_disable_block_voxes
@@ -206,6 +210,8 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
 #endif
+        } else if (i == zox_block_vox_grass - 1) {
+            continue;
         } else if (i == zox_block_dark - 1) {
             continue;
         } else if (i == zox_block_dungeon_core - 1) {

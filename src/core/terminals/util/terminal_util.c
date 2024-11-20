@@ -15,6 +15,7 @@ extern unsigned char target_fps;
 #define terrain_mode_large 3
 extern unsigned char terrain_mode;
 extern unsigned char disable_npcs;
+extern unsigned char disable_block_voxes;
 
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
@@ -95,8 +96,11 @@ int process_arguments(int argc, char* argv[]) {
         } else if (strcmp(argv[i], "--large") == 0) {
             terrain_mode = terrain_mode_large;
         }
-        else if (strcmp(argv[i], "--nonpc") == 0) {
+        else if (strcmp(argv[i], "--nonpc") == 0 || strcmp(argv[i], "--nonpcs") == 0) {
             disable_npcs = 1;
+        }
+        else if (strcmp(argv[i], "--noblockvoxes") == 0) {
+            disable_block_voxes = 1;
         }
     }
     return EXIT_SUCCESS;

@@ -16,7 +16,9 @@
 - [ ] join head and body as single vox (add head onto body, use this)
     - [ ] join_vox(body_vox, head_vox, 0, 22, -3) last is offset
     - [ ] for hips, we just join it again
-- [ ] fix item voxel textures
+- [ ] fix item voxel textures - world items
+- [ ] fix vox item textures - block voxes
+
 
 - [ ] refactor transform to use flecs relationships EcsChildOf
     - [ ] do this for bones for now

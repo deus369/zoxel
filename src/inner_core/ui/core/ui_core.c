@@ -179,7 +179,7 @@ if (!headless) {
 zox_system(CanvasResizeSystem, EcsOnUpdate, [in] CameraLink, [in] Children, [in] cameras.ScreenToCanvas, [out] PixelSize, [none] Canvas)
 // all ui
 zox_render2D_system(RenderTextureRenderSystem, [in] TransformMatrix, [in] Layer2D, [in] RenderDisabled, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [none] cameras.RenderTexture)
-zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [in] MeshDirty, [none] ElementRender, [none] !cameras.RenderTexture)
+zox_render2D_system(ElementRenderSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Layer2D,  [in] RenderDisabled, [in] Brightness, [in] Alpha, [in] MeshGPULink, [in] UvsGPULink, [in] TextureGPULink, [none] ElementRender, [none] !cameras.RenderTexture)
 // healthbars
 zox_render3D_system(Element3DRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] TextureGPULink, [in] RenderDisabled, [none] rendering.core.SingleMaterial)
 zox_system_1(ClickSoundSystem, zox_pip_mainthread, [in] ClickState, [none] ClickMakeSound)
