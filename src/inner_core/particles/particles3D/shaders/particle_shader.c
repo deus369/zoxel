@@ -1,9 +1,9 @@
 const char* source_vert_particle3D = "\
 #version 300 es\n\
-uniform highp mat4 camera_matrix;\
-uniform highp float thickness;\
 in highp vec3 position;\
 in lowp vec4 color;\
+uniform highp mat4 camera_matrix;\
+uniform highp float thickness;\
 out highp float fog_level;\
 out lowp vec4 frag_color;\
 \

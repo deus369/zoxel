@@ -33,8 +33,8 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     zox_field_in(Rotation3D, rotation3Ds, 6)
     zox_field_in(Bounds3D, bounds3Ds, 7)
     zox_field_in(RenderLod, renderLods, 8)
-    zox_field_in(MeshIndicies, meshIndiciess, 9)
-    zox_field_in(RenderDisabled, renderDisableds, 10)
+    // zox_field_in(MeshIndicies, meshIndiciess, 9)
+    zox_field_in(RenderDisabled, renderDisableds, 9)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(DebugCubeLines, debugCubeLiness, debugCubeLines)
         if (debugCubeLines->value == 0) continue;
@@ -45,13 +45,13 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(Rotation3D, rotation3Ds, rotation3D)
         zox_field_i(Bounds3D, bounds3Ds, bounds3D)
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
+        //zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         set_line3D_thickness(cubeLinesThickness->value);
         color_rgb lines_color = colorRGB->value;
         if (cubeline_debug_mode == zox_cubeline_debug_mesh) {
-            if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
-            else lines_color = (color_rgb) { 0, 255, 0 };
+            // if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
+            // else lines_color = (color_rgb) { 0, 255, 0 };
             if (renderDisabled->value) lines_color = (color_rgb) { 0, 0, 255 };
         } else if (cubeline_debug_mode == zox_cubeline_debug_render_lod) {
             if (renderLod->value == 255) lines_color = (color_rgb) { 255, 0, 0 };

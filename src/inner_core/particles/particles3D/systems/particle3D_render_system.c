@@ -1,5 +1,5 @@
 // #define zox_debug_particle3Ds
-const float default_point_thickness = 32.0f;
+const float default_point_thickness = 4 * 32.0f;
 #ifdef zox_debug_particle3Ds
 const float3 debug_particle_line_addition = (float3) { 0, 0.2f, 0 };
 extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
@@ -10,6 +10,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 // todo: test function that spawns 100k particles at once and lerps their positions or something out from origin
 
 void Particle3DRenderSystem(ecs_iter_t *it) {
+    // zox_log("particles [%i]\n", it->count)
     zox_statistics_particles3D += it->count;
     opengl_enable_blend();
     glUseProgram(particle3D_material);

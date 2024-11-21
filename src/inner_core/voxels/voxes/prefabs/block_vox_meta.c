@@ -1,7 +1,7 @@
 // a block that is for a block vox
-ecs_entity_t spawn_prefab_block_box_meta(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_block_vox_meta(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t prefab_block_vox) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_block_box_meta")
+    zox_prefab_name("prefab_block_vox_meta")
     zox_prefab_add(e, ModelLink)
     // zox_prefab_set(e, BlockModel, { zox_block_vox })
     return e;
@@ -10,6 +10,9 @@ ecs_entity_t spawn_prefab_block_box_meta(ecs_world_t *world, const ecs_entity_t 
 ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
     zox_name(data->name) // "block_vox_meta")
+    if (data->prefab_block_vox) {
+        zox_prefab_set(e, BlockPrefabLink, { data->prefab_block_vox })
+    }
     zox_set(e, BlockIndex, { data->index })
     zox_set(e, Color, { data->color })
     if (data->model) zox_set(e, BlockModel, { data->model })

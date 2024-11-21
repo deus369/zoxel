@@ -30,6 +30,12 @@ zox_component_entity(CloneVoxLink)
 void dispose_voxes(ecs_world_t *world, void *ctx) {
     dispose_files_voxes(world);
 }
+
+void initialize_voxes(ecs_world_t *world) {
+    prefab_block_vox_instanced = spawn_prefab_block_vox_instanced(world, prefab_particle3D); // prefab_vox);
+    load_files_voxes(world, prefab_vox); // _file);
+}
+
 zox_begin_module(Voxes)
 zox_module_dispose(dispose_voxes)
 zox_define_tag(Vox)
@@ -48,7 +54,6 @@ zox_system(Bounds3DGrowSystem, zox_pip_voxels, [in] MeshDirty, [in] ChunkSize, [
 zox_system(GenerateVoxSystem, zox_pip_voxels, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkDirty)
 zox_system(VoxTextureSystem, zox_pip_voxels_chunk_dirty, [in] TextureSize, [in] VoxLink, [in] VoxBakeSide, [out] GenerateTexture, [out] TextureData, [out] TextureDirty, [none] textures.core.VoxTexture)
 zox_system(CloneVoxSystem, zox_pip_voxels, [in] CloneVoxLink, [out] CloneVox, [out] ChunkOctree, [out] ChunkSize, [out] ColorRGBs, [out] ChunkDirty, [out] ChunkLod)
-initialize_voxes(world);
 spawn_prefabs_voxes(world);
 zoxel_end_module(Voxes)
 

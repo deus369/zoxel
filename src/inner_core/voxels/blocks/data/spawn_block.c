@@ -1,5 +1,6 @@
 typedef struct {
     ecs_entity_t prefab;
+    ecs_entity_t prefab_block_vox;
     char *name;
     unsigned char index;
     unsigned char model;

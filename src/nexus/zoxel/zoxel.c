@@ -35,6 +35,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_log_boot_game
     zox_log("boot_zoxel_game4\n")
 #endif
+    // load resources
+    // todo: each module should add to a load resources event for i/o game data
+    initialize_voxes(world);
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world);

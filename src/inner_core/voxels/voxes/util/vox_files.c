@@ -33,11 +33,6 @@ void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
     free_files(&files);
 }
 
-void initialize_voxes(ecs_world_t *world) {
-    load_files_voxes(world, prefab_vox_file);
-}
-
-
 void dispose_files_voxes(ecs_world_t *world) {
     string_hashmap_dispose(files_hashmap_voxes);
     files_hashmap_voxes = NULL;

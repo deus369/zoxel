@@ -6,6 +6,9 @@ void opengl_enable_bone_buffer(GLuint shader_index, GLuint buffer) {
 }
 
 void SkeletonRender3DSystem(ecs_iter_t *it) {
+#ifdef zox_disable_skeleton_rendering
+    return;
+#endif
     if (!material_bone) return;
     zox_iter_world()
     unsigned char has_set_material = 0;
@@ -60,12 +63,12 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
         opengl_render(meshIndicies->length);
-        #ifdef zoxel_catch_opengl_errors
+#ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
             zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
             break;
         }
-        #endif
+#endif
         rendered_count++;
         zox_statistics_characters_rendered++;
     }

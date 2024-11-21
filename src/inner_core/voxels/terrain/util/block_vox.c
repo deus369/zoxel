@@ -14,6 +14,7 @@ typedef struct {
     const ecs_entity_t chunk;
     const ecs_entity_t *blocks;
     const ecs_entity_t *block_voxes;
+    const ecs_entity_t *block_prefabs;
     const unsigned char *block_vox_offsets;
     const unsigned char block_voxes_count;
     const float3 chunk_position_real;
@@ -43,19 +44,6 @@ void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     }
 }
 
-/* void remove_old_block_vox_from_tree(ecs_world_t *world, BlockSpawns *block_spawns, const int3 octree_position) {
-#ifdef zox_disable_block_spawns_hash
-    return;
-#endif
-    byte3 position_local = int3_to_byte3(octree_position);
-    if (byte3_hashmap_has(block_spawns->value, position_local)) {
-        // zox_log(" > destroying vox block [%ix%ix%i]\n", position_local.x, position_local.y, position_local.z)
-        const ecs_entity_t old_vox_block = byte3_hashmap_get(block_spawns->value, position_local);
-        if (old_vox_block) zox_delete(old_vox_block)
-            byte3_hashmap_remove(block_spawns->value, position_local);
-    }
-} */
-
 void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk, const unsigned char max_depth, unsigned char depth) {
     if (depth == max_depth) {
         remove_old_voxel_by_link(world, chunk);
@@ -73,11 +61,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
     if (delve_data->depth == max_octree_depth) {
         // if null or air, remove
         if (!delve_data->chunk || !delve_data->chunk->value) {
-#ifndef zox_disable_block_spawns_hash
-            remove_old_block_vox_from_tree(world, data->block_spawns, delve_data->octree_position);
-#else
             remove_old_voxel_by_link(world, delve_data->chunk);
-#endif
             return; // air returns!
         }
         // cheeck if out of bounds
@@ -87,35 +71,27 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             return;
         }
         const ecs_entity_t block_meta = data->blocks[block_index];
-        const unsigned char is_world_block = zox_has(block_meta, BlockPrefabLink);
+        const ecs_entity_t block_prefab = data->block_prefabs[block_index];
+        // zox_has(block_meta, BlockPrefabLink);
         // cheeck if vox model
         //  if meta data is block vox type, spawn, otherwise, remove
-        if (!is_world_block && !data->block_voxes[block_index]) {
-#ifndef zox_disable_block_spawns_hash
-            remove_old_block_vox_from_tree(world, data->block_spawns, delve_data->octree_position);
-#else
+        if (!block_prefab) {
             remove_old_voxel_by_link(world, delve_data->chunk);
-#endif
             return;
         }
         // + spawn block vox
         const float voxel_scale = 0.5f; // terrain scale
         data->spawn_data->position_local = int3_to_byte3(delve_data->octree_position);
-#ifndef zox_disable_block_spawns_hash
-        if (byte3_hashmap_has(data->block_spawns->value, data->spawn_data->position_local)) return;
-#else
         // if exists already, shouldn't we check if is the same block vox type?
         // if exists, and is same type, return!
         ChunkOctree *chunk = delve_data->chunk;
         if (chunk->nodes) {
             const ecs_entity_t e3 = ((VoxelEntityLink*) chunk->nodes)->value;
             if (zox_valid(e3)) {
-                if (is_world_block) {
-                    // this means e3 has spawned
-                    // we should check its the same one
-                    // we can add lod to mechanical entities too
-                    return;
-                } else if (zox_has(e3, BlockIndex)) {
+                // this means e3 has spawned
+                // we should check its the same one
+                // we can add lod to mechanical entities too
+                if (zox_has(e3, BlockIndex)) {
                     const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
                     if (old_block_index == block_index) {
                         // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
@@ -126,12 +102,11 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                             zox_set(e3, RenderLod, { vox_lod })
                             zox_set(e3, ChunkDirty, { chunk_dirty_state_lod_updated })
                         }
-                        return;
                     }
                 }
+                return;
             }
         }
-#endif
         // if not same time, spawn new here
         data->spawn_data->block_index = block_index;
         data->spawn_data->vox = data->block_voxes[block_index];
@@ -143,18 +118,25 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         data->spawn_data->position_real = position_real;
         // todo: instead of hash, replace OctreeNode with OctreeNodeEntity - link directly in the node
         ecs_entity_t e2;
-        if (is_world_block) {
-            const ecs_entity_t block_prefab = zox_get_value(block_meta, BlockPrefabLink)
+        // const unsigned char is_world_block = block_prefab && !zox_has(block_prefab, BlockVox);
+        data->spawn_data->prefab = block_prefab;
+        if (zox_has(block_prefab, BlockVox)) {
+            e2 = spawn_block_vox(world, data->spawn_data);
+        } else if (zox_has(block_prefab, InstanceRenderer)) {
+            // zox_log("particle-")
+            // e2 = spawn_block_vox_instanced(world, data->spawn_data);
+            e2 = zox_instancee(block_prefab)
+            // e2 = zox_instancee(prefab_particle3D)
+            zox_set(e2, Position3D, { position_real })
+            zox_set(e2, ChunkLink, { data->chunk })
+            zox_set(e2, VoxelPosition, { delve_data->octree_position })
+        } else {
+            // dungeon blocks
             e2 = zox_instancee(block_prefab)
             zox_set(e2, ChunkLink, { data->chunk })
             zox_set(e2, VoxelPosition, { delve_data->octree_position })
-            zox_log("block world entity spawning: %lu prefab: %lu from: %lu\n", e2, block_prefab, data->chunk)
-        } else {
-            e2 = spawn_block_vox(world, data->spawn_data);
+            // zox_set(e2, Position3D, { position_real })
         }
-#ifndef zox_disable_block_spawns_hash
-        byte3_hashmap_add(data->block_spawns->value, data->spawn_data->position_local, e2);
-#else
         remove_old_voxel_by_link(world, delve_data->chunk);
         chunk->nodes = malloc(sizeof(VoxelEntityLink));
         if (!chunk->nodes) {
@@ -163,7 +145,6 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             return;
         }
         *(VoxelEntityLink*) chunk->nodes = (VoxelEntityLink){ .value = e2 };
-#endif
         // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
     } else {
         NodeDelveData delve_data2 = {
@@ -197,15 +178,20 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const VoxLink 
     const unsigned char block_voxes_count = voxelLinks->length;
     ecs_entity_t blocks[block_voxes_count];
     ecs_entity_t block_voxes[block_voxes_count];
+    ecs_entity_t block_prefabs[block_voxes_count];
     unsigned char block_vox_offsets[block_voxes_count];
     memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
+    memset(block_prefabs, 0, block_voxes_count);
     memset(block_vox_offsets, 0, block_voxes_count);
     for (int j = 0; j < block_voxes_count; j++) {
-        const ecs_entity_t block = voxelLinks->value[j];
-        blocks[j] = block;
-        if (zox_gett_value(block, BlockModel) == zox_block_vox) {
-            block_voxes[j] = zox_get_value(block, ModelLink)
-            if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
+        const ecs_entity_t block_meta = voxelLinks->value[j];
+        blocks[j] = block_meta;
+        if (zox_gett_value(block_meta, BlockModel) == zox_block_vox) {
+            block_voxes[j] = zox_get_value(block_meta, ModelLink)
+            if (zox_has(block_meta, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block_meta, BlockVoxOffset)
+        }
+        if (zox_has(block_meta, BlockPrefabLink)) {
+            block_prefabs[j] = zox_get_value(block_meta, BlockPrefabLink)
         }
     }
     // convert chunk position to real
@@ -216,16 +202,10 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const VoxLink 
         .render_lod = vox_lod,
         .render_disabled = renderDisabled->value // until i get frustum to cull these
     };
-#ifndef zox_disable_block_spawns_hash
-    if (!block_spawns->value) block_spawns->value = create_byte3_hashmap(max_vox_blocks);
-    if (!block_spawns->value) {
-        zox_log(" ! error creating block spawns hashmap\n")
-        return;
-    }
-#endif
     UpdateBlockEntities data = {
         .chunk = e,
-        .blocks = blocks,
+        .blocks = blocks, // metas
+        .block_prefabs = block_prefabs,
         .block_voxes = block_voxes,
         .block_vox_offsets = block_vox_offsets,
         .block_voxes_count = block_voxes_count,

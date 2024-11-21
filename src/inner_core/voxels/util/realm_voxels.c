@@ -18,7 +18,8 @@ ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const unsigned char i
     SpawnBlock spawn_data = {
         .index = index,
         .seed = generate_voxel_seed(index),
-        .prefab_texture = prefab_vox_texture
+        .prefab_texture = prefab_vox_texture,
+        // .prefab_block_vox = prefab_block_vox,
     };
     spawn_data.name = name; // "dark";
     spawn_data.color = color_black;
@@ -121,6 +122,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     // the rest
     for (unsigned char i = 0; i < voxelLinks->length; i++) {
         SpawnBlock spawn_data = {
+            // .prefab_block_vox = prefab_block_vox,
             .index = (unsigned char) (i + 1),
             .seed = generate_voxel_seed(i),
             .prefab_texture = prefab_vox_texture
@@ -156,6 +158,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #ifndef zox_disable_block_voxes
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
+            spawn_data.prefab_block_vox = prefab_block_vox;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("flower"));
             if (!vox) {
                 zox_log(" ! [flower] vox not found\n")
@@ -176,6 +179,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.tag = zox_id(BlockVox);
             spawn_data.model = zox_block_vox;
             spawn_data.vox = dirt_vox;
+            spawn_data.prefab_block_vox = prefab_block_vox;
 #else
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
@@ -188,6 +192,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.model = zox_block_vox;
             spawn_data.vox = dirt_rubble;
             spawn_data.disable_collision = 1;
+            spawn_data.prefab_block_vox = prefab_block_vox;
 #else
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
