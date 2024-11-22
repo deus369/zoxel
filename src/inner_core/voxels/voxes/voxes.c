@@ -32,7 +32,7 @@ void dispose_voxes(ecs_world_t *world, void *ctx) {
 }
 
 void initialize_voxes(ecs_world_t *world) {
-    prefab_block_vox_instanced = spawn_prefab_block_vox_instanced(world, prefab_particle3D); // prefab_vox);
+    // prefab_block_vox_instanced = spawn_prefab_block_vox_instanced(world, prefab_particle3D); // prefab_vox);
     load_files_voxes(world, prefab_vox); // _file);
 }
 

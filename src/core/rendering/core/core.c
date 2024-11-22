@@ -10,7 +10,7 @@ const GLchar* shader_frags[zox_max_shaders];
 zox_declare_tag(Shader)
 zox_declare_tag(Material)
 zox_declare_tag(SingleMaterial)
-zox_declare_tag(InstanceRenderer)
+zox_declare_tag(RendererInstance)
 zox_component_byte(ShaderSourceIndex)
 zox_component_entity(ShaderLink) // links to a shader entity
 zox_memory_component(MeshIndicies, int)
@@ -36,6 +36,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "util/render_passes.c"
 #include "prefabs/shader.c"
 #include "prefabs/material.c"
+#include "prefabs/renderer_instance.c"
 #include "systems/mesh_dispose_system.c"
 #include "systems/mesh_restore_system.c"
 #include "systems/material_dispose_system.c"
@@ -44,9 +45,12 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "systems/shader_restore_system.c"
 #include "systems/camera_render_system.c"
 
+ecs_entity_t prefab_renderer_instance;
+
 void spawn_prefabs_rendering_core(ecs_world_t *world) {
     spawn_prefab_shader(world);
     spawn_prefab_material(world);
+    prefab_renderer_instance = spawn_prefab_renderer_instance(world);
 }
 
 void initialize_rendering_core(ecs_world_t *world) {
@@ -67,7 +71,7 @@ zox_module_dispose(dispose_rendering_core)
 zox_define_tag(Shader)
 zox_define_tag(Material)
 zox_define_tag(SingleMaterial)
-zox_define_tag(InstanceRenderer)
+zox_define_tag(RendererInstance)
 zox_define_component(MaterialInstancedGPULink)
 zox_define_component_w_dest(ShaderGPULink)
 zox_define_component_w_dest(MaterialGPULink)

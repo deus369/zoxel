@@ -2,6 +2,7 @@
 //   create vbo for instance stuff like particles
 //   create instanced mesh prefab and spawn for grass - just has to have a tag, transform data, and point to a mesh to render
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
+    zox_log("voxes rendering: " + it->count)
     if (!material_colored3D) return;
 
     ecs_entity_t grass = string_hashmap_get(files_hashmap_voxes, new_string_data("grass"));

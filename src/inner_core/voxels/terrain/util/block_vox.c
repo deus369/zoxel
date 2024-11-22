@@ -122,7 +122,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         data->spawn_data->prefab = block_prefab;
         if (zox_has(block_prefab, BlockVox)) {
             e2 = spawn_block_vox(world, data->spawn_data);
-        } else if (zox_has(block_prefab, InstanceRenderer)) {
+        } else if (zox_has(block_prefab, RendererInstance)) {
             // zox_log("particle-")
             // e2 = spawn_block_vox_instanced(world, data->spawn_data);
             e2 = zox_instancee(block_prefab)
