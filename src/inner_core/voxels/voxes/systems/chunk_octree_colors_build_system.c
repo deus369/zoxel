@@ -62,11 +62,14 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }
         chunkDirty->value = chunk_dirty_state_none;
+
+        // todo: fix this, unless upload fast it crashes
         if (zox_has(it->entities[i], Skeleton)) {
             meshDirty->value = mesh_state_trigger;
         } else {
             meshDirty->value = mesh_state_upload;
         }
+
         did_do_timing()
         if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
     }

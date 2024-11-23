@@ -124,12 +124,12 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             e2 = spawn_block_vox(world, data->spawn_data);
         } else if (zox_has(block_prefab, RendererInstance)) {
             // zox_log("particle-")
-            // e2 = spawn_block_vox_instanced(world, data->spawn_data);
-            e2 = zox_instancee(block_prefab)
+            e2 = spawn_block_vox_instanced(world, data->spawn_data);
+            // e2 = zox_instancee(block_prefab)
             // e2 = zox_instancee(prefab_particle3D)
-            zox_set(e2, Position3D, { position_real })
-            zox_set(e2, ChunkLink, { data->chunk })
-            zox_set(e2, VoxelPosition, { delve_data->octree_position })
+            // zox_set(e2, Position3D, { position_real })
+            // zox_set(e2, ChunkLink, { data->chunk })
+            // zox_set(e2, VoxelPosition, { delve_data->octree_position })
         } else {
             // dungeon blocks
             e2 = zox_instancee(block_prefab)

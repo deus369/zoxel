@@ -1,5 +1,8 @@
 // Here? select which zoxel modules I shall use?
 
+
+// #define zox_testing_networking
+
 // #define zox_print_files
 
 // #define zox_test_skeletons
@@ -35,8 +38,6 @@
 // #define zox_set_camera_topdown
 // #define zox_use_orthographic_projection // used for different projection matrix
 // #define zox_spawn_terrain_on_startup
-
-// #define zoxel_test_networking
 
 // #define zox_characters_as_cubes
 

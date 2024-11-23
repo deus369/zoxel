@@ -49,7 +49,7 @@ zox_import_module(Cubes)
 zox_import_module(Particles)
 zox_import_module(Blueprints)
 zox_import_module(Characters)
-zox_add_tag(prefab_block_vox_instanced, Particle3D)
+// zox_add_tag(prefab_block_vox_instanced, Particle3D)
 update_inner_core(world);
 zoxel_end_module(InnerCore)
 

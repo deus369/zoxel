@@ -28,10 +28,14 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (meshIndicies->length == 0) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
+        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
         zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        if (colorsGPULink->value == 0) continue;
         zox_field_i(BoneIndexGPULink, boneIndexGPULinks, boneIndexGPULink)
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
+        if (boneIndexGPULink->value == 0) continue;
         zox_field_i(BoneLinks, boneLinkss, boneLinks)
+        if (boneLinks->length == 0) continue;
+        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         if (!has_set_material) {
             has_set_material = 1;
 #ifdef zox_transparent_voxes
@@ -57,7 +61,6 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         opengl_set_matrix_array(material_attributes->bone_matrix, bones, boneLinks->length);
         opengl_set_float3_array(material_attributes->bone_positions, bone_positions, boneLinks->length);
         opengl_enable_bone_buffer(material_attributes->bone_index, boneIndexGPULink->value);
-
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);

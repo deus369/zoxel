@@ -45,11 +45,12 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                         data.position = voxel_position;
                         if (voxel_position.y  == local_height_raw) {
                             if (global_position_y < sand_height) set_voxel(&datam_sand, data);
+                            else if (global_position_y == sand_height) set_voxel(&datam_dirt, data);
                             else set_voxel(&datam_dirt_grass, data);
                         } else set_voxel(&datam_dirt, data);
                     }
                 }
-                if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length) {
+                if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length && (global_position_y > sand_height)) {
                     const int rando = rand() % 10000;
                     if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
                         voxel_position.y = local_height_raw + 1;

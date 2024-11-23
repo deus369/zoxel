@@ -1,18 +1,18 @@
 typedef struct {
     GLint vertex_position;
     GLint vertex_color;
-    GLuint transform_matrix;
+    GLuint matrices;
     GLuint camera_matrix;
     GLuint brightness;
     GLuint fog_data;
-} MaterialColored3D;
-zox_custom_component(MaterialColored3D)
+} MaterialVoxInstance;
+zox_custom_component(MaterialVoxInstance)
 
-MaterialColored3D create_MaterialColored3D(const GLuint material) {
-    return (MaterialColored3D) {
+MaterialVoxInstance create_MaterialVoxInstance(const GLuint material) {
+    return (MaterialVoxInstance) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
-        glGetUniformLocation(material, "transform_matrix"),
+        0, //glGetUniformLocation(material, "matrices"),
         glGetUniformLocation(material, "camera_matrix"),
         glGetUniformLocation(material, "brightness"),
         glGetUniformLocation(material, "fog_data")

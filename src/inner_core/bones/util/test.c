@@ -1,3 +1,5 @@
+// todo: use iterative instance function: prefab_children
+
 void make_test_skeleton(ecs_world_t *world, const ecs_entity_t e) {
     const float3 test_spawn_bone_position = (float3) { 0, 0.18f, -0.03f };
     const float3 test_bone_position = (float3) { 0, 0.58f, -0.03f };

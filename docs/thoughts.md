@@ -23,7 +23,8 @@ I need to do marching cubes for dirt
 use 6 textures and generate inside of vox based on those, make sure edges line up too by picking randomly or merging colors to best fit
 
 
-# optomize
+note: no need optimize before players unless its fps inducing, just get gameplay loop done
+# optimize
 I need to make a no physics system where characters can just move around voxel position by position, use on outer chunks further from camera, or for different game modes
 
 
