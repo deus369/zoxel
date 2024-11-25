@@ -14,6 +14,7 @@ zox_declare_tag(RendererInstance)
 zox_declare_tag(RendererColored)
 zox_component_byte(ShaderSourceIndex)
 zox_component_entity(ShaderLink) // links to a shader entity
+zox_component_entity(InstanceLink) // links to a instance parent
 zox_memory_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
@@ -22,6 +23,7 @@ zox_memory_component(MeshColors, color)
 zox_memory_component(MeshColorRGBs, color_rgb)
 #include "components/material_gpu_link.c"
 #include "components/texture_gpu_link.c"
+#include "components/ubo_gpu_link.c"
 #include "components/mesh_gpu_link.c"
 #include "components/uvs_gpu_link.c"
 #include "components/colors_gpu_link.c"
@@ -74,6 +76,7 @@ zox_define_tag(Material)
 zox_define_tag(SingleMaterial)
 zox_define_tag(RendererInstance)
 zox_define_tag(RendererColored)
+zox_define_component_entity(InstanceLink)
 zox_define_component(MaterialInstancedGPULink)
 zox_define_component_w_dest(ShaderGPULink)
 zox_define_component_w_dest(MaterialGPULink)
@@ -84,6 +87,7 @@ zox_define_component_w_dest(ColorsGPULink)
 zox_define_component_w_dest(ComputeShaderLink)
 zox_define_component_w_dest(FrameBufferLink)
 zox_define_component_w_dest(RenderBufferLink)
+zox_define_component_w_dest(UboGPULink)
 zox_define_component_byte(ShaderSourceIndex)
 zox_define_component_entity(ShaderLink) // links to a shader entity
 zox_define_memory_component(MeshIndicies)

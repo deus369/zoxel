@@ -64,11 +64,12 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         chunkDirty->value = chunk_dirty_state_none;
 
         // todo: fix this, unless upload fast it crashes
-        if (zox_has(it->entities[i], Skeleton)) {
+        /*if (zox_has(it->entities[i], Skeleton)) {
             meshDirty->value = mesh_state_trigger;
         } else {
             meshDirty->value = mesh_state_upload;
-        }
+        }*/
+        meshDirty->value = mesh_state_trigger;
 
         did_do_timing()
         if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;

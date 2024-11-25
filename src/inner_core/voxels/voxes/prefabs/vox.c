@@ -2,7 +2,6 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_vox")
     zox_add_tag(e, Vox)
-    // zox_add_tag(e, RendererColored)
     add_components_mesh_colored(world, e);
     // transform
     zox_prefab_set(e, Euler, { float3_zero })

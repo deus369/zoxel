@@ -2,7 +2,7 @@
 //  also LODing support
 #define zox_max_vox_instances 4000
 
-GLuint vox_instance_transform_link;
+// GLuint vox_instance_transform_link;
 ecs_entity_t shader_vox_instance;
 ecs_entity_t material_vox_instance;
 // layout(std140, binding = 0)
@@ -40,20 +40,26 @@ void main() {\
     frag_color = mix(frag_color, vec3(fog_data.x, fog_data.y, fog_data.z), fog_blend);\
 }";
 
-void initialize_vox_instance(GLint binding_point) {
-    glGenBuffers(1, &vox_instance_transform_link);
-    glBindBuffer(GL_UNIFORM_BUFFER, vox_instance_transform_link);
+GLuint generate_ubo(GLint binding_point) {
+    GLuint ubo;
+    glGenBuffers(1, &ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo);
     glBufferData(GL_UNIFORM_BUFFER, sizeof(float4x4) * zox_max_vox_instances, NULL, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, vox_instance_transform_link);
+    glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, 0); // Unbind after allocation
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        zox_log("Error initializing uniform buffer: %d\n", error)
-    }
+    zox_log(" + spawned ubo: %i binded to block index %i\n", ubo, binding_point)
+    return ubo;
+}
+
+GLuint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
+    const MaterialVoxInstance *materialVoxInstance = zox_get(material, MaterialVoxInstance)
+    const GLint binding_point = materialVoxInstance->matrices;
+    if (binding_point == GL_INVALID_INDEX) zox_log("InstanceMatrices block index not found in shader.\n")
+    return generate_ubo(binding_point);
 }
 
 void dispose_vox_instance() {
-    glDeleteBuffers(1, &vox_instance_transform_link);
+    // glDeleteBuffers(1, &vox_instance_transform_link);
 }
 
 ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
@@ -65,15 +71,11 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     GLuint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
-    // get gpu bindings for material
     const MaterialVoxInstance materialVoxInstance =  create_MaterialVoxInstance(material);
     zox_set_data(e, MaterialVoxInstance, materialVoxInstance)
     material_vox_instance = e;
     shader_vox_instance = shader;
-    GLint block_index = glGetUniformBlockIndex(material, "InstanceMatrices");
-    if (block_index == GL_INVALID_INDEX) zox_log("InstanceMatrices block index not found in shader.\n")
-    // else zox_log("block index found: %i\n", block_index)
-
-    initialize_vox_instance(block_index);
+    GLuint ubo = generate_ubo(materialVoxInstance.matrices);
+    zox_set(e, UboGPULink, { ubo }) // spawn_ubo(world, material_vox_instance) })
     return e;
 }

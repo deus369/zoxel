@@ -104,6 +104,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     // dark block is  tasty
     voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
     voxelLinks->value[zox_block_vox_grass - 1] = spawn_realm_block_vox_grass(world, zox_block_vox_grass);
+    voxelLinks->value[zox_block_vox_flower - 1] = spawn_realm_block_vox_flower(world, zox_block_vox_flower);
 
     // dungeon block, spawns world block prefab first
     zox_neww(dungeon_block_world)
@@ -152,7 +153,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.color = generate_random_voxel_color();
             spawn_data.vox = vox_obsidian;
             spawn_data.bake_vox = 1;
-        } else if (i == zox_block_vox_flower - 1) {
+        } /*else if (i == zox_block_vox_flower - 1) {
             spawn_data.name = "flower";
             spawn_data.color = generate_random_voxel_color();
 #ifndef zox_disable_block_voxes
@@ -170,7 +171,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
 #endif
-        } else if (i == zox_block_dirt_vox - 1) {
+        } */ else if (i == zox_block_dirt_vox - 1) {
             spawn_data.name = "dirt_vox";
             spawn_data.color = dirt_color;
             // this is a more detailed version of dirt! non baked
@@ -197,11 +198,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
 #endif
-        } else if (i == zox_block_vox_grass - 1) {
-            continue;
-        } else if (i == zox_block_dark - 1) {
-            continue;
-        } else if (i == zox_block_dungeon_core - 1) {
+        } else if (i == zox_block_vox_grass - 1 || i == zox_block_vox_flower - 1 || i == zox_block_dark - 1 || i == zox_block_dungeon_core - 1) {
             continue;
         } else {
             // continue;

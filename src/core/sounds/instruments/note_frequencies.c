@@ -85,3 +85,19 @@ const float note_frequencies[] = {
     932.33f, // A5#
     987.77f // B5
 };
+const int notes_max = 72;
+
+// Function to find the closest note index for a given frequency
+int find_note_index(float frequency) {
+    int closest_index = 0;
+    float min_diff = fabs(note_frequencies[0] - frequency);
+    // Iterate through the note_frequencies array to find the closest match
+    for (int i = 1; i < notes_max; i++) {
+        float diff = fabs(note_frequencies[i] - frequency);
+        if (diff < min_diff) {
+            min_diff = diff;
+            closest_index = i;
+        }
+    }
+    return closest_index;
+}

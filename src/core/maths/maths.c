@@ -43,6 +43,7 @@ zoxel_dynamic_array(int)
 create_is_in_array_d(int)
 zoxel_dynamic_array(float3)
 zoxel_dynamic_array(float2)
+zoxel_dynamic_array(float4x4)
 
 zox_begin_module(Maths)
 set_noise_seed(get_unique_time_seed());

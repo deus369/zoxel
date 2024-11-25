@@ -1,7 +1,7 @@
 typedef struct {
     GLint vertex_position;
     GLint vertex_color;
-    GLuint matrices;
+    GLint matrices;
     GLuint camera_matrix;
     GLuint brightness;
     GLuint fog_data;
@@ -12,7 +12,7 @@ MaterialVoxInstance create_MaterialVoxInstance(const GLuint material) {
     return (MaterialVoxInstance) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
-        0, //glGetUniformLocation(material, "matrices"),
+        glGetUniformBlockIndex(material, "InstanceMatrices"),
         glGetUniformLocation(material, "camera_matrix"),
         glGetUniformLocation(material, "brightness"),
         glGetUniformLocation(material, "fog_data")

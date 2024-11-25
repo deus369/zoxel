@@ -117,9 +117,15 @@ if (zox_has(prefab, Children)) {\
 
 #define zox_instancee(prefab) ecs_new_w_pair(world, EcsIsA, prefab);
 
+#define zox_instance_named(prefab, name) const ecs_entity_t name = ecs_new_w_pair(world, EcsIsA, prefab);
+
 #define zox_prefab_child(prefab)\
     zox_instance(prefab)\
     zox_make_prefab(e)
+
+#define zox_prefab_child_named(prefab, name)\
+    zox_instance_named(prefab, name)\
+    zox_make_prefab(name)
 
 #define zox_clone(prefab) const ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 

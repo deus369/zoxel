@@ -44,7 +44,7 @@ zox_system_1(InstanceRender3DSystem, 0, [in] Position3D, [in] Rotation3D, [in] S
 zox_render3D_plus_system(TexturedRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] RenderDisabled, [in] MaterialGPULink, [in] TextureGPULink, [in] MaterialTextured3D, [none] TexturedMesh3D)
 // characters
 zox_render3D_plus_system(RenderCharacters3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] TransformMatrix, [in] RenderDisabled, [none] MeshColorRGBs, [none] !UvsGPULink, [none] rendering.core.RendererColored)
-zox_render3D_plus_system(VoxInstanceRenderSystem, [in] TransformMatrix, [none] rendering.core.RendererInstance)
+zox_render3D_plus_system(VoxInstanceRenderSystem, [in] TransformMatrix, [in] InstanceLink, [none] rendering.core.RendererInstance)
 
 // upload gpu
 zox_system_1(MeshUpdateSystem, zox_pip_mainthread, [in] MeshDirty, [in] MeshIndicies, [in] MeshVertices, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)

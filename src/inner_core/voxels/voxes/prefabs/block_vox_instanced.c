@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world, const ecs_enti
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, VoxScale, { vox_model_scale * 1 })
     zox_prefab_set(e, Color, {{ 25, 255, 25, 255 }})
+    zox_prefab_set(e, InstanceLink, { 0 })
     // testing
     // for debug
     zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
