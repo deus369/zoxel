@@ -19,10 +19,12 @@ void PlaySoundSystem(ecs_iter_t *it) {
         if (triggerSound->value != 1) continue;
         // generating
         zox_field_e()
-        if (zox_has(e, GenerateSound)) {
+        /*if (zox_has(e, GenerateSound)) {
             const unsigned char generating = zox_get_value(e, GenerateSound)
             if (generating) continue;
-        }
+        }*/
+        if (zox_has(e, GenerateSound) && zox_gett_value(e, GenerateSound)) continue;
+        if (zox_has(e, ProcessSound) && zox_gett_value(e, ProcessSound)) continue;
         zox_field_i(SoundLength, soundLengths, soundLength)
         zox_field_o(SDLSound, sdlSounds, sdlSound)
         zox_field_o(DestroyInTime, destroyInTimes, destroyInTime)

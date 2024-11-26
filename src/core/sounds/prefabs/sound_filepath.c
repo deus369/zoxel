@@ -4,7 +4,6 @@ ecs_entity_t spawn_prefab_sound_filepath(ecs_world_t *world) {
 #ifdef zox_lib_sdl_mixer
     zox_prefab_add(e, SDLSound)
 #endif
-    zox_prefab_add(e, SoundLength)
     return e;
 }
 

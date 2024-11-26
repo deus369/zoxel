@@ -1,18 +1,15 @@
 // todo: Different meshes, linking, and then use a stack
 //  also LODing support
-#define zox_max_vox_instances 4000
-
-// GLuint vox_instance_transform_link;
+#define zox_max_vox_instances 2048
 ecs_entity_t shader_vox_instance;
 ecs_entity_t material_vox_instance;
-// layout(std140, binding = 0)
 
 const GLchar* shader_vert_vox_instance = "\
 #version 320 es\n\
 layout(location=0) in highp vec3 vertex_position;\
 layout(location=1) in highp vec3 vertex_color;\
 uniform InstanceMatrices {\
-    lowp mat4 matrices[4000];\
+    lowp mat4 matrices[2048];\
 };\
 uniform highp mat4 camera_matrix;\
 uniform lowp vec4 fog_data;\
@@ -58,10 +55,6 @@ GLuint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
     return generate_ubo(binding_point);
 }
 
-void dispose_vox_instance() {
-    // glDeleteBuffers(1, &vox_instance_transform_link);
-}
-
 ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     const unsigned char shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = shader_vert_vox_instance;
@@ -76,6 +69,6 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     material_vox_instance = e;
     shader_vox_instance = shader;
     GLuint ubo = generate_ubo(materialVoxInstance.matrices);
-    zox_set(e, UboGPULink, { ubo }) // spawn_ubo(world, material_vox_instance) })
+    zox_set(e, UboGPULink, { ubo })
     return e;
 }

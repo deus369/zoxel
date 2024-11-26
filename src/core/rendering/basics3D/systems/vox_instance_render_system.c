@@ -97,7 +97,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
             continue;
         }
 
-//        zox_log(" [%i] rendering %lu - %i - UBO %i\n", i, mesh, command.transforms->size, uboGPULink->value)
+        // zox_log(" [%i] rendering %lu - %i - UBO %i\n", i, mesh, command.transforms->size, uboGPULink->value)
 
         // set mesh verts
         opengl_set_mesh_indicies(meshGPULink->value.x);

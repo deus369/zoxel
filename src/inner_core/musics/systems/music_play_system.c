@@ -34,8 +34,25 @@ void MusicPlaySystem(ecs_iter_t *it) {
             if (note_time == 0) continue;
             const int note_instrument = zox_get_value(note, InstrumentType)
             const float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
+
+            // todo:
+            // spawn second music to play in game loop
+            // keep one as main menu
+            // set music notes to piano
+            // support different tracks
+
             // const float note_time = musicSpeed->value * music_speed;
-            spawn_sound_generated(world, note_instrument, frequency, note_time, note_volume);
+            // const ecs_entity_t sound = spawn_sound_generated(world, note_instrument, frequency, note_time, note_volume);
+            // if note_instrument == piano_file:
+            // zox_log("spawned soud [swap_action]\n")
+            const ecs_entity_t sound = spawn_sound_from_file_name(world, prefab_sound, "piano");
+            zox_set(sound, SoundFrequency, { frequency })
+            zox_set(sound, SoundVolume, { note_volume })
+            zox_set(sound, ProcessSound, { 1 })
+            zox_set(sound, TriggerSound, { 0 })
+
+            // alter sound by frequency
+            // frequency, note_time, note_volume
 
             if (rand() % 100 >= 95) musicTime->value += musicSpeed->value;
             // zox_log(" + playing music at [%f] type [%i] length [%f] volume [%f]\n", zox_current_time, note_instrument, note_time, note_volume)

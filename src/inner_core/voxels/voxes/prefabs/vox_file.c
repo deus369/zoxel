@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     // Rendering
     zox_prefab_set(e, Brightness, { 1.0f })
-    zox_prefab_set(e, RenderDisabled, { 0 })
+    zox_prefab_set(e, RenderDisabled, { 1 })
     zox_prefab_set(e, MeshDirty, { 0 })
     prefab_add_mesh_basic(world, e);
     add_components_mesh_colored(world, e);

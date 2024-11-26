@@ -68,7 +68,11 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
     } })
     zox_set(e, SoundLength, { sound_length })
     // unless we justt  copy over
-    // zox_set(e, SoundData, { mixChunk->abuf })
+
+    int array_length = sdl_sound->value.alen / sizeof(float);
+    float *new_data = (float*) malloc(array_length * sizeof(float));
+    memcpy(new_data, sdl_sound->value.abuf, array_length * sizeof(float));
+    zox_set(e, SoundData, { array_length, new_data })
     // wait this won't clear, so we need SDLData t too'
     //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
 #else
@@ -95,6 +99,6 @@ ecs_entity_t spawn_sound_from_file_name(ecs_world_t *world, const ecs_entity_t p
         return spawn_sound_from_file(world, prefab, sound_file);
     } else {
         zox_log(" ! sound_file not found [%s]\n", name)
+        return 0;
     }
-    return 0;
 }

@@ -11,6 +11,7 @@ zox_component_byte(GenerateSound)        //! A state event for generating sounds
 // remember: renamed PlaySound to TriggerSound temporarily, cause of windows.h conflict
 zox_component_byte(TriggerSound)         //! A state event for playing sounds
 zox_component_byte(SoundDirty)
+zox_component_byte(ProcessSound)
 zox_component_float(SoundFrequency)     //! The frequency of the generated sound
 zox_component_float(SoundVolume)     //! The frequency of the generated sound
 zox_component_int(SoundFrequencyIndex)     //! The frequency of the generated sound
@@ -31,6 +32,7 @@ zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "instruments/noise_waves.c"
 #include "instruments/instruments.c"
 #include "instruments/envelop.c"
+#include "systems/sound_process_system.c"
 #include "systems/sound_generate_system.c"
 #include "systems/sound_debug_system.c"
 #ifdef zox_lib_sdl_mixer
@@ -63,6 +65,7 @@ zox_define_component_byte(InstrumentType)
 zox_define_component_byte(SoundDirty)
 zox_define_component_byte(TriggerSound)
 zox_define_component_byte(GenerateSound)
+zox_define_component_byte(ProcessSound)
 zox_define_component_double(SoundLength)
 zox_define_component_float(SoundFrequency)
 zox_define_component_float(SoundVolume)
@@ -71,6 +74,7 @@ zox_define_memory_component(SoundData)
 #ifdef zox_lib_sdl_mixer
 zox_define_component(SDLSound)
 #endif
+zox_system(SoundProcessSystem, EcsOnUpdate, [in] SoundFrequency, [in] SoundData, [out] ProcessSound, [out] TriggerSound, [out] SoundDirty, [None] Sound)
 zox_system(SoundGenerateSystem, EcsOnUpdate, [in] InstrumentType, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [none] Sound)
 #ifdef zox_lib_sdl_mixer
 zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
