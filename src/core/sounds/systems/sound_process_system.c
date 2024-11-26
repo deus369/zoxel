@@ -1,6 +1,6 @@
 // todo: alter frequency over time during sound
 void SoundProcessSystem(ecs_iter_t *it) {
-    // return;
+    const float default_frequency = 220; // 440;
     zox_field_in(SoundFrequency, soundFrequencys, 1)
     zox_field_in(SoundData, soundDatas, 2)
     zox_field_out(ProcessSound, processSounds, 3)
@@ -19,7 +19,6 @@ void SoundProcessSystem(ecs_iter_t *it) {
         zox_field_o(SoundDirty, soundDirtys, soundDirty)
         zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
         const float frequency = soundFrequency->value;
-        const float default_frequency = 440;
         const float frequency_scale = frequency / default_frequency;
         float new_data[soundData->length];
         for (int j = 0; j < soundData->length; j++) {

@@ -7,15 +7,13 @@ void MusicPlaySystem(ecs_iter_t *it) {
     zox_field_in(MusicPlaying, musicPlayings, 1)
     zox_field_in(NoteLinks, noteLinkss, 2)
     zox_field_in(MusicSpeed, musicSpeeds, 3)
-    // zox_field_in(InstrumentType, instrumentTypes, 4)
-    zox_field_out(MusicNote, musicNotes, 5)
-    zox_field_out(MusicTime, musicTimes, 6)
+    zox_field_out(MusicNote, musicNotes, 4)
+    zox_field_out(MusicTime, musicTimes, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(MusicPlaying, musicPlayings, musicPlaying)
         if (!musicPlaying->value) continue;
         zox_field_i(NoteLinks, noteLinkss, noteLinks)
         zox_field_i(MusicSpeed, musicSpeeds, musicSpeed)
-        // zox_field_i(InstrumentType, instrumentTypes, instrumentType)
         zox_field_o(MusicNote, musicNotes, musicNote)
         zox_field_o(MusicTime, musicTimes, musicTime)
         musicTime->value += delta_time;
@@ -45,6 +43,8 @@ void MusicPlaySystem(ecs_iter_t *it) {
             // const ecs_entity_t sound = spawn_sound_generated(world, note_instrument, frequency, note_time, note_volume);
             // if note_instrument == piano_file:
             // zox_log("spawned soud [swap_action]\n")
+
+            // spawn sound_file_note(world, prefab_sound_file_note)
             const ecs_entity_t sound = spawn_sound_from_file_name(world, prefab_sound, "piano");
             zox_set(sound, SoundFrequency, { frequency })
             zox_set(sound, SoundVolume, { note_volume })
@@ -54,7 +54,8 @@ void MusicPlaySystem(ecs_iter_t *it) {
             // alter sound by frequency
             // frequency, note_time, note_volume
 
-            if (rand() % 100 >= 95) musicTime->value += musicSpeed->value;
+            // if (rand() % 100 >= 95) musicTime->value += musicSpeed->value;
+
             // zox_log(" + playing music at [%f] type [%i] length [%f] volume [%f]\n", zox_current_time, note_instrument, note_time, note_volume)
 #ifdef zoxel_log_music_playing
             zox_log(" > music note played [%i : %i] frequency [%f] instrument [%i]\n", musicNote->value, music_note, frequency, instrumentType->value)

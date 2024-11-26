@@ -1,25 +1,13 @@
+// wsl gcc -std=c99 src/inner_core/musics/convert/midi.c -o build/midi_converter `pkg-config --cflags --libs glib-2.0` -lm -lsmf
+//  wsl gcc -std=c99 src/inner_core/musics/convert/midi.c -o build/midi_converter -lm $(pkg-config --cflags --libs glib-2.0 smf) && wsl ./build/midi_converter raw/midis/song_1.mid
 #include <stdio.h>
 #include <math.h>
 #include <smf.h>
 #include "midi_note.c"
 #include "midi_load.c"
+#include "midi_save.c"
 
 #define FILENAME "resources/music/music.zox"
-
-// Save the notes to a file
-int save_notes_to_file(MidiNote *notes, int note_count, const char *filename) {
-    FILE *file = fopen(filename, "wb");
-    if (!file) {
-        perror("Failed to open file for saving");
-        return -1;
-    }
-
-    fwrite(&note_count, sizeof(int), 1, file); // Write the number of notes
-    fwrite(notes, sizeof(MidiNote), note_count, file); // Write the notes data
-
-    fclose(file);
-    return 0;
-}
 
 // Function to convert MIDI note number to frequency
 double midi_note_to_frequency(int note_number) {
