@@ -26,6 +26,14 @@ zox_entities_component(NoteLinks)
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
 
+void initialize_music(ecs_world_t *world) {
+#ifdef zox_test_music_files
+    local_music = load_music_file(world, prefab_music_file, prefab_note);
+#else
+    local_music = spawn_music_generated(world, prefab_music); // _square
+#endif
+}
+
 zox_begin_module(Musics)
 zox_define_tag(Note)
 zox_define_tag(Music)
@@ -40,9 +48,7 @@ zox_define_entities_component(NoteLinks)
 zox_system_1(MusicGenerateSystem, zox_pip_mainthread, [out] GenerateMusic, [out] NoteLinks, [none] Music)
 zox_system_1(MusicPlaySystem, zox_pip_mainthread, [in] MusicPlaying, [in] NoteLinks, [in] MusicSpeed, [out] MusicNote, [out] MusicTime, [none] Music)
 spawn_prefabs_musics(world);
-#ifdef zox_test_music_files
-load_music_file(world, prefab_music_file, prefab_note);
-#endif
+zox_log("ADDW")
 zoxel_end_module(Musics)
 
 #endif

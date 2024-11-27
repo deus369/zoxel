@@ -3,7 +3,7 @@ extern unsigned char terrain_vertical;
 ecs_entity_t terrain_grid;
 
 void destroy_terrain_grid(ecs_world_t *world) {
-    zox_delete(terrain_grid)
+    if (terrain_grid) zox_delete(terrain_grid)
 }
 
 void spawn_terrain_grid(ecs_world_t *world, const float real_chunk_scale) {

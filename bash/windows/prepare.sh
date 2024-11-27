@@ -12,7 +12,8 @@ bash bash/windows/install_winpthread.sh
 # source bash/windows/download_libraries.sh
 os=$(detect_os)
 echo " + OS is $os"
-if "$os" -eq "LINUX" ; then
+
+if [ "$os" = "LINUX" ]; then
     echo " + linux cross compilation preparation"
     if yay -Q mingw-w64-glew > /dev/null 2>&1; then
         echo " > mingw-w64-glew is installed"

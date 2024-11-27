@@ -1,0 +1,77 @@
+# ====== ===== ====== #
+# ===== windows ===== #
+# ====== ===== ====== #
+# [from linux]
+
+cc_windows=x86_64-w64-mingw32-gcc # -Wall -g
+target_windows = build/windows/zoxel.exe
+windows_libs = -lm -lpthread -lopengl32 -lglew32 -LSDL2main -lSDL2
+windows_libs += -Wl,-subsystem,windows -mwindows -lws2_32 # windows only
+ifeq ($(use_lib_sdl_image), true)
+	windows_libs += -lSDL2_image -Dzox_lib_sdl_images
+endif
+ifeq ($(use_lib_sdl_mixer), true)
+	windows_libs += -lSDL2_mixer -Dzox_lib_sdl_mixer
+endif
+ifeq ($(use_lib_ttf), true)
+	windows_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2
+endif
+# windows_libs += --static # this fixes thread dll issue
+# windows pathing
+windows_includes = -Llib -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
+# -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
+windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
+windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
+windows_includes += -Iinclude/glew -Lbuild/glew/lib/Release/x64 # glew
+# command
+make_windows = \
+	echo " > building zoxel-windows" && \
+	$(patient_cmd) && \
+	$(cc_windows) $(cflags) $(cflags_release) $(OBJS) include/flecs/flecs.c -o $(target_windows) $(windows_includes) $(windows_libs)
+
+# if [ ! -d build/windows ]; then mkdir build/windows; fi
+
+prepare-windows: # for linux cross platform build
+	@ echo " > preparing windows"
+	@ $(patient_cmd)
+	@ make download-flecs
+	@ bash bash/windows/install_sdk.sh
+	@ bash bash/windows/prepare.sh
+
+# todo: copy resources and bin dll's into the folder build/windows
+ifneq ($(SYSTEM),Windows)
+
+$(target_windows): $(SRCS)
+	@ $(make_windows)
+
+windows:
+	@ $(make_windows)
+
+endif
+
+# @ WINEPATH=bin wine $(target_windows)
+
+run-windows:
+	@ WINEPREFIX=~/.wine64 wine $(target_windows)
+
+run-windows-debug2:
+	@ WINEPREFIX=~/.wine64 winedbg $(target_windows)
+
+run-windows-debug:
+	@ WINEPREFIX=~/.wine64 WINEDEBUG=+backtrace wine $(target_windows)
+
+run-windows-debug3:
+	@ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
+
+# @ WINEPREFIX=~/.wine64 WINEDEBUG=+all wine $(target_windows)
+# @ WINEPREFIX=~/.wine64 WINEDEBUG=+opengl wine $(target_windows)
+
+# ======= ===== ======= #
+# ===== windows32 ===== #
+# ======= ===== ======= #
+
+cc_windows_32=i686-w64-mingw32-gcc
+target_windows_32 = build/windows_32/zoxel_32.exe
+
+# todo: windows 32 build, linux32, etc
+

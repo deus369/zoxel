@@ -1,6 +1,3 @@
-void initialize_sdl_inputs() {
-}
-
 void close_sdl_input() {
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }

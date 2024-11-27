@@ -1,0 +1,103 @@
+
+# ===== ===== ===== #
+# ===== steam ===== #
+# ===== ===== ===== #
+
+.PHONY: steam-wrapper-linux steam-linux steam-linux-dev steam-run steam-wrapper-windows steam-windows steam steam-cmd steam-sdk steam-package steam-upload steam-upload-live prepare-steamdeck clean-steam
+
+# todo: use windows-steam directory
+steam_objs = bash/steam/steamwrapper.c
+steam_libs = -Iinclude/steam -Dzox_include_steam -lsteam_wrapper # -Wl,-rpath='lib' # rpath used for wrapper
+# linux
+steam_libs_linux = -Llib -lsteam_api -Llib
+make_linux_with_steam = $(CC) $(cflags) $(cflags_release) -o $(target) $(OBJS) $(steam_objs) $(make_libs) $(steam_libs) $(steam_libs_linux)
+make_linux_dev_with_steam = $(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(steam_objs) $(make_libs) $(steam_libs) $(steam_libs_linux)
+# windows
+steam_libs_windows = -lsteam_api64
+make_windows_with_steam = $(cc_windows) $(cflags) $(cflags_release) $(OBJS) include/flecs/flecs.c $(steam_objs) -o $(target_windows) $(windows_includes) $(windows_libs) $(steam_libs) $(steam_libs_windows)
+
+steam-wrapper-linux:
+	@ $(patient_cmd)
+	@ bash bash/steam/build_wrapper_linux.sh
+
+steam-linux:
+	@ echo " > building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > building linux-steam"
+	@ $(patient_cmd)
+	@ $(make_linux_with_steam)
+
+steam-linux-dev:
+	@ echo " > building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > building linux-steam"
+	@ $(patient_cmd)
+	@ $(make_linux_dev_with_steam)
+
+steam-run:
+	@ LD_LIBRARY_PATH=lib ./$(target) # LD_LIBRARY_PATH used for steam_api
+
+steam-wrapper-windows:
+	@ $(patient_cmd)
+	@ bash bash/steam/build_wrapper_windows.sh
+
+steam-windows:
+	@ echo " > building windows-steam wrapper"
+	@ bash bash/steam/build_wrapper_windows.sh
+	@ echo " > building windows-steam"
+	@ $(patient_cmd)
+	@ $(make_windows_with_steam)
+
+steam:
+	@ echo " > [1/6] building linux-steam wrapper"
+	@ bash bash/steam/build_wrapper_linux.sh
+	@ echo " > [2/6] building linux-steam"
+	@ $(make_linux_with_steam)
+	@ echo " > [3/6] building windows-steam wrapper"
+	@ bash bash/steam/build_wrapper_windows.sh
+	@ echo " > [4/6] building windows-steam"
+	@ $(make_windows_with_steam)
+	@ echo " > [5/6] packaging build/steam_export.zip"
+	@ bash bash/steam/package.sh
+	@ echo " > [6/6] uploading build/steam_export.zip"
+	@ $(patient_cmd)
+	@ bash bash/steam/upload_package.sh
+	# bash bash/steam/upload_package.sh --default
+
+steam-cmd:
+	@ bash bash/steam/install_steamcmd.sh
+
+steam-sdk:
+	@ bash bash/steam/install_sdk.sh
+
+steam-package:
+	@ bash bash/steam/package.sh
+
+steam-upload:
+	@ bash bash/steam/upload_package.sh
+
+steam-upload-live:
+	@ bash bash/steam/upload_package.sh --default
+
+# install libs needed on steamdeck for builds there (steam os)
+prepare-steamdeck:
+	@ bash bash/steamdeck/prepare.sh
+
+clean-steam:
+	@ echo " > cleaning steam builds"
+	@ bash bash/steam/clean.sh
+
+help:
+	@echo "  > [steam]"
+	@echo "    steam			builds both wrappers, builds and uploads them to beta"
+	@echo "    steam-wrapper-linux		builds steam wrapper lib/libsteam_wrapper.so"
+	@echo "    steam-linux			builds zoxel-linux with steam added"
+	@echo "    steam-wrapper-windows	builds steam wrapper lib/libsteam_wrapper.dll"
+	@echo "    steam-windows		builds zoxel-windows with steam added"
+	@echo "    steam-package		packages steam zip for upload"
+	@echo "    steam-upload		uploads steam to beta branch"
+	@echo "    steam-upload-live		uploads steam to main branch"
+	@echo "	   steam-cmd			installs steam cmd for uploads"
+	@echo "    steam-sdk			installs steamworks sdk from zip ~/Downloads/steamworks_sdk.zip"
+	@echo "    prepare-steamdeck		installs steamdeck required libs"
+

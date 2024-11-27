@@ -12,14 +12,12 @@
 #else
     #ifdef USE_SDL_3
         #include <SDL3/SDL.h>
-    #elif defined(zox_sdl_import_file_only)
-        #include <SDL.h>
     #else
         #include <SDL2/SDL.h>
     #endif
 #endif
 #ifdef zox_lib_sdl_images
-    #if defined(zox_sdl_import_file_only)
+    #if defined(zox_lib_sdl_direct)
         #include <SDL_image.h>
     #else
         #include <SDL2/SDL_image.h>

@@ -9,10 +9,12 @@
 
 // #define zox_beta
 // to fix windows build
-#define zox_sdl_import_file_only
-#if defined(_WIN32) || defined(__ANDROID__)
+
 // #define zox_sdl_import_file_only
-#endif
+
+//#if defined(_WIN32) || defined(__ANDROID__)
+// #define zox_sdl_import_file_only
+//#endif
 // #define zox_print_opengl
 // #define zox_print_sdl                       // debugs sdl app
 #define zox_print_shader_support

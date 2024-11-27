@@ -1,0 +1,97 @@
+# ====== ===== ====== #
+# ===== android ===== #
+# ====== ===== ====== #
+
+.PHONY: prepare-android prepare-android-emu android android-push android-sdl android-clean android-install android-run android-sign android-debug android-dev android-create-key android-uninstall android-update-settings android-dev-debug android-install-run android-sign-install-run
+
+# firefox-esr | firefox
+make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
+target_android = build/zoxel.apk
+
+prepare-android:
+	@ echo " > preparing for android"
+	@ $(patient_cmd)
+	@ bash bash/android/prepare.sh
+
+prepare-android-emu:
+	@ echo " > installing android emulator"
+	@ $(patient_cmd)
+	@ bash bash/android/prepare_emu.sh
+
+android:
+	@ echo " > building zoxel-android"
+	@ $(patient_cmd)
+	@ $(make_android)
+
+android-push:
+	@ echo " > installing and running zoxel.apk"
+	@ $(patient_cmd)
+	@ bash bash/android/gradle_push_release.sh
+
+android-sdl:
+	@ echo " > installing sdl for android"
+	@ $(patient_cmd)
+	@ bash bash/android/install_sdl.sh
+	@ bash bash/android/copy_sdl.sh
+
+android-clean:
+	@ echo " > cleaning up android build files"
+	@ $(patient_cmd)
+	@ bash bash/android/clean_sdk.sh
+
+# @ bash bash/android/gradle_install.sh && bash bash/android/gradle_run.sh
+
+android-install:
+	@ bash bash/android/gradle_install.sh
+
+android-run:
+	@ bash bash/android/gradle_run.sh
+
+android-sign:
+	@ bash bash/android/gradle_sign.sh
+
+android-debug:
+	@ bash bash/android/debug_android.sh
+
+android-dev:
+	@ bash bash/android/gradle_build_dev.sh
+
+android-create-key:
+	@ bash bash/android/generate_keystore.sh
+
+android-uninstall:
+	@ bash bash/android/gradle_uninstall.sh
+
+#android-clean:
+#	bash bash/android/gradle_clean.sh
+
+android-update-settings:
+	@ bash bash/android/sdl/copy_settings.sh
+
+android-dev-debug:
+	@ bash bash/android/install_debug.sh
+	@ bash bash/android/debug_android.sh
+
+# combos for easiness
+
+android-install-run:
+	@ bash bash/android/gradle_install.sh
+	@ bash bash/android/gradle_run.sh
+
+android-sign-install-run:
+	@ bash bash/android/gradle_sign.sh
+	@ bash bash/android/gradle_install.sh
+	@ bash bash/android/gradle_run.sh
+
+help:
+	@echo "  > [android]"
+	@echo "    prepare-android		installs tools for android build"
+	@echo "    prepare-android-emu		installs waydroid for local android"
+	@echo "    android			builds & runs android release"
+	@echo "    android-create-key		created android keystore"
+	@echo "    android-sign		signs the unsigned zoxel apk"
+	@echo "    android-install		installs zoxel apk"
+	@echo "    android-run			runs the zoxel apk"
+	@echo "    android-dev			builds & runs android debug"
+	@echo "    android-dev-debug		builds & runs android debug with logcat"
+	@echo "    debug-android		debugs running android game"

@@ -1,0 +1,101 @@
+# ==== ====== ==== #
+# ===== util ===== #
+# ==== ====== ==== #
+
+## installs zoxel into /usr/games directory
+install:
+ifeq ($(OS),Windows_NT) # on windows
+	@ bash bash/windows/install.sh
+else # linux
+	@ bash bash/install/install.sh
+endif
+
+## uninstalls zoxel into /usr/games directory
+uninstall:
+	@ bash bash/install/uninstall.sh
+
+
+# removes all build files
+# todo: remove build, lib, include from project
+
+.PHONY: codeberg github create-system zip-build install-play play resources
+
+codeberg:
+	@ open https://codeberg.org/deus/zoxel &
+
+github:
+	@ open https://github.com/deus369/zoxel &
+
+create-system:
+	@ bash bash/zoxel/create_system.sh
+
+package:
+	@ bash bash/util/zip_build.sh $(target)
+
+install-play:
+	@ bash bash/install/install_play_button.sh
+
+play:
+	@ gcc tests/glut/play_button.c -o build/play_button -lglut -lGL -lGLU && ./build/play_button &
+
+resources:
+	@ echo " + resources updating"
+	@ bash bash/util/update_build_resources.sh
+
+debug-libs:
+	ldd ./$(target)
+
+#show-systems:
+#	@ echo " > showing systems"
+#	@ bash bash/count/create_systems_chart.sh
+
+
+# -==== ====== ====- #
+# ===== counts ===== #
+# -==== ====== ====- #
+
+.PHONY: count count-systems list-systems count-module-lines
+
+count:
+	@ echo " > counting source files"
+	@ bash bash/count/count_source.sh
+
+count-systems:
+#	@ bash bash/count/count_systems.sh
+	@ bash bash/count/create_systems_chart.sh
+
+list-systems:
+	@ echo " > listing systems"
+	# @ bash bash/count/list_systems.sh
+	@ bash bash/zoxel/list_systems.sh
+
+count-module-lines:
+	@ echo " > counting module lines"
+	@ bash bash/count/count_module_lines.sh
+
+
+help:
+	@echo " count			counts lines in source"
+	@echo " list-systems		lists all the systems"
+	@echo " count-systems		creates a chart"
+	@echo " count-module-lines	counts lines per module"
+	@echo "  > [setup]"
+	@echo "    install-required		installs required libraries for debian systems"
+	@echo "    install-sdl			installs sdl"
+	@echo "    install			installs zoxel"
+	@echo "    uninstall			inuninstalls zoxel"
+	@echo "    clean			removes all build files"
+	@echo "    package			packages into a zip file"
+	@echo "  > [util]"
+	@echo "    count			counts total lines in all source"
+	@echo "    list-systems		lists all found zoxel systems in a module"
+	@echo "    create-system		creates a new system in a module"
+	@echo "    zip-build			zips zoxel build and resources"
+	@echo "    github			opens zoxel on github"
+	@echo "    codeberg			opens zoxel on codeberg"
+	@echo "    play			runs a play button"
+	@echo "    install-play		installs a play button"
+	@echo "  > [linux-to-windows]"
+	@echo "    make prepare-windows	prepare build directory and libraries"
+	@echo "    windows-sdk			installs tools for windows cross compilation"
+	@echo "    windows			builds windows release"

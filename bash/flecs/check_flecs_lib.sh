@@ -8,7 +8,7 @@ if [ -f $lib_check_filepath ]; then
 else
     echo "  - [$lib_check_filepath] does not exist"
     echo "#####"
-    echo "  > remember to build flecs lib with 'make build/libflecs.a'"
+    echo "  > remember to build flecs lib with 'make flecs'"
     echo "#####"
     exit 1 # Set failure status
 fi

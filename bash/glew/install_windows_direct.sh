@@ -34,3 +34,15 @@ if [ ! -f $dll_destination ]; then
 else
     echo " > [$dll_destination] already exists"
 fi
+
+if [ ! -d "include/glew" ]; then
+    mkdir "include/glew"
+    #cp -r "$glew_path/include/*.*" "include/glew/"
+    for file in "$glew_path/include"/*; do
+        if [ -f "$file" ]; then
+            cp "$file" "include/glew/"
+        fi
+    done
+
+fi
+

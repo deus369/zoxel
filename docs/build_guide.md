@@ -34,8 +34,8 @@ make install-required                   # installs required libraries
 ```
 > install flecs using make > bash commands
 ```
-make install-flecs      # installs flecs v3.0.3 files
-make build/libflecs.a   # builds flecs library
+make download-flecs      # installs flecs v3.0.3 files
+make flecs               # builds flecs library
 ```
 > for linux or windows
 ```

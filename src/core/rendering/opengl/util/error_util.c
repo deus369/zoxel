@@ -35,9 +35,9 @@ int check_opengl_error(char* function_name) {
             case GL_INVALID_INDEX:
                 error_message = "GL_INVALID_INDEX";
                 break;
-            case GL_CONTEXT_LOST:
-                error_message = "GL_CONTEXT_LOST";
-                break;
+            // case GL_CONTEXT_LOST:
+            //    error_message = "GL_CONTEXT_LOST";
+            //    break;
             default:
                 error_message = "UNKNOWN";
                 break;

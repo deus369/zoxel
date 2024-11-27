@@ -1,0 +1,80 @@
+# ===== ===== ===== #
+# ===== flecs ===== #
+# ===== ===== ===== #
+
+.PHONY: flecs install-sdl download-flecs remove-flecs get-nightly-flecs get-flecs-version revert-nightly-flecs check-flecs
+
+ifeq ($(OS),Windows_NT)
+    SYSTEM := Windows
+endif
+
+# build/libflecs.a
+# main
+CC = gcc
+cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
+# supresses flecs warning
+cflags += -Wno-stringop-overread -Wno-stringop-overflow
+# make faster for release builds
+cflags_release = -Ofast -D NDEBUG -s
+ifneq ($(SYSTEM),Windows)
+cflags_release += -flto=auto # fuse linker plugin on linux only
+endif
+
+# flecs
+flecs_target = lib/libflecs.a
+flecs_source = include/flecs/flecs.c
+flecs_flags = -c
+flecs_obj = build/flecs.o
+flecs_libs = -lm -lpthread
+ifeq ($(SYSTEM), Windows) # win sockets
+	flecs_libs += -lws2_32
+endif
+make_flecs = mkdir build; $(CC) $(flecs_flags) $(cflags) $(cflags_release) $(flecs_source) -o $(flecs_obj) $(flecs_libs)
+make_flecs_lib = mkdir lib; ar rcs $(flecs_target) $(flecs_obj)
+make_flecs_big = $(make_flecs) && $(make_flecs_lib)
+
+# && rm $(flecs_obj)
+
+flecs:
+	@ make -f make/flecs download-flecs
+	@ $(make_flecs_big)
+
+print:
+	@ echo "make_flecs:"
+	@ echo $(make_flecs)
+	@ echo "make_flecs_big:"
+	@ echo $(make_flecs_big)
+
+# downloads source into include, installs library into lib
+$(flecs_target):
+	@ $(make_flecs_big)
+
+download-flecs:
+	@ bash bash/flecs/download_flecs_source.sh
+
+# @ bash bash/flecs/remove_flecs.sh
+
+remove-flecs:
+	@ bash bash/flecs/remove_flecs.sh
+
+get-nightly-flecs:
+	@ bash bash/flecs/nightly_flecs.sh
+
+get-flecs-version:
+	@ bash bash/flecs/download_flecs_version.sh
+
+revert-nightly-flecs:
+	@ bash bash/flecs/nightly_revert_source.sh
+
+check-flecs:
+	@ open https://github.com/SanderMertens/flecs/releases &
+
+help:
+	@echo "  > [flecs]"
+	@echo "    make $(flecs_target)	builds flecs"
+	@echo "    check-flecs			checks flecs releases"
+	@echo "    download-flecs		installs latest flecs (3.2.6)"
+	@echo "    /lib/flecs.a		builds flecs library"
+	@echo "    remove-flecs		removes flecs library"
+	@echo "    get-flecs-version		get a flecs by version"
+	@echo "    get-nightly-flecs		gets latest flecs"

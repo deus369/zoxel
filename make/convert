@@ -1,0 +1,25 @@
+# ===== ====== ====== #
+# ===== convert ===== #
+# ===== ====== ====== #
+
+# todo: we should also compiler the converts and libraries they use
+
+all:
+	@ echo " > converting all raw into resources"
+	@ make -f make/convert music
+
+music:
+	@ ./bash/convert/music.sh
+
+textures:
+	@ echo " todo: convert textures into zoxes"
+
+voxes:
+	@ echo " todo: convert voxes into zoxes"
+
+help:
+	@ echo "music          - converts all midi files into zongs"
+	@ echo "fonts          - converts all fonts into zonts"
+	@ echo "fbxs           - converts all fbxs into skeletons"
+	@ echo "textures           - converts textures"
+	@ echo "voxes           - converts voxes"

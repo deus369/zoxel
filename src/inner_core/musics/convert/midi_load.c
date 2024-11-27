@@ -11,6 +11,8 @@ int load_notes_from_file(MidiNote *notes, const char *filename) {
     }
     int note_count;
     fread(&note_count, sizeof(int), 1, file); // Read the number of notes
+    fread(notes, sizeof(MidiNote), note_count, file); // Read the notes data
+    fclose(file);
     // notes = (MidiNote*) malloc(sizeof(MidiNote) * note_count);
     /*for (int i = 0; i < note_count; i++) {
         MidiNote note;
@@ -19,8 +21,6 @@ int load_notes_from_file(MidiNote *notes, const char *filename) {
         fread(&note.frequency, sizeof(double), 1, file);
         notes[i] = note;
     }*/
-    fread(notes, sizeof(MidiNote), note_count, file); // Read the notes data
-    fclose(file);
     return note_count;
 }
 

@@ -3,19 +3,20 @@
 # Set the download URL for SDL2
 sdl_url="https://github.com/libsdl-org/SDL/releases/download/release-2.30.2/SDL2-devel-2.30.2-VC.zip"
 sdl_zip="build/sdl.zip"
-sdl_source="build/sdl/SDL2-2.30.2" # SDL2-2.0.14"
 sdl_path="build/sdl"
-sdl_source="build/sdl/lib/x64/SDL2.dll"
+sdl_zip_directory="$sdl_path/SDL2-2.30.2" # SDL2-2.0.14"
+sdl_source="$sdl_path/lib/x64/SDL2.dll"
 sdl_destination="lib/SDL2.dll"
 
 if [ ! -d $sdl_path ]; then
+    echo " > making sdl path [$sdl_path]"
     mkdir -p "$sdl_path"
     wget -O "$sdl_zip" "$sdl_url"
     unzip -q "$sdl_zip" -d "$sdl_path"
     rm "$sdl_zip"
     # remove folder build/sdl/SDL2-2.0.14
-    mv "$sdl_source"/* "$sdl_path"
-    rmdir "$sdl_source"
+    mv "$sdl_zip_directory"/* "$sdl_path"
+    rmdir "$sdl_zip_directory"
 else
     echo " > [$sdl_path] exists"
 fi

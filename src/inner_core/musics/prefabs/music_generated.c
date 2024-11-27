@@ -23,6 +23,5 @@ ecs_entity_t spawn_music_generated(ecs_world_t *world, const ecs_entity_t prefab
     zox_name("music")
     zox_set(e, MusicSpeed, { music_speed })
     zox_set(e, InstrumentType, { instrument_type })
-    // local_music = e;
     return e;
 }

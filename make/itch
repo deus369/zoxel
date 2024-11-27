@@ -1,0 +1,26 @@
+# ===== ====== ===== #
+# ===== itchio ===== #
+# ===== ====== ===== #
+
+.PHONY: itch-all itch-upload itch-sdk
+
+itch-all:
+	@ echo "	> build linux"
+	@ $(make_release)
+	@ echo "	> build windows"
+	@ $(make_windows)
+	@ echo "	> upload all to itch io"
+	@ bash bash/itch/upload.sh
+	@ echo "	> itch all complete"
+
+itch-upload:
+	@ bash bash/itch/upload.sh
+
+itch-sdk:
+	@ bash bash/itch/install_butler.sh
+
+help:
+	@echo "  > [itchio]"
+	@echo "    itch-all			builds all platforms uploads to itch"
+	@echo "    itch-upload			uploads builds to itch"
+	@echo "    itch-sdk			installs itch io butler"
