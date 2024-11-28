@@ -92,6 +92,11 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
         attach_camera_to_character(world, player, camera, 0);
     }
     #endif
+
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    const ecs_entity_t playlist = zox_get_value(realm, PlaylistLink)
+    play_music(world, playlist, 1);
 }
 
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {

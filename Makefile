@@ -313,19 +313,9 @@ endif
 	@echo "  + run-dev-debug		runs valgrind $(target_dev)"
 	@echo "  + run-dev-profiler		runs $(target_dev) --profiler"
 
+push:
+	@ make -f make/git push
+
 .DEFAULT:
 	@ echo " ! Unknown target '$@'"
 	@ make help;
-
-#@ echo " > running 'make help'"
-#@echo "  "
-#@echo " > help-x commands"
-#@echo "  + flecs		building flecs"
-#@echo "  + extra		all the extras"
-#@echo "  + git			git bash helpers"
-#@echo "  + android		android builds"
-#@echo "  + web			web builds"
-#@echo "  + steam		steam integration"
-#@echo "  + itch		itch-io automation"
-#@echo "  + analyse		tools for analyzing"
-#@echo "  "

@@ -33,8 +33,6 @@ make_flecs = mkdir build; $(CC) $(flecs_flags) $(cflags) $(cflags_release) $(fle
 make_flecs_lib = mkdir lib; ar rcs $(flecs_target) $(flecs_obj)
 make_flecs_big = $(make_flecs) && $(make_flecs_lib)
 
-# && rm $(flecs_obj)
-
 flecs:
 	@ make -f make/flecs download-flecs
 	@ $(make_flecs_big)

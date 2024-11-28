@@ -12,6 +12,10 @@ void player_end_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     zox_set(camera, Euler, { float3_zero })
     zox_set(camera, CharacterLink, { 0 })
     spawn_main_menu(world, player, canvas, game_name, int2_zero, float2_half);
+    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    const ecs_entity_t playlist = zox_get_value(realm, PlaylistLink)
+    play_music(world, playlist, 0);
 }
 
 void player_end_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
