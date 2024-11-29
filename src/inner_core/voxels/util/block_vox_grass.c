@@ -3,7 +3,6 @@ ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char
     if (vox == 0) {
         zox_log(" ! grass_vox model not found.\n")
     }
-    // zox_set(vox, UboGPULink, { spawn_ubo(world, material_vox_instance) })
     // use instanced mesh prefab
     // prefab_block_vox_meta
     SpawnBlock spawn_data = {
@@ -18,8 +17,8 @@ ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char
         .disable_collision = 1,
         .prefab_texture = prefab_vox_texture
     };
-    // zox_prefab_child_named(prefab_block_vox_instanced, prefab_block_vox2)
-    zox_instance_named(prefab_block_vox_instanced, prefab_block_vox2)
+    zox_prefab_child_named(prefab_block_vox_instanced, prefab_block_vox2)
+    // zox_instance_named(prefab_block_vox_instanced, prefab_block_vox2)
     spawn_data.prefab_block_vox = prefab_block_vox2;
     zox_set(prefab_block_vox2, InstanceLink, { vox })
     // todo: spawn a new prefab here to edit - make sure its destroyed after, do we have a EntityLinkDestroyer, make this purely for generic disposal
@@ -47,9 +46,6 @@ ecs_entity_t spawn_realm_block_vox_flower(ecs_world_t *world, const unsigned cha
     if (vox == 0) {
         zox_log(" ! vox model not found.\n")
     }
-    // zox_set(vox, UboGPULink, { spawn_ubo(world, material_vox_instance) })
-    // use instanced mesh prefab
-    // prefab_block_vox_meta
     SpawnBlock spawn_data = {
         .index = (unsigned char) (index + 1),
         .seed = generate_voxel_seed(index),
@@ -63,8 +59,8 @@ ecs_entity_t spawn_realm_block_vox_flower(ecs_world_t *world, const unsigned cha
     };
     // zox_set(prefab_block_vox_instanced, InstanceLink, { vox })
     // const ecs_entity_t prefab_block_vox2 = prefab_block_vox_instanced;
-    // zox_prefab_child_named(prefab_block_vox_instanced, prefab_block_vox2)
-    zox_instance_named(prefab_block_vox_instanced, prefab_block_vox2)
+    zox_prefab_child_named(prefab_block_vox_instanced, prefab_block_vox2)
+    // zox_instance_named(prefab_block_vox_instanced, prefab_block_vox2)
     spawn_data.prefab_block_vox = prefab_block_vox2;
     zox_set(prefab_block_vox2, InstanceLink, { vox })
     // zox_prefab_set(prefab_block_vox2, TransformMatrix, { float4x4_identity() })

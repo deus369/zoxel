@@ -1,6 +1,6 @@
 // todo: Different meshes, linking, and then use a stack
 //  also LODing support
-#define zox_max_vox_instances 2048
+#define zox_max_vox_instances 10000
 ecs_entity_t shader_vox_instance;
 ecs_entity_t material_vox_instance;
 
@@ -9,7 +9,7 @@ const GLchar* shader_vert_vox_instance = "\
 layout(location=0) in highp vec3 vertex_position;\
 layout(location=1) in highp vec3 vertex_color;\
 uniform InstanceMatrices {\
-    lowp mat4 matrices[2048];\
+    lowp mat4 matrices[10000];\
 };\
 uniform highp mat4 camera_matrix;\
 uniform lowp vec4 fog_data;\

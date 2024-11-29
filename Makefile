@@ -313,6 +313,10 @@ endif
 	@echo "  + run-dev-debug		runs valgrind $(target_dev)"
 	@echo "  + run-dev-profiler		runs $(target_dev) --profiler"
 
+android:
+	@ echo " > building zoxel-android"
+	@ make -f make/android android
+
 push:
 	@ make -f make/git push
 

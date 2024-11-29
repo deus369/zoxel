@@ -8,77 +8,67 @@
 make_android = bash bash/android/gradle_build_release.sh # gradle_build_run.sh
 target_android = build/zoxel.apk
 
-prepare-android:
-	@ echo " > preparing for android"
-	@ $(patient_cmd)
-	@ bash bash/android/prepare.sh
-
-prepare-android-emu:
-	@ echo " > installing android emulator"
-	@ $(patient_cmd)
-	@ bash bash/android/prepare_emu.sh
-
 android:
 	@ echo " > building zoxel-android"
-	@ $(patient_cmd)
+	@ make -f make/android prepare
 	@ $(make_android)
 
-android-push:
+prepare:
+	@ echo " > preparing for android"
+	@ bash bash/android/prepare.sh
+
+emu:
+	@ echo " > installing android emulator"
+	@ bash bash/android/prepare_emu.sh
+
+push:
 	@ echo " > installing and running zoxel.apk"
-	@ $(patient_cmd)
 	@ bash bash/android/gradle_push_release.sh
 
-android-sdl:
+sdl:
 	@ echo " > installing sdl for android"
-	@ $(patient_cmd)
 	@ bash bash/android/install_sdl.sh
 	@ bash bash/android/copy_sdl.sh
 
-android-clean:
+clean:
 	@ echo " > cleaning up android build files"
-	@ $(patient_cmd)
 	@ bash bash/android/clean_sdk.sh
 
-# @ bash bash/android/gradle_install.sh && bash bash/android/gradle_run.sh
-
-android-install:
+install:
 	@ bash bash/android/gradle_install.sh
 
-android-run:
+run:
 	@ bash bash/android/gradle_run.sh
 
-android-sign:
+sign:
 	@ bash bash/android/gradle_sign.sh
 
-android-debug:
+debug:
 	@ bash bash/android/debug_android.sh
 
-android-dev:
+dev:
 	@ bash bash/android/gradle_build_dev.sh
 
-android-create-key:
+create-key:
 	@ bash bash/android/generate_keystore.sh
 
-android-uninstall:
+uninstall:
 	@ bash bash/android/gradle_uninstall.sh
 
-#android-clean:
-#	bash bash/android/gradle_clean.sh
-
-android-update-settings:
+update-settings:
 	@ bash bash/android/sdl/copy_settings.sh
 
-android-dev-debug:
+dev-debug:
 	@ bash bash/android/install_debug.sh
 	@ bash bash/android/debug_android.sh
 
 # combos for easiness
 
-android-install-run:
+install-run:
 	@ bash bash/android/gradle_install.sh
 	@ bash bash/android/gradle_run.sh
 
-android-sign-install-run:
+sign-install-run:
 	@ bash bash/android/gradle_sign.sh
 	@ bash bash/android/gradle_install.sh
 	@ bash bash/android/gradle_run.sh

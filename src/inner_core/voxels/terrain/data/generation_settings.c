@@ -2,7 +2,7 @@
 const int sand_height = -10;
 const int mountain_height = 20;
 // blocks
-#define block_spawn_chance_grass 333
+#define block_spawn_chance_grass 1033
 #define block_spawn_chance_flower 188 // flowers
 #define block_spawn_chance_rubble 47
 #define grass_spawn_chance 90

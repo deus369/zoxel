@@ -1,3 +1,8 @@
+#if defined(__ANDROID__)
+    #define zox_lib_sdl_direct
+    // #define zox_disable_rendering_instances
+#endif
+
 // Here? select which zoxel modules I shall use?
 
 
@@ -12,9 +17,9 @@
 
 // #define zox_sdl_import_file_only
 
-//#if defined(_WIN32) || defined(__ANDROID__)
-// #define zox_sdl_import_file_only
-//#endif
+// defined(_WIN32) ||
+
+
 // #define zox_print_opengl
 // #define zox_print_sdl                       // debugs sdl app
 #define zox_print_shader_support

@@ -19,33 +19,51 @@
 #   + libraries
 #   + resources
 
+source bash/android/_core.sh
 source bash/util/package_util.sh
 source bash/android/gradle_pathing.sh
 
-echo " !!! if these fail, install yay -S sdkmanager android-sdk jdk-openjdk"
-bash bash/util/install_yay.sh
-
-# on ubuntu only android-sdk, default-jdk works
-# sudo apt install android-sdk default-jdk
-# ubuntu need snapd package - sudo snap install sdkmanager
-
-if [ has_yay ]; then
-    echo "  > installing [jdk-openjdk]"
-    yay -S --noconfirm jdk-openjdk
-    echo "  > installing [android-sdk]"
-    yay -S --noconfirm android-sdk
-    echo "  > installing [sdkmanager]"
-    yay -S --noconfirm sdkmanager
+if [ is_windows ]; then
+    echo "Running on Windows"
+    # Set JAVA_HOME
+    export JAVA_HOME="/c/ProgramData/chocolatey/lib/openjdk/tools"
+    # Add JAVA_HOME/bin to PATH
+    export PATH="$JAVA_HOME/bin:$PATH"
+    # choco install openjdk sdkmanager -y
+    install_with_choco android-sdk
+    install_with_choco openjdk17 # 1
+    echo "note: need to download windows sdk manually for jdk11"
+    echo "  > sdkmanager cmdline tools"
+    echo "      > https://developer.android.com/studio#command-tools"
+    echo "  > jdk17"
+    echo "      > https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html"
+    # sleep 10
 else
-    echo " ! yay does not exist"
-    echo "  > installing [sdkmanager]"
-    install_first_library "sdkmanager"
-    echo "  > installing [android-sdk]"
-    install_first_library "android-sdk"
-    echo "  > installing [jdk]"
-    install_first_library "default-jdk" "jdk-openjdk"
-    # if failing on steamdeck, use:
-    # sudo pacman -S --overwrite /etc/java-openjdk/sdp/sdp.conf.template jdk-openjdk
+    echo "Not running on Windows"
+
+    echo " !!! if these fail, install yay -S sdkmanager android-sdk jdk-openjdk"
+    bash bash/util/install_yay.sh
+    # on ubuntu only android-sdk, default-jdk works
+    # sudo apt install android-sdk default-jdk
+    # ubuntu need snapd package - sudo snap install sdkmanager
+    if [ has_yay ]; then
+        echo "  > installing [jdk-openjdk]"
+        yay -S --noconfirm jdk-openjdk
+        echo "  > installing [android-sdk]"
+        yay -S --noconfirm android-sdk
+        echo "  > installing [sdkmanager]"
+        yay -S --noconfirm sdkmanager
+    else
+        echo " ! yay does not exist"
+        echo "  > installing [sdkmanager]"
+        install_first_library "sdkmanager"
+        echo "  > installing [android-sdk]"
+        install_first_library "android-sdk"
+        echo "  > installing [jdk]"
+        install_first_library "default-jdk" "jdk-openjdk"
+        # if failing on steamdeck, use:
+        # sudo pacman -S --overwrite /etc/java-openjdk/sdp/sdp.conf.template jdk-openjdk
+    fi
 fi
 
 # ubuntu install_sdk_manager.sh
@@ -56,17 +74,9 @@ fi
 clear_gradle_build
 start_gradle_build
 
-if [ ! -d $android_sdk_path ]; then
-    sudo mkdir $android_sdk_path && sudo chmod -R 777 $android_sdk_path
-fi
-if [ ! -d $ndk_path ]; then
-    sudo mkdir $ndk_path && sudo chmod -R 777 $ndk_path
-fi
-
-# license directory
-if [ ! -d /opt/android-sdk/licenses ]; then
-    sudo mkdir /opt/android-sdk/licenses && sudo chmod -R 777 /opt/android-sdk/licenses
-fi
+zmkdir $android_sdk_path
+zmkdir $ndj_path
+zmkdir "/opt/android-sdk/licenses"
 
 # now update licenses / accept them
 # yes | sdkmanager --license # accepts sdkmanager licenses in /opt/android-sdk/licenses directory
@@ -110,7 +120,6 @@ source bash/android/sdl/copy_source.sh
 # installs ndk automatically
 echo " > refreshing [gradlew]"
 cd build/android-build && bash gradlew; cd ../..
-# cd build/android-build && bash gradlew clean; cd ../..
 
 end_gradle_build
 

@@ -2,6 +2,7 @@
 # ===== convert ===== #
 # ===== ====== ====== #
 
+# todo: resource cloning to build directory should only copy over changed files, new files, or delete old files
 # todo: we should also compiler the converts and libraries they use
 
 all:

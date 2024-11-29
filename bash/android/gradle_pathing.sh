@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source bash/android/_core.sh
+
 # global variables
 is_sdl_image=true
 is_sdl_mixer=true
@@ -34,11 +36,15 @@ start_gradle_build() {
     #echo " > JDK Version found [$jdk_ver]"
     platform_ver=34 # 30
     platform_tools_ver=34.0.5
-    build_tools_ver=34.0.0-rc4 # 30.0.3
+    build_tools_ver=34.0.0 # -rc4 # 30.0.3
     # echo "  > gradle setting paths"
     zoxel_directory=$PWD
     android_sdk_path="$zoxel_directory/build/android_sdk"
     apksigner=$android_sdk_path/build-tools/$build_tools_ver/apksigner
+    if [ is_windows ]; then
+        apksigner="$apksigner.bat"
+    fi
+    echo "apksigner is at [$apksigner]"
     ndk_path=$android_sdk_path/ndk
     export ANDROID_HOME=$android_sdk_path
     export ANDROID_SDK_ROOT=$android_sdk_path
@@ -56,7 +62,10 @@ start_gradle_build() {
     #JAVA_HOME=/usr/lib/jvm/java-$jdk_ver-openjdk # 7 / 11 / 20
     #export JAVA_HOME=$JAVA_HOME
     # javaHome=$JAVA_HOME # "/usr/lib/jvm/java-17-openjdk" # $(dirname $(dirname $(whereis java)))
+    source bash/android/_core.sh
+    #if [ ! is_windows ]; then
     source bash/android/set_java_home.sh
+    #fi
     # SDL
     sdl_parent_directory=$zoxel_directory/build/android-sdl
     sdl_directory=$sdl_parent_directory/sdl

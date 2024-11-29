@@ -19,7 +19,7 @@ zoxel_dynamic_array(InstanceRenderCommand)
 
 unsigned char has_mesh(InstanceRenderCommand_array_d* commands, ecs_entity_t mesh, int *index) {
     for (int i = 0; i < commands->size; i++) {
-        if (commands->data[i].mesh = mesh) {
+        if (commands->data[i].mesh == mesh) {
             *index = i;
             return 1;
         }
@@ -28,17 +28,20 @@ unsigned char has_mesh(InstanceRenderCommand_array_d* commands, ecs_entity_t mes
 }
 
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
-    zox_iter_world()
-    if (material_vox_instance == 0) {
+    if (material_vox_instance == 0 || it->count == 0) {
         zox_log(" ! error with vox instance material_vox_instance.")
         return;
     }
-
+    // zox_log("instances: %i\n", it->count)
+    zox_iter_world()
     // create dynamic array of transforms
     InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
     zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(InstanceLink, instanceLinks, 2)
+    zox_field_in(InstanceLink, instanceLinks, 2) // this should be instance link per lod level?
+    zox_field_in(RenderDisabled, renderDisableds, 3)
     for (int i = 0; i < it->count; i++) {
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        if (renderDisabled->value) continue;
         zox_field_i(InstanceLink, instanceLinks, instanceLink)
         if (!instanceLink->value) continue;
         zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)

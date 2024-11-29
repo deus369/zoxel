@@ -12,7 +12,9 @@ echo "      > apk_signed_filepath [$apk_signed_filepath]"
 # jarsigner -verbose -keystore $keystore_filepath $apk_filepath $keystore_alias
 #apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
 # sh $ANDROID_SDK_ROOT/build-tools/30.0.3/apksigner
-bash $apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
+
+# bash was here
+$apksigner sign --ks $keystore_filepath --ks-key-alias $keystore_alias --out $apk_signed_filepath $apk_filepath
 if [ $? -ne 0 ]; then
     echo "  > gradlew signing command failed"
     clear_gradle_build

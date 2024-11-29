@@ -26,6 +26,9 @@ cp $local_properties_source $local_properties_target
 echo_2 "  > in [$local_properties_target] replacing [\$android_sdk_path] to [$android_sdk_path]"
 sed -i "s|\$android_sdk_path|$android_sdk_path|g" "$local_properties_target"
 
+# echo "  > in [$local_properties_target] replacing [\$java_path_name] to [$JAVA_HOME]"
+# sed -i "s|\$java_home|$JAVA_HOME|g" "$local_properties_target"
+
 # copy app/build.gradle
 android_gradle_file_source=$android_bash_directory/app/build.gradle
 android_gradle_file_target=$android_directory/app/build.gradle

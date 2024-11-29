@@ -95,8 +95,7 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
 
     const ecs_entity_t game = zox_get_value(player, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    const ecs_entity_t playlist = zox_get_value(realm, PlaylistLink)
-    play_music(world, playlist, 1);
+    play_playlist(world, realm, 1);
 }
 
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
