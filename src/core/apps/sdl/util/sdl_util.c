@@ -96,6 +96,14 @@ void on_viewport_resized(ecs_world_t *world, const int2 new_size) {
     resize_cameras(viewport_dimensions); // set viewport size - triggers canvas resizing
 }
 
+int get_sdl_window_header_size(SDL_Window* window) {
+    int top, left, bottom, right;
+    if (SDL_GetWindowBordersSize(window, &top, &left, &bottom, &right) == 0) {
+        return top;
+    }
+    return 0;
+}
+
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
     SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
@@ -105,22 +113,31 @@ void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
         zox_log(" ! no WindowSize on app [%lu]\n", e)
         return;
     }
-    SDL_Window* window = zox_get_value(e, SDLWindow)
-    const int2 window_size = zox_get_value(e, WindowSizeRestore)
-    const int2 window_position = zox_get_value(e, WindowPosition)
-    SDL_SetWindowSize(window, window_size.x, window_size.y);
-    SDL_SetWindowPosition(window, window_position.x, window_position.y);
+    int2 size = zox_get_value(e, WindowSizeRestore)
+    if (size.x == 0 && size.y == 0) {
+        size.x = screen_dimensions.x / 2;
+        size.y = screen_dimensions.y / 2;
+    }
+    const int2 window_position = get_window_position(size, screen_dimensions); // zox_get_value(e, WindowPosition)
+    SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
+    SDL_SetWindowSize(sdl_window, size.x, size.y);
+    SDL_SetWindowPosition(sdl_window, window_position.x, window_position.y);
+    zox_set(e, WindowSize, { size })
     // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
 }
+
+extern void apps_on_screen_resize(ecs_world_t *world, const int2 size);
 
 void on_window_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size) {
     if (int2_equals(size, screen_dimensions)) {
         // zox_log(" > screen dimensions already at [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
         return;
     }
+    zox_log(" > window resized: %ix%i\n", size.x, size.y)
     screen_dimensions = size;
     on_viewport_resized(world, screen_dimensions);
     zox_set(e, WindowSize, { screen_dimensions })
+    // apps_on_screen_resize(world, screen_dimensions);
     if (!zox_gett_value(e, WindowFullscreen)) zox_set(e, WindowSizeRestore, { screen_dimensions })
     zox_log(" > screen dimensions set to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
 }
@@ -151,7 +168,7 @@ void close_sdl_video() {
     // SDL_Quit();
 }
 
-int initialize_sdl_video() {
+int initialize_sdl_video(ecs_world_t *world) {
     if (SDL_VideoInit(NULL) != 0) {
         zox_log(" - failed to initialize sdl [%s]\n", SDL_GetError())
         return EXIT_FAILURE;

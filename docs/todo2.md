@@ -1,11 +1,16 @@
 # now todo #
 
-- [ ] Add PlaylistLinks to realm, and set a different playlist per scene (game/mainmenu)
+- [ ] fix fullscreening not resizing canvas
+- [ ] Make a second canvas for debug uis
+
+- [ ] reworking streaming chunks
+- [ ] can add timers to spawning off chunks so its past x seconds from when they're born (bornTime)
+
+- [x] Add PlaylistLinks to realm, and set a different playlist per scene (game/mainmenu)
 - [ ] convert a directory of music files, not just one
-- [ ] Scenes data! main menu and game atm
+- [-] Scenes data! main menu and game atm
 - [ ] generate grass instead of using preset one
 - [ ] support for multiple grass models (variations)
-
 - [ ] start screen
 - [ ] influence sphere for bones
 - [ ] debug bone influence spheres
@@ -41,3 +46,8 @@
     - [ ] music play to support sound files too
         - [x] use piano.wav (convert from .orgg) to get same sounds as LMMS
         - [x] alter the pitch of the loaded sound so we can align to the note of the music when playing
+
+// todo: add note timings, and check them all when playing
+//      ^ add two sounds together
+// todo: multiple musics, and playlists (musicLinks)
+// todo: each music note - will check music start time - get current time, to know when to spawn sound - makes it more dynamic

@@ -32,7 +32,7 @@ ecs_entity_t spawn_vox_file(ecs_world_t *world, const ecs_entity_t prefab, const
     // i can disable these later with RenderDisabled;
     // zox_set(e, RenderDisabled, { 1 })
     zox_set(e, RenderLod, { 0 })
-    zox_set(e, ChunkDirty, { chunk_dirty_state_lod_updated })
+    zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
     zox_set(e, Scale1D, { 2 })
     zox_set(e, Position3D, { { 2 * (rand() % 6), 0, 2 * (rand() % 6) }})
 
@@ -46,4 +46,4 @@ ecs_entity_t spawn_vox_file(ecs_world_t *world, const ecs_entity_t prefab, const
 // things for mesh generation:
 // ChunkOctree, ColorRGBs, ChunkSize (used to centre, should be vox size?)
 // MeshIndicies, MeshVertices, MeshColorRGBs, MeshDirty
-// ChunkDirty, RenderLod, ChunkNeighbors
+// ChunkMeshDirty, RenderLod, ChunkNeighbors

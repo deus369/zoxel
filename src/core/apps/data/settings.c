@@ -2,7 +2,7 @@
 #define sdl_gl_minor 0
 // const char *sdl_window_name = "Zoxel";
 int2 default_window_position = { 0, 0 };
-const int2 default_window_size = { 1280, 720 };
+const int2 default_window_size = { 480, 480 };
 // Set Initially
 int2 screen_dimensions = { 480, 480 };
 int2 viewport_dimensions;

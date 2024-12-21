@@ -1,7 +1,5 @@
 // const int max_chunks_build_per_frame = 32; // 16; // terrain chunks built per frame
 unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char initial_terrain_lod = 2; // 3 | 2
-const unsigned char terrain_lod_dividor = 3; // 2 | 3
 unsigned char terrain_spawn_distance;
 unsigned char terrain_vertical = 2;
 const unsigned char terrain_min_height = 8;
@@ -22,3 +20,16 @@ double terrain_frequency = 0; // 0.038216;
 #define noise_positiver2 32000
 #define terrain_minus_amplifier 0.0
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
+
+void print_terrain_settings() {
+    zox_log(" > terrain settings set\n")
+    // zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
+    zox_log("     + octree depth is [%i]\n", max_octree_depth)
+    zox_log("     + render distance is [%i]\n", terrain_spawn_distance)
+    zox_log("     + terrain vertical is [%i]\n", terrain_vertical)
+    zox_log("     + lod dividor is [%i]\n", terrain_lod_dividor)
+    zox_log("     + height amplifier is [%d]\n", terrain_amplifier)
+    zox_log("     + height noise frequency is [%d]\n", terrain_frequency)
+    zox_log("     + height boost is [%d]\n", terrain_boost)
+    zox_log("     + lowest low is [%d]\n", lowest_voxel_height)
+}

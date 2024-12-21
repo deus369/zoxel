@@ -32,15 +32,17 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     } else {
         close_same_nodes(chunk_octree, max_octree_depth, 0);
     }
-    zox_set(chunk, ChunkDirty, { chunk_dirty_state_edited })
+    zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
+    zox_set(chunk, ChunkMeshDirty, { chunk_dirty_state_trigger })
+    // should be, BlockVoxesDirty
+
     // if block meta is minivox or vox entity:
     // todo: just check for spawned entity, spawn either minivox or block entity here
-    zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_spawn })
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position, chunk_size_b3)) {
         const ChunkNeighbors *chunk_neighbors = zox_get(chunk, ChunkNeighbors)
         for (unsigned char axis = 0; axis < 6; axis++) {
             if (byte3_on_edge_axis(position, chunk_size_b3, axis)) {
-                zox_set(chunk_neighbors->value[axis], ChunkDirty, { chunk_dirty_state_edited })
+                zox_set(chunk_neighbors->value[axis], ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
         }
     }

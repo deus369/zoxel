@@ -1,8 +1,3 @@
-// EcsOnUpdate | EcsPreStore | EcsOnLoad
-// base on - zox_pip_mainthread EcsPreStore - zox_pip_resets EcsPostUpdate
-#define zox_pip_voxels_chunk_dirty EcsOnLoad // sets chunk dirty 1 -  generates voxel data
-#define zox_pip_voxels EcsOnUpdate // uses event states
-#define zox_pip_voxels_chunk_clean EcsPostUpdate // generates mesh data, resets chunk_dirty
 // #define zox_debug_chunks // use to debug chunk edges
 
 // 0 for max, 255 hidden?

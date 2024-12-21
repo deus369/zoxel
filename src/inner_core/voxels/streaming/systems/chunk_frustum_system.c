@@ -1,4 +1,8 @@
 const float fudge_frustum_extents = 2.0f;
+extern int zox_statistics_chunks_visible;
+extern int zox_statistics_chunks_total;
+extern int zox_statistics_characters_visible;
+extern int zox_statistics_characters_total;
 
 // block spawn delve function
 void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const unsigned char max_depth, unsigned char depth, const unsigned char state) {

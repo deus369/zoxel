@@ -3,7 +3,8 @@ ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world, const ecs_enti
     zox_prefab_name("prefab_block_vox_instanced")
     //zox_add_tag(e, BlockVox)
     zox_prefab_set(e, BlockIndex, { 0 })
-    zox_prefab_set(e, RenderLod, { 0 })
+    zox_prefab_set(e, RenderLod, { render_lod_uninitialized })
+    zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, VoxScale, { vox_model_scale * 1 })
     zox_prefab_set(e, Color, {{ 25, 255, 25, 255 }})
     zox_prefab_set(e, InstanceLink, { 0 })
@@ -24,11 +25,8 @@ ecs_entity_t spawn_block_vox_instanced(ecs_world_t *world, const SpawnBlockVox *
     zox_set(e, BlockIndex, { data->block_index })
     zox_set(e, Position3D, { data->position_real })
     zox_set(e, RenderLod, { data->render_lod })
+    zox_set(e, RenderDisabled, { data->render_disabled })
     zox_set(e, TransformMatrix, { float4x4_position(data->position_real) })
-    // zox_set(e, TransformMatrix, { float4x4_transform_scale(float3_zero, quaternion_identity, 4) })
-    // zox_set(e, TransformMatrix, { float4x4_transform(data->position_real, quaternion_identity) })
-    // zox_set(e, RenderDisabled, { data->render_disabled })
     // zox_set(e, CloneVoxLink, { data->vox })
-    // zox_log("pp-p")
     return e;
 }

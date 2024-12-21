@@ -6,6 +6,7 @@
 */
 
 void MouseExtractSystem(ecs_iter_t *it) {
+    zox_iter_world()
     // remember: sdl doesn't do multiple mouses
     int2 mouse_position;
     Uint32 buttons = SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
@@ -16,7 +17,6 @@ void MouseExtractSystem(ecs_iter_t *it) {
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) button_pressed_left = 1;
     // if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) button_pressed_middle = 1;
     if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) button_pressed_right = 1;
-    zox_iter_world()
     zox_field_in(Children, childrens, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Children, childrens, children)
@@ -29,7 +29,8 @@ void MouseExtractSystem(ecs_iter_t *it) {
                     zox_geter(zevice, ZevicePointerPosition, position)
                     int2 position2 = position->value;
                     int2_flip_y(&position2, viewport_dimensions);
-                    SDL_WarpMouseInWindow(mouse_lock_window, position2.x, position2.y);
+                    SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)
+                    SDL_WarpMouseInWindow(sdl_window, position2.x, position2.y);
                 } else {
                     zox_get_muter(zevice, ZevicePointerPosition, position)
                     zox_get_muter(zevice, ZevicePointerDelta, delta)

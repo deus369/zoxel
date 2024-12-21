@@ -35,6 +35,7 @@ void iterate_time(ecs_world_t *world) {
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
     add_plot_data_time(world, zox_delta_time);
+    if (zox_delta_time > max_zox_delta_time) zox_delta_time = 0; // max_zox_delta_time;
     // for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
     // zox_delta_times[record_frames_count - 1] = zox_delta_time;
 #ifdef zox_check_current_time
@@ -44,7 +45,6 @@ void iterate_time(ecs_world_t *world) {
 #endif
     // zoxel_log("current time [%d]\n", zox_current_time);
     // zoxel_log("delta time [%f]\n", zox_delta_time * 1000.0);
-    if (zox_delta_time > max_zox_delta_time) zox_delta_time = max_zox_delta_time;
     frames_count++;
     frames_per_second_time += zox_delta_time;
     if (frames_per_second_time >= 1.0) {

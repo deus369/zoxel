@@ -1,4 +1,9 @@
 #define zox_pip_resets EcsPostUpdate
+// general states
+#define zox_general_state_none 0
+#define zox_general_state_trigger 1
+#define zox_general_state_dirty 2
+#define zox_general_state_end 3
 
 // if non zero, moves to target state
 #define zox_increment_system(component_name, target)\

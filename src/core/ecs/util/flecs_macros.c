@@ -68,7 +68,9 @@ if (e) {\
 
 #define zox_geter(e, T, name) const T *name = zox_get(e, T)
 
-#define zox_get_value(e, T) ecs_get(world, e, T)->value;
+#define zox_get_value(e, type) ecs_get(world, e, type)->value;
+
+#define zox_geter_value(e, component_type, type, name) const type name = zox_get_value(e, component_type)
 
 #define zox_get_mut(e, T) ecs_get_mut(world, e, T);
 

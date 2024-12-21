@@ -9,7 +9,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(WindowToTop, windowToTops, windowToTop)
         if (!windowToTop->value) continue;
-        if (!zox_has(windowToTop->value, Window)) {
+        if (!zox_has(windowToTop->value, Window) || zox_has(windowToTop->value, IgnoreWindowLayering)) {
             windowToTop->value = 0;
             // zox_log(" > windowToTop->value set wrongly\n")
             continue;
@@ -17,12 +17,12 @@ void CanvasStackSystem(ecs_iter_t *it) {
         zox_field_i(Children, childrens, children)
         zox_field_o(WindowsLayers, windowsLayerss, windowsLayers)
         zox_field_o(WindowsCount, windowsCounts, windowsCount)
-
         unsigned char windows_count = 0; // maybe count windows first
         unsigned char layers_per_window = 1;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
-            if (!child|| !zox_has(child, Window)) continue;
+            if (!child || !zox_has(child, Window)) continue;
+            if (zox_has(child, IgnoreWindowLayering)) continue;
             const unsigned char window_layers = get_highest_layer(world, child, 1);
             if (window_layers > layers_per_window) layers_per_window = window_layers;
             windows_count++;
@@ -52,6 +52,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
             if (!zox_valid(child) || !zox_has(child, Window)) continue;
+            if (zox_has(child, IgnoreWindowLayering)) continue;
             if (windowToTop->value == child) continue;
             unsigned char child_window_layer = zox_get_value(child, WindowLayer)
             if (child_window_layer == 0) {

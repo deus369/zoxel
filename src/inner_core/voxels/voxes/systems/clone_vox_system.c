@@ -1,5 +1,5 @@
 // todo: make use TargetChunkLod -> and load/unload depth based on that
-// todo: set lod here instead of just applying RenderLod only with ChunkDirty -> keeps memory down
+// todo: set lod here instead of just applying RenderLod only with ChunkMeshDirty -> keeps memory down
 
 void CloneVoxSystem(ecs_iter_t *it) {
     zox_field_in(CloneVoxLink, cloneVoxLinks, 1)
@@ -7,7 +7,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
     zox_field_out(ChunkOctree, chunkOctrees, 3)
     zox_field_out(ChunkSize, chunkSizes, 4)
     zox_field_out(ColorRGBs, colorRGBss, 5)
-    zox_field_out(ChunkDirty, chunkDirtys, 6)
+    zox_field_out(ChunkMeshDirty, chunkMeshDirtys, 6)
     zox_field_out(ChunkLod, chunkLods, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(CloneVox, cloneVoxes, cloneVox)
@@ -18,7 +18,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
         zox_field_o(ChunkSize, chunkSizes, chunkSize)
-        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
+        zox_field_o(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
         zox_field_o(ChunkLod, chunkLods, chunkLod)
         // clone one depth at a time
         zox_geter(source, ChunkOctree, chunk_octree_source)
@@ -35,7 +35,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
             colorRGBs->length = colors_source->length;
             colorRGBs->value = memcpy(malloc(memory_length), colors_source->value, memory_length);
             cloneVox->value = 0;
-            chunkDirty->value = chunk_dirty_state_generated;
+            chunkMeshDirty->value = chunk_dirty_state_trigger;
         }
     }
 } zox_declare_system(CloneVoxSystem)

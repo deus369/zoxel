@@ -45,15 +45,11 @@ zox_define_component_byte(GenerateVox)
 zox_define_component_byte(ChunkLod)
 zox_define_component_byte(CloneVox)
 zox_define_component_entity(CloneVoxLink)
-// zox_filter(chunks_generating, [in] GenerateChunk)
-// Builds our Colored Chunks (Voxes)
-// _ctx chunks_generating, zox_pip_voxels_chunk_clean
-if (!headless) zox_system(ChunkOctreeColorsBuildSystem, zox_pip_voxels, [out] ChunkDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)
-// zox_pip_voxels_chunk_clean
-zox_system(Bounds3DGrowSystem, zox_pip_voxels, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D) // remember: timing specific, fucks up if changes position
-zox_system(GenerateVoxSystem, zox_pip_voxels, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkDirty)
-zox_system(VoxTextureSystem, zox_pip_voxels_chunk_dirty, [in] TextureSize, [in] VoxLink, [in] VoxBakeSide, [out] GenerateTexture, [out] TextureData, [out] TextureDirty, [none] textures.core.VoxTexture)
-zox_system(CloneVoxSystem, zox_pip_voxels, [in] CloneVoxLink, [out] CloneVox, [out] ChunkOctree, [out] ChunkSize, [out] ColorRGBs, [out] ChunkDirty, [out] ChunkLod)
+if (!headless) zox_system(ChunkOctreeColorsBuildSystem, EcsOnUpdate, [in] ChunkMeshDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)
+zox_system(Bounds3DGrowSystem, EcsOnUpdate, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D) // remember: timing specific, fucks up if changes position
+zox_system(GenerateVoxSystem, EcsOnUpdate, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkMeshDirty)
+zox_system(VoxTextureSystem, EcsPreUpdate, [in] TextureSize, [in] VoxLink, [in] VoxBakeSide, [out] GenerateTexture, [out] TextureData, [out] TextureDirty, [none] textures.core.VoxTexture)
+zox_system(CloneVoxSystem, EcsOnUpdate, [in] CloneVoxLink, [out] CloneVox, [out] ChunkOctree, [out] ChunkSize, [out] ColorRGBs, [out] ChunkMeshDirty, [out] ChunkLod)
 spawn_prefabs_voxes(world);
 zoxel_end_module(Voxes)
 

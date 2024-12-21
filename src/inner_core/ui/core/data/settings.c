@@ -9,6 +9,7 @@ float zox_ui_scale = 0.78f; // todo: effect actionbar, taskbar and user uis
 #define restore_joystick_cutoff 0.06f
 ecs_entity_t main_canvas;
 ecs_entity_t zox_canvases[max_cameras];
+const unsigned char game_overlay_layer = max_layers2D - 12; // -1
 // debugs
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states

@@ -4,7 +4,7 @@
 unsigned char boot_zixel(ecs_world_t *world) {
     game_name = "zixel";
     zox_log(" + booting [%s]\n", game_name)
-    const ecs_entity_t window = spawn_main_window(world);
+    const ecs_entity_t window = spawn_main_window(world, default_window_position, default_window_size, fullscreen);
     initialize_rendering(world);
     load_shaders(world);
     if (!headless) load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");

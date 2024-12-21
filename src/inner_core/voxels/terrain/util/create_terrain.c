@@ -20,10 +20,32 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
     return position.x * (rows + rows + 1) + position.y  * (rows + rows + 1) * (rows + rows + 1) + position.z;
 }
 
+// todo: pass in through struct
+ecs_entity_t spawn_terrain_streaming(ecs_world_t *world,  const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {
+    if (!zox_has(realm, TilemapLink)) {
+        zox_log(" ! realm lacking a TilemapLink.\n")
+        return 0;
+    }
+    const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
+    if (tilemap) {
+        zox_set(tilemap, RealmLink, { realm })
+    }
+    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
+    const int3 chunk_position = int3_zero;
+    const ecs_entity_t chunk = spawn_terrain_chunk(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
+    // set_chunk_neighbors_six_directions(world, chunk, 0, 0, 0, 0, 0, 0);
+    zox_get_muter(terrain_world, ChunkLinks, chunkLinks)
+    chunkLinks->value = create_int3_hashmap(2048); int3_hashmap_add(chunkLinks->value, chunk_position, chunk);
+    return terrain_world;
+}
+
 ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {
     // zox_log(" + terrain size [%ix%ix%i]\n", size.x, size.y, size.z)
     // spawn_terrain_grid(world, real_chunk_scale);
-    if (!zox_has(realm, TilemapLink)) zox_log("AWEIJOAWEW\n")
+    if (!zox_has(realm, TilemapLink)) {
+        zox_log(" ! realm lacking a TilemapLink.\n")
+        return 0;
+    }
     const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
     if (tilemap) {
         zox_set(tilemap, RealmLink, { realm })
@@ -38,8 +60,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
             for (chunk_position.y = -size.y; chunk_position.y <= size.y; chunk_position.y++) {
                 const int index = get_chunk_index_3(chunk_position, size.x, size.y);
                 if (index < 0 || index >= chunks_total_length) continue;
-                const float3 real_chunk_position = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-                const ecs_entity_t chunk = spawn_terrain_chunk_octree(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_position);
+                const ecs_entity_t chunk = spawn_terrain_chunk(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
                 chunk_positions[index] = chunk_position;
                 chunks[index] = chunk;
             }
@@ -60,10 +81,9 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
             }
         }
     }
-    ChunkLinks *chunkLinks = zox_get_mut(terrain_world, ChunkLinks)
+    zox_get_muter(terrain_world, ChunkLinks, chunkLinks)
     chunkLinks->value = create_int3_hashmap(chunks_total_length);
     for (int i = 0; i < chunks_total_length; i++) int3_hashmap_add(chunkLinks->value, chunk_positions[i], chunks[i]);
-    zox_modified(terrain_world, ChunkLinks)
 #ifdef zox_time_create_terrain
     end_timing_absolute("    - create_terrain")
 #endif

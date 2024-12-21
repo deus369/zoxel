@@ -14,21 +14,20 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     const SetVoxelTargetData datam_flower = { .depth = target_depth, .voxel = zox_block_vox_flower, .effect_nodes = 1 };
     const SetVoxelTargetData datam_rubble = { .depth = target_depth, .voxel = zox_block_dirt_rubble, .effect_nodes = 1 };
     const uint32_t seed = global_seed;
-    zox_change_check()
+    // zox_change_check()
     zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_out(GenerateChunk, generateChunks, 3)
-    zox_field_out(ChunkDirty, chunkDirtys, 4)
-    zox_field_out(ChunkOctree, chunkOctrees, 5)
+    zox_field_out(ChunkOctree, chunkOctrees, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
-        if (generateChunk->value != 1) continue;
-        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        // if (chunkDirty->value != 0) continue;
-        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
+        if (generateChunk->value != chunk_generate_state_update) continue;
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
+        if (chunkOctree->nodes != NULL) continue; // already generated
+        fill_new_octree(chunkOctree, 0, target_depth);
+
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
-        fill_new_octree(chunkOctree, 0, target_depth);
         SetVoxelData data = { .node = chunkOctree };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
@@ -66,8 +65,6 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 #ifndef zox_disable_closing_octree_nodes
         close_same_nodes(chunkOctree, max_octree_depth, 0);
 #endif
-        generateChunk->value = 0;
-        chunkDirty->value = chunk_dirty_state_generated;
     }
 } zox_declare_system(GrassyPlainsSystem)
 

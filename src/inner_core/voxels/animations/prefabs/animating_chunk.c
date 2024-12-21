@@ -6,6 +6,7 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world, const ecs_entity_t
     zox_prefab_set(e, ChunkSize, { chunk_size })
     zox_prefab_set(e, AnimateChunk, { 1.0 })
     zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_none })
+    zox_prefab_set(e, ChunkMeshDirty, { chunk_dirty_state_none })
     zox_prefab_set(e, MeshDirty, { 0 })
     add_gpu_colors(world, e);
     // testing: set colors

@@ -3,6 +3,7 @@
 # ====== ===== ====== #
 # [from linux]
 
+
 cc_windows=x86_64-w64-mingw32-gcc # -Wall -g
 target_windows = build/windows/zoxel.exe
 windows_libs = -lm -lpthread -lopengl32 -lglew32 -LSDL2main -lSDL2
@@ -19,9 +20,9 @@ endif
 # windows_libs += --static # this fixes thread dll issue
 # windows pathing
 windows_includes = -Llib -Iinclude #  -I/usr/include/SDL2 -I/usr/include/GL
-# -Lbuild/sdl/sdl/build/.libs -Lbuild/sdl/sdl_mixer/build/.libs -Lbuild/sdl/sdl_image/.libs
-windows_includes += -Ibuild/sdl/include -Ibuild/sdl_image/include -Ibuild/sdl_mixer/include
-windows_includes += -Lbuild/sdl/lib/x64 -Lbuild/sdl_image/lib/x64 -Lbuild/sdl_mixer/lib/x64
+sdl_build_directory="build/windows-sdl"
+windows_includes += -I$(sdl_build_directory)/include -I$(sdl_build_directory)_image/include -I$(sdl_build_directory)_mixer/include
+windows_includes += -L$(sdl_build_directory)/lib/x64 -L$(sdl_build_directory)_image/lib/x64 -L$(sdl_build_directory)_mixer/lib/x64
 windows_includes += -Iinclude/glew -Lbuild/glew/lib/Release/x64 # glew
 # command
 make_windows = \

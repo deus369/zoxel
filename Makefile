@@ -97,8 +97,10 @@ make_release = echo " > building for release" && \
 # .DEFAULT_GOAL := $(target)
 
 $(target): $(SRCS)
-	@ make prepare
 	@ $(make_release)
+
+# @ make prepare
+
 
 linux:
 	@ make prepare
@@ -151,15 +153,6 @@ run-server:
 run-client:
 	@ ./$(target) --headless --client
 
-#run-tiny:
-#	@ ./$(target) --tiny
-
-#run-medium:
-#	@ ./$(target) --medium
-
-#run-large:
-#	@ ./$(target) --large
-
 
 # ====== ======= ====== #
 # ===== linux-dev ===== #
@@ -211,7 +204,11 @@ run-valgrind:
 	@ valgrind ./$(target_dev) --tiny
 
 run-drmemory:
-	@ drmemory.exe -brief -light -- $(target_dev) $(args)
+	@ drmemory -light -callstack_max_frames 32 -malloc_max_frames 32  -- $(target_dev) $(args)
+
+# -batch -quiet -light -no_text_output
+# -batch -no_count_leaks  -no_track_allocs
+#  -brief -light .exe  -batch -callstack_max_frames 16
 
 run-drmemory-full:
 	@ drmemory.exe -- $(target_dev) $(args)
@@ -219,34 +216,29 @@ run-drmemory-full:
 run-coop-valgrind:
 	@ valgrind ./$(target_dev) --tiny -s
 
-# run release + flecs profiler
-run-profiler:
-	@ echo " + opening https://www.flecs.dev/explorer"
-	@ sleep 3 && open https://www.flecs.dev/explorer &
-	@ ./$(target) --profiler
 
-run-dev-profiler-tiny:
-	@ sleep 3 && open https://www.flecs.dev/explorer &
-	@ ./$(target_dev) --profiler --tiny
-
-# build with profiler
-dev-profiler:
-	@ echo " > building zoxel-dev-linux with profiler"
-	@ $(patient_cmd)
-	@ $(make_dev) -Dzox_using_profiler
 
 run-drmemory-headless:
 	@ drmemory.exe -brief -light $(PWD)/$(target_dev) --headless
 
 
-# run development + flecs profiler
-run-dev-profiler:
-	@ echo "opening https://www.flecs.dev/explorer"
-	@ sleep 3 && open https://www.flecs.dev/explorer &
-	@ ./$(target_dev) --profiler
-
 
 .PHONY: dev run-dev run-drmemory
+
+# with profiler
+# build with profiler
+profiler:
+	@ echo " > building zoxel-dev-linux with profiler"
+	@ $(patient_cmd)
+	@ $(make_dev) -Dzox_using_profiler
+
+# run development + flecs profiler
+run-profiler:
+	@ echo "opening https://www.flecs.dev/explorer"
+	@ sleep 3 && open https://www.flecs.dev/explorer &
+	@ ./$(target_dev) $(args) --profiler
+
+.PHONY: profiler run-profiler
 
 # ==== ===== ==== #
 # ===== all ===== #

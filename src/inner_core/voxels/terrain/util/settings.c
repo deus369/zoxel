@@ -1,30 +1,5 @@
-unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera) {
-#ifdef zox_disable_terrain_lod_levels
-    return max_octree_depth;
-#endif
-    unsigned char lod;
-    if (distance_to_camera <= initial_terrain_lod) lod = max_octree_depth;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) lod = max_octree_depth - 1;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 2) lod = max_octree_depth - 2;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 3) lod = max_octree_depth - 3;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 4) lod = max_octree_depth - 4;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 5) lod = 0;
-    else lod = 255;
-    return lod;
-}
-
-void print_terrain_settings() {
-    zox_log(" > terrain settings set\n")
-    // zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
-    zox_log("     + octree depth is [%i]\n", max_octree_depth)
-    zox_log("     + render distance is [%i]\n", terrain_spawn_distance)
-    zox_log("     + terrain vertical is [%i]\n", terrain_vertical)
-    zox_log("     + lod dividor is [%i]\n", terrain_lod_dividor)
-    zox_log("     + height amplifier is [%d]\n", terrain_amplifier)
-    zox_log("     + height noise frequency is [%d]\n", terrain_frequency)
-    zox_log("     + height boost is [%d]\n", terrain_boost)
-    zox_log("     + lowest low is [%d]\n", lowest_voxel_height)
-}
+// actually amount of detail, so 0 is lowest
+// todo: lod should be reversed, 0 highest, and we subtract from max resolution of game
 
 void set_terrain_render_distance() {
     if (cpu_tier == 3) {

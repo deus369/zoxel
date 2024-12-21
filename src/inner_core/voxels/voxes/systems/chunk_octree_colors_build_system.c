@@ -1,7 +1,8 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
-    begin_timing()
+    // begin_timing()
     zox_iter_world()
+    zox_field_in(ChunkMeshDirty, chunkMeshDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(RenderLod, renderLods, 3)
     zox_field_in(ChunkNeighbors, chunkNeighbors, 4)
@@ -11,11 +12,10 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshIndicies, meshIndiciess, 9)
     zox_field_out(MeshVertices, meshVerticess, 10)
     zox_field_out(MeshColorRGBs, meshColorRGBss, 11)
-    zox_field_out(ChunkDirty, chunkDirtys, 1)
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ChunkDirty, chunkDirtys, chunkDirty)
-        if (!chunkDirty->value) continue;
+        zox_field_i(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
+        if (chunkMeshDirty->value != chunk_dirty_state_update) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         zox_field_o(MeshIndicies, meshIndiciess, meshIndicies)
@@ -23,10 +23,9 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         // removes mesh when 255
         clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
-        if (renderLod->value == 255) {
-            // zox_log(" + removing mesh of block vox [%s]\n", zox_get_name(it->entities[i]))
+        if (renderLod->value < 254) {
             // clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
-        } else {
+        // } else {
             // zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
             // if (renderDisabled->value) continue;
             zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
@@ -48,21 +47,17 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             const unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[4], RenderLod)
             const unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[5], RenderLod)
             unsigned char neighbor_lods[6];
-            neighbor_lods[0] = colors_get_max_depth_from_division(chunk_left_max_distance);
-            neighbor_lods[1] = colors_get_max_depth_from_division(chunk_right_max_distance);
-            neighbor_lods[2] = colors_get_max_depth_from_division(chunk_down_max_distance);
-            neighbor_lods[3] = colors_get_max_depth_from_division(chunk_up_max_distance);
-            neighbor_lods[4] = colors_get_max_depth_from_division(chunk_back_max_distance);
-            neighbor_lods[5] = colors_get_max_depth_from_division(chunk_front_max_distance);
+            neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance);
+            neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance);
+            neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance);
+            neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance);
+            neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance);
+            neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance);
             const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
-            const unsigned char chunk_depth = colors_get_max_depth_from_division(renderLod->value);
-            BuildChunkColored build_chunk_colored = {
-
-            };
+            const unsigned char chunk_depth = get_chunk_division_from_lod(renderLod->value);
+            // BuildChunkColored build_chunk_colored = { };
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }
-        chunkDirty->value = chunk_dirty_state_none;
-
         // todo: fix this, unless upload fast it crashes
         /*if (zox_has(it->entities[i], Skeleton)) {
             meshDirty->value = mesh_state_trigger;
@@ -71,8 +66,8 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
         }*/
         meshDirty->value = mesh_state_trigger;
 
-        did_do_timing()
-        if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
+        // did_do_timing()
+        // if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
     }
     // end_timing("ChunkOctreeColorsBuildSystem")
 } zox_declare_system(ChunkOctreeColorsBuildSystem)

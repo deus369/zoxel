@@ -1,4 +1,4 @@
-const unsigned char max_layers2D = 64;
+const unsigned char max_layers2D = 128; // 64;
 unsigned char renderer_layer;
 ecs_entity_t renderer_camera;
 float4x4 render_camera_matrix;

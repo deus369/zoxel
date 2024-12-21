@@ -22,24 +22,19 @@ const unsigned char zox_build_all_faces = 1;
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned char voxel, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 *voxel_face_uvs, const unsigned char direction, const float3 offset, const float vert_scale) {
     expand_capacity_int_array_d(mesh_data->indicies, voxel_face_indicies_length);
-    add_voxel_face_uvs_indicies(0)
-    add_voxel_face_uvs_indicies(1)
-    add_voxel_face_uvs_indicies(2)
-    add_voxel_face_uvs_indicies(3)
-    add_voxel_face_uvs_indicies(4)
-    add_voxel_face_uvs_indicies(5)
+    for (unsigned char i = 0; i < 6; i++) {
+        add_voxel_face_uvs_indicies(i)
+    }
     mesh_data->indicies->size += voxel_face_indicies_length;
     expand_capacity_float3_array_d(mesh_data->vertices, voxel_face_vertices_length);
-    zox_build_voxel_face_vert(0)
-    zox_build_voxel_face_vert(1)
-    zox_build_voxel_face_vert(2)
-    zox_build_voxel_face_vert(3)
+    for (unsigned char i = 0; i < 4; i++) {
+        zox_build_voxel_face_vert(i)
+    }
     mesh_data->vertices->size += voxel_face_vertices_length;
     expand_capacity_float2_array_d(mesh_data->uvs, voxel_face_vertices_length);
-    add_voxel_face_uvs_uvs(0)
-    add_voxel_face_uvs_uvs(1)
-    add_voxel_face_uvs_uvs(2)
-    add_voxel_face_uvs_uvs(3)
+    for (unsigned char i = 0; i < 4; i++) {
+        add_voxel_face_uvs_uvs(i)
+    }
     mesh_data->uvs->size += voxel_face_vertices_length;
     for (unsigned char a = 0; a < voxel_face_vertices_length; a++) {
         color_rgb vertex_color = color_rgb_white;
@@ -55,10 +50,10 @@ void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned c
 }
 
 // this function accounts for size of drawing voxels
-void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const unsigned char voxel_direction, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const unsigned char distance_to_camera, const unsigned char node_index, const byte3 node_position, const unsigned char depth, const unsigned char lod, const unsigned char voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const unsigned char *voxel_solidity) {
-    if (is_adjacent_all_solid(voxel_direction, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_lods, edge_voxel, voxel_solidity)) return;
+void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const unsigned char voxel_direction, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const unsigned char is_max_depth_chunk, const unsigned char node_index, const byte3 node_position, const unsigned char depth, const unsigned char lod, const unsigned char voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const unsigned char *voxel_solidity) {
+    if (is_adjacent_all_solid(voxel_direction, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_depths, edge_voxel, voxel_solidity)) return;
     unsigned char is_regular_build = 1;
-    if (zox_build_all_faces && distance_to_camera <= high_resolution_terain_lod) {
+    if (zox_build_all_faces && is_max_depth_chunk) {
         /* so far just increasing face draw resolution for up faces */
         // if (voxel_direction == direction_up) {
             int depth_difference = max_octree_depth - depth;
@@ -115,23 +110,21 @@ void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *pa
 
 // if building, build
 #define zox_build_if_adjacent_voxel(direction_name, is_positive, voxel_uvs)\
-    build_if_adjacent_voxel(root_node, parent_node, vertex_position_offset, get_voxel_indicies_##is_positive, voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name, neighbors, neighbor_lods, distance_to_camera, node_index, node_position, depth, lod, voxel, octree_scale, vert_scale, octree_position, mesh_data, voxel_solidity);
+    build_if_adjacent_voxel(root_node, parent_node, vertex_position_offset, get_voxel_indicies_##is_positive, voxel_face_vertices##_##direction_name, voxel_uvs, direction##_##direction_name, neighbors, neighbor_depths, is_max_depth_chunk, node_index, node_position, depth, lod, voxel, octree_scale, vert_scale, octree_position, mesh_data, voxel_solidity);
 
 // if child node is solid, dig down
 #define zox_terrain_building_dig_node(i)\
     if (chunk_octree->nodes[i].value) {\
-        zox_terrain_building_dig(root_node, tilemapUVs, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_lods, mesh_data, distance_to_camera, lod, depth, int3_add(octree_position, octree_positions[i]), i, old_octree_scale, vert_scale, voxel_solidity, voxel_uv_indexes);\
+        zox_terrain_building_dig(root_node, tilemapUVs, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_depths, mesh_data, is_max_depth_chunk, lod, depth, int3_add(octree_position, octree_positions[i]), i, old_octree_scale, vert_scale, voxel_solidity, voxel_uv_indexes);\
     }
 
-void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const mesh_uvs_build_data *mesh_data, const unsigned char distance_to_camera, const unsigned char lod, unsigned char depth, int3 octree_position, const unsigned char node_index, const float old_octree_scale, const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
+void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const mesh_uvs_build_data *mesh_data, const unsigned char is_max_depth_chunk, const unsigned char lod, unsigned char depth, int3 octree_position, const unsigned char node_index, const float old_octree_scale, const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
     if (depth >= lod || chunk_octree->nodes == NULL) {
-        if (chunk_octree->value != 0 && voxel_solidity[chunk_octree->value - 1]) { //  (chunk_octree->value)
+        if (chunk_octree->value != 0 && voxel_solidity[chunk_octree->value - 1]) {
             const unsigned char voxel = chunk_octree->value;
             const float octree_scale = octree_scales3[depth];
             const float3 vertex_position_offset = float3_from_int3(octree_position);
             const byte3 node_position = octree_positions_b[node_index];
-            // const float2 *voxel_uvs = &tilemapUVs->value[(voxel - 1) * 4];
-            // &tilemapUVs->value[voxel_uv_indexes[(voxel - 1) * 6 + 0]]
             const int voxel_uvs_index = (voxel - 1) * 6;
             zox_build_if_adjacent_voxel(left, 0, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 0]])
             zox_build_if_adjacent_voxel(right, 1, &tilemapUVs->value[voxel_uv_indexes[voxel_uvs_index + 1]])
@@ -143,30 +136,21 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
     } else {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
-        zox_terrain_building_dig_node(0)
-        zox_terrain_building_dig_node(1)
-        zox_terrain_building_dig_node(2)
-        zox_terrain_building_dig_node(3)
-        zox_terrain_building_dig_node(4)
-        zox_terrain_building_dig_node(5)
-        zox_terrain_building_dig_node(6)
-        zox_terrain_building_dig_node(7)
+        for (unsigned char i = 0; i < 8; i++) {
+            zox_terrain_building_dig_node(i)
+        }
     }
 }
 
-void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char distance_to_camera, const unsigned char lod, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
-
+void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char is_max_depth_chunk, const unsigned char depth, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
     const mesh_uvs_build_data mesh_data = {
         .indicies = create_int_array_d(initial_dynamic_array_size),
         .vertices = create_float3_array_d(initial_dynamic_array_size),
         .uvs = create_float2_array_d(initial_dynamic_array_size),
         .color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size)
     };
-
     // build out mesh data
-    zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_lods, &mesh_data, distance_to_camera, lod, 0, int3_zero, 0, 1, vert_scale, voxel_solidity, voxel_uv_indexes);
-
-    // set new
+    zox_terrain_building_dig(chunk_octree, tilemapUVs, NULL, chunk_octree, neighbors, neighbor_depths, &mesh_data, is_max_depth_chunk, depth, 0, int3_zero, 0, 1, vert_scale, voxel_solidity, voxel_uv_indexes);
 
     // sizes
     meshIndicies->length = mesh_data.indicies->size;
@@ -185,13 +169,4 @@ void build_chunk_octree_mesh_uvs(const ChunkOctree *chunk_octree, const TilemapU
     on_memory_component_created(meshVertices, MeshVertices)
     on_memory_component_created(meshColorRGBs, MeshColorRGBs)
     on_memory_component_created(meshUVs, MeshUVs)
-}
-
-#define set_neightbor_chunk_data(dir) {\
-    const unsigned char index = direction##_##dir;\
-    const ecs_entity_t neighbor = chunkNeighbors2->value[index];\
-    const ChunkOctree *neighbor_chunk = neighbor == 0 ? NULL : ecs_get(world, neighbor, ChunkOctree);\
-    const unsigned char neighbor_distance = neighbor == 0 ? 0 : ecs_get(world, neighbor, RenderLod)->value;\
-    neighbor_lods[index] = get_terrain_lod_from_camera_distance(neighbor_distance);\
-    neighbors[index] = neighbor_chunk;\
 }

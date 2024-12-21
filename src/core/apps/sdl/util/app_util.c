@@ -1,16 +1,15 @@
-ecs_entity_t spawn_main_window(ecs_world_t *world) {
-    SDL_Window* window = create_sdl_window(default_window_position, default_window_size, fullscreen);
+ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const unsigned char fullscreen) {
+    if (fullscreen) {
+        size = screen_dimensions;
+    }
+    position = get_window_position(size, screen_dimensions);
+    SDL_Window* window = create_sdl_window(position, size, fullscreen);
     if (window == NULL) {
         zox_log("    ! opengl did not create window, exiting zoxel\n")
         running = 0;
         return 0;
     }
-    if (fullscreen) {
-        viewport_dimensions = screen_dimensions;
-    } else {
-        viewport_dimensions = default_window_size;
-    }
-    mouse_lock_window = window;
+    viewport_dimensions = screen_dimensions; // size;
     if (!is_using_vulkan) {
         SDL_GLContext* gl_context = create_sdl_opengl_context(window);
         if (gl_context == NULL) {
@@ -18,7 +17,8 @@ ecs_entity_t spawn_main_window(ecs_world_t *world) {
             running = 0;
             return 0;
         }
-        const ecs_entity_t e = spawn_app_sdl(world, window, gl_context, default_window_position, default_window_size, fullscreen);
+        const ecs_entity_t e = spawn_app_sdl(world, window, gl_context, position, size, fullscreen);
+        mouse_lock_window = e;
         return e;
     } else {
 #ifdef zox_include_vulkan
@@ -44,30 +44,33 @@ void update_sdl(ecs_world_t *world, const ecs_entity_t e, const int2 viewport_si
         input_extract_from_sdl(world, event, viewport_size);
         int eventType = event.type;
         if (eventType == SDL_QUIT) {
-            zox_log(" > window was quit\n")
+            // zox_log(" > window was quit\n")
             engine_end();
         } else if (eventType == SDL_WINDOWEVENT) {
+            if (!rendering) continue;
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) { // handles application resizing
-                if (!rendering) continue;
-                int2 new_screen_size = (int2) { event.window.data1, event.window.data2 };
-                on_window_resized(world, e, new_screen_size);
+                int2 size = (int2) { event.window.data1, event.window.data2 };
+                on_window_resized(world, e, size);
             } else if (event.window.event == SDL_WINDOWEVENT_MOVED) { // handles application resizing
-                if (!rendering) continue;
-                int2 new_window_position = (int2) { event.window.data1, event.window.data2 };
-                unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
-                if (!is_fullscreen) {
-                    zox_set(e, WindowPosition, { new_window_position })
-                }
+                int2 position = (int2) { event.window.data1, event.window.data2 };
+                // unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
+                SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
+                int window_height = get_sdl_window_header_size(sdl_window);
+                int2 size = zox_get_value(e, WindowSize)
+                position.x += size.x / 2;
+                position.y += size.y / 2 + window_height;
+                zox_set(e, WindowPosition, { position })
+                // zox_log(" > window moved: %ix%i\n", position.x, position.y)
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
-                zox_log(" > window was minimized\n")
+                // zox_log(" > window was minimized\n")
                 opengl_dispose_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-                zox_log(" > window was restored\n")
+                // zox_log(" > window was restored\n")
                 opengl_restore_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
-                updating_time = 0;
+                // updating_time = 0;
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-                updating_time = 1;
+                // updating_time = 1;
             }
         }
     }

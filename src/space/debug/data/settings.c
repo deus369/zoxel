@@ -4,7 +4,7 @@ double time_update_debug_label_system_rate = 1.0;
 double time_update_debug_label_system = 0;
 
 // #define zox_debug_ui_memorys_allocated
-#define zox_debug_ui_device_mode
+// #define zox_debug_ui_device_mode
 // #define zox_debug_player_character2D
 
 // system
@@ -26,9 +26,11 @@ double time_update_debug_label_system = 0;
 // #define zox_debug_player_canvas
 
 // streaming
-// #define zox_debug_zox_statistics
+#define zox_debug_statistics_chunks
 // #define zox_debug_zox_statistics2
 // #define zox_debug_statistics_characters
+// #define zox_debug_statistics_particles3D
+
 // camera
 // #define zox_debug_player_camera_position
 // #define zox_debug_player_camera_euler

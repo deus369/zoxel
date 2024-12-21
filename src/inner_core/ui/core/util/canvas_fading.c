@@ -45,7 +45,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     // const double fade_time = 0.7;
     // const double delay_time = 1.4;
     // zox_log(" + [%lu] triggering fade sequence for canvas_overlay [%lu]\n", canvas, e)
-    zox_set(e, Layer2D, { max_layers2D - 1 })
+    zox_set(e, Layer2D, { game_overlay_layer })
     zox_set(e, AnimationIndex, { 0 })
     zox_set(e, AnimationDelay, { 0 })
     zox_set(e, RenderDisabled, { 0 })

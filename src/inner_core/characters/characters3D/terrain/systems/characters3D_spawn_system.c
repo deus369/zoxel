@@ -11,7 +11,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
-    zox_field_in(RenderLod, renderLods, 4)
+    zox_field_in(RenderDistance, renderDistances, 4)
     zox_field_in(RenderDisabled, renderDisableds, 5)
     zox_field_out(EntityLinks, entityLinkss, 6)
     for (int i = 0; i < it->count; i++) {
@@ -19,12 +19,12 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         if (chunkLodDirty->value != chunk_lod_state_characters_spawn) continue;
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) continue;   // if basically all air or solid, no need to spawn
-        zox_field_i(RenderLod, renderLods, renderLod)
+        zox_field_i(RenderDistance, renderDistances, renderDistance)
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_o(EntityLinks, entityLinkss, entityLinks)
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) continue;
-        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderLod->value);
+        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);

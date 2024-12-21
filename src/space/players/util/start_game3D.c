@@ -111,8 +111,8 @@ void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     if (!terrain) return;
     zox_set(camera, StreamPoint, { terrain_position })
     zox_set(camera, VoxLink, { terrain })
-    zox_set(camera, TerrainLink, { terrain })
-    zox_set(terrain, StreamDirty, { 1 })
+    // zox_set(camera, TerrainLink, { terrain })
+    zox_set(camera, StreamDirty, { zox_general_state_trigger })
     zox_set(terrain, StreamEndEvent, { on_spawned_terrain })
     zox_set(terrain, EventInput, { player }) // todo: make player parent and get children players
     // weirdly when i have second camera, this line will cause destruction of frame buffer:

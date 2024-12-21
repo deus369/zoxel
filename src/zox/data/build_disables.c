@@ -1,7 +1,6 @@
 // disables
 
-// #define zox_disable_block_voxes
-// #define zox_disable_block_voxes2
+// #define zox_is_flatlands
 
 // lags on weaker cpus
 // #define zox_disable_music
@@ -29,8 +28,6 @@
 // #define zox_disable_tilemaps
 // #define zox_log_realm_generate
 
-/*#define zox_is_flatlands
-#define zox_terrain_tiny*/
 
 // #define zox_disable_player_ui
 
@@ -53,9 +50,6 @@
 // #define zox_disable_post_processing
 // #define zox_disable_depth_buffer
 // #define zox_disable_render_texture
-
-// #define zox_vox_noise
-// #define zox_disable_block_voxes
 
 // #define zox_disable_terrain_lod_levels
 

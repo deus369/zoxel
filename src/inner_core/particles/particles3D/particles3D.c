@@ -3,7 +3,6 @@
 
 // stats
 // #define zox_disable_particles_gpu_instancing
-#define zox_debug_statistics_particles3D
 int zox_statistics_particles3D = 0;
 #define zox_max_particles3D 100000
 zox_declare_tag(Particle3D)

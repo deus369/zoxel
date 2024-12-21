@@ -48,7 +48,7 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         did_do_timing()
 #endif
         generateChunk->value = 0;
-        chunkDirty->value = chunk_dirty_state_generated;
+        chunkDirty->value = chunk_dirty_state_trigger;
     }
 #ifdef zoxel_time_terrain_chunk_system
     end_timing("TerrainChunkSystem")

@@ -2,6 +2,7 @@ ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_window)
     zox_prefab_name("prefab_frame_debugger_ui")
     zox_add_tag(e, FrameDebuggerWindow)
+    zox_add_tag(e, IgnoreWindowLayering)
     zox_prefab_add(e, PlotDataDouble)
     zox_get_muter(e, PlotDataDouble, data)
     resize_memory_component(PlotDataDouble, data, double, record_frames_count)
@@ -11,8 +12,9 @@ ecs_entity_t spawn_prefab_frame_debugger_ui(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t prefab, const char *header_label, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const unsigned char layer) {
-    // defaultt header data
     const unsigned char header_layer = layer + 1;
+    const unsigned char lines_layer = layer + 2;
+
     const int font_size = 28;
     const int header_margins = 16;
     const float2 header_anchor = (float2) { 0.5f, 1.0f };
@@ -25,7 +27,6 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
     const unsigned char is_close_button = 1;
     const color line_color = (color) { 6, 222, 222, 255 };
     const int lines_count = record_frames_count;
-    const unsigned char lines_layer = layer + 2;
     const float lines_thickness = 1.0f;
     const int line_margins = 8;   // x
     const float line_spacing = ( pixel_size.x - line_margins * 2 ) / (float) (lines_count - 1);
@@ -41,7 +42,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
     // zox_set(e, HeaderHeight, { header_size.y })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, canvas_position);
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
-    Children *children = zox_get_mut(e, Children)
+    zox_get_muter(e, Children, children)
     resize_memory_component(Children, children, ecs_entity_t, children_count)
     if (is_header) {
         children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, canvas_position, pixel_size, is_close_button, canvas_size);
@@ -87,13 +88,12 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
         zox_add_tag(e2, PlotLine)
         children->value[is_header + is_plot_sub_label + i] = e2;
     }
-    zox_modified(e, Children)
     plot_window_time = e;
     return e;
 }
 
 ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t canvas) {
-    const unsigned char layer = 3;
+    const unsigned char layer = game_overlay_layer + 3; // 3;
     const int2 test_window_size = { 380, 380 };
     const int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     const float2 test_window_anchor = { 1.0f, 0.0f };

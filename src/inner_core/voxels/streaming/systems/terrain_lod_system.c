@@ -1,10 +1,13 @@
 // this checcks neighbor chunks and makes sure surrounding ones update too (i think?)
 #define check_chunk_lod(dir)\
-    (chunkNeighbors->value[direction##_##dir] != 0 &&\
-    zox_gett_value(chunkNeighbors->value[direction##_##dir], RenderLod) != \
+    (zox_valid(chunkNeighbors->value[direction_##dir]) &&\
+    zox_gett_value(chunkNeighbors->value[direction_##dir], RenderLod) != \
     get_camera_chunk_distance(stream_point, int3_move_##dir(chunk_position)))
 
+// todo: crashes here! find out why with drmemory
+
 // For each terrain, it uses it's Chunks and StreamerLinks
+/*
 void TerrainLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_iter_world()
@@ -43,6 +46,7 @@ void TerrainLodSystem(ecs_iter_t *it) {
         memset(camera_distances, 255, total_chunks); // start all at 255
         for (int j = 0; j < total_chunks; j++) {
             const ChunkNeighbors *chunkNeighbors = &chunkNeighborss[j];
+            // if (chunkNeighbors->length == 0) continue;
             RenderLod *renderLod = &renderLods[j];
             const int3 chunk_position = (&chunkPositions[j])->value;
             const int3 stream_point = find_closest_point(stream_points, stream_points_length, chunk_position);
@@ -59,15 +63,27 @@ void TerrainLodSystem(ecs_iter_t *it) {
             ChunkLodDirty *chunkLodDirty = &chunkLodDirtys[j];
             ChunkDirty *chunkDirty = &chunkDirtys[j];
             renderLod->value = camera_distance;
-            chunkDirty->value = chunk_dirty_state_lod_updated;
-            chunkLodDirty->value = chunk_lod_state_dirty;
+            chunkDirty->value = chunk_dirty_state_trigger;
+            chunkLodDirty->value = chunk_lod_state_trigger;
         }
         streamDirty->value = 0;
     }
     ecs_iter_fini(&chunks_iterator);
     ecs_iter_fini(&streamers_iter);
 } zox_declare_system(TerrainLodSystem)
-
+*/
+/*unsigned char is_setting_neighbors = 0;
+ f or* (int k = 0; k < chunkNeighbors->length; k++) {
+ if (!zox_valid(chunkNeighbors->value[k])) {
+     is_setting_neighbors = 1;
+     continue;
+     }
+     }
+     if (is_setting_neighbors) {
+         // camera_distances[j] = camera_distance;
+         // break;
+         return;
+         }*/
 
 // If it is dirty, it will go through and update Chunk RenderLod's
 // todo: shouldn't i iterate each table of t these queries?

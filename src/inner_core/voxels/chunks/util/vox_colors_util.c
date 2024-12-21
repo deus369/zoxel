@@ -1,7 +1,3 @@
-unsigned char colors_get_max_depth_from_division(const unsigned char chunk_division) {
-    return max_octree_depth - chunk_division;
-}
-
 #define add_voxel_face_colors_indicies(index) indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
 
 #define add_voxel_face_colors_vertices(index) {\
@@ -64,6 +60,7 @@ if (!(chunk_octree->nodes[i].nodes == NULL && chunk_octree->nodes[i].value == 0)
 }
 
 void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index, const float3 total_mesh_offset, const float vox_scale) {
+    if (chunk_octree == NULL) return;
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
             const float voxel_scale = octree_scales3[depth] * vox_scale;

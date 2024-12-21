@@ -19,7 +19,20 @@ typedef struct {
 void traverse_chunk(TraverseChunk *data) {
     if (!data->chunk) return;
     if (data->depth != data->target_depth) {
-        if (!data->chunk->nodes) return; // if node is closed
+        if (!data->chunk->nodes) {
+            byte3 position_parent = data->position;
+            byte3_multiply_byte(&position_parent, 2);
+            unsigned char node_size = powers_of_two_byte[data->depth];
+            if (!byte3_on_edge_xz(position_parent, (byte3) { node_size, node_size, node_size })) return;
+            const color_rgb debug_color = { 155, 255, 125 };
+            // zox_log(" > depth [%i] line at position: %ix%ix%i\n", data->depth, data->position.x, data->position.y, data->position.z)
+            float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x / 2.0f, data->position.y / 2.0f, data->position.z / 2.0f });
+            float3_add_float3_p(&voxel_position, (float3) { 0.25f, 0, 0.25f }); // half voxel addition
+            float3 point_start = voxel_position;
+            float3 point_end = float3_add(voxel_position, (float3) { 0, 1.0f, 0 });
+            render_line3D(data->world, point_start, point_end, debug_color);
+            return; // if node is closed
+        }
         const unsigned char depth = data->depth + 1;
         // const unsigned char dividor = powers_of_two_byte[depth - 1];
         const ChunkOctree *chunk = data->chunk;
@@ -40,7 +53,7 @@ void traverse_chunk(TraverseChunk *data) {
         float3_add_float3_p(&voxel_position, (float3) { 0.25f, 0, 0.25f }); // half voxel addition
         float3 point_start = voxel_position;
         float3 point_end = float3_add(voxel_position, (float3) { 0, 1.0f, 0 });
-        render_line3D(world, point_start, point_end, debug_color);
+        render_line3D(data->world, point_start, point_end, debug_color);
         /*for (unsigned char i = 0; i < octree_length; i++) {
             if (data->chunk->nodes[i].nodes != NULL) return; // if a child node is open, then don't close this node
             const unsigned char node_value = data->chunk->nodes[i].value;
@@ -60,7 +73,7 @@ void ChunkDebugSystem(ecs_iter_t *it) {
     zox_field_in(RenderLod, renderLods, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderLod, renderLods, renderLod)
-        if (renderLod->value > 1) continue;
+        if (renderLod->value >= 1) continue;
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         TraverseChunk data = (TraverseChunk) {

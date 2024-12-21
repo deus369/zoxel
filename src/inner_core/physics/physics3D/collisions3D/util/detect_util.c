@@ -55,6 +55,7 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, const unsigned char *b
     // Convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    if (!zox_valid(chunk)) return;
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree);
     if (!chunk_octree) return;
 
@@ -110,6 +111,7 @@ void collide_with_chunk_d2(const ChunkLinks *chunk_links, const unsigned char *b
 
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    if (!zox_valid(chunk)) return;
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
     if (!chunk_octree) return;
 
@@ -149,6 +151,7 @@ void collide_with_chunk(const ChunkLinks *chunk_links, const unsigned char *bloc
     // next convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    if (!zox_valid(chunk)) return;
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
     if (!chunk_octree) return;
 

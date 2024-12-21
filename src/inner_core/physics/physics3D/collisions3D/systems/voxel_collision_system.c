@@ -1,4 +1,5 @@
 // Handles AABB to Voxel Chunk Collisions
+// todo: support multiple realms
 void VoxelCollisionSystem(ecs_iter_t *it) {
 #ifdef zox_disable_collisions
     return;
@@ -59,7 +60,6 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         unsigned char did_collide_y = 0;
         unsigned char did_collide_z = 0;
         detect_voxel_collisions()
-        // respond to collisions
         respond_to_collisions()
         // keeps grounded for an additional frame
         if (did_collide_y && is_falling) grounded->value = 1;

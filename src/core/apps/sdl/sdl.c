@@ -5,7 +5,7 @@
 // #define zox_log_platform
 #include "util/import_sdl.c" // sdl is here
 const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
-SDL_Window* mouse_lock_window;
+ecs_entity_t mouse_lock_window;
 zox_component(SDLWindow, SDL_Window*)
 zox_component(Renderer, SDL_Renderer*)
 zox_component(Context, SDL_GLContext*)
@@ -32,11 +32,7 @@ unsigned char initialize_apps_sdl(ecs_world_t *world) {
 #ifdef zox_log_platform
     debug_platform();
 #endif
-    /*if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0) {
-        fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
-        return -1;  // Handle the error appropriately
-    }*/
-    initialize_sdl_video();
+    initialize_sdl_video(world);
     screens_count = SDL_GetNumVideoDisplays();
     if (screens_count == 1) screen_index = 0;
     return EXIT_SUCCESS;

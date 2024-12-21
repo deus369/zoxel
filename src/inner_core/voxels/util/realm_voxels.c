@@ -97,9 +97,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     zox_add_tag(dirt_rubble, VoxRubble)
     const ecs_entity_t vox_obsidian = spawn_vox_generated_invisible(world, prefab_vox_generated, color_obsidian);
-#ifdef zox_disable_block_voxes
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
-#endif
     // todo: make all spawn code like this instead of a for loop
     // dark block is  tasty
     voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
@@ -176,15 +174,15 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.color = dirt_color;
             // this is a more detailed version of dirt! non baked
             // remember: to add air back onto sides
-#ifndef zox_disable_block_voxes
-            spawn_data.tag = zox_id(BlockVox);
-            spawn_data.model = zox_block_vox;
-            spawn_data.vox = dirt_vox;
-            spawn_data.prefab_block_vox = prefab_block_vox;
-#else
-            spawn_data.bake_vox = 1;
-            spawn_data.vox = vox_disabled;
-#endif
+            if (disable_block_voxes) {
+                spawn_data.bake_vox = 1;
+                spawn_data.vox = vox_disabled;
+            } else {
+                spawn_data.tag = zox_id(BlockVox);
+                spawn_data.model = zox_block_vox;
+                spawn_data.vox = dirt_vox;
+                spawn_data.prefab_block_vox = prefab_block_vox;
+            }
         } else if (i == zox_block_dirt_rubble - 1) {
             spawn_data.name = "dirt_rubble";
             spawn_data.color = dirt_color;

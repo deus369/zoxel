@@ -166,7 +166,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         // test this \n
         // snprintf(buffer, sizeof(buffer), "debug ui\nline 2");
         // buffer_index += snprintf(buffer + buffer_index, sizeof(buffer), "[debug]");
-#ifdef zox_debug_zox_statistics
+#ifdef zox_debug_statistics_chunks
         if (zox_statistics_chunks_total) buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "chunks visible [%i / %i]\n", zox_statistics_chunks_visible, zox_statistics_chunks_total);
 #endif
 #ifdef zox_debug_statistics_characters

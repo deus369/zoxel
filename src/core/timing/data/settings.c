@@ -5,6 +5,6 @@ double zox_current_time_check = 0.0;
 #define record_frames_count 120
 // double zox_delta_times[record_frames_count];
 // double system_times[record_frames_count];
-const double max_zox_delta_time = 1.0 / 2.0;
+const double max_zox_delta_time = 1.0 / 30.0;
 unsigned char last_updated_time = 0;
 unsigned char updating_time = 1;

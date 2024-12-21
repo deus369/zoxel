@@ -18,7 +18,7 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world, SDL_Window* window, SDL_GLContext
     zox_set(e, Context, { context })
     zox_set(e, WindowPosition, { position })
     zox_set(e, WindowSize, { size })
-    zox_set(e, WindowSizeRestore, { size })
+    // zox_set(e, WindowSizeRestore, { size })
     zox_set(e, WindowFullscreen, { fullscreen })
     main_app = e;
     return e;

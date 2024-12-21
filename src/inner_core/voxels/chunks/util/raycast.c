@@ -11,13 +11,13 @@ const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
 #define ray_hit_type_character 3
 
 unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
-    if (!chunk) return 0;
+    if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) return 0;
     unsigned char hit_character = 0;
-    const EntityLinks *entity_links = zox_get(chunk, EntityLinks)
+    zox_geter(chunk, EntityLinks, entity_links)
     *closest_t = FLT_MAX;
-    for (int i = 0; i < entity_links->length; ++i) {
+    for (int i = 0; i < entity_links->length; i++) {
         const ecs_entity_t character = entity_links->value[i];
-        if (!character || caster == character || !zox_valid(character) || !zox_has(character, Position3D) || !zox_has(character, Bounds3D)) continue;
+        if (!character || !zox_valid(character) || caster == character || !zox_has(character, Position3D) || !zox_has(character, Bounds3D)) continue;
         const float3 position3D = zox_get_value(character, Position3D)
         const float3 bounds3D = zox_get_value(character, Bounds3D)
         const bounds character_bounds = { .center = position3D, .extents = bounds3D };
@@ -71,7 +71,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             const int3 new_chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_size);
             if (!int3_equals(chunk_position, new_chunk_position)) {
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
-                if (!chunk) return 0;
+                if (!zox_valid(chunk)) return 0;
                 chunk_octree = zox_get_mut(chunk, ChunkOctree)
                 if (!chunk_octree) return 0;
                 chunk_position = new_chunk_position;

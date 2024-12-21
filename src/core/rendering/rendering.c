@@ -1,6 +1,8 @@
 #ifndef zox_mod_rendering
 #define zox_mod_rendering
 
+#define render_lod_invisible 254
+#define render_lod_uninitialized 255
 unsigned char rendering_initialized = 0;
 #include "data/renderer_types.c"
 #include "data/mesh_alignment_types.c"
@@ -12,6 +14,7 @@ zox_component_entity(MeshLink)
 zox_component_byte(TextureDirty)
 zox_component_byte(MeshAlignment)
 zox_component_byte(RenderLod)       // The resolution of each chunk, distance to nearest camera
+zox_component_byte(RenderDistance)
 zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
@@ -42,6 +45,7 @@ zox_define_component_byte(MeshAlignment)
 zox_define_component_entity(MeshLink)
 zox_define_component_byte(TextureDirty)
 zox_define_component_byte(RenderLod)
+zox_define_component_byte(RenderDistance)
 zox_define_component_byte(RenderDisabled)
 zox_define_component_float(Brightness)
 zox_define_component_float(Alpha)

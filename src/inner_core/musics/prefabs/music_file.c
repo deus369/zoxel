@@ -28,7 +28,7 @@ ecs_entity_t load_music_file(ecs_world_t *world, const ecs_entity_t prefab, cons
     for (int i = 0; i < loaded_note_count; i++) {
         MidiNote note = loaded_notes[i];
         int note_index = find_note_index(note.frequency);
-        double test_frequency = note_frequencies[note_index];
+        // double test_frequency = note_frequencies[note_index];
         noteLinks->value[i] = spawn_note(world, prefab_note, note_index, instrument_piano_file, note.length, 1);
         music_length += note.length;
         // zox_log("   - %i - Frequency: %.2f : %.2f Hz, Start time: %.2f, Length: %.2f\n", i + 1, note.frequency, test_frequency, note.time, note.length)

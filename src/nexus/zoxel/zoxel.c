@@ -17,7 +17,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #endif
     initialize_networking();
     if (!headless) {
-        const ecs_entity_t window = spawn_main_window(world);
+        const ecs_entity_t window = spawn_main_window(world, default_window_position, default_window_size, fullscreen);
         if (window == 0) {
             return EXIT_FAILURE;
         }
