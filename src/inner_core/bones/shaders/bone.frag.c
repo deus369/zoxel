@@ -1,7 +1,7 @@
 #ifdef zox_transparent_voxes
 
 const GLchar* shader_bone_frag = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_color_frag;\
 in lowp float fog_blend;\
 uniform lowp vec4 fog_data;\
@@ -17,7 +17,7 @@ void main() {\
 #else
 
 const GLchar* shader_bone_frag = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_color_frag;\
 in lowp float fog_blend;\
 uniform lowp vec4 fog_data;\

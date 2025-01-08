@@ -1,7 +1,7 @@
 // todo: replacing position/angle/scale with a transform matrix
 
 const GLchar* shader2D_textured_vert_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform highp mat4 camera_matrix;\
 uniform lowp vec3 position;\
 uniform lowp float angle;\
@@ -18,7 +18,7 @@ void main() {\
 }";
 
 const GLchar* shader2D_textured_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec2 uv;\
 uniform sampler2D tex;\
 uniform lowp float brightness;\
@@ -40,7 +40,7 @@ void main() {\
 
 /*
 const GLchar* shader2D_textured_vert_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec2 vertex_position;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp float positionX;\
@@ -56,7 +56,7 @@ void main() {\
 }";
 
 const GLchar* shader2D_textured_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform lowp float brightness;\
 out lowp vec4 color;\
 \

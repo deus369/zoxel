@@ -4,7 +4,7 @@
 
 .PHONY: ssh push git-commit push-only pull config git-id update
 
-ssh:
+keys:
 	@ bash bash/ssh/create_ssh.sh
 
 push: ## installs zoxel into /usr/games directory
@@ -14,7 +14,7 @@ push: ## installs zoxel into /usr/games directory
 git-commit: ## creates a commit in terminal
 	@ echo create a commit  pusher script
 
-push-only: ## pushes commit, created otherwise
+just-push: ## pushes commit, created otherwise
 	@ bash bash/git/git_push_only.sh
 
 pull: ## installs zoxel into /usr/games directory

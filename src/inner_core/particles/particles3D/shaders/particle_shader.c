@@ -1,5 +1,5 @@
 const char* source_vert_particle3D = "\
-#version 300 es\n\
+#version 320 es\n\
 in highp vec3 position;\
 in lowp vec4 color;\
 uniform highp mat4 camera_matrix;\
@@ -16,7 +16,7 @@ void main() {\
 }";
 
 const GLchar* source_frag_particle3D = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform lowp vec4 fog_data;\
 in highp float fog_level;\
 in lowp vec4 frag_color;\

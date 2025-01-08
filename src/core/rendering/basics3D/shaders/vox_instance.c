@@ -25,7 +25,7 @@ void main() {\
 }";
 
 const GLchar* shader_frag_vox_instance = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_color_frag;\
 in lowp float fog_blend;\
 uniform lowp vec4 fog_data;\

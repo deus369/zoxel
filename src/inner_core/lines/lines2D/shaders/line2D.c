@@ -1,5 +1,5 @@
 const char* line2D_source_vert = "\
-#version 300 es\n\
+#version 320 es\n\
 in highp vec2 position;\
 uniform lowp float depth;\
 uniform highp mat4 camera_matrix;\
@@ -10,7 +10,7 @@ void main() {\
 }";
 
 const GLchar* line2D_source_frag = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform lowp vec4 color;\
 out lowp vec4 color_output;\
 \

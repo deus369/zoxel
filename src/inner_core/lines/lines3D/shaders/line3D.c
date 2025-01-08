@@ -1,5 +1,5 @@
 const char* line3D_source_vert = "\
-#version 300 es\n\
+#version 320 es\n\
 in highp vec3 position;\
 uniform highp mat4 camera_matrix;\
 out highp float fog_level;\
@@ -10,7 +10,7 @@ void main() {\
 }";
 
 const GLchar* line3D_source_frag = "\
-#version 300 es\n\
+#version 320 es\n\
 in highp float fog_level;\
 uniform lowp vec3 color;\
 uniform lowp vec4 fog_data;\

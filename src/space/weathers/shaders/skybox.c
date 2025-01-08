@@ -2,7 +2,7 @@
 // layout(location=4) 
 
 const GLchar* skybox_shader_source_vert = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_position;\
 uniform highp mat4 camera_matrix;\
 uniform highp vec3 position;\
@@ -25,7 +25,7 @@ void main() {\
 }";
 
 const GLchar* skybox_shader_source_frag = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform lowp float brightness;\
 uniform lowp vec3 sky_top_color;\
 uniform lowp vec3 sky_bottom_color;\

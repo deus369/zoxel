@@ -20,7 +20,7 @@ MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const GLu
 }
 
 const GLchar* shader_source_vert_render_texture = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform highp mat4 camera_matrix;\
 uniform highp mat4 transform_matrix;\
 layout(location=0) in lowp vec2 vertex_position;\
@@ -33,7 +33,7 @@ void main() {\
 }";
 
 const GLchar* shader_source_frag_render_texture = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform sampler2D tex;\
 in lowp vec2 uv;\
 out lowp vec4 color;\

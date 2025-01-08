@@ -132,26 +132,26 @@ zixel:
 run:
 	@ ./$(target) $(args)
 
-#run-vulkan:
-#	@ ./$(target) --vulkan
-
 run-debug-libs:
 	LD_DEBUG=libs ./$(target)
 
 run-debug:
 	gdb ./$(target)
 
-#run-coop:
-#	@ ./$(target) -s
-
-#run-headless:
-#	@ ./$(target) --headless
-
 run-server:
 	@ ./$(target) --headless --server
 
 run-client:
 	@ ./$(target) --headless --client
+
+run-coop:
+	@ ./$(target) -s
+
+run-headless:
+	@ ./$(target) --headless
+
+run-vulkan:
+	@ ./$(target) --vulkan
 
 
 # ====== ======= ====== #
@@ -311,6 +311,12 @@ android:
 
 push:
 	@ make -f make/git push
+
+keys:
+	@ make -f make/git keys
+
+git-push:
+	@ echo "!!! Use make push!"
 
 .DEFAULT:
 	@ echo " ! Unknown target '$@'"

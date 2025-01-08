@@ -2,7 +2,7 @@
 // later we can pack more information into bone_index uint
 
 const GLchar* shader_bone_vert = "\
-#version 300 es\n\
+#version 320 es\n\
 layout(location=0) in highp vec3 vertex_position;\
 layout(location=1) in highp vec3 vertex_color;\
 layout(location=2) in lowp float bone_index;\

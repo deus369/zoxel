@@ -1,5 +1,5 @@
 const GLchar* shader2D_basic_vert_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec2 vertex_position;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp vec3 position;\
@@ -13,7 +13,7 @@ void main() {\
 }";
 
 const GLchar* shader2D_basic_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 uniform lowp float brightness;\
 out lowp vec4 color;\
 \

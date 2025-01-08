@@ -1,5 +1,5 @@
 const GLchar* shader3D_colored_vert_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 layout(location=0) in highp vec3 vertex_position;\
 layout(location=1) in highp vec3 vertex_color;\
 uniform highp mat4 transform_matrix;\
@@ -18,7 +18,7 @@ void main() {\
 #ifdef zox_transparent_voxes
 
 const GLchar* shader3D_colored_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_color_frag;\
 in lowp float fog_blend;\
 uniform lowp vec4 fog_data;\
@@ -34,7 +34,7 @@ void main() {\
 #else
 
 const GLchar* shader3D_colored_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 in lowp vec3 vertex_color_frag;\
 in lowp float fog_blend;\
 uniform lowp vec4 fog_data;\
@@ -54,7 +54,7 @@ void main() {\
 // test to remove memory bug
 
 const GLchar* debug_shader3D_colored_vert_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 layout(location=0) in lowp vec3 vertex_position;\
 uniform lowp mat4 camera_matrix;\
 uniform lowp vec3 position;\
@@ -73,7 +73,7 @@ void main() {\
 }";
 
 const GLchar* debug_shader3D_colored_frag_buffer = "\
-#version 300 es\n\
+#version 320 es\n\
 out lowp vec3 color;\
 \
 void main() {\
