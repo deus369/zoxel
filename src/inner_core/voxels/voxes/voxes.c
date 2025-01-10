@@ -1,5 +1,5 @@
-#ifndef zox_voxes
-#define zox_voxes
+#ifndef zox_mod_voxes
+#define zox_mod_voxes
 
 unsigned char disable_block_voxes = 0;
 #include "data/default_palette.c"

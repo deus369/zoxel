@@ -1,6 +1,8 @@
 #ifndef zox_mod_rendering
 #define zox_mod_rendering
 
+// #define zox_disable_rendering3D
+
 #define render_lod_invisible 254
 #define render_lod_uninitialized 255
 unsigned char rendering_initialized = 0;
@@ -22,7 +24,9 @@ zox_component_float(Alpha)
 #include "vulkan/vulkan.c"
 #include "core/core.c"
 #include "basics2D/basics2D.c"
-#include "basics3D/basics3D.c"
+#ifndef zox_disable_rendering3D
+    #include "basics3D/basics3D.c"
+#endif
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 
 unsigned char initialize_rendering(ecs_world_t *world) {
@@ -49,14 +53,19 @@ zox_define_component_byte(RenderDistance)
 zox_define_component_byte(RenderDisabled)
 zox_define_component_float(Brightness)
 zox_define_component_float(Alpha)
+zox_define_increment_system(MeshDirty, EcsOnLoad)
 if (headless) return;
-check_vulkan_suppport();
-if (is_using_vulkan) { zox_import_module(Vulkan) }
-else { zox_import_module(OpenGL) }
+if (is_using_vulkan) {
+    if (check_vulkan_suppport()) zox_import_module(Vulkan)
+}
+else {
+    zox_import_module(OpenGL)
+}
 zox_import_module(RenderingCore)
 zox_import_module(RenderingBasics2D)
-zox_import_module(RenderingBasics3D)
-zox_define_increment_system(MeshDirty, EcsOnLoad)
+#ifdef zox_mod_rendering_basics3D
+    zox_import_module(RenderingBasics3D)
+#endif
 zoxel_end_module(Rendering)
 
 #endif

@@ -5,7 +5,9 @@
 #include <stdio.h>  // just for sprintf and perror
 // sub modules
 #include "../../core/core.c"
-#include "../../inner_core/inner_core.c"
-#include "../../users/users.c"
-#include "../../gameplay/gameplay.c"
-#include "../../space/space.c"
+#ifndef zox_disable_inner_core
+    #include "../../inner_core/inner_core.c"
+    #include "../../users/users.c"
+    #include "../../gameplay/gameplay.c"
+    #include "../../space/space.c"
+#endif

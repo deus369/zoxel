@@ -24,8 +24,8 @@ config:
 	@ bash bash/git/git_update_config.sh
 
 git-id:
-	@ bash bash/git/set_git_name.sh
-	@ bash bash/git/set_git_email.sh
+	@ bash bash/git/set_name.sh
+	@ bash bash/git/set_email.sh
 
 update: ## installs zoxel into /usr/games directory
 	@ echo " + updating zoxel"

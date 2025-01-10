@@ -10,12 +10,16 @@ extern unsigned char is_multithreading;
 extern unsigned char profiler;
 extern unsigned char server_mode;
 extern unsigned char target_fps;
-#define terrain_mode_tiny 1
-#define terrain_mode_medium 2
-#define terrain_mode_large 3
-extern unsigned char terrain_mode;
-extern unsigned char disable_npcs;
-extern unsigned char disable_block_voxes;
+#ifdef zox_mod_voxels
+    #define terrain_mode_tiny 1
+    #define terrain_mode_medium 2
+    #define terrain_mode_large 3
+    extern unsigned char terrain_mode;
+    extern unsigned char disable_block_voxes;
+#endif
+#ifdef zox_mod_characters
+    extern unsigned char disable_npcs;
+#endif
 
 void print_help_menu(const char* arg0) {
     zoxel_log("\n");
@@ -88,6 +92,7 @@ int process_arguments(int argc, char* argv[]) {
         else if (strcmp(argv[i], "--freeroam") == 0) {
             game_rule_attach_to_character = 0;
         }
+#ifdef zox_mod_voxels
         else if (strcmp(argv[i], "--tiny") == 0) {
             terrain_mode = terrain_mode_tiny;
             zox_log(" + tiny mode enabled\n")
@@ -96,12 +101,15 @@ int process_arguments(int argc, char* argv[]) {
         } else if (strcmp(argv[i], "--large") == 0) {
             terrain_mode = terrain_mode_large;
         }
-        else if (strcmp(argv[i], "--nonpc") == 0 || strcmp(argv[i], "--nonpcs") == 0) {
-            disable_npcs = 1;
-        }
         else if (strcmp(argv[i], "--noblockvoxes") == 0) {
             disable_block_voxes = 1;
         }
+#endif
+#ifdef zox_mod_characters
+        else if (strcmp(argv[i], "--nonpc") == 0 || strcmp(argv[i], "--nonpcs") == 0) {
+            disable_npcs = 1;
+        }
+#endif
     }
     return EXIT_SUCCESS;
 }

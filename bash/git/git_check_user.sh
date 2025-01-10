@@ -8,11 +8,11 @@ echo "      + name is [$current_name]"
 echo "      + email is [$current_email]"
 
 if [[ $current_name = "" ]]; then
-    source bash/git/set_git_name.sh
+    source bash/git/set_name.sh
 fi
 
 if [[ $current_email = "" ]]; then
-    source bash/git/set_git_email.sh
+    source bash/git/set_email.sh
 fi
 
 echo "  > checking credentials completed"

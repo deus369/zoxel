@@ -1,5 +1,5 @@
-#ifndef zox_rendering_basics3D
-#define zox_rendering_basics3D
+#ifndef zox_mod_rendering_basics3D
+#define zox_mod_rendering_basics3D
 
 zox_declare_tag(TexturedMesh3D)
 #include "shaders/colored3D.c"

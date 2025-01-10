@@ -1,32 +1,43 @@
+extern void opengl_dispose_resources(ecs_world_t *world);
+extern void opengl_restore_resources(ecs_world_t *world);
+extern void engine_end(); // engine
+
 ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const unsigned char fullscreen) {
     if (fullscreen) {
         size = screen_dimensions;
     }
     position = get_window_position(size, screen_dimensions);
-    SDL_Window* window = create_sdl_window(position, size, fullscreen);
-    if (window == NULL) {
-        zox_log("    ! opengl did not create window, exiting zoxel\n")
+    SDL_Window* sdl_window = create_sdl_window(position, size, fullscreen);
+    if (sdl_window == NULL) {
+        zox_log("    ! opengl did not create sdl_window, exiting zoxel\n")
         running = 0;
         return 0;
     }
     viewport_dimensions = screen_dimensions; // size;
     if (!is_using_vulkan) {
-        SDL_GLContext* gl_context = create_sdl_opengl_context(window);
-        if (gl_context == NULL) {
-            zox_log("    ! opengl did not create context, exiting zoxel\n")
-            running = 0;
-            return 0;
-        }
-        const ecs_entity_t e = spawn_app_sdl(world, window, gl_context, position, size, fullscreen);
+        const ecs_entity_t e = spawn_app_sdl(world, sdl_window, position, size, fullscreen);
         mouse_lock_window = e;
         return e;
     } else {
 #ifdef zox_include_vulkan
-        return spawn_main_window_vulkan(world, window);
+        return spawn_main_window_vulkan(world, sdl_window);
 #else
         return 0;
 #endif
     }
+}
+
+unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {
+    SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
+    SDL_GLContext* gl_context = create_sdl_opengl_context(sdl_window);
+    zox_log(" ! gl_context is fine? [%s]\n", SDL_GetError())
+    if (!gl_context) {
+        zox_log("    ! opengl did not create gl_context, exiting zoxel\n")
+        running = 0;
+        return EXIT_FAILURE;
+    }
+    zox_set(e, Context, { gl_context })
+    return EXIT_SUCCESS;
 }
 
 void app_update_gpu(ecs_world_t *world) {

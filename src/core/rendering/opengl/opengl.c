@@ -32,8 +32,8 @@ unsigned char initialize_opengl(ecs_world_t *world) {
     // if (!has_opengl_extensions()) return EXIT_FAILURE;
     print_opengl();
     check_frame_buffer();
-    check_compute();
-    check_geometry();
+    // check_compute();
+    // check_geometry();
     return EXIT_SUCCESS;
 }
 

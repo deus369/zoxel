@@ -1,5 +1,5 @@
-#ifndef zox_characters2D
-#define zox_characters2D
+#ifndef zox_mod_characters2D
+#define zox_mod_characters2D
 
 const int spawn_characters2D_count = 64;
 const int2 character2DTextureSize = { 16, 16 };

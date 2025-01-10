@@ -22,7 +22,10 @@ void clear_system_times() {
     // for (int i = 0; i < record_frames_count; i++) system_times[i] = 0;
 }
 
+// todo: find a better way to grab time data in a new module
+#ifdef zox_mod_plots
 extern void add_plot_data_time(ecs_world_t *world, const double value);
+#endif
 
 void iterate_time(ecs_world_t *world) {
     clear_system_times();
@@ -34,7 +37,9 @@ void iterate_time(ecs_world_t *world) {
     }
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
+#ifdef zox_mod_plots
     add_plot_data_time(world, zox_delta_time);
+#endif
     if (zox_delta_time > max_zox_delta_time) zox_delta_time = 0; // max_zox_delta_time;
     // for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
     // zox_delta_times[record_frames_count - 1] = zox_delta_time;

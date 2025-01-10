@@ -15,7 +15,10 @@ ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); 
 #include "prefabs/app_sdl.c"
 #include "inputs/inputs.c"
 #include "util/vulkan_util.c"
+#include "util/sdl_opengl.c"
+#include "util/screen.c"
 #include "util/sdl_util.c"
+#include "util/window.c"
 #include "util/app_util.c"
 
 void dispose_apps_sdl(ecs_world_t *world, void *ctx) {
@@ -45,7 +48,6 @@ zox_define_component_w_dest(Context)
 zox_define_component_w_dest(Renderer)
 initialize_apps_sdl(world);
 spawn_prefabs_apps_sdl(world);
-// sub modules
 zox_import_module(AppsInputs)
 zoxel_end_module(AppsSDL)
 

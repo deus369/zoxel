@@ -10,10 +10,10 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     game_name = "zoxel_beta";
 #endif
 #ifdef zox_log_boot_game
-    zox_log("boot_zoxel_game\n")
+    zox_log(" ! boot_zoxel_game\n")
 #endif
 #ifdef zox_log_boot_game
-    zox_log("boot_zoxel_game2\n")
+    zox_log(" ! boot_zoxel_game2\n")
 #endif
     initialize_networking();
     if (!headless) {
@@ -22,6 +22,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
             return EXIT_FAILURE;
         }
         initialize_rendering(world);
+        if (create_window_opengl_context(world, window) == EXIT_FAILURE) return EXIT_FAILURE;
         load_shaders(world);
 #ifdef zox_log_boot_game
         zox_log("boot_zoxel_game3\n")
@@ -33,17 +34,19 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
         free(icon_path);
     }
 #ifdef zox_log_boot_game
-    zox_log("boot_zoxel_game4\n")
+    zox_log(" ! boot_zoxel_game4\n")
 #endif
     // load resources
     // todo: each module should add to a load resources event for i/o game data
+#ifdef zox_mod_voxels
     initialize_voxes(world);
+#endif
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
 #ifdef zox_log_boot_game
-    zox_log("boot_zoxel_game5\n")
+    zox_log(" ! boot_zoxel_game5\n")
 #endif
 #ifdef zox_mod_weathers
     spawn_weather(world);
@@ -52,7 +55,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     initialize_music(world, realm);
 #endif
 #ifdef zox_log_boot_game
-    zox_log(" > boot_zoxel_game 6\n")
+    zox_log(" ! boot_zoxel_game 6\n")
 #endif
 #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
@@ -60,9 +63,9 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     intialize_game_store();
     test_steam_cloud();
 #ifdef zox_log_boot_game
-    zox_log(" > boot zoxel completedboot_zoxel_game7\n")
+    zox_log(" ! boot zoxel completed\n")
 #endif
-    zox_log(" > boot completed [zoxel]\n")
+    zox_log(" ! boot completed [zoxel]\n")
     return EXIT_SUCCESS;
 }
 
@@ -70,7 +73,9 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_game_type = zox_game_mode_3D;
+#ifdef zox_mod_players2
     game_ui_has_taskbar = 1;
+#endif
 #ifdef zox_mod_weathers
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };

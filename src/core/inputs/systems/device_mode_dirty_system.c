@@ -9,7 +9,6 @@ void DeviceModeDirtySystem(ecs_iter_t *it) {
         zox_field_o(DeviceMode, deviceModes, deviceMode)
         unsigned char old_mode = deviceMode->value;
         deviceMode->value = deviceModeDirty->value;
-        // if (old_mode) zox_log(" old_mode [%i]\n", old_mode)
         disable_inputs_until_release(world, e, deviceMode->value, old_mode);
         deviceModeDirty->value = 0;
 #ifdef zox_debug_log_device_mode_system
