@@ -182,6 +182,9 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
     const unsigned char block_voxes_count = voxels->length;
+    if (block_voxes_count == 0) {
+        return;
+    }
     ecs_entity_t blocks[block_voxes_count];
     ecs_entity_t block_voxes[block_voxes_count];
     ecs_entity_t block_prefabs[block_voxes_count];

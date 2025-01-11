@@ -42,6 +42,13 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
+  if (*SDL_GetError()) {
+    printf("2 Failed to create OpenGL context: %s\n", SDL_GetError());
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return -1;
+  }
+
   if (SDL_GL_MakeCurrent(window, context) != 0) {
     printf("Failed to make OpenGL context current: %s\n", SDL_GetError());
     SDL_GL_DeleteContext(context);
@@ -51,6 +58,7 @@ int main(int argc, char* argv[]) {
   }
 
   printf("OpenGL context successfully created and made current.\n");
+  SDL_Delay(30000);
 
   SDL_GL_DeleteContext(context);
   SDL_DestroyWindow(window);

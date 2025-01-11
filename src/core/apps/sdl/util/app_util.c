@@ -2,35 +2,63 @@ extern void opengl_dispose_resources(ecs_world_t *world);
 extern void opengl_restore_resources(ecs_world_t *world);
 extern void engine_end(); // engine
 
-ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const unsigned char fullscreen) {
+// todo: get position2 to work
+ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const unsigned char fullscreen) {
+    int2 window_size = size;
     if (fullscreen) {
-        size = screen_dimensions;
+        window_size = screen_dimensions;
     }
-    position = get_window_position(size, screen_dimensions);
-    SDL_Window* sdl_window = create_sdl_window(position, size, fullscreen);
+    const int2 position = get_window_position(window_size, screen_dimensions);
+    SDL_Window* sdl_window = create_sdl_window(position, window_size, fullscreen);
     if (sdl_window == NULL) {
         zox_log("    ! opengl did not create sdl_window, exiting zoxel\n")
         running = 0;
         return 0;
     }
-    viewport_dimensions = screen_dimensions; // size;
-    if (!is_using_vulkan) {
-        const ecs_entity_t e = spawn_app_sdl(world, sdl_window, position, size, fullscreen);
-        mouse_lock_window = e;
-        return e;
-    } else {
-#ifdef zox_include_vulkan
-        return spawn_main_window_vulkan(world, sdl_window);
-#else
+    /*if (*SDL_GetError()) {
+        zox_log(" ! spawn_window_opengl: %s\n", SDL_GetError())
         return 0;
+    }*/
+    viewport_dimensions = screen_dimensions;
+    const ecs_entity_t e = spawn_app_sdl(world, sdl_window, position, window_size, fullscreen);
+    mouse_lock_window = e;
+    if (create_window_opengl_context(world, e) == EXIT_FAILURE) {
+        return 0;
+    }
+    return e;
+}
+
+ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const unsigned char fullscreen) {
+    if (is_using_vulkan) {
+#ifndef zox_include_vulkan
+        zox_log("! vulkan wasn't included in build\n")
+        return 0;
+#else
+        if (fullscreen) {
+            size = screen_dimensions;
+        }
+        position = get_window_position(size, screen_dimensions);
+        viewport_dimensions = screen_dimensions; // size;
+        SDL_Window* sdl_window = create_sdl_window(position, size, fullscreen);
+        if (sdl_window == NULL) {
+            zox_log("    ! opengl did not create sdl_window, exiting zoxel\n")
+            running = 0;
+            return 0;
+        }
+        if (*SDL_GetError()) {
+            zox_log(" ! is_using_vulkan: %s\n", SDL_GetError())
+            return 0;
+        }
+        return spawn_main_window_vulkan(world, sdl_window);
 #endif
+    } else {
+        return spawn_window_opengl(world, position, size, fullscreen);
     }
 }
 
 unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {
     SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
     SDL_GLContext* gl_context = create_sdl_opengl_context(sdl_window);
-    zox_log(" ! gl_context is fine? [%s]\n", SDL_GetError())
     if (!gl_context) {
         zox_log("    ! opengl did not create gl_context, exiting zoxel\n")
         running = 0;

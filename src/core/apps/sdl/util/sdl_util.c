@@ -28,16 +28,15 @@ int initialize_sdl_video(ecs_world_t *world) {
     if (SDL_VideoInit(NULL) != 0) {
         zox_log(" - failed to initialize sdl [%s]\n", SDL_GetError())
         return EXIT_FAILURE;
-    } else {
-        screen_dimensions = get_screen_size();
-        zox_log(" > screen dimensions init to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
-        print_sdl();
-#ifdef zox_include_vulkan
-        if (!load_vulkan_library()) return EXIT_FAILURE;
-#else
-        is_using_vulkan = 0;
-#endif
-        if (!is_using_vulkan) set_sdl_attributes();
-        return EXIT_SUCCESS;
     }
+    screen_dimensions = get_screen_size();
+    zox_log(" > screen dimensions init to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
+    print_sdl();
+#ifdef zox_include_vulkan
+    if (!load_vulkan_library()) return EXIT_FAILURE;
+#else
+    is_using_vulkan = 0;
+#endif
+    if (!is_using_vulkan) set_sdl_attributes();
+    return EXIT_SUCCESS;
 }

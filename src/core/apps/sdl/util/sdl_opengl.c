@@ -26,8 +26,9 @@ void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    if (override_opengl_es) {
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    /*if (override_opengl_es) {
         if (opengl_es_supported()) {
             #ifdef zoxel_debug_opengl
             zox_log(" + GL_ES detected\n")
@@ -39,7 +40,7 @@ void set_sdl_attributes() {
             #endif
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         }
-    }
+    }*/
 }
 
 SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
@@ -49,21 +50,26 @@ SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (!context) {
+        zox_log(" ! failed again to create opengl context [%s]\n", SDL_GetError())
+        return NULL;
+    }
+    /*if (*SDL_GetError()) {
+        zox_log(" ! SDL_GL_CreateContext errored: %s\n", SDL_GetError())
+        SDL_GL_DeleteContext(context);
+        return NULL;
+    }*/
+    /*if (!context) {
         zox_log(" ! failed to create opengl context [%s]\n", SDL_GetError())
         zox_log(" > falling back to opengl core profile\n");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         context = SDL_GL_CreateContext(window);
-    }
-    if (!context) {
-        zox_log(" !! failed again to create opengl context [%s]\n", SDL_GetError())
-        return NULL;
-    }
+    }*/
     if (SDL_GL_MakeCurrent(window, context) != 0) {
         zox_log(" ! failed to make OpenGL context current: %s\n", SDL_GetError())
         SDL_GL_DeleteContext(context);
         return NULL;
     }
-    zox_log(" + SDL_GL_MakeCurrent succeeded: %s\n", SDL_GetError())
+    // SDL_Delay(10000);
     return context;
 }
 

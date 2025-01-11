@@ -2,12 +2,16 @@
 # ===== zox ===== #
 # ==== ===== ==== #
 
+# todo: for linux, a full build - which doesn't rely on system sdl
+	# for regular package, just use system sdl2s
+
 # requires: [git] [make] && make prepare
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
 # make game=zixel for zoxel2D
 resources_dir = resources
 # library use
+use_system_sdl := true
 # used for apps
 use_lib_sdl := true
 # used for texture file processing
@@ -26,12 +30,15 @@ patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 finish_cmd = echo " > we are done :), lord deus -[>,O]-"
 make_libs = -Llib -Iinclude -Wl,-rpath='lib' # default paths
 make_libs += -lm -lpthread -lflecs # default libraries
-ifndef ($(system-sdl))
-    make_libs += -Dzox_lib_sdl_direct # use this if compiled sdl from source
-endif
 ifdef game
     make_libs +=-Dzox_game=$(game)
 endif
+ifndef ($(use_system_sdl))
+    # make_libs += -Dzox_lib_sdl_direct # use this if compiled sdl from source
+    make_libs += -Dzox_lib_sdl -lSDL2
+    make_libs += -Dzox_lib_sdl_images -lSDL2_image
+    make_libs += -Dzox_lib_sdl_mixer -lSDL2_mixer
+else
 ifeq ($(use_lib_sdl), true)
     make_libs += -Dzox_lib_sdl -Iinclude/sdl -lSDL2
 endif
@@ -40,6 +47,7 @@ ifeq ($(use_lib_sdl_image), true)
 endif
 ifeq ($(use_lib_sdl_mixer), true)
     make_libs += -Dzox_lib_sdl_mixer -Iinclude/sdl_mixer -lSDL2_mixer
+endif
 endif
 ifeq ($(use_lib_vulkan), true)
     make_libs += -lvulkan -Dzox_include_vulkan # vulkan on linux

@@ -1,17 +1,11 @@
 #ifndef zox_sdl
 #define zox_sdl
-
 // #define zox_log_screens
 // #define zox_log_platform
 #include "util/import_sdl.c" // sdl is here
 const int sdl_fullscreen_byte = SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
 ecs_entity_t mouse_lock_window;
-zox_component(SDLWindow, SDL_Window*)
-zox_component(Renderer, SDL_Renderer*)
-zox_component(Context, SDL_GLContext*)
-ECS_DTOR(SDLWindow, ptr, { if (ptr->value != 0) SDL_DestroyWindow(ptr->value); })
-ECS_DTOR(Renderer, ptr, { if (ptr->value != 0) SDL_DestroyRenderer(ptr->value); })
-ECS_DTOR(Context, ptr, { if (ptr->value != 0) SDL_GL_DeleteContext(ptr->value); })
+#include "components/components.c"
 #include "prefabs/app_sdl.c"
 #include "inputs/inputs.c"
 #include "util/vulkan_util.c"

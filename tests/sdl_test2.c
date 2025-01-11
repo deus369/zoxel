@@ -14,7 +14,7 @@ int main() {
     return 1;
   }
 
-  SDL_Delay(2000); // Show the window for 2 seconds
+  SDL_Delay(30000);
   SDL_DestroyWindow(win);
   SDL_Quit();
 

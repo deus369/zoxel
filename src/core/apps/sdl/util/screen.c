@@ -31,7 +31,7 @@ void on_viewport_resized(ecs_world_t *world, const int2 new_size) {
 }
 
 void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
-    // SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
+    SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
 
 void on_window_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size) {
@@ -58,7 +58,7 @@ void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
         size.x = screen_dimensions.x / 2;
         size.y = screen_dimensions.y / 2;
     }
-    const int2 window_position = get_window_position(size, screen_dimensions); // zox_get_value(e, WindowPosition)
+    const int2 window_position = get_window_position(size, screen_dimensions);
     SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
     SDL_SetWindowSize(sdl_window, size.x, size.y);
     SDL_SetWindowPosition(sdl_window, window_position.x, window_position.y);

@@ -17,11 +17,12 @@ int get_sdl_window_header_size(SDL_Window* window) {
     return 0;
 }
 
+extern unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
+
 SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const int2 position, const int2 size) {
-    if (is_using_vulkan) zox_log(" ! VULKAN MODE\n")
-        int flags;
+    int flags;
     if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
-    else flags = SDL_WINDOW_OPENGL;
+    else flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     #ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
     #endif
@@ -33,6 +34,10 @@ SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const i
     if (window == NULL) {
         zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
         return window;
+    }
+    if (*SDL_GetError()) {
+        zox_log(" ! !SDL_CreateWindow: %s\n", SDL_GetError())
+        return 0;
     }
     /*if (screen_index == 1) {
         SDL_Rect displayBounds;
@@ -63,14 +68,12 @@ SDL_Window* create_sdl_window(const int2 position, const int2 size, const unsign
         zox_log(" ! failed to create sdl window [%s]\n", SDL_GetError())
         return window;
     }
-    // SDL_SetWindowResizable(window, is_resizeable);
-    if (!is_using_vulkan) {
-        // SDL_SetWindowResizable(window, is_resizeable);
-        SDL_GL_SwapWindow(window);
-        SDL_GL_SetSwapInterval(vsync);
-        #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
-        sdl_set_fullscreen(window, fullscreen);
-        #endif
-    }
+    if (is_using_vulkan) return window;
+    SDL_SetWindowResizable(window, is_resizeable);
+    SDL_GL_SwapWindow(window);
+    SDL_GL_SetSwapInterval(vsync);
+    #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
+    sdl_set_fullscreen(window, fullscreen);
+    #endif
     return window;
 }

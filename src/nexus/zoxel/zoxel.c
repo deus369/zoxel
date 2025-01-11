@@ -9,12 +9,6 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #else
     game_name = "zoxel_beta";
 #endif
-#ifdef zox_log_boot_game
-    zox_log(" ! boot_zoxel_game\n")
-#endif
-#ifdef zox_log_boot_game
-    zox_log(" ! boot_zoxel_game2\n")
-#endif
     initialize_networking();
     if (!headless) {
         const ecs_entity_t window = spawn_main_window(world, default_window_position, default_window_size, fullscreen);
@@ -22,20 +16,13 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
             return EXIT_FAILURE;
         }
         initialize_rendering(world);
-        if (create_window_opengl_context(world, window) == EXIT_FAILURE) return EXIT_FAILURE;
         load_shaders(world);
-#ifdef zox_log_boot_game
-        zox_log("boot_zoxel_game3\n")
-#endif
         char* icon_path = get_asset_path("textures", "game_icon.png")
 #ifdef zox_mod_textures
         load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
 #endif
         free(icon_path);
     }
-#ifdef zox_log_boot_game
-    zox_log(" ! boot_zoxel_game4\n")
-#endif
     // load resources
     // todo: each module should add to a load resources event for i/o game data
 #ifdef zox_mod_voxels
@@ -45,26 +32,17 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world);
     zox_set(game, RealmLink, { realm })
-#ifdef zox_log_boot_game
-    zox_log(" ! boot_zoxel_game5\n")
-#endif
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif
 #ifdef zox_mod_musics
     initialize_music(world, realm);
 #endif
-#ifdef zox_log_boot_game
-    zox_log(" ! boot_zoxel_game 6\n")
-#endif
 #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
 #endif
     intialize_game_store();
     test_steam_cloud();
-#ifdef zox_log_boot_game
-    zox_log(" ! boot zoxel completed\n")
-#endif
     zox_log(" ! boot completed [zoxel]\n")
     return EXIT_SUCCESS;
 }

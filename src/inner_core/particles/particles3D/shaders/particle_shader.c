@@ -56,7 +56,7 @@ void initialize_particle_gpu_instancing(GLuint particle3D_position_location, GLu
 #ifdef zox_disable_particles_gpu_instancing
     return;
 #endif
-    zox_log(" > locations are: %i x %i\n", particle3D_position_location, particle3D_color_location)
+    // zox_log(" > locations are: %i x %i\n", particle3D_position_location, particle3D_color_location)
     // Setup position buffer
     glGenBuffers(1, &particle3D_instanced_position_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, particle3D_instanced_position_buffer);
