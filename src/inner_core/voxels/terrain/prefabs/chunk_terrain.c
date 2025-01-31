@@ -26,7 +26,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t p
     return e;
 }
 
-ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale) {
+ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale) {
     zox_instance(prefab)
     // zox_name("terrain_chunk")
     // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)

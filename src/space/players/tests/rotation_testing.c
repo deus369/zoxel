@@ -24,10 +24,10 @@ void test_rotation(ecs_world_t *world, const ecs_entity_t character, const keybo
         float3 euler = (float3) { 0 * degreesToRadians, (180 + debug_rotation_addition) * degreesToRadians, 0 * degreesToRadians };
         zox_set(character, Rotation3D, { quaternion_from_euler(euler) });
     } else if (keyboard->f.pressed_this_frame) {
-        zoxel_log(" > reset omega3D\n");
+        zox_log(" > reset omega3D\n");
         zox_set(character, Omega3D, { quaternion_identity });
     } else if (keyboard->g.pressed_this_frame) {
-        zoxel_log(" > reset alpha3D\n");
+        zox_log(" > reset alpha3D\n");
         zox_set(character, Alpha3D, { quaternion_identity });
     }
 }

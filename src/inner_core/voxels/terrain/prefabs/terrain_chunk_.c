@@ -10,7 +10,7 @@
     return e;
 }
 
-ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, ecs_entity_t prefab, int3 chunk_position, float3 position, float scale) {
+ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, ecs_entity_t prefab, int3 chunk_position, float3 position, float scale) {
     zox_instance(prefab)
     // zox_name("terrain_chunk")
     zox_set(e, ChunkPosition, { chunk_position })

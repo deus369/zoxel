@@ -74,7 +74,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         char buffer[buffer_size];
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "%s [v0.0.1]\n", game_name);
 
-        // memset(buffer, 0, buffer_size); // Initialize buffer to zero
 #ifdef zox_debug_game_players
         const ecs_entity_t game = zox_get_value(player, GameLink)
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "player [%s]\n", zox_get_name(player));

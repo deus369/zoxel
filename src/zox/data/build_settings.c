@@ -5,13 +5,10 @@
 
 // Here? select which zoxel modules I shall use?
 
+#define zox_test_streaming_01
 
 // #define zox_testing_networking
-
 // #define zox_print_files
-
-// #define zox_test_skeletons
-
 // #define zox_beta
 // to fix windows build
 

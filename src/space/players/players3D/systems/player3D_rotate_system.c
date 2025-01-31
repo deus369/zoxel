@@ -124,7 +124,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
 
 // todo: make rotation by alpha force a function
 /*#ifndef disable_player_rotate_alpha_force
-    // if (mouse_delta != 0) zoxel_log(" > mouse_delta: %f\n", mouse_delta);
+    // if (mouse_delta != 0) zox_log(" > mouse_delta: %f\n", mouse_delta);
     // this is all pretty shit ay haha... fuck mouses
     if (mouse_delta < -max_mouse_delta2) mouse_delta.x = -max_mouse_delta;
     else if (mouse_delta > max_mouse_delta2) mouse_delta.x = max_mouse_delta;

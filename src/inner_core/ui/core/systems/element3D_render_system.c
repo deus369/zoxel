@@ -43,7 +43,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_render(meshIndicies->length);
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged()) {
-            zoxel_log(" > failed to render element3D [%i]: [%i] - [%ix%i:%i]\n", i, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value);
+            zox_log(" > failed to render element3D [%i]: [%i] - [%ix%i:%i]\n", i, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value)
             break;
         }
 #endif

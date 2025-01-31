@@ -128,7 +128,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                     spawn_line3D(world, position3D->value, float3_add(position3D->value, movement), debug_thickness, 34.0);
                     float3 movement2 = float4_rotate_float3(face_direction, (float3) { 0, 0, -1 });
                     spawn_line3D(world, position3D->value, float3_add(position3D->value, movement2), debug_thickness, 34.0);
-                    zoxel_log(" > face_direction %fx%fx%fx%f\n", face_direction.x, face_direction.y, face_direction.z, face_direction.w);
+                    zox_log(" > face_direction %fx%fx%fx%f\n", face_direction.x, face_direction.y, face_direction.z, face_direction.w);
 #endif
                 }
             }

@@ -70,9 +70,6 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const ecs_
     if (life_time != 0.0f) zox_set(e, DestroyInTime, { life_time })
     // adds to canvas
     if (parent == canvas) on_child_added(world, canvas, e);
-    // const LinePosition2D linePosition2D = (LinePosition2D) { line_position2D };
-    // zoxel_log(" > line [%ix%ix%ix%i]\n", line_position2D.x, line_position2D.y, line_position2D.z, line_position2D.w);
-    //  { point_a.x, point_a.y, point_b.x, point_b.y } };
     return e;
 }
 

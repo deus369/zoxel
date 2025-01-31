@@ -99,7 +99,7 @@ void close_same_nodes(ChunkOctree *node, const unsigned char max_depth, unsigned
             break;
         }
     }
-    // if (all_same && first_node_value != 0) zoxel_log("  > closing same node [%i]\n", first_node_value);
+    // if (all_same && first_node_value != 0) zox_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) {
         node->value = all_same_voxel;
         close_ChunkOctree(node, max_octree_depth);
@@ -154,10 +154,10 @@ unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root
     return voxel_solidity[voxel_adjacent];
     /*unsigned char chunk_index = 0;
     const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
-    // if (adjacent_node == NULL) zoxel_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
+    // if (adjacent_node == NULL) zox_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
     if (adjacent_node == NULL) return edge_voxel;
-    //if (adjacent_node->value) zoxel_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
-    //if (!adjacent_node->value) zoxel_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    //if (adjacent_node->value) zox_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
+    //if (!adjacent_node->value) zox_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
     if (adjacent_node->value) return 1;
     else return 0;*/
 }

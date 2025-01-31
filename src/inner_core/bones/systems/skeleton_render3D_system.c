@@ -68,7 +68,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         opengl_render(meshIndicies->length);
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
-            zoxel_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
+            zox_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value)
             break;
         }
 #endif

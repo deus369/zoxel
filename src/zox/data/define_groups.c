@@ -1,3 +1,9 @@
+#ifdef zox_test_streaming_01
+    // #define zox_is_flatlands
+    #define zox_disable_npcs
+    #define zox_disable_block_voxes
+#endif
+
 #ifdef zox_test_skeletons
     #define zox_transparent_voxes
     #define zox_debug_bones

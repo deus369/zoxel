@@ -32,7 +32,7 @@ ecs_entity_t spawn_terrain_streaming(ecs_world_t *world,  const ecs_entity_t rea
     }
     ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     const int3 chunk_position = int3_zero;
-    const ecs_entity_t chunk = spawn_terrain_chunk(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
+    const ecs_entity_t chunk = spawn_chunk_terrain(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
     // set_chunk_neighbors_six_directions(world, chunk, 0, 0, 0, 0, 0, 0);
     zox_get_muter(terrain_world, ChunkLinks, chunkLinks)
     chunkLinks->value = create_int3_hashmap(2048); int3_hashmap_add(chunkLinks->value, chunk_position, chunk);
@@ -60,7 +60,7 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
             for (chunk_position.y = -size.y; chunk_position.y <= size.y; chunk_position.y++) {
                 const int index = get_chunk_index_3(chunk_position, size.x, size.y);
                 if (index < 0 || index >= chunks_total_length) continue;
-                const ecs_entity_t chunk = spawn_terrain_chunk(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
+                const ecs_entity_t chunk = spawn_chunk_terrain(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
                 chunk_positions[index] = chunk_position;
                 chunks[index] = chunk;
             }
@@ -101,6 +101,6 @@ ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const 
         k == -terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k - 1, terrain_spawn_distance, 0)],
         k == terrain_spawn_distance ? 0 : chunks[get_chunk_index_2(i, j, k + 1, terrain_spawn_distance, 0)]);
                 #else
-                    chunks[index] = spawn_terrain_chunk(world, prefab_terrain_chunk, chunk_position, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
+                    chunks[index] = spawn_chunk_terrain(world, prefab_terrain_chunk, chunk_position, (float3) { i * real_chunk_scale, 0, k * real_chunk_scale }, 0.5f);
                 #endif
 */

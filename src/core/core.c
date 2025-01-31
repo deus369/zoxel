@@ -8,33 +8,31 @@
 #ifndef zox_mod_core
 #define zox_mod_core
 
-const char *game_name = "zox";
+// global variables
 unsigned char cpu_tier;
-typedef unsigned int uint;
-#include "platforms/util/platform_defines.c"
-#include "util/logs.c"
-#include "collections/collections.c"
-#include "ecs/ecs.c"
-#include "maths/maths.c"
-#include "platforms/platforms.c"
-#include "generic/generic.c"
-#include "timing/timing.c"
-#include "transforms/transforms.c"
-#include "networking/networking.c"
-#include "terminals/terminals.c"
-#include "players/players.c"
-#include "inputs/inputs.c"
-#include "apps/apps.c"          // test removing sdl for engine stability
-#include "files/files.c"        // uses sdl path function atm
-#include "cameras/cameras.c"
-#include "rendering/rendering.c"
-#include "sounds/sounds.c"
-#include "nodes/nodes.c"
-#include "realms/realms.c"
-#include "games/games.c"
-#include "raycasts/raycasts.c"
-#include "colors/colors.c"
-#include "util/core_util.c"
+#include "../util/util.c"
+#include "../platforms/util/platform_defines.c"
+#include "../collections/collections.c"
+#include "../ecs/ecs.c"
+#include "../maths/maths.c"
+#include "../platforms/platforms.c"
+#include "../generic/generic.c"
+#include "../timing/timing.c"
+#include "../transforms/transforms.c"
+#include "../networking/networking.c"
+#include "../terminals/terminals.c"
+#include "../players/players.c"
+#include "../inputs/inputs.c"
+#include "../apps/apps.c"          // test removing sdl for engine stability
+#include "../files/files.c"        // uses sdl path function atm
+#include "../cameras/cameras.c"
+#include "../rendering/rendering.c"
+#include "../sounds/sounds.c"
+#include "../nodes/nodes.c"
+#include "../realms/realms.c"
+#include "../games/games.c"
+#include "../raycasts/raycasts.c"
+#include "../colors/colors.c"
 
 zox_begin_module(Core)
 clear_zoxel_log();

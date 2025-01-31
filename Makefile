@@ -196,11 +196,6 @@ run-dev-headless:
 run-dev-server:
 	@ ./$(target_dev) --headless --server
 
-run-debug-vulkan:
-	@ echo " > running gdb with vulkan"
-	@ $(patient_cmd)
-	@ valgrind ./$(target_dev) --vulkan
-
 run-dev-debug:
 	@ gdb ./$(target_dev)
 
@@ -209,7 +204,7 @@ run-dev-debug-tiny:
 
 # run development + valgrind
 run-valgrind:
-	@ valgrind ./$(target_dev) --tiny
+	@ valgrind ./$(target_dev)
 
 run-drmemory:
 	@ drmemory -light -callstack_max_frames 32 -malloc_max_frames 32  -- $(target_dev) $(args)

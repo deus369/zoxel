@@ -2,7 +2,7 @@
 #define zox_mod_textures
 
 #include "core/textures_core.c"
-#include "../../core/apps/sdl/textures/textures.c"
+#include "../../apps/sdl/textures/textures.c"
 #include "io/textures_io.c"
 
 zox_begin_module(Textures)

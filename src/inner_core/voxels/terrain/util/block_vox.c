@@ -81,11 +81,9 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             zox_log(" ! block_index out of bounds %i of %i\n", block_index, data->block_voxes_count)
             return;
         }
-        // const ecs_entity_t block_meta = data->blocks[block_index];
         const ecs_entity_t block_prefab = data->block_prefabs[block_index];
         // zox_has(block_meta, BlockPrefabLink);
-        // cheeck if vox model
-        //  if meta data is block vox type, spawn, otherwise, remove
+        // cheeck if vox model - if meta data is block vox type, spawn, otherwise, remove
         if (!block_prefab) {
             remove_old_voxel_by_link(world, delve_data->chunk);
             return;
@@ -189,9 +187,12 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
     ecs_entity_t block_voxes[block_voxes_count];
     ecs_entity_t block_prefabs[block_voxes_count];
     unsigned char block_vox_offsets[block_voxes_count];
-    memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
-    memset(block_prefabs, 0, block_voxes_count);
-    memset(block_vox_offsets, 0, block_voxes_count);
+    zero_memory(block_voxes, block_voxes_count, ecs_entity_t)
+    zero_memory(block_prefabs, block_voxes_count, ecs_entity_t)
+    zero_memory(block_vox_offsets, block_voxes_count, unsigned char)
+    //memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
+    //memset(block_prefabs, 0, block_voxes_count * sizeof(ecs_entity_t));
+    //memset(block_vox_offsets, 0, block_voxes_count);
     for (int j = 0; j < block_voxes_count; j++) {
         const ecs_entity_t block_meta = voxels->value[j];
         blocks[j] = block_meta;

@@ -36,7 +36,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
     const int2 canvas_position = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(canvas_position, canvas_size);
     const int children_count = is_header + is_plot_sub_label + lines_count;
-    // zoxel_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
+    // zox_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab)
     zox_name("frame_debugger_ui")
     // zox_set(e, HeaderHeight, { header_size.y })

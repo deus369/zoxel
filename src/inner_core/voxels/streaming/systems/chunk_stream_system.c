@@ -1,9 +1,9 @@
 // if camera distance is less than max view distance
 // spawn a chunk neighbor if any dont exist
 //  - only if visible too
-const unsigned char streaming_distance = 2;
+const unsigned char streaming_distance = 1;
 extern ecs_entity_t prefab_chunk_height;
-extern ecs_entity_t spawn_terrain_chunk(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
+extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
 
 void ChunkStreamSystem(ecs_iter_t *it) {
     zox_iter_world()
@@ -44,7 +44,7 @@ void ChunkStreamSystem(ecs_iter_t *it) {
             ecs_entity_t neighbor = int3_hashmap_get(chunkLinks->value, neighbor_position);
             if (!neighbor) {
                 const int3 stream_point = find_closest_point(stream_points, streamers_iter.count, chunkPosition->value);
-                neighbor = spawn_terrain_chunk(world, prefab_chunk_height, voxLink->value, stream_point, neighbor_position, real_chunk_scale);
+                neighbor = spawn_chunk_terrain(world, prefab_chunk_height, voxLink->value, stream_point, neighbor_position, real_chunk_scale);
                 int3_hashmap_add(chunkLinks->value, neighbor_position, neighbor);
             }
             chunkNeighbors->value[j] = neighbor;

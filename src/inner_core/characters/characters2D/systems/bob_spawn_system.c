@@ -7,7 +7,7 @@ int GetBobCount() {
 }
 
 void PrintBobSpawnSystem(ecs_world_t *world) {
-    zoxel_log("    Bobs Spawned [%i]\n", GetBobCount());
+    zox_log("    Bobs Spawned [%i]\n", GetBobCount())
 }
 
 //! Here for now, spawns a one man bobarmy.

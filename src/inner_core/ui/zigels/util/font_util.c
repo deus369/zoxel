@@ -142,8 +142,8 @@ void generate_splotches_lines(color* data, const int2 size, const FontData *font
         int distance = int2_distance(pointA, pointB);
         float2 direction = float2_normalize(float2_sub(int2_to_float2(pointB), int2_to_float2(pointA)));
 #ifdef debug_font_texture
-        zoxel_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
-        zoxel_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
+        zox_log("    - %ix%i > %ix%i\n", pointA.x, pointA.y, pointB.x, pointB.y);
+        zox_log("    - distance %i direction %fx%f\n", distance, direction.x, direction.y);
 #endif
         int2 splash_point = pointA;
         for (int j = 0; j <= distance; j++) {
@@ -183,7 +183,7 @@ void generate_font_lines(color* data, const int2 size, const FontData *fontData,
         int2 pointA = byte2_to_int2(fontData->value[i]);
         int2 pointB = byte2_to_int2(fontData->value[i + 1]);
 #ifdef debug_font_texture
-        zoxel_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
+        zox_log("Font Data %i %ix%i > %ix%i\n", i, pointA.x, pointA.y, pointB.x, pointB.y);
 #endif
         // scale points to texture size
         pointA.x = (int) ((pointA.x / 255.0f) * size.x);
