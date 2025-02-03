@@ -1,7 +1,3 @@
-typedef struct {
-    float4 x, y, z, w;
-} float4x4;
-
 // remember: matrix in column-major order, each float4 is a column
 
 #define float4x4_zero { float4_zero, float4_zero, float4_zero, float4_zero }

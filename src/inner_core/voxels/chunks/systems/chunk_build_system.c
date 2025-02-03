@@ -1,9 +1,3 @@
-// #define disable_voxel_left
-// #define disable_voxel_right
-// #define disable_voxel_down
-// #define disable_voxel_up
-// #define disable_voxel_back
-// #define disable_voxel_front
 /*
 void add_voxel_face(MeshIndicies *meshIndicies2, MeshVertices *meshVertices2,
     float3 vertex_position_offset, float3 center_mesh_offset, float voxel_scale,

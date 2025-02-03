@@ -46,6 +46,7 @@ zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "systems/zevice_pointer_enable_system.c"
 #include "systems/device_mode_system.c"
 #include "systems/device_mode_dirty_system.c"
+#include "systems/keyboard_reset_system.c"
 
 zox_begin_module(Inputs)
 zox_define_tag(Device)
@@ -83,6 +84,7 @@ zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMod
 zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
 zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)
 zox_system(ZevicePointerEnableSystem, zox_pipelines_devices_enables, [in] ZevicePointer, [out] ZeviceDisabled)
+zox_system(KeyboardResetSystem, EcsOnUpdate, [out] Keyboard)
 spawn_prefabs_inputs(world);
 zoxel_end_module(Inputs)
 

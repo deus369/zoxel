@@ -1,8 +1,3 @@
-typedef struct {
-    unsigned char x;
-    unsigned char y;
-} byte2;
-
 #define byte2_zero (byte2) { 0, 0 }
 
 byte2 byte2_multiply_int(const byte2 input, const int mul) {

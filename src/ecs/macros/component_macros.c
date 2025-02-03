@@ -15,7 +15,8 @@ typedef struct {\
 #define zox_function_component(name, return_type, ...)\
 typedef struct {\
     return_type (*value)(__VA_ARGS__);\
-} name; zox_custom_component(name)
+} name;\
+zox_custom_component(name)
 
 #define zox_define_component(name) ECS_COMPONENT_DEFINE(world, name);
 

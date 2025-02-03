@@ -1,4 +1,3 @@
 typedef struct {
-    GLuint x;
-    GLuint y;
+    GLuint x, y;
 } GLuint2;

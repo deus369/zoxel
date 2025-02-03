@@ -1,9 +1,3 @@
-typedef struct {
-    float3 x;
-    float3 y;
-    float3 z;
-} float3x3;
-
 float3x3 quaternion_to_float3x3(float4 q) {
     return (float3x3) {
         (float3) { 1 - 2*q.y*q.y - 2*q.z*q.z, 2*q.x*q.y - 2*q.z*q.w, 2*q.x*q.z + 2*q.y*q.w },

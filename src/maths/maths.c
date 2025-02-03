@@ -5,7 +5,6 @@
 #include <float.h>
 #include "data/constants.c"
 #include "util/float_util.c"
-typedef unsigned int uint;
 // data types
 #include "data/int2.c"
 #include "data/int3.c"

@@ -1,7 +1,3 @@
-typedef struct {
-    float x, y, z, w;
-} float4;
-
 #define float4_zero (float4) { 0, 0, 0, 0 }
 #define float4_identity (float4) { 0, 0, 0, 1 }
 

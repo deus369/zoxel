@@ -41,6 +41,7 @@ zox_define_component_w_dest(SDLWindow)
 zox_define_component_w_dest(Context)
 zox_define_component_w_dest(Renderer)
 initialize_apps_sdl(world);
+add_to_update_loop(update_sdl);
 spawn_prefabs_apps_sdl(world);
 zox_import_module(AppsInputs)
 zoxel_end_module(AppsSDL)

@@ -8,10 +8,9 @@
 #ifndef zox_mod_core
 #define zox_mod_core
 
-// global variables
-unsigned char cpu_tier;
-#include "../util/util.c"
 #include "../platforms/util/platform_defines.c"
+#include "../types/types.c"
+#include "../util/util.c"
 #include "../collections/collections.c"
 #include "../ecs/ecs.c"
 #include "../maths/maths.c"
@@ -35,29 +34,31 @@ unsigned char cpu_tier;
 #include "../colors/colors.c"
 
 zox_begin_module(Core)
-clear_zoxel_log();
-zox_import_module(Platforms)
-zox_import_module(Generic)
-zox_import_module(Maths)
-zox_import_module(Timing)
-zox_import_module(Transforms)
-zox_import_module(Files)
-zox_import_module(Terminals)
-#ifndef zox_disable_module_networking // disabled on web atm
-zox_import_module(Networking)
-#endif
-zox_import_module(Players)
-zox_import_module(Inputs)
-initialize_pathing();
-if (!headless) zox_import_module(Apps) // sdl
-zox_import_module(Cameras)
-zox_import_module(Rendering)
-zox_import_module(Sounds)
-zox_import_module(Nodes)
-zox_import_module(Realms)
-zox_import_module(Games)
-zox_import_module(Raycasts)
-zox_import_module(Colorz)
+    clear_zoxel_log();
+    zox_import_module(Platforms)
+    zox_import_module(Generic)
+    zox_import_module(Maths)
+    zox_import_module(Timing)
+    zox_import_module(Transforms)
+    zox_import_module(Files)
+    zox_import_module(Terminals)
+    #ifndef zox_disable_module_networking // disabled on web atm
+        zox_import_module(Networking)
+    #endif
+    zox_import_module(Players)
+    zox_import_module(Inputs)
+    initialize_pathing();
+    if (!headless) {
+        zox_import_module(Apps) // sdl
+    }
+    zox_import_module(Cameras)
+    zox_import_module(Rendering)
+    zox_import_module(Sounds)
+    zox_import_module(Nodes)
+    zox_import_module(Realms)
+    zox_import_module(Games)
+    zox_import_module(Raycasts)
+    zox_import_module(Colorz)
 zoxel_end_module(Core)
 
 #endif

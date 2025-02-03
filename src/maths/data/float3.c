@@ -1,12 +1,3 @@
-#ifndef zox_float3
-#define zox_float3
-
-typedef struct {
-    float x, y, z;
-} float3;
-
-#endif
-
 #define float3_zero (float3) { 0, 0, 0 }
 #define float3_half (float3) { 0.5f, 0.5f, 0.5f }
 #define float3_one (float3) { 1, 1, 1 }

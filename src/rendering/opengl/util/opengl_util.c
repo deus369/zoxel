@@ -90,7 +90,9 @@ void opengl_set_defaults(unsigned char is_3D) {
     // glDisable(GL_BLEND); // Disable blending
 }
 
-void opengl_clear_viewport_all(const float3 clear_color) {
+void opengl_clear_viewport_all(ecs_world_t *world) { // const float3 clear_color) {
+    if (headless) return;
+    const float3 clear_color = viewport_clear_color;
     glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
     // glClearDepth(0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

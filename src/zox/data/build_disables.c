@@ -92,19 +92,11 @@
 // #define zox_disable_terrain
 // #define zox_disable_characters3D_voxes
 
-// -- disables --
-// #define disable_voxel_left
-// #define disable_voxel_right
-// #define disable_voxel_back
-// #define disable_voxel_front
-// #define disable_voxel_down
-
 // voxels
 // #define zox_disable_terrain_octrees  // disables octrees, uses arrays
 // #define zox_disable_closing_octree_nodes
 // #define zoxel_disable_close_nodes
 // #define zox_disable_hidden_terrain_edge        // hides faces on edge of map
-// #define zox_disable_voxels_dynamic_array      // used in mesh generation
 // #define zoxel_voxel_disable_distance_division
 // #define voxels_use_octree_pooling
 
@@ -112,4 +104,3 @@
 // #define zoxel_disable_velocity       // disables all movement, used to debug spawning
 // #define zoxel_disable_non_vertical_bounce
 // #define zox_disable_fog
-// #define zox_disable_vox_octrees

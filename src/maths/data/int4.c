@@ -1,10 +1,3 @@
-typedef struct {
-    int x;
-    int y;
-    int z;
-    int w;
-} int4;
-
 #define int4_zero (int4) { 0, 0, 0, 0 }
 
 int2 int4_xy(const int4 value) {

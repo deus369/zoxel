@@ -1,9 +1,3 @@
-typedef struct {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-} color_rgb;
-
 zoxel_dynamic_array(color_rgb)
 
 #define color_rgb_white (color_rgb) { 255, 255, 255 }

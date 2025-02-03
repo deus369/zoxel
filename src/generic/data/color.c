@@ -1,11 +1,3 @@
-//! A basic x2 building block.
-typedef struct {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-    unsigned char a;
-} color;
-
 #define color_white (color) { 255, 255, 255, 255 }
 #define color_gray (color) { 125, 125, 125, 255 }
 #define color_gray_dark (color) { 55, 55, 55, 255 }

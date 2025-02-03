@@ -1,8 +1,3 @@
-//! A basic x2 building block.
-typedef struct {
-    float x, y;
-} float2;
-
 #define float2_zero (float2) { 0.0f, 0.0f }
 #define float2_half (float2) { 0.5f, 0.5f }
 #define float2_one (float2) { 1, 1 }

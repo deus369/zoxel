@@ -1,9 +1,3 @@
-typedef struct {
-    unsigned char x;
-    unsigned char y;
-    unsigned char z;
-} byte3;
-
 unsigned char byte3_equals(const byte3 a, const byte3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }

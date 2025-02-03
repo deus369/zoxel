@@ -1,11 +1,3 @@
-typedef struct {
-    double x, y, z;
-} double3;
-
-typedef struct {
-    double x, y, z, w;
-} double4;
-
 // new: , float4x4_multiply_double4, double3_divide_double
 // for higher precision maths
 

@@ -1,12 +1,3 @@
-#ifndef zox_int2
-#define zox_int2
-
-typedef struct {
-    int x, y;
-} int2;
-
-#endif
-
 #define int2_zero (int2) { 0, 0 }
 #define int2_one (int2) { 1, 1 }
 #define int2_two (int2) { 2, 2 }

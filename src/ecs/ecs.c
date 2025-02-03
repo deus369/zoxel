@@ -1,14 +1,12 @@
 // flecs useage, create an ecs world
 #include <inttypes.h> // For PRIu64
-typedef unsigned int uint;
-typedef unsigned char byte;
 #include "util/flecs_defines.c"
-#include "data/settings.c"
-zoxel_dynamic_array(ecs_entity_t)
-create_is_in_array_d(ecs_entity_t)
-#include "macros/names.c"
-#include "util/util.c"
 
+#include "macros/macros.c"
+#include "data/entity_dynamic_array.c"
+#include "data/general_fun.c"
+#include "data/settings.c"
+#include "util/util.c"
 
 void initialize_flecs_profiler(ecs_world_t* world) {
 #ifdef zox_using_profiler
@@ -44,16 +42,11 @@ ecs_world_t* initialize_ecs(int argc, char* argv[]) {
     int cpu_core_count = SDL_GetCPUCount();
     fetch_pc_info(cpu_core_count);
     world = open_ecs(argc, argv, cpu_core_count);
+    initialize_update_loop();
     return world;
-}
-
-void run_ecs(ecs_world_t *world)  {
-    if (debug_pipelines) {
-        ecs_log_set_level(1);    // debug system pipelines
-    }
-    ecs_progress(world, 0);
 }
 
 void dispose_ecs(ecs_world_t *world) {
     ecs_fini(world);
+    dispose_update_loop();
 }

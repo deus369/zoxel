@@ -1,7 +1,3 @@
-typedef struct {
-    int x, y, z;
-} int3;
-
 const int3 int3_zero = (int3) { 0, 0, 0 };
 // #define int3_zero (int3) { 0, 0, 0 }
 const int3 int3_chaos = (int3) { -666, -666, -666 };

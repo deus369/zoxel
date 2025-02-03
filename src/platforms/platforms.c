@@ -3,7 +3,8 @@
 
 // specific platform implementation code
 // #define zox_log_cores
-int cpu_core_count;
+byte cpu_core_count;
+byte cpu_tier;
 #include "util/cpu_util.c"
 #include "util/platform_debug_util.c"
 #include "util/webasm_util.c"
@@ -21,6 +22,9 @@ void spawn_prefabs_platforms(ecs_world_t *world) {
 zox_begin_module(Platforms)
 // zox_define_tag(Terminal)
 spawn_prefabs_platforms(world);
+#if zoxel_on_web
+    add_to_update_loop(update_web_canvas);
+#endif
 zoxel_end_module(Platforms)
 
 #endif
