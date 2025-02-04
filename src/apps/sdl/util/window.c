@@ -19,8 +19,6 @@ int get_sdl_window_header_size(SDL_Window* window) {
     return 0;
 }
 
-extern unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
-
 SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const int2 position, const int2 size) {
     int flags;
     if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;

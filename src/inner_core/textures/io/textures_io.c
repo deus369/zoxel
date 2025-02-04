@@ -1,7 +1,7 @@
 #ifndef zox_mod_textures_io
 #define zox_mod_textures_io
 
-#define directory_textures "textures"character_slash
+#define directory_textures "textures"
 int files_count_textures = 0;
 ecs_entity_t *files_textures;
 string_hashmap *files_hashmap_textures;

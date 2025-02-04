@@ -1,4 +1,4 @@
-#define directory_sounds "sounds"character_slash
+#define directory_sounds "sounds" // character_slash
 
 int sound_files_count = 0;
 ecs_entity_t *files_sounds;

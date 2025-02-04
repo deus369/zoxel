@@ -1,12 +1,13 @@
+#define init_delta_time() const double delta_time = zox_delta_time;
+#ifdef zox_mod_plots
+extern void add_plot_data_time(ecs_world_t *world, const double value);
+#endif
+
 double current_time_in_seconds() {
     struct timespec current_time;
     clock_gettime(CLOCK_REALTIME, &current_time);
     return current_time.tv_sec + (double) current_time.tv_nsec / 1000000000.0;
 }
-
-
-#define init_delta_time() const double delta_time = zox_delta_time;
-
 
 void initialize_time() {
     time_begin = current_time_in_seconds();
@@ -23,9 +24,6 @@ void clear_system_times() {
 }
 
 // todo: find a better way to grab time data in a new module
-#ifdef zox_mod_plots
-extern void add_plot_data_time(ecs_world_t *world, const double value);
-#endif
 
 void iterate_time(ecs_world_t *world) {
     clear_system_times();
@@ -60,6 +58,9 @@ void iterate_time(ecs_world_t *world) {
         zox_log("frames_per_second [%i]\n", frames_per_second);
 #endif
     }
+#ifdef zoxel_log_frame_ms
+    zox_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f))
+#endif
 }
 
 float get_total_time_seconds() {

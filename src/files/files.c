@@ -1,3 +1,12 @@
+/**
+ *  Zox Files
+ *
+ *      - Zox Files functions
+ *
+ *      - todo: move to core
+ *      - todo: remove sdl use and just make my own functions
+ *
+ * */
 #ifndef zox_files
 #define zox_files
 
@@ -18,11 +27,15 @@ zox_declare_tag(Asset)
 #define get_asset_path(folder_path, filename) concat_file_path(resources_path, folder_path character_slash filename);
 
 zox_begin_module(Files)
-zox_define_tag(Asset)
-#ifdef __WINE__
-    zox_log("  > inside wine\n")
-    exit(0)
-#endif
+    zox_define_tag(Asset)
+    if (initialize_pathing() == EXIT_FAILURE) {
+        zox_log(" ! FAILED PATHING\n")
+        return;
+    }
+    #ifdef __WINE__
+        zox_log("  > inside wine\n")
+        exit(0)
+    #endif
 zoxel_end_module(Files)
 
 #endif

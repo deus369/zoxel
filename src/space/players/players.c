@@ -40,32 +40,34 @@ zox_component_entity(PlayerPauseEvent)
 #include "systems/raycast_gizmo_system.c"
 #include "systems/voxel_action_system.c"
 #include "systems/player_place_voxel_system.c"
+#include "util/camera.c"
+#include "util/ui.c"
 
 void initialize_players(ecs_world_t *world) {
     add_to_event_game_state((zox_game_event) { &players_game_state });
 }
 
 zox_begin_module(Players2)
-zox_define_component_entity(PlayerPauseEvent)
-if (headless) return;
-zox_system(QolShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [none] players.Player)
-zox_system(PlayerShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [in] GameLink, [none] players.Player)
-zox_import_module(Players2D)
-zox_import_module(Players3D)
-zox_import_module(FreeRoam)
-// zox_pipelines_pre_render
-zox_system_1(DeviceModeResponseSystem, zox_pipelines_devices_enables_pre, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink) // note: must update before DeviceModeDirtySystem
-zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
-zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
-zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] players.Player)
-zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLink, [in] RaycasterResult, [in] ZevicePointer, [in] VirtualZeviceLink,  [none] inputs.Zevice)
-zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
-zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
-zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
-zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
-zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [out] ActionLinks, [out] TriggerActionB)
-initialize_players(world);
-spawn_prefabs_players2(world);
+    zox_define_component_entity(PlayerPauseEvent)
+    if (headless) return;
+    zox_system(QolShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [none] players.Player)
+    zox_system(PlayerShortcutsSystem, EcsOnUpdate, [in] DeviceLinks, [in] GameLink, [none] players.Player)
+    zox_import_module(Players2D)
+    zox_import_module(Players3D)
+    zox_import_module(FreeRoam)
+    // zox_pipelines_pre_render
+    zox_system_1(DeviceModeResponseSystem, zox_pipelines_devices_enables_pre, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink) // note: must update before DeviceModeDirtySystem
+    zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
+    zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
+    zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] players.Player)
+    zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLink, [in] RaycasterResult, [in] ZevicePointer, [in] VirtualZeviceLink,  [none] inputs.Zevice)
+    zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
+    zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
+    zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
+    zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
+    zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [out] ActionLinks, [out] TriggerActionB)
+    initialize_players(world);
+    spawn_prefabs_players2(world);
 zoxel_end_module(Players2)
 
 #endif

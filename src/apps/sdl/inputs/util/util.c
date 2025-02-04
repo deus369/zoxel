@@ -1,0 +1,7 @@
+#include "sdl_key_util.c"
+#include "keyboard_extract_util.c"
+#include "mouse_extract_util.c"
+#include "touchscreen_extract_util.c"
+#include "gamepad_extract_util.c"
+#include "input_util.c"
+#include "cursor.c"

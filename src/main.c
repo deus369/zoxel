@@ -3,10 +3,16 @@
 #include zox_nexus_game
 
 int run_main(int argc, char* argv[]) {
-    ecs_world_t *world = initialize_ecs(argc, argv);
+    int didFail = process_arguments(argc, argv);
+    if (didFail == EXIT_FAILURE) {
+        return EXIT_FAILURE;
+    }
+    // cpu_core_count = SDL_GetCPUCoreCount();
+    fetch_pc_info();
+    ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (world == NULL) {
         zox_log(" ! engine failed to start\n")
-        return 0;
+        return EXIT_FAILURE;
     } else {
         zox_import_module(Zox)
         #ifdef zox_mod_game
@@ -21,7 +27,7 @@ int run_main(int argc, char* argv[]) {
         }
         dispose_zox(world);
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 #ifndef zoxel_on_windows

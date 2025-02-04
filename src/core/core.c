@@ -8,57 +8,29 @@
 #ifndef zox_mod_core
 #define zox_mod_core
 
-#include "../platforms/util/platform_defines.c"
-#include "../types/types.c"
-#include "../util/util.c"
-#include "../collections/collections.c"
-#include "../ecs/ecs.c"
-#include "../maths/maths.c"
-#include "../platforms/platforms.c"
-#include "../generic/generic.c"
-#include "../timing/timing.c"
-#include "../transforms/transforms.c"
-#include "../networking/networking.c"
-#include "../terminals/terminals.c"
-#include "../players/players.c"
-#include "../inputs/inputs.c"
-#include "../apps/apps.c"          // test removing sdl for engine stability
-#include "../files/files.c"        // uses sdl path function atm
-#include "../cameras/cameras.c"
-#include "../rendering/rendering.c"
-#include "../sounds/sounds.c"
-#include "../nodes/nodes.c"
-#include "../realms/realms.c"
-#include "../games/games.c"
-#include "../raycasts/raycasts.c"
-#include "../colors/colors.c"
+// base libraries we rely on besides ecs
+#include <signal.h> // used for detecting cancel
+#include <string.h> // who uses this?
+#include <stdlib.h> // for malloc & free
+#include <stdio.h>  // just for sprintf and perror
+
+// base util functions and types
+//      todo: move these to core folder
+#include "defines/platform_defines.c"
+#include "logs/logs.c"
+#include "collections/collections.c"
+#include "maths/maths.c"
+#include "platforms/platforms.c"
+#include "terminals/terminals.c"
+#include "ecs/ecs.c"
 
 zox_begin_module(Core)
     clear_zoxel_log();
-    zox_import_module(Platforms)
-    zox_import_module(Generic)
-    zox_import_module(Maths)
-    zox_import_module(Timing)
-    zox_import_module(Transforms)
-    zox_import_module(Files)
-    zox_import_module(Terminals)
-    #ifndef zox_disable_module_networking // disabled on web atm
-        zox_import_module(Networking)
+    // other calls
+    set_noise_seed(get_unique_time_seed());
+    #if zoxel_on_web
+        add_to_update_loop(update_web_canvas);
     #endif
-    zox_import_module(Players)
-    zox_import_module(Inputs)
-    initialize_pathing();
-    if (!headless) {
-        zox_import_module(Apps) // sdl
-    }
-    zox_import_module(Cameras)
-    zox_import_module(Rendering)
-    zox_import_module(Sounds)
-    zox_import_module(Nodes)
-    zox_import_module(Realms)
-    zox_import_module(Games)
-    zox_import_module(Raycasts)
-    zox_import_module(Colorz)
 zoxel_end_module(Core)
 
 #endif

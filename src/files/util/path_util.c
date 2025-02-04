@@ -7,8 +7,10 @@ char *resources_path = NULL;
 
 #if defined(zoxel_on_windows) && !defined(_WINE) //__WINE__)
     #define character_slash "\\"
+    #define char_slash '\\'
 #else
     #define character_slash "/"
+    #define char_slash '/'
 #endif
 
 #ifdef zoxel_on_android
@@ -217,31 +219,27 @@ char* clone_str(const char* text) {
     return new_text;
 }
 
-unsigned char initialize_pathing() {
-#ifdef zox_disable_io
-    return EXIT_SUCCESS;
-#endif
+byte initialize_pathing() {
+    #ifdef zox_disable_io
+        zox_log(" ! io is disabled\n")
+        return EXIT_SUCCESS;
+    #endif
+
     char* base_path;
 #ifdef zoxel_using_sdl
-#ifdef zoxel_on_android
-    base_path = clone_str(SDL_AndroidGetInternalStoragePath());
-    __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
-#else
-    base_path = SDL_GetBasePath();
-#ifdef zoxel_on_windows
-    // convert_file_path_slashes(base_path);
-#endif
-    /*zox_log("   + base_path [%s]\n", base_path)
-    if (is_platform_wine()) {
-        zox_log("wine platform\n")
-        convert_file_path(base_path);
-    } else exit(0);*/
-#endif
+    #ifdef zoxel_on_android
+        base_path = clone_str(SDL_AndroidGetInternalStoragePath());
+        __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
+    #else
+        base_path = SDL_GetBasePath();
+    #endif
 #else
     // can i use a base path here based on platform?
     base_path = NULL;
+    zox_log(" ! SDL is disabled\n")
     return EXIT_FAILURE;
 #endif
+    zox_log(" > Resources Base Path: %s\n", base_path)
 #ifdef zoxel_debug_base_path
     debug_base_path(base_path);
 #endif
@@ -284,5 +282,7 @@ unsigned char initialize_pathing() {
     } else {
         zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path)
     }
+    zox_log(" > (data) PATH: %s\n", data_path)
+    zox_log(" > (resources) PATH: %s\n", resources_path)
     return EXIT_SUCCESS;
 }

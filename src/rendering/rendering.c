@@ -2,10 +2,9 @@
 #define zox_mod_rendering
 
 // #define zox_disable_rendering3D
-
 #define render_lod_invisible 254
 #define render_lod_uninitialized 255
-unsigned char rendering_initialized = 0;
+byte rendering_initialized = 0;
 #include "data/renderer_types.c"
 #include "data/mesh_alignment_types.c"
 #include "data/settings.c"
@@ -42,30 +41,30 @@ void dispose_rendering(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Rendering)
-zox_module_dispose(dispose_rendering)
-zox_define_tag(Mesh)
-zox_define_component_byte(MeshDirty)
-zox_define_component_byte(MeshAlignment)
-zox_define_component_entity(MeshLink)
-zox_define_component_byte(TextureDirty)
-zox_define_component_byte(RenderLod)
-zox_define_component_byte(RenderDistance)
-zox_define_component_byte(RenderDisabled)
-zox_define_component_float(Brightness)
-zox_define_component_float(Alpha)
-zox_define_increment_system(MeshDirty, EcsOnLoad)
-if (headless) return;
-if (is_using_vulkan) {
-    if (check_vulkan_suppport()) zox_import_module(Vulkan)
-}
-else {
-    zox_import_module(OpenGL)
-}
-zox_import_module(RenderingCore)
-zox_import_module(RenderingBasics2D)
-#ifdef zox_mod_rendering_basics3D
-    zox_import_module(RenderingBasics3D)
-#endif
+    zox_module_dispose(dispose_rendering)
+    zox_define_tag(Mesh)
+    zox_define_component_byte(MeshDirty)
+    zox_define_component_byte(MeshAlignment)
+    zox_define_component_entity(MeshLink)
+    zox_define_component_byte(TextureDirty)
+    zox_define_component_byte(RenderLod)
+    zox_define_component_byte(RenderDistance)
+    zox_define_component_byte(RenderDisabled)
+    zox_define_component_float(Brightness)
+    zox_define_component_float(Alpha)
+    zox_define_increment_system(MeshDirty, EcsOnLoad)
+    if (headless) {
+        return;
+    } else if (is_using_vulkan && check_vulkan_suppport()) {
+        zox_import_module(Vulkan)
+    } else {
+        zox_import_module(OpenGL)
+    }
+    zox_import_module(RenderingCore)
+    zox_import_module(RenderingBasics2D)
+    #ifdef zox_mod_rendering_basics3D
+        zox_import_module(RenderingBasics3D)
+    #endif
 zoxel_end_module(Rendering)
 
 #endif

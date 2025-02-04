@@ -1,5 +1,5 @@
 // save font style
-#define directory_fonts "fonts"character_slash
+#define directory_fonts "fonts"
 // #define zox_log_font_io
 
 // todo: save properly
@@ -9,7 +9,10 @@ unsigned char save_font_style(ecs_world_t *world, const ecs_entity_t e, char *re
         return 0;
     }
     char* directory = concat_file_path(resources_directory, directory_fonts);
-    char* path = concat_file_path(directory, filename);
+    char* directory2 = concat_file_path(directory, character_slash);
+    free(directory);
+    char* path = concat_file_path(directory2, filename);
+    free(directory2);
 #ifdef zox_log_font_io
     zox_log(" + saving font style entity [%s]\n", zox_get_name(e))
     zox_log("   - to zox file [%s]\n", filename)
@@ -20,7 +23,6 @@ unsigned char save_font_style(ecs_world_t *world, const ecs_entity_t e, char *re
     if (file == NULL) {
         zox_log(" > error saving [%s]\n", path)
         perror("Error opening file for writing");
-        free(directory);
         free(path);
         return 0;
     }
@@ -29,7 +31,6 @@ unsigned char save_font_style(ecs_world_t *world, const ecs_entity_t e, char *re
     zox_geter(e, Children, children)
     if (children == NULL) {
         zox_log(" ! error saving entity [%lu] invalid children [%s]\n", e, path)
-        free(directory);
         free(path);
         return 0;
     }
@@ -55,7 +56,6 @@ unsigned char save_font_style(ecs_world_t *world, const ecs_entity_t e, char *re
     }
     fwrite(&data, sizeof(SaveDataFontStyle), 1, file);
     fclose(file);
-    free(directory);
     free(path);
     return 1; // success
 }
@@ -91,7 +91,10 @@ ecs_entity_t spawn_font_style_save_data(ecs_world_t *world, const ecs_entity_t p
 ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
     // spawn font style and spawn fonts based on data
     char* directory = concat_file_path(resources_path, directory_fonts);
-    char* path = concat_file_path(directory, filename);
+    char* directory_slash = concat_file_path(directory, character_slash);
+    free(directory);
+    char* path = concat_file_path(directory_slash, filename);
+    free(directory_slash);
     FILE *file = fopen(path, "rb");
 #ifdef zox_log_font_io
     zox_log(" + loading font style entity\n")
@@ -102,7 +105,6 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
     if (file == NULL) {
         zox_log(" > file is NULL at path [%s]\n", path)
         perror("Error opening file for writing");
-        free(directory);
         free(path);
         return 0;
     }
@@ -119,7 +121,6 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
         perror("filesize is 0");
     }
     fclose(file);
-    free(directory);
     free(path);
     return font_style;
 }

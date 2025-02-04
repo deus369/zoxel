@@ -57,10 +57,12 @@ ecs_entity_t spawn_ttf_path_as_font_style(ecs_world_t *world, const ecs_entity_t
 
 ecs_entity_t spawn_ttf_from_file(ecs_world_t *world, const ecs_entity_t prefab, const FT_Library *library, const char *load_path) {
     char* load_directory = concat_file_path(resources_path, directory_fonts);
-    char* font_ttf = concat_file_path(load_directory, load_path);
+    char* load_directory_slash = concat_file_path(load_directory, character_slash);
+    char* font_ttf = concat_file_path(load_directory_slash, load_path);
     const ecs_entity_t e = spawn_ttf_path_as_font_style(world, prefab, library, font_ttf);
     free(font_ttf);
     free(load_directory);
+    free(load_directory_slash);
     return e;
 }
 

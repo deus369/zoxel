@@ -27,10 +27,10 @@ void free_files(FileList *fileList) {
 // without extension
 char* get_filename(const char* filepath) {
     // Find the last occurrence of the directory separator
-    const char *last_slash = strrchr(filepath, '/');
-    if (!last_slash) {
-        last_slash = strrchr(filepath, '\\');  // For Windows paths
-    }
+    const char *last_slash = strrchr(filepath, char_slash); // '/');
+    // if (!last_slash) {
+    //    last_slash = strrchr(filepath, '\\');  // For Windows paths
+    //}
     const char *filename = (last_slash) ? last_slash + 1 : filepath;
 
     // Find the last occurrence of the dot
@@ -51,6 +51,7 @@ char* get_filename(const char* filepath) {
 }
 
 void add_file(FileList *fileList, const char *filepath) {
+    // zox_log(" + adding filepath: %s\n", filepath)
     // static int capacity = 10;
     if (fileList->count == 0) {
         fileList->capacity = 1;
@@ -99,9 +100,14 @@ void add_file(FileList *fileList, const char *filepath) {
 }
 
 void traverse_directory(FileList *fileList, const char *directory) {
+    if (directory == NULL) {
+        zox_log(" ! directory is null in [traverse_directory]\n")
+        return;
+    }
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
+    // zox_log(" ! opening directory [%s]\n", directory)
     dp = opendir(directory);
     if (dp == NULL) {
         zox_log(" ! directory error [%s]\n", directory)
@@ -150,6 +156,10 @@ FileList get_files(char *directory) {
 }
 
 void list_files(const char *directory) {
+    if (directory == NULL) {
+        zox_log(" ! directory is null in [list_files]\n")
+        return;
+    }
     struct dirent *entry;
     DIR *dp;
     // Opening the directory

@@ -1,6 +1,7 @@
 extern void opengl_dispose_resources(ecs_world_t *world);
 extern void opengl_restore_resources(ecs_world_t *world);
 extern void engine_end(); // engine
+extern unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
 
 // todo: get position2 to work
 ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const unsigned char fullscreen) {
@@ -15,10 +16,6 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 
         running = 0;
         return 0;
     }
-    /*if (*SDL_GetError()) {
-        zox_log(" ! spawn_window_opengl: %s\n", SDL_GetError())
-        return 0;
-    }*/
     viewport_dimensions = screen_dimensions;
     const ecs_entity_t e = spawn_app_sdl(world, sdl_window, position, window_size, fullscreen);
     mouse_lock_window = e;
