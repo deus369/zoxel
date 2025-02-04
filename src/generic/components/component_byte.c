@@ -1,6 +1,6 @@
 component_id_list(byte)
 
-#define zox_component_byte(name) zox_component(name, unsigned char)
+#define zox_component_byte(name) zox_component(name, byte)
 
 #define zox_define_component_byte(name)\
 zox_define_component(name)\

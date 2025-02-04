@@ -7,10 +7,10 @@ zox_component_float(Scale1D)
 #include "transforms3D/transforms3D.c"
 
 zox_begin_module(Transforms)
-zox_define_component_float(Scale1D)
-zox_import_module(Hierarchys)
-zox_import_module(Transforms2D)
-zox_import_module(Transforms3D)
+    zox_define_component_float(Scale1D)
+    zox_import_module(Hierarchys)
+    zox_import_module(Transforms2D)
+    zox_import_module(Transforms3D)
 zoxel_end_module(Transforms)
 
 #endif

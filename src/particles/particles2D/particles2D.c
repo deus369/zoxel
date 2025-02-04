@@ -10,7 +10,7 @@ void spawn_prefabs_particles2D(ecs_world_t *world) {
 }
 
 zox_begin_module(Particles2D)
-zox_define_tag(Particle2D)
+    zox_define_tag(Particle2D)
 zoxel_end_module(Particles2D)
 
 #endif

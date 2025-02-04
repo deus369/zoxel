@@ -1,14 +1,7 @@
 #ifndef zox_mod_engine
 #define zox_mod_engine
 
-// big defines
-#include "data/build_settings.c"
-#include "data/build_disables.c"
-#include "data/define_groups.c"
-#include "util/defines.c"
-#include zox_nexus_defines
-// our engine
-#include "../_includes.c"
+// todo: remove players2 and realm2 and just use plugins architecture
 #include "data/settings.c"
 #include "util/engine.c"
 
@@ -54,15 +47,36 @@ zox_begin_module(Zox)
     zox_import_module(Particles)
     zox_import_module(Blueprints)
     zox_import_module(Characters)
-
-    #ifdef zox_mod_users
-        zox_import_module(Users)
+    // user data
+    zox_import_module(Users)
+    zox_import_module(Combat)
+    zox_import_module(Stats)
+    zox_import_module(Skills)
+    zox_import_module(Items)
+    zox_import_module(Actions)
+    zox_import_module(Dialogues)
+    zox_import_module(Quests)
+    zox_import_module(Classes)
+    zox_import_module(Jobs)
+    zox_import_module(Races)
+    zox_import_module(Clans)
+    zox_import_module(Lores)
+    zox_import_module(Achievements)
+    // gameplay
+    zox_import_module(Pickups)
+    zox_import_module(Crafting)
+    zox_import_module(Farming)
+    zox_import_module(Turrets)
+    zox_import_module(Maps)
+    zox_import_module(AI)
+    // space
+    zox_import_module(Weathers)
+    zox_import_module(Realms2)
+    #if defined(zox_mod_players)
+    if (!headless) zox_import_module(Players2)
     #endif
-    #ifdef zox_mod_gameplay
-        zox_import_module(Gameplay)
-    #endif
-    #ifdef zox_mod_space
-        zox_import_module(Space)
+    #if defined(zox_mod_debug)
+    zox_import_module(Debug)
     #endif
 zoxel_end_module(Zox)
 

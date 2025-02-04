@@ -11,7 +11,7 @@
 #define inc_nexus_game(x) str_macro(nexus/x/x.c)
 #define zox_nexus_game inc_nexus_game(zox_game)
 
-#define inc_nexus_defines(x) str_macro(../nexus/x/defines.c)
+#define inc_nexus_defines(x) str_macro(nexus/x/defines.c)
 #define zox_nexus_defines inc_nexus_defines(zox_game)
 
 // for custom builds people can include these

@@ -1,4 +1,5 @@
 // profiling: make build/dev && make run-dev-profiler
+#include "_includes.c"
 #include "zox/zox.c"
 #include zox_nexus_game
 
@@ -7,7 +8,6 @@ int run_main(int argc, char* argv[]) {
     if (didFail == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
-    // cpu_core_count = SDL_GetCPUCoreCount();
     fetch_pc_info();
     ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (world == NULL) {

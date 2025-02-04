@@ -46,20 +46,20 @@ void initialize_networking() {
 }
 
 zox_begin_module(Networking)
-zox_define_tag(Packet)
-zox_define_tag(NetRoom)
-zox_define_tag(NetPlayer)
-zox_define_tag(PacketReciever)
-zox_define_tag(PacketSender)
-zox_define_component(NetAddress)
-zox_define_component(TargetNetAddress)
-zox_define_component_int(NetPort)
-zox_define_component_int(TargetNetPort)
-zox_define_memory_component(PacketData)
-zox_define_component_w_dest(SocketLink)
-zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
-zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
-spawn_prefabs_networking(world);
+    zox_define_tag(Packet)
+    zox_define_tag(NetRoom)
+    zox_define_tag(NetPlayer)
+    zox_define_tag(PacketReciever)
+    zox_define_tag(PacketSender)
+    zox_define_component(NetAddress)
+    zox_define_component(TargetNetAddress)
+    zox_define_component_int(NetPort)
+    zox_define_component_int(TargetNetPort)
+    zox_define_memory_component(PacketData)
+    zox_define_component_w_dest(SocketLink)
+    zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
+    zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
+    spawn_prefabs_networking(world);
 zoxel_end_module(Networking)
 
 #endif

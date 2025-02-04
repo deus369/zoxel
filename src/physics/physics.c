@@ -9,11 +9,11 @@ zox_component_byte(CollisionDisabled)
 #include "physics3D/physics3D.c"
 
 zox_begin_module(Physics)
-zox_define_tag(Frictioned)
-zox_define_component(DisableMovement)
-zox_define_component(CollisionDisabled)
-zox_import_module(Physics2D)
-zox_import_module(Physics3D)
+    zox_define_tag(Frictioned)
+    zox_define_component(DisableMovement)
+    zox_define_component(CollisionDisabled)
+    zox_import_module(Physics2D)
+    zox_import_module(Physics3D)
 zoxel_end_module(Physics)
 
 #endif

@@ -20,13 +20,13 @@ void spawn_prefabs_editor(ecs_world_t *world) {
 }
 
 zox_begin_module(EditorElements)
-zox_define_tag(EditorElement)
-zox_define_tag(HierarchyUI)
-zox_define_tag(InspectorLabel)
-zox_define_component(HierarchyUIDirty)
-zox_system(InspectorElementSystem, EcsOnUpdate, [none] InspectorLabel, [in] EntityTarget, [in] ComponentTarget)
-zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [in] CanvasLink, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
-spawn_prefabs_editor(world);
+    zox_define_tag(EditorElement)
+    zox_define_tag(HierarchyUI)
+    zox_define_tag(InspectorLabel)
+    zox_define_component(HierarchyUIDirty)
+    zox_system(InspectorElementSystem, EcsOnUpdate, [none] InspectorLabel, [in] EntityTarget, [in] ComponentTarget)
+    zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [in] CanvasLink, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
+    spawn_prefabs_editor(world);
 zoxel_end_module(EditorElements)
 
 #endif
