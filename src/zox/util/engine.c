@@ -15,26 +15,14 @@ void handle_terminal_close(int sig) {
     engine_end();
 }
 
-void update_zox_frame() {
-#ifdef zoxel_time_main_loop
-    begin_timing_absolute()
-#endif
-    update_core(world);
-#ifdef zox_mod_inner_core
-    update_inner_core(world);
-#endif
-#ifdef zoxel_time_main_loop
-    end_timing_cutoff(" - engine update lagged", zoxel_time_main_loop_cutoff)
-#endif
-}
-
-void update_zox() {
+// handles loop with special check on web builds
+void engine_loop() {
 #ifdef zoxel_on_web
-    emscripten_set_main_loop(&update_zox_frame, -1, 1); // old - 60, 1);
+    emscripten_set_main_loop(&update_ecs, -1, 1); // old - 60, 1);
 #else
     signal(SIGINT, handle_terminal_close);     // Handles closing from control + c
     signal(SIGSEGV, handle_segfault);
-    while (running) update_zox_frame();
+    while (running) update_ecs();
 #endif
 }
 

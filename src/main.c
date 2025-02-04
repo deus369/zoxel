@@ -21,7 +21,7 @@ int run_main(int argc, char* argv[]) {
         zox_log(" ! game not loaded\n")
         #endif
         if (boot_event(world) == EXIT_SUCCESS) {
-            update_zox();
+            engine_loop();
         } else {
             zox_log(" ! booting failed\n")
         }

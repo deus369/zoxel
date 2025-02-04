@@ -35,9 +35,26 @@ zox_begin_module(Zox)
     zox_import_module(Games)
     zox_import_module(Raycasts)
     zox_import_module(Colorz)
-    #ifdef zox_mod_inner_core
-        zox_import_module(InnerCore)
+
+    zox_import_module(Textures)
+    zox_import_module(Musics)
+    zox_import_module(Animations)
+    zox_import_module(Bones)
+    #ifdef zox_mod_ui
+    zox_import_module(Elements)
     #endif
+    zox_import_module(Lines)
+    zox_import_module(Plots)
+    zox_import_module(Genetics)
+    zox_import_module(Neurals)
+    zox_import_module(Tiles)
+    zox_import_module(Voxels)
+    zox_import_module(Physics)
+    zox_import_module(Cubes)
+    zox_import_module(Particles)
+    zox_import_module(Blueprints)
+    zox_import_module(Characters)
+
     #ifdef zox_mod_users
         zox_import_module(Users)
     #endif

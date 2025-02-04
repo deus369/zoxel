@@ -1,6 +1,7 @@
 // #define zox_log_achievements
 #ifdef zox_include_steam
 unsigned char is_steam_running = 0;
+// todo: move this to a steam module
 #include "../../../../bash/steam/steamwrapper.c"
 
 void intialize_game_store() {
