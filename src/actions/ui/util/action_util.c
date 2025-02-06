@@ -30,8 +30,6 @@ void set_player_action(ecs_world_t *world, const ecs_entity_t player, const unsi
 
 void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const int direction) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    //find_child_with_tag(canvas, MenuGame, menu_game)
-    //if (!menu_game) return;
     find_child_with_tag(canvas, MenuActions, actionbar)
     if (!actionbar) return;
     const Children *window_children = zox_get(actionbar, Children)
@@ -60,7 +58,6 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
     spawn_sound_from_file_name(world, prefab_sound, "swap_action");
 }
 
-
 unsigned char get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {
     if (!player) {
         zox_log(" ! player invalid\n")
@@ -79,4 +76,8 @@ unsigned char get_player_action_index(ecs_world_t *world, const ecs_entity_t pla
         if (zox_gett_value(child, ActiveState)) return i;
     }
     return 255;
+}
+
+void button_event_switch_action(ecs_world_t *world, const ClickEventData *event) {
+    player_action_ui_move(world, event->clicker, 1);
 }

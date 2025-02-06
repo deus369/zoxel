@@ -29,7 +29,6 @@ zox_component_entity(PlayerPauseEvent)
 #include "util/player_util.c"
 #include "util/voxel_ray_util.c"
 #include "systems/player_pause_system.c"
-#include "systems/device_mode_response_system.c"
 #include "systems/virtual_joystick_system.c"
 #include "systems/editor_input_system.c"
 #include "systems/qol_shortcuts_system.c"
@@ -56,7 +55,6 @@ zox_begin_module(Players2)
     zox_import_module(Players3D)
     zox_import_module(FreeRoam)
     // zox_pipelines_pre_render
-    zox_system_1(DeviceModeResponseSystem, zox_pipelines_devices_enables_pre, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink) // note: must update before DeviceModeDirtySystem
     zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
     zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
     zox_system_1(PlayerPauseSystem, zox_pip_mainthread, [in] DeviceLinks, [none] players.Player)

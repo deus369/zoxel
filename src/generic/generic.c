@@ -50,28 +50,28 @@ void spawn_prefabs_generic(ecs_world_t *world) {
 }
 
 zox_begin_module(Generic)
-zox_module_dispose(dispose_generic)
-initialize_component_ids();
-zox_define_component_byte(EntityInitialize)
-zox_define_component_byte(EntityDirty)
-zox_define_component_int2(ScreenDimensions)
-zox_define_tag(DestroyInFrame)
-zox_define_component_long_int(Seed)
-zox_define_component_byte(GenericEvent)
-zox_define_component_int(ID)
-zox_define_component_float3(Bounds3D)
-zox_define_component_float6(Position3DBounds)
-zox_define_entities_component(EntityLinks)
-zox_define_component_zext(ZoxName)
-zox_define_component_entity(EntityTarget) // used for editor
-zox_define_component_entity(ComponentTarget)
-zox_define_component_double(EventTime)
-zox_define_component_entity(EventInput)
-zox_define_component(TimedEvent)
-// rest
-zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-zox_system_1(TimedEventSystem, zox_pip_mainthread, [in] TimedEvent, [in] EventInput, [out] EventTime)
-spawn_prefabs_generic(world);
+    zox_module_dispose(dispose_generic)
+    initialize_component_ids();
+    zox_define_component_byte(EntityInitialize)
+    zox_define_component_byte(EntityDirty)
+    zox_define_component_int2(ScreenDimensions)
+    zox_define_tag(DestroyInFrame)
+    zox_define_component_long_int(Seed)
+    zox_define_component_byte(GenericEvent)
+    zox_define_component_int(ID)
+    zox_define_component_float3(Bounds3D)
+    zox_define_component_float6(Position3DBounds)
+    zox_define_entities_component(EntityLinks)
+    zox_define_component_zext(ZoxName)
+    zox_define_component_entity(EntityTarget) // used for editor
+    zox_define_component_entity(ComponentTarget)
+    zox_define_component_double(EventTime)
+    zox_define_component_entity(EventInput)
+    zox_define_component(TimedEvent)
+    // rest
+    zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
+    zox_system_1(TimedEventSystem, zox_pip_mainthread, [in] TimedEvent, [in] EventInput, [out] EventTime)
+    spawn_prefabs_generic(world);
 zoxel_end_module(Generic)
 
 #endif

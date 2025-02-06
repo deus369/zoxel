@@ -1,7 +1,8 @@
+// todo: find a way to add game modules onto game menu - add stats ui on etc
 #ifndef zox_mod_game_ui
 #define zox_mod_game_ui
 
-#include "settings/settings.c"
+#include "data/settings.c"
 #include "data/taskbar.c"
 zox_declare_tag(MenuMain)
 zox_declare_tag(MenuOptions)
@@ -13,17 +14,14 @@ zox_declare_tag(QuadsCountLabel)
 zox_declare_tag(GameDebugLabel)
 zox_declare_tag(FrameDebuggerWindow)
 zox_declare_tag(JoystickUI)
-zox_declare_tag(Tooltip)
 zox_declare_tag(Taskbar)
 zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
-#include "util/menu_main.c"
-#include "util/menu_options.c"
-#include "util/menu_paused.c"
-#include "util/game_loading.c"
+#include "util/util.c"
 #include "prefabs/prefabs.c"
 #include "systems/fps_display_system.c"
 #include "systems/quads_display_system.c"
+#include "systems/device_mode_ui_system.c"
 
 zox_begin_module(GameUI)
     zox_define_tag(MenuMain)
@@ -36,10 +34,10 @@ zox_begin_module(GameUI)
     zox_define_tag(GameDebugLabel)
     zox_define_tag(FrameDebuggerWindow)
     zox_define_tag(JoystickUI)
-    zox_define_tag(Tooltip)
     zox_define_tag(Taskbar)
     zox_define_component_int(QuadsCount)
     zox_define_component_double(FPSDisplayTicker)
+    zox_system_1(DeviceModeUISystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink, [in] CanvasLink) // note: must update before DeviceModeDirtySystem
     zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)
     zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
     spawn_prefabs_game_ui(world);

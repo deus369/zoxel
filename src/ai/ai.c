@@ -10,9 +10,9 @@ void spawn_prefabs_ai(ecs_world_t *world) {
 }
 
 zox_begin_module(AI)
-zox_define_tag(Wanderer)
-zox_system(WanderSystem, EcsOnUpdate, [none] Wanderer, [in] Rotation3D,  [in] Velocity3D, [out] Acceleration3D, [in] Omega3D, [out] Alpha3D, [in] DisableMovement)
-spawn_prefabs_ai(world);
+    zox_define_tag(Wanderer)
+    zox_system(WanderSystem, EcsOnUpdate, [none] Wanderer, [in] Rotation3D,  [in] Velocity3D, [out] Acceleration3D, [in] Omega3D, [out] Alpha3D, [in] DisableMovement)
+    spawn_prefabs_ai(world);
 zoxel_end_module(AI)
 
 #endif

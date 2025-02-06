@@ -59,31 +59,31 @@ void dispose_sounds(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Sounds)
-zox_module_dispose(dispose_sounds)
-zox_define_tag(Sound)
-zox_define_component_byte(InstrumentType)
-zox_define_component_byte(SoundDirty)
-zox_define_component_byte(TriggerSound)
-zox_define_component_byte(GenerateSound)
-zox_define_component_byte(ProcessSound)
-zox_define_component_double(SoundLength)
-zox_define_component_float(SoundFrequency)
-zox_define_component_float(SoundVolume)
-zox_define_component_int(SoundFrequencyIndex)
-zox_define_memory_component(SoundData)
-#ifdef zox_lib_sdl_mixer
-zox_define_component(SDLSound)
-#endif
-zox_system(SoundProcessSystem, EcsOnUpdate, [in] SoundFrequency, [in] SoundData, [out] ProcessSound, [out] TriggerSound, [out] SoundDirty, [None] Sound)
-zox_system(SoundGenerateSystem, EcsOnUpdate, [in] InstrumentType, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [none] Sound)
-#ifdef zox_lib_sdl_mixer
-zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
-// zox_pipelines_pre_render
-zox_system(PlaySoundSystem, EcsPostUpdate, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
-#endif
-zox_system_1(SoundDebugSystem, zox_pip_mainthread, [none] Sound, [in] SoundData, [in] SoundDirty)
-initialize_sounds(world);
-spawn_prefabs_sounds(world);
+    zox_module_dispose(dispose_sounds)
+    zox_define_tag(Sound)
+    zox_define_component_byte(InstrumentType)
+    zox_define_component_byte(SoundDirty)
+    zox_define_component_byte(TriggerSound)
+    zox_define_component_byte(GenerateSound)
+    zox_define_component_byte(ProcessSound)
+    zox_define_component_double(SoundLength)
+    zox_define_component_float(SoundFrequency)
+    zox_define_component_float(SoundVolume)
+    zox_define_component_int(SoundFrequencyIndex)
+    zox_define_memory_component(SoundData)
+    #ifdef zox_lib_sdl_mixer
+    zox_define_component(SDLSound)
+    #endif
+    zox_system(SoundProcessSystem, EcsOnUpdate, [in] SoundFrequency, [in] SoundData, [out] ProcessSound, [out] TriggerSound, [out] SoundDirty, [None] Sound)
+    zox_system(SoundGenerateSystem, EcsOnUpdate, [in] InstrumentType, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [none] Sound)
+    #ifdef zox_lib_sdl_mixer
+    zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
+    // zox_pipelines_pre_render
+    zox_system(PlaySoundSystem, EcsPostUpdate, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
+    #endif
+    zox_system_1(SoundDebugSystem, zox_pip_mainthread, [none] Sound, [in] SoundData, [in] SoundDirty)
+    initialize_sounds(world);
+    spawn_prefabs_sounds(world);
 zoxel_end_module(Sounds)
 
 #endif

@@ -1,3 +1,8 @@
+// todo: find a way to hook this into the game uis
+extern void button_event_switch_action(ecs_world_t *world, const ClickEventData *event);
+extern void button_event_jump(ecs_world_t *world, const ClickEventData *event);
+extern void button_event_attack(ecs_world_t *world, const ClickEventData *event);
+
 ecs_entity_t spawn_prefab_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("menu_game_touch")
@@ -71,15 +76,13 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
     return e;
 }
 
-void dispose_game_menu_touch(ecs_world_t *world, const ecs_entity_t canvas) {
-    find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
-    if (game_menu_touch) zox_delete(game_menu_touch)
-}
-
 // called from game state changes
 void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
     if (!game_menu_touch) spawn_menu_game_touch(world, prefab_menu_game_touch, canvas);
 }
 
-// add_to_Children(children, spawn_button_on_canvas(world, canvas, "=", position, font_size, padding, float2_zero, (ClickEvent) { &button_event_pause_game }));
+void dispose_game_menu_touch(ecs_world_t *world, const ecs_entity_t canvas) {
+    find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
+    if (game_menu_touch) zox_delete(game_menu_touch)
+}

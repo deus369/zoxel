@@ -24,15 +24,15 @@ void dispose_games(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Games)
-zox_module_dispose(dispose_games)
-zox_define_tag(Game)
-zox_define_component_byte(GameState)
-zox_define_component_byte(GameStateTarget)
-zox_define_component_entity(GameLink)
-// main thread due to
-zox_system_1(GameStateSystem, EcsPostUpdate, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState) // , [none] Game)
-spawn_prefabs_games(world);
-initialize_games(world);
+    zox_module_dispose(dispose_games)
+    zox_define_tag(Game)
+    zox_define_component_byte(GameState)
+    zox_define_component_byte(GameStateTarget)
+    zox_define_component_entity(GameLink)
+    // main thread due to
+    zox_system_1(GameStateSystem, EcsPostUpdate, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState) // , [none] Game)
+    spawn_prefabs_games(world);
+    initialize_games(world);
 zoxel_end_module(Games)
 
 #endif

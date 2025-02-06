@@ -28,6 +28,7 @@
 #include "animations/animations.c"
 #include "bones/bones.c"
 #include "ui/ui.c"
+#include "game_ui/game_ui.c"
 #include "lines/lines.c"
 #include "plots/plots.c"
 #include "genetics/genetics.c"
@@ -64,8 +65,8 @@
 #include "maps/maps.c"
 #include "ai/ai.c"
 // space
+#include "editor_ui/editor_ui.c"
 #include "weathers/weathers.c"
 #include "dungeons/dungeons.c"
-#include "realms2/realms.c"
 #include "players2/players.c"
 #include "debug/debug.c"

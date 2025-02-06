@@ -1,7 +1,7 @@
+ecs_entity_t local_terrain; // todo: remove and just use Realm's TerrainLink
 #include "terrain.c"
 #include "chunk_terrain.c"
 ecs_entity_t prefab_terrain;
-ecs_entity_t local_terrain; // todo: remove and just use Realm's TerrainLink
 ecs_entity_t prefab_chunk_height;
 ecs_entity_t prefab_terrain_chunk_flat;
 

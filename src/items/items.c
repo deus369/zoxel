@@ -18,11 +18,11 @@ void set_linked_item(ecs_world_t *world, const ecs_entity_t user, const int inde
 }
 
 zox_begin_module(Items)
-zox_define_tag(ItemBlock)
-zox_define_user_data(Item)
-zox_import_module(ItemsUI)
-spawn_prefabs_items(world);
-zox_define_system_state_event_1(RealmItems, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    zox_define_tag(ItemBlock)
+    zox_define_user_data(Item)
+    zox_import_module(ItemsUI)
+    spawn_prefabs_items(world);
+    zox_define_system_state_event_1(RealmItems, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
 zoxel_end_module(Items)
 
 #endif

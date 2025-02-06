@@ -1,0 +1,8 @@
+#include "settings.c"
+#include "chunk_util.c"
+#include "octree_build_util.c"
+#include "block_vox.c"
+#include "debug_util.c"
+#include "terrain_util.c"
+#include "create_terrain.c"
+#include "game.c"

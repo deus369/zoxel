@@ -33,22 +33,22 @@ void set_linked_skill(ecs_world_t *world, const ecs_entity_t user, const int ind
 }
 
 zox_begin_module(Skills)
-zox_define_tag(Melee)
-zox_define_tag(Aura)
-zox_define_tag(Poison)
-zox_define_user_data(Skill)
-zox_define_component_float(SkillDamage)
-zox_define_component_float(SkillRange)
-zox_define_component_float(SkillCost)
-// zox_define_component_entity(SkillLink)
-zox_define_component_byte(SkillActive)
-zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLinks)
-zox_system_ctx_1(DamageAuraSystem, zox_pip_mainthread, characters, [in] UserLink, [in] SkillActive, [in] SkillDamage, [in] SkillRange, [in] Color, [none] Aura)
-zox_system(DamageAuraRemoveSystem, EcsOnUpdate, [in] Position3D, [out] DotLinks, [out] Children)
-zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [in] SpawnerLink, [in] SkillDamage, [none] Poison)
-zox_import_module(UISkills)
-zox_define_system_state_event_1(RealmSkills, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
-spawn_prefabs_skills(world);
+    zox_define_tag(Melee)
+    zox_define_tag(Aura)
+    zox_define_tag(Poison)
+    zox_define_user_data(Skill)
+    zox_define_component_float(SkillDamage)
+    zox_define_component_float(SkillRange)
+    zox_define_component_float(SkillCost)
+    // zox_define_component_entity(SkillLink)
+    zox_define_component_byte(SkillActive)
+    zox_filter(characters, [in] Dead, [in] Position3D, [out] Children, [out] DotLinks)
+    zox_system_ctx_1(DamageAuraSystem, zox_pip_mainthread, characters, [in] UserLink, [in] SkillActive, [in] SkillDamage, [in] SkillRange, [in] Color, [none] Aura)
+    zox_system(DamageAuraRemoveSystem, EcsOnUpdate, [in] Position3D, [out] DotLinks, [out] Children)
+    zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [in] SpawnerLink, [in] SkillDamage, [none] Poison)
+    zox_import_module(UISkills)
+    zox_define_system_state_event_1(RealmSkills, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    spawn_prefabs_skills(world);
 zoxel_end_module(Skills)
 
 #endif

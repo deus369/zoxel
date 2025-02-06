@@ -1,3 +1,5 @@
+extern ecs_entity_t spawn_statbar2D(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const ecs_entity_t player, const ecs_entity_2 character_group);
+
 ecs_entity_t spawn_prefab_menu_game(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("game_ui")

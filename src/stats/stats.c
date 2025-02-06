@@ -29,25 +29,25 @@ zox_declare_tag(StatSoul)
 zox_declare_system_state_event(RealmStats, GenerateRealm, zox_generate_realm_stats, spawn_realm_stats)
 
 zox_begin_module(Stats)
-zox_define_tag(StatState)
-zox_define_tag(StatRegen)
-zox_define_tag(StatAttribute)
-zox_define_tag(StatLevel)
-zox_define_user_data(Stat)
-zox_define_component_float(StatValue)
-zox_define_component_float(StatValueMax)
-zox_define_component_float(ExperienceValue)
-zox_define_component_float(ExperienceMax)
-zox_define_entities_component(DotLinks)
-// special stats
-zox_define_tag(HealthStat)
-zox_define_tag(StatSoul)
-// debuff system here, skills will add debuffs
-zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)
-zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] StatState)
-zox_import_module(StatsUI)
-zox_define_system_state_event_1(RealmStats, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
-spawn_prefabs_stats(world);
+    zox_define_tag(StatState)
+    zox_define_tag(StatRegen)
+    zox_define_tag(StatAttribute)
+    zox_define_tag(StatLevel)
+    zox_define_user_data(Stat)
+    zox_define_component_float(StatValue)
+    zox_define_component_float(StatValueMax)
+    zox_define_component_float(ExperienceValue)
+    zox_define_component_float(ExperienceMax)
+    zox_define_entities_component(DotLinks)
+    // special stats
+    zox_define_tag(HealthStat)
+    zox_define_tag(StatSoul)
+    // debuff system here, skills will add debuffs
+    zox_system(DeathSystem, EcsOnUpdate, [in] StatValue, [in] UserLink, [none] HealthStat)
+    zox_system(StatRegenSystem, EcsOnUpdate, [in] UserLink, [in] StatValueMax, [out] StatValue, [none] StatState)
+    zox_import_module(StatsUI)
+    zox_define_system_state_event_1(RealmStats, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    spawn_prefabs_stats(world);
 zoxel_end_module(Stats)
 
 #endif

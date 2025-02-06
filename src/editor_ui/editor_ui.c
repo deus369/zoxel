@@ -8,6 +8,7 @@ zox_declare_tag(InspectorLabel)
 zox_component_byte(HierarchyUIDirty)
 #include "prefabs/hierarchy.c"
 #include "prefabs/inspector.c"
+#include "prefabs/frame_debugger.c"
 #include "util/shared.c"
 #include "util/inspector_util.c"
 #include "util/hierarchy_util.c"
@@ -19,7 +20,7 @@ void spawn_prefabs_editor(ecs_world_t *world) {
     spawn_prefab_inspector(world);
 }
 
-zox_begin_module(EditorElements)
+zox_begin_module(EditorUI)
     zox_define_tag(EditorElement)
     zox_define_tag(HierarchyUI)
     zox_define_tag(InspectorLabel)
@@ -27,6 +28,6 @@ zox_begin_module(EditorElements)
     zox_system(InspectorElementSystem, EcsOnUpdate, [none] InspectorLabel, [in] EntityTarget, [in] ComponentTarget)
     zox_system_1(HierarchyRefreshSystem, main_thread_pipeline, [none] HierarchyUI, [in] Position2D, [in] CanvasPosition, [in] Layer2D, [in] Anchor, [in] ListUIMax, [in] ElementFontSize, [in] CanvasLink, [out] HierarchyUIDirty, [out] PixelPosition, [out] PixelSize, [out] TextureSize, [out] Children)
     spawn_prefabs_editor(world);
-zoxel_end_module(EditorElements)
+zoxel_end_module(EditorUI)
 
 #endif

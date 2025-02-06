@@ -13,11 +13,11 @@ void spawn_prefabs_voxel_animations(ecs_world_t *world) {
 }
 
 zox_begin_module(VoxelsAnimations)
-zox_define_component_double(AnimateChunk)
-zox_filter(noise_chunks, [none] chunks.NoiseChunk, [out] GenerateChunk)
-zox_system(AnimateChunkSystem, EcsOnUpdate, [out] AnimateChunk, [out] GenerateChunk)
-zox_system_ctx(NoiseChunkOctreeSystem, EcsPreUpdate, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkOctree, [in] RenderLod, [out] GenerateChunk)
-spawn_prefabs_voxel_animations(world);
+    zox_define_component_double(AnimateChunk)
+    zox_filter(noise_chunks, [none] chunks.NoiseChunk, [out] GenerateChunk)
+    zox_system(AnimateChunkSystem, EcsOnUpdate, [out] AnimateChunk, [out] GenerateChunk)
+    zox_system_ctx(NoiseChunkOctreeSystem, EcsPreUpdate, noise_chunks, [none] chunks.NoiseChunk, [out] ChunkDirty, [out] ChunkOctree, [in] RenderLod, [out] GenerateChunk)
+    spawn_prefabs_voxel_animations(world);
 zoxel_end_module(VoxelsAnimations)
 
 #endif

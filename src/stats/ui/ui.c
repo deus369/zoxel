@@ -12,11 +12,11 @@ int get_statbars_count(ecs_world_t *world) {
 }
 
 zox_begin_module(StatsUI)
-zox_define_tag(Statbar)
-zox_define_tag(MenuStats)
-zox_define_tag(IconFrameStat)
-zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
-spawn_prefabs_ui_stats(world);
+    zox_define_tag(Statbar)
+    zox_define_tag(MenuStats)
+    zox_define_tag(IconFrameStat)
+    zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
+    spawn_prefabs_ui_stats(world);
 zoxel_end_module(StatsUI)
 
 #endif

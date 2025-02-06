@@ -35,6 +35,8 @@ zox_begin_module(Zox)
     zox_import_module(Bones)
     #ifdef zox_mod_ui
     zox_import_module(Elements)
+    zox_import_module(GameUI)
+    zox_import_module(EditorUI)
     #endif
     zox_import_module(Lines)
     zox_import_module(Plots)
@@ -71,7 +73,6 @@ zox_begin_module(Zox)
     zox_import_module(AI)
     // space
     zox_import_module(Weathers)
-    zox_import_module(Realms2)
     #if defined(zox_mod_players)
     if (!headless) zox_import_module(Players2)
     #endif

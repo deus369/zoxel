@@ -39,31 +39,3 @@ void pause_player(ecs_world_t *world, const ecs_entity_t player) {
     }
     zox_set(player, PlayerPauseEvent, { pause_event })
 }
-
-void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    const unsigned char game_state = zox_get_value(game, GameState)
-    if (!(game_state == zox_game_playing || game_state == zox_game_paused)) return;
-    unsigned char is_paused = game_state == zox_game_paused;
-    if (!is_paused) set_game_state_target(world, game, zox_game_paused);
-    else set_game_state_target(world, game, zox_game_playing);
-}
-
-// from touch_ui
-void button_event_pause_game(ecs_world_t *world, const ClickEventData *event) {
-    toggle_pause_ui(world, event->clicker);
-}
-
-void button_event_jump(ecs_world_t *world, const ClickEventData *event) {
-    const ecs_entity_t character = zox_get_value(event->clicker, CharacterLink)
-    if (character && can_jump(world, character)) zox_set(character, Jump, { jump_timing })
-}
-
-void button_event_attack(ecs_world_t *world, const ClickEventData *event) {
-    const ecs_entity_t character = zox_get_value(event->clicker, CharacterLink)
-    if (character) zox_set(character, TriggerActionB, { 1 })
-}
-
-void button_event_switch_action(ecs_world_t *world, const ClickEventData *event) {
-    player_action_ui_move(world, event->clicker, 1);
-}
