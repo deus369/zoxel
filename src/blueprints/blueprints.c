@@ -16,14 +16,14 @@ zox_declare_tag(BluenodeOutput)
 #include "prefabs/prefabs.c"
 
 zox_begin_module(Blueprints)
-zox_define_tag(Blueprint)
-zox_define_tag(Bluenode)
-zox_define_tag(Bluelink)
-zox_define_tag(BluenodeInput)
-zox_define_tag(BluenodeAction)
-zox_define_tag(BluenodeOutput)
-spawn_prefabs_blueprints(world);
-// test blueprints - spawn like neurals
+    zox_define_tag(Blueprint)
+    zox_define_tag(Bluenode)
+    zox_define_tag(Bluelink)
+    zox_define_tag(BluenodeInput)
+    zox_define_tag(BluenodeAction)
+    zox_define_tag(BluenodeOutput)
+    spawn_prefabs_blueprints(world);
+    // test blueprints - spawn like neurals
 zoxel_end_module(Blueprints)
 
 #endif

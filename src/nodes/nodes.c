@@ -10,13 +10,13 @@ zox_component_entity(NodeNext)
 #include "prefabs/prefabs.c"
 
 zox_begin_module(Nodes)
-zox_define_tag(Node)
-zox_define_tag(Nodelink)
-zox_define_tag(Nodegraph)
-zox_define_component_entity(NodeParent)
-zox_define_component_entity(NodeNext)
-spawn_prefabs_nodes(world);
-// test_nodes(world);
+    zox_define_tag(Node)
+    zox_define_tag(Nodelink)
+    zox_define_tag(Nodegraph)
+    zox_define_component_entity(NodeParent)
+    zox_define_component_entity(NodeNext)
+    spawn_prefabs_nodes(world);
+    // test_nodes(world);
 zoxel_end_module(Nodes)
 
 #endif

@@ -13,7 +13,8 @@
 #include "players/players.c"
 #include "inputs/inputs.c"
 #include "apps/apps.c"          // test removing sdl for engine stability
-#include "files/files.c"        // uses sdl path function atm
+#include "sdl/sdl.c"
+#include "assets/assets.c"        // uses sdl path function atm
 #include "cameras/cameras.c"
 #include "rendering/rendering.c"
 #include "sounds/sounds.c"

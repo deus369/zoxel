@@ -7,9 +7,9 @@ zox_declare_tag(IconAction)
 #include "util/action_util.c"
 
 zox_begin_module(ActionsUI)
-zox_define_tag(MenuActions)
-zox_define_tag(IconAction)
-spawn_prefabs_actions_ui(world);
+    zox_define_tag(MenuActions)
+    zox_define_tag(IconAction)
+    spawn_prefabs_actions_ui(world);
 zoxel_end_module(Actions)
 
 #endif

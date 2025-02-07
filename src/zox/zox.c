@@ -18,8 +18,9 @@ zox_begin_module(Zox)
     zox_import_module(Inputs)
     if (!headless) {
         zox_import_module(Apps) // sdl
+        zox_import_module(Sdl)
     }
-    zox_import_module(Files)
+    zox_import_module(Assets)
     zox_import_module(Cameras)
     zox_import_module(Rendering)
     zox_import_module(Sounds)

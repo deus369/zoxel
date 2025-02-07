@@ -10,7 +10,6 @@ zox_component_int2(WindowPosition)
 zox_component_int2(WindowSizeRestore)
 #include "util/screen.c"
 #include "prefabs/prefabs.c"
-#include "sdl/sdl.c"
 
 zox_begin_module(Apps)
     zox_define_tag(App)
@@ -22,8 +21,6 @@ zox_begin_module(Apps)
     zox_define_component(VulkanSurface)
     #endif
     spawn_prefabs_apps(world);
-    zox_import_module(Sdl)
-    set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
 zoxel_end_module(Apps)
 
 #endif
