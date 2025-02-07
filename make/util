@@ -40,7 +40,7 @@ play:
 
 resources:
 	@ echo " + resources updating"
-	@ bash bash/util/update_build_resources.sh
+	@ bash bash/util/update_build_resources.sh $(game)
 
 debug-libs:
 	ldd ./$(target)

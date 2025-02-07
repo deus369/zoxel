@@ -32,6 +32,8 @@ make_libs = -Llib -Iinclude -Wl,-rpath='lib' # default paths
 make_libs += -lm -lpthread -lflecs # default libraries
 ifdef game
     make_libs +=-Dzox_game=$(game)
+else
+    game = zoxel
 endif
 ifndef ($(use_system_sdl))
     # make_libs += -Dzox_lib_sdl_direct # use this if compiled sdl from source
@@ -86,9 +88,9 @@ ifneq ($(SYSTEM),Windows)
 cflags_release += -flto=auto # fuse linker plugin on linux only
 endif
 # target per build type
-target = build/linux/zoxel
+target = build/$(game)-linux/$(game)
 ifeq ($(SYSTEM),Windows)
-target = build/windows/zoxel.exe
+target = build/$(game)-windows/$(game).exe
 endif
 
 # ===== ===== ===== #
@@ -109,7 +111,6 @@ $(target): $(SRCS)
 
 # @ make prepare
 
-
 linux:
 	@ make prepare
 	@ $(make_release)
@@ -123,7 +124,7 @@ prepare:
 ifeq ($(OS),Windows_NT) # on windows
 	@ bash bash/windows/prepare.sh
 else # linux
-	@ bash bash/linux/prepare.sh
+	@ bash bash/linux/prepare_minimal.sh $(game)
 endif
 zixel:
 	@ echo "making [zixel]"
@@ -163,16 +164,16 @@ run-vulkan:
 
 
 # ====== ======= ====== #
-# ===== linux-dev ===== #
+# ===== linux dev ===== #
 # ====== ======= ====== #
 
-target_dev = build/linux-dev/zoxel
+target_dev = build/$(game)-linux/$(game)
 ifeq ($(SYSTEM),Windows)
-target_dev = build/windows-dev/zoxel.exe
+target_dev = build/$(game)-windows/$(game).exe
 endif
 cflags_debug = -Wall -g # -O0 -fsanitize=address # -Wextra -Wpedantic -Wshadow -Wl,--verbose -Og
 # cflags_debug += -fno-inline -fno-omit-frame-pointer
-make_dev = echo " > building zoxel-dev-linux [$(target_dev)]" && \
+make_dev = echo " > building $(game)-linux [$(target_dev)]" && \
 	$(patient_cmd) && \
 	$(CC) $(cflags) $(cflags_debug) -o $(target_dev) $(OBJS) $(make_libs)
 
@@ -231,7 +232,7 @@ run-drmemory-headless:
 # with profiler
 # build with profiler
 profiler:
-	@ echo " > building zoxel-dev-linux with profiler"
+	@ echo " > building zoxel-linux with profiler"
 	@ $(patient_cmd)
 	@ $(make_dev) -Dzox_using_profiler
 

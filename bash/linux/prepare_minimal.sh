@@ -1,17 +1,15 @@
 #!/bin/bash
 
-# first install required packages
-source bash/util/install_required.sh
+game="$1"
+if [ $game -eq "" ]; then
+    echo "No Game Found"
+    return 0
+fi
 
-# next fix up directories
-source bash/util/prepare_directories.sh
+bash bash/util/prepare_directories.sh
 
-# first download libraries
-source bash/linux/download_libraries.sh
-
-# source bash/freetype/install.sh
-
-build_path="build/linux"
+echo " + creating game build folder [$game-linux]"
+build_path="build/$game-linux"
 resources="resources"
 lib="lib"
 # if [ ! - d $build_path ] mkdir $build_path ;
@@ -55,4 +53,3 @@ prepare_linux_build_directory() {
 }
 
 prepare_linux_build_directory "$build_path"
-# prepare_linux_build_directory "$build_dev_path"

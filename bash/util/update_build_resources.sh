@@ -1,5 +1,7 @@
 #!/bin/bash
 
+game="$1"
+
 update_resources() {
     local build_directory="build/$1"
     if [ -d "$build_directory" ]; then
@@ -11,6 +13,5 @@ update_resources() {
     fi
 }
 
-update_resources linux
-update_resources linux-dev
-update_resources windows
+update_resources $game-linux
+update_resources $game-windows
