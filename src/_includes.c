@@ -36,6 +36,8 @@
 #include "neurals/neurals.c"
 #include "tiles/tiles.c"
 #include "voxels/voxels.c"
+#include "voxes/voxes.c"
+#include "terrain/terrain.c"
 #include "physics/physics.c"
 #include "cubes/cubes.c"
 #include "particles/particles.c"

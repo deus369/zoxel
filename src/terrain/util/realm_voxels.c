@@ -1,11 +1,7 @@
 // #define zox_log_realm_colors
 // #define zox_log_spawn_realm_voxels
-// statically create them atm
-// const unsigned char realm_voxels = 8;
 extern float3 game_sky_color;
 extern float3 game_sky_bottom_color;
-
-#include "block_vox_grass.c"
 
 float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, const float2 saturation_limits) {
     return (float3) {

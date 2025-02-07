@@ -31,13 +31,9 @@ int run_main(int argc, char* argv[]) {
 }
 
 #ifndef zoxel_on_windows
-
-int main(int argc, char* argv[]) {
-    return run_main(argc, argv);
-}
-
+    int main(int argc, char* argv[]) {
+        return run_main(argc, argv);
+    }
 #else
-
-#include "main.windows.c"
-
+    #include "main.windows.c"
 #endif

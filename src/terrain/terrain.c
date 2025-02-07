@@ -1,7 +1,14 @@
-// todo: don't generate mesh until render is enabled!
-// todo: use ChunkOriginDistance instead of RenderLod for camera distance for TerrainChunks
-// todo: delay BlockVoxSpawnSystem to main thread pipeline like character spawning, use same trigger? rest on load? make a resetsystem 2 for this - just  make reset defines use the pipeline
-#ifndef zox_mod_terrain
+/**
+ *  Zox Terrain
+ *
+ *      - colored vox models
+ *
+ *      - todo: don't generate mesh until render is enabled!
+ *      - todo: use ChunkOriginDistance instead of RenderLod for camera distance for TerrainChunks
+  *      - todo: delay BlockVoxSpawnSystem to main thread pipeline like character spawning, use same trigger? rest on load? make a resetsystem 2 for this - just  make reset defines use the pipeline
+ *
+ * */
+#if !defined(zox_mod_terrain) && defined(zox_mod_voxels)
 #define zox_mod_terrain
 
 zox_declare_tag(FlatTerrain)
@@ -27,6 +34,7 @@ zox_component_entity(TerrainLink)
 #include "systems/chunk_flatland_system.c"
 #include "systems/grassy_plains_system.c"
 #include "systems/dungeon_block_system.c"
+zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
 zox_begin_module(Terrain)
     zox_define_tag(FlatTerrain)
@@ -35,7 +43,6 @@ zox_begin_module(Terrain)
     zox_define_tag(TerrainChunk)
     zox_define_tag(ChunkTerrain)
     zox_define_component_entity(TerrainLink)
-    // systems
     // Builds our Textured Chunks (Terrain) !
     if (!headless) zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [in] ChunkMeshDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
@@ -51,6 +58,9 @@ zox_begin_module(Terrain)
     zox_system(DungeonBlockSystem, EcsOnUpdate, [in] TimerState, [in] ChunkLink, [none] blocks.BlockDungeon)
     set_terrain_render_distance();
     add_to_event_game_state((zox_game_event) { &realms_game_state });
+    zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, GenerateRealm)
+    zox_prefab_add(prefab_realm, VoxelLinks)
+    zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
     spawn_prefabs_terrain(world);
 zoxel_end_module(Terrain)
 

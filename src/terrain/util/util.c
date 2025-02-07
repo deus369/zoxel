@@ -6,3 +6,5 @@
 #include "terrain_util.c"
 #include "create_terrain.c"
 #include "game.c"
+#include "block_vox_grass.c"
+#include "realm_voxels.c"

@@ -1,3 +1,5 @@
+extern void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox);
+
 ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_vox_file")
@@ -27,7 +29,6 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
 ecs_entity_t spawn_vox_file(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *data) {
     zox_instance(prefab)
     set_vox_file(world, e, data);
-
     // todo: remove RenderDisabled and just use RenderLod?
     // i can disable these later with RenderDisabled;
     // zox_set(e, RenderDisabled, { 1 })

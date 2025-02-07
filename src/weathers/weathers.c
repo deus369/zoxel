@@ -8,18 +8,8 @@ ecs_entity_t skybox; // remove this, link to realm/game
 zox_declare_tag(Weather)
 zox_declare_tag(Skybox)
 #include "shaders/skybox.c"
-#include "prefabs/skybox.c"
+#include "prefabs/prefabs.c"
 #include "systems/skybox_restore_system.c"
-
-void spawn_prefabs_weather(ecs_world_t *world) {
-    prefab_skybox = spawn_prefab_skybox(world);
-}
-
-void spawn_weather(ecs_world_t *world) {
-#ifndef zox_disable_skybox
-    spawn_skybox(world, shader_skybox);
-#endif
-}
 
 void spawn_shaders_weather(ecs_world_t *world) {
     shader_skybox = spawn_shader_skybox(world);

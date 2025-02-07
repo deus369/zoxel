@@ -1,3 +1,6 @@
+// todo: pre prefab functions?
+extern void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, unsigned char max_depth);
+
 ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_vox")
