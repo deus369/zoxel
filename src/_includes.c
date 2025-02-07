@@ -4,8 +4,11 @@
 #include "zox/data/define_groups.c"
 #include "zox/util/defines.c"
 #include zox_nexus_defines
+
 // engine modules
 #include "core/core.c"
+
+// todo: include all these automatically
 #include "generic/generic.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"
@@ -43,6 +46,8 @@
 #include "particles/particles.c"
 #include "blueprints/blueprints.c"
 #include "characters/characters.c"
+#include "weathers/weathers.c"
+#include "dungeons/dungeons.c"
 // user data
 #include "users/users.c"
 #include "combat/combat.c"
@@ -67,9 +72,7 @@
 #include "combat/combat.c"
 #include "maps/maps.c"
 #include "ai/ai.c"
-// space
+// on top
 #include "editor_ui/editor_ui.c"
-#include "weathers/weathers.c"
-#include "dungeons/dungeons.c"
 #include "players2/players.c"
 #include "debug/debug.c"
