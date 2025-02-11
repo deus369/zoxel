@@ -42,9 +42,12 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     // i should make a BlockItemLinks perhaps? nah  that overcomplicates
     zox_get_muter(realm, ItemLinks, items)
     // clear previous
-    for (int i = 0; i < items->length; i++) if (items->value[i]) zox_delete(items->value[i])
+    for (int i = 0; i < items->length; i++) {
+        if (items->value[i]) {
+            zox_delete(items->value[i])
+        }
+    }
     resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
-
     for (int i = 0; i < voxels->length; i++) {
         const ecs_entity_t block = voxels->value[i];
         items->value[i] = spawn_block_item(world, block);
@@ -59,22 +62,7 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     meta_item_block_dungeon_core = items->value[zox_block_dungeon_core - 1];
     meta_item_block_sand = items->value[zox_block_sand - 1];
     meta_item_block_stone = items->value[zox_block_stone - 1];
-
 #ifdef zox_log_realm_generate
     zox_log(" + generated realm [items]\n")
 #endif
 }
-
-
-/*void respawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
-    zox_get_mutt(realm, ItemLinks, itemLinks)
-    for (int i = 0; i < itemLinks->length; i++) zox_delete(itemLinks->value[i])
-    clear_memory_component(ItemLinks, itemLinks)
-    spawn_realm_items(world, realm);
-}*/
-
-
-// dirt item
-// since memory moved with flecs, do again
-// voxels = zox_get(realm, VoxelLinks)
-// const ecs_entity_t dirt_block = voxels->value[0];

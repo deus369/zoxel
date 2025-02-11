@@ -30,8 +30,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #endif
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    const ecs_entity_t game = spawn_game(world);
-    zox_set(game, RealmLink, { realm })
+    const ecs_entity_t game = spawn_game(world, realm);
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif

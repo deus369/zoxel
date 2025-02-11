@@ -4,14 +4,23 @@
 unsigned char boot_zixel(ecs_world_t *world) {
     game_name = "zixel";
     zox_log(" + booting [%s]\n", game_name)
-    const ecs_entity_t window = spawn_main_window(world, default_window_position, default_window_size, fullscreen);
-    initialize_rendering(world);
-    load_shaders(world);
-    if (!headless) load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");
+    if (!headless) {
+        const ecs_entity_t window = spawn_main_window(world, default_window_position, default_window_size, fullscreen);
+        initialize_rendering(world);
+        load_shaders(world);
+        // load_app_icon(zox_gett_value(window, SDLWindow), resources_folder_name"textures/game_icon.png");
+        char* icon_path = get_asset_path("textures", "game_icon.png")
+        #ifdef zox_mod_textures
+            load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
+        #endif
+        free(icon_path);
+    }
+    #ifdef zox_mod_voxels
+    initialize_voxes(world);
+    #endif
     // Realm,  players, skybox
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    const ecs_entity_t game = spawn_game(world);
-    zox_set(game, RealmLink, { realm })
+    const ecs_entity_t game = spawn_game(world, realm);
     spawn_weather(world);
     // if (!headless) spawn_music(world, prefab_music);
     spawn_players_cameras_canvases(world, game);

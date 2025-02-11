@@ -204,7 +204,7 @@ run-dev-debug-tiny:
 	@ gdb --args ./$(target_dev) --tiny
 
 # run development + valgrind
-run-valgrind:
+valgrind:
 	@ valgrind ./$(target_dev)
 
 run-drmemory:
