@@ -32,6 +32,7 @@ void Element2DMeshSystem(ecs_iter_t *it) {
             textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
             zox_field_e()
+            // doing this again?
             if (zox_has(e, RenderTexture)) {
                 set_render_texture_gpu(textureGPULink->value, canvas_size);
                 const ecs_entity_t camera = zox_get_value(e, CameraLink)

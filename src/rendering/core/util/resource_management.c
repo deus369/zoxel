@@ -29,7 +29,7 @@ void run_gpu_restore_systems(ecs_world_t *world) {
 
 void opengl_dispose_resources(ecs_world_t *world) {
     if (is_using_vulkan) return;
-    zox_log(" > disposing all opengl resources\n");
+    // zox_log(" > disposing all opengl resources\n");
     rendering = 0;
     minimized = 1; // move this to a system and function for app! when implement multi apps
     updating_time = 0; // timesteps a bit low atm so pause while minimizing
@@ -38,7 +38,7 @@ void opengl_dispose_resources(ecs_world_t *world) {
 
 void opengl_restore_resources(ecs_world_t *world) {
     if (is_using_vulkan) return;
-    zox_log(" > restoring all opengl resources\n");
+    // zox_log(" > restoring all opengl resources\n");
     run_gpu_restore_systems(world);
     rendering = 1;
     minimized = 0;

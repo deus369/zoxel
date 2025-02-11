@@ -19,15 +19,10 @@ ecs_entity_t spawn_render_texture(ecs_world_t *world, const ecs_entity_t prefab,
     const float2 anchor = float2_half;
     const int2 size = canvas_size;
     int2 position_in_canvas = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, position, anchor);
-    // position_in_canvas.x = 0;
     const float2 position_real = get_element_position(position_in_canvas, canvas_size);
     zox_instance(prefab)
     zox_name("render_texture")
     zox_set(e, CameraLink, { camera })
     initialize_element(world, e, parent, canvas, position, size, size, anchor, layer, position_real, position_in_canvas);
-    /*zox_log(" + render_texture canvas_size [%ix%i]\n", canvas_size.x, canvas_size.y)
-    zox_log("   + render_texture position [%ix%i]\n", position.x, position.y)
-    zox_log("   + render_texture anchor [%fx%f]\n", anchor.x, anchor.y)
-    zox_log("   + render_texture position_in_canvas [%ix%i]\n", position_in_canvas.x, position_in_canvas.y)*/
     return e;
 }

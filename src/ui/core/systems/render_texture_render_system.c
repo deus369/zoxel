@@ -23,7 +23,17 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
         zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) continue;
+        if (!meshGPULink->value.x || !meshGPULink->value.y) {
+            continue;
+        }
+        if (!uvsGPULink->value) {
+            continue;
+        }
+        if (!textureGPULink->value) {
+            zox_log("! render texture - gpu texture link broken\n")
+            continue;
+        }
+        // zox_log("+ rendering - render texture\n")
         if (!has_set_material) {
             has_set_material = 1;
             opengl_set_material(material_link);
@@ -39,9 +49,6 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
         opengl_bind_texture(textureGPULink->value);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
-        // float2 position2D = zox_get_value(it->entities[i], Position2D)
-        // const float4x4 position_matrix = float4x4_position((float3) { position2D.x, position2D.y, 0 });
-        // opengl_set_matrix(material_attributes->transform_matrix, position_matrix);
 #ifndef zox_disable_render_ui
         opengl_render(6);
 #endif

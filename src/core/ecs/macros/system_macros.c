@@ -126,6 +126,7 @@ if (!headless) {\
 
 // used for systems
 
+#define zox_field_world() ecs_world_t *world = it->world;
 #define zox_iter_world() ecs_world_t *world = it->world;
 
 #define zox_field_in(component_name, field_name, index) const component_name *field_name = ecs_field(it, component_name, index);

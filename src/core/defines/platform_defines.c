@@ -3,7 +3,7 @@
     #define zoxel_on_android
 
     // custom defines for android
-    #define zox_disable_post_processing
+    // #define zox_disable_post_processing
 
 #elif defined(__EMSCRIPTEN__)
 
@@ -13,6 +13,7 @@
     #define zox_disable_module_networking
     // #define zox_disable_terrain_textures // this kinda breaks
     #define zox_disable_render_element3D
+    #define zox_disable_post_processing
 
 #elif defined(_WIN32)
     #define zoxel_on_windows

@@ -1,8 +1,8 @@
-#if !defined(zox_mod_cameras) && defined(zox_mod_transforms)
-#define zox_mod_cameras
-
+// todo: make a sub module for render cameras
 // todo: use this for ViewMatrix (current use) and use ViewMatrix just as Inverted TransformMatrix
 // todo: refactor cameras do they even need ScreenPosition? we should just have CanvasLinks, and each camera is linked to a bunch? idk
+#if !defined(zox_mod_cameras) && defined(zox_mod_transforms)
+#define zox_mod_cameras
 
 #include "data/camera_spawn_data.c"
 #include "data/bounds.c"
@@ -14,8 +14,6 @@ zox_declare_tag(Camera3D)
 zox_declare_tag(FirstPersonCamera)
 zox_declare_tag(CameraFollower2D)
 zox_declare_tag(CameraUI)
-zox_declare_tag(RenderCamera)
-zox_declare_tag(RenderTexture)
 zox_declare_tag(ElementBillboard)
 zox_component_byte(CanRoam)
 zox_component_byte(CameraMode)
@@ -32,14 +30,12 @@ zox_component(ViewMatrix, float4x4) // todo: rename to ViewProjectionMatrix inst
 // zox_component(ViewProjectionMatrix, float4x4)
 zox_memory_component(FrustumCorners, double3)
 zox_memory_component(CameraPlanes, plane)
+// Render Cameras
+zox_declare_tag(RenderCamera)
+zox_declare_tag(RenderTexture)
 zox_component_entity(RenderTextureLink)
-#include "util/camera_mode.c"
-#include "util/position.c"
-#include "util/bounds_util.c"
-#include "util/camera_util.c"
-#include "util/frustum_util.c"
-#include "util/planes_util.c"
-#include "util/debug_util.c"
+zox_component_entity(RenderCameraLink)
+#include "util/util.c"
 #include "tests/planes_tests.c"
 #include "prefabs/prefabs.c"
 #include "systems/systems.c"
@@ -51,10 +47,7 @@ zox_begin_module(Cameras)
     zox_define_tag(FirstPersonCamera)
     zox_define_tag(CameraFollower2D)
     zox_define_tag(CameraUI)
-    zox_define_tag(RenderCamera)
-    zox_define_tag(RenderTexture)
     zox_define_tag(ElementBillboard)
-    zox_define_component_entity(RenderTextureLink)
     zox_define_component_byte(CanRoam)
     zox_define_component_byte(CameraMode)
     zox_define_component_byte(CameraViewing)
@@ -70,6 +63,11 @@ zox_begin_module(Cameras)
     zox_define_component_float4(ScreenToCanvas)
     zox_define_memory_component(FrustumCorners)
     zox_define_memory_component(CameraPlanes)
+    // render cameras
+    zox_define_tag(RenderCamera)
+    zox_define_tag(RenderTexture)
+    zox_define_component_entity(RenderTextureLink)
+    zox_define_component_entity(RenderCameraLink)
     zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] CanRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D, [none] CameraFollower2D)
     zox_system(Camera3DFollowSystem, EcsOnUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
     zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] ProjectionMatrix, [out] ViewMatrix)

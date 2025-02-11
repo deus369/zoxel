@@ -19,7 +19,7 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         }
         zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         if (!textureGPULink->value) {
-            zox_log("! texture upload - texture gpu link issue\n")
+            // zox_log("! texture upload - texture gpu link issue: %s\n", zox_get_name(it->entities[i]))
             continue;
         }
         zox_field_e()
