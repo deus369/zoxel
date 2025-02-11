@@ -40,7 +40,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/latest_screenshot_0.png?raw=false" alt="Zoxel" width="98%"/>
+  <img src="screenshots/latest_screenshot_0.png?raw=false" alt="Zoxel" width="98%"/>
 </p>
 
 <h3 align="center">the socials</h3>
