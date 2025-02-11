@@ -21,13 +21,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "prefabs/shader.c"
 #include "prefabs/material.c"
 #include "prefabs/renderer_instance.c"
-#include "systems/mesh_dispose_system.c"
-#include "systems/mesh_restore_system.c"
-#include "systems/material_dispose_system.c"
-#include "systems/material_restore_system.c"
-#include "systems/shader_dispose_system.c"
-#include "systems/shader_restore_system.c"
-#include "systems/camera_render_system.c"
+#include "systems/systems.c"
 
 ecs_entity_t prefab_renderer_instance;
 
@@ -77,21 +71,7 @@ zox_begin_module(RenderingCore)
     zox_define_memory_component(MeshUVs)
     zox_define_memory_component(MeshColors)
     zox_define_memory_component(MeshColorRGBs)
-    zox_gpu_dispose_system(MeshGPUDisposeSystem, [in] MeshGPULink)
-    zox_gpu_dispose_system(MeshUvsGPUDisposeSystem, [in] UvsGPULink)
-    zox_gpu_dispose_system(MeshColorsGPUDisposeSystem, [in] ColorsGPULink)
-    zox_gpu_dispose_system(TextureGPUDisposeSystem, [in] TextureGPULink)
-    zox_gpu_restore_system(MeshDirtyRestoreSystem, [out] MeshDirty)
-    zox_gpu_restore_system(MeshGPURestoreSystem, [out] MeshGPULink)
-    zox_gpu_restore_system(UvsGPULinkRestoreSystem, [out] UvsGPULink)
-    zox_gpu_restore_system(ColorsGPULinkRestoreSystem, [out] ColorsGPULink)
-    zox_gpu_restore_system(TextureRestoreSystem, [out] TextureGPULink, [out] TextureDirty)
-    zox_gpu_dispose_system(ShaderDisposeSystem, [in] ShaderGPULink)
-    zox_gpu_restore_system(ShaderRestoreSystem, [in] ShaderSourceIndex, [out] ShaderGPULink)
-    zox_gpu_dispose_system(MaterialDisposeSystem, [in] MaterialGPULink)
-    zox_gpu_restore_system(MaterialRestoreSystem, [in] ShaderLink, [out] MaterialGPULink)
-    zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] !cameras.CameraUI)
-    zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] cameras.CameraUI)
+    define_systems_rendering(world);
     spawn_prefabs_rendering_core(world);
 zoxel_end_module(RenderingCore)
 

@@ -42,15 +42,7 @@ zox_component_entity(RenderTextureLink)
 #include "util/debug_util.c"
 #include "tests/planes_tests.c"
 #include "prefabs/prefabs.c"
-#include "systems/projection_matrix_system.c"
-#include "systems/view_matrix_system.c"
-#include "systems/camera2D_follow_system.c"
-#include "systems/camera3D_follow_system.c"
-#include "systems/camera_frustum_system.c"
-#include "systems/camera_debug_system.c"
-#include "systems/camera_draw_frustum_system.c"
-#include "systems/camera_planes_draw_system.c"
-#include "systems/billboard_system.c"
+#include "systems/systems.c"
 
 zox_begin_module(Cameras)
     zox_define_tag(Camera)

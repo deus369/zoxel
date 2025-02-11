@@ -1,3 +1,4 @@
+// todo: link sdl app events to sub systems
 extern void opengl_dispose_resources(ecs_world_t *world);
 extern void opengl_restore_resources(ecs_world_t *world);
 extern void engine_end(); // engine
@@ -79,12 +80,10 @@ void update_sdl(ecs_world_t *world) { // const ecs_entity_t e) { // , const int2
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
         input_extract_from_sdl(world, event, viewport_dimensions);
-        int eventType = event.type;
-        if (eventType == SDL_QUIT) {
-            // zox_log(" > window was quit\n")
+        if (event.type == SDL_QUIT) {
             engine_end();
-        } else if (eventType == SDL_WINDOWEVENT) {
-            if (!rendering) continue;
+        } else if (event.type == SDL_WINDOWEVENT) {
+            // if (!rendering) continue;
             if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) { // handles application resizing
                 int2 size = (int2) { event.window.data1, event.window.data2 };
                 on_window_resized(world, e, size);
@@ -99,10 +98,8 @@ void update_sdl(ecs_world_t *world) { // const ecs_entity_t e) { // , const int2
                 zox_set(e, WindowPosition, { position })
                 // zox_log(" > window moved: %ix%i\n", position.x, position.y)
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
-                // zox_log(" > window was minimized\n")
                 opengl_dispose_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-                // zox_log(" > window was restored\n")
                 opengl_restore_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 // updating_time = 0;

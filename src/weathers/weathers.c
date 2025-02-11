@@ -10,6 +10,7 @@ zox_declare_tag(Skybox)
 #include "shaders/skybox.c"
 #include "prefabs/prefabs.c"
 #include "systems/skybox_restore_system.c"
+#include "systems/skybox_set_time_system.c"
 
 void spawn_shaders_weather(ecs_world_t *world) {
     shader_skybox = spawn_shader_skybox(world);
