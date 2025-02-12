@@ -36,10 +36,10 @@ void ChunkLodSystem(ecs_iter_t *it) {
         zox_field_o(RenderDistance, renderDistances, renderDistance)
         const int3 stream_point = find_closest_point(stream_points, streamers_iter.count, chunkPosition->value)
         ;
-        const unsigned char camera_distance = get_camera_chunk_distance(stream_point, chunkPosition->value);
+        const byte camera_distance = get_camera_chunk_distance(stream_point, chunkPosition->value);
         if (camera_distance != renderDistance->value) {
             renderDistance->value = camera_distance;
-            const unsigned char new_lod =  get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance);
+            const byte new_lod =  get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance);
             zox_field_o(RenderLod, renderLods, renderLod)
             if (renderLod->value != new_lod) {
                 renderLod->value = new_lod;

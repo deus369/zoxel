@@ -1,20 +1,32 @@
 // Handles AABB to Voxel Chunk Collisions
 // todo: support multiple realms
 void VoxelCollisionSystem(ecs_iter_t *it) {
-#ifdef zox_disable_collisions
-    return;
-#endif
-    // init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     ecs_entity_t realm = 0;
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) continue;
+        if (!voxLink->value) {
+            continue;
+        }
+        // these two, this npc survived the closing
+        if (!zox_alive(voxLink->value)) {
+            zox_field_e()
+            // for now, space physics not supported
+            zox_log("! npc should of died with world death [%s]:[%lu]\n", zox_get_name(e), e)
+            zox_delete(e)
+            continue;
+        }
+        if (!zox_has(voxLink->value, RealmLink)) {
+            // zox_log("! terrain not found to have a realm link\n")
+            continue;
+        }
         realm = zox_get_value(voxLink->value, RealmLink)
         break;
     }
-    if (!realm) return;
+    if (!realm) {
+        return;
+    }
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
     unsigned char block_collisions[voxelLinks->length + 1];
     block_collisions[0] = 0;

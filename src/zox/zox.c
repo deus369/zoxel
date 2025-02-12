@@ -1,7 +1,6 @@
 #ifndef zox_mod_engine
 #define zox_mod_engine
 
-// todo: remove players2 and realm2 and just use plugins architecture
 #include "data/settings.c"
 #include "util/engine.c"
 

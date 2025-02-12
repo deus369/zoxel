@@ -1,7 +1,7 @@
 // if camera distance is less than max view distance
 // spawn a chunk neighbor if any dont exist
 //  - only if visible too
-const unsigned char streaming_distance = 1;
+const byte streaming_distance = 2;
 extern ecs_entity_t prefab_chunk_height;
 extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
 
@@ -27,8 +27,8 @@ void ChunkStreamSystem(ecs_iter_t *it) {
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i(RenderDistance, renderDistances, renderDistance)
         if (renderDistance->value == 255) continue;
-        const unsigned char stay_zone = renderDistance->value < streaming_distance;
-        const unsigned char kill_zone = renderDistance->value > streaming_distance + 1;
+        const byte stay_zone = renderDistance->value < streaming_distance;
+        const byte kill_zone = !stay_zone; // renderDistance->value > streaming_distance + 1;
         if (!stay_zone) {
             if (kill_zone) {
                 zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)

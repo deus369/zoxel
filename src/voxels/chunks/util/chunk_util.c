@@ -25,9 +25,11 @@ bounds calculate_chunk_bounds(const float3 position3D, const int3 chunk_size, co
 }
 
 // returns simple camera distance for chunks
-unsigned char get_camera_chunk_distance(const int3 camera_position, const int3 chunk_position) {
+byte get_camera_chunk_distance(const int3 camera_position, const int3 chunk_position) {
+    return (byte) int3_max(chunk_position, camera_position);
     // return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
-    return int_max(int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.y - camera_position.y)), int_abs(chunk_position.z - camera_position.z));
+    // return int3_distance(camera_position, chunk_position);
+    // return int_max(int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.y - camera_position.y)), int_abs(chunk_position.z - camera_position.z));
 }
 
 unsigned char get_voxes_lod_from_camera_distance(const unsigned char distance_to_camera) {

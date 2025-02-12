@@ -64,5 +64,9 @@ void prefab_set_mesh_uvs_float2(ecs_world_t *world, ecs_entity_t e, const float2
     if (headless) return;
     zox_get_muter(e, MeshUVs, meshUVs)
     resize_memory_component(MeshUVs, meshUVs, float2, length)
-    memcpy(meshUVs->value, uvs, length * sizeof(float2));
+    if (meshUVs->value) {
+        memcpy(meshUVs->value, uvs, length * sizeof(float2));
+    } else {
+        zox_log("! meshUVs realloc failed")
+    }
 }

@@ -42,7 +42,7 @@ unsigned char boot_zoxel_game(ecs_world_t *world) {
 #endif
     intialize_game_store();
     test_steam_cloud();
-    zox_log(" ! boot completed [zoxel]\n")
+    // zox_log(" ! boot completed [zoxel]\n")
     return EXIT_SUCCESS;
 }
 

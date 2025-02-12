@@ -35,7 +35,7 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             unsigned char new_value = !mouse_locked;
             zox_set(mouse, MouseLock, { new_value })
             zox_set(cameraLink->value, CanRoam, { new_value ? 2 : 1 })
-            zox_log(" > camera state [%s]\n", new_value ? "roaming" : "locked")
+            // zox_log(" > camera state [%s]\n", new_value ? "roaming" : "locked")
         }
     }
 } zox_declare_system(FreeCameraToggleSystem)
