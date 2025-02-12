@@ -9,7 +9,7 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         zox_field_i(TextureData, textureDatas, textureData)
         zox_field_i(TextureSize, textureSizes, textureSize)
         if (textureData->length != textureSize->value.x * textureSize->value.y) {
-            zox_log("! texture upload - texture length missmatch\n")
+            // zox_log("! texture upload - texture length missmatch\n")
             continue;
         }
         if (!textureData->value) {

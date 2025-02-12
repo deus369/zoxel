@@ -1,56 +1,78 @@
 int total_memorys_allocated = 0;
 
 // assumes non zero
-#define initialize_memory_component(name, component, data_type, new_length) {\
-    component->value = malloc(new_length * sizeof(data_type));\
-    if (component->value) {\
+#define initialize_memory_component(name, component, type, new_length) {\
+    int memory_length = new_length * sizeof(type);\
+    type *new_memory = malloc(memory_length);\
+    if (!new_memory) {\
+        zox_log(" ! failed (init) allocating memory in clone_" #name "\n")\
+        component->length = 0;\
+    } else {\
+        component->value = new_memory;\
         component->length = new_length;\
         total_memorys_allocated++;\
-        name##_##memorys_allocated++;\
-    } else {\
-        zox_log(" ! failed iniitalizing component\n")\
-        component->length = 0;\
+        name##_memorys_allocated++;\
     }\
 }
 
 #define zox_memory_component(name, type)\
-int name##_##memorys_allocated = 0;\
+int name##_memorys_allocated = 0;\
 typedef struct {\
     int length;\
     type *value;\
-} name; zox_custom_component(name)\
-void zero##_##name(name *ptr) {\
+} name;\
+zox_custom_component(name)\
+\
+void zero_##name(name *ptr) {\
     ptr->value = NULL;\
     ptr->length = 0;\
 }\
-void dispose##_##name(name *ptr) {\
-    if (!ptr->value) return;\
+\
+void dispose_##name(name *ptr) {\
+    if (!ptr->value || !ptr->length) {\
+        return;\
+    }\
     free(ptr->value);\
-    zero##_##name(ptr);\
-    name##_##memorys_allocated--;\
+    zero_##name(ptr);\
+    name##_memorys_allocated--;\
     total_memorys_allocated--;\
     /*zox_log(" [%s] disposing of entity with memory component\n", #name)*/\
 }\
-ECS_CTOR(name, ptr, { zero##_##name(ptr); })\
-ECS_DTOR(name, ptr, { dispose##_##name(ptr); })\
+\
+ECS_CTOR(name, ptr, {\
+    zero_##name(ptr);\
+})\
+\
+ECS_DTOR(name, ptr, {\
+    dispose_##name(ptr);\
+})\
+\
 ECS_MOVE(name, dst, src, {\
     if (dst->value == src->value) return;\
-    dispose##_##name(dst);\
+    dispose_##name(dst);\
     dst->length = src->length;\
     dst->value = src->value;\
-    zero##_##name(src);\
+    zero_##name(src);\
 })\
 \
 void clone_##name(name* dst, const name* src) {\
     if (!src->value) {\
-        dispose##_##name(dst);\
+        dispose_##name(dst);\
     } else {\
         int memory_length = src->length * sizeof(type);\
-        if (dst->value) dispose##_##name(dst);\
+        type *new_memory = malloc(memory_length);\
+        if (!new_memory) {\
+            zox_log(" ! failed allocating memory in clone_" #name "\n")\
+            return;\
+        }\
+        if (dst->value) {\
+            dispose_##name(dst);\
+        }\
+        memcpy(new_memory, src->value, memory_length);\
+        dst->value = new_memory;\
         dst->length = src->length;\
-        dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
         total_memorys_allocated++;\
-        name##_##memorys_allocated++;\
+        name##_memorys_allocated++;\
     }\
 }\
 \
@@ -60,8 +82,15 @@ ECS_COPY(name, dst, src, {\
 \
 unsigned char add_to_##name(name *component, const type data) {\
     if (component->value) {\
+        int new_length = component->length + 1;\
+        int memory_length = (new_length) * sizeof(type);\
+        type *new_memory = realloc(component->value, memory_length);\
+        if (!new_memory) {\
+            zox_log(" ! failed realloc memory in add_to_" #name "\n")\
+            return 0;\
+        }\
+        component->value = new_memory;\
         component->length++;\
-        component->value = realloc(component->value, component->length * sizeof(type));\
     } else {\
         initialize_memory_component(name, component, type, 1);\
     }\
@@ -79,14 +108,14 @@ component->value = malloc(sizeof(type));\
 component->value[0] = data;
 
 if (!src->value) {\
-    dispose##_##name(dst);\
+    dispose_##name(dst);\
 } else {\
     int memory_length = src->length * sizeof(type);\
     if (dst->value) dispose##_##name(dst);\
     dst->length = src->length;\
     dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
     total_memorys_allocated++;\
-    name##_##memorys_allocated++;\
+    name##_memorys_allocated++;\
 }\
 */
 
@@ -100,12 +129,12 @@ ecs_set_hooks(world, name, {\
 });
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
-#define clear_memory_component(name, component) dispose##_##name(component);
+#define clear_memory_component(name, component) dispose_##name(component);
 
 #define on_memory_component_created(component, name) {\
     if (component->value) {\
         total_memorys_allocated++;\
-        name##_##memorys_allocated++;\
+        name##_memorys_allocated++;\
     }\
 }
 
@@ -123,22 +152,20 @@ ecs_set_hooks(world, name, {\
 // component->length = new_length;
 // component->value = realloc(component->value, new_length * sizeof(data_type));
 
-#define resize_memory_component(name, component, data_type, new_length) {\
+#define resize_memory_component(name, component, type, new_length) {\
     if (component->length != new_length) {\
         if (new_length == 0) {\
             clear_memory_component(name, component)\
         } else if (component->value) {\
-            data_type* temp = realloc(component->value, new_length * sizeof(data_type));\
-            if (temp) {\
-                component->value = temp;\
-                component->length = new_length;\
-            } else {\
+            type* new_memory = realloc(component->value, new_length * sizeof(type));\
+            if (!new_memory) {\
                 zox_log(" ! failure reallocing memory\n")\
-                clear_memory_component(name, component)\
-                component->length = 0;\
+            } else {\
+                component->value = new_memory;\
+                component->length = new_length;\
             }\
         } else {\
-            initialize_memory_component(name, component, data_type, new_length);\
+            initialize_memory_component(name, component, type, new_length);\
         }\
     }\
 }
@@ -166,7 +193,7 @@ ecs_set_hooks(world, name, {\
 }
 */
 
-#define remove_from_memory_component(component, data_type, data) {\
+#define remove_from_memory_component(component, type, data) {\
     if (component->value) {\
         int index = -1;\
         for (int i = 0; i < component->length; i++) {\
@@ -182,7 +209,7 @@ ecs_set_hooks(world, name, {\
                 free(component->value);\
                 component->value = NULL;\
             } else {\
-                component->value = realloc(component->value, component->length * sizeof(data_type));\
+                component->value = realloc(component->value, component->length * sizeof(type));\
             }\
         }\
     }\

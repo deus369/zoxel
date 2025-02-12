@@ -44,7 +44,7 @@ GLuint generate_ubo(GLint binding_point) {
     glBufferData(GL_UNIFORM_BUFFER, sizeof(float4x4) * zox_max_vox_instances, NULL, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, 0); // Unbind after allocation
-    zox_log(" + spawned ubo: %i binded to block index %i\n", ubo, binding_point)
+    zox_log_shader(" + spawned ubo: %i binded to block index %i", ubo, binding_point)
     return ubo;
 }
 

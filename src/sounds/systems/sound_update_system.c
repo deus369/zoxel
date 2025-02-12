@@ -9,10 +9,11 @@ void SoundUpdateSystem(ecs_iter_t *it) {
         zox_field_i(SoundData, soundDatas, soundData)
         if (!soundData->value) continue;
         zox_field_o(SDLSound, sdlSounds, sdlSound)
+        const int memory_length = soundData->length * sizeof(float);
         sdlSound->value = (Mix_Chunk) {
           .volume = global_master_volume,
-          .alen = soundData->length * sizeof(float),
-          .abuf = (Uint8*) soundData->value
+          .alen = memory_length,
+          .abuf = (void*) soundData->value
         };
         soundDirty->value = 0;
     }

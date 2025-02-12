@@ -1,5 +1,3 @@
-// #define zox_log_gamepad_button_pressed // debug button presses
-// SDL_Joystick *joystick;
 int joysticks_count;
 // debug purposes
 int joystick_axes;
@@ -73,8 +71,7 @@ ecs_entity_t spawn_gamepad_from_sdl(ecs_world_t *world, SDL_Joystick *joystick) 
     const unsigned char gamepad_type = get_gamepad_type(joystick);
     const ecs_entity_t e = spawn_gamepad(world, gamepad_type);
     zox_set(e, SDLGamepad, { joystick })
-    const char* joystick_name = SDL_JoystickName(joystick);
-    zox_log("   + gamepad [%s]\n", joystick_name)
+    zox_log_input("   + gamepad [%s]", SDL_JoystickName(joystick))
     return e;
 }
 
@@ -84,17 +81,17 @@ void handle_new_sdl_gamepad(ecs_world_t *world, const SDL_Event event) {
         fprintf(stderr, "   ! joystick error: %s\n", SDL_GetError());
         return;
     }
-    int joystick_id = SDL_JoystickInstanceID(joystick);
-    zox_log(" + new gamepad [%d] has connected\n", joystick_id)
+    zox_log_input(" + new gamepad [%d] has connected", SDL_JoystickInstanceID(joystick))
     spawn_gamepad_from_sdl(world, joystick);
 }
 
 void initialize_sdl_gamepads() {
     // SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     joysticks_count = SDL_NumJoysticks();
-// #ifdef zoxel_debug_input
-    zox_log(" > gamepads connected [%d]\n", joysticks_count)
-// #endif
+    if (joysticks_count == 0) {
+        return;
+    }
+    zox_log_input(" > gamepads connected [%d]", joysticks_count)
     for (int i = 0; i < joysticks_count; i++) {
         SDL_Joystick *joystick = SDL_JoystickOpen(i);
         if (!joystick) {
@@ -105,21 +102,17 @@ void initialize_sdl_gamepads() {
     }
 }
 
-unsigned char process_byte(const unsigned char old_byte, const unsigned char raw_value) {
-    unsigned char was_pressed = devices_get_is_pressed(old_byte);
-    unsigned char pressed_this_frame = !was_pressed && raw_value;
-    unsigned char released_this_frame = was_pressed && !raw_value;
-#ifdef zox_log_gamepad_button_pressed
-    if (pressed_this_frame) zox_log("  [%i] is pressed this frame\n", index)
-    if (released_this_frame) zox_log("  [%i] is released this frame\n", index)
-#endif
-    unsigned char new_value = 0;
+byte process_byte(const byte old_byte, const byte raw_value) {
+    const byte was_pressed = devices_get_is_pressed(old_byte);
+    const byte pressed_this_frame = !was_pressed && raw_value;
+    const byte released_this_frame = was_pressed && !raw_value;
+    if (pressed_this_frame) zox_log_input("  [%i] is pressed this frame", index)
+    if (released_this_frame) zox_log_input("  [%i] is released this frame", index)
+    byte new_value = 0;
     if (pressed_this_frame) devices_set_pressed_this_frame(&new_value, 1);
     if (released_this_frame) devices_set_released_this_frame(&new_value, 1);
     if (raw_value) devices_set_is_pressed(&new_value, raw_value);
-#ifdef zox_log_gamepad_button_pressed
-    if (new_value != old_value) zox_log("   - [%i] has updated [%i > %i]\n", index, old_value, new_value)
-#endif
+    if (new_value != old_byte) zox_log_input("   - [%i] has updated [%i > %i]", index, old_value, new_value)
     return new_value;
 }
 
@@ -174,9 +167,7 @@ unsigned char set_gamepad_axis2(ZeviceStick *zeviceStick, SDL_Joystick *joystick
     float2 previous_value = zeviceStick->value;
     zeviceStick->value.x = get_gamepad_axis(joystick, index);
     zeviceStick->value.y = get_gamepad_axis(joystick, index + 1);
-#ifdef zox_log_gamepad_button_pressed
-    if (float_abs(zeviceStick->value.x) > 0.06f || float_abs(zeviceStick->value.y) > 0.06f) zox_log(" > stick: %fx%f\n", zeviceStick->value.x, zeviceStick->value.y)
-#endif
+    if (float_abs(zeviceStick->value.x) > 0.06f || float_abs(zeviceStick->value.y) > 0.06f) zox_log_input(" > stick [%fx%f]", zeviceStick->value.x, zeviceStick->value.y)
     return !(zeviceStick->value.x == previous_value.x && zeviceStick->value.y == previous_value.y);
 }
 

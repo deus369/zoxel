@@ -1,3 +1,6 @@
+// important
+#define scale_volumes 1 // debug 0.1 / 1
+#define sound_play_death_delay 32 // keep big incase lag, we dont want to destroy while playing
 #define channel_sample_rate 44100
 #define sound_sample_rate 44100 // / 8
 // #define sound_sample_rate 4410 // 2205
@@ -13,8 +16,14 @@ unsigned char zox_visualize_sounds = 0;
 #define sound_display_end 1.0f
 const float debug_sound_thickness = 0.01f;  // 0.1f
 const float default_sound_volume = 1.0f; // 0.5f
-const float default_sound_volume_loaded = 0.3f;
 const float sound_generation_splitter = 8;
-int global_master_volume = 64;
-const int global_master_volume_max = 128;
-const int global_master_volume_increment = 16;
+// volumes
+const float default_sound_volume_loaded = 0.03f; // 0.3f;
+int global_master_volume = 64 * scale_volumes;
+const int global_master_volume_max = 128 * scale_volumes;
+const int global_master_volume_increment = 16 * scale_volumes;
+// files
+#define directory_sounds "sounds"
+int sound_files_count = 0;
+ecs_entity_t *files_sounds;
+string_hashmap *files_hashmap_sounds;

@@ -1,10 +1,10 @@
 #ifndef zox_mod_sounds
 #define zox_mod_sounds
 
-unsigned char audio_enabled = 0;
-#include "util/import_sdl_mixer.c"
+#include "_includes.c"
+byte audio_enabled = 0;
 #include "data/instrument_types.c"
-#include "settings/settings.c"
+#include "data/settings.c"
 zox_declare_tag(Sound)
 zox_component_byte(InstrumentType)
 zox_component_byte(GenerateSound)        //! A state event for generating sounds
@@ -19,26 +19,9 @@ zox_component_double(SoundLength)       //! The length of a sound
 zox_memory_component(SoundData, float)   //! A sound has an array of bytes
 #include "components/SDLSound.c"
 #include "prefabs/prefabs.c"
-#include "util/static_sound_util.c"
-#include "util/sdl_mix_util.c"
-#include "util/sdl_sound_util.c"
-#include "util/sound_files.c"
-#include "instruments/note_frequencies.c"
-#include "instruments/sin_waves.c"
-#include "instruments/square_waves.c"
-#include "instruments/triangle_waves.c"
-#include "instruments/sawtooth_waves.c"
-#include "instruments/fm_synthesis_waves.c"
-#include "instruments/noise_waves.c"
+#include "util/util.c"
 #include "instruments/instruments.c"
-#include "instruments/envelop.c"
-#include "systems/sound_process_system.c"
-#include "systems/sound_generate_system.c"
-#include "systems/sound_debug_system.c"
-#ifdef zox_lib_sdl_mixer
-#include "systems/play_sound_system.c"
-#include "systems/sound_update_system.c"
-#endif
+#include "systems/systems.c"
 
 void initialize_sounds(ecs_world_t *world) {
 #ifndef zox_lib_sdl_mixer
@@ -74,14 +57,7 @@ zox_begin_module(Sounds)
     #ifdef zox_lib_sdl_mixer
     zox_define_component(SDLSound)
     #endif
-    zox_system(SoundProcessSystem, EcsOnUpdate, [in] SoundFrequency, [in] SoundData, [out] ProcessSound, [out] TriggerSound, [out] SoundDirty, [None] Sound)
-    zox_system(SoundGenerateSystem, EcsOnUpdate, [in] InstrumentType, [in] SoundLength, [in] SoundFrequency, [in] SoundVolume, [out] GenerateSound, [out] SoundData, [out] SoundDirty, [none] Sound)
-    #ifdef zox_lib_sdl_mixer
-    zox_system(SoundUpdateSystem, EcsPostUpdate, [none] Sound, [in] SoundData, [out] SoundDirty, [out] SDLSound)
-    // zox_pipelines_pre_render
-    zox_system(PlaySoundSystem, EcsPostUpdate, [in] SoundLength, [out] TriggerSound, [out] SDLSound, [out] DestroyInTime, [none] Sound)
-    #endif
-    zox_system_1(SoundDebugSystem, zox_pip_mainthread, [none] Sound, [in] SoundData, [in] SoundDirty)
+    define_systems_sounds(world);
     initialize_sounds(world);
     spawn_prefabs_sounds(world);
 zoxel_end_module(Sounds)

@@ -16,7 +16,7 @@ void initialize_time() {
 void skip_time_to_current() {
     zox_current_time = current_time_in_seconds() - time_begin;
     zox_delta_time = 0;
-    zox_log(" > restoring time to [%d]\n", zox_current_time)
+    // zox_log(" > restoring time to [%d]\n", zox_current_time)
 }
 
 void clear_system_times() {
@@ -38,7 +38,12 @@ void iterate_time(ecs_world_t *world) {
 #ifdef zox_mod_plots
     add_plot_data_time(world, zox_delta_time);
 #endif
-    if (zox_delta_time > max_zox_delta_time) zox_delta_time = 0; // max_zox_delta_time;
+    // todo: use a seperate physics time float? fixed_time?
+#ifdef limit_time_delta
+    if (zox_delta_time > max_zox_delta_time) {
+        zox_delta_time = 0; // max_zox_delta_time;
+    }
+#endif
     // for (int i = 0; i < record_frames_count - 1; i++) zox_delta_times[i] = zox_delta_times[i + 1];
     // zox_delta_times[record_frames_count - 1] = zox_delta_time;
 #ifdef zox_check_current_time

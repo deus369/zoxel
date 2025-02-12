@@ -48,10 +48,12 @@ void MusicPlaySystem(ecs_iter_t *it) {
             if (note_instrument == instrument_piano_file) {
                 // spawn sound_file_note(world, prefab_sound_file_note)
                 sound = spawn_sound_from_file_name(world, prefab_sound, "piano");
-                zox_set(sound, SoundFrequency, { frequency })
-                zox_set(sound, SoundVolume, { note_volume })
-                zox_set(sound, ProcessSound, { 1 })
-                zox_set(sound, TriggerSound, { 0 })
+                if (sound) {
+                    zox_set(sound, SoundFrequency, { frequency })
+                    zox_set(sound, SoundVolume, { note_volume })
+                    zox_set(sound, ProcessSound, { 1 })
+                    zox_set(sound, TriggerSound, { 0 })
+                }
             } else {
                 sound = spawn_sound_generated(world, note_instrument, frequency, note_time, note_volume);
                 if (rand() % 100 >= 95) spawn_sound_generated(world, note_instrument, frequency, note_time, note_volume);

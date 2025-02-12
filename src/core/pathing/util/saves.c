@@ -139,17 +139,17 @@ void delete_save_directory(const char *game) {
     char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     if (has_path_directory(path)) {
-        zox_log(" + deleting directory [%s]\n", path)
+        zox_log_io(" + deleting directory [%s]", path)
         if (delete_directory_contents(path) == 0) {
 #ifdef _WIN32
             if (RemoveDirectory(path)) {
-                zox_log(" > directory deleted successfully\n");
+                zox_log_io(" > directory [%s] deleted", path)
             } else {
                 perror("Error deleting directory");
             }
 #else
             if (rmdir(path) == 0) {
-                zox_log(" > directory deleted successfully\n");
+                zox_log_io(" > directory [%s] deleted", path)
             } else {
                 perror("Error deleting directory");
             }
@@ -165,7 +165,7 @@ unsigned char create_new_save_directory(const char *game) {
     char path[max_path_characters];
     get_save_directory(game, path, sizeof(path));
     if (!has_path_directory(path)) {
-        zox_log(" + creating new save directory [%s]\n", path)
+        zox_log_io(" + creating new save directory [%s]", path)
 #ifdef zoxel_on_windows
         if (mkdir(path) == 0) {
             return 1;
@@ -197,7 +197,6 @@ unsigned char create_new_save_directory(const char *game) {
 unsigned char has_save_game_file(const char *game, const char *filename) {
     char path[max_path_characters];
     get_save_filepath(game, filename, path, sizeof(path));
-    // zox_log(" > has save? %s\n", path)
     FILE *file = fopen(path, "rb");
     if (file != NULL) {
         fclose(file);

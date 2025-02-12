@@ -16,11 +16,17 @@
 
 // shaders
 #if defined(zox_enable_log_shader) && !defined(zox_disable_logs)
-    #define zox_log_shader(msg, ...) zox_log_line(msg, __VA_ARGS__)
+    #define zox_log_shader(msg, ...) zox_log_line(msg, ##__VA_ARGS__)
 #else
     #define zox_log_shader(msg, ...) { }
 #endif
 
+// uis
+#if defined(zox_enable_log_ui) && !defined(zox_disable_logs)
+    #define zox_log_ui(msg, ...) zox_log_line(msg, ##__VA_ARGS__)
+#else
+    #define zox_log_ui(msg, ...) { }
+#endif
+
 // realms
 // games
-// uis

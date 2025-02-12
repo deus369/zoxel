@@ -19,4 +19,6 @@
 
 // log types
 // #define zox_enable_log_ios
-#define zox_enable_log_input
+// #define zox_enable_log_input
+// #define zox_enable_log_ui
+// #define zox_enable_log_shader

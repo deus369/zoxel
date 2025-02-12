@@ -39,13 +39,13 @@ void on_window_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size
         // zox_log(" > screen dimensions already at [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
         return;
     }
-    zox_log(" > window resized: %ix%i\n", size.x, size.y)
+    zox_log_ui(" > window resized [%ix%i]", size.x, size.y)
     screen_dimensions = size;
     on_viewport_resized(world, screen_dimensions);
     zox_set(e, WindowSize, { screen_dimensions })
     // apps_on_screen_resize(world, screen_dimensions);
     if (!zox_gett_value(e, WindowFullscreen)) zox_set(e, WindowSizeRestore, { screen_dimensions })
-        zox_log(" > screen dimensions set to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
+        zox_log_ui(" > screen dimensions set to [%ix%i]", screen_dimensions.x, screen_dimensions.y)
 }
 
 void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
@@ -63,5 +63,5 @@ void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
     SDL_SetWindowSize(sdl_window, size.x, size.y);
     SDL_SetWindowPosition(sdl_window, window_position.x, window_position.y);
     zox_set(e, WindowSize, { size })
-    // zox_log(" > setting to windowed [%ix%i]\n", window_size.x, window_size.y)
+    zox_log_ui(" > setting to window: position [%ix%i] size [%ix%i]", window_position.x, window_position.y, size.x, size.y)
 }

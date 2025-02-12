@@ -19,7 +19,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         zox_field_i(InstrumentType, instrumentTypes, instrumentType)
         zox_field_i(SoundVolume, soundVolumes, soundVolume)
         const float volume = soundVolume->value;
-        const double sound_time_length = soundLength->value; // soundData.sound_time_length;
+        const double sound_time_length = soundLength->value;
         const float frequency = soundFrequency->value;
         const float noise = sound_noise * (rand() % 101) / 100.0f;
         // random.NextFloat(generateSound.noise.x, generateSound.noise.y);

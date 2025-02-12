@@ -1,4 +1,3 @@
-// #define zox_log_fingers
 // #define zox_debug_log_element_raycasting
 int touch_devices_count = 0;
 int touch_fingers_count = 0;
@@ -83,21 +82,16 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
                 }
                 zevicePointerPosition->value = finger_position;
                 global_any_fingers_down = 1;
-#ifdef zox_log_fingers
-                zox_log(" > finger touching [%lu] fingerid [%i]\n", zevice, zevice_id)
-#endif
+                zox_log_input(" > finger touching [%lu] fingerid [%i]", zevice, zevice_id)
             } else {
                 finger_released(world, zevice);
-#ifdef zox_log_fingers
-                zox_log(" - finger released [%lu] fingerid [%i]\n", zevice, zevice_id)
-#endif
+                zox_log_input(" - finger released [%lu] fingerid [%i]", zevice, zevice_id)
             }
         } else {
             // get unused finger! find a finger that isn't used yet
             SDL_Finger *finger = find_finger_unused(world, zevices);
             if (finger) {
                 const int finger_id = finger->id + 1;
-                // zox_log(" + touch down: %i\n", finger_id)
                 set_id(world, zevice, finger_id);
                 zox_get_muter(zevice, ZevicePointer, zevicePointer)
                 zox_get_muter(zevice, ZevicePointerPosition, zevicePointerPosition)
@@ -107,9 +101,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
                 int2_flip_y(&finger_position, touchscreen_size);
                 zevicePointerPosition->value = finger_position;
                 global_any_fingers_down = 1;
-#ifdef zox_log_fingers
-                zox_log(" + finger touched [%lu] fingerid [%i]\n", zevice, finger_id)
-#endif
+                zox_log_input(" + finger touched [%lu] fingerid [%i]", zevice, finger_id)
             }
         }
     }

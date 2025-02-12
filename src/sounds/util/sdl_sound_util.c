@@ -5,6 +5,7 @@ double get_mix_chunk_sound_length(Mix_Chunk* chunk) {
     Uint16 format;
     if (Mix_QuerySpec(&frequency, &format, &channels) == 0) {
         // Oh dear, SDL_mixer isn't initialized or is being bashful
+        zox_log("! failed finding sound frequency (mix length)\n")
         return -1.0;
     }
     // The size of a sample in bytes

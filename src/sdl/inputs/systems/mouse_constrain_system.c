@@ -4,10 +4,8 @@ void MouseConstrainSystem(ecs_iter_t *it) {
     // todo: support for multi window contstraints, pass in multiple sdl windows here
     if (!mouse_lock_window) return;
     SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)
-    // const int2 lock_position = zox_get_value(mouse_lock_window, WindowPosition)
     const int2 app_size = zox_get_value(mouse_lock_window, WindowSize)
     const int2 lock_position = (int2) { app_size.x / 2, app_size.y / 2 };
-    // zox_log(" > lock_position %ix%i\n", lock_position.x, lock_position.y)
     zox_field_in(MouseLock, mouseLocks, 1)
     zox_field_in(Children, childrens, 2)
     for (int i = 0; i < it->count; i++) {
