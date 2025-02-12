@@ -1,3 +1,14 @@
+/*
+ *  Zox Input
+ *
+ *      - defines base types for device handling
+ *      - emulates state changes of physical devices
+ *
+ *  todo:
+ *
+ *      - refactor keyboard as a list of keys
+ *
+ * */
 #ifndef zox_mod_inputs
 #define zox_mod_inputs
 
@@ -34,19 +45,9 @@ zox_component_entity(VirtualZeviceLink)
 zox_memory_component(DeviceButtonLinks, ecs_entity_t)
 zox_memory_component(DeviceLinks, ecs_entity_t)
 #include "components/keyboard.c"
-#include "util/click_state.c"
-#include "util/input_util.c"
-#include "util/deadzone_util.c"
+#include "util/util.c"
 #include "prefabs/prefabs.c"
-#include "systems/zevice_button_reset_system.c"
-#include "systems/zevice_pointer_reset_system.c"
-#include "systems/zevice_pointer_delta_reset_system.c"
-#include "systems/zevice_button_enable_system.c"
-#include "systems/zevice_stick_enable_system.c"
-#include "systems/zevice_pointer_enable_system.c"
-#include "systems/device_mode_system.c"
-#include "systems/device_mode_dirty_system.c"
-#include "systems/keyboard_reset_system.c"
+#include "systems/systems.c"
 
 zox_begin_module(Inputs)
     zox_define_tag(Device)
@@ -75,18 +76,7 @@ zox_begin_module(Inputs)
     zox_define_component_entity(ZeviceLink)
     zox_define_component_entity(VirtualZeviceLink)
     zox_define_memory_component(DeviceLinks)
-    // resets
-    zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset, [out] ZeviceButton)
-    zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset, [out] ZevicePointer)
-    zox_system(ZevicePointerRightResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerRight)
-    zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset, [out] ZevicePointerDelta) // remember: ZevicePointerDeltaResetSystem has to be before other systems
-    zox_system(KeyboardResetSystem, EcsOnStore, [out] Keyboard) // reset at end of frame - todo: move keyboard extraction to a system
-    // others
-    zox_system(DeviceModeSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] DeviceModeDirty)
-    zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables, [out] DeviceMode, [out] DeviceModeDirty)
-    zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables, [in] ZeviceButton, [out] ZeviceDisabled)
-    zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables, [in] ZeviceStick, [out] ZeviceDisabled)
-    zox_system(ZevicePointerEnableSystem, zox_pipelines_devices_enables, [in] ZevicePointer, [out] ZeviceDisabled)
+    define_systems_input(world);
     spawn_prefabs_inputs(world);
 zoxel_end_module(Inputs)
 

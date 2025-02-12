@@ -16,15 +16,3 @@ ecs_entity_t spawn_mouse(ecs_world_t *world) {
     add_to_Children(children, pointer);
     return e;
 }
-
-unsigned char mouse_is_any_input(ecs_world_t *world, const ecs_entity_t e) {
-    if (!e || !zox_alive(e)) return 0;
-    const Children *children = zox_get(e, Children)
-    for (int i = 0; i < children->length; i++) {
-        const ecs_entity_t e = children->value[i];
-        if (!zox_has(e, ZevicePointer)) continue;
-        zox_geter(e, ZevicePointer, zevicePointer)
-        if (zevice_pointer_has_input(zevicePointer)) return 1;
-    }
-    return 0;
-}

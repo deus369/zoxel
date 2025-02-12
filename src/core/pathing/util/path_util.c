@@ -94,18 +94,14 @@ byte initialize_pathing() {
         return EXIT_SUCCESS;
     #endif
     char* base_path = initialize_base_path();
-    if (base_path == NULL) return EXIT_FAILURE;
-    zox_log(" > Resources Base Path: %s\n", base_path)
-    if (base_path) data_path = base_path;
-// #ifdef zoxel_using_sdl
-//    else data_path = SDL_strdup("./");
-// #endif
-    zox_log(" + opening base_path [%s]\n", base_path)
+    if (base_path == NULL) {
+        zox_log("! failed to get base_path\n")
+        return EXIT_FAILURE;
+    }
+    data_path = base_path;
+    zox_log_io("> io base_path [%s]", base_path)
     DIR* dir = opendir(base_path);
     if (dir) {
-#ifdef zoxel_debug_pathing
-        zox_log(" + base path exists [%s]\n", data_path)
-#endif
 #ifndef zoxel_on_android
         resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
         strcpy(resources_path, base_path);
@@ -115,27 +111,21 @@ byte initialize_pathing() {
         strcpy(resources_path, base_path);
         strcat(resources_path, "/resources/");
 #endif
-        zox_log(" > resources_folder_name [%s] resources_path [%s]\n", resources_folder_name, resources_path)
+        zox_log_io("> resources_path [%s]", resources_path)
 #ifdef zoxel_on_android
         decompress_android_resources();
 #endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
-#ifdef zoxel_debug_pathing
-            zox_log("     + resources path is [%s]\n", resources_path)
-#endif
             closedir(dir2);
         } else {
-            zox_log(" !!! resources_path does not exist [%s]\n", resources_path)
+            zox_log("! resources_path does not exist [%s]\n", resources_path)
         }
         closedir(dir);
-        // free(resources_path);
     } else if (ENOENT == errno) {
         zox_log("SDL data_path (DOES NOT EXIST): %s\n", data_path)
     } else {
         zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path)
     }
-    zox_log(" > (data) PATH: %s\n", data_path)
-    zox_log(" > (resources) PATH: %s\n", resources_path)
     return EXIT_SUCCESS;
 }

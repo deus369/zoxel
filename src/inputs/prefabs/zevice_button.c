@@ -16,10 +16,3 @@ ecs_entity_t spawn_device_button(ecs_world_t *world, const unsigned char type, c
     zox_set(e, RealButtonIndex, { index })
     return e;
 }
-
-unsigned char reset_device_button(ZeviceButton *zeviceButton) {
-    unsigned char previous_value = zeviceButton->value;
-    if (devices_get_pressed_this_frame(zeviceButton->value)) devices_set_pressed_this_frame(&zeviceButton->value, 0);
-    else if (devices_get_released_this_frame(zeviceButton->value)) devices_set_released_this_frame(&zeviceButton->value, 0);
-    return previous_value != zeviceButton->value;
-}

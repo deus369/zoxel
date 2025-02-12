@@ -48,9 +48,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
             continue;
         }
         zox_field_o(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
-#ifdef zox_debug_log_device_mode_system
-        unsigned char old_device_mode = deviceMode->value;
-#endif
+        const byte old_device_mode = deviceMode->value;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];
             if (!device) continue;
@@ -109,13 +107,11 @@ void DeviceModeSystem(ecs_iter_t *it) {
                 }
             }
         }
-#ifdef zox_debug_log_device_mode_system
         if (deviceModeDirty->value && old_device_mode != deviceModeDirty->value) {
-            zox_log(" + device mode switched to [%i] from [%i]\n", deviceModeDirty->value, deviceMode->value)
-            if (deviceModeDirty->value == zox_device_mode_keyboardmouse) zox_log(" => input mode changed to keyboardmouse ==\n")
-            else if (deviceModeDirty->value == zox_device_mode_touchscreen) zox_log(" => input mode changed to ouchscreen ==\n")
-            else if (deviceModeDirty->value == zox_device_mode_gamepad) zox_log(" => input mode changed to gamepad ==\n")
+            // zox_log_input(" + device mode switched to [%i] from [%i]", deviceModeDirty->value, deviceMode->value)
+            if (deviceModeDirty->value == zox_device_mode_keyboardmouse) zox_log_input("> device mode changed to [keyboardmouse]")
+            else if (deviceModeDirty->value == zox_device_mode_touchscreen) zox_log_input("> device mode changed to [touchscreen]")
+            else if (deviceModeDirty->value == zox_device_mode_gamepad) zox_log_input("> device mode changed to [gamepad]")
         }
-#endif
     }
 } zox_declare_system(DeviceModeSystem)

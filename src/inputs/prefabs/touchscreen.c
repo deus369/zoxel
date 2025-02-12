@@ -24,15 +24,3 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, co
     }
     return e;
 }
-
-unsigned char touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t touchscreen) {
-    if (!touchscreen || !zox_alive(touchscreen)) return 0;
-    zox_geter(touchscreen, Children, children)
-    for (int i = 0; i < children->length; i++) {
-        const ecs_entity_t e = children->value[i];
-        if (!e || !zox_has(e, ZevicePointer) || !zox_has(e, Finger)) continue;
-        zox_geter(e, ZevicePointer, zevicePointer)
-        if (zevice_pointer_has_input(zevicePointer)) return 1;
-    }
-    return 0;
-}

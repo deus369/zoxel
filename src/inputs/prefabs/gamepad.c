@@ -78,21 +78,3 @@ ecs_entity_t spawn_gamepad(ecs_world_t *world, const byte gamepad_type) {
     gamepad_entity = e;
     return e;
 }
-
-byte gamepad_is_any_input(ecs_world_t *world, const ecs_entity_t gamepad) {
-    const Children *children = zox_get(gamepad, Children)
-    for (int i = 0; i < children->length; i++) {
-        const ecs_entity_t e = children->value[i];
-#ifndef zox_disable_gamepad_stick_as_any_input
-        if (zox_has(e, ZeviceStick)) {
-            const ZeviceStick *zeviceStick = zox_get(e, ZeviceStick)
-            return zevice_stick_has_input(zeviceStick, joystick_min_cutoff);
-        } else
-#endif
-        if (zox_has(e, ZeviceButton)) {
-            const ZeviceButton *zeviceButton = zox_get(e, ZeviceButton)
-            if (devices_get_pressed_this_frame(zeviceButton->value)) return 1;
-        }
-    }
-    return 0;
-}

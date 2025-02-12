@@ -14,15 +14,11 @@ void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
     files_voxes_count = files.count;
     files_voxes = malloc(sizeof(ecs_entity_t) * files_voxes_count);
     files_hashmap_voxes = create_string_hashmap(files_voxes_count);
-#ifdef zox_print_files
-    zox_log("   > voxes found [%i]\n", files.count)
-#endif
+    zox_log_io(" + io loaded [voxes] [%i]", files.count)
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
-#ifdef zox_print_files
-        zox_log("   > [%i] vox file [%s]\n", i, filepath)
-#endif
+        zox_log_io("   - [%i] [vox] [%s]", i, filepath)
         vox_file data;
         load_vox_file(filepath, &data);
         const ecs_entity_t e = spawn_vox_file(world, prefab, &data);
@@ -34,6 +30,7 @@ void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
 }
 
 void dispose_files_voxes(ecs_world_t *world) {
+    zox_log_io(" > disposing [%i] [voxes]", files_hashmap_voxes->size)
     string_hashmap_dispose(files_hashmap_voxes);
     files_hashmap_voxes = NULL;
     free(files_voxes);

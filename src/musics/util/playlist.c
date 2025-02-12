@@ -5,7 +5,7 @@ void play_music(ecs_world_t *world, const ecs_entity_t playlist, const unsigned 
     }
     const unsigned char current_index = zox_get_value(playlist, PlaylistIndex)
     if (new_index == current_index) {
-        zox_log(" > music is already at [%i]\n", current_index)
+        // zox_log(" > music is already at [%i]\n", current_index)
         return;
     }
     // set previous music off and new one on
@@ -22,7 +22,7 @@ void add_music(ecs_world_t *world, ecs_entity_t playlist, ecs_entity_t music) {
         zox_log(" ! cannot add music to null playlist\n")
         return;
     }
-    zox_log(" + added music to playlist [%lu]\n", music)
+    // zox_log(" + added music to playlist [%lu]\n", music)
     zox_get_muter(playlist, MusicLinks, musicLinks)
     add_to_MusicLinks(musicLinks, music);
 }

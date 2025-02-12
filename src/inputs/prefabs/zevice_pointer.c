@@ -21,25 +21,3 @@ ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, const ecs_entity_t device,
     zox_set(e, RealButtonIndex, { index })
     return e;
 }
-
-/*unsigned char reset_device_pointer2(unsigned char *value) {
-    unsigned char previous_value = *value;
-    if (devices_get_pressed_this_frame(previous_value)) devices_set_pressed_this_frame(value, 0);
-    else if (devices_get_released_this_frame(previous_value)) devices_set_released_this_frame(value, 0);
-    return previous_value != *value;
-}
-
-unsigned char reset_device_pointer(ZevicePointer *zevicePointer) {
-    unsigned char previous_value = zevicePointer->value;
-    if (devices_get_pressed_this_frame(zevicePointer->value)) devices_set_pressed_this_frame(&zevicePointer->value, 0);
-    else if (devices_get_released_this_frame(zevicePointer->value)) devices_set_released_this_frame(&zevicePointer->value, 0);
-    return previous_value != zevicePointer->value;
-}*/
-
-// resets the single frame states
-unsigned char reset_button_state(const unsigned char previous_state) {
-    unsigned char new_state = previous_state;
-    if (devices_get_pressed_this_frame(previous_state)) devices_set_pressed_this_frame(&new_state, 0);
-    else if (devices_get_released_this_frame(previous_state)) devices_set_released_this_frame(&new_state, 0);
-    return new_state;
-}

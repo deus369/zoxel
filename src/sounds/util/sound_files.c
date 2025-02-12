@@ -1,4 +1,4 @@
-#define directory_sounds "sounds" // character_slash
+#define directory_sounds "sounds"
 
 int sound_files_count = 0;
 ecs_entity_t *files_sounds;
@@ -7,24 +7,19 @@ string_hashmap *files_hashmap_sounds;
 void load_files_sounds() {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     FileList files = get_files(load_directory);
-#ifdef zox_print_files
-    zox_log("   > sounds found [%i]\n", files.count)
-#endif
     sound_files_count = files.count;
     files_sounds = malloc(sizeof(ecs_entity_t) * files.count);
     files_hashmap_sounds = create_string_hashmap(files.count);
-    zox_log(" + loaded sounds [%i]\n", sound_files_count)
+    zox_log_io(" + io loaded [sounds] [%i]", files.count)
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
-#ifdef zox_print_files
-        zox_log("   > sound file [%s]\n", filepath)
-#endif
+        zox_log_io("   - [%i] [sound] [%s]", i, filepath)
 #ifdef zox_lib_sdl_mixer
         Mix_Chunk *sound_data = Mix_LoadWAV(filepath);
         if (!sound_data) {
             zox_log(" ! sound file failed to load [%s]\n", filepath)
-            printf("  - SDL_mixer Error: %s\n", Mix_GetError());
+            zox_log("  - SDL_mixer Error: %s\n", Mix_GetError())
             files_sounds[i] = 0;
             continue;
         }
@@ -40,6 +35,7 @@ void load_files_sounds() {
 }
 
 void dispose_files_sounds() {
+    zox_log_io(" > disposing [%i] [sounds]", files_hashmap_sounds->size)
     string_hashmap_dispose(files_hashmap_sounds);
     files_hashmap_sounds = NULL;
     free(files_sounds);
@@ -80,7 +76,6 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
 #endif
     return e;
 }
-
 
 ecs_entity_t spawn_sound_from_file_index(ecs_world_t *world, const ecs_entity_t prefab, const int index) {
     if (index < sound_files_count && files_sounds[index]) {
