@@ -1,6 +1,6 @@
 
 void Player3DRotateSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_in(CharacterLink, characterLinks, 3)
@@ -58,7 +58,7 @@ void Player3DRotateSystem(ecs_iter_t *it) {
                     const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
                     if (zeviceDisabled->value) continue;
                     if (zox_has(zevice, ZeviceStick)) {
-                        const unsigned char joystick_type = zox_get_value(zevice, DeviceButtonType)
+                        const byte joystick_type = zox_get_value(zevice, DeviceButtonType)
                         if (joystick_type == zox_device_stick_right) {
                             const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
                             right_stick.x -= zeviceStick->value.x * touchscreen_rotate_multiplier;

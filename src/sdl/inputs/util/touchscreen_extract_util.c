@@ -2,7 +2,7 @@
 int touch_devices_count = 0;
 int touch_fingers_count = 0;
 
-unsigned char touchscreen_has_id(ecs_world_t *world, const Children *zevices, const int id) {
+byte touchscreen_has_id(ecs_world_t *world, const Children *zevices, const int id) {
     for (int i = 0; i < zevices->length; i++) {
         const ecs_entity_t zevice = zevices->value[i];
         if (!zox_has(zevice, Finger)) continue;

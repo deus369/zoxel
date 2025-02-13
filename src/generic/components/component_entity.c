@@ -11,7 +11,7 @@ add_to_ecs_entity_t_array_d(component_ids_entity, ecs_id(name));
 // add to tilemap link
 #define zox_component_parented(name) zox_component_entity(name)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    zox_iter_world()\
+    zox_field_world()\
     zox_field_out(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_o(name, components, component)\

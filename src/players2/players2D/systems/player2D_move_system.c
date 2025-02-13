@@ -3,7 +3,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
     float2 max_delta_velocity = max_velocity;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CharacterLink, characterLinks, 2)
     for (int i = 0; i < it->count; i++) {
@@ -14,7 +14,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
             const DisableMovement *disableMovement = zox_get(character, DisableMovement)
             if (disableMovement->value) continue;
         }
-        unsigned char is_running = 0;
+        byte is_running = 0;
         float2 movement = float2_zero; // { 0, 0 };
         float2 left_stick = float2_zero;
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
@@ -52,7 +52,7 @@ void Player2DMoveSystem(ecs_iter_t *it) {
                     const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
                     if (zeviceDisabled->value) continue;
                     if (zox_has(zevice, ZeviceStick)) {
-                        const unsigned char joystick_type = zox_get_value(zevice, DeviceButtonType)
+                        const byte joystick_type = zox_get_value(zevice, DeviceButtonType)
                         if (joystick_type == zox_device_stick_left) {
                             const ZeviceStick *zeviceStick = zox_get(zevice, ZeviceStick)
                             left_stick.x += zeviceStick->value.x;

@@ -13,7 +13,7 @@ void set_ui_line_position(LineData2D *lineData2D, const int4 linePosition2D, con
 
 // this just sets posiions - sets render position based on canvas
 void Line2DElementSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(LinePosition2D, linePosition2Ds, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
     zox_field_out(LineData2D, lineData2Ds, 3)

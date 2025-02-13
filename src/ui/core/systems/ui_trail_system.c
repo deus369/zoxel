@@ -4,7 +4,7 @@
 #endif
 
 void UITrailSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(UIHolderLink, uiHolderLinks, 1)
     zox_field_in(UITrail, uiTrails, 2)
     zox_field_out(Position3D, position3Ds, 3)

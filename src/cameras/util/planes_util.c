@@ -6,13 +6,13 @@
 // we need to draw these planes. we can get their overlapping 8 points?
 // return float3_dot(p.normal, point) >= p.distance;
 
-unsigned char is_outside_plane(const plane p, const float3 point) {
+byte is_outside_plane(const plane p, const float3 point) {
     return float3_dot(p.normal, point) - p.distance >= 0;
 }
 
 // checks if bounds is inside 6 planes
-unsigned char is_entire_bounds_in_frustum(const plane *planes, bounds b) {
-    for (unsigned char i = 0; i < 6; i++) {
+byte is_entire_bounds_in_frustum(const plane *planes, bounds b) {
+    for (byte i = 0; i < 6; i++) {
         const plane p = planes[i];
         const float3 normal_sign = float3_sign(p.normal);
         const float3 point = float3_add(b.center, float3_multiply_float3(b.extents, normal_sign));
@@ -22,11 +22,11 @@ unsigned char is_entire_bounds_in_frustum(const plane *planes, bounds b) {
 }
 
 // checks if any part of bounds is inside 6 planes
-unsigned char is_in_frustum(const plane *planes, bounds b) {
+byte is_in_frustum(const plane *planes, bounds b) {
     float3 point;
-    for (unsigned char i = 0; i < 6; i++) {
+    for (byte i = 0; i < 6; i++) {
         const plane p = planes[i];
-        unsigned char all_outside_plane = 1;
+        byte all_outside_plane = 1;
         point = float3_add(b.center, (float3) { -b.extents.x, -b.extents.y, -b.extents.z });
         if (!is_outside_plane(p, point)) all_outside_plane = 0;
         point = float3_add(b.center, (float3) { -b.extents.x, -b.extents.y, +b.extents.z });

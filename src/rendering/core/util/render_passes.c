@@ -1,8 +1,8 @@
-const unsigned char max_layers2D = 128; // 64;
-unsigned char renderer_layer;
+const byte max_layers2D = 128; // 64;
+byte renderer_layer;
 ecs_entity_t renderer_camera;
 float4x4 render_camera_matrix;
-unsigned char render_camera_fov;
+byte render_camera_fov;
 int_array_d* render2D_systems;
 // todo: add a layer for rendering systems - zox_render3D_system - camera_render_system
 int_array_d* render3D_systems;

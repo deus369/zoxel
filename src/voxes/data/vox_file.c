@@ -9,7 +9,7 @@ typedef struct {
   char name[4];
   int chunk_content;
   int chunk_nums;
-  unsigned char *voxels;
+  byte *voxels;
 } vox_file_xyzi;
 
 typedef struct {

@@ -1,5 +1,5 @@
 void DeviceModeDirtySystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_out(DeviceMode, deviceModes, 1)
     zox_field_out(DeviceModeDirty, deviceModeDirtys, 2)
     for (int i = 0; i < it->count; i++) {
@@ -7,7 +7,7 @@ void DeviceModeDirtySystem(ecs_iter_t *it) {
         if (!deviceModeDirty->value) continue;
         zox_field_e()
         zox_field_o(DeviceMode, deviceModes, deviceMode)
-        unsigned char old_mode = deviceMode->value;
+        byte old_mode = deviceMode->value;
         deviceMode->value = deviceModeDirty->value;
         disable_inputs_until_release(world, e, deviceMode->value, old_mode);
         deviceModeDirty->value = 0;

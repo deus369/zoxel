@@ -12,12 +12,12 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     return;
 #endif
     // todo: optimize transform so it doesn't update every frame? StaticTransform tag
-    unsigned char has_set_material = 0;
+    byte has_set_material = 0;
     ecs_entity_t vox_entity = 0;
     const MaterialGPULink *materialGPULink;
     const TextureGPULink *textureGPULink;
     const MaterialTextured3D *material_attributes;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(TransformMatrix, transformMatrixs, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
     zox_field_in(UvsGPULink, uvsGPULinks, 3)

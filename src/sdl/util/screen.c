@@ -30,7 +30,7 @@ void on_viewport_resized(ecs_world_t *world, const int2 new_size) {
     resize_cameras(viewport_dimensions); // set viewport size - triggers canvas resizing
 }
 
-void sdl_set_fullscreen(SDL_Window* window, unsigned char is_fullscreen) {
+void sdl_set_fullscreen(SDL_Window* window, byte is_fullscreen) {
     SDL_SetWindowFullscreen(window, is_fullscreen ? sdl_fullscreen_byte : 0);
 }
 

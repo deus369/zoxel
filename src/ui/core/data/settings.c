@@ -9,11 +9,11 @@ float zox_ui_scale = 0.78f; // todo: effect actionbar, taskbar and user uis
 #define restore_joystick_cutoff 0.06f
 ecs_entity_t main_canvas;
 ecs_entity_t zox_canvases[max_cameras];
-const unsigned char game_overlay_layer = max_layers2D - 12; // -1
+const byte game_overlay_layer = max_layers2D - 12; // -1
 // debugs
 // #define zox_debug_ui_trails
 // #define zoxel_debug_ui_selectable_states
-const unsigned char pause_ui_overlay_layer = 2;
+const byte pause_ui_overlay_layer = 2;
 const color default_fill_color = (color) { 155, 155, 155, 144 };
 const color default_outline_color = (color) { 155, 88, 45, 200 };
 // windows
@@ -39,9 +39,9 @@ const color default_fill_color_frame_item = (color) { 6, 6, 77, 122 };
 const color default_fill_color_frame_skill = (color) { 77, 6, 6, 122 };
 const color default_fill_color_frame_stat = (color) { 33, 33, 33, 122 };
 // corner and outline
-const unsigned char default_button_corner = 8;
-const unsigned char default_window_corner = 16;
-const unsigned char default_button_frame_thickness = 4;
+const byte default_button_corner = 8;
+const byte default_window_corner = 16;
+const byte default_button_frame_thickness = 4;
 // pause settings
 const float pause_fade_alpha = 0.52f;
 const float pause_fade_time = 0.48f;

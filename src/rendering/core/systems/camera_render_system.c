@@ -1,8 +1,8 @@
-void camera_render_update(ecs_iter_t *it, const unsigned char is_camera2D) {
-    unsigned char do_renders = !headless && rendering; // && !is_using_vulkan;
+void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
+    byte do_renders = !headless && rendering; // && !is_using_vulkan;
     if (!do_renders) return;
     opengl_set_defaults(!is_camera2D);
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ViewMatrix, viewMatrixs, 1)
     zox_field_in(FieldOfView, fieldOfViews, 2)
     zox_field_in(ScreenPosition, screenPositions, 3)
@@ -75,7 +75,7 @@ glClearBufferSubData(GL_RENDERBUFFER, GL_DEPTH, 0, 0, GL_DEPTH_COMPONENT, GL_FLO
 /*if (zox_has(e, RenderBufferLink)) {
     rbo = zox_get_value(e, RenderBufferLink)
 }*/
-/*void clear_viewport( unsigned char is_3D) {
+/*void clear_viewport( byte is_3D) {
     if (is_using_vulkan) {
 #ifdef zox_include_vulkan
         vulkan_clear_viewport(viewport_clear_color);

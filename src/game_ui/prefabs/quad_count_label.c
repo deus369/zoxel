@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_quad_count_label(ecs_world_t *world) {
 
 ecs_entity_t spawn_quad_count_label(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t parent = canvas;
-    const unsigned char font_size = 24;
+    const byte font_size = 24;
     const byte2 padding = (byte2) { 12, 8 };
     const float2 anchor = { 1, 0 };
     const int2 pixel_position = (int2) { -8, 8 };

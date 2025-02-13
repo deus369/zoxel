@@ -17,6 +17,6 @@
 #define zox_device_button_dpad_left 16
 #define zox_device_button_dpad_right 17
 
-unsigned char is_dpad_button(const unsigned char index) {
+byte is_dpad_button(const byte index) {
     return index >= zox_device_button_dpad_down && index <= zox_device_button_dpad_right;
 }

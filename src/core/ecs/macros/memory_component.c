@@ -80,7 +80,7 @@ ECS_COPY(name, dst, src, {\
     clone_##name(dst, src);\
 })\
 \
-unsigned char add_to_##name(name *component, const type data) {\
+byte add_to_##name(name *component, const type data) {\
     if (component->value) {\
         int new_length = component->length + 1;\
         int memory_length = (new_length) * sizeof(type);\
@@ -173,7 +173,7 @@ ecs_set_hooks(world, name, {\
 /*
 #define add_to_memory_component(component, data_type, data) {\
     if (component->value) {\
-        unsigned char has_data = 0;\
+        byte has_data = 0;\
         for (int i = 0; i < component->length; i++) {\
             if (component->value[i] == data) {\
                 has_data = 1;\
@@ -245,7 +245,7 @@ ecs_set_hooks(world, name, {\
 #define zox_link_component(name, type, links_name, ...)\
 zox_component(name, type)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    zox_iter_world()\
+    zox_field_world()\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         ecs_entity_t e = it->entities[i];\

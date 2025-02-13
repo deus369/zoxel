@@ -23,9 +23,9 @@ void debug_midi_file(smf_t *smf) {
         while ((event = smf_track_get_next_event(track)) != NULL) {
             printf(" > [%i] time [%f] len [%i]\n", event->event_number, event->time_seconds, event->midi_buffer_length);
             if (event->midi_buffer_length >= 3) { // && event->event_number == SMF_EVENT_MIDI) {
-                unsigned char status = event->midi_buffer[0] & 0xF0;
+                byte status = event->midi_buffer[0] & 0xF0;
                 if (status == 0x90 || status == 0x80) {  // Note On or Note Off
-                    unsigned char note_number = event->midi_buffer[1];
+                    byte note_number = event->midi_buffer[1];
                     double frequency = midi_note_to_frequency(note_number);
                     printf("        - note %s\n", (status == 0x90) ? "On" : "Off");
                     printf("        - number %i\n", note_number);
@@ -62,8 +62,8 @@ int main(int argc, char *argv[]) {
         smf_event_t *event;
         while ((event = smf_track_get_next_event(track)) != NULL) {
             if (event->midi_buffer_length >= 3) {
-                unsigned char status = event->midi_buffer[0] & 0xF0;
-                unsigned char note_number = event->midi_buffer[1];
+                byte status = event->midi_buffer[0] & 0xF0;
+                byte note_number = event->midi_buffer[1];
                 double frequency = midi_note_to_frequency(note_number);
                 if (status == 0x90) {  // Note On
                     // Store the start time and frequency when the note is turned on

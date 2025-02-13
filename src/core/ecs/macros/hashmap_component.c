@@ -14,7 +14,7 @@ void dispose_##type##_hashmap(ecs_world_t *world, type##_##hashmap* hashmap) {\
 }\
 \
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    zox_iter_world()\
+    zox_field_world()\
     zox_field_out(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_o(name, components, component)\

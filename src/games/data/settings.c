@@ -1,4 +1,4 @@
-unsigned char zox_game_type;
+byte zox_game_type;
 
 float3 menu_sky_color = float3_zero; // (float3) { 0.2f, 0.4f, 0.4f };
 float3 menu_sky_bottom_color = float3_zero; // (float3) { 0.2f, 0.4f, 0.4f };

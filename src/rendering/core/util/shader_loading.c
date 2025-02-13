@@ -30,7 +30,7 @@ void load_shaders(ecs_world_t *world) {
     }
 }
 
-unsigned char get_new_shader_source_index() {
+byte get_new_shader_source_index() {
     shaders_count++;
     return shaders_count - 1;
 }

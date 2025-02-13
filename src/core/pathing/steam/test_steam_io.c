@@ -1,6 +1,6 @@
-unsigned char test_read_byte = 255;
-unsigned char test_read_byte2 = 255;
-extern unsigned char is_steam_running;
+byte test_read_byte = 255;
+byte test_read_byte2 = 255;
+extern byte is_steam_running;
 
 void test_steam_cloud() {
 #ifdef zox_include_steam
@@ -14,7 +14,7 @@ void test_steam_cloud() {
     int32_t *file_length = malloc(sizeof(int32_t));
     // zox_log(" > sizeof(int32_t) [%i]\n", sizeof(int32_t))
     *file_length = 0;
-    unsigned char* test_bytes_read = steam_remote_read(save_file_name, file_length);
+    byte* test_bytes_read = steam_remote_read(save_file_name, file_length);
     if (test_bytes_read && file_length && *file_length == default_file_length) {
         test_read_byte = test_bytes_read[0];
         test_read_byte2 = test_bytes_read[1];
@@ -29,7 +29,7 @@ void test_steam_cloud() {
     test_read_byte++;
     if (test_read_byte == 255) test_read_byte = 0;
     // write to file
-    unsigned char* test_bytes_write = malloc(default_file_length);
+    byte* test_bytes_write = malloc(default_file_length);
     test_bytes_write[0] = test_read_byte;
     test_bytes_write[1] = test_read_byte2;
     if (!steam_remote_save(save_file_name, test_bytes_write, default_file_length)) {

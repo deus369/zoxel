@@ -1,10 +1,10 @@
-extern unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e);
+extern byte can_render_ui(ecs_world_t *world, ecs_entity_t e);
 // #define zox_time_render3D_textured_system
 
 void Element3DRenderSystem(ecs_iter_t *it) {
     if (!material_textured3D) return;
-    zox_iter_world()
-    unsigned char has_set_material = 0;
+    zox_field_world()
+    byte has_set_material = 0;
     const GLuint material_link = zox_get_value(material_textured3D, MaterialGPULink)
     const MaterialTextured3D *material_attributes = zox_get(material_textured3D, MaterialTextured3D)
     zox_field_in(TransformMatrix, transformMatrixs, 1)

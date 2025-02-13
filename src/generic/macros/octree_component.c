@@ -37,7 +37,7 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 } Node;
 
 typedef struct {
-    unsigned char value;
+    byte value;
 } VoxelNode; */
 
 // used to link static chunk voxel to a entity in world
@@ -45,8 +45,8 @@ typedef struct {
     ecs_entity_t value;
 } VoxelEntityLink;
 
-extern unsigned char max_octree_depth;
-// unsigned char max_octree_depth = 5;
+extern byte max_octree_depth;
+// byte max_octree_depth = 5;
 
 #define zoxel_octree_component(name, type, default_value)\
 typedef struct name name;\
@@ -57,7 +57,7 @@ struct name {\
 \
 extern void delete_vox_entity_from_nodes(ecs_world_t *world, name *chunk);\
 \
-void close_##name(name* octree, unsigned char depth) {\
+void close_##name(name* octree, byte depth) {\
     if (!octree->nodes) return;\
     /* > todo: check if entity link here, using depth check */\
     if (depth == 0) {\
@@ -65,7 +65,7 @@ void close_##name(name* octree, unsigned char depth) {\
         delete_vox_entity_from_nodes(world, octree);\
     } else {\
         depth--;\
-        for (unsigned char i = 0; i < octree_length; i++) {\
+        for (byte i = 0; i < octree_length; i++) {\
             close_##name(&octree->nodes[i], depth);\
         }\
     }\
@@ -85,24 +85,24 @@ void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     if (src->nodes) {\
         open_new_##name(dst);\
-        for (unsigned char i = 0; i < octree_length; i++) clone_##name(&dst->nodes[i], &src->nodes[i]);\
+        for (byte i = 0; i < octree_length; i++) clone_##name(&dst->nodes[i], &src->nodes[i]);\
     } else {\
         dst->nodes = NULL;\
     }\
 }\
 \
-void clone_depth_##name(name* dst, const name* src, const unsigned char max_depth, unsigned char depth) {\
+void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte depth) {\
     dst->value = src->value;\
     depth++;\
     if (src->nodes && depth <= max_depth) {\
         open_new_##name(dst);\
-        for (unsigned char i = 0; i < octree_length; i++) clone_depth_##name(&dst->nodes[i], &src->nodes[i], max_depth, depth);\
+        for (byte i = 0; i < octree_length; i++) clone_depth_##name(&dst->nodes[i], &src->nodes[i], max_depth, depth);\
     } else {\
         dst->nodes = NULL;\
     }\
 }\
 \
-void clone_at_depth_##name(name* dst, const name* src, const unsigned char target_depth, unsigned char depth) {\
+void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, byte depth) {\
     if (target_depth > 0 && depth == target_depth - 1) {\
         if (src->nodes) open_new_##name(dst);\
     }\
@@ -112,7 +112,7 @@ void clone_at_depth_##name(name* dst, const name* src, const unsigned char targe
     } else {\
         if (src->nodes && dst->nodes) {\
             depth++;\
-            for (unsigned char i = 0; i < octree_length; i++) {\
+            for (byte i = 0; i < octree_length; i++) {\
                 clone_at_depth_##name(&dst->nodes[i], &src->nodes[i], target_depth, depth);\
             }\
         }\
@@ -122,29 +122,29 @@ void clone_at_depth_##name(name* dst, const name* src, const unsigned char targe
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
         open_new_##name(octree);\
-        for (unsigned char i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
+        for (byte i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
     }\
 }\
 \
-const name* find_node##_##name(const name* node, int3 octree_position, unsigned char depth) {\
+const name* find_node##_##name(const name* node, int3 octree_position, byte depth) {\
     /* if depth finish or if closed node, return node early */ \
     if (depth == 0 || node->nodes == NULL) return node;\
     depth--;\
-    unsigned char dividor = powers_of_two[depth];\
+    byte dividor = powers_of_two[depth];\
     int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
     int3 child_octree_position = (int3) { octree_position.x % dividor, octree_position.y % dividor, octree_position.z % dividor };\
     return find_node##_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
 }\
 \
 /* maybe make below function use this if it isn't in the non root node */\
-const name* find_root_adjacent##_##name(const name* root, int3 position, unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index) {\
+const name* find_root_adjacent##_##name(const name* root, int3 position, byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
     if (direction == direction_left) position.x--;\
     else if (direction == direction_right) position.x++;\
     else if (direction == direction_down) position.y--;\
     else if (direction == direction_up) position.y++;\
     else if (direction == direction_back) position.z--;\
     else if (direction == direction_front) position.z++;\
-    unsigned char position_bounds = powers_of_two[depth];\
+    byte position_bounds = powers_of_two[depth];\
     if (position.x >= 0 && position.x < position_bounds && position.y >= 0 && position.y < position_bounds && position.z >= 0 && position.z < position_bounds) {\
         return find_node##_##name(root, position, depth);\
     } else {\
@@ -185,8 +185,8 @@ const name* find_root_adjacent##_##name(const name* root, int3 position, unsigne
     }\
 }\
 \
-const name* find_adjacent##_##name(const name* root, const name* node, int3 position, unsigned char node_index, byte3 node_position,\
-    unsigned char depth, unsigned char direction, const name *neighbors[], unsigned char *chunk_index) {\
+const name* find_adjacent##_##name(const name* root, const name* node, int3 position, byte node_index, byte3 node_position,\
+    byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
     if (node != NULL) {\
         if (direction == direction_left) {\
             if (node_position.x != 0) return &node->nodes[node_index_with_left[node_index]];\

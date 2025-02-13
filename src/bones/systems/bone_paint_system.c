@@ -8,7 +8,7 @@ void BonePaintSystem(ecs_iter_t *it) {
         zox_field_i(BoneIndexes, boneIndexess, boneIndexes)
         zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         for (int j = 0; j < meshColorRGBs->length; j++) {
-            const unsigned char bone = boneIndexes->value[j];
+            const byte bone = boneIndexes->value[j];
             color_rgb bone_color = (color_rgb) { 255, 0, 0 };
             if (bone) bone_color.g = 255;
             bone_color.b += 16 * bone;

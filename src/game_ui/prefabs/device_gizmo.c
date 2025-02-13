@@ -9,9 +9,9 @@ ecs_entity_t spawn_prefab_device_gizmo(ecs_world_t *world, const ecs_entity_t pr
 }
 
 // when switch, spawn, destroy after x seconds, add a cooldown on switching devices
-ecs_entity_t spawn_device_gizmo(ecs_world_t *world, const ecs_entity_t canvas, const unsigned char device_type) {
-    const unsigned char size = 64;
-    const unsigned char position_offset = 16;
+ecs_entity_t spawn_device_gizmo(ecs_world_t *world, const ecs_entity_t canvas, const byte device_type) {
+    const byte size = 64;
+    const byte position_offset = 16;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     SpawnIcon spawnIcon = {
         .canvas = {

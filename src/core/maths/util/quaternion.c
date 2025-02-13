@@ -103,12 +103,12 @@ float3 quaternion_to_euler_360(float4 q) {
     return float3_multiply_float(quaternion_to_euler(q), (180.0f / M_PI));
 }
 
-unsigned char quaternion_to_quadrant(float4 q) {
+byte quaternion_to_quadrant(float4 q) {
     float degree = quaternion_to_euler(q).y * (180.0f / M_PI);
     // float degree = quaternion_to_euler_y(q) * (180.0f / M_PI);
     if (degree < 0) degree += 360;
     // printf("    - degree [%f]\n", degree);
-    return (unsigned char)((degree + 0.1f) / 90) % 4;  // 0.1 = 45 before
+    return (byte)((degree + 0.1f) / 90) % 4;  // 0.1 = 45 before
 }
 
 float4 quaternion_from_euler(float3 euler) {
@@ -164,8 +164,8 @@ float4 quaternion_from_normal(float3 normal) {
 }
 
 void print_quadrant(float4 q) {
-    unsigned char quadrant = quaternion_to_quadrant(q);
-    // unsigned char quadrant = get_quadrant(quaternion_to_euler(q));
+    byte quadrant = quaternion_to_quadrant(q);
+    // byte quadrant = get_quadrant(quaternion_to_euler(q));
     if (quadrant == 0) {
         zox_log(" + quadrant 1\n");
     } else if (quadrant == 1) {
@@ -184,12 +184,12 @@ void float4_print_euler(float4 input) {
     zox_log("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }
 
-unsigned char quaternion_equal(float4 a, float4 b) {
+byte quaternion_equal(float4 a, float4 b) {
     return ((a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w) ||
         (a.x == -b.x && a.y == -b.y && a.z == -b.z && a.w == -b.w));
 }
 
-unsigned char test_quaternion_math(float4 input) {
+byte test_quaternion_math(float4 input) {
     float3 input_e = quaternion_to_euler(input);
     float4 output = quaternion_from_euler(input_e);
     zox_log("     - in e [%fx%fx%f]\n", input_e.x, input_e.y, input_e.z);
@@ -235,7 +235,7 @@ output.y = cos(roll/2) * sin(pitch/2) * cos(yaw/2) + sin(roll/2) * cos(pitch/2) 
 output.z = cos(roll/2) * cos(pitch/2) * sin(yaw/2) - sin(roll/2) * sin(pitch/2) * cos(yaw/2);
 output.w = cos(roll/2) * cos(pitch/2) * cos(yaw/2) + sin(roll/2) * sin(pitch/2) * sin(yaw/2);
 return output;*/
-    // unsigned char quadrant = get_quadrant((float3) { input->x, input->y, input->z });
+    // byte quadrant = get_quadrant((float3) { input->x, input->y, input->z });
     /*if (quadrant == 2) {
         input->x += M_PI;
         input->y = - input->y - M_PI;
@@ -286,7 +286,7 @@ return output;*/
         zox_log(" + quadrant 4\n");
     } else {
         zox_log(" + quadrant ? [%f]\n", euler_y);
-    }*//*unsigned char quaternion_to_quadrant(float4 q) {
+    }*//*byte quaternion_to_quadrant(float4 q) {
     float x = q.x;
     float z = q.z;
     float angle = atan2(z, x);
@@ -298,7 +298,7 @@ return output;*/
     return quadrant;
 }*/
 
-/*unsigned char get_quadrant(float3 input) {
+/*byte get_quadrant(float3 input) {
     if (input.x == 0.0f) {
         if (input.y >= 0 && input.y <= M_PI / 2.0f) {
             return 0;
@@ -317,7 +317,7 @@ return output;*/
 
 
 /*void correct_euler_for_quadrants(float4 q, float3* euler) {
-    unsigned char quadrant = quaternion_to_quadrant(q);
+    byte quadrant = quaternion_to_quadrant(q);
     correct_euler_quadrant(euler);
 }
 

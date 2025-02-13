@@ -28,7 +28,7 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         return;
     }
     const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
-    unsigned char block_collisions[voxelLinks->length + 1];
+    byte block_collisions[voxelLinks->length + 1];
     block_collisions[0] = 0;
     for (int i = 0; i < voxelLinks->length; i++) {
         const ecs_entity_t block = voxelLinks->value[i];
@@ -67,10 +67,10 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         const float3 position_new = position3D->value;
         float3 collision_point_real = position3D->value;
         float3 collision_offset = float3_zero;
-        const unsigned char is_falling = velocity3D->value.y < 0;
-        unsigned char did_collide_x = 0;
-        unsigned char did_collide_y = 0;
-        unsigned char did_collide_z = 0;
+        const byte is_falling = velocity3D->value.y < 0;
+        byte did_collide_x = 0;
+        byte did_collide_y = 0;
+        byte did_collide_z = 0;
         detect_voxel_collisions()
         respond_to_collisions()
         // keeps grounded for an additional frame

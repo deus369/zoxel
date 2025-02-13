@@ -1,5 +1,5 @@
 void DestroyInTimeSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     init_delta_time()
     zox_field_out(DestroyInTime, destroyInTimes, 1)
     for (int i = 0; i < it->count; i++) {

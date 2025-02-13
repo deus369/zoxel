@@ -1,25 +1,23 @@
-extern unsigned char fullscreen;
-extern unsigned char halfscreen;
-extern unsigned char is_split_screen;
-extern unsigned char vsync;
-extern unsigned char override_opengl_es;
-extern unsigned char is_using_vulkan;
-extern unsigned char game_rule_attach_to_character;
+extern byte fullscreen;
+extern byte halfscreen;
+extern byte is_split_screen;
+extern byte vsync;
+extern byte override_opengl_es;
+extern byte is_using_vulkan;
+extern byte game_rule_attach_to_character;
 extern byte headless;
-extern unsigned char is_multithreading;
-extern unsigned char profiler;
-extern unsigned char server_mode;
-extern unsigned char target_fps;
+extern byte is_multithreading;
+extern byte profiler;
+extern byte server_mode;
+extern byte target_fps;
 #ifdef zox_mod_voxels
     #define terrain_mode_tiny 1
     #define terrain_mode_medium 2
     #define terrain_mode_large 3
-    extern unsigned char terrain_mode;
-    extern unsigned char disable_block_voxes;
+    extern byte terrain_mode;
+    extern byte disable_block_voxes;
 #endif
-#ifdef zox_mod_characters
-    extern unsigned char disable_npcs;
-#endif
+extern byte disable_npcs;
 
 void print_help_menu(const char* arg0) {
     zox_log("\n");
@@ -60,7 +58,7 @@ int process_arguments(int argc, char* argv[]) {
             print_help_menu(argv[0]);
             return EXIT_FAILURE;
         } else if (strcmp(argv[i], "--fps") == 0) {
-            target_fps = (unsigned char) (atoi(argv[i + 1]));
+            target_fps = (byte) (atoi(argv[i + 1]));
             i++;
         } else if (strcmp(argv[i], "--singlethread") == 0) {
             is_multithreading = 0;
@@ -105,11 +103,9 @@ int process_arguments(int argc, char* argv[]) {
             disable_block_voxes = 1;
         }
 #endif
-#ifdef zox_mod_characters
         else if (strcmp(argv[i], "--nonpc") == 0 || strcmp(argv[i], "--nonpcs") == 0) {
             disable_npcs = 1;
         }
-#endif
     }
     // extra disables
     #if defined(zox_mod_characters) && defined(zox_disable_npcs)

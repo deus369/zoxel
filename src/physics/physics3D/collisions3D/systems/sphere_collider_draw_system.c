@@ -1,7 +1,7 @@
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
 
 void SphereColliderDrawSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     const color_rgb line_color = (color_rgb) { 55, 55, 55 };
     zox_field_in(RenderDisabled, renderDisableds, 1)
     zox_field_in(Position3D, position3Ds, 2)

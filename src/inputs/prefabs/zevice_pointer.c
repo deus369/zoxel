@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, const ecs_entity_t device, unsigned char type, unsigned char index) {
+ecs_entity_t spawn_zevice_pointer(ecs_world_t *world, const ecs_entity_t device, byte type, byte index) {
     zox_instance(prefab_zevice_pointer)
     zox_name("zevice_pointer")
     zox_set(e, DeviceLink, { device })

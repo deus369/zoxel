@@ -11,8 +11,8 @@ ecs_entity_t spawn_prefab_fps_display(ecs_world_t *world) {
 
 ecs_entity_t spawn_fps_display(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t parent = canvas;
-    const unsigned char layer = game_overlay_layer + 1; // 1;
-    const unsigned char font_size = 32;
+    const byte layer = game_overlay_layer + 1; // 1;
+    const byte font_size = 32;
     const byte2 padding = (byte2) { 12, 8 };
     const float2 anchor = { 1.0f, 1.0f };
     const int2 pixel_position = (int2) { -16, -16 };

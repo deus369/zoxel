@@ -1,18 +1,18 @@
-const unsigned char font_left_side = 32; // 2 * 16;
-const unsigned char font_right_side = 208; // 13 * 16;
-const unsigned char font_bottom_side = 32; // 2 * 16;
-const unsigned char font_top_side = 208; // 13 * 16;
-const unsigned char font_lowerMiddleSideX = 80; // 5 * 16;
-const unsigned char font_upperMiddleSideY = 128; // 8 * 16;
-const unsigned char font_lowerMiddleSideY = 80; // 5 * 16;
-const unsigned char font_lowerTopSide = 144; // 9 * 16;
-const unsigned char elStart = 96; // 6 * 16;
-const unsigned char curve = 48; // 3 * 16;
-const unsigned char tiny_curve = 24; // 1 * 16;
-const unsigned char font_lowerCurve = 32; // 2 * 16;
-const unsigned char middleSideX = 128; // 8 * 16;
+const byte font_left_side = 32; // 2 * 16;
+const byte font_right_side = 208; // 13 * 16;
+const byte font_bottom_side = 32; // 2 * 16;
+const byte font_top_side = 208; // 13 * 16;
+const byte font_lowerMiddleSideX = 80; // 5 * 16;
+const byte font_upperMiddleSideY = 128; // 8 * 16;
+const byte font_lowerMiddleSideY = 80; // 5 * 16;
+const byte font_lowerTopSide = 144; // 9 * 16;
+const byte elStart = 96; // 6 * 16;
+const byte curve = 48; // 3 * 16;
+const byte tiny_curve = 24; // 1 * 16;
+const byte font_lowerCurve = 32; // 2 * 16;
+const byte middleSideX = 128; // 8 * 16;
 
-const unsigned char font_question_mark_length = 9 * 2;
+const byte font_question_mark_length = 9 * 2;
 const byte2 font_question_mark[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },  // top line
     { font_left_side, font_top_side }, { font_left_side, font_lowerTopSide },
@@ -27,41 +27,41 @@ const byte2 font_question_mark[] = {
     { middleSideX - curve, font_bottom_side }, { middleSideX, font_bottom_side }
 };
 
-const unsigned char font_space_length = 1 * 2;
+const byte font_space_length = 1 * 2;
 const byte2 font_space[] = {
     { middleSideX, font_bottom_side }, { middleSideX, font_bottom_side }
 };
 
-const unsigned char underscore_length = 1 * 2;
+const byte underscore_length = 1 * 2;
 const byte2 font_underscore[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_bottom_side }
 };
 
-const unsigned char font_slash_length = 1 * 2;
+const byte font_slash_length = 1 * 2;
 const byte2 font_slash[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_top_side }
 };
 
-const unsigned char font_percentage_length = 3 * 2;
+const byte font_percentage_length = 3 * 2;
 const byte2 font_percentage[] = {
     { font_left_side, font_bottom_side }, { font_right_side, font_top_side },
     { font_right_side, font_bottom_side }, { font_right_side - 42, font_bottom_side + 42 },
     { font_left_side, font_top_side  }, { font_left_side + 42, font_top_side - 42 },
 };
 
-const unsigned char font_back_slash_length = 1 * 2;
+const byte font_back_slash_length = 1 * 2;
 const byte2 font_back_slash[] = {
     { font_left_side, font_top_side }, { font_right_side, font_bottom_side }
 };
 
-const unsigned char font_comma_length = 1 * 2;
+const byte font_comma_length = 1 * 2;
 const byte2 font_comma[] = {
     { font_left_side, font_bottom_side }, { middleSideX, font_lowerMiddleSideY }
 };
 
 
-const unsigned char full_stop_radius = 2;
-const unsigned char full_stop_length = 4 * 2;
+const byte full_stop_radius = 2;
+const byte full_stop_length = 4 * 2;
 const byte2 font_full_stop[] = {
     { middleSideX - full_stop_radius, middleSideX - full_stop_radius }, { middleSideX + full_stop_radius, middleSideX - full_stop_radius },
     { middleSideX + full_stop_radius, middleSideX - full_stop_radius }, { middleSideX + full_stop_radius, middleSideX + full_stop_radius },
@@ -69,32 +69,32 @@ const byte2 font_full_stop[] = {
     { middleSideX - full_stop_radius, middleSideX + full_stop_radius }, { middleSideX - full_stop_radius, middleSideX - full_stop_radius },
 };
 
-const unsigned char left_square_bracket_length = 3 * 2;
+const byte left_square_bracket_length = 3 * 2;
 const byte2 left_square_bracket[] = {
     { font_left_side, font_top_side }, { middleSideX, font_top_side },
     { font_left_side, font_top_side }, { font_left_side, font_bottom_side },
     { font_left_side, font_bottom_side }, { middleSideX, font_bottom_side },
 };
 
-const unsigned char right_square_bracket_length = 3 * 2;
+const byte right_square_bracket_length = 3 * 2;
 const byte2 right_square_bracket[] = {
     { font_right_side, font_top_side }, { middleSideX, font_top_side },
     { font_right_side, font_top_side }, { font_right_side, font_bottom_side },
     { font_right_side, font_bottom_side }, { middleSideX, font_bottom_side },
 };
 
-const unsigned char font_minus_length = 1 * 2;
+const byte font_minus_length = 1 * 2;
 const byte2 font_minus[] = {
     { font_left_side, middleSideX }, { font_right_side, middleSideX }
 };
 
-const unsigned char font_plus_length = 2 * 2;
+const byte font_plus_length = 2 * 2;
 const byte2 font_plus[] = {
     { font_left_side, middleSideX }, { font_right_side, middleSideX },
     { middleSideX, font_top_side }, { middleSideX, font_bottom_side }
 };
 
-const unsigned char number_0_length = 4 * 2;
+const byte number_0_length = 4 * 2;
 const byte2 number_0[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },
     { font_right_side, font_top_side }, { font_right_side, font_bottom_side },
@@ -746,7 +746,7 @@ const byte2 font_lower_z[] = {
 };
 
 // copied font_lowerZ
-const unsigned char font_upper_z_length = 3 * 2;
+const byte font_upper_z_length = 3 * 2;
 const byte2 font_upper_z[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side - tiny_curve },  // top line
     { font_right_side, font_top_side - tiny_curve }, { font_left_side, font_bottom_side + tiny_curve },

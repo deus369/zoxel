@@ -12,13 +12,13 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         const int3 voxel_position = zox_get_value(it->entities[i], VoxelPosition)
         // get closest grass block
         //byte3 position = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };
-        unsigned char place_type = 0;
+        byte place_type = 0;
         if (rand() % 100 >= 2) {
             place_type = zox_block_dark;
         }
         // find next z position
-        const unsigned char range = 5;
-        unsigned char find = 0;
+        const byte range = 5;
+        byte find = 0;
         byte3 position = int3_to_byte3(voxel_position);
         ChunkOctree *update_node;
         if (place_type == 0) {

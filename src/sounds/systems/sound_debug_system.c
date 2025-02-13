@@ -2,8 +2,8 @@ extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 point
 
 void SoundDebugSystem(ecs_iter_t *it) {
     if (!zox_visualize_sounds) return;
-    zox_iter_world()
-    unsigned char has_begun = 0;
+    zox_field_world()
+    byte has_begun = 0;
     zox_field_in(SoundData, soundDatas, 2)
     zox_field_in(SoundDirty, soundDirtys, 3)
     for (int i = 0; i < it->count; i++) {

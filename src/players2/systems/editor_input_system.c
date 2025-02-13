@@ -4,7 +4,7 @@ const float3 big_old_particle_zone_bounds = (float3) { 32, 32, 32 };
 // max should be around 10k
 
 void EditorInputSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {

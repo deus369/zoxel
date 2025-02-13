@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_button_close(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_t spawn_close_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 parent_position, const int2 parent_size, const int2 position, const int size, byte2 padding, const unsigned char layer, const int2 canvas_size) {
+ecs_entity_t spawn_close_button(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 parent_position, const int2 parent_size, const int2 position, const int size, byte2 padding, const byte layer, const int2 canvas_size) {
     const float2 anchor = (float2) { 1, 0.5f };
     SpawnButton spawnButton = {
         .canvas = {

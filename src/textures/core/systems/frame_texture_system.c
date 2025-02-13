@@ -19,13 +19,13 @@ void FrameTextureSystem(ecs_iter_t *it) {
         zox_field_o(TextureData, textureDatas, textureData)
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
-        const unsigned char add_noise = zox_has(e, TextureAddNoise);
+        const byte add_noise = zox_has(e, TextureAddNoise);
         const color fill_color = color2->value;
         color outline_color;
         if (zox_has(e, OutlineColor)) outline_color = zox_get_value(e, OutlineColor)
         else outline_color = (color) { fill_color.g + 25 + rand() % 25, fill_color.b + 25 + rand() % 25, fill_color.r + 25 + rand() % 25, 255 };
         if (zox_has(e, IconTexture)) {
-            const unsigned char radius = (unsigned char ) (textureSize->value.y * zox_gett_value(e, IconRadius));
+            const byte radius = (byte ) (textureSize->value.y * zox_gett_value(e, IconRadius));
             generate_texture_icon(textureData->value, textureData->length, textureSize->value, fill_color, outline_color, outlineThickness->value, radius, add_noise);
             // zox_log(" > [%s] radius [%i] size [%ix%i]\n", zox_get_name(it->entities[i]), radius, textureSize->value.x, textureSize->value.y)
         } else {

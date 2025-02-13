@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
 }
 
 // SDL_GLContext* context,
-ecs_entity_t spawn_app_sdl(ecs_world_t *world, SDL_Window* window, const int2 position, const int2 size, const unsigned char fullscreen) {
+ecs_entity_t spawn_app_sdl(ecs_world_t *world, SDL_Window* window, const int2 position, const int2 size, const byte fullscreen) {
     zox_instance(prefab_app_sdl)
     zox_name("app_sdl")
     zox_set(e, SDLWindow, { window })

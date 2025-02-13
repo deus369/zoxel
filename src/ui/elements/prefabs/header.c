@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_header(ecs_world_t *world, const ecs_entity_t prefab) 
     return e;
 }
 
-ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const char* text, const int font_size, int header_margins, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const unsigned char is_close_button, const int2 canvas_size) {
+ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const char* text, const int font_size, int header_margins, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const byte is_close_button, const int2 canvas_size) {
     const int string_length = strlen(text);
     int2 zext_position = (int2) { ((font_size * string_length) / 2) + header_margins / 2, 0 };
     float2 zext_anchor = (float2) { 0, 0.5f };
@@ -24,8 +24,8 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
     const byte2 padding = (byte2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
     const int2 global_position = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(global_position, canvas_size);
-    const unsigned char zext_layer = layer + 1;
-    const unsigned char button_layer = layer + 2;
+    const byte zext_layer = layer + 1;
+    const byte button_layer = layer + 2;
     zox_instance(prefab_header)
     zox_name("header")
     zox_set(e, DraggedLink, { parent })
@@ -74,8 +74,8 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
     const byte2 padding = (byte2) { (int) (data->zext.font_size * 0.3f), (int) (data->zext.font_size * 0.3f) };
     const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
-    const unsigned char zext_layer = data->element.layer + 1;
-    const unsigned char button_layer = data->element.layer + 2;
+    const byte zext_layer = data->element.layer + 1;
+    const byte button_layer = data->element.layer + 2;
     zox_instance(data->element.prefab)
     zox_name("header")
     zox_set(e, DraggedLink, { data->parent.e })

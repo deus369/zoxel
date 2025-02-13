@@ -65,7 +65,7 @@ void initialize_component_ids##_##name() {\
 void dispose_component_ids##_##name() {\
     dispose_ecs_entity_t_array_d(component_ids##_##name);\
 }\
-unsigned char is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }
+byte is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }
 
 #define zox_debug_component(name)  zox_log(" + component [%s] > [%s]\n", #name, zox_get_name(name))
 
@@ -78,7 +78,7 @@ void initialize_component_ids##_##name() {\
 void dispose_component_ids##_##name() {\
     dispose_ecs_entity_t_array_d(component_ids##_##name);\
 }\
-unsigned char is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }*/
+byte is_component_type##_##name(ecs_entity_t id) { return is_in_ecs_entity_t_array_d(component_ids##_##name, id);  }*/
 
 /*ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });*/
 /*ECS_DTOR(name, ptr, {\

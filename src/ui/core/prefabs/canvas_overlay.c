@@ -18,7 +18,7 @@ ecs_entity_t spawn_canvas_overlay(ecs_world_t *world, const ecs_entity_t prefab,
     return 0;
 #endif
     const ecs_entity_t parent = canvas;
-    const unsigned char layer = game_overlay_layer;
+    const byte layer = game_overlay_layer;
     const int2 pixel_position = int2_zero;
     const float2 anchor = float2_half;
     const int2 pixel_size = (int2) { 4096, 4096 }; //  canvas_size;

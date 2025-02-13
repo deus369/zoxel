@@ -15,7 +15,7 @@ zox_component(TargetNetAddress, byte4)
 zox_component_int(NetPort)
 zox_component_int(TargetNetPort)
 zox_component_int(SocketLink)
-zox_memory_component(PacketData, unsigned char)
+zox_memory_component(PacketData, byte)
 #include "util/ip_util.c"
 #include "util/socket_util.c"
 #include "components/socket_link.c"

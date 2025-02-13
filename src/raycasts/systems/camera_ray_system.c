@@ -21,7 +21,7 @@ void calculate_new_frustum(ecs_world_t *world, const ecs_entity_t e, const float
 void CameraRaySystem(ecs_iter_t *it) {
     const float max_ray_distance = 1;
     const double2 viewport_position = (double2) { 0.5, 0.5 };
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(FrustumCorners, frustumCornerss, 1)
     zox_field_out(RaycastOrigin, raycastOrigins, 2)
     zox_field_out(RaycastNormal, raycastNormals, 3)

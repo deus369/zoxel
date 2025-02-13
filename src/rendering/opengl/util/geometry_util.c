@@ -1,4 +1,4 @@
-unsigned char does_support_geometry_shaders() {
+byte does_support_geometry_shaders() {
     GLint maxGeometryOutputVertices;
     glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES, &maxGeometryOutputVertices);
     return (maxGeometryOutputVertices > 0);

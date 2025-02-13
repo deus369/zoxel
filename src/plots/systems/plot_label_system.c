@@ -24,7 +24,7 @@ void PlotLabelSystem(ecs_iter_t *it) {
         delta_time_min *= 1000;
         delta_time_max *= 1000;
         // zox_log("min %f - max %f\n", delta_time_min, delta_time_max)
-        const unsigned char buffer_size = 64;
+        const byte buffer_size = 64;
         int buffer_index = 0;
         char buffer[buffer_size];
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "min %.0f\nmax %.0f\n", delta_time_min, delta_time_max);

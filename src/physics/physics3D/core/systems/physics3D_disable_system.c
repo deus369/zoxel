@@ -1,4 +1,4 @@
-const unsigned char physics_disable_frames = 8;
+const byte physics_disable_frames = 8;
 
 void Physics3DDisableSystem(ecs_iter_t *it) {
 #ifdef zoxel_disable_velocity

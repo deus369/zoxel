@@ -1,5 +1,5 @@
 void PickupSoundSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(PickedUp, pickedUps, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(PickedUp, pickedUps, pickedUp)

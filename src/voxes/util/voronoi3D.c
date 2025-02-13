@@ -25,22 +25,22 @@ int get_closest_index3(const byte3 point, byte3 *points, int points_length, byte
     return smallestIndex;
 }
 
-void voronoi3D(ChunkOctree *node, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, unsigned char black_voxel) {
-    const unsigned char unique_regions = 64;
+void voronoi3D(ChunkOctree *node, const byte target_depth, const byte3 size, const byte2 voxel_range, byte black_voxel) {
+    const byte unique_regions = 64;
     const int points_length = (int) (size.x * 1.6f);
     const int voxels_length = size.x * size.y * size.z;
     const float pointCloseness = size.x / 5;
     byte3 position = byte3_zero;
     byte3 points[points_length];
-    unsigned char regions[points_length];
-    unsigned char region_voxels[voxels_length];
+    byte regions[points_length];
+    byte region_voxels[voxels_length];
     for (int i = 0; i < points_length; i++) points[i] = byte3_zero;
     for (int i = 0; i < points_length; i++) {
         byte3 point = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };
         int count = 0;
         while (count <= 128) {
             point = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };
-            unsigned char isTooClose = 0;
+            byte isTooClose = 0;
             for (int j = i - 1; j >= 0; j--) {
                 byte3 point2 = points[j];
                 if (    point.x + pointCloseness > point2.x - pointCloseness &&
@@ -70,15 +70,15 @@ void voronoi3D(ChunkOctree *node, const unsigned char target_depth, const byte3 
             }
         }
     }
-    unsigned char is_darken[voxels_length];
+    byte is_darken[voxels_length];
     for (position.x = 0; position.x < size.x; position.x++) {
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {
                 const int index = byte3_array_index(position, size);
-                const unsigned char voxel = region_voxels[index];
-                unsigned char is_voxel_up = 0;
-                unsigned char is_voxel_right = 0;
-                unsigned char is_voxel_front = 0;
+                const byte voxel = region_voxels[index];
+                byte is_voxel_up = 0;
+                byte is_voxel_right = 0;
+                byte is_voxel_front = 0;
                 // right
                 if (position.x != size.x - 1 || position.y == size.y - 1 || position.z == size.z - 1) {
                     byte3 position_right = byte3_right(position);
@@ -119,7 +119,7 @@ void voronoi3D(ChunkOctree *node, const unsigned char target_depth, const byte3 
         for (position.y = 0; position.y < size.y; position.y++) {
             for (position.z = 0; position.z < size.z; position.z++) {
                 const int index = byte3_array_index(position, size);
-                const unsigned char region_voxel = region_voxels[index];
+                const byte region_voxel = region_voxels[index];
                 byte2 set_voxel = (byte2) { black_voxel, target_depth };
                 if (region_voxel != unique_regions) {
                     set_voxel.x = voxel_range.x + (region_voxel % (voxel_range.y - voxel_range.x));

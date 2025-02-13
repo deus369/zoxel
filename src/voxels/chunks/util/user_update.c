@@ -1,4 +1,4 @@
-void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const unsigned char voxel, ChunkOctree *parent_node) {
+void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const byte voxel, ChunkOctree *parent_node) {
     // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
     // if (place_chunk == 0) {
     if (!zox_valid(chunk)) {
@@ -40,7 +40,7 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     // todo: just check for spawned entity, spawn either minivox or block entity here
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position, chunk_size_b3)) {
         const ChunkNeighbors *chunk_neighbors = zox_get(chunk, ChunkNeighbors)
-        for (unsigned char axis = 0; axis < 6; axis++) {
+        for (byte axis = 0; axis < 6; axis++) {
             if (byte3_on_edge_axis(position, chunk_size_b3, axis)) {
                 zox_set(chunk_neighbors->value[axis], ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
@@ -48,7 +48,7 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     }
 }
 
-void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const unsigned char voxel, unsigned char hit_type) {
+void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const byte voxel, byte hit_type) {
     // int3 ray_hit_normal;
     byte3 position;
     ecs_entity_t chunk;

@@ -3,7 +3,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
     return;
 #endif
     init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(MusicPlaying, musicPlayings, 1)
     zox_field_in(NoteLinks, noteLinkss, 2)
     zox_field_in(MusicSpeed, musicSpeeds, 3)
@@ -30,7 +30,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
             if (note_volume == 0) continue;
             const float note_time = zox_get_value(note, SoundLength)
             if (note_time == 0) continue;
-            const unsigned char note_instrument = zox_get_value(note, InstrumentType)
+            const byte note_instrument = zox_get_value(note, InstrumentType)
             const float frequency = note_frequencies[music_note]; // based sound note off music note, get timings off music notes in array
 
             // todo:

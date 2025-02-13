@@ -1,7 +1,7 @@
 // todo: reuse parts of ZeviceClickSystem in this
 // this is now from zevice
 void DeviceClickSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(PlayerLink, playerLinks, 1)
     zox_field_in(Children, childrens, 4)
     zox_field_in(RaycasterTarget, raycasterTargets, 2)
@@ -17,24 +17,24 @@ void DeviceClickSystem(ecs_iter_t *it) {
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         if (!canvas) continue;
         zox_field_i(Children, childrens, children)
-        unsigned char click_type = 0;
+        byte click_type = 0;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];
             if (!zevice) continue;
             if (!zox_has(zevice, ZeviceButton)) continue;
             if (!zox_has(zevice, DeviceButtonType)) continue;
-            const unsigned char button_type = zox_get_value(zevice, DeviceButtonType)
+            const byte button_type = zox_get_value(zevice, DeviceButtonType)
             if (button_type == zox_device_button_a) {
-                const unsigned char disabled = zox_get_value(zevice, ZeviceDisabled)
+                const byte disabled = zox_get_value(zevice, ZeviceDisabled)
                 if (!disabled) {
-                    const unsigned char click_value = zox_get_value(zevice, ZeviceButton)
+                    const byte click_value = zox_get_value(zevice, ZeviceButton)
                     if (devices_get_pressed_this_frame(click_value)) click_type = 1;
                     else if (devices_get_released_this_frame(click_value)) click_type = 2;
                 }
             }
         }
         if (click_type == 0) continue;
-        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        const byte device_mode = zox_get_value(player, DeviceMode)
         // zox_field_e()
         zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
         zox_field_i(WindowRaycasted, windowRaycasteds, windowRaycasted)
@@ -58,7 +58,7 @@ void DeviceClickSystem(ecs_iter_t *it) {
                 zox_set(canvas, WindowToTop, { windowTarget->value })
             }
             if (zox_has(raycasterTarget->value, Dragable)) {
-                unsigned char drag_mode = zox_drag_mode_none;
+                byte drag_mode = zox_drag_mode_none;
                 if (device_mode == zox_device_mode_keyboardmouse) drag_mode = zox_drag_mode_mouse;
                 else if (device_mode == zox_device_mode_touchscreen) drag_mode = zox_drag_mode_finger;
                 set_element_dragged(world, player, raycasterTarget->value, drag_mode);

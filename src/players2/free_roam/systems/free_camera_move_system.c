@@ -4,7 +4,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
 #ifdef zoxel_on_web
     movement_power *= 10.0f;
 #endif
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CameraLink, cameraLinks, 2)
     for (int i = 0; i < it->count; i++) {

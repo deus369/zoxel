@@ -27,7 +27,7 @@ void delete_directory_recursive(const char* path) {
     }
 }
 
-unsigned char create_directory(const char* path) {
+byte create_directory(const char* path) {
     if (mkdir(path, 0777) != 0) {
         zox_log(" !!! directory failed to create [%s]\n", path)
         return 0;

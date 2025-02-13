@@ -78,7 +78,7 @@ color hsv_to_color(const float3 hsv) {
     r = ceil(r * 255);
     g = ceil(g * 255);
     b = ceil(b * 255);
-    return (color) { (unsigned char)(r), (unsigned char)(g), (unsigned char)(b), 255 };
+    return (color) { (byte) r, (byte) g, (byte) b, 255 };
 }
 
 

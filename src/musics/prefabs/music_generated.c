@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_music_generated(ecs_world_t *world, const ecs_entity_t
 
 ecs_entity_t spawn_music_generated(ecs_world_t *world, const ecs_entity_t prefab) {
     // settings
-    unsigned char instrument_type = instrument_piano;
+    byte instrument_type = instrument_piano;
     double music_speed = 0.54 + 0.32 * (rand() % 100) * 0.01;
     #ifdef zoxel_slow_music
     music_speed *= 6.0;

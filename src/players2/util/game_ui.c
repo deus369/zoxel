@@ -4,9 +4,9 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player, const ecs_e
     return;
 #endif
     if (!zox_has(player, DeviceMode) || !zox_has(player, CanvasLink)) return;
-    const unsigned char device_mode = zox_get_value(player, DeviceMode)
+    const byte device_mode = zox_get_value(player, DeviceMode)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    unsigned char is_touch = device_mode == zox_device_mode_touchscreen;
+    byte is_touch = device_mode == zox_device_mode_touchscreen;
 #ifdef zoxel_mouse_emulate_touch
     is_touch = 1;
 #endif

@@ -1,6 +1,6 @@
 // todo: refactor how these work so i can just hook into user events
 
-void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const unsigned char quantity) {
+void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const byte quantity) {
     if (!player) return;
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
@@ -24,7 +24,7 @@ void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, cons
 
 void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event) {
     const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
-    const unsigned char index = zox_get_value(event->clicked, IconIndex)
+    const byte index = zox_get_value(event->clicked, IconIndex)
     if (index == taskbar_menu) toggle_ui_with_tag_e(spawn_menu_paused_player, MenuPaused, event->clicker)
     else if (index == taskbar_stats) toggle_ui_with_tag_e(spawn_menu_stats_player, MenuStats, event->clicker)
     else if (index == taskbar_items) toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, event->clicker)

@@ -5,7 +5,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
     return;
 #endif
     // get held action type
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(RaycastVoxelData, raycastVoxelDatas, 1)
     zox_field_out(ActionLinks, actionLinkss, 2)
     zox_field_out(TriggerActionB, triggerActionBs, 3)
@@ -17,7 +17,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
         zox_field_o(ActionLinks, actionLinkss, actionLinks)
         const ecs_entity_t player = zox_get_value(e, PlayerLink)
         if (!player) continue;
-        const unsigned char action_selected = get_player_action_index(world, player);
+        const byte action_selected = get_player_action_index(world, player);
         if (action_selected == 255) {
             triggerActionB->value = 0;
             continue; // no actionbar
@@ -35,16 +35,16 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
         }
         if (zox_has(action_entity, Item)) {
             // if item quantity > 0
-            unsigned char quantity = zox_get_value(action_entity, Quantity)
+            byte quantity = zox_get_value(action_entity, Quantity)
             if (quantity == 0) {
                 zox_log(" ! cannot place with zero quantity")
             } else {
-                unsigned char is_use_quantity = 0;
+                byte is_use_quantity = 0;
                 if (zox_has(action_entity, ItemBlock)) {
                     const ecs_entity_t block = zox_get_value(action_entity, BlockLink)
                     if (block) {
                         // todo: check placing on type and normal
-                        const unsigned char block_index = zox_get_value(block, BlockIndex)
+                        const byte block_index = zox_get_value(block, BlockIndex)
                         raycast_action(world, raycastVoxelData, block_index, 1);
                         is_use_quantity = 1;
                     }
@@ -116,7 +116,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                                 if (terrain && zox_has(terrain, RealmLink)) {
                                     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
                                     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-                                    const unsigned char voxel_index = raycastVoxelData->voxel - 1;
+                                    const byte voxel_index = raycastVoxelData->voxel - 1;
                                     const ecs_entity_t voxel = voxels->value[voxel_index];
                                     // now get item and set to pickup
                                     if (zox_has(voxel, ItemLink)) {

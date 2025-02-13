@@ -18,7 +18,7 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-/*ecs_entity_t spawn_animating_chunk(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const float scale, const unsigned char division) {
+/*ecs_entity_t spawn_animating_chunk(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const float scale, const byte division) {
     ecs_entity_t e = spawn_chunk_octree(world, prefab, position, scale);
     zox_set(e, AnimateChunk, { (((rand() % 100) / 100.0f) * animating_chunk_speed) })
     zox_set(e, RenderLod, { division })

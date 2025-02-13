@@ -1,6 +1,6 @@
 // triggers on VoxelsDirty flag
 void TerrainTextureSetSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(RealmLink, realmLinks, 1)
     zox_field_out(GenerateTexture, generateTextures, 2)
     zox_field_out(TilemapSize, tilemapSizes, 3)
@@ -8,7 +8,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RealmLink, realmLinks, realmLink)
         if (!zox_valid(realmLink->value) || !zox_has(realmLink->value, VoxelLinks)) continue;
-        const unsigned char voxels_dirty = zox_get_value(realmLink->value, VoxelsDirty)
+        const byte voxels_dirty = zox_get_value(realmLink->value, VoxelsDirty)
         if (voxels_dirty == 0) continue;
         // wait for realm to generate, voxels and textures
         if  (voxels_dirty <= 8) {

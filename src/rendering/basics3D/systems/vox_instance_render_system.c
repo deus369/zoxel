@@ -17,7 +17,7 @@ typedef struct
 } InstanceRenderCommand;
 zoxel_dynamic_array(InstanceRenderCommand)
 
-unsigned char has_mesh(InstanceRenderCommand_array_d* commands, ecs_entity_t mesh, int *index) {
+byte has_mesh(InstanceRenderCommand_array_d* commands, ecs_entity_t mesh, int *index) {
     for (int i = 0; i < commands->size; i++) {
         if (commands->data[i].mesh == mesh) {
             *index = i;
@@ -33,7 +33,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         return;
     }
     // zox_log("instances: %i\n", it->count)
-    zox_iter_world()
+    zox_field_world()
     // create dynamic array of transforms
     InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
     zox_field_in(TransformMatrix, transformMatrixs, 1)

@@ -13,9 +13,9 @@ ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const ecs_entity_t finger, const ecs_entity_t virtual_joystick, const unsigned char button_type) {
+ecs_entity_t spawn_virtual_joystick(ecs_world_t *world, const ecs_entity_t canvas, const int2 pixel_position, const ecs_entity_t finger, const ecs_entity_t virtual_joystick, const byte button_type) {
     const float2 anchor = float2_zero;
-    const unsigned char layer = 4;
+    const byte layer = 4;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);

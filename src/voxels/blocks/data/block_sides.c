@@ -5,7 +5,7 @@
 #define block_side_back 4
 #define block_side_front 5
 
-unsigned char byte3_on_edge_axis(const byte3 pos, const byte3 size, const unsigned char axis) {
+byte byte3_on_edge_axis(const byte3 pos, const byte3 size, const byte axis) {
     return (axis == block_side_left && pos.x == 0) ||
         (axis == block_side_down && pos.y == 0) ||
         (axis == block_side_back && pos.z == 0) ||

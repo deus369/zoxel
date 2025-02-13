@@ -5,8 +5,8 @@ const float joystick_deadzone_time = 0.2f;
 int joystick_deadzones_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int joystick_deadzones_new_values[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 double joystick_deadzone_times[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-unsigned char joystick_deadzones_setting[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-unsigned char joystick_deadzones_set[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+byte joystick_deadzones_setting[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+byte joystick_deadzones_set[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 int apply_joystick_deadzone(const int index, int axis_value) {
 #if defined(zox_disable_gamepad_deadzones)

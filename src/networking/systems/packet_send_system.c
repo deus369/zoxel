@@ -16,14 +16,14 @@ void PacketSendSystem(ecs_iter_t *it) {
         zox_field_i(TargetNetAddress, targetNetAddresss, targetNetAddress)
         zox_field_i(TargetNetPort, targetNetPorts, targetNetPort)
         struct sockaddr_in send_addr = byte4_to_ip(targetNetAddress->value, targetNetPort->value);
-        unsigned char packet_size = 1;
-        unsigned char send_buffer[] = { zoxel_packet_type_connect };
+        byte packet_size = 1;
+        byte send_buffer[] = { zoxel_packet_type_connect };
         const char *send_text = "Hello World.";
-        unsigned char *send_buffer_2 = convert_from_ascii_text_at(send_text, 2);
+        byte *send_buffer_2 = convert_from_ascii_text_at(send_text, 2);
         send_buffer_2[0] = zoxel_packet_type_msg;
         send_buffer_2[1] = strlen(send_text);
-        unsigned char packet_size_2 = 2 + send_buffer_2[1];
-        unsigned char packets_send_count = 1 + rand() % test_send_packet_length;
+        byte packet_size_2 = 2 + send_buffer_2[1];
+        byte packets_send_count = 1 + rand() % test_send_packet_length;
 #ifdef zox_testing_networking
         zox_log(" > sending [%i] packets to [%i.%i.%i.%i:%i]\n", packets_send_count, targetNetAddress->value.x, targetNetAddress->value.y, targetNetAddress->value.z, targetNetAddress->value.w, targetNetPort->value)
 #endif

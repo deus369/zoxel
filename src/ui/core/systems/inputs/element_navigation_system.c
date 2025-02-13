@@ -5,7 +5,7 @@ extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t ra
 // todo: fix this, RaycasterTarget moved to zevices
 void ElementNavigationSystem(ecs_iter_t *it) {
     init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(NavigatorState, navigatorStates, 3)
@@ -17,7 +17,7 @@ void ElementNavigationSystem(ecs_iter_t *it) {
         zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
         zox_field_o(NavigatorState, navigatorStates, navigatorState)
         zox_field_o(NavigatorTimer, navigatorTimers, navigatorTimer)
-        unsigned char device_mode = deviceMode->value;
+        byte device_mode = deviceMode->value;
 #ifdef zox_debug_navigation
         device_mode = zox_device_mode_gamepad;
 #endif

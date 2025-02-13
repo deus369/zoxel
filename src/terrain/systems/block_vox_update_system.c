@@ -11,7 +11,7 @@ void BlockVoxUpdateSystem(ecs_iter_t *it) {
         zox_field_i(BlocksSpawned, blocksSpawneds, blocksSpawned)
         if (!blocksSpawned->value) continue;
         zox_field_o(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        const unsigned char chunk_lod_dirty = chunkLodDirty->value; //  zox_get_value(e, ChunkLodDirty)
+        const byte chunk_lod_dirty = chunkLodDirty->value; //  zox_get_value(e, ChunkLodDirty)
         if (chunk_lod_dirty == chunk_lod_state_none || chunk_lod_dirty > chunk_lod_state_vox_blocks_spawn) {
             chunkLodDirty->value = chunk_lod_state_vox_blocks_pre_spawn;
         }

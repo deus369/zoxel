@@ -1,7 +1,7 @@
 extern double zox_delta_time;
 
 void TimedEventSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(TimedEvent, timedEvents, 1)
     zox_field_in(EventInput, eventInputs, 2)
     zox_field_out(EventTime, eventTimes, 3)

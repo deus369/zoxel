@@ -29,7 +29,7 @@ MaterialBone create_MaterialBone(const GLuint material) {
 }
 
 ecs_entity_t spawn_shader_bone(ecs_world_t *world) {
-    const unsigned char shader_index = get_new_shader_source_index();
+    const byte shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = shader_bone_vert;
     shader_frags[shader_index] = shader_bone_frag;
     const ecs_entity_t e = spawn_shader(world, shader_index);

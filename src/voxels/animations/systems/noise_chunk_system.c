@@ -43,7 +43,7 @@
         const ChunkSize *chunkSize = &chunkSizes[i];
         ChunkData *chunkData = &chunks[i];
         int voxels_array_size = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
-        resize_memory_component(ChunkData, chunkData, unsigned char, voxels_array_size);
+        resize_memory_component(ChunkData, chunkData, byte, voxels_array_size);
         generate_chunk_noise(chunkData, chunkSize);
         generateChunk->value = 0;
         chunkDirty->value = chunk_dirty_state_trigger;
@@ -64,7 +64,7 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         if (chunkDirty->value != 0) continue;
         const RenderLod *renderLod = &renderLods[i];
         ChunkOctree *chunkOctree = &chunkOctrees[i];
-        unsigned char chunk_depth = get_chunk_division_from_lod(renderLod->value); // 5
+        byte chunk_depth = get_chunk_division_from_lod(renderLod->value); // 5
         random_fill_octree(chunkOctree, 1, chunk_depth);
 #ifndef zox_disable_closing_octree_nodes
         close_solid_nodes(chunkOctree);

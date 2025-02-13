@@ -1,10 +1,10 @@
 // #define zox_octree_chunk_build_limits
-const unsigned char zox_build_all_faces = 1;
+const byte zox_build_all_faces = 1;
 
 #ifndef zox_disable_hidden_terrain_edge
-    const unsigned char edge_voxel = 1;
+    const byte edge_voxel = 1;
 #else
-    const unsigned char edge_voxel = 0;
+    const byte edge_voxel = 0;
 #endif
 
 #define add_voxel_face_uvs_indicies(index) mesh_data->indicies->data[mesh_data->indicies->size + index] = mesh_data->vertices->size + voxel_face_indicies[index];
@@ -20,23 +20,23 @@ const unsigned char zox_build_all_faces = 1;
 
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
-void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned char voxel, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 *voxel_face_uvs, const unsigned char direction, const float3 offset, const float vert_scale) {
+void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const byte voxel, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 *voxel_face_uvs, const byte direction, const float3 offset, const float vert_scale) {
     expand_capacity_int_array_d(mesh_data->indicies, voxel_face_indicies_length);
-    for (unsigned char i = 0; i < 6; i++) {
+    for (byte i = 0; i < 6; i++) {
         add_voxel_face_uvs_indicies(i)
     }
     mesh_data->indicies->size += voxel_face_indicies_length;
     expand_capacity_float3_array_d(mesh_data->vertices, voxel_face_vertices_length);
-    for (unsigned char i = 0; i < 4; i++) {
+    for (byte i = 0; i < 4; i++) {
         zox_build_voxel_face_vert(i)
     }
     mesh_data->vertices->size += voxel_face_vertices_length;
     expand_capacity_float2_array_d(mesh_data->uvs, voxel_face_vertices_length);
-    for (unsigned char i = 0; i < 4; i++) {
+    for (byte i = 0; i < 4; i++) {
         add_voxel_face_uvs_uvs(i)
     }
     mesh_data->uvs->size += voxel_face_vertices_length;
-    for (unsigned char a = 0; a < voxel_face_vertices_length; a++) {
+    for (byte a = 0; a < voxel_face_vertices_length; a++) {
         color_rgb vertex_color = color_rgb_white;
 #ifndef zox_disable_fake_voxel_lighting
         if (direction == direction_down) color_rgb_multiply_float(&vertex_color, 0.33f);
@@ -50,9 +50,9 @@ void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const unsigned c
 }
 
 // this function accounts for size of drawing voxels
-void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const unsigned char voxel_direction, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const unsigned char is_max_depth_chunk, const unsigned char node_index, const byte3 node_position, const unsigned char depth, const unsigned char lod, const unsigned char voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const unsigned char *voxel_solidity) {
+void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *parent_node, const float3 vertex_position_offset, const int* voxel_face_indicies, const float3 *voxel_face_vertices, const float2 *voxel_uvs, const byte voxel_direction, const ChunkOctree *neighbors[], const byte neighbor_depths[], const byte is_max_depth_chunk, const byte node_index, const byte3 node_position, const byte depth, const byte lod, const byte voxel, const float octree_scale, const float vert_scale, int3 octree_position, const mesh_uvs_build_data *mesh_data, const byte *voxel_solidity) {
     if (is_adjacent_all_solid(voxel_direction, root_node, parent_node, neighbors, octree_position, node_index, node_position, depth, lod, neighbor_depths, edge_voxel, voxel_solidity)) return;
-    unsigned char is_regular_build = 1;
+    byte is_regular_build = 1;
     if (zox_build_all_faces && is_max_depth_chunk) {
         /* so far just increasing face draw resolution for up faces */
         // if (voxel_direction == direction_up) {
@@ -118,10 +118,10 @@ void build_if_adjacent_voxel(const ChunkOctree *root_node, const ChunkOctree *pa
         zox_terrain_building_dig(root_node, tilemapUVs, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_depths, mesh_data, is_max_depth_chunk, lod, depth, int3_add(octree_position, octree_positions[i]), i, old_octree_scale, vert_scale, voxel_solidity, voxel_uv_indexes);\
     }
 
-void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const mesh_uvs_build_data *mesh_data, const unsigned char is_max_depth_chunk, const unsigned char lod, unsigned char depth, int3 octree_position, const unsigned char node_index, const float old_octree_scale, const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
+void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *tilemapUVs, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const byte neighbor_depths[], const mesh_uvs_build_data *mesh_data, const byte is_max_depth_chunk, const byte lod, byte depth, int3 octree_position, const byte node_index, const float old_octree_scale, const float vert_scale, const byte *voxel_solidity, const int *voxel_uv_indexes) {
     if (depth >= lod || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0 && voxel_solidity[chunk_octree->value - 1]) {
-            const unsigned char voxel = chunk_octree->value;
+            const byte voxel = chunk_octree->value;
             const float octree_scale = octree_scales3[depth];
             const float3 vertex_position_offset = float3_from_int3(octree_position);
             const byte3 node_position = octree_positions_b[node_index];
@@ -136,13 +136,13 @@ void zox_terrain_building_dig(const ChunkOctree *root_node, const TilemapUVs *ti
     } else {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
-        for (unsigned char i = 0; i < 8; i++) {
+        for (byte i = 0; i < 8; i++) {
             zox_terrain_building_dig_node(i)
         }
     }
 }
 
-void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const unsigned char is_max_depth_chunk, const unsigned char depth, const ChunkOctree *neighbors[], const unsigned char neighbor_depths[], const float vert_scale, const unsigned char *voxel_solidity, const int *voxel_uv_indexes) {
+void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs *tilemapUVs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const byte is_max_depth_chunk, const byte depth, const ChunkOctree *neighbors[], const byte neighbor_depths[], const float vert_scale, const byte *voxel_solidity, const int *voxel_uv_indexes) {
     const mesh_uvs_build_data mesh_data = {
         .indicies = create_int_array_d(initial_dynamic_array_size),
         .vertices = create_float3_array_d(initial_dynamic_array_size),

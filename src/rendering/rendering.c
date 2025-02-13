@@ -28,7 +28,7 @@ zox_component_float(Alpha)
 #endif
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 
-unsigned char initialize_rendering(ecs_world_t *world) {
+byte initialize_rendering(ecs_world_t *world) {
     rendering_initialized = 1;
     if (headless) return EXIT_SUCCESS;
     else if (is_using_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN

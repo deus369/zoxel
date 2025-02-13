@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_note(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_note(ecs_world_t *world, const ecs_entity_t prefab, const int note, const unsigned char instrument, const float length, const float volume) {
+ecs_entity_t spawn_note(ecs_world_t *world, const ecs_entity_t prefab, const int note, const byte instrument, const float length, const float volume) {
     zox_instance(prefab)
     zox_name("note")
     zox_set(e, InstrumentType, { instrument })

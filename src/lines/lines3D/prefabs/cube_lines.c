@@ -1,6 +1,6 @@
 ecs_entity_t prefab_cube_lines;
 
-void prefab_add_cube_lines(ecs_world_t *world, const ecs_entity_t e, const color_rgb lines_color, const unsigned char is_active) {
+void prefab_add_cube_lines(ecs_world_t *world, const ecs_entity_t e, const color_rgb lines_color, const byte is_active) {
     zox_add_tag(e, CubeLines)
     zox_prefab_set(e, DebugCubeLines, { is_active })
     zox_prefab_set(e, CubeLinesThickness, { 1 })

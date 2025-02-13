@@ -52,7 +52,7 @@ void get_save_filepath(const char *game, const char *filename, char *path, size_
     snprintf(path, size, "%s/%s", dir, filename);
 }
 
-unsigned char has_path_directory(const char *path) {
+byte has_path_directory(const char *path) {
 #ifdef zoxel_on_windows
     DWORD attrib = GetFileAttributesA(path);
     if (attrib != INVALID_FILE_ATTRIBUTES && (attrib & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -67,7 +67,7 @@ unsigned char has_path_directory(const char *path) {
     return 0; // Save game directory does not exist
 }
 
-unsigned char has_save_game_directory(const char *game) {
+byte has_save_game_directory(const char *game) {
 #ifdef zox_disable_save_games
     return 0;
 #endif
@@ -158,7 +158,7 @@ void delete_save_directory(const char *game) {
     }
 }
 
-unsigned char create_new_save_directory(const char *game) {
+byte create_new_save_directory(const char *game) {
 #ifdef zox_disable_save_games
     return 1;
 #else
@@ -194,7 +194,7 @@ unsigned char create_new_save_directory(const char *game) {
     User-specific Data Directory: ~/.local/share/<YourGame>
 */
 
-unsigned char has_save_game_file(const char *game, const char *filename) {
+byte has_save_game_file(const char *game, const char *filename) {
     char path[max_path_characters];
     get_save_filepath(game, filename, path, sizeof(path));
     FILE *file = fopen(path, "rb");

@@ -5,7 +5,7 @@ int zox_statistics_characters_rendered;
 // extern int zox_statistics_characters_rendered;
 void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (!material_colored3D) return;
-    zox_iter_world()
+    zox_field_world()
     const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
     const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
     zox_field_in(MeshIndicies, meshIndiciess, 1)
@@ -13,7 +13,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
     zox_field_in(ColorsGPULink, colorsGPULinks, 3)
     zox_field_in(TransformMatrix, transformMatrixs, 4)
     zox_field_in(RenderDisabled, renderDisableds, 5)
-    unsigned char has_set_material = 0;
+    byte has_set_material = 0;
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;

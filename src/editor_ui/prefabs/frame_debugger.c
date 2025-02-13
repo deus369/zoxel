@@ -1,7 +1,7 @@
 
-ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t prefab, const char *header_label, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const unsigned char layer) {
-    const unsigned char header_layer = layer + 1;
-    const unsigned char lines_layer = layer + 2;
+ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t prefab, const char *header_label, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const byte layer) {
+    const byte header_layer = layer + 1;
+    const byte lines_layer = layer + 2;
 
     const int font_size = 28;
     const int header_margins = 16;
@@ -9,10 +9,10 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
     const int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
     const int2 header_size = (int2) { pixel_size.x, font_size + header_margins };
 
-    const unsigned char is_header = 1;
-    const unsigned char is_plot_sub_label = 1;
+    const byte is_header = 1;
+    const byte is_plot_sub_label = 1;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const unsigned char is_close_button = 1;
+    const byte is_close_button = 1;
     const color line_color = (color) { 6, 222, 222, 255 };
     const int lines_count = record_frames_count;
     const float lines_thickness = 1.0f;
@@ -82,7 +82,7 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
 }
 
 ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t canvas) {
-    const unsigned char layer = game_overlay_layer + 3; // 3;
+    const byte layer = game_overlay_layer + 3; // 3;
     const int2 test_window_size = { 380, 380 };
     const int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     const float2 test_window_anchor = { 1.0f, 0.0f };

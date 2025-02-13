@@ -15,8 +15,8 @@ ecs_entity_t spawn_prefab_hierarchy(ecs_world_t *world) {
 ecs_entity_t spawn_editor_hierarchy(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t player = 0; // zox_players[0];
     const char *header_label = "hierarchy";
-    const unsigned char ui_layer = 8;
-    const unsigned char is_close_button = 1;
+    const byte ui_layer = 8;
+    const byte is_close_button = 1;
     const int font_size = 18;
     const int labels_count = 0;
     const int max_elements = 8;

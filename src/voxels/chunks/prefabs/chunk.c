@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {
     zox_prefab()
     // Voxels
     // todo: calculate this based on max LOD resolution (2 to power of resolution)
-    const unsigned char max_length = 32; // todo: Calculate this from max resolution!
+    const byte max_length = 32; // todo: Calculate this from max resolution!
     const int3 size = (int3) { max_length, max_length, max_length };
     add_chunk_octree(world, e, size);
     zox_prefab_set(e, VoxScale, { default_vox_scale })

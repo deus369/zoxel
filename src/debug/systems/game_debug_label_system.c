@@ -27,8 +27,8 @@ int debug_label_device(ecs_world_t *world, const ecs_entity_t device, char buffe
                 if (!zox_has(zevice, ZevicePointer)) continue;
                 buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " - z [%i]", j);
                 if (zox_has(zevice, ZevicePointer)) {
-                        const unsigned char click_value = zox_get_value(zevice, ZevicePointer)
-                        unsigned char click_type = 0;
+                        const byte click_value = zox_get_value(zevice, ZevicePointer)
+                        byte click_type = 0;
                         if (devices_get_pressed_this_frame(click_value)) click_type = 1;
                         else if (devices_get_released_this_frame(click_value)) click_type = 2;
                         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " clk [%i]", click_type);
@@ -50,7 +50,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
        return;
     }
     const int buffer_size = max_debug_characters;
-    zox_iter_world()
+    zox_field_world()
     zox_field_out(ZextDirty, zextDirtys, 1)
     zox_field_out(ZextData, zextDatas, 2)
     for (int i = 0; i < it->count; i++) {

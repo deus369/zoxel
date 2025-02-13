@@ -11,8 +11,8 @@ ecs_entity_t spawn_prefab_scrollbar(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_scrollbar(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, unsigned char layer, int2 parent_pixel_position_global, int2 parent_pixel_size, int width, int scrollbar_margins, int2 canvas_size, int elements_count, int max_elements) {
-    unsigned char child_layer = layer + 1;
+ecs_entity_t spawn_scrollbar(ecs_world_t *world, ecs_entity_t parent, ecs_entity_t canvas, int2 pixel_position, byte layer, int2 parent_pixel_position_global, int2 parent_pixel_size, int width, int scrollbar_margins, int2 canvas_size, int elements_count, int max_elements) {
+    byte child_layer = layer + 1;
     float2 anchor = (float2) { 1.0f, 0.5f };
     int2 pixel_size = (int2) { width, parent_pixel_size.y };
     int2 margins = (int2) { scrollbar_margins, 0 };

@@ -1,7 +1,7 @@
 #define zoxel_convert_ascii(char, number) else if (input == char) return number;
 #define zox_char_newline 254
 
-unsigned char convert_ascii(char input) {
+byte convert_ascii(char input) {
     // special characters
     if (input == '?') return 0;
     zoxel_convert_ascii('\n', zox_char_newline)
@@ -86,8 +86,8 @@ unsigned char convert_ascii(char input) {
     return 0;
 }
 
-/*unsigned char* convert_ascii_text(const char *input, int length) {
-    static unsigned char output[length];
+/*byte* convert_ascii_text(const char *input, int length) {
+    static byte output[length];
     for (int i = 0; i < length; i++)
     {
         output[i] = convert_ascii(input[i]);
@@ -95,11 +95,11 @@ unsigned char convert_ascii(char input) {
     return output;
 }*/
 
-unsigned char* convert_from_ascii_text_at(const char *input, unsigned char start_buffer) {
-    unsigned char length = start_buffer + strlen(input);
-    unsigned char *output = malloc(length);
-    for (unsigned char i = start_buffer; i < length; i++) {
-        unsigned char input_index = i - start_buffer;
+byte* convert_from_ascii_text_at(const char *input, byte start_buffer) {
+    byte length = start_buffer + strlen(input);
+    byte *output = malloc(length);
+    for (byte i = start_buffer; i < length; i++) {
+        byte input_index = i - start_buffer;
         output[i] = convert_ascii(input[input_index]);
         // printf("Converting Ascii to byte: %i : %i : %c\n", i, output[i], input[input_index]);
     }

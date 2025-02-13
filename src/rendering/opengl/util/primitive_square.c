@@ -86,7 +86,7 @@ const float2 square_vertices_bottom_left_aligned[] = {
     { 1, 0 }
 };
 
-const float2* get_aligned_mesh2D(unsigned char alignment) {
+const float2* get_aligned_mesh2D(byte alignment) {
     if (alignment == zox_mesh_alignment_centred) {
         return square_vertices;
     } else if (alignment == zox_mesh_alignment_right) {

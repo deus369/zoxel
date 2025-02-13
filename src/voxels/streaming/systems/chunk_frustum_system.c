@@ -5,7 +5,7 @@ extern int zox_statistics_characters_visible;
 extern int zox_statistics_characters_total;
 
 // block spawn delve function
-void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const unsigned char max_depth, unsigned char depth, const unsigned char state) {
+void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const byte max_depth, byte depth, const byte state) {
     if (!node->nodes) return;
     if (depth == max_depth) {
         // get block_vox from nodes
@@ -40,10 +40,10 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_field_i(EntityLinks, entityLinkss, entityLinks)
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
-        // const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
+        // const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
-        unsigned char is_viewed = 1;
+        byte is_viewed = 1;
         ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
         while(ecs_query_next(&it2)) {
             const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);

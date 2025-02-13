@@ -1,9 +1,9 @@
-void vox_outlines(ChunkOctree *chunk, const unsigned char target_depth, byte3 size, const unsigned char black_voxel) {
+void vox_outlines(ChunkOctree *chunk, const byte target_depth, byte3 size, const byte black_voxel) {
     byte3 voxel_position;
     for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
         for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
             for (voxel_position.z = 0; voxel_position.z < size.z; voxel_position.z++) {
-                unsigned char on_edges = byte3_on_edges(voxel_position, size);
+                byte on_edges = byte3_on_edges(voxel_position, size);
                 if (on_edges) {
                     // skip if air
                     byte3 temp_position_2 = voxel_position;
@@ -17,7 +17,7 @@ void vox_outlines(ChunkOctree *chunk, const unsigned char target_depth, byte3 si
     }
 }
 
-void noise_vox(ChunkOctree *chunk, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, const unsigned char black_voxel) {
+void noise_vox(ChunkOctree *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const byte black_voxel) {
     byte3 voxel_position;
     for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
         for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
@@ -26,7 +26,7 @@ void noise_vox(ChunkOctree *chunk, const unsigned char target_depth, const byte3
                 if (get_octree_voxel(chunk, &temp_position, target_depth) == black_voxel) continue;
                 const int rando = rand() % 1000;
                 if (rando > 300) continue;
-                const unsigned char voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
+                const byte voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
                 byte2 set_voxel = (byte2) { voxel, target_depth };
                 byte3 node_position = voxel_position;
                 set_octree_voxel(chunk, &node_position, &set_voxel, 0);
@@ -35,7 +35,7 @@ void noise_vox(ChunkOctree *chunk, const unsigned char target_depth, const byte3
     }
 }
 
-void vox_rubble(ChunkOctree *chunk, const unsigned char target_depth, const byte3 size, const byte2 voxel_range, const int rubble_count) {
+void vox_rubble(ChunkOctree *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const int rubble_count) {
     byte3 voxel_position;
     for (int j = 0; j < rubble_count; j++) {
         voxel_position.x = rand() % size.x;
@@ -45,7 +45,7 @@ void vox_rubble(ChunkOctree *chunk, const unsigned char target_depth, const byte
             byte3 node_position = voxel_position;
             if (get_octree_voxel(chunk, &node_position, target_depth) == 0) break;
         }
-        unsigned char voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
+        byte voxel = voxel_range.x + rand() % (voxel_range.y - voxel_range.x);
         byte2 set_voxel = (byte2) { voxel, target_depth };
         byte3 node_position = voxel_position;
         set_octree_voxel(chunk, &node_position, &set_voxel, 0);

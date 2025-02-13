@@ -23,7 +23,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         const float frequency = soundFrequency->value;
         const float noise = sound_noise * (rand() % 101) / 100.0f;
         // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
-        const unsigned char instrument_type = instrumentType->value; // rand() % 3; // 2;
+        const byte instrument_type = instrumentType->value; // rand() % 3; // 2;
         const float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         const float dampen = sound_dampen_multiplier * sound_time_length;
         const int total_sound_samples = (int) (sound_sample_rate * sound_time_length);

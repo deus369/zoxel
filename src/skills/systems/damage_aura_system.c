@@ -7,7 +7,7 @@
 // todo: seperate skill, use sphere cast (using sphere distance) to cache nearby characters - and lookup using chunk entities and not a seperate query
 
 void DamageAuraSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_in(SkillActive, skillActives, 2)
     zox_field_in(SkillDamage, skillDamages, 3)

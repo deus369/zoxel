@@ -1,7 +1,7 @@
 // todo: get dimensions off app using AppLink from Canvas, check it's dimensions
 void CanvasResizeSystem(ecs_iter_t *it) {
     const int2 new_size = viewport_dimensions;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(CameraLink, cameraLinks, 1)
     zox_field_in(Children, childrens, 2)
     zox_field_in(ScreenToCanvas, screenToCanvass, 3)

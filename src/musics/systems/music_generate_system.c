@@ -1,7 +1,7 @@
 void MusicGenerateSystem(ecs_iter_t *it) {
-    const unsigned char lowest_note = 12;
-    const unsigned char highest_note = 36;
-    const unsigned char note_verse_difference = 6;
+    const byte lowest_note = 12;
+    const byte highest_note = 36;
+    const byte note_verse_difference = 6;
     zox_field_out(GenerateMusic, generateMusics, 1)
     zox_field_out(NoteLinks, noteLinkss, 2)
     // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
@@ -58,7 +58,7 @@ void MusicGenerateSystem(ecs_iter_t *it) {
                 } else {
                     music_note += -2 + rand() % 3;
                 }
-                unsigned char music_instrument = instrument_piano;
+                byte music_instrument = instrument_piano;
                 if (rand() % 100 >= 50) music_instrument = instrument_organ;
                 const float note_length = 0.8f + 0.6f * (rand() % 100 * 0.01f);
                 const float note_volume = 0.6f + 0.4f * (rand() % 100 * 0.01f);

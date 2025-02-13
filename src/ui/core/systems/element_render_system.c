@@ -3,7 +3,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
     if (!material_textured2D) return;
     const GLuint material_link = zox_get_value(material_textured2D, MaterialGPULink)
     const MaterialTextured2D *material_attributes = zox_get(material_textured2D, MaterialTextured2D)
-    unsigned char has_set_material = 0;
+    byte has_set_material = 0;
     const float position_z = ((int) renderer_layer) * shader_depth_multiplier;
     // glUniform1f(attributes.depth, position_z);
     zox_field_in(Position2D, position2Ds, 1)

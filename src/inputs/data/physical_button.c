@@ -1,7 +1,7 @@
 typedef struct {
-    unsigned char is_pressed;
-    unsigned char pressed_this_frame;
-    unsigned char released_this_frame;
+    byte is_pressed;
+    byte pressed_this_frame;
+    byte released_this_frame;
 } PhysicalButton;
 
 void reset_key(PhysicalButton *key) {

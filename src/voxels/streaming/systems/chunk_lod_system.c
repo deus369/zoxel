@@ -12,7 +12,7 @@ void ChunkLodSystem(ecs_iter_t *it) {
         ecs_iter_fini(&streamers_iter);
         return;
     }
-    unsigned char streamers_dirty = 0;
+    byte streamers_dirty = 0;
     zox_field_in_iter(&streamers_iter, StreamDirty, streamDirtys, 1)
     for (int i = 0; i < streamers_iter.count; i++) {
         zox_field_i(StreamDirty, streamDirtys, streamDirty)

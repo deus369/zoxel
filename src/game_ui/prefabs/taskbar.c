@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
 extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i);
 extern void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event);
 
-ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const unsigned char layer) {
+ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const byte layer) {
     int2 position = (int2) { 0, -24 * zox_ui_scale };
     float2 anchor = (float2) {0.5f, 1 };
     const int size = 48 * zox_ui_scale;

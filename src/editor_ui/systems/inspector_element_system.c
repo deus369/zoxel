@@ -1,6 +1,6 @@
 // update inspector element text every .5 seconds by checking if value changed... with a string check
 void InspectorElementSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(EntityTarget, entityTargets, 2)
     zox_field_in(ComponentTarget, componentTargets, 3)
     for (int i = 0; i < it->count; i++) {

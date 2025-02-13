@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity_t frame, const unsigned char quantity) {
+void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity_t frame, const byte quantity) {
     if (!zox_has(frame, IconLabel)) return;
     if (!zox_has(frame, Children)) {
         zox_log(" ! frame has no children :( %lu\n", frame)
@@ -35,7 +35,7 @@ void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame,
         if (children->length < 2) return;
         const ecs_entity_t zext = children->value[1];
         if (zox_has(data, Quantity)) {
-            const unsigned char quantity = zox_get_value(data, Quantity)
+            const byte quantity = zox_get_value(data, Quantity)
             // zox_log("x%i\n", quantity)
             if (quantity > 1) {
                 char text[6];
@@ -55,7 +55,7 @@ void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame,
 void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t data) {
     if (!zext) return;
     if (zox_has(data, Quantity)) {
-        const unsigned char quantity = zox_get_value(data, Quantity)
+        const byte quantity = zox_get_value(data, Quantity)
         // zox_log("x%i\n", quantity)
         if (quantity > 1) {
             char text[6];

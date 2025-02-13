@@ -12,7 +12,7 @@ ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_name("touchscreen")
     zox_set(e, ScreenDimensions, { screen_dimensions })
     zox_get_muter(e, Children, children)
-    for (unsigned char i = 0; i < fingers_count; i++) {
+    for (byte i = 0; i < fingers_count; i++) {
         const ecs_entity_t finger = spawn_zevice_pointer(world, e, i, i);
         const ecs_entity_t virtual_joystick = spawn_zevice_stick(world, e, i, i);
         zox_add_tag(finger, Finger)

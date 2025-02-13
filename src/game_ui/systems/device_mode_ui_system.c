@@ -1,6 +1,6 @@
 // handles changes in device mode state
 void DeviceModeUISystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceMode, deviceModes, 1)
     zox_field_in(DeviceModeDirty, deviceModeDirtys, 2)
     zox_field_in(GameLink, gameLinks, 3)
@@ -13,7 +13,7 @@ void DeviceModeUISystem(ecs_iter_t *it) {
         zox_field_i(GameLink, gameLinks, gameLink)
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value; // zox_get_value(e, CanvasLink)
-        unsigned char game_state = 0;
+        byte game_state = 0;
         if (gameLink->value) game_state = zox_get_value(gameLink->value, GameState)
         // handle previous mode
         if (deviceMode->value == zox_device_mode_touchscreen) {

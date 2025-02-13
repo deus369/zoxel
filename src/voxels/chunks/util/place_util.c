@@ -1,19 +1,19 @@
-byte3 find_position_in_chunk(const ChunkOctree *chunk_octree, const unsigned char target_depth) {
+byte3 find_position_in_chunk(const ChunkOctree *chunk_octree, const byte target_depth) {
     if (chunk_octree == NULL) return byte3_full;
-    const unsigned char chunk_length = powers_of_two_byte[target_depth];
-    const unsigned char max_checks = 32;
-    unsigned char checks_count = 0;
+    const byte chunk_length = powers_of_two_byte[target_depth];
+    const byte max_checks = 32;
+    byte checks_count = 0;
     while (checks_count < max_checks) {
         // get a random x-z position
         byte3 local_position = (byte3) { rand() % chunk_length, chunk_length - 1, rand() % chunk_length };
         // zox_log("   > checking position: %ix%i\n", local_position.x, local_position.z)
         byte3 temp2 = local_position;
-        const unsigned char voxel1 = get_octree_voxel(chunk_octree, &temp2, target_depth);
+        const byte voxel1 = get_octree_voxel(chunk_octree, &temp2, target_depth);
         if (!voxel1) {
             // find ground now
             for (local_position.y = chunk_length - 2; local_position.y >= 0; local_position.y--) {
                 byte3 temp = local_position;
-                const unsigned char voxel = get_octree_voxel(chunk_octree, &temp, target_depth);
+                const byte voxel = get_octree_voxel(chunk_octree, &temp, target_depth);
                 if (voxel) { // can stand on voxel
                     local_position.y++; // place on top of solid
                     return local_position;
@@ -27,22 +27,22 @@ byte3 find_position_in_chunk(const ChunkOctree *chunk_octree, const unsigned cha
 }
 
 
-byte3 find_position_in_chunk_with_above(const ChunkOctree *chunk_octree, const unsigned char target_depth, const ChunkOctree *chunk_octree_above) {
+byte3 find_position_in_chunk_with_above(const ChunkOctree *chunk_octree, const byte target_depth, const ChunkOctree *chunk_octree_above) {
     if (chunk_octree == NULL) return byte3_full;
-    const unsigned char chunk_length = powers_of_two_byte[target_depth];
-    const unsigned char max_checks = 32;
-    unsigned char checks_count = 0;
+    const byte chunk_length = powers_of_two_byte[target_depth];
+    const byte max_checks = 32;
+    byte checks_count = 0;
     while (checks_count < max_checks && chunk_octree_above) {
         // get a random x-z position
         byte3 local_position = (byte3) { rand() % chunk_length, 0, rand() % chunk_length };
         // zox_log("   > checking position: %ix%i\n", local_position.x, local_position.z)
         byte3 temp2 = local_position;
-        const unsigned char voxel1 = get_octree_voxel(chunk_octree_above, &temp2, target_depth);
+        const byte voxel1 = get_octree_voxel(chunk_octree_above, &temp2, target_depth);
         if (!voxel1) {
             // find ground now
             for (local_position.y = chunk_length - 1; local_position.y >= 0; local_position.y--) {
                 byte3 temp = local_position;
-                const unsigned char voxel = get_octree_voxel(chunk_octree, &temp, target_depth);
+                const byte voxel = get_octree_voxel(chunk_octree, &temp, target_depth);
                 if (voxel) { // can stand on voxel
                     local_position.y++; // place on top of solid
                     return local_position;

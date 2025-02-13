@@ -1,9 +1,9 @@
 // spawning block vox entities during LOD generation step!
-const unsigned char block_vox_render_distance = 1; // 3 | 4 looks best
+const byte block_vox_render_distance = 1; // 3 | 4 looks best
 
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
     if (disable_block_voxes) return;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkPosition, chunkPositions, 3)
     zox_field_in(VoxLink, voxLinks, 4)
@@ -20,10 +20,10 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(BlocksSpawned, blocksSpawneds, blocksSpawned)
-        const unsigned char can_have_block_voxes = renderDistance->value <= block_vox_render_distance;
+        const byte can_have_block_voxes = renderDistance->value <= block_vox_render_distance;
         if (can_have_block_voxes) {
             zox_field_e()
-            const unsigned char vox_lod = get_block_voxes_lod_from_camera_distance(renderDistance->value);
+            const byte vox_lod = get_block_voxes_lod_from_camera_distance(renderDistance->value);
             if (!blocksSpawned->value) {
                 blocksSpawned->value = 1;
                 update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, max_octree_depth);

@@ -1,13 +1,15 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
 // todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
-extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const ecs_entity_t vox, const float3 position, const float4 rotation, const unsigned char character_lod, const unsigned char render_disabled);
+extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, ecs_entity_t_array_d* entities, const ecs_entity_t vox, const float3 position, const float4 rotation, const byte character_lod, const byte render_disabled);
 // default_chunk_length
 // todo: predict spawn size from octree?
 // todo: handle bounds resize by shifting positions
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    if (disable_npcs) return;
-    zox_iter_world()
+    if (disable_npcs) {
+        return;
+    }
+    zox_field_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(ChunkPosition, chunkPositions, 3)
@@ -24,12 +26,12 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         zox_field_o(EntityLinks, entityLinkss, entityLinks)
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) continue;
-        const unsigned char vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
+        const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
-        for (unsigned char j = 0; j < characters_per_chunk_count; j++) {
+        for (byte j = 0; j < characters_per_chunk_count; j++) {
             byte3 local_position = find_position_in_chunk(chunkOctree, max_octree_depth);
             if (byte3_equals(byte3_full, local_position)) continue;
             float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 0.5f, 0.5f });

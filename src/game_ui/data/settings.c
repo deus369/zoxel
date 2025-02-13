@@ -3,7 +3,7 @@ const int2 crosshair_texture_size = (int2) { 128, 128 };
 const int2 crosshair_pixel_size = (int2) { 64, 64 };
 const color crosshair_color = (color) { 255, 255, 255, 88 };
 // more ui
-unsigned char game_ui_has_taskbar = 0;// sizes
+byte game_ui_has_taskbar = 0;// sizes
 const int2 virtual_joystick_size = (int2) { 300, 300 };
 const int2 virtual_joystick_pointer_size = (int2) { 120, 120 };
 // colors

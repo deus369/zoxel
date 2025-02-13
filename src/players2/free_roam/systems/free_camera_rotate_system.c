@@ -7,13 +7,13 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
 #ifdef zoxel_on_web
     rotate_power *= 10.0;
 #endif
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CameraLink, cameraLinks, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
-        const unsigned char roam_state = zox_get_value(cameraLink->value, CanRoam)
+        const byte roam_state = zox_get_value(cameraLink->value, CanRoam)
         if (roam_state != 2) continue;
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {

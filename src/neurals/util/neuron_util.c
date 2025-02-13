@@ -38,8 +38,8 @@ float2 calculate_neuron_position(const float2 position, const int neurons_length
 // ecs_entity_t get_neuron_links_output() { }
 
 // for any connecctions, if has neuron as a, start signals
-unsigned char send_signals_from_neuron(ecs_world_t *world, const ecs_entity_t neuron, float value) {
-    unsigned char has_outputs = 0;
+byte send_signals_from_neuron(ecs_world_t *world, const ecs_entity_t neuron, float value) {
+    byte has_outputs = 0;
     // finds connection link, should use the neurons connecction link here instead of scrolling through parent
     const ecs_entity_t brain = zox_get_value(neuron, ParentLink)
     const BrainLinks *brain_links = zox_get(brain, BrainLinks)

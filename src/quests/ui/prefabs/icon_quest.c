@@ -3,7 +3,7 @@ void tooltip_event_icon_quest(ecs_world_t *world, const TooltipEventData *data) 
         set_entity_with_text(world, data->tooltip, "");
     } else*/ {
         // set_entity_with_text(world, data->tooltip, "selected skill");
-        unsigned char used_name = 0;
+        byte used_name = 0;
         char result[64];
         if (data->data && zox_has(data->data, ZoxName)) {
             const ZoxName *zox_name = zox_get(data->data, ZoxName)

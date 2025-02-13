@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const float percentage, const unsigned char render_disabled) {
+ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const float percentage, const byte render_disabled) {
     // const ecs_entity_t camera = main_cameras[0];
     // const ecs_entity_t canvas = zox_canvases[0];
     const float depth_difference = 0.0012f; // 0.012f;

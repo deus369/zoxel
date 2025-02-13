@@ -1,4 +1,4 @@
-unsigned char characters_per_chunk_count = 8;
+byte characters_per_chunk_count = 8;
 int npc_vox_index_count = 4;
 // int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
 char* npc_voxes[] = { "mrpenguin", "slime", "bob", "chicken" };

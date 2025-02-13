@@ -1,7 +1,7 @@
 // todo: SelectedEvent, Deselected Event, or, SelectState = SelectedThisFrame, Selected, Deselected, None
 // todo: Give item a texture, spawn as icon!
 void UserIconSelectSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(SelectState, selectStates, 1)
     zox_field_in(UserDataLink, userDataLinks, 2)
     zox_field_in(CanvasLink, canvasLinks, 3)

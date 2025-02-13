@@ -1,8 +1,8 @@
-extern unsigned char set_entity_with_text(ecs_world_t *world, ecs_entity_t e, const char* text);
-extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, unsigned char mesh_alignment);
+extern byte set_entity_with_text(ecs_world_t *world, ecs_entity_t e, const char* text);
+extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, byte mesh_alignment);
 
 void ElementBarSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ElementBar, elementBars, 1)
     zox_field_in(ElementBarSize, elementBarSizes, 2)
     zox_field_in(Children, childrens, 3)
@@ -14,7 +14,7 @@ void ElementBarSystem(ecs_iter_t *it) {
         const InitializeElement *initializeElement = zox_get(front_bar, InitializeElement)
         if (initializeElement->value) continue; // removing this breaks it?!?!
         zox_field_e()
-        // unsigned char is_2D = zox_has(front_bar, MeshVertices2D);
+        // byte is_2D = zox_has(front_bar, MeshVertices2D);
         if (!can_render_ui(world, e)) continue; // disabled for now causes issues
         zox_field_i(ElementBar, elementBars, elementBar)
         zox_field_i(ElementBarSize, elementBarSizes, elementBarSize)
@@ -30,7 +30,7 @@ void ElementBarSystem(ecs_iter_t *it) {
             // const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
             // if (test_var == meshVertices->value[2].x) continue;
             MeshVertices *meshVertices2 = zox_get_mut(front_bar, MeshVertices)
-            for (unsigned char j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
+            for (byte j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
             meshDirty->value = mesh_state_trigger2;
             zox_modified(front_bar, MeshDirty)
             zox_modified(front_bar, MeshVertices)

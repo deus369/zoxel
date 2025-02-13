@@ -3,7 +3,7 @@
 void set_zox_name(ZoxName *zoxName, const char* text) {
     // int text_length = strlen(text);
     const int text_length = text != NULL ? strlen(text) : 0;
-    if (zoxName->length != text_length) resize_memory_component(ZoxName, zoxName, unsigned char, text_length)
+    if (zoxName->length != text_length) resize_memory_component(ZoxName, zoxName, byte, text_length)
     for (int i = 0; i < text_length; i++) zoxName->value[i] = convert_ascii(text[i]);
 }
 
@@ -11,7 +11,7 @@ char* get_zext_text(const ZextData *zextData) {
     return convert_zext_to_text(zextData->value, zextData->length);
 }
 
-unsigned char is_zext(ZextData *zext, const char* text) {
+byte is_zext(ZextData *zext, const char* text) {
     if (zext == NULL || zext->value == NULL) return 0; // error
     // int text_length = strlen(text);
     const int text_length = text != NULL ? strlen(text) : 0;
@@ -27,7 +27,7 @@ void set_zext(ZextData *zextData, const char* text) {
     // const int text_length = strlen(text);
     const int text_length = text != NULL ? strlen(text) : 0;
     // zox_log("   - set zext [%i]\n", text_length)
-    if (zextData->length != text_length) resize_memory_component(ZextData, zextData, unsigned char, text_length)
+    if (zextData->length != text_length) resize_memory_component(ZextData, zextData, byte, text_length)
     for (int i = 0; i < text_length; i++) zextData->value[i] = convert_ascii(text[i]);
 }
 
@@ -39,10 +39,10 @@ void print_entity_zext(ecs_world_t *world, const ecs_entity_t e) {
     free(text);
 }
 
-unsigned char is_zext_updating(ecs_world_t *world, const Children *children) {
+byte is_zext_updating(ecs_world_t *world, const Children *children) {
     for (int i = 0; i < children->length; i++) { // update the reused ones
         const ecs_entity_t zigel = children->value[i];
-        const unsigned char generate_texture = zox_get_value(zigel, GenerateTexture)
+        const byte generate_texture = zox_get_value(zigel, GenerateTexture)
         if (generate_texture) return 1;
     }
     return 0;
@@ -68,10 +68,10 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
     // Set Data for Old Zigels
     for (int i = 0; i < reuse_count; i++) {
         const ecs_entity_t e = old_children[i];
-        const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
+        const byte zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
         const int data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
         set_zigel_position(world, zextData, e, data_index, data->element.size.y, data->zext.text_alignment, data->zext.text_padding, data->element.anchor, new_children_length, data->parent.position, data->parent.size, data->canvas.size);
-        const unsigned char old_zigel_index = zox_get_value(e, ZigelIndex)
+        const byte old_zigel_index = zox_get_value(e, ZigelIndex)
         // only if ZigelIndex has changed!
         if (old_zigel_index != zigel_index) {
 #ifdef zoxel_debug_zigel_updates
@@ -92,7 +92,7 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
         zox_log("    - spawning new_children [%i]\n", new_children_length - old_children_length)
 #endif
         for (int i = old_children_length; i < new_children_length; i++) {
-            const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
+            const byte zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
             const int data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
             data->zigel.zigel_index = zigel_index;
             data->zigel.data_index = data_index;
@@ -113,7 +113,7 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
     if (has_old_children) free(old_children);
 }
 
-void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, unsigned char *value, int length) {
+void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, byte *value, int length) {
     const Children *name_label_children = zox_get(parent, Children)
     ecs_entity_t e = name_label_children->value[0];
     ZextData *zextData = zox_get_mut(e, ZextData)
@@ -127,7 +127,7 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, u
     zox_modified(zext_entity, ZextDirty)*/
 }
 
-unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+byte set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     zox_get_muter(e, ZextData, zextData)
     if (is_zext(zextData, text)) return 0;
     set_zext(zextData, text);
@@ -136,14 +136,14 @@ unsigned char set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, con
     return 1;
 }
 
-unsigned char set_entity_with_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+byte set_entity_with_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     zox_get_muter(e, ZextData, zextData)
     set_zext(zextData, text);
     zox_set(e, ZextDirty, { zext_update_start })
     return 1;
 }
 
-unsigned char set_entity_label_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+byte set_entity_label_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     const Children *children = zox_get(e, Children)
     if (children->length == 0) return 0;
     return set_entity_with_text(world, children->value[0], text);

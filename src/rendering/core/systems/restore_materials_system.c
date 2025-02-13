@@ -1,5 +1,5 @@
 void MaterialRestoreSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ShaderLink, shaderLinks, 1)
     zox_field_out(MaterialGPULink, materialGPULinks, 2)
     for (int i = 0; i < it->count; i++) {

@@ -2,7 +2,7 @@
 
 #define zoxel_convert_to_ascii(char, number) else if (input == number) return char;
 
-char convert_to_ascii(unsigned char input) {
+char convert_to_ascii(byte input) {
     zoxel_convert_to_ascii_start('?', 0)
     zoxel_convert_to_ascii('\n', zox_char_newline)
     // lower case
@@ -86,15 +86,15 @@ char convert_to_ascii(unsigned char input) {
     return ' ';
 }
 
-char* convert_to_ascii_text(unsigned char *input, int length) {
+char* convert_to_ascii_text(byte *input, int length) {
     char *output = malloc(sizeof(char) * length);
     for (int i = 0; i < length; i++) output[i] = convert_to_ascii(input[i]);
     return output;
 }
 
-char* convert_to_ascii_text_at(unsigned char *input, int length, unsigned char at_index) {
+char* convert_to_ascii_text_at(byte *input, int length, byte at_index) {
     char *output = malloc(sizeof(char) * (length + 1));
-    for (unsigned char i = at_index; i < at_index + length; i++) output[(i - at_index)] = convert_to_ascii(input[i]);
+    for (byte i = at_index; i < at_index + length; i++) output[(i - at_index)] = convert_to_ascii(input[i]);
     output[length] = '\0';
     return output;
 }

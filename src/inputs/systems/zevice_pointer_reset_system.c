@@ -2,7 +2,7 @@ void ZevicePointerResetSystem(ecs_iter_t *it) {
     zox_field_out(ZevicePointer, zevicePointers, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ZevicePointer, zevicePointers, zevicePointer)
-        unsigned char last_value = zevicePointer->value;
+        byte last_value = zevicePointer->value;
         zevicePointer->value = reset_button_state(zevicePointer->value);
         // resets position here if finger is released last frame
         zox_field_e()

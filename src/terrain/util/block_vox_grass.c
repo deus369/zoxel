@@ -1,4 +1,4 @@
-ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char index) {
+ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const byte index) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("grass"));
     if (vox == 0) {
         zox_log(" ! grass_vox model not found.\n")
@@ -6,7 +6,7 @@ ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char
     // use instanced mesh prefab
     // prefab_block_vox_meta
     SpawnBlock spawn_data = {
-        .index = (unsigned char) (index + 1),
+        .index = (byte) (index + 1),
         .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
         // .prefab_block_vox = prefab_block_vox,
@@ -40,13 +40,13 @@ ecs_entity_t spawn_realm_block_vox_grass(ecs_world_t *world, const unsigned char
     return block_vox_meta;
 }
 
-ecs_entity_t spawn_realm_block_vox_flower(ecs_world_t *world, const unsigned char index) {
+ecs_entity_t spawn_realm_block_vox_flower(ecs_world_t *world, const byte index) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("flower"));
     if (vox == 0) {
         zox_log(" ! vox model not found.\n")
     }
     SpawnBlock spawn_data = {
-        .index = (unsigned char) (index + 1),
+        .index = (byte) (index + 1),
         .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
         .name = "flower",

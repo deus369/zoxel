@@ -1,5 +1,5 @@
 void ParentRotationSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ParentLink, parentLinks, 1)
     zox_field_in(LocalRotation3D, localRotation3Ds, 2)
     zox_field_out(Rotation3D, rotation3Ds, 3)

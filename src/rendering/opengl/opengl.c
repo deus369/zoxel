@@ -18,7 +18,7 @@ void check_compute() {
     if (check_compute_shader_support() == EXIT_FAILURE) zox_log(" ! opengl compute is not supported\n");
 }
 
-unsigned char initialize_opengl(ecs_world_t *world) {
+byte initialize_opengl(ecs_world_t *world) {
 #ifdef zoxel_on_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {

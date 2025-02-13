@@ -2,11 +2,11 @@
 extern ecs_entity_t local_realm;
 
 void HierarchyRefreshSystem(ecs_iter_t *it) {
-    const unsigned char is_header = 1;
-    const unsigned char is_scrollbar = 1;
-    const unsigned char list_start = is_header + is_scrollbar;
+    const byte is_header = 1;
+    const byte is_scrollbar = 1;
+    const byte list_start = is_header + is_scrollbar;
     const ecs_entity_t realm = local_realm;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Position2D, position2Ds, 2)
     zox_field_in(CanvasPosition, canvasPositions, 3)
     zox_field_in(Layer2D, layer2Ds, 4)
@@ -42,7 +42,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
         const int elements_visible = listUIMax->value;
         const int font_size = elementFontSize->value * zox_ui_scale;
-        const unsigned char button_layer = layer2D->value + 1;
+        const byte button_layer = layer2D->value + 1;
         const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
         const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
         const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };

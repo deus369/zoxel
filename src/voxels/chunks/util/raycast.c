@@ -10,9 +10,9 @@ const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
 #define ray_hit_type_block_vox 2
 #define ray_hit_type_character 3
 
-unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
+byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) return 0;
-    unsigned char hit_character = 0;
+    byte hit_character = 0;
     zox_geter(chunk, EntityLinks, entity_links)
     *closest_t = FLT_MAX;
     for (int i = 0; i < entity_links->length; i++) {
@@ -35,7 +35,7 @@ unsigned char raycast_character(ecs_world_t *world, const ecs_entity_t caster, c
     return hit_character;
 }
 
-unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
+byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
     ChunkOctree *chunk_octree;
     if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
@@ -60,11 +60,11 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
     if (ray_normal.z < 0) ray_add.z = (ray_origin_scaled.z - (float) voxel_position.z);
     else ray_add.z = ((float) voxel_position.z + 1 - ray_origin_scaled.z);
     float3_multiply_float3_p(&ray_add, ray_unit_size);
-    unsigned char ray_hit = 0;
+    byte ray_hit = 0;
     int3 hit_normal = int3_zero;
     float ray_distance = 0;
     float closest_t;
-    unsigned char hit_character = 0;
+    byte hit_character = 0;
     uint checks = 0;
     while (ray_distance <= ray_length && checks < safety_checks_raycasting) {
         if (chunk_links) {
@@ -84,7 +84,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
             if (int3_in_bounds(voxel_position, chunk_size)) voxel_position_local = int3_to_byte3(voxel_position);
             else voxel_position_local = (byte3) { 255, 255, 255 }; // failure!
         }
-        unsigned char old_voxel = 0;
+        byte old_voxel = 0;
         if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
             byte3 temp = voxel_position_local;
             // old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
@@ -92,7 +92,7 @@ unsigned char raycast_general(ecs_world_t *world, const ecs_entity_t caster, con
         }
         if (old_voxel) {
             data->voxel = old_voxel;
-            unsigned char is_minivox = 0;
+            byte is_minivox = 0;
             if (voxels) {
                 // const ecs_entity_t block = voxels->value[old_voxel - 1];
                 // is_minivox = zox_has(block, BlockVox);

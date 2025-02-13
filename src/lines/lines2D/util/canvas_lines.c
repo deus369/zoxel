@@ -1,6 +1,6 @@
 void spawn_canvas_edge_lines(ecs_world_t *world, const ecs_entity_t canvas, const int edge_size, const color edge_color) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const unsigned char lines_layer = max_layers2D - 2;
+    const byte lines_layer = max_layers2D - 2;
     // const int min_dim = int2_min(canvas_size);
     // const int edge_size = min_dim / 80;
     // const color edge_color = (color) { 13, 44, 13, 255 };

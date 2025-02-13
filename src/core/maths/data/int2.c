@@ -12,7 +12,7 @@ int2 int2_single(const int value) {
     return (int2) { value, value };
 }
 
-unsigned char int2_equals(const int2 a, const int2 b) {
+byte int2_equals(const int2 a, const int2 b) {
     return a.x == b.x && a.y == b.y;
 }
 
@@ -86,7 +86,7 @@ int int2_min(const int2 value) {
     else return value.y;
 }
 
-unsigned char int2_equal(const int2 a, const int2 b) {
+byte int2_equal(const int2 a, const int2 b) {
     return a.x == b.x && a.y == b.y;
 }
 
@@ -123,7 +123,7 @@ int2 int2_right(const int2 input) {
     return (int2) { input.x + 1, input.y };
 }
 
-unsigned char int2_in_bounds(const int2 input, const int2 size) {
+byte int2_in_bounds(const int2 input, const int2 size) {
     return (input.x >= 0 && input.x < size.x
         && input.y >= 0 && input.y < size.y);
 }

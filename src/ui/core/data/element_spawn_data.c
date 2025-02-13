@@ -4,8 +4,8 @@ typedef struct {
     int2 position;
     int2 size;
     float2 anchor;
-    unsigned char layer;
-    unsigned char render_disabled;
+    byte layer;
+    byte render_disabled;
     // outputs
     int2 position_in_canvas;
 } ElementSpawnData;

@@ -1,5 +1,5 @@
 void Element2DMeshSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(PixelSize, pixelSizes, 2)
     zox_field_in(MeshAlignment, meshAlignments, 3)
     zox_field_in(CanvasLink, canvasLinks, 4)

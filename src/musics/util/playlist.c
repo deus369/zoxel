@@ -1,9 +1,9 @@
-void play_music(ecs_world_t *world, const ecs_entity_t playlist, const unsigned char new_index) {
+void play_music(ecs_world_t *world, const ecs_entity_t playlist, const byte new_index) {
     if (!playlist || !zox_has(playlist, PlaylistIndex)) {
         zox_log(" ! cannot play music on null playlist\n")
         return;
     }
-    const unsigned char current_index = zox_get_value(playlist, PlaylistIndex)
+    const byte current_index = zox_get_value(playlist, PlaylistIndex)
     if (new_index == current_index) {
         // zox_log(" > music is already at [%i]\n", current_index)
         return;
@@ -27,7 +27,7 @@ void add_music(ecs_world_t *world, ecs_entity_t playlist, ecs_entity_t music) {
     add_to_MusicLinks(musicLinks, music);
 }
 
-void play_playlist(ecs_world_t *world, const ecs_entity_t realm, const unsigned char index) {
+void play_playlist(ecs_world_t *world, const ecs_entity_t realm, const byte index) {
     if (!realm || !zox_has(realm, PlaylistLinks)) {
         zox_log("invalid realm\n")
         return;

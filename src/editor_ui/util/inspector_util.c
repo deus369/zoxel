@@ -11,14 +11,14 @@ void button_event_clicked_inspepctor(ecs_world_t *world, const ecs_entity_t trig
 }
 
 // like text, sets the list of text onto the ui element list
-/*void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_entity_t window_entity, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int labels_count, const ClickEvent click_event, const unsigned char button_layer, const byte2 button_padding, const int button_inner_margins, const int font_size, const unsigned char list_start, const int2 list_margins, const unsigned char is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+/*void set_ui_list_inspector(ecs_world_t *world, Children *children, const ecs_entity_t window_entity, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int labels_count, const ClickEvent click_event, const byte button_layer, const byte2 button_padding, const int button_inner_margins, const int font_size, const byte list_start, const int2 list_margins, const byte is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // refresh elements
     const ecs_entity_t canvas = zox_get_value(window_entity, CanvasLink)
     const int childrens_length = list_start + labels_count;
     for (int j = list_start; j < children->length; j++) zox_delete(children->value[j]) // destroy previous
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
     for (int j = 0; j < labels_count; j++) {
-        const unsigned char render_disabled = !(j >= 0 && j < elements_visible);
+        const byte render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = (int2) { 0, (int) (window_size.y / 2) - (j + 0.5f) * (font_size + button_padding.y * 2) - list_margins.y - j * button_inner_margins };
         if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
         const ecs_entity_t list_element = spawn_button_old(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_color);
@@ -93,15 +93,15 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     const ecs_type_t *type = ecs_get_type(world, e);
     const ecs_id_t *type_ids = type->array;
     const int components_count = type->count; // int32_t
-    const unsigned char is_entity_name_label = 1;
-    const unsigned char is_header = 1;
-    const unsigned char is_scrollbar = 1;
-    const unsigned char list_start = is_header + is_scrollbar;
+    const byte is_entity_name_label = 1;
+    const byte is_header = 1;
+    const byte is_scrollbar = 1;
+    const byte list_start = is_header + is_scrollbar;
     Children *children = zox_get_mut(window_entity, Children)
     const ecs_entity_t scrollbar = children->value[1];
     const int elements_visible = zox_get_value(window_entity, ListUIMax)
     const int font_size = zox_ui_scale * zox_get_value(window_entity, ElementFontSize)
-    const unsigned char button_layer = 1 + zox_get_value(window_entity, Layer2D)
+    const byte button_layer = 1 + zox_get_value(window_entity, Layer2D)
     const int2 window_pixel_position_global = zox_get_value(window_entity, CanvasPosition)
     const int2 window_size = zox_get_value(window_entity, PixelSize)
     const ecs_entity_t canvas = zox_get_value(window_entity, CanvasLink)
@@ -121,7 +121,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     if (is_entity_name_label) {
         const int list_index = 0;
         const int child_index = list_start + list_index;
-        const unsigned char render_disabled = 0;
+        const byte render_disabled = 0;
         const ZoxName *zoxName = zox_get(e, ZoxName)
         char *text;
         if (zoxName) text = convert_zext_to_text(zoxName->value, zoxName->length);
@@ -135,7 +135,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
         const ecs_id_t id = type_ids[i];
         const int list_index = is_entity_name_label + i;
         const int child_index = list_start + list_index;
-        const unsigned char render_disabled = !(list_index >= 0 && list_index < elements_visible);
+        const byte render_disabled = !(list_index >= 0 && list_index < elements_visible);
         const int2 label_position = get_element_label_position(list_index, font_size, button_padding, button_inner_margins, window_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
         ecs_entity_t component = 0;
         // const char *text = ""; // labels->data[i].text

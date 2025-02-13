@@ -2,7 +2,7 @@
 // Set Dead to 1
 void DeathSystem(ecs_iter_t *it) {
     // if (!ecs_query_changed(NULL, it)) return; // only update when stat value changes
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(StatValue, statValues, 1)
     zox_field_in(UserLink, userLinks, 2)
     for (int i = 0; i < it->count; i++) {

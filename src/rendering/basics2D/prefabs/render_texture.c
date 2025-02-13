@@ -2,7 +2,7 @@ ecs_entity_t shader_render_texture;
 ecs_entity_t material_render_texture;
 
 ecs_entity_t spawn_shader_render_texture(ecs_world_t *world) {
-    const unsigned char shader_index = get_new_shader_source_index();
+    const byte shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = shader_source_vert_render_texture;
     shader_frags[shader_index] = shader_source_frag_render_texture;
     const ecs_entity_t e = spawn_shader(world, shader_index);

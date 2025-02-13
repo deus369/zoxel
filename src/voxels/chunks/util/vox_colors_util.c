@@ -15,7 +15,7 @@ float3 calculate_vox_bounds(const int3 chunk_size, const float vox_scale) {
 
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
-void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, float3 vertex_position_offset, color_rgb voxel_color, const float voxel_scale, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const unsigned char direction) {
+void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, float3 vertex_position_offset, color_rgb voxel_color, const float voxel_scale, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const byte direction) {
     expand_capacity_int_array_d(indicies, voxel_face_indicies_length);
         add_voxel_face_colors_indicies(0)
         add_voxel_face_colors_indicies(1)
@@ -59,7 +59,7 @@ if (!(chunk_octree->nodes[i].nodes == NULL && chunk_octree->nodes[i].value == 0)
     build_octree_chunk_colors_d(root_node, chunk_octree, &chunk_octree->nodes[i], neighbors, neighbor_lods, colorRGBs, indicies, vertices, color_rgbs, max_depth, depth, int3_add(octree_position, octree_positions[i]), i, total_mesh_offset, vox_scale);\
 }
 
-void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const unsigned char max_depth, unsigned char depth, int3 octree_position, const unsigned char node_index, const float3 total_mesh_offset, const float vox_scale) {
+void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const byte neighbor_lods[], const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const byte max_depth, byte depth, int3 octree_position, const byte node_index, const float3 total_mesh_offset, const float vox_scale) {
     if (chunk_octree == NULL) return;
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
@@ -68,7 +68,7 @@ void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree
             float3_multiply_float_p(&vertex_position_offset, voxel_scale);
             float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
             byte3 node_position = octree_positions_b[node_index];
-            const unsigned char voxel = chunk_octree->value;
+            const byte voxel = chunk_octree->value;
             const color_rgb voxel_color = colorRGBs->value[voxel - 1];
             zoxel_octree_colors_build_face_d(left, 0)
             zoxel_octree_colors_build_face_d(right, 1)
@@ -96,19 +96,19 @@ typedef struct {
     const ChunkOctree *chunk_octree;
     // vox
     const ColorRGBs *colorRGBs;
-    const unsigned char chunk_depth;    // our lod
+    const byte chunk_depth;    // our lod
     const float vox_scale;
     const float3 total_mesh_offset;
     // neighbors
     const ChunkOctree **neighbors; // array of pointers
-    const unsigned char *neighbor_lods; // array
+    const byte *neighbor_lods; // array
     // chunk output
     MeshIndicies *meshIndicies;
     MeshVertices *meshVertices;
     MeshColorRGBs *meshColorRGBs;
 } BuildChunkColored;
 
-void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, const unsigned char chunk_depth, const ChunkOctree *neighbors[], const unsigned char neighbor_lods[], const float3 total_mesh_offset, const float vox_scale) {
+void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, const byte chunk_depth, const ChunkOctree *neighbors[], const byte neighbor_lods[], const float3 total_mesh_offset, const float vox_scale) {
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);

@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
     zox_prefab_add(e, ColorRGBs)
     zox_prefab_add(e, UboGPULink)
     // extra for rendering
-    const unsigned char max_length = 32; // todo: Calculate this from max resolution!
+    const byte max_length = 32; // todo: Calculate this from max resolution!
     const int3 size = (int3) { max_length, max_length, max_length };
     add_chunk_octree(world, e, size);
     zox_prefab_set(e, VoxScale, { vox_model_scale })

@@ -4,7 +4,7 @@ void RayDebugSystem(ecs_iter_t *it) {
     const color_rgb debug_color = { 255, 55, 55 };
     const color_rgb debug_color2 = { 155, 155, 155 };
     const float ray_length = 16;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(RaycastOrigin, raycastOrigins, 1)
     zox_field_in(RaycastNormal, raycastNormals, 2)
     for (int i = 0; i < it->count; i++) {

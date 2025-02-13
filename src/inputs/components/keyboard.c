@@ -66,7 +66,7 @@ typedef struct {
 } Keyboard;
 zox_custom_component(Keyboard)
 
-unsigned char keyboard_is_any_input(const Keyboard *keyboard) {
+byte keyboard_is_any_input(const Keyboard *keyboard) {
     return (keyboard->enter.is_pressed || keyboard->backspace.is_pressed || keyboard->space.is_pressed ||
         keyboard->w.is_pressed || keyboard->a.is_pressed || keyboard->s.is_pressed || keyboard->d.is_pressed);
 }

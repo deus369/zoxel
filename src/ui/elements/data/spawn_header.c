@@ -1,8 +1,8 @@
 // for only the button
 typedef struct {
     ecs_entity_t prefab_zext;
-    unsigned char is_close_button;
-    unsigned char margins;
+    byte is_close_button;
+    byte margins;
     color color;
 } SpawnHeaderData;
 

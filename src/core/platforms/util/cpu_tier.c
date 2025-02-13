@@ -1,4 +1,4 @@
-unsigned char get_cpu_tier(int core_count) {
+byte get_cpu_tier(int core_count) {
 #ifdef zox_log_cores
     zox_log(" + detected cpu cores [%i]\n", core_count)
 #endif

@@ -5,7 +5,7 @@ void ZeviceButtonEnableSystem(ecs_iter_t *it) {
         zox_field_o(ZeviceDisabled, zeviceDisableds, zeviceDisabled)
         if (!zeviceDisabled->value) continue;
         zox_field_i(ZeviceButton, zeviceButtons, zeviceButton)
-        const unsigned char has_input = devices_get_is_pressed(zeviceButton->value);
+        const byte has_input = devices_get_is_pressed(zeviceButton->value);
 #ifdef zox_debug_zevice_states
         if (!has_input) zox_log("   = button reenabled [%lu] at %f\n", it->entities[i], zox_current_time)
 #endif

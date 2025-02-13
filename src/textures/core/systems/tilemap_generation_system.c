@@ -1,8 +1,8 @@
 // uses terrain's texture links to generate a tilemap
 // todo: support for multiple sizes, would have to place them in? or something
 void TilemapGenerationSystem(ecs_iter_t *it) {
-    const unsigned char uvs_per_tile = 4;
-    zox_iter_world()
+    const byte uvs_per_tile = 4;
+    zox_field_world()
     zox_field_in(TilemapSize, tilemapSizes, 1)
     zox_field_in(TextureLinks, textureLinkss, 2)
     zox_field_out(GenerateTexture, generateTextures, 3)
@@ -114,7 +114,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
 } zox_declare_system(TilemapGenerationSystem)
 
 
-        /*unsigned char is_generating = 0;
+        /*byte is_generating = 0;
         for (int j = 0; j < textureLinks->length; j++) {
             const ecs_entity_t texture = textureLinks->value[j];
             if (zox_gett_value(texture, GenerateTexture)) {

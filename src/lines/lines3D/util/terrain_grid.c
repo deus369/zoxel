@@ -1,5 +1,5 @@
-extern unsigned char terrain_spawn_distance;
-extern unsigned char terrain_vertical;
+extern byte terrain_spawn_distance;
+extern byte terrain_vertical;
 ecs_entity_t terrain_grid;
 
 void destroy_terrain_grid(ecs_world_t *world) {

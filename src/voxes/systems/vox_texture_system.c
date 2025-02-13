@@ -1,5 +1,5 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
-void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, unsigned char side) {
+void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, byte side) {
     if  (chunk == NULL) return;
     const color air_vox_color = (color) { 15, 15, 15, 255 };
     int index = 0;
@@ -9,8 +9,8 @@ void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { x, i, j };
-                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                unsigned char is_darken = 0;
+                byte voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_left) {
@@ -38,8 +38,8 @@ void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, x, j };
-                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                unsigned char is_darken = 0;
+                byte voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_down) {
@@ -67,8 +67,8 @@ void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, j, x };
-                unsigned char voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
-                unsigned char is_darken = 0;
+                byte voxel = get_octree_voxel(chunk, &node_position, max_octree_depth);
+                byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_back) {

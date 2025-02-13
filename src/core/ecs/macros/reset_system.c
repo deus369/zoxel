@@ -71,7 +71,7 @@ void system_name(ecs_iter_t *it) {\
 
 #define zox_declare_system_state_event(system_name, component, target, function)\
 void system_name##StateEventSystem(ecs_iter_t *it) {\
-    zox_iter_world()\
+    zox_field_world()\
     zox_field_in(component, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_i(component, components, comp)\

@@ -56,7 +56,7 @@ GLuint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
 }
 
 ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
-    const unsigned char shader_index = get_new_shader_source_index();
+    const byte shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = shader_vert_vox_instance;
     shader_frags[shader_index] = shader_frag_vox_instance;
     const ecs_entity_t shader = spawn_shader(world, shader_index);

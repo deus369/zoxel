@@ -13,9 +13,9 @@ ecs_entity_t spawn_prefab_tooltip(ecs_world_t *world, const ecs_entity_t prefab)
 ecs_entity_t spawn_tooltip(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas) {
     const ecs_entity_t parent = canvas;
     const int layer = max_layers2D - 2;
-    const unsigned char font_size = 20;
+    const byte font_size = 20;
     const byte2 padding = (byte2) { 12, 8 };
-    const unsigned char alignment = zox_mesh_alignment_top_right;
+    const byte alignment = zox_mesh_alignment_top_right;
     const float2 anchor = float2_one;
     const int2 pixel_position = (int2) { -8, -8 };
     const int2 parent_pixel_size = zox_get_value(parent, PixelSize)

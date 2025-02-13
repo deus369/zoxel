@@ -5,7 +5,7 @@ void clear_regular_buffer(GLuint *gpu_buffer) {
     }
 }
 
-unsigned char initialize_material(GLuint material, GLuint vert_shader, GLuint frag_shader) {
+byte initialize_material(GLuint material, GLuint vert_shader, GLuint frag_shader) {
     glAttachShader(material, vert_shader);
     glAttachShader(material, frag_shader);
     glLinkProgram(material);

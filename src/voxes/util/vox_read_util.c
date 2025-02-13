@@ -191,7 +191,7 @@ int read_vox(const char* filename, vox_file *vox) {
         chunk.xyzi.voxels = malloc(voxels_length);
         for (int j = 0; j < voxels_length; j++) chunk.xyzi.voxels[j] = 0;
         // zoxel_log("-=== voxel_nums [%i] ===-\n", voxel_nums);
-        unsigned char *voxel_bytes = (unsigned char*) malloc(bytes_length);
+        byte *voxel_bytes = (byte*) malloc(bytes_length);
         if (voxel_bytes == NULL)
         {
             zoxel_log_error(stderr, "Failed to allocate memory for voxel_bytes!\n");

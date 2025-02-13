@@ -116,18 +116,9 @@ if (!headless) {\
     zox_system_ctx(system, zox_pip_textures, generateTextureQuery, [none] texture_tag, [out] TextureDirty, [out] TextureData, [in] TextureSize, [out] GenerateTexture, __VA_ARGS__)\
 }
 
-// because these don't work in multithreading
-// zox_system_1
-// if (!ecs_query_changed(NULL, it)) return;
-// ecs_query_skip(it);
-
-// #define zoxel_button_system(system, tag) zox_system(system, EcsPostUpdate, [none] tag, [in] ClickState);
-// #define zoxel_button_system2(system, tag, pipeline) zox_system(system, pipeline, [none] tag, [in] ClickState);
-
 // used for systems
 
 #define zox_field_world() ecs_world_t *world = it->world;
-#define zox_iter_world() ecs_world_t *world = it->world;
 
 #define zox_field_in(component_name, field_name, index) const component_name *field_name = ecs_field(it, component_name, index);
 

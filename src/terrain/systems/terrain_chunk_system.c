@@ -42,7 +42,7 @@ void TerrainChunkSystem(ecs_iter_t *it) {
         const ChunkSize *chunkSize = &chunkSizes[i];
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         int array_length = chunkSize->value.x * chunkSize->value.y * chunkSize->value.z;
-        resize_memory_component(ChunkData, chunkData, unsigned char, array_length)
+        resize_memory_component(ChunkData, chunkData, byte, array_length)
         generate_chunk_terrain(chunkData, chunkSize->value, chunkPosition->value);
 #ifdef zoxel_time_terrain_chunk_system
         did_do_timing()

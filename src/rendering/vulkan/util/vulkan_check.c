@@ -2,7 +2,7 @@
 
 #include <vulkan/vulkan.h>
 
-unsigned char is_vulkan_supported() {
+byte is_vulkan_supported() {
     VkInstance instance;
     VkApplicationInfo appInfo = {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -26,7 +26,7 @@ unsigned char is_vulkan_supported() {
 }
 
 
-/*unsigned char vulkan_supported() {
+/*byte vulkan_supported() {
     #ifdef zox_include_vulkan
         uint32_t extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, NULL);
@@ -54,6 +54,6 @@ unsigned char is_vulkan_supported() {
 
 #else
 
-unsigned char is_vulkan_supported() { return 0; }
+byte is_vulkan_supported() { return 0; }
 
 #endif

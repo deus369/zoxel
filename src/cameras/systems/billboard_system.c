@@ -5,7 +5,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 
 void BillboardSystem(ecs_iter_t *it) {
     if (main_cameras_count == 0) return;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_out(Rotation3D, rotation3Ds, 2)
     for (int i = 0; i < it->count; i++) {

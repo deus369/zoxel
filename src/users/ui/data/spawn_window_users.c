@@ -3,9 +3,9 @@ typedef struct {
     ecs_entity_t prefab_header;
     ecs_entity_t prefab_header_text;
     byte2 grid_size;
-    unsigned char icon_size;
-    unsigned char grid_padding;
-    unsigned char grid_margins;
+    byte icon_size;
+    byte grid_padding;
+    byte grid_margins;
     ecs_entity_t character;
     ecs_entity_t user_links_id;
 } SpawnWindowUsersData;

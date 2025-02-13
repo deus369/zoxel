@@ -11,8 +11,8 @@ ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const char *header_label, const int2 position, const float2 anchor) {
-    const unsigned char is_close_button = 0;
-    const unsigned char layer = 3;
+    const byte is_close_button = 0;
+    const byte layer = 3;
     // enter
     ecs_entity_t e = 0;
     int labels_count = 0;

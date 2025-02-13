@@ -1,4 +1,4 @@
-const unsigned char max_stack_quantity = 255;
+const byte max_stack_quantity = 255;
 
 void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t user) {
     if (!zox_gett_value(e, PickedUp) && zox_has(user, PickUpperer)) {
@@ -7,7 +7,7 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
             const ecs_entity_t item = zox_get_value(e, ItemLink)
             zox_get_muter(user, ActionLinks, actions)
             const ecs_entity_t meta_item_block = item;
-            unsigned char stack_index = 255;
+            byte stack_index = 255;
             for (int i = 0; i < actions->length; i++) {
                 if (actions->value[i] == 0) continue;
                 zox_get_prefab(actions->value[i], item_prefab)
@@ -17,10 +17,10 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
                 }
             }
             // stack first
-            unsigned char did_stack = 0;
+            byte did_stack = 0;
             if (stack_index != 255) {
                 const ecs_entity_t stack_item = actions->value[stack_index];
-                unsigned char quantity = zox_get_value(stack_item, Quantity)
+                byte quantity = zox_get_value(stack_item, Quantity)
                 if (quantity != max_stack_quantity) {
                     quantity++;
                     zox_set(stack_item, Quantity, { quantity })
@@ -31,7 +31,7 @@ void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entit
             }
             if (!did_stack) {
                 // place as new
-                unsigned char action_index = 255;
+                byte action_index = 255;
                 for (int i = 0; i < actions->length; i++) {
                     if (actions->value[i] == 0) {
                         action_index = i;

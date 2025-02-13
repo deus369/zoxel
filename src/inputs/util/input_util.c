@@ -4,7 +4,7 @@
 extern void raycaster_select_element(ecs_world_t *world, const ecs_entity_t raycaster_entity, const ecs_entity_t element);
 
 // this disables any buttons (zevices) of a device, until they are released, then they get auto re enabled
-void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player, const unsigned char new_device_mode, const unsigned char old_mode) {
+void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player, const byte new_device_mode, const byte old_mode) {
     if (old_mode == 0) return; // no need disable on start
     if (!player) return;
 
@@ -20,7 +20,7 @@ void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player,
                 ecs_entity_t zevice_entity = zevices->value[k];
                 ZeviceDisabled *zeviceDisabled = zox_get_mut(zevice_entity, ZeviceDisabled)
                 if (!zeviceDisabled->value) {
-                    unsigned char has_input = 0;
+                    byte has_input = 0;
                     if (zox_has(zevice_entity, ZeviceStick)) {
                         const ZeviceStick *zeviceStick = zox_get(zevice_entity, ZeviceStick)
                         has_input = zevice_stick_has_input(zeviceStick, joystick_min_cutoff);

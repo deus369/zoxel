@@ -1,7 +1,7 @@
 void QuadsLabelSystem(ecs_iter_t *it) {
     const int triangles_count = MeshIndicies_memorys_allocated * 3;
     char buffer[32];
-    //unsigned char system_updated = 0;
+    //byte system_updated = 0;
     zox_field_out(QuadsCount, quadsCounts, 2)
     zox_field_out(ZextDirty, zextDirtys, 3)
     zox_field_out(ZextData, zextDatas, 4)

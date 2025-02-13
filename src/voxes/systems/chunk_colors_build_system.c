@@ -2,7 +2,7 @@
 void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs,
     color_rgb voxel_color, float3 vertex_position_offset, float voxel_scale,
     const int voxel_face_indicies[], int voxel_face_indicies_length,
-    const float3 voxel_face_vertices[], int voxel_face_vertices_length, unsigned char direction) {
+    const float3 voxel_face_vertices[], int voxel_face_vertices_length, byte direction) {
     int vertex_index_start = vertices->size;
     for (int a = 0; a < voxel_face_indicies_length; a++) {
         int vertex_index = vertex_index_start + voxel_face_indicies[a];
@@ -24,7 +24,7 @@ void add_voxel_face_colors(int_array_d *indicies, float3_array_d* vertices, colo
 }
 
 #define zoxel_get_adjacent_face(direction)\
-    unsigned char voxel##_##direction = get_voxel##_##direction(local_position, chunk, chunk_size, NULL);
+    byte voxel##_##direction = get_voxel##_##direction(local_position, chunk, chunk_size, NULL);
 
 #define zoxel_add_faces_colors(direction_facing, is_positive)\
 if (voxel##_##direction_facing == 0) {\
@@ -40,7 +40,7 @@ void build_chunk_mesh_colors(const ChunkData *chunk, const ChunkSize *chunkSize,
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
     // precount our face data for initialization
     const byte3 chunk_size = (byte3) { chunkSize->value.x, chunkSize->value.y, chunkSize->value.z };
-    unsigned char voxel;
+    byte voxel;
     color_rgb voxel_color;
     int array_index;
     byte3 local_position;

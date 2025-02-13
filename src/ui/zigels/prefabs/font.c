@@ -6,7 +6,7 @@ ecs_entity_t spawn_font_prefab(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_font(ecs_world_t *world, const ecs_entity_t prefab, const byte2 points[], const unsigned char length) {
+ecs_entity_t spawn_font(ecs_world_t *world, const ecs_entity_t prefab, const byte2 points[], const byte length) {
     zox_instance(prefab)
     zox_name("font")
     zox_get_muter(e, FontData, fontData)
@@ -16,7 +16,7 @@ ecs_entity_t spawn_font(ecs_world_t *world, const ecs_entity_t prefab, const byt
 }
 
 // doesn't clone points
-ecs_entity_t spawn_font_direct(ecs_world_t *world, const ecs_entity_t prefab, byte2 *points, const unsigned char length) {
+ecs_entity_t spawn_font_direct(ecs_world_t *world, const ecs_entity_t prefab, byte2 *points, const byte length) {
     zox_instance(prefab)
     zox_name("font")
     zox_get_muter(e, FontData, fontData)

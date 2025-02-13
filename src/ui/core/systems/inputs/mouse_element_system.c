@@ -1,6 +1,6 @@
 // element will follow mouse position
 void MouseElementSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ZeviceLink, zeviceLinks, 1)
     zox_field_in(Anchor, anchors, 2)
     zox_field_in(CanvasLink, canvasLinks, 3)

@@ -1,4 +1,4 @@
-void set_player_action(ecs_world_t *world, const ecs_entity_t player, const unsigned char index) {
+void set_player_action(ecs_world_t *world, const ecs_entity_t player, const byte index) {
     // zox_log(" > setting action [%i]\n", index)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     //find_child_with_tag(canvas, MenuGame, menu_game)
@@ -58,7 +58,7 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
     spawn_sound_from_file_name(world, prefab_sound, "swap_action");
 }
 
-unsigned char get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {
+byte get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {
     if (!player) {
         zox_log(" ! player invalid\n")
         return 255;

@@ -11,12 +11,12 @@ ecs_entity_t spawn_prefab_inspector(ecs_world_t *world) {
 
 ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
     const ecs_entity_t player = 0; // zox_players[0];
-    const unsigned char layer = 12;
+    const byte layer = 12;
     const int font_size = 18;
     const float2 anchor = (float2) { 1, 0.5f };
     const int2 pixel_position = int2_zero;
-    const unsigned char is_scrollbar = 1;
-    const unsigned char is_close_button = 1;
+    const byte is_scrollbar = 1;
+    const byte is_close_button = 1;
     const int labels_count = 1; // 34;
     const int max_elements = 8;
     const text_group labels[] = { { "-------------------------------" } };

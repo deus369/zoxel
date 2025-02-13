@@ -10,8 +10,8 @@ ecs_entity_t spawn_prefab_elementbar2D_front(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_elementbar2D_front(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 parent_position, const int2 parent_size, const int2 canvas_size, const unsigned char layer, const unsigned char render_disabled) {
-    const unsigned char margin = 6;
+ecs_entity_t spawn_elementbar2D_front(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 parent_position, const int2 parent_size, const int2 canvas_size, const byte layer, const byte render_disabled) {
+    const byte margin = 6;
     const int2 pixel_size = (int2) { 0, parent_size.y - margin * 2 };
     const float2 anchor = (float2) { 0, 0.5f }; //  float2_half;
     const int2 position = int2_zero; // parent_position

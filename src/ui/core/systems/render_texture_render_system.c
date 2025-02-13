@@ -5,7 +5,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
     if (!material_render_texture) return;
     const GLuint material_link = zox_get_value(material_render_texture, MaterialGPULink)
     const MaterialAttributesRenderTexture *material_attributes = zox_get(material_render_texture, MaterialAttributesRenderTexture)
-    unsigned char has_set_material = 0;
+    byte has_set_material = 0;
     zox_field_in(TransformMatrix, transformMatrixs, 1)
     zox_field_in(Layer2D, layer2Ds, 2)
     zox_field_in(RenderDisabled, renderDisableds, 3)

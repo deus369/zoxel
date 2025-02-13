@@ -4,7 +4,7 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
     if (!ecs_query_changed(NULL, it)) return;
 #endif
 #ifdef zox_use_orthographic_projection
-    zox_iter_world()
+    zox_field_world()
 #endif
     zox_field_in(ScreenDimensions, screenDimensionss, 1)
     zox_field_in(FieldOfView, fieldOfViews, 2)

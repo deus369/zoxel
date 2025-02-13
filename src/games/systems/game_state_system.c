@@ -9,7 +9,7 @@
 //      game_state_end > game_state_menu = return to main menu scene + ui
 
 void GameStateSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(RealmLink, realmLinks, 1)
     zox_field_in(GameStateTarget, gameStateTargets, 2)
     zox_field_out(GameState, gameStates, 3)

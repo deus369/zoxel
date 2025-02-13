@@ -7,7 +7,7 @@
     return e;
 }
 
-ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 position, const float2 anchor, const unsigned char layer, const unsigned char size) {
+ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 position, const float2 anchor, const byte layer, const byte size) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const int actions_count = 8;
     const int padding_x = 6;

@@ -2,7 +2,7 @@
 void ConnectionRenderSystem(ecs_iter_t *it) {
     if (zox_current_time < 0.1) return;
     init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     // const float signal_height = 0.02f * neural_render_scale;
     const float connection_thickness = 2 * neural_render_scale2;
     const float connection_min_thickness = 0.1f;

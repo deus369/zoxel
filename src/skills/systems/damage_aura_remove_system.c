@@ -2,7 +2,7 @@
 // I could do this per debuff instead of character...! if it's a area based debuff
 void DamageAuraRemoveSystem(ecs_iter_t *it) {
     // const float damage_radius = 3.0f; // todo: grab this off skill
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_out(DotLinks, dotLinkss, 2)
     zox_field_out(Children, childrens, 3)
@@ -18,7 +18,7 @@ void DamageAuraRemoveSystem(ecs_iter_t *it) {
             const ecs_entity_t aura = zox_get_value(dot, SkillLink)
             const ecs_entity_t user = zox_get_value(dot, SpawnerLink)
             const float radius = zox_get_value(aura, SkillRange)
-            unsigned char is_still_in_aura = 0;
+            byte is_still_in_aura = 0;
             if (user && aura && zox_gett_value(aura, SkillActive)) { // if user exists and skill is active
                 const float3 aura_position = zox_get_value(user, Position3D)
                 const float distance = float3_distance(position3D->value, aura_position);

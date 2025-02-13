@@ -1,4 +1,4 @@
-// extern unsigned char get_block_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
+// extern byte get_block_voxes_lod_from_camera_distance(byte distance_to_camera);
 
 // when terrain lod updates, it will update [Block Vox] lods
 /* void ChunkBlocksLodSystem(ecs_iter_t *it) {
@@ -14,15 +14,15 @@
         zox_field_i(BlockSpawns, blockSpawnss, blockSpawns)
         if (!blockSpawns->value || !blockSpawns->value->data) continue;
         zox_field_i(RenderLod, renderLods, renderLod)
-        const unsigned char camera_distance = renderLod->value;
-        const unsigned char vox_lod = get_block_voxes_lod_from_camera_distance(camera_distance);
+        const byte camera_distance = renderLod->value;
+        const byte vox_lod = get_block_voxes_lod_from_camera_distance(camera_distance);
         for (int j = 0; j < blockSpawns->value->size; j++) {
             const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
                 const ecs_entity_t e2 = pair->value;
                 if (e2 && zox_valid(e2) && zox_has(e2, RenderLod)) {
-                    const unsigned char current_lod = zox_get_value(e2, RenderLod)
+                    const byte current_lod = zox_get_value(e2, RenderLod)
                     if (current_lod != vox_lod) {
                         zox_set(e2, RenderLod, { vox_lod })
                         zox_set(e2, ChunkDirty, { chunk_dirty_state_lod_updated })

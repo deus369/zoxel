@@ -1,4 +1,4 @@
 typedef struct {
-    unsigned char *solidity;
+    byte *solidity;
     int *uvs;
 } ChunkTexturedBuildData;

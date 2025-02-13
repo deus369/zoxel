@@ -5,9 +5,9 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor, const unsigned char layer) {
-    const unsigned char font_size = 26; // 22
-    const unsigned char is_close_button = 0;
+ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor, const byte layer) {
+    const byte font_size = 26; // 22
+    const byte is_close_button = 0;
 #ifdef zox_disable_save_games
     const int labels_count = 2;
     const text_group labels[] = { { "return" }, { "leave" } };

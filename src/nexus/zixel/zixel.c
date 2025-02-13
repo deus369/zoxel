@@ -1,7 +1,7 @@
 #ifndef zox_mod_game
 #define zox_mod_game
 
-unsigned char boot_zixel(ecs_world_t *world) {
+byte boot_zixel(ecs_world_t *world) {
     game_name = "zixel";
     zox_log(" + booting [%s]\n", game_name)
     if (!headless) {

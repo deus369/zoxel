@@ -1,7 +1,7 @@
 extern const char *game_name;
 
 void sdl_toggle_fullscreen(ecs_world_t *world, const ecs_entity_t e) { // SDL_Window* window) {
-    const unsigned char is_fullscreen = !zox_get_value(e, WindowFullscreen)
+    const byte is_fullscreen = !zox_get_value(e, WindowFullscreen)
     zox_set(e, WindowFullscreen, { is_fullscreen })
     sdl_set_fullscreen(zox_gett_value(e, SDLWindow), is_fullscreen);
     if (!is_fullscreen) {
@@ -19,7 +19,7 @@ int get_sdl_window_header_size(SDL_Window* window) {
     return 0;
 }
 
-SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const int2 position, const int2 size) {
+SDL_Window* create_sdl_window_basic(const byte is_using_vulkan, const int2 position, const int2 size) {
     int flags;
     if (is_using_vulkan) flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
     else flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
@@ -53,8 +53,8 @@ SDL_Window* create_sdl_window_basic(const unsigned char is_using_vulkan, const i
     return window;
 }
 
-SDL_Window* create_sdl_window(const int2 position, const int2 size, const unsigned char fullscreen) {
-    unsigned char is_resizeable = 1;
+SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte fullscreen) {
+    byte is_resizeable = 1;
     #ifdef zoxel_on_android
     is_resizeable = 0;
     #endif

@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_render_texture(ecs_world_t *world) {
 
 // todo: stretch to canvas_size, AnchorSize
 ecs_entity_t spawn_render_texture(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const int2 canvas_size, const ecs_entity_t camera) {
-    const unsigned char layer = 0;
+    const byte layer = 0;
     const ecs_entity_t parent = canvas;
     const int2 position = int2_zero;
     const float2 anchor = float2_half;

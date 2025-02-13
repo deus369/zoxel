@@ -20,7 +20,7 @@
 // pipelines
 #define zox_pip_texture_generation EcsPostUpdate
 // settings
-unsigned char terrain_texture_outline_type = zox_outline_type_full;
+byte terrain_texture_outline_type = zox_outline_type_full;
 const double noise_animation_speed = 0.5;
-unsigned char texture_mode = 0;
+byte texture_mode = 0;
 const int2 voxel_texture_size = (int2) { 32, 32 }; // 16 | 32 | 64

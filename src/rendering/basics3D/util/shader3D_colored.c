@@ -2,7 +2,7 @@ ecs_entity_t shader_colored3D;
 ecs_entity_t material_colored3D;
 
 ecs_entity_t spawn_shader_colored3D(ecs_world_t *world) {
-    const unsigned char shader_index = get_new_shader_source_index();
+    const byte shader_index = get_new_shader_source_index();
     shader_verts[shader_index] = shader3D_colored_vert_buffer;
     shader_frags[shader_index] = shader3D_colored_frag_buffer;
     const ecs_entity_t e = spawn_shader(world, shader_index);

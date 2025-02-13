@@ -82,7 +82,7 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
 }
 
 
-ecs_entity_t spawn_button_old(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const byte2 padding, const float2 anchor, const char* text, const int font_size, const unsigned char layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const unsigned char render_disabled, const color button_color) {
+ecs_entity_t spawn_button_old(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const byte2 padding, const float2 anchor, const char* text, const int font_size, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const byte render_disabled, const color button_color) {
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
     const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };
     const int2 global_position = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
@@ -121,7 +121,7 @@ ecs_entity_t spawn_button_old(ecs_world_t *world, const ecs_entity_t parent, con
 }
 
 /*const ecs_entity_t parent = canvas;
-const unsigned char layer = 6;
+const byte layer = 6;
 const int2 canvas_size = zox_get_value(canvas, PixelSize)
 fix_text_for_screen_size(&pixel_position, &font_size, canvas_size);
 const int2 zext_size = (int2) { font_size * strlen(text), font_size };

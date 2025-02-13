@@ -2,7 +2,7 @@
 zox_memory_component(name, ecs_entity_t)\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
-    zox_iter_world()\
+    zox_field_world()\
     zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_i(name, components, component)\
@@ -29,7 +29,7 @@ void remove_index_from_##name(name *component, const int i) {\
     }\
 }\
 \
-unsigned char remove_from_##name(name *component, const ecs_entity_t data) {\
+byte remove_from_##name(name *component, const ecs_entity_t data) {\
     if (!component || !component->value) return 0;\
     for (int i = 0; i < component->length; i++) {\
         if (component->value[i] == data) {\
@@ -40,14 +40,14 @@ unsigned char remove_from_##name(name *component, const ecs_entity_t data) {\
     return 0;\
 }\
 \
-unsigned char is_in_##name(name *component, const ecs_entity_t data) {\
+byte is_in_##name(name *component, const ecs_entity_t data) {\
     if (!component->value) return 0;\
         for (int i = 0; i < component->length; i++)\
             if (component->value[i] == data) return 1;\
     return 0;\
 }\
 \
-unsigned char add_unique_to_##name(name *component, const ecs_entity_t data) {\
+byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
     if (!is_in_##name(component, data)) return add_to_##name(component, data);\
     else return 0;\
 }

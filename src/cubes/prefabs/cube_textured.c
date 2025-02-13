@@ -1,5 +1,5 @@
 // adds texture generated
-extern void prefab_add_texture_generated(ecs_world_t *world, ecs_entity_t e, int2 textureSize, unsigned char generate);
+extern void prefab_add_texture_generated(ecs_world_t *world, ecs_entity_t e, int2 textureSize, byte generate);
 // zox_render3D_system(TexturedRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] RenderDisabled, [in] MaterialGPULink, [in] TextureGPULink, [in] MaterialTextured3D, [none] TexturedMesh3D)
 // zox_system_1(Mesh3DTexturedUploadSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices, [in] MeshUVs, [in] MeshColorRGBs, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [out] MeshDirty)
 

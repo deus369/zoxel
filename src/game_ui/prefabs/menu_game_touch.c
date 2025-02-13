@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_menu_game_touch(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 canvas_size, const int2 position, const float2 anchor, const unsigned char size, const ClickEvent event) {
+ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 canvas_size, const int2 position, const float2 anchor, const byte size, const ClickEvent event) {
     SpawnButton data = {
         .canvas = {
             .e = canvas,
@@ -48,9 +48,9 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t e = spawn_element_invisible_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
     zox_name("menu_game_touch")
-    const unsigned char button_size = 140;
-    const unsigned char button_padding = 20;
-    const unsigned char bottom_padding = 60;
+    const byte button_size = 140;
+    const byte button_padding = 20;
+    const byte bottom_padding = 60;
     zox_get_muter(e, Children, children)
 #ifndef zox_disable_touch_buttons
     // left side - pause - switch weapon

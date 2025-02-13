@@ -1,6 +1,6 @@
 // doesn't check for edge chunks
 void ChunkFindNeighborSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ChunkPosition, chunkPositions, 1)
     zox_field_in(VoxLink, voxLinks, 2)
     zox_field_in(RenderLod, renderLods, 3)
@@ -17,7 +17,7 @@ void ChunkFindNeighborSystem(ecs_iter_t *it) {
             resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
             for (int i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
         }
-        unsigned char need_find = 0;
+        byte need_find = 0;
         for (int j = 0; j < chunkNeighbors->length; j++) {
             if (!zox_valid(chunkNeighbors->value[j])) {
                 need_find = 1;

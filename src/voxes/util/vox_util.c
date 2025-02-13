@@ -1,6 +1,6 @@
 
 
-unsigned char is_vox_valid(const vox_file *vox) {
+byte is_vox_valid(const vox_file *vox) {
     return (vox && vox->chunks);
 }
 
@@ -29,8 +29,8 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         set_as_debug_vox(world, e);
         return;
     }
-    const unsigned char target_depth = max_octree_depth_character;
-    const unsigned char *voxels = vox->chunks[0].xyzi.voxels;
+    const byte target_depth = max_octree_depth_character;
+    const byte *voxels = vox->chunks[0].xyzi.voxels;
     const byte3 vox_size_original = int3_to_byte3(vox->chunks[0].size.xyz);
     // maxed based on octree size
     const int max_length = pow(2, max_octree_depth_character);
@@ -61,7 +61,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
 }
 
 // todo: make this a update function so it does one node at a time! load per entity per depth level to slow it down
-void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, unsigned char max_depth) {
+void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, byte max_depth) {
     if (!source) return;
     const int3 chunk_size = zox_get_value(source, ChunkSize)
     zox_set(e, ChunkSize, { chunk_size })

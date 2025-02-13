@@ -19,7 +19,7 @@ zox_memory_component(ChunkNeighbors, ecs_entity_t)
 zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
 zox_hashmap_component(ChunkLinks, int3)
 zox_component_byte(BlocksSpawned)
-zoxel_octree_component(ChunkOctree, unsigned char, 0)
+zoxel_octree_component(ChunkOctree, byte, 0)
 #include "data/settings.c"
 #include "data/raycast_voxel_data.c"
 #include "data/color_settings.c"

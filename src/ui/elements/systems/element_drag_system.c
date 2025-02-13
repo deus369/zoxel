@@ -2,7 +2,7 @@
 // if it updates, also update any childrens positions too
 // has to also move children and their children
 void ElementDragSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DraggableState, dragableStates, 1)
     zox_field_in(DraggingDelta, draggingDeltas, 2)
     zox_field_in(DraggedLink, draggedLinks, 3)

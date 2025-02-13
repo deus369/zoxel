@@ -1,6 +1,6 @@
 // #define zox_log_jumping
 void Player3DJumpSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_in(CharacterLink, characterLinks, 3)
@@ -14,7 +14,7 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         if (!grounded->value) continue;
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
-        unsigned char is_jump_triggered = 0;
+        byte is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!device) continue;

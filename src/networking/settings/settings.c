@@ -6,4 +6,4 @@
 #define SERVER_PORT 12346
 #define BUFFER_SIZE 128 // 1024 // the size of the buffer to use for receiving and sending data
 #define ZOXEL_URL "https://zoxel.duckdns.org"
-unsigned char server_mode = 0;
+byte server_mode = 0;

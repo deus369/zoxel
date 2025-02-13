@@ -24,7 +24,7 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
         zox_field_o(AnimationStart, animationStarts, animationStart)
         zox_field_o(AnimationLength, animationLengths, animationLength)
         zox_field_o(AnimationState, animationStates, animationState)
-        unsigned char is_anim_over = 0;
+        byte is_anim_over = 0;
         if (animationIndex->value == 0) {
             is_anim_over = 1;
         } else {

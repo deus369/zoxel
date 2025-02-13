@@ -1,5 +1,5 @@
 #define noise_values_length 512
-unsigned char values[noise_values_length];
+byte values[noise_values_length];
 uint32_t global_seed;
 
 int noise_fast_floor(float x) {
@@ -93,7 +93,7 @@ void set_noise_seed(uint32_t seed) {
     // zox_log(" + seed set [%" PRIu32 "]\n", global_seed)
     srand(seed);
     for (int i = 0; i < noise_values_length; i++) {
-        values[i] = (unsigned char) rand() % 256; // (byte) random.NextInt(0, 255);
+        values[i] = (byte) rand() % 256; // (byte) random.NextInt(0, 255);
     }
     // testing
     // float value = generate_noise_2D(float2_zero, 0.01f);

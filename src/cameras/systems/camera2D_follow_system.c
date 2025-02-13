@@ -1,5 +1,5 @@
 void Camera2DFollowSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(CanRoam, canRoams, 1)
     zox_field_in(CameraTarget, cameraTargets, 2)
     zox_field_out(Position3D, positions3D, 3)

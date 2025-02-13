@@ -1,5 +1,5 @@
 void ZeviceClickSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLink, deviceLinks, 1)
     zox_field_in(RaycasterTarget, raycasterTargets, 2)
     zox_field_in(WindowRaycasted, windowRaycasteds, 3)
@@ -18,7 +18,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
             // zox_log(" ! device has null player [%lu]\n", device)
             continue;
         }
-        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        const byte device_mode = zox_get_value(player, DeviceMode)
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         zox_field_e()
         zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
@@ -28,7 +28,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         zox_field_o(WindowTarget, windowTargets, windowTarget)
         unsigned click_type = 0;
         if (zox_has(e, ZevicePointer)) {
-            const unsigned char click_value = zox_get_value(e, ZevicePointer)
+            const byte click_value = zox_get_value(e, ZevicePointer)
             if (devices_get_pressed_this_frame(click_value)) click_type = 1;
             else if (devices_get_released_this_frame(click_value)) click_type = 2;
         }
@@ -37,7 +37,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
             if (deviceButtonType->value == zox_device_button_a) {
                 const ZeviceDisabled *zeviceDisabled = zox_get(e, ZeviceDisabled)
                 if (!zeviceDisabled->value) {
-                    const unsigned char click_value = zox_get_value(e, ZeviceButton)
+                    const byte click_value = zox_get_value(e, ZeviceButton)
                     if (devices_get_pressed_this_frame(click_value)) click_type = 1;
                     else if (devices_get_released_this_frame(click_value)) click_type = 2;
                 }
@@ -61,7 +61,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
                 zox_set(canvas, WindowToTop, { windowTarget->value })
             }
             if (zox_has(raycasterTarget->value, Dragable)) {
-                unsigned char drag_mode = zox_drag_mode_none;
+                byte drag_mode = zox_drag_mode_none;
                 if (device_mode == zox_device_mode_keyboardmouse) drag_mode = zox_drag_mode_mouse;
                 else if (device_mode == zox_device_mode_touchscreen) drag_mode = zox_drag_mode_finger;
                 set_element_dragged(world, player, raycasterTarget->value, drag_mode);

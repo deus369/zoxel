@@ -1,4 +1,4 @@
-unsigned char has_gl_extension(const GLubyte *extensions, const char *target) {
+byte has_gl_extension(const GLubyte *extensions, const char *target) {
     const char *token = strtok((char *)extensions, " ");
     while (token != NULL) {
         if (strcmp(token, target) == 0) return 1; // Extension found
@@ -7,8 +7,8 @@ unsigned char has_gl_extension(const GLubyte *extensions, const char *target) {
     return 0; // Extension not found
 }
 
-unsigned char has_opengl_extensions() {
-    unsigned char has_extension = 1;
+byte has_opengl_extensions() {
+    byte has_extension = 1;
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
     /*if (extensions != NULL) printf("        > gl extensions: %s\n", extensions);
     else fprintf(stderr, "Error retrieving extensions\n");*/
@@ -70,12 +70,12 @@ void opengl_disable_blend() {
     glDisable(GL_BLEND);
 }
 
-void opengl_disable_texture(unsigned char isBlend) {
+void opengl_disable_texture(byte isBlend) {
     if (isBlend) glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_set_defaults(unsigned char is_3D) {
+void opengl_set_defaults(byte is_3D) {
     if (is_3D) {
         glEnable(GL_DEPTH_TEST);        // cull for 3D things
         glDepthFunc(GL_LESS);

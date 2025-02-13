@@ -1,4 +1,4 @@
-unsigned char initialize_sdl_mixer() {
+byte initialize_sdl_mixer() {
 #ifndef zox_lib_sdl_mixer
     return EXIT_FAILURE;
 #else

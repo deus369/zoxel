@@ -31,15 +31,15 @@ const float camera_near_distance = 0.1f;
 const float camera_far_distance = 800;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;
-unsigned char camera_mode = 0; // zox_camera_mode_first_person;
-unsigned char camera_fov = 0; // camera_fov_first_person;
-unsigned char camera_follow_mode = 0; // zox_camera_follow_mode_attach;
+byte camera_mode = 0; // zox_camera_mode_first_person;
+byte camera_fov = 0; // camera_fov_first_person;
+byte camera_follow_mode = 0; // zox_camera_follow_mode_attach;
 ecs_entity_t main_cameras[max_cameras];
 ecs_entity_t ui_cameras[max_cameras];
 #ifdef zox_disable_streaming
-unsigned char zox_cameras_disable_streaming = 1;
+byte zox_cameras_disable_streaming = 1;
 #else
-unsigned char zox_cameras_disable_streaming = 0;
+byte zox_cameras_disable_streaming = 0;
 #endif
 const CameraSpawnData camera_preset_first_person = { .position = (float3) { 0, 0.34f, 0.085f * 2 }, .euler = (float3) { 0, 180, 0 }, .fov = 75, .follow_mode = zox_camera_follow_mode_attach };
 const CameraSpawnData camera_preset_third_person = { .position = (float3) { 0, 3.6f * 0.25f, -6.6f * 0.25f }, .euler = (float3) { -25, 180, 0 }, .fov = 75, .follow_mode = zox_camera_follow_mode_attach };

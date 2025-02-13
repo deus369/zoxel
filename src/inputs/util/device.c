@@ -1,4 +1,4 @@
-unsigned char touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t e) {
+byte touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t e) {
     if (!e || !zox_alive(e)) {
         return 0;
     }
@@ -12,7 +12,7 @@ unsigned char touchscreen_is_any_input(ecs_world_t *world, const ecs_entity_t e)
     return 0;
 }
 
-unsigned char mouse_is_any_input(ecs_world_t *world, const ecs_entity_t e) {
+byte mouse_is_any_input(ecs_world_t *world, const ecs_entity_t e) {
     if (!e || !zox_alive(e)) {
         return 0;
     }

@@ -1,6 +1,6 @@
 // how to link main_window, viewport_dimensions and mouse
 void MouseConstrainSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     // todo: support for multi window contstraints, pass in multiple sdl windows here
     if (!mouse_lock_window) return;
     SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)

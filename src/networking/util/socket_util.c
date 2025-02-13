@@ -1,4 +1,4 @@
-unsigned char sockets_enabled = 0;
+byte sockets_enabled = 0;
 #ifndef zoxel_on_windows
     #define peek_packet_size 1
     #define socket_error_code -1
@@ -101,9 +101,9 @@ int check_socket_error(char *debug) {
 #endif
 }
 
-unsigned char peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
+byte peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
     socklen_t recv_addr_len = sizeof(*recv_addr);
-    unsigned char recv_buffer[peek_packet_size];
+    byte recv_buffer[peek_packet_size];
     int recv_size = recvfrom(socket, (char *) recv_buffer, peek_packet_size, MSG_PEEK, (struct sockaddr*) recv_addr, &recv_addr_len);
     if (recv_size < 0) {
         check_socket_error("peek_at_packet");

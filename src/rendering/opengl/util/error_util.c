@@ -48,8 +48,8 @@ int check_opengl_error(char* function_name) {
     return is_error;
 }
 
-unsigned char check_opengl_error_unlogged() {
-    unsigned char is_error = 0;
+byte check_opengl_error_unlogged() {
+    byte is_error = 0;
     GLenum error_code = glGetError();
     while (error_code != GL_NO_ERROR) {
         is_error = 1;
@@ -58,7 +58,7 @@ unsigned char check_opengl_error_unlogged() {
     return is_error;
 }
 
-unsigned char check_opengl_frame_buffer_status() {
+byte check_opengl_frame_buffer_status() {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status == GL_FRAMEBUFFER_COMPLETE) return 1;
     char* error_code = "";

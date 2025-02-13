@@ -2,7 +2,7 @@
 #ifdef zox_lib_amd
 
 #include <rocm_smi/rocm_smi.h>
-unsigned char amd_initialized = 0;
+byte amd_initialized = 0;
 
 void initialize_amd() {
     rsmi_status_t result;

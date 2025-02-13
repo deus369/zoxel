@@ -14,7 +14,7 @@ void save_##name(const char *game, const char *filename, Name *data) {\
     /*zox_log(" > saved to [%s]\n", path)*/\
 }\
 \
-unsigned char load_##name(const char *game, const char *filename, Name *data) {\
+byte load_##name(const char *game, const char *filename, Name *data) {\
     char path[256];\
     get_save_filepath(game, filename, path, sizeof(path));\
     FILE *file = fopen(path, "rb");\

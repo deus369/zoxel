@@ -1,6 +1,6 @@
 // Shortcuts for player that require main thread
 void PlayerShortcutsMainThreadSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     //zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {

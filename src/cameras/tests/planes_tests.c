@@ -1,11 +1,11 @@
 // actually this helped me solve plane math
 void test_plane_points(const char *text, const plane p) {
     zox_log(" + [%s] normal [%ix%ix%i] dist [%i]\n", text, (int) p.normal.x, (int) p.normal.y, (int) p.normal.z, (int) p.distance)
-    unsigned char outside_a = is_outside_plane(p, (float3) { 0, 0, 0 });
-    unsigned char outside_b = is_outside_plane(p, (float3) { 0, -1, 0 });
-    unsigned char outside_c = is_outside_plane(p, (float3) { 0, 1, 0 });
-    //unsigned char outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
-    //unsigned char outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
+    byte outside_a = is_outside_plane(p, (float3) { 0, 0, 0 });
+    byte outside_b = is_outside_plane(p, (float3) { 0, -1, 0 });
+    byte outside_c = is_outside_plane(p, (float3) { 0, 1, 0 });
+    //byte outside_d = is_outside_plane(p, (float3) { -1, 0, 0 });
+    //byte outside_e = is_outside_plane(p, (float3) { 1, 0, 0 });
     zox_log("   + [%s] b [0,-1,0] outside plane [%s]\n", text, outside_b ? "yes" : "no")
     zox_log("   + [%s] a [0,0,0] outside plane [%s]\n", text, outside_a ? "yes" : "no")
     zox_log("   + [%s] c [0,1,0] outside plane [%s]\n", text, outside_c ? "yes" : "no")
@@ -23,7 +23,7 @@ void test_plane_checks() {
 
 
 void print_planes(plane *planes) {
-    for (unsigned char i = 0; i < 6; i++) {
+    for (byte i = 0; i < 6; i++) {
         zox_log("   - [%i] plane normal [%fx%fx%f] dist [%f]\n", i, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z, planes[i].distance)
     }
 }
@@ -172,11 +172,11 @@ void run_test_frustum(char *label, const float3 camera_position, const float3 ca
     bounds bounds_f = { { distance_from / 2, 0, distance_from / 2 }, extents };
 
     // calculate results
-    unsigned char result_b = is_in_frustum(planes, bounds_b);
-    unsigned char result_c = is_in_frustum(planes, bounds_c);
-    unsigned char result_d = is_in_frustum(planes, bounds_d);
-    unsigned char result_e = is_in_frustum(planes, bounds_e);
-    unsigned char result_f = is_in_frustum(planes, bounds_f);
+    byte result_b = is_in_frustum(planes, bounds_b);
+    byte result_c = is_in_frustum(planes, bounds_c);
+    byte result_d = is_in_frustum(planes, bounds_d);
+    byte result_e = is_in_frustum(planes, bounds_e);
+    byte result_f = is_in_frustum(planes, bounds_f);
 
     // print results
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_b ? "Inside Frustum" : "Outside Frustum", bounds_b.center.x, bounds_b.center.y, bounds_b.center.z)
@@ -212,11 +212,11 @@ void test_is_in_frustum(char *label) {
     zox_log("   - bounds_f center: [%f %f %f]\n", bounds_f.center.x, bounds_f.center.y, bounds_f.center.z)
 
     // calculate results
-    unsigned char result_b = is_in_frustum(planes, bounds_b);
-    unsigned char result_c = is_in_frustum(planes, bounds_c);
-    unsigned char result_d = is_in_frustum(planes, bounds_d);
-    unsigned char result_e = is_in_frustum(planes, bounds_e);
-    unsigned char result_f = is_in_frustum(planes, bounds_f);
+    byte result_b = is_in_frustum(planes, bounds_b);
+    byte result_c = is_in_frustum(planes, bounds_c);
+    byte result_d = is_in_frustum(planes, bounds_d);
+    byte result_e = is_in_frustum(planes, bounds_e);
+    byte result_f = is_in_frustum(planes, bounds_f);
 
     // Print results
     zox_log("   - result bounds_b: %s\n", result_b ? "Inside Frustum" : "Outside Frustum");

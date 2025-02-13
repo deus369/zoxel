@@ -2,7 +2,7 @@
 #define zox_cubeline_debug_none 0
 #define zox_cubeline_debug_mesh 1
 #define zox_cubeline_debug_render_lod 2
-const unsigned char cubeline_debug_mode = zox_cubeline_debug_mesh;
+const byte cubeline_debug_mode = zox_cubeline_debug_mesh;
 const float cube_lines_length = 1.0f;
 
 void set_line3D_color(color_rgb color_rgb2) {

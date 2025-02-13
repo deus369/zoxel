@@ -5,14 +5,14 @@ extern ecs_entity_t local_character3D; // change to devicece links and use e!
 
 // quality of life
 void QolShortcutsSystem(ecs_iter_t *it) {
-    unsigned char is_toggle_fullscreen = 0;
-    zox_iter_world()
+    byte is_toggle_fullscreen = 0;
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
-        unsigned char is_shift_action_left = 0;
-        unsigned char is_shift_action_right = 0;
+        byte is_shift_action_left = 0;
+        byte is_shift_action_right = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!device) continue;
@@ -63,14 +63,14 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                     if (zox_has(zevice_entity, ZeviceButton)) {
                         const ZeviceDisabled *zeviceDisabled = zox_get(zevice_entity, ZeviceDisabled)
                         if (zeviceDisabled->value) continue;
-                        const unsigned char device_button_type = zox_get_value(zevice_entity, DeviceButtonType)
-                        const unsigned char zevice_button = zox_get_value(zevice_entity, ZeviceButton)
+                        const byte device_button_type = zox_get_value(zevice_entity, DeviceButtonType)
+                        const byte zevice_button = zox_get_value(zevice_entity, ZeviceButton)
                         if (device_button_type == zox_device_button_lb) {
                             if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_left = 1;
                         } else if (device_button_type == zox_device_button_rb) {
                             if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_right = 1;
                         }
-                        const unsigned char real_button_index = zox_get_value(zevice_entity, RealButtonIndex)
+                        const byte real_button_index = zox_get_value(zevice_entity, RealButtonIndex)
                         if (real_button_index == zox_device_button_dpad_left) {
                             if (devices_get_pressed_this_frame(zevice_button)) is_shift_action_left = 1;
                         } else if (real_button_index == zox_device_button_dpad_right) {

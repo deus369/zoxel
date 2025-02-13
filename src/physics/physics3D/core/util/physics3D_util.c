@@ -31,6 +31,6 @@ void add_physics3D(ecs_world_t *world, const ecs_entity_t e) {
 #endif
 }
 
-unsigned char can_jump(ecs_world_t *world, const ecs_entity_t e) {
+byte can_jump(ecs_world_t *world, const ecs_entity_t e) {
     return !zox_gett_value(e, DisableMovement) && zox_gett_value(e, Grounded);
 }

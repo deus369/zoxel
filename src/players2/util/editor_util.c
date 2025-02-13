@@ -1,5 +1,5 @@
-unsigned char debug_colliders = 0;
-unsigned char debug_block_vox_bounds = 0;
+byte debug_colliders = 0;
+byte debug_block_vox_bounds = 0;
 
 void toggle_debug_character_bounds(ecs_world_t *world) {
     if (!zox_valid(local_terrain)) return;
@@ -24,7 +24,7 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
     }
 }
 
-void toggle_debug_bounds_delve(ecs_world_t *world, const ChunkOctree *chunk, const unsigned char max_depth, unsigned char depth) {
+void toggle_debug_bounds_delve(ecs_world_t *world, const ChunkOctree *chunk, const byte max_depth, byte depth) {
     if (!chunk->nodes) return;
     if (depth == max_depth) {
         const ecs_entity_t spawned_block = ((VoxelEntityLink*)chunk->nodes)->value;
@@ -51,13 +51,13 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
         uint checks = 0;
         while (pair != NULL && checks < max_safety_checks_hashmap) {
             ecs_entity_t chunk = pair->value;
-            const unsigned char has_block_spawns = zox_get_value(chunk, BlocksSpawned)
+            const byte has_block_spawns = zox_get_value(chunk, BlocksSpawned)
             if (has_block_spawns) {
                 const ChunkOctree *chunk_data = zox_get(chunk, ChunkOctree)
                 toggle_debug_bounds_delve(world, chunk_data, max_octree_depth, 0);
             }
             /*const BlockSpawns *blockSpawns = zox_get(chunk, BlockSpawns)
-            const unsigned char block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
+            const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
             if (block_spawns_initialized) {
                 for (int j = 0; j < blockSpawns->value->size; j++) {
                     const byte3_hashmap_pair* pair = blockSpawns->value->data[j];

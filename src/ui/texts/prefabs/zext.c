@@ -30,7 +30,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     zox_get_muter(e, ZextData, zextData)
     zox_get_muter(e, Children, children)
     const int zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
-    initialize_memory_component(ZextData, zextData, unsigned char, zext_data_length)
+    initialize_memory_component(ZextData, zextData, byte, zext_data_length)
     for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->zext.text[i]);
     const int zigels_count = calculate_total_zigels(zextData->value, zextData->length);
     initialize_memory_component(Children, children, ecs_entity_t, zigels_count)
@@ -59,7 +59,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     };
     for (int i = 0; i < zigels_count; i++) {
         const int data_index = calculate_zigel_data_index(zextData->value, zextData->length, i);
-        const unsigned char zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
+        const byte zigel_index = calculate_zigel_index(zextData->value, zextData->length, i);
         spawn_data.zigel.data_index = data_index;
         spawn_data.zigel.zigel_index = zigel_index;
         children->value[i] = spawn_zext_zigel(world, zextData, &spawn_data);

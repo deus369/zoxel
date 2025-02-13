@@ -28,7 +28,7 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-CameraSpawnData get_camera_preset(const unsigned char camera_mode) {
+CameraSpawnData get_camera_preset(const byte camera_mode) {
     CameraSpawnData data = { };
     if (camera_mode == zox_camera_mode_topdown) {
         data = camera_preset_top_down;
@@ -44,7 +44,7 @@ CameraSpawnData get_camera_preset(const unsigned char camera_mode) {
     return data;
 }
 
-void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const unsigned char camera_mode) {
+void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const byte camera_mode) {
     if (!camera || !character) return;
     float3 target_position = float3_zero;
     const Position3D *position3D = zox_get(character, Position3D)
@@ -62,17 +62,17 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
     } else zox_set(camera, Rotation3D, { camera_rotation })
 }
 
-unsigned char get_camera_mode_fov(const unsigned char camera_mode) {
+byte get_camera_mode_fov(const byte camera_mode) {
     return get_camera_preset(camera_mode).fov;
 }
 
-void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
+void set_camera_mode(ecs_world_t *world, byte new_camera_mode) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) new_camera_mode = zox_camera_mode_first_person;
     if (camera_mode == new_camera_mode) return;
     camera_mode = new_camera_mode;
-    const unsigned char old_camera_follow_mode = camera_follow_mode;
-    const unsigned char camera_fov = get_camera_mode_fov(camera_mode);
+    const byte old_camera_follow_mode = camera_follow_mode;
+    const byte camera_fov = get_camera_mode_fov(camera_mode);
     camera_follow_mode = get_camera_preset(camera_mode).follow_mode;
     for (int i = 0; i < main_cameras_count; i++) {
         const ecs_entity_t camera = main_cameras[i];
@@ -98,7 +98,7 @@ void set_camera_mode(ecs_world_t *world, unsigned char new_camera_mode) {
 }
 
 void toggle_camera_mode(ecs_world_t *world) {
-    unsigned char new_camera_mode = camera_mode + 1;
+    byte new_camera_mode = camera_mode + 1;
     if (new_camera_mode> zox_camera_mode_topdown) new_camera_mode = 0;
     set_camera_mode(world, new_camera_mode);
 }

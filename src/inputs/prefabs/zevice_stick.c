@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zevice_stick(ecs_world_t *world, const ecs_entity_t device, const unsigned char type, const unsigned char index) {
+ecs_entity_t spawn_zevice_stick(ecs_world_t *world, const ecs_entity_t device, const byte type, const byte index) {
     zox_instance(prefab_zevice_stick)
     zox_name("zevice_stick")
     zox_set(e, DeviceLink, { device })

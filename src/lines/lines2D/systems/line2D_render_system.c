@@ -1,6 +1,6 @@
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
-void line2D_render_iteration(ecs_iter_t *it, const unsigned char is_element_line) {
+void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     if (is_element_line) {

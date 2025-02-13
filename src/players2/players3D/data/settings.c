@@ -1,7 +1,7 @@
-const unsigned char zox_players_reverse_x = 0;
-const unsigned char zox_players_reverse_y = 0;
-const unsigned char zox_players_reverse_rotate_x = 0;
-const unsigned char zox_players_reverse_rotate_y = 0;
+const byte zox_players_reverse_x = 0;
+const byte zox_players_reverse_y = 0;
+const byte zox_players_reverse_rotate_x = 0;
+const byte zox_players_reverse_rotate_y = 0;
 const double gamepad_rotate_multiplier_x = 0.04;
 const double gamepad_rotate_multiplier_y = 0.03;
 const double mouse_rotate_multiplier = 0.0032; // 0.008;

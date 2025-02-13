@@ -85,7 +85,7 @@ void test_raycast(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity
 
 // Shortcuts just for testing new stuff
 void PlayerTestSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {

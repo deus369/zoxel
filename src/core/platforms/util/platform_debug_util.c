@@ -1,4 +1,4 @@
-unsigned char is_steam_deck() {
+byte is_steam_deck() {
     if (getenv("STEAMOS_SESSIONTYPE") != NULL && strcmp(getenv("STEAMOS_SESSIONTYPE"), "steam") == 0) {
         return 1;
     } else {
@@ -26,7 +26,7 @@ void debug_platform() {
 
 // char* wine_prefix = getenv("WINEPREFIX");
 
-unsigned char is_platform_wine() {
+byte is_platform_wine() {
 #ifdef zoxel_on_windows
     return 0;
 #else

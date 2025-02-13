@@ -18,7 +18,7 @@ zox_component_float(AnimateTargetFloat)
 zox_component_float(FadeOutEvent)
 // sequencing
 zox_component_byte(AnimationIndex)
-zox_memory_component(AnimationSequence, unsigned char) // a sequence of animation states
+zox_memory_component(AnimationSequence, byte) // a sequence of animation states
 zox_memory_component(AnimationTimes, double) // a sequence of animation times
 zox_memory_component(AnimationTargets, float) // a sequence of animation target values
 #include "systems/eternal_rotation_system.c"    // move this to animation module

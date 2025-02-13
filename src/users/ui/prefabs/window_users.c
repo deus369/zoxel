@@ -17,11 +17,11 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
         return 0;
     }
     // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
-    const unsigned char body_layer = data->element.layer + 1;
-    const unsigned char icon_layer = body_layer + 1;
-    const unsigned char is_header = data->window.prefab_header != 0;
+    const byte body_layer = data->element.layer + 1;
+    const byte icon_layer = body_layer + 1;
+    const byte is_header = data->window.prefab_header != 0;
     int2 position = data->element.position;
-    unsigned char header_height = 0;
+    byte header_height = 0;
     if (is_header) header_height = data->header_zext.font_size + data->header.margins;
     const int2 canvas_position = get_element_pixel_position_global(data->parent.position, data->element.size, position, data->element.anchor);
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
@@ -42,7 +42,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     }
     int2 header_size = int2_zero;
     if (is_header) {
-        const unsigned char header_layer = data->element.layer + 1; // 3;
+        const byte header_layer = data->element.layer + 1; // 3;
         const float2 header_anchor = (float2) { 0.5f, 1.0f };
         const int2 header_position = (int2) { 0, -header_height / 2 };
         header_size = (int2) { data->element.size.x, header_height };
@@ -100,7 +100,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
     int item_index = 0;
     int array_index = 0;
-    const unsigned char icon_frames_have_active_states = zox_has(data->icon_frame.prefab, ActiveState);
+    const byte icon_frames_have_active_states = zox_has(data->icon_frame.prefab, ActiveState);
     for (int j = data->window.grid_size.y - 1; j >= 0; j--) {
         if (array_index >= body_children->length) break;
         for (int i = 0; i < data->window.grid_size.x; i++) {
@@ -138,9 +138,9 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
 }
 
 SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t character, const ecs_entity_t canvas, const int2 canvas_size) {
-    const unsigned char header_font_size = 26 * zox_ui_scale;
-    const unsigned char header_margins = 6 * zox_ui_scale;
-    const unsigned char header_height = header_font_size + header_margins * 2;
+    const byte header_font_size = 26 * zox_ui_scale;
+    const byte header_margins = 6 * zox_ui_scale;
+    const byte header_height = header_font_size + header_margins * 2;
     const float2 anchor = float2_half;
     const int2 position = position;
     const byte2 grid_size = (byte2) { 4, 4 };

@@ -2,7 +2,7 @@ const int character_stats = 2;
 const int player_extra_stats = 6;
 
 // todo: take in npc spawn meta data, like location, biome, etc
-ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, const unsigned char render_disabled) {
+ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, const byte render_disabled) {
     // stats
     float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;

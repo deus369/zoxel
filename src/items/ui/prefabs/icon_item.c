@@ -1,7 +1,7 @@
 void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
     char result[64];
     const ZoxName *zox_name = zox_get(data->data, ZoxName)
-    const unsigned char quantity = zox_has(data->data, Quantity) ? zox_gett_value(data->data, Quantity) : 0;
+    const byte quantity = zox_has(data->data, Quantity) ? zox_gett_value(data->data, Quantity) : 0;
     if (zox_name && zox_name->value && zox_name->length) {
         char *name_string = convert_zext_to_text(zox_name->value, zox_name->length);
         sprintf(result, "[%s] x%i\n", name_string, quantity);

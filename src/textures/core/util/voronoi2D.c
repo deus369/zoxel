@@ -41,7 +41,7 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
     float pointCloseness = size.x / 5; //3;
     int2 points[points_length];
     color regionColors[points_length];
-    unsigned char is_darken[pixels_length];
+    byte is_darken[pixels_length];
     for (int i = 0; i < points_length; i++) {
         points[i] = int2_zero;
         regionColors[i] = color_white;
@@ -49,7 +49,7 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
         int count = 0;
         while (count <= 128) {
             newPoint = (int2) { rand() % size.x, rand() % size.y };
-            unsigned char isTooClose = 0;
+            byte isTooClose = 0;
             for (int j = i - 1; j >= 0; j--) {
                 int2 otherPoint = points[j];
                 if (    newPoint.x + pointCloseness > otherPoint.x - pointCloseness &&
@@ -65,9 +65,9 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
             count++;
         }
         points[i] = newPoint;
-        unsigned char r = (unsigned char)(base_color.r + (variance.r ? rand() % variance.r : 0));
-        unsigned char g = (unsigned char)(base_color.g + (variance.r ? rand() % variance.g : 0));
-        unsigned char b = (unsigned char)(base_color.b + (variance.r ? rand() % variance.b : 0));
+        byte r = (byte)(base_color.r + (variance.r ? rand() % variance.r : 0));
+        byte g = (byte)(base_color.g + (variance.r ? rand() % variance.g : 0));
+        byte b = (byte)(base_color.b + (variance.r ? rand() % variance.b : 0));
         regionColors[i] = (color) { r, g, b, 255 };
 
         // zox_log("region color [%i] %ix%ix%i\n", i, r, g, b)
@@ -93,8 +93,8 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
             if (positionRight.x == size.x) positionRight.x = 0;
             int pixelIndexUp = (int) (positionUp.y) * size.x + (int)(positionUp.x);
             int pixelIndexRight = (int) (positionRight.y) * size.x + (int)(positionRight.x);
-            unsigned char colorDiffUp = !color_equal(pixel, pixels[pixelIndexUp]);
-            unsigned char colorDiffRight = !color_equal(pixel, pixels[pixelIndexRight]);
+            byte colorDiffUp = !color_equal(pixel, pixels[pixelIndexUp]);
+            byte colorDiffRight = !color_equal(pixel, pixels[pixelIndexRight]);
             if (colorDiffUp || colorDiffRight) is_darken[pixelIndex] = 1;
             else is_darken[pixelIndex] = 0;
         }
@@ -111,7 +111,7 @@ void voronoi2D(color *pixels, const int2 size, const color base_color, color var
                 r = ((int)(r * darken));
                 g = ((int)(g * darken));
                 b = ((int)(b * darken));
-                pixels[pixelIndex] = (color) { (unsigned char) r, (unsigned char)g, (unsigned char)b, 255 };
+                pixels[pixelIndex] = (color) { (byte) r, (byte)g, (byte)b, 255 };
             }
         }
     }

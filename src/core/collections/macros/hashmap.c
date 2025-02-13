@@ -57,7 +57,7 @@ type name##_get(name* map, key_type key_raw) {\
     return type_zero;\
 }\
 \
-unsigned char name##_has(name* map, key_type key_raw) {\
+byte name##_has(name* map, key_type key_raw) {\
     if (!map || !map->data || map->size == 0) return 1;\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\

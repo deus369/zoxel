@@ -2,10 +2,10 @@
 extern void opengl_dispose_resources(ecs_world_t *world);
 extern void opengl_restore_resources(ecs_world_t *world);
 extern void engine_end(); // engine
-extern unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
+extern byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
 
 // todo: get position2 to work
-ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const unsigned char fullscreen) {
+ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const byte fullscreen) {
     int2 window_size = size;
     if (fullscreen) {
         window_size = screen_dimensions;
@@ -26,7 +26,7 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 
     return e;
 }
 
-ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const unsigned char fullscreen) {
+ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const byte fullscreen) {
     if (is_using_vulkan) {
 #ifndef zox_include_vulkan
         zox_log("! vulkan wasn't included in build\n")
@@ -54,7 +54,7 @@ ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, con
     }
 }
 
-unsigned char create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {
+byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {
     SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
     SDL_GLContext* gl_context = create_sdl_opengl_context(sdl_window);
     if (!gl_context) {
@@ -89,7 +89,7 @@ void update_sdl(ecs_world_t *world) { // const ecs_entity_t e) { // , const int2
                 on_window_resized(world, e, size);
             } else if (event.window.event == SDL_WINDOWEVENT_MOVED) { // handles application resizing
                 int2 position = (int2) { event.window.data1, event.window.data2 };
-                // unsigned char is_fullscreen = zox_get_value(e, WindowFullscreen)
+                // byte is_fullscreen = zox_get_value(e, WindowFullscreen)
                 SDL_Window* sdl_window = zox_get_value(e, SDLWindow)
                 int window_height = get_sdl_window_header_size(sdl_window);
                 int2 size = zox_get_value(e, WindowSize)

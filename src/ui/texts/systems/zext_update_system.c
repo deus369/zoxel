@@ -1,7 +1,7 @@
 //! When ui text updates, spawn/destroy font entities
 void ZextUpdateSystem(ecs_iter_t *it) {
     // zox_change_check()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ZextData, zextDatas, 1)
     zox_field_in(ZextSize, zextSizes, 2)
     zox_field_in(ZextPadding, zextPaddings, 3)
@@ -34,7 +34,7 @@ void ZextUpdateSystem(ecs_iter_t *it) {
         zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
         const ecs_entity_t canvas = get_root_canvas(world, e);
         const int2 canvas_size = zox_get_value(canvas, PixelSize)
-        const unsigned char zext_length = calculate_total_zigels(zextData->value, zextData->length);
+        const byte zext_length = calculate_total_zigels(zextData->value, zextData->length);
         if (zox_has(e, ZextRenderEnabler)) renderDisabled->value = zextData->length == 0;
         // set parent to or refactor debug ui?
         SpawnZigel spawn_data = {

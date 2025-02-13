@@ -4,14 +4,13 @@
 void BoneIndexGenerateSystem(ecs_iter_t *it) {
     zox_field_in(MeshDirty, meshDirtys, 1)
     zox_field_in(MeshVertices, meshVerticess, 2)
-    // zox_field_in(BoneLinks, boneLinkss, 3)
     zox_field_out(BoneIndexes, boneIndexess, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(MeshDirty, meshDirtys, meshDirty)
         if (meshDirty->value != mesh_state_generate) continue;
         zox_field_i(MeshVertices, meshVerticess, meshVertices)
         zox_field_o(BoneIndexes, boneIndexess, boneIndexes)
-        resize_memory_component(BoneIndexes, boneIndexes, unsigned char, meshVertices->length)
+        resize_memory_component(BoneIndexes, boneIndexes, byte, meshVertices->length)
         for (int j = 0; j < meshVertices->length; j++) {
             const float3 position = meshVertices->value[j];
             if (position.y >= 0.12f) boneIndexes->value[j] = 1;

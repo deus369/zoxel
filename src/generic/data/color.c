@@ -19,7 +19,7 @@ float4 color_to_float4(const color input) {
 }
 
 void color_multiply_float(color *input, const float multiplier) {
-    input->r = (unsigned char) (input->r * multiplier);
-    input->g = (unsigned char) (input->g * multiplier);
-    input->b = (unsigned char) (input->b * multiplier);
+    input->r = (byte) (input->r * multiplier);
+    input->g = (byte) (input->g * multiplier);
+    input->b = (byte) (input->b * multiplier);
 }

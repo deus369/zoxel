@@ -3,7 +3,7 @@
 // #define zox_log_font_io
 
 // todo: save properly
-unsigned char save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_directory, char *filename) {
+byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_directory, char *filename) {
     if (!e) {
         zox_log(" ! error saving entity [%lu] invalid children [%s]\n", e, filename)
         return 0;
@@ -129,7 +129,7 @@ void load_styles(ecs_world_t *world) {
     zox_font_style_default = spawn_font_style(world, prefab_font_style);
     // for now save
     // zox_font_style_monocraft is set in ttf initialization
-    const unsigned char loaded_ttf = initialize_ttf(world, prefab_font_style); // load in monocraft
+    const byte loaded_ttf = initialize_ttf(world, prefab_font_style); // load in monocraft
     if (loaded_ttf) {
         // save for now, testing
         // save_font_style(world, zox_font_style_monocraft, "/home/deus/zoxel/resources/", "monocraft.zox");

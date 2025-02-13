@@ -8,7 +8,7 @@
 #define float3_backward (float3) { 0, 0, -1 }
 #define float3_forward (float3) { 0, 0, 1 }
 
-unsigned char float3_equals(const float3 a, const float3 b) {
+byte float3_equals(const float3 a, const float3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 void float3_print(const float3 input) {

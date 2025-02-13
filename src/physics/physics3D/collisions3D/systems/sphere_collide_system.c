@@ -1,5 +1,5 @@
 void SphereCollideSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(SphereRadius, sphereRadiuss, 2)
     zox_field_in(CollisionDisabled, collisionDisableds, 3)
@@ -22,7 +22,7 @@ void SphereCollideSystem(ecs_iter_t *it) {
                 const Position3D *position3D2 = &position3Ds2[j];
                 const SphereRadius *sphereRadius2 = &sphereRadiuss2[j];
                 const float distance = float3_distance(position3D->value, position3D2->value);
-                const unsigned char overlaps = (distance <= sphereRadius->value + sphereRadius2->value);
+                const byte overlaps = (distance <= sphereRadius->value + sphereRadius2->value);
                 if (overlaps) {
                     if (zox_has(e, OverlapEvent)) {
                         const OverlapEvent *overlapEvent = zox_get(e, OverlapEvent)

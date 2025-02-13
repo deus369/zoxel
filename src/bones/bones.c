@@ -7,7 +7,7 @@ zox_declare_tag(SkeletonRenderer)
 zox_declare_tag(PaintedSkeleton)
 zox_declare_tag(HeadBone)
 zox_component_float3(BonePosition)
-zox_memory_component(BoneIndexes, unsigned char)
+zox_memory_component(BoneIndexes, byte)
 zox_memory_component(BoneLinks, ecs_entity_t)
 #include "components/bone_index.c"
 #include "shaders/shaders.c"

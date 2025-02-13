@@ -1,4 +1,4 @@
-unsigned char byte3_equals(const byte3 a, const byte3 b) {
+byte byte3_equals(const byte3 a, const byte3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
@@ -6,7 +6,7 @@ int byte3_array_index(const byte3 input, const byte3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
-unsigned char byte3_octree_array_index(const byte3 input) {
+byte byte3_octree_array_index(const byte3 input) {
     return input.z + 2 * (input.y + 2 * input.x);
 }
 
@@ -20,7 +20,7 @@ void byte3_add_byte3_p(byte3 *value, const byte3 add) {
     value->z += add.z;
 }
 
-void byte3_modulus_byte(byte3 *value, const unsigned char moduli) {
+void byte3_modulus_byte(byte3 *value, const byte moduli) {
     value->x %= moduli;
     value->y %= moduli;
     value->z %= moduli;
@@ -91,27 +91,27 @@ const byte3 octree_positions_b[] = {
     { 1, 1, 1}
 };
 
-unsigned char byte3_in_bounds(const byte3 input, const byte3 size) {
+byte byte3_in_bounds(const byte3 input, const byte3 size) {
     return (input.x >= 0 && input.x < size.x && input.y >= 0 && input.y < size.y && input.z >= 0 && input.z < size.z);
 }
 
-unsigned char byte3_on_edge(const byte3 pos, const byte3 size) {
+byte byte3_on_edge(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.y == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.y == size.y - 1 || pos.z == size.z - 1;
 }
 
-unsigned char byte3_on_edge_xz(const byte3 pos, const byte3 size) {
+byte byte3_on_edge_xz(const byte3 pos, const byte3 size) {
     return pos.x == 0 || pos.z == 0 || pos.x == size.x - 1 || pos.z == size.z - 1;
 }
 
-unsigned char byte3_on_edges(const byte3 pos, const byte3 size) {
-    unsigned char edges_count = 0;
+byte byte3_on_edges(const byte3 pos, const byte3 size) {
+    byte edges_count = 0;
     if (pos.x == 0 || pos.x == size.x - 1) edges_count++;
     if (pos.y == 0 || pos.y == size.y - 1) edges_count++;
     if (pos.z == 0 || pos.z == size.z - 1) edges_count++;
     return edges_count >= 2;
 }
 
-void byte3_multiply_byte(byte3* input, const unsigned char mul) {
+void byte3_multiply_byte(byte3* input, const byte mul) {
     input->x *= mul;
     input->y *= mul;
     input->z *= mul;

@@ -1,7 +1,7 @@
 // todo: use a DeviceMode for logic flow ?
 
 void ElementRaycastSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Raycaster, raycasters, 1)
     zox_field_in(DeviceLink, deviceLinks, 2)
     zox_field_out(RaycasterTarget, raycasterTargets, 3)
@@ -12,7 +12,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         if (!deviceLink->value) continue;
         const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
         if (!player) continue;
-        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        const byte device_mode = zox_get_value(player, DeviceMode)
         // zox_field_i(DeviceMode, deviceModes, deviceMode)
         if (device_mode != zox_device_mode_keyboardmouse && device_mode != zox_device_mode_touchscreen) continue;
         const ecs_entity_t player_canvas = zox_get_value(player, CanvasLink)
@@ -51,7 +51,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 const int2 pixelSize = pixelSize2->value;
                 const int2 canvas_position = zox_get_value(camera, ScreenPosition)
                 const int2 canvas_size = zox_get_value(camera, ScreenDimensions)
-                const unsigned char ray_in_viewport = position.x >= canvas_position.x && position.x <= canvas_position.x + canvas_size.x && position.y >= canvas_position.y && position.y <= canvas_position.y + canvas_size.y;
+                const byte ray_in_viewport = position.x >= canvas_position.x && position.x <= canvas_position.x + canvas_size.x && position.y >= canvas_position.y && position.y <= canvas_position.y + canvas_size.y;
                 if (!ray_in_viewport) continue;
                 // zox_log(" > player [%lu] ray in viewport: p [%ix%i] c [%ix%i] [%ix%i]\n", e, position.x, position.y, canvas_position.x, canvas_position.y, canvas_size.x, canvas_size.y)
                 int2 viewport_position = canvasPosition2->value;
@@ -59,7 +59,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 viewport_position.y += canvas_position.y;
                 // bounds should be offset with canvas position
                 const int4 ui_bounds = { viewport_position.x - pixelSize.x / 2, viewport_position.x + pixelSize.x / 2, viewport_position.y - pixelSize.y / 2,  viewport_position.y + pixelSize.y / 2};
-                const unsigned char was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
+                const byte was_raycasted = position.x >= ui_bounds.x && position.x <= ui_bounds.y && position.y >= ui_bounds.z && position.y <= ui_bounds.w;
                 if (was_raycasted) {
                     const unsigned window_raycasted = zox_has(e2, WindowRaycastTarget);
                     if (layer2D->value > ui_layer) { // !window_raycasted &&

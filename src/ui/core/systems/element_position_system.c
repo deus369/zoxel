@@ -1,6 +1,6 @@
 // for any elements with parent that is canvas
 void ElementPositionSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     ecs_query_t *change_query = it->ctx;
     ecs_iter_t it2 = ecs_query_iter(world, change_query);
     while (ecs_query_next(&it2)) {

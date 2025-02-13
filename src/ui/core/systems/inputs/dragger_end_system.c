@@ -1,5 +1,5 @@
 void DraggerEndSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_out(DraggableState, dragableStates, 1)
     zox_field_out(DraggerLink, draggerLinks, 2)
     zox_field_out(DraggingDelta, draggingDeltas, 3)
@@ -11,7 +11,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
         zox_field_o(DraggingDelta, draggingDeltas, draggingDelta)
         const ecs_entity_t player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
-        unsigned char did_drag_end = 0;
+        byte did_drag_end = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!device) continue;
@@ -20,7 +20,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
                 const ecs_entity_t zevice = zevices->value[k];
                 if (!zevice) continue;
                 if (!zox_has(zevice, ZevicePointer)) continue;
-                const unsigned char click = zox_get_value(zevice, ZevicePointer)
+                const byte click = zox_get_value(zevice, ZevicePointer)
                 const int2 delta = zox_get_value(zevice, ZevicePointerDelta)
                 if (devices_get_released_this_frame(click)) did_drag_end = 1;
                 else if (devices_get_is_pressed(click)) draggingDelta->value = delta;

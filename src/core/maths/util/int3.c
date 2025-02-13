@@ -10,7 +10,7 @@ const int3 int3_chaos = (int3) { -666, -666, -666 };
 #define int3_forward (int3) { 0, 0, 1 }
 const int3 int3_directions[] = { int3_left, int3_right, int3_down, int3_up, int3_backward, int3_forward };
 
-unsigned char int3_equals(const int3 a, const int3 b) {
+byte int3_equals(const int3 a, const int3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
@@ -52,7 +52,7 @@ int int3_array_index(const int3 input, const int3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
-unsigned char int3_to_node_index(const int3 position) {
+byte int3_to_node_index(const int3 position) {
     return position.x * 4 + position.y * 2 + position.z;
 }
 
@@ -143,7 +143,7 @@ int3 find_closest_point(const int3* points, const int points_length, const int3 
     if (points_length == 1) return points[0];
     int3 closest_point = points[0];
     float closest_distance = int3_distance(points[0], target); // 1000000;
-    for (unsigned char i = 1; i < points_length; i++) {
+    for (byte i = 1; i < points_length; i++) {
         const float distance = int3_distance(points[i], target);
         if (distance < closest_distance) {
             closest_distance = distance;

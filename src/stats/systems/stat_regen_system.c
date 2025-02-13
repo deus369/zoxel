@@ -1,10 +1,10 @@
 // todo: rework from regen stat, and impact stat value
 // do I need a velocity for stats? then regen will add to it? or just add directly..? :O hmm
 void StatRegenSystem(ecs_iter_t *it) {
-    //unsigned char system_updated = 0;
+    //byte system_updated = 0;
     const float regen_rate = 0.125f;
     init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_in(StatValueMax, statValueMaxs, 2)
     zox_field_out(StatValue, statValues, 3)

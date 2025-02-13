@@ -18,7 +18,7 @@ void BoneIndexUploadSystem(ecs_iter_t *it) {
             boneIndexGPULink->value = spawn_gpu_generic_buffer();
         }
         glBindBuffer(GL_ARRAY_BUFFER, boneIndexGPULink->value);
-        glBufferData(GL_ARRAY_BUFFER, boneIndexess->length * sizeof(unsigned char), boneIndexess->value, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, boneIndexess->length * sizeof(byte), boneIndexess->value, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // zox_log(" + updated bone indexes to gpu\n")
 #ifdef zoxel_catch_opengl_errors

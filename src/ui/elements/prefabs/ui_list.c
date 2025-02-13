@@ -17,18 +17,18 @@ int get_max_characters(const char *header_label, const text_group labels[], int 
 }
 
 // todo: use struct inputs
-ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const unsigned char is_close_button, unsigned char font_size, const unsigned char layer, const unsigned char is_scrollbar, const ecs_entity_t player) {
+ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const char *header_label, const int elements_count, const int max_elements, const text_group labels[], const ClickEvent events[], int2 pixel_position, const float2 anchor, const byte is_close_button, byte font_size, const byte layer, const byte is_scrollbar, const ecs_entity_t player) {
     const ecs_entity_t parent = canvas;
-    const unsigned char is_header = 1;
-    const unsigned char list_start = is_header + is_scrollbar;
+    const byte is_header = 1;
+    const byte list_start = is_header + is_scrollbar;
     const int children_length = (list_start + elements_count);
     const int max_characters = get_max_characters(header_label, labels, elements_count);
     const int scaled_font_size = zox_ui_scale * (int) font_size;
     const int scrollbar_width = 36 * zox_ui_scale;
     const int scrollbar_margins = 8 * zox_ui_scale;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const unsigned char header_layer = layer + 1;
-    const unsigned char button_layer = layer + 1;
+    const byte header_layer = layer + 1;
+    const byte button_layer = layer + 1;
     const int header_margins = 12 * zox_ui_scale;
     const int header_height = (scaled_font_size + header_margins - 1);
     const int2 list_margins = (int2) { (int) (scaled_font_size * 0.8f), (int) (scaled_font_size * 0.8f) };
@@ -96,7 +96,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     zox_modified(e, Children)
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0 && player) {
-        const unsigned char device_mode = zox_get_value(player, DeviceMode)
+        const byte device_mode = zox_get_value(player, DeviceMode)
         if (device_mode == zox_device_mode_gamepad) raycaster_select_element(world, player, children->value[list_start]);
     }
 #endif

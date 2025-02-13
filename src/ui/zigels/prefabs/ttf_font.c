@@ -66,7 +66,7 @@ ecs_entity_t spawn_ttf_from_file(ecs_world_t *world, const ecs_entity_t prefab, 
     return e;
 }
 
-unsigned char initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
+byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
     FT_Library library;
     if (FT_Init_FreeType(&library)) {
         fprintf(stderr, " ! error: failure in initialize_ttf\n");
@@ -79,7 +79,7 @@ unsigned char initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
 
 #else
 
-unsigned char initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
+byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
     return 0;
 }
 

@@ -8,7 +8,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         zox_field_i(DeviceLinks, deviceLinks, deviceLinks2)
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         // first check if currently using selected inputs
-        unsigned char using_current_inputs = 0;
+        byte using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];
             if (!device) continue;

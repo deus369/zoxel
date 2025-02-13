@@ -7,11 +7,11 @@ zox_component(VulkanSurface, VkSurfaceKHR*) // goes onto the sdl app
 
 // from vulkan module:
 extern VkSurfaceKHR create_vulkan_surface( SDL_Window* window, VkInstance instance);
-extern unsigned char create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfaceKHR* vk_surface);
+extern byte create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfaceKHR* vk_surface);
 extern VkInstance* vk_instance;
 extern VkSurfaceKHR* vk_surface;
 
-unsigned char load_vulkan_library() {
+byte load_vulkan_library() {
     if (is_using_vulkan) {
         if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
             zox_log(" ! failed to load vulkan library [%s]\n", SDL_GetError())

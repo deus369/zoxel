@@ -22,7 +22,7 @@ void pause_player(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     dispose_menu_game(world, player); // check this, ingame ui should now be linked to player, got from canvas
     disable_inputs_until_release(world, player, zox_device_mode_none, 1);
-    const unsigned char can_roam = zox_get_value(camera, CanRoam)
+    const byte can_roam = zox_get_value(camera, CanRoam)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     if (can_roam == 0) { // if attached to character
         if (zox_alive(character)) zox_set(character, DisableMovement, { 1 })

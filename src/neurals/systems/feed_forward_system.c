@@ -7,7 +7,7 @@ void LinkFeedForwardSystem(ecs_iter_t *it) {
     float learning_rate = 0.01f; // Assuming your learning rate is 0.01
     */
     init_delta_time()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ConnectionData, connectionDatas, 1)
     zox_field_in(BrainLink, brainLinks, 2)
     zox_field_out(Weight, weights, 3)
@@ -21,7 +21,7 @@ void LinkFeedForwardSystem(ecs_iter_t *it) {
         transfer->value += delta_time * neural_process_speed;
         if (transfer->value < 1.0f) continue;
         transfer->value = 0;
-        unsigned char reached_end = 0;
+        byte reached_end = 0;
         zox_field_o(Weight, weights, weight)
         const ecs_entity_t neuron_b = connectionData->value.y;
         if (neuron_b) {

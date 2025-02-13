@@ -1,4 +1,4 @@
-void on_element_pixels_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size, const unsigned char mesh_alignment) {
+void on_element_pixels_resized(ecs_world_t *world, const ecs_entity_t e, const int2 size, const byte mesh_alignment) {
     const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
     const float2 canvas_size = int2_to_float2(zox_gett_value(canvas, PixelSize));
     const float2 scale2D = (float2) { size.x / canvas_size.y, size.y / canvas_size.y };

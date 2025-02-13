@@ -4,7 +4,7 @@
 #define zox_gamepad_layout_type_steamdeck 2
 #define zox_device_stick_left 0
 #define zox_device_stick_right 1
-const unsigned char fingers_count = 2;
+const byte fingers_count = 2;
 // prefeabs
 ecs_entity_t prefab_zevice_button;
 ecs_entity_t prefab_zevice_stick;

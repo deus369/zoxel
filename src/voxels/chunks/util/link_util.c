@@ -1,4 +1,4 @@
-extern unsigned char get_voxes_lod_from_camera_distance(unsigned char distance_to_camera);
+extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
 
 void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t new_chunk) {
     ecs_entity_t old_chunk = chunkLink->value;
@@ -11,13 +11,13 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
         // Set RenderLod and RenderDisabled based on chunk!
         if (new_chunk) {
             // now render distabled
-            const unsigned char chunk_render_disabled = zox_get_value(new_chunk, RenderDisabled)
-            const unsigned char render_disabled = zox_get_value(e, RenderDisabled)
+            const byte chunk_render_disabled = zox_get_value(new_chunk, RenderDisabled)
+            const byte render_disabled = zox_get_value(e, RenderDisabled)
             if (render_disabled != chunk_render_disabled) zox_set(e, RenderDisabled, { chunk_render_disabled })
             // now lod
-            const unsigned char chunk_lod = zox_get_value(new_chunk, RenderLod)
-            // const unsigned char chunk_lod = get_voxes_lod_from_camera_distance(zox_gett_value(new_chunk, RenderDistance));
-            const unsigned char render_lod = zox_get_value(e, RenderLod)
+            const byte chunk_lod = zox_get_value(new_chunk, RenderLod)
+            // const byte chunk_lod = get_voxes_lod_from_camera_distance(zox_gett_value(new_chunk, RenderDistance));
+            const byte render_lod = zox_get_value(e, RenderLod)
             if (render_lod != chunk_lod) zox_set(e, RenderLod, { chunk_lod })
         }
         // remove entity from old chunk

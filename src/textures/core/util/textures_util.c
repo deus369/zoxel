@@ -1,7 +1,7 @@
 const color empty_color = { 0, 0, 0, 0 };
 
 // move this to prefab
-void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, unsigned char corner, unsigned char thickness) {
+void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, byte corner, byte thickness) {
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { corner })
     zox_prefab_set(e, OutlineThickness, { thickness })
@@ -9,14 +9,14 @@ void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const colo
     zox_prefab_set(e, OutlineColor, { secondary })
 }
 
-void set_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, unsigned char corner, unsigned char thickness) {
+void set_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, byte corner, byte thickness) {
     zox_set(e, FrameCorner, { corner })
     zox_set(e, OutlineThickness, { thickness })
     zox_set(e, Color, { primary })
     zox_set(e, OutlineColor, { secondary })
 }
 
-unsigned char check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {
+byte check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {
     if (!int2_in_bounds(pixel_position, size)) return 0;
     if (color_equal(find_color, data[int2_array_index(pixel_position, size)])) return 1;
     if (distance >= 0) {
@@ -29,7 +29,7 @@ unsigned char check_texture(const color *data, const int2 size, const int2 pixel
     return 0;
 }
 
-void generate_texture_icon(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char radius, const unsigned char is_noise) {
+void generate_texture_icon(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const byte frame_thickness, const byte radius, const byte is_noise) {
     int index = 0;
     int2 mid_position = int2_half(size);
     int2 pixel_position = { 0, 0 };
@@ -48,7 +48,7 @@ void generate_texture_icon(color *data, const int length, const int2 size, const
     }
 }
 
-void generate_texture_frame(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const unsigned char frame_thickness, const unsigned char corner_size, const unsigned char is_noise) {
+void generate_texture_frame(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const byte frame_thickness, const byte corner_size, const byte is_noise) {
     int index = 0;
     int2 pixel_position = { 0, 0 };
     for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
@@ -134,7 +134,7 @@ void generate_texture_graybox(color* data, const int2 big_size, int2 position, c
     }
 }
 
-void generate_texture_noise(color* data, const int2 size, const unsigned char texture_type, const unsigned char outline_type, color fill_color) {
+void generate_texture_noise(color* data, const int2 size, const byte texture_type, const byte outline_type, color fill_color) {
     color color_min = { 15, 15, 15, 255 };
     color color_max = { 15, 15, 15, 255 };
     /*int2 redRange = { 15, 244 };
@@ -149,7 +149,7 @@ void generate_texture_noise(color* data, const int2 size, const unsigned char te
         // if (rand() % 100 >= 50) {
         color_min = fill_color;
         color_max = fill_color;
-        const unsigned char noise = 24;
+        const byte noise = 24;
         color_min.r -= noise;
         color_min.g -= noise;
         color_min.b -= noise;

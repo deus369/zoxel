@@ -3,7 +3,7 @@ void AnimateChunkSystem(ecs_iter_t *it) {
     double current_time = zox_current_time;
     AnimateChunk *animateChunks = ecs_field(it, AnimateChunk, 1);
     GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 2);
-    unsigned char changed = 0;
+    byte changed = 0;
     for (int i = 0; i < it->count; i++) {
         AnimateChunk *animateChunk = &animateChunks[i];
         if (current_time - animateChunk->value >= animating_chunk_speed) {

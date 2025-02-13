@@ -4,7 +4,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     // todo: link each zigel to fontstyle's font
     ecs_entity_t zox_font_style = get_font_style_using();
     if (!zox_font_style || !zox_has(zox_font_style, Children)) return;
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ZigelIndex, zigelIndexs, 1)
     zox_field_in(Color, colors, 2)
     zox_field_in(SecondaryColor, secondaryColors, 3)
@@ -14,7 +14,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     zox_field_out(TextureDirty, textureDirtys, 7)
     zox_field_out(GenerateTexture, generateTextures, 8)
     const Children *font_style_children = zox_get(zox_font_style, Children)
-    const unsigned char is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
+    const byte is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         if (generateTexture->value != zox_generate_texture_generate) continue;

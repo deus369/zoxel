@@ -1,8 +1,8 @@
 // #define zox_debug_font_textures
 const uint safety_checks_floodfill = 16000;
 const uint safety_checks_drawline = 1000;
-const unsigned char is_splotches = 1;
-// const unsigned char splotch_size = 2;
+const byte is_splotches = 1;
+// const byte splotch_size = 2;
 #ifdef zox_debug_font_textures
     const color nothing_font_color = { 125, 100, 100, 255 };
 #else
@@ -48,7 +48,7 @@ void flood_fill_texture(color* data, const int2 size, const color air_color, con
 // raycast from all 4 sides!
 void scanline_fill_texture(color* data, const int2 size, const color air_color, const color boundary_color, const color fill_color) {
     for (int y = 0; y < size.y; y++) {
-        unsigned char intersects = 0;
+        byte intersects = 0;
         for (int x = 0; x < size.x; x++) {
             const int index = int2_array_index((int2) { x, y }, size);
             if (intersects) {
@@ -70,7 +70,7 @@ void scanline_fill_texture(color* data, const int2 size, const color air_color, 
         }
     }
     for (int x = 0; x < size.x; x++) {
-        unsigned char intersects = 0;
+        byte intersects = 0;
         intersects = 0;
         for (int y = 0; y < size.y; y++) {
             const int index = int2_array_index((int2) { x, y }, size);
@@ -126,7 +126,7 @@ void draw_texture_line(color* data, const int2 size, const int2 point_a, const i
     }
 }
 
-void generate_splotches_lines(color* data, const int2 size, const FontData *fontData, const color line_color, const unsigned char splotch_size) {
+void generate_splotches_lines(color* data, const int2 size, const FontData *fontData, const color line_color, const byte splotch_size) {
     if (splotch_size == 0) return;
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
@@ -194,7 +194,7 @@ void generate_font_lines(color* data, const int2 size, const FontData *fontData,
     }
 }
 
-void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const unsigned char is_shapes,  unsigned char font_thickness) {
+void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const byte is_shapes,  byte font_thickness) {
     // const color nothing = { 0, 0, 0, 0 };
     clear_texture(data, size);
     if (!font_data->length) return;
@@ -208,7 +208,7 @@ void generate_font_texture(color* data, const int2 size, const FontData *font_da
 }
 
 /*
-const unsigned char is_background = 0;
+const byte is_background = 0;
 const int frame_thickness = size.x / 4;
 const int2 redRange = { 15, 244 };
 const int2 greenRange = { 15, 122 };

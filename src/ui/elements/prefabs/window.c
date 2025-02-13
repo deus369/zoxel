@@ -33,9 +33,9 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const unsigned char layer) {
+ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const byte layer) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const unsigned char header_layer = layer + 1;
+    const byte header_layer = layer + 1;
     const int font_size = 28;
     const int header_margins = 16;
     const ecs_entity_t parent = canvas;

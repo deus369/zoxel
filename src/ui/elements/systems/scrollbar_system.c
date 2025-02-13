@@ -1,7 +1,7 @@
 // when scroll_front_drags, get window, move elements by amount
 //      > e->parent->parent->children[2+] for list elements - if vertical scrollbar
 void ScrollbarSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(DraggableState, draggableStates, 2)
     zox_field_in(PixelPosition, pixelPositions, 3)
     zox_field_in(PixelSize, pixelSizes, 4)
@@ -45,7 +45,7 @@ void ScrollbarSystem(ecs_iter_t *it) {
                 element_pixel_position->value = element_position;
                 zox_modified(list_element, PixelPosition)
             }
-            unsigned char render_enabled = normal_j >= scrollview_index_offset && normal_j < scrollview_index_offset + elements_visible;
+            byte render_enabled = normal_j >= scrollview_index_offset && normal_j < scrollview_index_offset + elements_visible;
             disable_element_rendering(world, list_element, !render_enabled);
         }
     }

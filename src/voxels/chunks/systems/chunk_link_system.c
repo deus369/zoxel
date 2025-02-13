@@ -1,7 +1,7 @@
 // #define zox_debug_chunk_link_system
 // #define zox_debug_chunk_link_system_test
 void ChunkLinkSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     zox_field_out(Position3D, position3Ds, 2)
     zox_field_out(ChunkPosition, chunkPositions, 3)

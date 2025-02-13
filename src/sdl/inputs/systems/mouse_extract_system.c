@@ -6,14 +6,14 @@
 */
 
 void MouseExtractSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     // remember: sdl doesn't do multiple mouses
     int2 mouse_position;
     Uint32 buttons = SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
     int2_flip_y(&mouse_position, viewport_dimensions);
-    unsigned char button_pressed_left = 0;
-    // unsigned char button_pressed_middle = 0;
-    unsigned char button_pressed_right = 0;
+    byte button_pressed_left = 0;
+    // byte button_pressed_middle = 0;
+    byte button_pressed_right = 0;
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) button_pressed_left = 1;
     // if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) button_pressed_middle = 1;
     if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) button_pressed_right = 1;

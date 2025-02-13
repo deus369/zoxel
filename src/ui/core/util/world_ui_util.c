@@ -1,5 +1,5 @@
 // gets parent in tree's UI Holder, uses its render LOD to check if can render a 3D UI
-unsigned char can_render_ui(ecs_world_t *world, ecs_entity_t e) {
+byte can_render_ui(ecs_world_t *world, ecs_entity_t e) {
     if (zox_has(e, UIHolderLink)) {
         const UIHolderLink *uiHolderLink = zox_get(e, UIHolderLink)
         if (zox_has(uiHolderLink->value, RenderLod)) {

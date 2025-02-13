@@ -1,14 +1,14 @@
-void fill_new_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
+void fill_new_octree(ChunkOctree* node, const byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
         open_new_ChunkOctree(node);
-        for (unsigned char i = 0; i < octree_length; i++) fill_new_octree(&node->nodes[i], voxel, depth);
+        for (byte i = 0; i < octree_length; i++) fill_new_octree(&node->nodes[i], voxel, depth);
     } else node->nodes = NULL;
 }
 
 // max_octree_depth
-void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, unsigned char depth) {
+void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth) {
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
     fill_new_octree(chunkOctree, 0, depth);
     zox_modified(e, ChunkOctree)
@@ -28,26 +28,26 @@ void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size)
     zox_prefab_add(e, ChunkNeighbors)
     zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
-    for (unsigned char i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
+    for (byte i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
 }
 
-unsigned char get_octree_voxel(const ChunkOctree *node, byte3 *position, const unsigned char depth) {
+byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte depth) {
     if (node == NULL) return 0;
     else if (node->nodes == NULL) return node->value;
     else if (depth == 0) return node->value;
-    const unsigned char dividor = powers_of_two_byte[depth - 1];
+    const byte dividor = powers_of_two_byte[depth - 1];
     const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
     return get_octree_voxel(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
 }
 
 // returns node, also sets voxel
-ChunkOctree* get_octree_voxel_with_node(unsigned char *value, ChunkOctree *node, byte3 *position, const unsigned char depth) {
+ChunkOctree* get_octree_voxel_with_node(byte *value, ChunkOctree *node, byte3 *position, const byte depth) {
     if (node == NULL) return NULL;
     *value = node->value;
     // if child nodes closed or depth final, return current node
     if (node->nodes == NULL || depth == 0) return node;
-    const unsigned char dividor = powers_of_two_byte[depth - 1];
+    const byte dividor = powers_of_two_byte[depth - 1];
     const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
     return get_octree_voxel_with_node(value, &node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
@@ -57,10 +57,10 @@ ChunkOctree* get_octree_voxel_with_node(unsigned char *value, ChunkOctree *node,
 void close_solid_nodes(ChunkOctree *node) {
     if (!node->nodes) return;
     // for all children nodes - only check higher nodes if closed children
-    for (unsigned char i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
-    unsigned char all_solid = 1;
-    unsigned char all_air = 1;
-    for (unsigned char i = 0; i < octree_length; i++) {
+    for (byte i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
+    byte all_solid = 1;
+    byte all_air = 1;
+    for (byte i = 0; i < octree_length; i++) {
         // if child node is open still, don't close
         if (node->nodes[i].nodes) {
             all_solid = 0;
@@ -83,16 +83,16 @@ void close_solid_nodes(ChunkOctree *node) {
 }
 
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
-void close_same_nodes(ChunkOctree *node, const unsigned char max_depth, unsigned char depth) {
+void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
     if (node->nodes == NULL) return;
     if (depth == max_depth) return; // make sure this doesn't try to close spawned nodes
     depth++;
-    for (unsigned char i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i], max_depth, depth);
-    unsigned char all_same = 1;
-    unsigned char all_same_voxel = 255;
-    for (unsigned char i = 0; i < octree_length; i++) {
+    for (byte i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i], max_depth, depth);
+    byte all_same = 1;
+    byte all_same_voxel = 255;
+    for (byte i = 0; i < octree_length; i++) {
         if (node->nodes[i].nodes != NULL) return; // if a child node is open, then don't close this node
-        const unsigned char node_value = node->nodes[i].value;
+        const byte node_value = node->nodes[i].value;
         if (all_same_voxel == 255) all_same_voxel = node_value;
         else if (all_same_voxel != node_value) {
             all_same = 0;
@@ -108,15 +108,15 @@ void close_same_nodes(ChunkOctree *node, const unsigned char max_depth, unsigned
 
 void optimize_solid_nodes(ChunkOctree *node) {
     if (node->nodes != NULL) {
-        for (unsigned char i = 0; i < octree_length; i++) optimize_solid_nodes(&node->nodes[i]);
-        unsigned char voxel_types = 0;
+        for (byte i = 0; i < octree_length; i++) optimize_solid_nodes(&node->nodes[i]);
+        byte voxel_types = 0;
         // byte2 *voxel_counts = malloc(sizeof(byte2) * octree_length);
         byte2 voxel_counts[octree_length];
-        for (unsigned char i = 0; i < octree_length; i++) {
-            unsigned char node_value = node->nodes[i].value;
+        for (byte i = 0; i < octree_length; i++) {
+            byte node_value = node->nodes[i].value;
             if (node_value == 0) continue;
-            unsigned char has_counted = 0;
-            for (unsigned char j = 0; j < voxel_types; j++) {
+            byte has_counted = 0;
+            for (byte j = 0; j < voxel_types; j++) {
                 has_counted = voxel_counts[j].x == node_value;
                 if (has_counted) {
                     voxel_counts[j].y++;
@@ -130,7 +130,7 @@ void optimize_solid_nodes(ChunkOctree *node) {
             }
         }
         byte2 biggest_count = byte2_zero;
-        for (unsigned char j = 0; j < voxel_types; j++) {
+        for (byte j = 0; j < voxel_types; j++) {
             if (voxel_counts[j].y > biggest_count.y) biggest_count = voxel_counts[j];
         }
         if (biggest_count.x != 0) node->value = biggest_count.x;
@@ -138,8 +138,8 @@ void optimize_solid_nodes(ChunkOctree *node) {
     }
 }
 
-unsigned char get_adjacent_voxel(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel) {
-    unsigned char chunk_index = 0;
+byte get_adjacent_voxel(byte direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, byte depth, const byte edge_voxel) {
+    byte chunk_index = 0;
     const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node && adjacent_node->value) return adjacent_node->value;
     else if (!adjacent_node) return edge_voxel; // edge of map
@@ -147,12 +147,12 @@ unsigned char get_adjacent_voxel(unsigned char direction, const ChunkOctree *roo
 }
 
 // single voxel check!
-unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, unsigned char depth, const unsigned char edge_voxel, const unsigned char *voxel_solidity) {
-    unsigned char voxel_adjacent = get_adjacent_voxel(direction, root_node, neighbors, position, depth, edge_voxel);
+byte is_adjacent_solid(byte direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, byte depth, const byte edge_voxel, const byte *voxel_solidity) {
+    byte voxel_adjacent = get_adjacent_voxel(direction, root_node, neighbors, position, depth, edge_voxel);
     if (voxel_adjacent == 0) return 0;
     voxel_adjacent--; // remove air from index
     return voxel_solidity[voxel_adjacent];
-    /*unsigned char chunk_index = 0;
+    /*byte chunk_index = 0;
     const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
     // if (adjacent_node == NULL) zox_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
     if (adjacent_node == NULL) return edge_voxel;
@@ -166,9 +166,9 @@ unsigned char is_adjacent_solid(unsigned char direction, const ChunkOctree *root
 // max_depth is per chunk... refactor that
 // Fix issues between chunks of different levels of division
 // function to check all adjacent voxels are solid on the face
-unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, unsigned char node_index, byte3 node_position, unsigned char depth, const unsigned char max_depth, const unsigned char neighbor_depths[], unsigned char edge_voxel, const unsigned char *voxel_solidity) {
-    /*unsigned char is_adjacent_solid(direction, root_node, neighbors[], node_position, depth, edge_voxel, voxel_solidity);*/
-    unsigned char chunk_index = 0;
+byte is_adjacent_all_solid(byte direction, const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *neighbors[], int3 octree_position, byte node_index, byte3 node_position, byte depth, const byte max_depth, const byte neighbor_depths[], byte edge_voxel, const byte *voxel_solidity) {
+    /*byte is_adjacent_solid(direction, root_node, neighbors[], node_position, depth, edge_voxel, voxel_solidity);*/
+    byte chunk_index = 0;
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL) { // || depth == max_depth) {
         return edge_voxel;
@@ -177,7 +177,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
     } else if (adjacent_node->nodes != NULL && ((chunk_index == 0 && depth < max_depth) || (chunk_index != 0 && depth < neighbor_depths[chunk_index - 1]))) {
         depth++;
         int3_multiply_int_p(&octree_position, 2);
-        for (unsigned char i = 0; i < octree_length; i++) {
+        for (byte i = 0; i < octree_length; i++) {
             const byte3 local_position = octree_positions_b[i];
             if (direction == direction_left) {
                 if (local_position.x != 0) continue;
@@ -201,7 +201,7 @@ unsigned char is_adjacent_all_solid(unsigned char direction, const ChunkOctree *
     return 1;
 }
 
-void random_fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char depth) {
+void random_fill_octree(ChunkOctree* node, byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
@@ -214,11 +214,11 @@ void random_fill_octree(ChunkOctree* node, unsigned char voxel, unsigned char de
     }
 }
 
-void fill_octree(ChunkOctree* node, const unsigned char voxel, unsigned char depth) {
+void fill_octree(ChunkOctree* node, const byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
         open_ChunkOctree(node);
-        for (unsigned char i = 0; i < octree_length; i++) fill_octree(&node->nodes[i], voxel, depth);
+        for (byte i = 0; i < octree_length; i++) fill_octree(&node->nodes[i], voxel, depth);
     }
 }

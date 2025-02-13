@@ -125,7 +125,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     // set scale of mesh again
     if (!headless && zox_has(e, MeshVertices2D)) {
         zox_get_muter(e, MeshVertices2D, meshVertices2D)
-        const unsigned char mesh_alignment = zox_get_value(e, MeshAlignment)
+        const byte mesh_alignment = zox_get_value(e, MeshAlignment)
         const float2 size2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, size2D);
         zox_set(e, MeshDirty, { mesh_state_trigger2 })
@@ -155,7 +155,7 @@ void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_e
     }
 }
 
-void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {
+void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
@@ -170,7 +170,7 @@ void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, cons
     }
 }
 
-void initialize_element(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const unsigned char layer, const float2 position2D, const int2 pixel_position_global) {
+void initialize_element(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
     initialize_element_invisible(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, TextureSize, { texture_size })
     // use a function that updates it, but keep seperate from initialize function which merely sets variables

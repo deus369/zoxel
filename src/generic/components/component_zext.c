@@ -1,7 +1,7 @@
-// zox_memory_component(ZoxName, unsigned char)
+// zox_memory_component(ZoxName, byte)
 component_id_list(zext)
 
-#define zox_component_zext(name) zox_memory_component(name, unsigned char)
+#define zox_component_zext(name) zox_memory_component(name, byte)
 
 #define zox_define_component_zext(name)\
 zox_define_memory_component(name)\

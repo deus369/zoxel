@@ -1,5 +1,5 @@
 void ButtonClickEventSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ClickEvent, clickEvents, 1)
     zox_field_in(ClickState, clickStates, 2)
     zox_field_out(Clicker, clickers, 3)

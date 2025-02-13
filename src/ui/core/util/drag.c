@@ -1,4 +1,4 @@
-void set_element_dragged(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element, const unsigned char drag_mode) {
+void set_element_dragged(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element, const byte drag_mode) {
     DraggableState *dragableState = zox_get_mut(element, DraggableState)
     if (!dragableState->value) {
         DraggerLink *draggerLink = zox_get_mut(element, DraggerLink)

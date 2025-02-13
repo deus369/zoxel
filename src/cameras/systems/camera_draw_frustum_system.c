@@ -1,6 +1,6 @@
 void FrustumDrawSystem(ecs_iter_t *it) {
     /*color_rgb debug_color = (color_rgb) { 0, 0, 0 };
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(FrustumCorners, frustumCornerss, 1)
     for (int i = 0; i < it->count; i++) {
         // zox_field_i(FrustumCorners, frustumCornerss, frustumCorners)

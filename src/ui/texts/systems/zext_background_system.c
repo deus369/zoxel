@@ -1,6 +1,6 @@
 // this needs zextData with Mesh in one entity
 void ZextBackgroundSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ZextDirty, zextDirtys, 2)
     zox_field_in(ZextData, zextDatas, 3)
     zox_field_in(ZextSize, zextSizes, 4)

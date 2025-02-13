@@ -1,13 +1,13 @@
 int virtual_joysticks_spawn_count = 0;
 unsigned first_joystick_type = zox_device_stick_left;
 
-void handle_touch_drag(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t finger, const ecs_entity_t virtual_joystick, const unsigned char is_game_state_playing) {
+void handle_touch_drag(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t finger, const ecs_entity_t virtual_joystick, const byte is_game_state_playing) {
     const ZevicePointer *zevicePointer = zox_get(finger, ZevicePointer)
     if (devices_get_pressed_this_frame(zevicePointer->value)) {
         // delete_virtual_joystick(world, canvas);
         const ZevicePointerPosition *zevicePointerPosition = zox_get(finger, ZevicePointerPosition)
         if (is_game_state_playing) {
-            unsigned char button_type = zox_device_stick_left;
+            byte button_type = zox_device_stick_left;
             const ecs_entity_t touchscreen = zox_get_value(finger, DeviceLink)
             const int2 screen_dimensions = zox_get_value(touchscreen, ScreenDimensions)
             if (zevicePointerPosition->value.x >= screen_dimensions.x / 2) button_type = zox_device_stick_right;

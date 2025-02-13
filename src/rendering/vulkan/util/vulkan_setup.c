@@ -232,7 +232,7 @@ uint32_t find_graphics_and_present_queue_family_index(VkPhysicalDevice physicalD
     return (uint32_t)-1; // Return -1 if no suitable queue family was found
 }
 
-unsigned char vulkan_create_device() {
+byte vulkan_create_device() {
     const char* deviceExtensions[] = { "VK_KHR_swapchain" };
     uint32_t deviceExtensionCount = 1;
 
@@ -276,7 +276,7 @@ unsigned char vulkan_create_device() {
     return EXIT_SUCCESS;
 }
 
-unsigned char vulkan_create_command_buffer() {
+byte vulkan_create_command_buffer() {
     // Create a Command Pool
     VkCommandPoolCreateInfo poolCreateInfo = {};
     poolCreateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -432,7 +432,7 @@ VkSurfaceCapabilitiesKHR get_vulkan_surface_capabilities() {
     return surface_capabilities;
 }
 
-unsigned char create_vulkan_swap_chain() {
+byte create_vulkan_swap_chain() {
     VkBool32 presentSupport = VK_FALSE;
     vkGetPhysicalDeviceSurfaceSupportKHR(vk_physical_device, queue_family_index, *vk_surface, &presentSupport);
     if (!presentSupport) return EXIT_FAILURE;
@@ -464,7 +464,7 @@ unsigned char create_vulkan_swap_chain() {
     return EXIT_SUCCESS;
 }
 
-unsigned char create_vulkan_images() {
+byte create_vulkan_images() {
     // creates swap chain images
     VkResult swapChainImagesCountResult = vkGetSwapchainImagesKHR(vk_device, vk_swap_chain, &vk_images_count, NULL);
     if (swapChainImagesCountResult != VK_SUCCESS) {
@@ -512,7 +512,7 @@ unsigned char create_vulkan_images() {
     return EXIT_SUCCESS;
 }
 
-unsigned char create_vulkan_frame_buffer(VkImageView *vk_image_views) {
+byte create_vulkan_frame_buffer(VkImageView *vk_image_views) {
     // For simplicity, assuming a single imageView (in a real scenario, you'd loop over all swap chain images)
     // Create Framebuffer
     VkFramebufferCreateInfo framebufferInfo = {};
@@ -553,7 +553,7 @@ VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMes
     }
 }
 
-unsigned char create_vulkan_debugger() {
+byte create_vulkan_debugger() {
     // When setting up your Vulkan instance and devices
     VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -568,7 +568,7 @@ unsigned char create_vulkan_debugger() {
     return EXIT_SUCCESS;
 }
 
-unsigned char create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfaceKHR* vk_surface) {
+byte create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfaceKHR* vk_surface) {
     // int width, height;
     // SDL_Vulkan_GetDrawableSize(window, &width, &height);
     vk_swap_chain_extent = (VkExtent2D) { screen_dimensions.x, screen_dimensions.y };

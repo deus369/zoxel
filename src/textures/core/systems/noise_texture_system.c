@@ -1,6 +1,6 @@
 void NoiseTextureSystem(ecs_iter_t *it) {
     zox_change_check()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(TextureSize, textureSizes, 1)
     zox_field_in(Color, colors, 5)
     zox_field_out(GenerateTexture, generateTextures, 2)
@@ -14,7 +14,7 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         zox_field_i(Color, colors, fill_color)
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         zox_field_o(TextureData, textureDatas, textureData)
-        unsigned char texture_type = zox_texture_none;
+        byte texture_type = zox_texture_none;
         if (texture_mode == zox_texture_mode_graybox) {
             texture_type = zox_texture_graybox;
         } else if (zox_has(e, DirtTexture)) {

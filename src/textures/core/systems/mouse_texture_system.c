@@ -1,5 +1,5 @@
 // how to link main_window, viewport_dimensions and mouse
-// unsigned char has_disabled_sdl_mouse_cursor = 0;
+// byte has_disabled_sdl_mouse_cursor = 0;
 void MouseTextureSystem(ecs_iter_t *it) {
     zox_field_in(MouseLock, mouseLocks, 1)
     zox_field_in(TextureLink, textureLinks, 2)

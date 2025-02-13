@@ -5,9 +5,9 @@
 
 void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    const unsigned char game_state = zox_get_value(game, GameState)
+    const byte game_state = zox_get_value(game, GameState)
     if (!(game_state == zox_game_playing || game_state == zox_game_paused)) return;
-    unsigned char is_paused = game_state == zox_game_paused;
+    byte is_paused = game_state == zox_game_paused;
     if (!is_paused) set_game_state_target(world, game, zox_game_paused);
     else set_game_state_target(world, game, zox_game_playing);
 }

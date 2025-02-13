@@ -1,7 +1,7 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     // begin_timing()
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(ChunkMeshDirty, chunkMeshDirtys, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(RenderLod, renderLods, 3)
@@ -40,13 +40,13 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             const ChunkOctree *chunk_back = chunkNeighbors2->value[4] == 0 ? NULL : zox_get(chunkNeighbors2->value[4], ChunkOctree)
             const ChunkOctree *chunk_front = chunkNeighbors2->value[5] == 0 ? NULL : zox_get(chunkNeighbors2->value[5], ChunkOctree)
             const ChunkOctree *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
-            const unsigned char chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[0], RenderLod)
-            const unsigned char chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[1], RenderLod)
-            const unsigned char chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[2], RenderLod)
-            const unsigned char chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[3], RenderLod)
-            const unsigned char chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[4], RenderLod)
-            const unsigned char chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[5], RenderLod)
-            unsigned char neighbor_lods[6];
+            const byte chunk_left_max_distance = chunkNeighbors2->value[0] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[0], RenderLod)
+            const byte chunk_right_max_distance = chunkNeighbors2->value[1] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[1], RenderLod)
+            const byte chunk_down_max_distance = chunkNeighbors2->value[2] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[2], RenderLod)
+            const byte chunk_up_max_distance = chunkNeighbors2->value[3] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[3], RenderLod)
+            const byte chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[4], RenderLod)
+            const byte chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[5], RenderLod)
+            byte neighbor_lods[6];
             neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance);
             neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance);
             neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance);
@@ -54,7 +54,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance);
             neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance);
             const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
-            const unsigned char chunk_depth = get_chunk_division_from_lod(renderLod->value);
+            const byte chunk_depth = get_chunk_division_from_lod(renderLod->value);
             // BuildChunkColored build_chunk_colored = { };
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }

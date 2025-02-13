@@ -1,6 +1,6 @@
 void add_player(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     PlayerLinks *playerLinks = zox_get_mut(e, PlayerLinks)
-    unsigned char new_length = playerLinks->length + 1;
+    byte new_length = playerLinks->length + 1;
     resize_memory_component(PlayerLinks, playerLinks, ecs_entity_t, new_length)
     playerLinks->value[new_length - 1] = player;
     zox_modified(e, PlayerLinks)
@@ -8,7 +8,7 @@ void add_player(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t pla
 }
 
 // game state implementation for players module
-void players_game_state(ecs_world_t *world, const ecs_entity_t game, const unsigned char previous_game_state, const unsigned char new_game_state) {
+void players_game_state(ecs_world_t *world, const ecs_entity_t game, const byte previous_game_state, const byte new_game_state) {
     const PlayerLinks *playerLinks = zox_get(game, PlayerLinks)
     for (int i = 0; i < playerLinks->length; i++) {
         const ecs_entity_t player = playerLinks->value[i];

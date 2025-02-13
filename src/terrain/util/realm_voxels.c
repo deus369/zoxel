@@ -10,7 +10,7 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
         value_limits.x + (value_limits.y - value_limits.x) * (rand() % 100) * 0.01f };
 }
 
-ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const unsigned char index, char *name, char *texture_filename) {
+ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const byte index, char *name, char *texture_filename) {
     SpawnBlock spawn_data = {
         .index = index,
         .seed = generate_voxel_seed(index),
@@ -115,10 +115,10 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     voxelLinks->value[zox_block_dungeon_core - 1] = dungeon_block;
 
     // the rest
-    for (unsigned char i = 0; i < voxelLinks->length; i++) {
+    for (byte i = 0; i < voxelLinks->length; i++) {
         SpawnBlock spawn_data = {
             // .prefab_block_vox = prefab_block_vox,
-            .index = (unsigned char) (i + 1),
+            .index = (byte) (i + 1),
             .seed = generate_voxel_seed(i),
             .prefab_texture = prefab_vox_texture
         };
@@ -197,7 +197,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         } else {
             // continue;
         }
-        unsigned char is_name_malloc = 0;
+        byte is_name_malloc = 0;
         if (!spawn_data.name) {
             spawn_data.name = generate_name();
             is_name_malloc = 1;

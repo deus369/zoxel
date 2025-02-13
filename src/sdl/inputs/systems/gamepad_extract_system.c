@@ -1,5 +1,5 @@
 void GamepadExtractSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Children, childrens, 1)
     zox_field_in(SDLGamepad, sdlGamepads, 2)
     for (int i = 0; i < it->count; i++) {

@@ -4,8 +4,8 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     return;
 #endif
     // for now while types are global
-    const unsigned char target_depth = max_octree_depth;
-    const unsigned char chunk_voxel_length = powers_of_two_byte[target_depth];
+    const byte target_depth = max_octree_depth;
+    const byte chunk_voxel_length = powers_of_two_byte[target_depth];
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
     const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
     const SetVoxelTargetData datam_dirt_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
@@ -112,9 +112,9 @@ if (rando < grass_spawn_chance) {
                 if (global_height < lowest_voxel_height) global_height = lowest_voxel_height;
                 // now for grass_vox on top
                 // remember: to add structures like that, a noise roof over ttop of certain areas would be cool
-                const unsigned char is_mountain = global_height >= mountain_height;
-                const unsigned char is_sand = global_height <= sand_height;
-                const unsigned char is_grasslands = !is_sand && !is_mountain;
+                const byte is_mountain = global_height >= mountain_height;
+                const byte is_sand = global_height <= sand_height;
+                const byte is_grasslands = !is_sand && !is_mountain;
                 int rando = rand() % 10000;
                 if (is_grasslands) {
                     if (rando <= stone_top_spawn_chance) {
@@ -153,7 +153,7 @@ if (rando < grass_spawn_chance) {
 
                 int local_height = int_min(chunk_voxel_length, global_height - chunk_position_y); // gets either grass point or chunk_voxel_length
                 if (local_height > 0) {
-                    const unsigned char chunk_below_max = local_height > chunk_voxel_length;
+                    const byte chunk_below_max = local_height > chunk_voxel_length;
                     if (chunk_below_max) local_height = chunk_voxel_length;
                     // this moves through y positions of chunk
                     for (voxel_position.y = 0; voxel_position.y < local_height; voxel_position.y++) {

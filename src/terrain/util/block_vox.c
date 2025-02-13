@@ -6,8 +6,8 @@
 typedef struct {
     ChunkOctree *chunk; // const
     int3 octree_position;
-    unsigned char depth;
-    const unsigned char max_depth;
+    byte depth;
+    const byte max_depth;
 } NodeDelveData;
 
 typedef struct {
@@ -15,8 +15,8 @@ typedef struct {
     const ecs_entity_t *blocks;
     const ecs_entity_t *block_voxes;
     const ecs_entity_t *block_prefabs;
-    const unsigned char *block_vox_offsets;
-    const unsigned char block_voxes_count;
+    const byte *block_vox_offsets;
+    const byte block_voxes_count;
     const float3 chunk_position_real;
     SpawnBlockVox *spawn_data;
 } UpdateBlockEntities;
@@ -30,7 +30,7 @@ void delete_vox_entity_from_nodes(ecs_world_t *world, ChunkOctree *chunk) {
 }
 
 // returns 1 if needs allocate a new VoxelEntityLink
-unsigned char delete_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
+byte delete_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     if (!chunk->nodes) return 1;
     const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
     if (zox_valid(e3)) {
@@ -54,12 +54,12 @@ void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     }
 }
 
-void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk,  unsigned char depth, const unsigned char max_depth) {
+void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk,  byte depth, const byte max_depth) {
     if (depth == max_depth) {
         remove_old_voxel_by_link(world, chunk);
     } else if (chunk->nodes) {
         depth++;
-        for (unsigned char i = 0; i < octree_length; i++) {
+        for (byte i = 0; i < octree_length; i++) {
             delete_block_entities(world, &chunk->nodes[i], depth, max_depth);
         }
     }
@@ -76,7 +76,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             return; // air returns!
         }
         // cheeck if out of bounds
-        const unsigned char block_index = delve_data->chunk->value - 1;
+        const byte block_index = delve_data->chunk->value - 1;
         if (block_index >= data->block_voxes_count) {
             zox_log(" ! block_index out of bounds %i of %i\n", block_index, data->block_voxes_count)
             return;
@@ -100,12 +100,12 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                 // we should check its the same one
                 // we can add lod to mechanical entities too
                 if (zox_has(e3, BlockIndex)) {
-                    const unsigned char old_block_index = zox_get_value(e3, BlockIndex)
+                    const byte old_block_index = zox_get_value(e3, BlockIndex)
                     if (old_block_index == block_index) {
                         // zox_log(" > trying to spawn same block vox [%i]\n", old_block_index)
                         // Updates RenderLod of previous Vox Blocks
-                        const unsigned char vox_lod = data->spawn_data->render_lod;
-                        const unsigned char vox_lod_old = zox_get_value(e3, RenderLod)
+                        const byte vox_lod = data->spawn_data->render_lod;
+                        const byte vox_lod_old = zox_get_value(e3, RenderLod)
                         if (vox_lod_old != vox_lod) {
                             zox_set(e3, RenderLod, { vox_lod })
                             zox_set(e3, ChunkMeshDirty, { chunk_dirty_state_trigger })
@@ -126,7 +126,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         data->spawn_data->position_real = position_real;
         // todo: instead of hash, replace OctreeNode with OctreeNodeEntity - link directly in the node
         ecs_entity_t e2;
-        // const unsigned char is_world_block = block_prefab && !zox_has(block_prefab, BlockVox);
+        // const byte is_world_block = block_prefab && !zox_has(block_prefab, BlockVox);
         data->spawn_data->prefab = block_prefab;
         if (zox_has(block_prefab, BlockVox)) {
             e2 = spawn_block_vox(world, data->spawn_data);
@@ -154,7 +154,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         int3 octree_position = delve_data->octree_position;
         int3_multiply_int_p(&octree_position, 2);
         if (delve_data->chunk && delve_data->chunk->nodes) {
-            for (unsigned char i = 0; i < octree_length; i++) {
+            for (byte i = 0; i < octree_length; i++) {
                 NodeDelveData delve_data_child = {
                     .chunk = &delve_data->chunk->nodes[i],
                     .octree_position = int3_add(octree_position, octree_positions[i]),
@@ -166,7 +166,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         } else {
 #ifndef zox_disable_block_spawns_hash
             // traverse down with null nodes, making sure to clean up vox spawns on closed nodes
-            for (unsigned char i = 0; i < octree_length; i++) {
+            for (byte i = 0; i < octree_length; i++) {
                 delve_data2.octree_position = int3_add(octree_position, octree_positions[i]);
                 update_block_entities(world, data, &delve_data2);
             }
@@ -176,20 +176,20 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 }
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
-void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const unsigned char vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, const unsigned char max_depth) {
+void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, const byte max_depth) {
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-    const unsigned char block_voxes_count = voxels->length;
+    const byte block_voxes_count = voxels->length;
     if (block_voxes_count == 0) {
         return;
     }
     ecs_entity_t blocks[block_voxes_count];
     ecs_entity_t block_voxes[block_voxes_count];
     ecs_entity_t block_prefabs[block_voxes_count];
-    unsigned char block_vox_offsets[block_voxes_count];
+    byte block_vox_offsets[block_voxes_count];
     zero_memory(block_voxes, block_voxes_count, ecs_entity_t)
     zero_memory(block_prefabs, block_voxes_count, ecs_entity_t)
-    zero_memory(block_vox_offsets, block_voxes_count, unsigned char)
+    zero_memory(block_vox_offsets, block_voxes_count, byte)
     //memset(block_voxes, 0, block_voxes_count * sizeof(ecs_entity_t));
     //memset(block_prefabs, 0, block_voxes_count * sizeof(ecs_entity_t));
     //memset(block_vox_offsets, 0, block_voxes_count);

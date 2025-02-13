@@ -54,7 +54,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     //if (animationSequence->length == 0) {
     zox_get_muter(e, AnimationTimes, animationTimes)
     zox_get_muter(e, AnimationTargets, animationTargets)
-    resize_memory_component(AnimationSequence, animationSequence, unsigned char, 3)
+    resize_memory_component(AnimationSequence, animationSequence, byte, 3)
     resize_memory_component(AnimationTimes, animationTimes, double, 3)
     resize_memory_component(AnimationTargets, animationTargets, float, 3)
     animationSequence->value[0] = zox_animate_alpha; // zox_animation_fadein;
@@ -68,7 +68,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     animationTargets->value[2] = 0;
 }
 
-void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, const float time_length, const float alpha, const unsigned char direction) {
+void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, const float time_length, const float alpha, const byte direction) {
     const float canvas_fade_delay = 0.02f;
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) {

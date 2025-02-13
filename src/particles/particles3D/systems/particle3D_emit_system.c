@@ -1,5 +1,5 @@
 void Particle3DEmitSystem(ecs_iter_t *it) {
-    zox_iter_world()
+    zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ParticleEmitRate, particleEmitRates, 2)
     zox_field_in(Bounds3D, boundss, 3)

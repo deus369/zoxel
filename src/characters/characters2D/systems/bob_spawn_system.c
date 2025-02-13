@@ -1,4 +1,4 @@
-// unsigned char debugSpawnBobArmy = 0;
+// byte debugSpawnBobArmy = 0;
 
 // forward declarations
 

@@ -3,7 +3,7 @@
 
 // #define zox_log_boot_game
 
-unsigned char boot_zoxel_game(ecs_world_t *world) {
+byte boot_zoxel_game(ecs_world_t *world) {
 #ifndef zox_beta
     game_name = "zoxel";
 #else

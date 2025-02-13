@@ -7,7 +7,7 @@ double time_app_started = 0;
 #define clock_as_double (((double) clock()) / clocks_per_second)
 
 #define begin_timing()\
-unsigned char did_do = 0;\
+byte did_do = 0;\
 double time_start = clock_as_double;
 // clock_t
 

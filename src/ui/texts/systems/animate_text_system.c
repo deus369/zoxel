@@ -3,7 +3,7 @@ void AnimateTextSystem(ecs_iter_t *it) {
     zox_field_out(AnimateZext, animateZexts, 1)
     zox_field_out(ZextDirty, zextDirtys, 2)
     zox_field_out(ZextData, zextDatas, 3)
-    unsigned char changed = 0;
+    byte changed = 0;
     for (int i = 0; i < it->count; i++) {
         zox_field_o(AnimateZext, animateZexts, animateZext)
         animateZext->value -= delta_time;

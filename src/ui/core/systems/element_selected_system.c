@@ -7,11 +7,11 @@ void ElementSelectedSystem(ecs_iter_t *it) {
         zox_field_i(SelectState, selectStates, selectState)
         zox_field_o(Brightness, brightnesss, brightness)
         // todo: move these to new systems?
-        unsigned char is_dragging = 0;
+        byte is_dragging = 0;
         if (zox_has(e, DraggableState)) {
             is_dragging = zox_get_value(e, DraggableState)
         }
-        unsigned char is_active = 0;
+        byte is_active = 0;
         if (zox_has(e, ActiveState)) is_active = zox_get_value(e, ActiveState)
         if (is_active) brightness->value = ui_active_brightness;
         else if (is_dragging) brightness->value = ui_dragging_brightness;

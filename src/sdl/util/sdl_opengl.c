@@ -1,5 +1,5 @@
-unsigned char opengl_es_supported() {
-    unsigned char is_supported = 0;
+byte opengl_es_supported() {
+    byte is_supported = 0;
     int num_render_drivers = SDL_GetNumRenderDrivers();
     #ifdef zoxel_debug_opengl
     zox_log(" > found [%i] render drivers\n", num_render_drivers)

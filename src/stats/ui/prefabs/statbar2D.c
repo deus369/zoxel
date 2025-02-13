@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_statbar2D(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_statbar2D(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const ecs_entity_t player, const ecs_entity_2 character_group) {
-    const unsigned char layer = 1;
+    const byte layer = 1;
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const float2 elementbar2D_anchor = float2_top_left;
     const int2 size = (int2) { 256, 32 };

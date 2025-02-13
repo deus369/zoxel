@@ -59,7 +59,7 @@
     opengl_functions
 #undef opengl_function
 
-unsigned char opengl_load_functions() {
+byte opengl_load_functions() {
     #define opengl_function opengl_load_function
         opengl_functions
     #undef opengl_functions

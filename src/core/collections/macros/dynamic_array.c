@@ -36,7 +36,7 @@ void expand_capacity##_##data_type##_##array_d(data_type##_##array_d* dynamic_ar
     }\
 }\
 \
-void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type block[], unsigned char length) {\
+void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type block[], byte length) {\
     size_t required_capacity = dynamic_array->size + length; \
     if (required_capacity > dynamic_array->capacity) { \
         dynamic_array->capacity *= 2;\
@@ -46,14 +46,14 @@ void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array
     dynamic_array->size += length; \
 }\
 \
-void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array, const data_type block[], unsigned char length) {\
+void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array, const data_type block[], byte length) {\
     size_t required_capacity = dynamic_array->size + length;\
     if (required_capacity > dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
         dynamic_array->data = realloc(dynamic_array->data, dynamic_array->capacity * sizeof(data_type));\
     }\
     memcpy(dynamic_array->data + dynamic_array->size, block, length * sizeof(data_type));\
-    for (unsigned char i = 0; i < length; i++) dynamic_array->data[dynamic_array->size + i] = block[i];\
+    for (byte i = 0; i < length; i++) dynamic_array->data[dynamic_array->size + i] = block[i];\
     dynamic_array->size += length; \
 }\
 \
@@ -73,7 +73,7 @@ data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_arr
 }
 
 #define create_is_in_array_d(data_type)\
-unsigned char is_in##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type value) {\
+byte is_in##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type value) {\
     for (int i = 0; i < dynamic_array->size; i++) if (dynamic_array->data[i] == value) return 1;\
     return 0;\
 }

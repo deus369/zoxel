@@ -3,7 +3,7 @@ void AnimateNoiseSystem(ecs_iter_t *it) {
     init_delta_time()
     AnimateTexture *animateTextures = ecs_field(it, AnimateTexture, 1);
     GenerateTexture *generateTextures = ecs_field(it, GenerateTexture, 2);
-    unsigned char changed = 0;
+    byte changed = 0;
     for (int i = 0; i < it->count; i++) {
         AnimateTexture *animateTexture = &animateTextures[i];
         animateTexture->value -= delta_time;

@@ -1,5 +1,5 @@
 // Function to check if glGenFramebuffers is available
-unsigned char is_frame_buffer_supported() {
+byte is_frame_buffer_supported() {
     return SDL_GL_ExtensionSupported("GL_ARB_framebuffer_object");
     // Check if the necessary function is available
     /*if (GLEW_VERSION_3_0 || GLEW_ARB_framebuffer_object) {

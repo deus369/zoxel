@@ -20,7 +20,7 @@ void realms_game_end(ecs_world_t *world, const ecs_entity_t game) {
 }
 
 // state change goes to start and end functions
-void realms_game_state(ecs_world_t *world, const ecs_entity_t game, const unsigned char old_game_state, const unsigned char new_game_state) {
+void realms_game_state(ecs_world_t *world, const ecs_entity_t game, const byte old_game_state, const byte new_game_state) {
     if (old_game_state == zox_game_start && new_game_state == zox_game_playing) {
         realms_start_game(world, game);
     } else if (new_game_state == zox_game_start) {
