@@ -25,6 +25,6 @@ zox_begin_module(Weathers)
         zox_system_1(SkyboxSetTimeSystem, EcsOnUpdate, [in] MaterialGPULink, [none] Skybox)
     }
     spawn_prefabs_weather(world);
-zoxel_end_module(Weathers)
+zox_end_module(Weathers)
 
 #endif

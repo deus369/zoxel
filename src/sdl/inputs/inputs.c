@@ -21,6 +21,6 @@ zox_begin_module(SdlInputs)
     zox_system_1(MouseExtractSystem, zox_extract_pipeline, [in] Children, [none] inputs.Mouse)
     zox_system_1(MouseConstrainSystem, zox_extract_pipeline, [in] MouseLock, [in] Children, [none] inputs.Mouse)
     initialize_apps_input(world);
-zoxel_end_module(SdlInputs)
+zox_end_module(SdlInputs)
 
 #endif

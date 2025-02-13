@@ -25,6 +25,6 @@ zox_begin_module(Plots)
     zox_system(PlotLineSystem, EcsOnUpdate, [in] ParentLink, [in] ChildIndex, [out] LineLocalPosition2D, [none] PlotLine)
     zox_system(PlotLabelSystem, EcsOnUpdate, [in] ParentLink, [out] ZextDirty, [out] ZextData, [none] PlotLabel)
     spawn_prefabs_plots(world);
-zoxel_end_module(Plots)
+zox_end_module(Plots)
 
 #endif

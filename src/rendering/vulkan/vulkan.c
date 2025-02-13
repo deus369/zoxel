@@ -26,6 +26,6 @@ unsigned char check_vulkan_suppport() {
 }
 
 zox_begin_module(Vulkan)
-zoxel_end_module(Vulkan)
+zox_end_module(Vulkan)
 
 #endif

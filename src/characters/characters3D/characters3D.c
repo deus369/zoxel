@@ -18,6 +18,6 @@ zox_begin_module(Characters3D)
     zox_define_component_entity(Character3DLink)
     spawn_prefabs_characters3D(world);
     zox_import_module(Characters3DTerrain)
-zoxel_end_module(Characters3D)
+zox_end_module(Characters3D)
 
 #endif

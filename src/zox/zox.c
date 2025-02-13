@@ -81,6 +81,6 @@ zox_begin_module(Zox)
     #if defined(zox_mod_debug)
     zox_import_module(Debug)
     #endif
-zoxel_end_module(Zox)
+zox_end_module(Zox)
 
 #endif

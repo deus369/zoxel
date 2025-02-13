@@ -1,10 +1,10 @@
 // this passes cameras into chunks
 // each chunk will calculate distance to nearest camera and based LOD off this distance
-const unsigned char max_camera_distance = streaming_distance + 1; // 3;
+const byte max_camera_distance = streaming_distance + 1; // 3;
 
 void ChunkLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
-    zox_iter_world()
+    zox_field_world()
     ecs_query_t *streamers_query = it->ctx;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
     ecs_query_next(&streamers_iter);
@@ -53,9 +53,3 @@ void ChunkLodSystem(ecs_iter_t *it) {
     }
     ecs_iter_fini(&streamers_iter);
 } zox_declare_system(ChunkLodSystem)
-
-
-
-// zox_log(" > chunk dirty at [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
-// also set neighbors to rebuild (chunk dirty)
-/*  */

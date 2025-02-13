@@ -45,6 +45,6 @@ zox_begin_module(Blocks)
     zox_define_component_entity(BlockPrefabLink)
     zox_system(TerrainTextureSetSystem, EcsOnUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
     spawn_prefabs_blocks(world);
-zoxel_end_module(Blocks)
+zox_end_module(Blocks)
 
 #endif

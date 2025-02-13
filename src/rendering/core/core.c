@@ -73,7 +73,7 @@ zox_begin_module(RenderingCore)
     zox_define_memory_component(MeshColorRGBs)
     define_systems_rendering(world);
     spawn_prefabs_rendering_core(world);
-zoxel_end_module(RenderingCore)
+zox_end_module(RenderingCore)
 
 #endif
 

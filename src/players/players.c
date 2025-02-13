@@ -18,6 +18,6 @@ zox_begin_module(Players)
     zox_define_component_entity(PlayerLink)
     zox_define_memory_component(PlayerLinks)
     spawn_prefabs_players(world);
-zoxel_end_module(Players)
+zox_end_module(Players)
 
 #endif

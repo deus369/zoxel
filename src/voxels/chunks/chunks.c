@@ -86,6 +86,6 @@ zox_begin_module(Chunks)
     zox_system(ChunkEntitiesLodSystem, EcsOnUpdate, [in] ChunkLodDirty, [in] RenderDistance, [in] EntityLinks)
     zox_system(ChunkFindNeighborSystem, EcsOnLoad, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [out] ChunkNeighbors, [none] ChunkTextured)
     spawn_prefabs_chunks(world);
-zoxel_end_module(Chunks)
+zox_end_module(Chunks)
 
 #endif

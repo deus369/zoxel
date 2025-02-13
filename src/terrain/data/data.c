@@ -1,5 +1,3 @@
-#include "platform_settings.c"
-#include "generation_settings.c"
 #include "settings.c"
 #include "terrain_statistics.c"
 #include "chunk_textured_build_data.c"

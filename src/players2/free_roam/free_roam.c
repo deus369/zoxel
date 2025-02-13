@@ -12,7 +12,7 @@ zox_begin_module(FreeRoam)
     zox_system(FreeCameraMoveSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] players.Player)
     zox_system(FreeCameraRotateSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [none] players.Player)
     zox_system(FreeCameraToggleSystem, EcsOnUpdate, [in] DeviceLinks, [in] cameras.CameraLink, [in] GameLink, [none] players.Player)
-zoxel_end_module(FreeRoam)
+zox_end_module(FreeRoam)
 
 #endif
 

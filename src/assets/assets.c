@@ -13,6 +13,6 @@ zox_declare_tag(Asset)
 
 zox_begin_module(Assets)
     zox_define_tag(Asset)
-zoxel_end_module(Assets)
+zox_end_module(Assets)
 
 #endif

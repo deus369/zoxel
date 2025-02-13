@@ -7,6 +7,6 @@ zox_declare_tag(Dungeon)
 zox_begin_module(Dungeons)
 zox_define_tag(Dungeon)
 // spawn_prefab_dungeon(world);
-zoxel_end_module(Dungeons)
+zox_end_module(Dungeons)
 
 #endif

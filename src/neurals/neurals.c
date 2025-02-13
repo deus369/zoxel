@@ -52,6 +52,6 @@ zox_begin_module(Neurals)
     #ifdef zox_test_brain
     spawn_test_brain(world);
     #endif
-zoxel_end_module(Neurals)
+zox_end_module(Neurals)
 
 #endif

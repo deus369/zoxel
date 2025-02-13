@@ -7,10 +7,10 @@
 #include "elements/elements.c"
 
 zox_begin_module(Elements)
-    initialize_module_ui(world);
+    zox_import_module(ElementsCore)
     zox_import_module(Zigels)
     zox_import_module(Zexts)
-    zox_import_module(Zelements)
-zoxel_end_module(Elements)
+    zox_import_module(SubElements)
+zox_end_module(Elements)
 
 #endif

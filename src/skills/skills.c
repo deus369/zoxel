@@ -49,6 +49,6 @@ zox_begin_module(Skills)
     zox_import_module(UISkills)
     zox_define_system_state_event_1(RealmSkills, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
     spawn_prefabs_skills(world);
-zoxel_end_module(Skills)
+zox_end_module(Skills)
 
 #endif

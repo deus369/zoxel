@@ -41,6 +41,6 @@ zox_begin_module(Zexts)
     if (!headless) zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] ZextData, [in] ZextSize, [in] ZextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
     zox_define_increment_system(ZextDirty, EcsOnLoad, [none] Zext)
     spawn_prefabs_texts(world);
-zoxel_end_module(Zexts)
+zox_end_module(Zexts)
 
 #endif

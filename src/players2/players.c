@@ -66,6 +66,6 @@ zox_begin_module(Players2)
     zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [out] ActionLinks, [out] TriggerActionB)
     initialize_players(world);
     spawn_prefabs_players2(world);
-zoxel_end_module(Players2)
+zox_end_module(Players2)
 
 #endif

@@ -78,6 +78,6 @@ zox_begin_module(Inputs)
     zox_define_memory_component(DeviceLinks)
     define_systems_input(world);
     spawn_prefabs_inputs(world);
-zoxel_end_module(Inputs)
+zox_end_module(Inputs)
 
 #endif

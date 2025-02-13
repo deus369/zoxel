@@ -10,6 +10,6 @@ zox_begin_module(ActionsUI)
     zox_define_tag(MenuActions)
     zox_define_tag(IconAction)
     spawn_prefabs_actions_ui(world);
-zoxel_end_module(Actions)
+zox_end_module(Actions)
 
 #endif

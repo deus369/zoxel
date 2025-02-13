@@ -72,6 +72,6 @@ zox_begin_module(Generic)
     zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
     zox_system_1(TimedEventSystem, zox_pip_mainthread, [in] TimedEvent, [in] EventInput, [out] EventTime)
     spawn_prefabs_generic(world);
-zoxel_end_module(Generic)
+zox_end_module(Generic)
 
 #endif

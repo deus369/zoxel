@@ -23,6 +23,6 @@ zox_begin_module(Physics2D)
     zox_system(Velocity2DSystem, zox_pip_physics, [out] Position2D, [in] Velocity2D)
     zox_system(Torque2DSystem, zox_pip_physics, [out] Rotation2D, [in] Torque2D)
     zox_system(Bounds2DSystem, zox_pip_physics, [out] Position2D, [in] Bounds2D)
-zoxel_end_module(Physics2D)
+zox_end_module(Physics2D)
 
 #endif

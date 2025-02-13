@@ -87,6 +87,6 @@ zox_begin_module(TexturesCore)
     zox_define_increment_system(GenerateTexture, EcsOnLoad, [none] Texture)
     zox_system(MouseTextureSystem, EcsOnUpdate, [in] MouseLock, [in] TextureLink, [in] PlayerLink)
     spawn_prefabs_textures_core(world);
-zoxel_end_module(TexturesCore)
+zox_end_module(TexturesCore)
 
 #endif

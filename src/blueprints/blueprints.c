@@ -24,6 +24,6 @@ zox_begin_module(Blueprints)
     zox_define_tag(BluenodeOutput)
     spawn_prefabs_blueprints(world);
     // test blueprints - spawn like neurals
-zoxel_end_module(Blueprints)
+zox_end_module(Blueprints)
 
 #endif

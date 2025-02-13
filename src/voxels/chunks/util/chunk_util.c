@@ -1,9 +1,9 @@
 const int init_lod_voxes = 1;
 const int lod_div_voxes = 1;
-const unsigned char terrain_lod_dividor = 2; // 2 | 3
-unsigned char initial_terrain_lod = 1; // 3 | 2
+const byte terrain_lod_dividor = 2; // 2 | 3
+byte initial_terrain_lod = 1; // 3 | 2
 
-unsigned char get_terrain_lod_from_camera_distance(unsigned char distance_to_camera, unsigned char max_camera_distance) {
+byte get_terrain_lod_from_camera_distance(byte distance_to_camera, byte max_camera_distance) {
     #ifdef zox_disable_terrain_lod_levels
     return 0;
     #endif
@@ -27,13 +27,10 @@ bounds calculate_chunk_bounds(const float3 position3D, const int3 chunk_size, co
 // returns simple camera distance for chunks
 byte get_camera_chunk_distance(const int3 camera_position, const int3 chunk_position) {
     return (byte) int3_max(chunk_position, camera_position);
-    // return int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.z - camera_position.z));
-    // return int3_distance(camera_position, chunk_position);
-    // return int_max(int_max(int_abs(chunk_position.x - camera_position.x), int_abs(chunk_position.y - camera_position.y)), int_abs(chunk_position.z - camera_position.z));
 }
 
-unsigned char get_voxes_lod_from_camera_distance(const unsigned char distance_to_camera) {
-    unsigned char lod;
+byte get_voxes_lod_from_camera_distance(const byte distance_to_camera) {
+    byte lod;
     if (distance_to_camera <= init_lod_voxes) lod = 0;
     else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 1) lod = 1;
     else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 2) lod = 2;
@@ -44,8 +41,8 @@ unsigned char get_voxes_lod_from_camera_distance(const unsigned char distance_to
     return lod;
 }
 
-unsigned char get_block_voxes_lod_from_camera_distance(const unsigned char distance_to_camera) {
-    unsigned char lod;
+byte get_block_voxes_lod_from_camera_distance(const byte distance_to_camera) {
+    byte lod;
     if (distance_to_camera <= init_lod_voxes) lod = 0;
     else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 1) lod = 1;
     else if (distance_to_camera <= init_lod_voxes + lod_div_voxes * 2) lod = 2;

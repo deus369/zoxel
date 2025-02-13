@@ -40,6 +40,6 @@ zox_begin_module(Lines2D)
     zox_render3D_system(Line2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] !ElementLine2D)
     zox_render2D_system(ElementLine2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] ElementLine2D)
     spawn_prefabs_lines2D(world);
-zoxel_end_module(Lines2D)
+zox_end_module(Lines2D)
 
 #endif

@@ -60,6 +60,6 @@ zox_begin_module(Networking)
     zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
     zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
     spawn_prefabs_networking(world);
-zoxel_end_module(Networking)
+zox_end_module(Networking)
 
 #endif

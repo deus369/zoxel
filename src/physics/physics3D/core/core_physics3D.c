@@ -47,6 +47,6 @@ zox_begin_module(CorePhysics3D)
     zox_system(Acceleration3DSystem, zox_pip_physics, [out] Acceleration3D, [out] Velocity3D)
     zox_system(Alpha3DSystem, zox_pip_physics, [out] Alpha3D, [out] Omega3D)
     zox_system(Position3DBoundsSystem, zox_pip_physics, [in] Position3DBounds, [in] Bounds3D, [out] Position3D) // EcsPostUpdate - move to collisions maybe?
-zoxel_end_module(CorePhysics3D)
+zox_end_module(CorePhysics3D)
 
 #endif

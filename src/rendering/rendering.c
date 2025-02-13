@@ -65,6 +65,6 @@ zox_begin_module(Rendering)
     #ifdef zox_mod_rendering_basics3D
         zox_import_module(RenderingBasics3D)
     #endif
-zoxel_end_module(Rendering)
+zox_end_module(Rendering)
 
 #endif

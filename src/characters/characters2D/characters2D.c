@@ -21,6 +21,6 @@ spawn_prefabs_characters2D(world);
 #ifdef zoxel_test_character2Ds
     spawn_many_characters2D();
 #endif
-zoxel_end_module(Characters2D)
+zox_end_module(Characters2D)
 
 #endif

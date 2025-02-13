@@ -48,6 +48,6 @@ zox_begin_module(Stats)
     zox_import_module(StatsUI)
     zox_define_system_state_event_1(RealmStats, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
     spawn_prefabs_stats(world);
-zoxel_end_module(Stats)
+zox_end_module(Stats)
 
 #endif

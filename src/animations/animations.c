@@ -66,6 +66,6 @@ zox_begin_module(Animations)
     zox_system(AnimateAlphaSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [in] AnimateSourceFloat, [in] AnimateTargetFloat, [out] Alpha)
     zox_system(FadeoutSystem, EcsOnUpdate, [in] FadeOutEvent, [in] AnimationStart, [out] Alpha)
     zox_system(OscillateSystem, EcsOnUpdate, [in] OscillateStartPosition3D, [out] LocalPosition3D, [none] OscillatePosition3D)
-zoxel_end_module(Animations)
+zox_end_module(Animations)
 
 #endif

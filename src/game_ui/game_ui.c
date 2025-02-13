@@ -41,6 +41,6 @@ zox_begin_module(GameUI)
     zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)
     zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
     spawn_prefabs_game_ui(world);
-zoxel_end_module(GameUI)
+zox_end_module(GameUI)
 
 #endif

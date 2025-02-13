@@ -9,6 +9,6 @@ zox_begin_module(Particles)
     zox_define_component(ParticleEmitRate)
     zox_import_module(Particles2D)
     zox_import_module(Particles3D)
-zoxel_end_module(Particles)
+zox_end_module(Particles)
 
 #endif

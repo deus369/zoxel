@@ -9,6 +9,6 @@ zox_begin_module(ItemsUI)
     zox_define_tag(MenuItems)
     zox_define_tag(IconItem)
     spawn_prefabs_items_ui(world);
-zoxel_end_module(ItemsUI)
+zox_end_module(ItemsUI)
 
 #endif

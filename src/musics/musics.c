@@ -51,6 +51,6 @@ zox_begin_module(Musics)
     spawn_prefabs_musics(world);
     zox_prefab_set(prefab_realm, PlaylistLink, { 0 })
     zox_prefab_add(prefab_realm, PlaylistLinks)
-zoxel_end_module(Musics)
+zox_end_module(Musics)
 
 #endif

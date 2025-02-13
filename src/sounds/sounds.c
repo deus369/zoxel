@@ -35,6 +35,6 @@ zox_begin_module(Sounds)
     define_systems_sounds(world);
     initialize_sounds(world);
     spawn_prefabs_sounds(world);
-zoxel_end_module(Sounds)
+zox_end_module(Sounds)
 
 #endif

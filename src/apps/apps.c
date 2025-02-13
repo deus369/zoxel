@@ -21,6 +21,6 @@ zox_begin_module(Apps)
     zox_define_component(VulkanSurface)
     #endif
     spawn_prefabs_apps(world);
-zoxel_end_module(Apps)
+zox_end_module(Apps)
 
 #endif

@@ -17,6 +17,6 @@ zox_begin_module(Nodes)
     zox_define_component_entity(NodeNext)
     spawn_prefabs_nodes(world);
     // test_nodes(world);
-zoxel_end_module(Nodes)
+zox_end_module(Nodes)
 
 #endif

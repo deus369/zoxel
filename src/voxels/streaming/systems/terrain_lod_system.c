@@ -1,4 +1,5 @@
 // this checcks neighbor chunks and makes sure surrounding ones update too (i think?)
+/*
 #define check_chunk_lod(dir)\
     (zox_valid(chunkNeighbors->value[direction_##dir]) &&\
     zox_gett_value(chunkNeighbors->value[direction_##dir], RenderLod) != \
@@ -7,7 +8,7 @@
 // todo: crashes here! find out why with drmemory
 
 // For each terrain, it uses it's Chunks and StreamerLinks
-/*
+
 void TerrainLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_iter_world()

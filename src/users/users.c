@@ -16,6 +16,6 @@ zox_begin_module(Users)
     zox_define_component_byte(Quantity)
     zox_define_entities_component(UserLinks)
     zox_import_module(UsersUI)
-zoxel_end_module(Users)
+zox_end_module(Users)
 
 #endif

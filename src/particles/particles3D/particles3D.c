@@ -27,6 +27,6 @@ zox_begin_module(Particles3D)
     // if making rotation ones, just create new systems, add [none] Rotation3D - for this one
     zox_render3D_plus_system(Particle3DRenderSystem, [in] Position3D, [in] Color, [none] Particle3D)
     spawn_prefabs_particles3D(world);
-zoxel_end_module(Particles3D)
+zox_end_module(Particles3D)
 
 #endif

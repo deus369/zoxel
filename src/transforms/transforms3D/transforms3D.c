@@ -47,6 +47,6 @@ zox_begin_module(Transforms3D)
     zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] !Scale1D) // , [none] !CameraTransform)
     zox_system(TransformMatrixScaleSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [in] Scale1D, [out] TransformMatrix) // , [none] !CameraTransform)
     // zox_system(CameraTransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] CameraTransform)
-zoxel_end_module(Transforms3D)
+zox_end_module(Transforms3D)
 
 #endif

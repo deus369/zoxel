@@ -1,0 +1,5 @@
+# development pipelines
+- I need low mental tasks to combine with my high intensity ones
+    - this means tools for content creation so I can use established repetition
+    - these tasks require less processing mentally so I can produce game content
+    - procedural generation is good but requires more mental prowess compared to traditional pipelines and routines gamedevs use

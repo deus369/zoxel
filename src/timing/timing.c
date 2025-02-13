@@ -22,6 +22,6 @@ zox_begin_module(Timing)
     zox_system(TimerSystem, EcsPostUpdate, [in] TimerRate, [out] TimerState, [out] TimerTime)
     add_to_post_update_loop(iterate_time);
     initialize_time();
-zoxel_end_module(Timing)
+zox_end_module(Timing)
 
 #endif

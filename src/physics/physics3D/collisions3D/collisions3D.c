@@ -27,6 +27,6 @@ zox_begin_module(Collisions3D)
     #ifdef zox_gizmos_sphere_colliders
         zox_system_1(SphereColliderDrawSystem, zox_pip_mainthread, [in] RenderDisabled, [in] Position3D, [in] SphereRadius, [none] SphereCollider)
     #endif
-zoxel_end_module(Collisions3D)
+zox_end_module(Collisions3D)
 
 #endif

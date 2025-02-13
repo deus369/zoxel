@@ -23,6 +23,6 @@ zox_begin_module(Actions)
     zox_define_user_data(Action)
     zox_import_module(ActionsUI)
     spawn_prefabs_actions(world);
-zoxel_end_module(Actions)
+zox_end_module(Actions)
 
 #endif

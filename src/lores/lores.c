@@ -2,6 +2,6 @@
 #define zox_mod_lores
 
 zox_begin_module(Lores)
-zoxel_end_module(Lores)
+zox_end_module(Lores)
 
 #endif

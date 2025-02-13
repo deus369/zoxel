@@ -23,6 +23,6 @@ zox_begin_module(Items)
     zox_import_module(ItemsUI)
     spawn_prefabs_items(world);
     zox_define_system_state_event_1(RealmItems, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
-zoxel_end_module(Items)
+zox_end_module(Items)
 
 #endif

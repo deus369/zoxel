@@ -1,11 +1,23 @@
+// voxes lods
+const byte max_vox_blocks = 16; // max spawned vox_blocks
+const byte max_lod_voxes = 0;
+// terrain
+const int sand_height = -10;
+const int mountain_height = 20;
+// blocks
+#define block_spawn_chance_grass 1200 // 222 // 1033
+#define block_spawn_chance_flower 188 // flowers
+#define block_spawn_chance_rubble 47
+#define octree_random_spawn_chance 22
+
 // const int max_chunks_build_per_frame = 32; // 16; // terrain chunks built per frame
-unsigned char high_resolution_terain_lod = 1; // 2 | 1
-unsigned char terrain_spawn_distance;
-unsigned char terrain_vertical = 2;
-const unsigned char terrain_min_height = 8;
+byte high_resolution_terain_lod = 1; // 2 | 1
+byte terrain_spawn_distance;
+byte terrain_vertical = 2;
+const byte terrain_min_height = 8;
 const int terrain_octaves = 12;
 const float flat_height_level = -0.56f; // 0.2f;
-unsigned char terrain_mode = 0;
+byte terrain_mode = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;

@@ -6,6 +6,6 @@
 
 zox_begin_module(Cubes)
 spawn_prefabs_cubes(world);
-zoxel_end_module(Cubes)
+zox_end_module(Cubes)
 
 #endif

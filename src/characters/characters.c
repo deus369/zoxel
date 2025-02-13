@@ -28,6 +28,6 @@ zox_begin_module(Characters)
     zox_import_module(Characters2D)
     zox_import_module(Characters3D)
     prefabs_add_characters_to_player(world, prefab_player);
-zoxel_end_module(Characters)
+zox_end_module(Characters)
 
 #endif

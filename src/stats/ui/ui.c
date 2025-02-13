@@ -17,6 +17,6 @@ zox_begin_module(StatsUI)
     zox_define_tag(IconFrameStat)
     zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
     spawn_prefabs_ui_stats(world);
-zoxel_end_module(StatsUI)
+zox_end_module(StatsUI)
 
 #endif

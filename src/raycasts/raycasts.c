@@ -36,6 +36,6 @@ zox_begin_module(Raycasts)
     zox_system_1(RayDebugSystem, zox_pip_mainthread, [in] RaycastOrigin, [in] RaycastNormal)
     #endif
     prefab_set_game_prefabs(world);
-zoxel_end_module(Raycasts)
+zox_end_module(Raycasts)
 
 #endif

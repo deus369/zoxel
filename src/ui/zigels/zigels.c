@@ -41,6 +41,6 @@ zox_begin_module(Zigels)
     zox_system_ctx(FontTextureSystem, zox_pip_zigels, fonts, [in] ZigelIndex, [in] Color, [in] SecondaryColor, [in] TextureSize, [in] FontThickness, [out] TextureData, [out] TextureDirty, [out] GenerateTexture, [none] FontTexture)
     spawn_prefabs_zigels(world);
     load_styles(world);
-zoxel_end_module(Zigels)
+zox_end_module(Zigels)
 
 #endif

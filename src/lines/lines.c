@@ -11,6 +11,6 @@ zox_begin_module(Lines)
     zox_define_component(LineThickness)
     zox_import_module(Lines2D)
     zox_import_module(Lines3D)
-zoxel_end_module(Lines)
+zox_end_module(Lines)
 
 #endif

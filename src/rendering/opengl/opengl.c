@@ -39,6 +39,6 @@ unsigned char initialize_opengl(ecs_world_t *world) {
 
 zox_begin_module(OpenGL)
     add_to_update_loop(opengl_clear_viewport_all);
-zoxel_end_module(OpenGL)
+zox_end_module(OpenGL)
 
 #endif

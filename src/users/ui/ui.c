@@ -19,6 +19,6 @@ zox_begin_module(UsersUI)
     zox_system(UserIconSelectSystem, EcsOnUpdate, [in] SelectState, [in] UserDataLink, [in] CanvasLink, [in] TooltipEvent, [none] UserIcon)
     zox_system(UserIconClickSystem, EcsPreUpdate, [in] ClickState, [in] IconType, [in] IconIndex, [out] UserDataLink, [none] UserIcon)
     spawn_prefabs_users_ui(world);
-zoxel_end_module(Users)
+zox_end_module(Users)
 
 #endif

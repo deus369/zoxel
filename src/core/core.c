@@ -28,7 +28,7 @@ zox_begin_module(Core)
     #if zoxel_on_web
         add_to_update_loop(update_web_canvas);
     #endif
-zoxel_end_module(Core)
+zox_end_module(Core)
 
 /*#ifdef __WINE__
  z ox_*log("  > inside wine\n")

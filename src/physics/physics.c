@@ -14,6 +14,6 @@ zox_begin_module(Physics)
     zox_define_component(CollisionDisabled)
     zox_import_module(Physics2D)
     zox_import_module(Physics3D)
-zoxel_end_module(Physics)
+zox_end_module(Physics)
 
 #endif

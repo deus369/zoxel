@@ -33,6 +33,6 @@ zox_begin_module(Terrain)
     zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);
-zoxel_end_module(Terrain)
+zox_end_module(Terrain)
 
 #endif

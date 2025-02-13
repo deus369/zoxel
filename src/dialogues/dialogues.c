@@ -7,6 +7,6 @@ zox_begin_module(Dialogues)
 
 // zoxel_system_defines
 
-zoxel_end_module(Dialogues)
+zox_end_module(Dialogues)
 
 #endif

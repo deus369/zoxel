@@ -33,6 +33,6 @@ zox_begin_module(Games)
     zox_system_1(GameStateSystem, EcsPostUpdate, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState) // , [none] Game)
     spawn_prefabs_games(world);
     initialize_games(world);
-zoxel_end_module(Games)
+zox_end_module(Games)
 
 #endif

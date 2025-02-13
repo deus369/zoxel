@@ -16,6 +16,6 @@ void spawn_prefabs_voxels_structures(ecs_world_t *world) {
 zox_begin_module(Structures)
     zox_define_tag(VoxStructure)
     spawn_prefabs_voxels_structures(world);
-zoxel_end_module(Structures)
+zox_end_module(Structures)
 
 #endif

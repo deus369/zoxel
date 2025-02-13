@@ -46,6 +46,6 @@ zox_begin_module(Lines3D)
     // todo: make overlay layer in render stack
     zox_render3D_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] ColorRGB, [in] Position3D, [in] Rotation3D, [in] Bounds3D, [in] RenderLod, [in] RenderDisabled)
     spawn_prefabs_lines3D(world);
-zoxel_end_module(Lines3D)
+zox_end_module(Lines3D)
 
 #endif

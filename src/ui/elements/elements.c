@@ -22,14 +22,14 @@ zox_component_entity(IconFramePrefabLink)
 #include "data/spawn_icon.c"
 #include "data/spawn_icon_frame.c"
 #include "prefabs/prefabs.c"
-#include "fun/button_event_close_window.c"
+#include "util/button_event_close_window.c"
 #include "util/resize_util.c"
 #include "util/navigation_util.c"
 #include "util/position_util.c"
 #include "systems/element_drag_system.c"
 #include "systems/scrollbar_system.c"
 
-zox_begin_module(Zelements)
+zox_begin_module(SubElements)
     zox_define_tag(Label)
     zox_define_tag(Button)
     zox_define_tag(Icon)
@@ -47,6 +47,6 @@ zox_begin_module(Zelements)
     zox_system(ElementDragSystem, EcsPostLoad, [in] DraggableState, [in] DraggingDelta, [in] DraggedLink)
     zox_system(ScrollbarSystem, EcsPostUpdate, [none] ScrollbarButton, [in] DraggableState, [in] PixelPosition, [in] PixelSize, [in] ParentLink)
     spawn_prefabs_elements(world);
-zoxel_end_module(Zelements)
+zox_end_module(SubElements)
 
 #endif

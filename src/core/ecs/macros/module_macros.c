@@ -20,6 +20,6 @@ void zox_debug_module(ecs_world_t *world, const char *name, const ecs_entity_t m
     zox_module(name)\
     zox_debug_module(world, #name, ecs_id(name));
 
-#define zoxel_end_module(name)}
+#define zox_end_module(name)}
 
 #define zox_module_dispose(function_name) ecs_atfini(world, function_name, NULL);

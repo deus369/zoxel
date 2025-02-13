@@ -8,6 +8,6 @@
 zox_begin_module(Textures)
     zox_import_module(TexturesCore)
     zox_import_module(TexturesIO)
-zoxel_end_module(Textures)
+zox_end_module(Textures)
 
 #endif

@@ -3,6 +3,6 @@
 
 zox_begin_module(Genetics)
 // components & systems
-zoxel_end_module(Genetics)
+zox_end_module(Genetics)
 
 #endif

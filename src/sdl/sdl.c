@@ -23,6 +23,6 @@ zox_begin_module(Sdl)
     add_to_update_loop(update_sdl);
     add_to_post_update_loop(app_update_gpu);
     set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
-zoxel_end_module(Sdl)
+zox_end_module(Sdl)
 
 #endif

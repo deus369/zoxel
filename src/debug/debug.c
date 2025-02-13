@@ -14,6 +14,6 @@ zox_begin_module(Debug)
 zox_system(GameDebugLabelSystem, EcsOnStore, [out] ZextDirty, [out] ZextData, [none] game.u.i.GameDebugLabel)
 initialize_amd();
 zox_module_dispose(dispose_debug)
-zoxel_end_module(Debug)
+zox_end_module(Debug)
 
 #endif

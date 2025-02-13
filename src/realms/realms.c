@@ -15,6 +15,6 @@ zox_begin_module(Realms)
     zox_define_component_entity(RealmLink)
     // why is Realm tag not working here??
     zox_define_increment_system(GenerateRealm, EcsOnLoad) //, [none] Realm)
-zoxel_end_module(Realms)
+zox_end_module(Realms)
 
 #endif

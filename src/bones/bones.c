@@ -38,6 +38,6 @@ zox_begin_module(Bones)
         zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread, [in] MeshDirty, [in] BoneIndexes, [out] BoneIndexGPULink)
     }
     spawn_prefabs_bones(world);
-zoxel_end_module(Bones)
+zox_end_module(Bones)
 
 #endif

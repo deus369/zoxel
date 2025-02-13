@@ -14,6 +14,6 @@ zox_begin_module(Transforms2D)
     zox_define_component_float2(Scale2D)
     zox_define_component_int2(PixelPosition)
     zox_define_component_int2(PixelSize)
-zoxel_end_module(Transforms2D)
+zox_end_module(Transforms2D)
 
 #endif

@@ -2,6 +2,6 @@
 #define zox_mod_races
 
 zox_begin_module(Races)
-zoxel_end_module(Races)
+zox_end_module(Races)
 
 #endif

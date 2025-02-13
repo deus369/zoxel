@@ -18,6 +18,6 @@ zox_begin_module(Colorz)
     zox_define_memory_component(ColorRGBs)
     zox_define_memory_component(Colors)
     zox_prefab_add(prefab_realm, Colors)
-zoxel_end_module(Colorz)
+zox_end_module(Colorz)
 
 #endif

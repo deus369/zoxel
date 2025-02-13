@@ -53,6 +53,6 @@ zox_begin_module(Voxes)
         zox_system(ChunkOctreeColorsBuildSystem, EcsOnUpdate, [in] ChunkMeshDirty, [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] ColorRGBs, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [out] MeshIndicies, [out] MeshVertices, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ColorChunk)
     }
     spawn_prefabs_voxes(world);
-zoxel_end_module(Voxes)
+zox_end_module(Voxes)
 
 #endif

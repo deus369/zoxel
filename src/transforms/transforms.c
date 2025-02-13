@@ -11,6 +11,6 @@ zox_begin_module(Transforms)
     zox_import_module(Hierarchys)
     zox_import_module(Transforms2D)
     zox_import_module(Transforms3D)
-zoxel_end_module(Transforms)
+zox_end_module(Transforms)
 
 #endif

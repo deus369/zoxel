@@ -16,6 +16,6 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {
     .callback = on_destroyed_ParentLink,
     .events = { EcsOnRemove },
 });
-zoxel_end_module(Hierarchys)
+zox_end_module(Hierarchys)
 
 #endif

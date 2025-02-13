@@ -2,6 +2,6 @@
 #define zoxel_maps
 
 zox_begin_module(Maps)
-zoxel_end_module(Maps)
+zox_end_module(Maps)
 
 #endif

@@ -82,6 +82,6 @@ zox_begin_module(Cameras)
     zox_system_1(CameraDebugSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera)
     #endif
     spawn_prefabs_cameras(world);
-zoxel_end_module(Cameras)
+zox_end_module(Cameras)
 
 #endif

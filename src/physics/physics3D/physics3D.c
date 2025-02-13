@@ -7,6 +7,6 @@
 zox_begin_module(Physics3D)
     zox_import_module(CorePhysics3D)
     zox_import_module(Collisions3D)
-zoxel_end_module(Physics3D)
+zox_end_module(Physics3D)
 
 #endif

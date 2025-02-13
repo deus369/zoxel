@@ -23,6 +23,6 @@ zox_begin_module(Voxels)
     zox_import_module(Streaming)
     zox_import_module(Structures)
     zox_import_module(VoxelsAnimations)
-zoxel_end_module(Voxels)
+zox_end_module(Voxels)
 
 #endif
