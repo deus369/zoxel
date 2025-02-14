@@ -45,3 +45,16 @@ void print_terrain_settings() {
     zox_log("     + height boost is [%d]\n", terrain_boost)
     zox_log("     + lowest low is [%d]\n", lowest_voxel_height)
 }
+
+void process_arguments_terrain(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "--tiny") == 0) {
+            terrain_mode = terrain_mode_tiny;
+            zox_log(" + tiny mode enabled\n")
+        } else if (strcmp(args[i], "--medium") == 0) {
+            terrain_mode = terrain_mode_medium;
+        } else if (strcmp(args[i], "--large") == 0) {
+            terrain_mode = terrain_mode_large;
+        }
+    }
+}

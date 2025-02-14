@@ -7,3 +7,15 @@
 #define BUFFER_SIZE 128 // 1024 // the size of the buffer to use for receiving and sending data
 #define ZOXEL_URL "https://zoxel.duckdns.org"
 byte server_mode = 0;
+
+void process_arguments_networking(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "-x") == 0 || strcmp(args[i], "--server") == 0) {
+            server_mode = 1;
+        } else if (strcmp(args[i], "--client") == 0) {
+            server_mode = 0;
+        } else if (strcmp(args[i], "-x") == 0 || strcmp(args[i], "--server") == 0) {
+            server_mode = 1;
+        }
+    }
+}

@@ -4,29 +4,26 @@
 #include zox_nexus_game
 
 int run_main(int argc, char* argv[]) {
-    int didFail = process_arguments(argc, argv);
-    if (didFail == EXIT_FAILURE) {
+    #ifndef zox_mod_game
+        zox_log_line(" ! game not loaded")
         return EXIT_FAILURE;
-    }
+    #endif
     fetch_pc_info();
     ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (world == NULL) {
-        zox_log(" ! engine failed to start\n")
+        zox_log_line(" ! ecs failed to initialize.")
         return EXIT_FAILURE;
-    } else {
-        zox_import_module(Zox)
-        #ifdef zox_mod_game
-        zox_import_module(ZoxGame)
-        #else
-        zox_log(" ! game not loaded\n")
-        #endif
-        if (boot_event(world) == EXIT_SUCCESS) {
-            engine_loop();
-        } else {
-            zox_log(" ! booting failed\n")
-        }
-        dispose_zox(world);
     }
+    zox_import_module(Zox)
+    zox_import_module(ZoxGame)
+    initialize_ecs_settings(world);
+    process_arguments(world, argv, argc);
+    if (boot_event(world) == EXIT_SUCCESS) {
+        engine_loop();
+    } else {
+        zox_log_line(" ! [boot_event] failed")
+    }
+    dispose_zox(world);
     return EXIT_SUCCESS;
 }
 

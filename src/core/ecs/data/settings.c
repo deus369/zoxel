@@ -1,5 +1,6 @@
 ecs_world_t *world;
 byte profiler = 1;
+byte use_cores = 1;
 byte is_multithreading = 1;
 byte debug_pipelines = 0;
 // 24 | 60 | 120

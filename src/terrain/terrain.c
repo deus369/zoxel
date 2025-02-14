@@ -23,6 +23,7 @@ zox_component_entity(TerrainLink)
 #include "systems/systems.c"
 
 zox_begin_module(Terrain)
+    add_to_arguments(process_arguments_terrain);
     zox_define_tag(FlatTerrain)
     zox_define_tag(FlatlandChunk)
     zox_define_tag(TerrainWorld)

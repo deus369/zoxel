@@ -31,10 +31,21 @@ void spawn_prefabs_rendering_core(ecs_world_t *world) {
     prefab_renderer_instance = spawn_prefab_renderer_instance(world);
 }
 
+void process_arguments_rendering(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "-e") == 0 || strcmp(args[i], "--opengles") == 0) {
+            override_opengl_es = 1;
+        } else if (strcmp(args[i], "-v") == 0 || strcmp(args[i], "--vulkan") == 0) {
+            is_using_vulkan = 1;
+        }
+    }
+}
+
 void initialize_rendering_core(ecs_world_t *world) {
     initialize_render_loop();
     initialize_shader_loading();
     initialize_gpu_systems();
+    add_to_arguments(process_arguments_rendering);
 }
 
 void dispose_rendering_core(ecs_world_t *world, void *ctx) {

@@ -26,12 +26,8 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 
     return e;
 }
 
-ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, const byte fullscreen) {
-    if (is_using_vulkan) {
-#ifndef zox_include_vulkan
-        zox_log("! vulkan wasn't included in build\n")
-        return 0;
-#else
+ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, int2 position, int2 size, const byte fullscreen) {
+    #ifdef zox_include_vulkan
         if (fullscreen) {
             size = screen_dimensions;
         }
@@ -48,10 +44,15 @@ ecs_entity_t spawn_main_window(ecs_world_t *world, int2 position, int2 size, con
             return 0;
         }
         return spawn_main_window_vulkan(world, sdl_window);
-#endif
-    } else {
-        return spawn_window_opengl(world, position, size, fullscreen);
-    }
+    #else
+        zox_log("! vulkan wasn't included in build\n")
+        return 0;
+    #endif
+}
+
+// opengl
+ecs_entity_t spawn_main_window_opengl(ecs_world_t *world, int2 position, int2 size, const byte fullscreen) {
+    return spawn_window_opengl(world, position, size, fullscreen);
 }
 
 byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {

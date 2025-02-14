@@ -1,7 +1,4 @@
-// flecs useage, create an ecs world
-#include <inttypes.h> // For PRIu64
-#include "util/flecs_defines.c"
-
+#include "_includes.c"
 #include "macros/macros.c"
 #include "data/entity_dynamic_array.c"
 #include "data/general_fun.c"
@@ -18,23 +15,32 @@ void initialize_flecs_profiler(ecs_world_t* world) {
 #endif
 }
 
-ecs_world_t* open_ecs(int argc, char* argv[], int core_count) {
-    ecs_world_t* world = ecs_init_w_args(argc, argv);
-    if (core_count > 1 && is_multithreading) {
-        ecs_set_threads(world, core_count);
+void initialize_threads(ecs_world_t* world) {
+    if (use_cores > 1 && is_multithreading) {
+        ecs_set_threads(world, use_cores);
     } else {
         zox_log(" ! warning, single threads set\n")
         ecs_set_threads(world, 0);
     }
-    if (target_fps) ecs_set_target_fps(world, target_fps);
-    initialize_flecs_profiler(world);
-    return world;
 }
 
-ecs_world_t* initialize_ecs(int argc, char* argv[], byte cpu_core_count) {
-    world = open_ecs(argc, argv, cpu_core_count);
-    initialize_update_loop();
-    initialize_post_update_loop();
+void set_target_fps(ecs_world_t *world, byte target_fps) {
+    ecs_set_target_fps(world, target_fps);
+}
+
+void initialize_ecs_settings(ecs_world_t *world) {
+    initialize_threads(world);
+    initialize_flecs_profiler(world);
+    set_target_fps(world, target_fps);
+}
+
+ecs_world_t* open_ecs(int argc, char* argv[]) {
+    return ecs_init_w_args(argc, argv);
+}
+
+ecs_world_t* initialize_ecs(int argc, char* argv[], byte cores) {
+    use_cores = cores;
+    world = open_ecs(argc, argv);
     return world;
 }
 

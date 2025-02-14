@@ -12,6 +12,7 @@ zox_component_entity(CharacterLink)
 #include "util/buttons.c"
 
 zox_begin_module(Characters)
+    add_to_arguments(process_arguments_characters);
     zox_define_tag(Character)
     zox_define_component_byte(TriggerActionA)
     zox_define_component_byte(TriggerActionB)

@@ -34,9 +34,10 @@ int initialize_sdl_video(ecs_world_t *world) {
     print_sdl();
 #ifdef zox_include_vulkan
     if (!load_vulkan_library()) return EXIT_FAILURE;
-#else
-    is_using_vulkan = 0;
+//#else
+//    is_using_vulkan = 0;
 #endif
-    if (!is_using_vulkan) set_sdl_attributes();
+    // if (!is_using_vulkan)
+    set_sdl_attributes();
     return EXIT_SUCCESS;
 }

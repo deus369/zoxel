@@ -24,6 +24,7 @@ void dispose_games(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Games)
+    add_to_arguments(process_arguments_games);
     zox_module_dispose(dispose_games)
     zox_define_tag(Game)
     zox_define_component_byte(GameState)

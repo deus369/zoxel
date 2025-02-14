@@ -14,12 +14,34 @@
 #include "collections/collections.c"
 #include "maths/maths.c"
 #include "platforms/platforms.c"
-#include "terminals/terminals.c"
 #include "ecs/ecs.c"
+#include "terminals/terminals.c"
 #include "pathing/pathing.c"
 
+void module_dispose_core(ecs_world_t *world, void *ctx) {
+    dispose_terminal_functions();
+}
+
+void process_arguments_core(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "--fps") == 0) {
+            target_fps = (byte) (atoi(args[i + 1]));
+            i++;
+        } else if (strcmp(args[i], "--singlethread") == 0) {
+            is_multithreading = 0;
+        } else if (strcmp(args[i], "-p") == 0 || strcmp(args[i], "--profiler") == 0) {
+            profiler = 1;
+        }
+    }
+}
+
 zox_begin_module(Core)
+    zox_module_dispose(module_dispose_core)
     clear_zoxel_log();
+    initialize_update_loop();
+    initialize_post_update_loop();
+    initialize_terminal_functions();
+    add_to_arguments(process_arguments_core);
     if (initialize_pathing() == EXIT_FAILURE) {
         zox_log(" ! FAILED PATHING\n")
         return;
