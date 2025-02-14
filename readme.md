@@ -8,7 +8,8 @@
 <h3 align="center">a procedural simulation game</h3>
 
 <p align="center">
-+ inspired by warcraft, minecraft and cube world +
++ inspired by +
++ warcraft minecraft cube_world +
 </p>
 <p align="center">
 + with voxels, stats, skills, quests, dialogue, magic & more +
