@@ -1,6 +1,5 @@
 void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const byte voxel, ChunkOctree *parent_node) {
     // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
-    // if (place_chunk == 0) {
     if (!zox_valid(chunk)) {
         // zox_log(" > no chunk raycasted\n")
         return;

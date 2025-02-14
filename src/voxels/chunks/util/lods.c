@@ -1,8 +1,3 @@
-const int init_lod_voxes = 1;
-const int lod_div_voxes = 1;
-const byte terrain_lod_dividor = 2; // 2 | 3
-byte initial_terrain_lod = 1; // 3 | 2
-
 byte get_terrain_lod_from_camera_distance(byte distance_to_camera, byte max_camera_distance) {
     #ifdef zox_disable_terrain_lod_levels
     return 0;

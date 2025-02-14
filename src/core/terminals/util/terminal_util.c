@@ -10,13 +10,14 @@ extern byte is_multithreading;
 extern byte profiler;
 extern byte server_mode;
 extern byte target_fps;
-#ifdef zox_mod_voxels
+extern byte is_generate_vox_outlines;
+/*#ifdef zox_mod_voxels
     #define terrain_mode_tiny 1
     #define terrain_mode_medium 2
     #define terrain_mode_large 3
     extern byte terrain_mode;
     extern byte disable_block_voxes;
-#endif
+#endif*/
 extern byte disable_npcs;
 
 void print_help_menu(const char* arg0) {
@@ -90,7 +91,7 @@ int process_arguments(int argc, char* argv[]) {
         else if (strcmp(argv[i], "--freeroam") == 0) {
             game_rule_attach_to_character = 0;
         }
-#ifdef zox_mod_voxels
+/*#ifdef zox_mod_voxels
         else if (strcmp(argv[i], "--tiny") == 0) {
             terrain_mode = terrain_mode_tiny;
             zox_log(" + tiny mode enabled\n")
@@ -102,13 +103,16 @@ int process_arguments(int argc, char* argv[]) {
         else if (strcmp(argv[i], "--noblockvoxes") == 0) {
             disable_block_voxes = 1;
         }
-#endif
+#endif*/
         else if (strcmp(argv[i], "--nonpc") == 0 || strcmp(argv[i], "--nonpcs") == 0) {
             disable_npcs = 1;
         }
+        else if (strcmp(argv[i], "--disableoutlines") == 0) {
+            is_generate_vox_outlines = 0;
+        }
     }
     // extra disables
-    #if defined(zox_mod_characters) && defined(zox_disable_npcs)
+    #if defined(zox_disable_npcs)
         disable_npcs = 1;
     #endif
     return EXIT_SUCCESS;

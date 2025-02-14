@@ -1,15 +1,3 @@
-// #define zox_debug_hit_point
-// #define zox_debug_hit_normal
-const uint safety_checks_raycasting = 512;
-// const float ray_interval = 0.04f;
-const float terrain_ray_length = 8;
-const float raycast_thickness = 10;
-const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
-#define ray_hit_type_none 0
-#define ray_hit_type_terrain 1
-#define ray_hit_type_block_vox 2
-#define ray_hit_type_character 3
-
 byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) return 0;
     byte hit_character = 0;

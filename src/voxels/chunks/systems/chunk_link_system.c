@@ -1,5 +1,3 @@
-// #define zox_debug_chunk_link_system
-// #define zox_debug_chunk_link_system_test
 void ChunkLinkSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
@@ -8,7 +6,9 @@ void ChunkLinkSystem(ecs_iter_t *it) {
     zox_field_out(ChunkLink, chunkLinks, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value || !zox_alive(voxLink->value)) continue; // these shouldn't be here
+        if (!voxLink->value || !zox_alive(voxLink->value)) {
+            continue; // these shouldn't be here
+        }
         zox_field_e()
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_o(ChunkPosition, chunkPositions, chunkPosition)

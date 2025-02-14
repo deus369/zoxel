@@ -91,23 +91,6 @@ void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree
     }
 }
 
-typedef struct {
-    // chunk
-    const ChunkOctree *chunk_octree;
-    // vox
-    const ColorRGBs *colorRGBs;
-    const byte chunk_depth;    // our lod
-    const float vox_scale;
-    const float3 total_mesh_offset;
-    // neighbors
-    const ChunkOctree **neighbors; // array of pointers
-    const byte *neighbor_lods; // array
-    // chunk output
-    MeshIndicies *meshIndicies;
-    MeshVertices *meshVertices;
-    MeshColorRGBs *meshColorRGBs;
-} BuildChunkColored;
-
 void build_chunk_octree_mesh_colors(const ChunkOctree *chunk_octree, const ColorRGBs *colorRGBs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshColorRGBs *meshColorRGBs, const byte chunk_depth, const ChunkOctree *neighbors[], const byte neighbor_lods[], const float3 total_mesh_offset, const float vox_scale) {
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);

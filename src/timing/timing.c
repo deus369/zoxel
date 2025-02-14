@@ -1,8 +1,7 @@
 #ifndef zox_mod_timing
 #define zox_mod_timing
 
-// #define limit_time_delta
-#include <time.h>
+#include "_includes.c"
 #include "data/settings.c"
 zox_component_double(DestroyInTime)
 zox_component_double(TimerTime)

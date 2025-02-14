@@ -1,0 +1,1 @@
+byte disable_npcs = 0;
