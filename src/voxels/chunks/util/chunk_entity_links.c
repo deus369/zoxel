@@ -49,5 +49,5 @@ void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e,
     chunkPosition->value = chunk_position;
     const ChunkLinks *chunkLinks = zox_get(voxLink->value, ChunkLinks)
     const ecs_entity_t found_chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
-    set_entity_chunk(world, e, chunkLink, found_chunk);
+    // set_entity_chunk(world, e, chunkLink, found_chunk);
 }

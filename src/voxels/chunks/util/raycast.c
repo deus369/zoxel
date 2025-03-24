@@ -237,7 +237,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
 
 // using DDA for raycasting
 void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const ecs_entity_t camera, const ecs_entity_t terrain, RaycastVoxelData *data) {
-    if (!terrain || !camera || !zox_has(camera, RaycastOrigin)) return;
+    if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) return;
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
     const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)

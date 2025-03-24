@@ -1,6 +1,7 @@
 #ifndef zox_sdl_inputs
 #define zox_sdl_inputs
 
+typedef int32_t SDL_Keycode;
 byte global_any_fingers_down = 0;
 #include "components/sdl_gamepad.c"
 #include "util/util.c"

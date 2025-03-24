@@ -12,8 +12,10 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         // these two, this npc survived the closing
         if (!zox_alive(voxLink->value)) {
             zox_field_e()
+            const ecs_entity_t chunk = zox_get_value(e, ChunkLink)
+            zox_log("! npc [%s]:[%lu] should of died with world death\n", zox_get_name(e), e)
             // for now, space physics not supported
-            zox_log("! npc should of died with world death [%s]:[%lu]\n", zox_get_name(e), e)
+            zox_log("   - chunk [%lu] alive? [%i]\n", chunk, zox_alive(chunk))
             zox_delete(e)
             continue;
         }

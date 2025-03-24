@@ -12,9 +12,7 @@
 
 zox_begin_module(Sdl)
     zox_module_dispose(dispose_apps_sdl)
-    zox_define_component_w_dest(SDLWindow)
-    zox_define_component_w_dest(Context)
-    zox_define_component_w_dest(Renderer)
+    define_components_sdl(world);
     zox_import_module(SdlInputs)
     initialize_apps_sdl(world);
     // spawn just one prefab

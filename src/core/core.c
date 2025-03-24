@@ -19,7 +19,7 @@
 #include "pathing/pathing.c"
 
 void module_dispose_core(ecs_world_t *world, void *ctx) {
-    dispose_terminal_functions();
+    dispose_functions_terminal();
 }
 
 void process_arguments_core(ecs_world_t *world, char* args[], int count) {
@@ -40,7 +40,7 @@ zox_begin_module(Core)
     clear_zoxel_log();
     initialize_update_loop();
     initialize_post_update_loop();
-    initialize_terminal_functions();
+    initialize_functions_terminal();
     add_to_arguments(process_arguments_core);
     if (initialize_pathing() == EXIT_FAILURE) {
         zox_log(" ! FAILED PATHING\n")

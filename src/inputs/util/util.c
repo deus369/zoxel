@@ -3,3 +3,4 @@
 #include "deadzone_util.c"
 #include "zevice.c"
 #include "device.c"
+#include "hooks.c"

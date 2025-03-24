@@ -5,9 +5,22 @@
     extern void (ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t element);
 #endif
 
+void set_sdl_key(ecs_world_t *world, PhysicalButton *key, SDL_Keycode keycode, SDL_EventType event_type) {
+    byte key_down = event_type == SDL_KEYDOWN;
+    byte key_released = event_type == SDL_KEYUP;
+    if (!key->is_pressed && key_down) {
+        key->pressed_this_frame = 1;
+        run_functions_key_down(world, (int32_t) keycode);
+    }
+    if (key->is_pressed && key_released) {
+        key->released_this_frame = 1;
+    }
+    key->is_pressed = key_down;
+}
+
 #define sdl_key_case(sdl_event, key)\
     case sdl_event:\
-        set_sdl_key(key, event.type);\
+        set_sdl_key(world, key, sdl_event, event.type);\
         break;
 
 void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {

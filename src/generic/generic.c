@@ -1,5 +1,5 @@
-#ifndef zox_generic
-#define zox_generic
+#ifndef zox_mod_generic
+#define zox_mod_generic
 
 #include "components/components.c"
 #include "data/color.c"

@@ -13,11 +13,6 @@ void add_to_event_game_state(zox_game_event funn) {
     add_to_zox_game_event_array_d(game_state_event, funn);
 }
 
-/*void set_game_state(ecs_world_t *world, ecs_entity_t game, byte new_game_state) {
-    // zox_log(" > setting game state [%i]\n", new_game_state)
-    zox_set(game, GameState, { new_game_state })
-}*/
-
 void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const byte old_game_state, const byte new_game_state) {
     // const byte old_game_stat = zox_get_value(game, GameState)
     // if (new_game_state == old_game_stat) return;

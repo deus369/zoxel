@@ -2,6 +2,7 @@
 #define zox_mod_ai
 
 zox_declare_tag(Wanderer)
+ecs_entity_t prefab_character3D_npc;
 #include "prefabs/character3D_npc.c"
 #include "systems/wander_system.c"
 
