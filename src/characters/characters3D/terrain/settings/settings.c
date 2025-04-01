@@ -1,6 +1,5 @@
-byte characters_per_chunk_count = 16; // 1 | 8 | 16 | 64
-int npc_vox_index_count = 4;
-// int npc_vox_indexes[] = { 1, 2, 3, 7 }; // penguin | slime | bob | chicken
+byte characters_per_chunk_count = 16; // 0 | 1 | 4 | 8 | 16 | 64
+int npc_vox_index_count = 4; // count of below array
 char* npc_voxes[] = { "mrpenguin", "slime", "bob", "chicken" };
 
 void set_character_terrain_settings() {

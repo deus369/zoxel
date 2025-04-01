@@ -4,13 +4,12 @@
 
 # todo: for linux, a full build - which doesn't rely on system sdl
 	# for regular package, just use system sdl2s
-
 # requires: [git] [make] && make prepare
 # platforms [linux, windows, web, android]
 # stores [steam, itch, google]
 # make game=zixel for zoxel2D
 resources_dir = resources
-flecs_version := "3.2.6"
+flecs_version := "3.2.7"
 # library use
 use_system_sdl := true
 # used for apps
@@ -113,21 +112,24 @@ $(target): $(SRCS)
 # @ make prepare
 
 linux:
-	@ make prepare
+	# @ make prepare
 	@ $(make_release)
 
 debug-make:
 	@ echo '$(make_release)'
 
-refresh-flecs:
+reflecs:
+	@ echo "+ rebuilding flecs to new version [$(flecs_version)]"
+	@ sleep 1
 	@ make -f make/flecs remove-flecs
 	@ bash bash/flecs/download_flecs_source.sh "$(flecs_version)"
-	# @ make -f make/flecs download-flecs
 	@ make -f make/flecs flecs
+	@ make -B
 
 # required libraries
 prepare:
-	@ make -f make/flecs download-flecs && make -f make/flecs flecs
+	@ bash bash/flecs/download_flecs_source.sh "$(flecs_version)"
+	@ make -f make/flecs flecs
 ifeq ($(OS),Windows_NT) # on windows
 	@ bash bash/windows/prepare.sh
 else # linux
@@ -183,11 +185,8 @@ make_dev = echo " > building $(game)-linux [$(target_dev)]" && \
 
 # development
 
-$(target_dev): $(SRCS)
-	@ $(make_dev)
-
 dev:
-	@ make $(target_dev)
+	@ $(make_dev)
 
 run-dev:
 	@ ./$(target_dev) $(args)
@@ -229,27 +228,31 @@ run-drmemory-full:
 run-coop-valgrind:
 	@ valgrind ./$(target_dev) --tiny -s
 
-
-
 run-drmemory-headless:
 	@ drmemory.exe -brief -light $(PWD)/$(target_dev) --headless
-
-
 
 .PHONY: dev run-dev run-drmemory
 
 # with profiler
 # build with profiler
 profiler:
-	@ echo " > building zoxel-linux with profiler"
+	@ echo "> building zoxel-linux with profiler"
 	@ $(patient_cmd)
 	@ $(make_dev) -Dzox_using_profiler
+	@ echo "> profiler build completed"
 
-# run development + flecs profiler
+open-profiler:
+	@ echo "opening https://www.flecs.dev/explorer"
+	@ open https://www.flecs.dev/explorer &
+
+# run development + flecs profiler -
 run-profiler:
 	@ echo "opening https://www.flecs.dev/explorer"
-	@ sleep 3 && open https://www.flecs.dev/explorer &
-	@ ./$(target_dev) $(args) --profiler
+	@ ./$(target_dev) $(args) --profiler --windowed
+
+gdb-profiler:
+	@ echo "opening https://www.flecs.dev/explorer"
+	@ gdb --args ./$(target_dev) $(args) --profiler --windowed
 
 .PHONY: profiler run-profiler
 
@@ -331,6 +334,11 @@ keys:
 git-push:
 	@ echo "!!! Use make push!"
 
+# special cheeck for fixing -B (always-make) flags
 .DEFAULT:
+ifeq ($(findstring B,$(MAKEFLAGS)),B)
+	@true
+else
 	@ echo " ! Unknown target '$@'"
-	@ make help;
+	@ make help
+endif

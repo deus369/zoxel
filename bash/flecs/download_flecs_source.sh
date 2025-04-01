@@ -5,4 +5,4 @@ echo "> updating flecs_version: $flecs_version"
 source bash/flecs/flecs_util.sh
 download_flecs_source "$flecs_version"
 source bash/flecs/post_download_edits.sh
-echo "? remember to remake game"
+echo "+ downloaded flecs"

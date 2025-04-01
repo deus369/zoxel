@@ -20,12 +20,15 @@ download_flecs_source() {
     # check if flecs.c and flecs.h already exist in include/flecs
     if [ ! -f "$flecs_install_directory/flecs.c" ] || [ ! -f "$flecs_install_directory/flecs.h" ]; then
         echo "  > downloading flecs [v$version]" >&2
+        download_url="https://github.com/SanderMertens/flecs/archive/refs/tags/v$version.zip"
+        echo "  > downloading from [$download_url]" >&2
         # download zip file
-        wget https://github.com/SanderMertens/flecs/archive/refs/tags/v$version.zip >&2
+        # https://github.com/SanderMertens/flecs/archive/refs/tags/v4.0.5.zip
+        wget "$download_url" >&2
         # extract zip file
-        unzip -j v$version.zip flecs-$version/flecs.c flecs-$version/flecs.h -d include/flecs >&2
+        unzip -j "v$version.zip" flecs-$version/flecs.c flecs-$version/flecs.h -d include/flecs >&2
         # delete downloaded zip and extracted folder
-        rm v$version.zip
+        rm "v$version.zip"
     fi
 	# cp $flecs_install_directory/flecs.h include
     echo "  > flecs [v$version] source is downloaded" >&2

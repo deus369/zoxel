@@ -13,8 +13,6 @@ void prefab_add_terrain_camera(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 void spawn_prefabs_terrain(ecs_world_t *world) {
-    // zox_prefab_add(prefab_realm, VoxelLinks)
-    // zox_prefab_set(prefab_realm, VoxelLinks, { 0, NULL })
     zox_prefab_set(prefab_realm, VoxelLinks, { 0, NULL })
     zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
     prefab_add_terrain_camera(world, prefab_camera_game);

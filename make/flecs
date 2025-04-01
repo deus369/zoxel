@@ -2,6 +2,8 @@
 # ===== flecs ===== #
 # ===== ===== ===== #
 
+flecs_version := "3.2.9"
+
 .PHONY: flecs install-sdl download-flecs remove-flecs get-nightly-flecs get-flecs-version revert-nightly-flecs check-flecs
 
 ifeq ($(OS),Windows_NT)
@@ -10,7 +12,6 @@ endif
 
 # build/libflecs.a
 # main
-flecs_version := "3.2.6"
 CC = gcc
 cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
 # supresses flecs warning
