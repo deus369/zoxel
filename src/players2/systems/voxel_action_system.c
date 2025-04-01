@@ -1,8 +1,5 @@
 // left click - destroy
 void VoxelActionASystem(ecs_iter_t *it) {
-#ifdef zox_disable_raycasts3D
-    return;
-#endif
     zox_field_world()
     zox_field_in(RaycastVoxelData, raycastVoxelDatas, 1)
     zox_field_out(TriggerActionA, triggerActionAs, 2)

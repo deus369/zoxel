@@ -12,8 +12,9 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         add_gpu_mesh(world, e);
         add_gpu_material(world, e);
         prefab_set_mesh_indicies(world, e, cube_indicies, cube_indicies_length);
-        // prefab_set_mesh_vertices_float3(world, e, cube_vertices, cube_vertices_length);
-        prefab_set_mesh_vertices_float(world, e, cube_vertices_singles, cube_vertices_singles_length);
+        prefab_set_mesh_vertices_float3(world, e, cube_vertices, cube_vertices_length);
+        // why did i put t this here?
+        // prefab_set_mesh_vertices_float(world, e, cube_vertices_singles, cube_vertices_singles_length);
     }
     return e;
 }

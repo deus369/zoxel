@@ -46,8 +46,6 @@
     // player
     #define zox_disable_player_ui
     #define zox_disable_player_character
-    #define zox_disable_raycasts3D
-    #define zox_disable_raycast_gizmos
     // chunks
     #define zox_disable_block_voxes
     #define zox_disable_streaming

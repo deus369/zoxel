@@ -1,7 +1,4 @@
 void RaycastGizmoSystem(ecs_iter_t *it) {
-#ifdef zox_disable_raycast_gizmos
-    return;
-#endif
     zox_field_world()
     zox_field_in(CameraLink, cameraLinks, 1)
     zox_field_in(VoxLink, voxLinks, 2)

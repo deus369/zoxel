@@ -1,10 +1,6 @@
 // right click = place
 
 void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
-#ifdef zox_disable_raycasts3D
-    return;
-#endif
-    // get held action type
     zox_field_world()
     zox_field_in(RaycastVoxelData, raycastVoxelDatas, 1)
     zox_field_out(ActionLinks, actionLinkss, 2)
@@ -109,7 +105,6 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                         } else if (raycastVoxelData->voxel != 0) {
                             raycast_action(world, raycastVoxelData, 0, 2);
                             // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
-
                             if (zox_has(raycastVoxelData->chunk, TerrainChunk)) {
                                 const ecs_entity_t pickup = spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
                                 const ecs_entity_t terrain = zox_get_value(raycastVoxelData->chunk, VoxLink)
