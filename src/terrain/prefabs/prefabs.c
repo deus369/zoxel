@@ -13,10 +13,14 @@ void prefab_add_terrain_camera(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 void spawn_prefabs_terrain(ecs_world_t *world) {
+    // zox_prefab_add(prefab_realm, VoxelLinks)
+    // zox_prefab_set(prefab_realm, VoxelLinks, { 0, NULL })
+    zox_prefab_set(prefab_realm, VoxelLinks, { 0, NULL })
+    zox_prefab_set(prefab_realm, VoxelsDirty, { 0 })
     prefab_add_terrain_camera(world, prefab_camera_game);
     const int3 terrain_chunk_size = (int3) { default_chunk_length, 8 * default_chunk_length, default_chunk_length };
-    prefab_terrain = spawn_prefab_terrain(world);
     prefab_chunk_height = spawn_prefab_terrain_chunk(world, prefab_chunk, terrain_chunk_size);
     prefab_terrain_chunk_flat = spawn_prefab_terrain_chunk(world, prefab_chunk, terrain_chunk_size);
     zox_add_tag(prefab_terrain_chunk_flat, FlatlandChunk)
+    prefab_terrain = spawn_prefab_terrain(world);
 }

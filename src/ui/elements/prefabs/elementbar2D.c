@@ -62,10 +62,12 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, c
         }
     };
     const ecs_entity_t zext = spawn_zext(world, &zextSpawnData);
-    Children *children = zox_get_mut(e, Children)
+    // Children *children = zox_get_mut(e, Children)
+    Children *children = &((Children) { 0, NULL });
     resize_memory_component(Children, children, ecs_entity_t, 2)
     children->value[0] = front_bar;
     children->value[1] = zext;
-    zox_modified(e, Children)
+    // zox_modified(e, Children)
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }

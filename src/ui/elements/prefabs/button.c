@@ -35,8 +35,10 @@ ecs_entity_t spawn_button(ecs_world_t *world, SpawnButton *data) {
         .zext = data->zext
     };
     const ecs_entity_t zext = spawn_zext(world, &spawnZext);
-    zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
+    // zox_get_muter(e, Children, children)
     add_to_Children(children, zext);
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }
 

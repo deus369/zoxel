@@ -5,8 +5,8 @@ const byte max_lod_voxes = 0;
 const int sand_height = -10;
 const int mountain_height = 20;
 // blocks
-#define block_spawn_chance_grass 1200 // 222 // 1033
-#define block_spawn_chance_flower 188 // flowers
+#define block_spawn_chance_grass 128 // 128 | 256 // 512 // 1024
+#define block_spawn_chance_flower 18 // 188 flowers
 #define block_spawn_chance_rubble 47
 #define octree_random_spawn_chance 22
 

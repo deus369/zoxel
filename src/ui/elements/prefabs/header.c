@@ -52,14 +52,16 @@ ecs_entity_t spawn_header(ecs_world_t *world, const ecs_entity_t parent, const e
             .font_outline_color = header_font_outline_color
         }
     };
-    zox_get_mutt(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
+    // zox_get_mutt(e, Children, children)
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
         add_to_Children(children, spawn_close_button(world, e, canvas, global_position, pixel_size, close_button_position, font_size, padding, button_layer, canvas_size));
     }
-    zox_modified(e, Children)
+    zox_set(e, Children, { children->length, children->value })
+    // zox_modified(e, Children)
     return e;
 }
 
@@ -95,13 +97,15 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
         },
         .zext = data->zext
     };
-    zox_get_mutt(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
+    // zox_get_mutt(e, Children, children)
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
     if (data->header.is_close_button) {
         const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins, 0 };
         add_to_Children(children, spawn_close_button(world, e, data->canvas.e, canvas_position, data->element.size, close_button_position, data->zext.font_size, padding, button_layer, data->canvas.size));
     }
-    zox_modified(e, Children)
+    // zox_modified(e, Children)
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }

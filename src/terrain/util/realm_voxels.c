@@ -26,30 +26,41 @@ ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const byte index, cha
 }
 
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
-    if (realm == 0) return;
+    if (!realm) return;
 
-    zox_get_mutt(realm, VoxelLinks, voxelLinks)
+    if (zox_has(realm, TilemapLink)) {
+        ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
+        if (tilemap) {
+            zox_delete(tilemap)
+        }
+        tilemap = spawn_tilemap(world, prefab_tilemap);
+        zox_set(realm, TilemapLink, { tilemap })
+        if (tilemap) {
+            zox_set(tilemap, RealmLink, { realm })
+        }
+    }
 
-    // clear previous
-    ecs_entity_t old_tilemap = 0;
-    if (zox_has(realm, TilemapLink)) old_tilemap = zox_get_value(realm, TilemapLink)
-    if (old_tilemap) zox_delete(old_tilemap)
-    for (int i = 0; i < voxelLinks->length; i++) zox_delete(voxelLinks->value[i])
-    clear_memory_component(VoxelLinks, voxelLinks)
+    if (!zox_has(realm, VoxelLinks)) {
+        zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
+        return;
+    }
+    /*zox_get_mutt(realm, VoxelLinks, voxels)
+    if (!voxels) {
+        zox_log("! realm voxels was null [%lu]\n", realm)
+        return;
+    }
+    zox_log("+ realm [%lu] has [%i] voxels\n", realm, voxels->length)*/
 
-#ifdef zox_log_spawn_realm_voxels
-    zox_log("spawn voxels 0\n")
-#endif
-    ecs_entity_t tilemap = spawn_tilemap(world, prefab_tilemap);
-#ifdef zox_log_spawn_realm_voxels
-    zox_log("spawn voxels 1\n")
-#endif
-    zox_set(realm, TilemapLink, { tilemap })
-    if (tilemap) zox_set(tilemap, RealmLink, { realm })
-    resize_memory_component(VoxelLinks, voxelLinks, ecs_entity_t, zox_blocks_count)
-#ifdef zox_log_spawn_realm_voxels
-    zox_log("spawn voxels 2\n")
-#endif
+    zox_geter(realm, VoxelLinks, oldVoxels)
+    if (oldVoxels) {
+        for (int i = 0; i < oldVoxels->length; i++) {
+            zox_delete(oldVoxels->value[i])
+        }
+        // clear_memory_component(VoxelLinks, voxels)
+    }
+    VoxelLinks *voxels = &((VoxelLinks) { 0, NULL });
+    resize_memory_component(VoxelLinks, voxels, ecs_entity_t, zox_blocks_count)
+
     // dirt color - hsv - hue saturation value
     const float2 dirt_hue = (float2) { 0, 360 };
     const float2 dirt_value = (float2) { 28, 36 };
@@ -80,9 +91,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const color stone_color = hsv_to_color(stone_hsv);
     const color sky_color = hsv_to_color(sky_hsv);
     const color color_obsidian = hsv_to_color((float3) { rand() % 360, 33, 33 });
-#ifdef zox_log_spawn_realm_voxels
-    zox_log("spawn voxels 3\n")
-#endif
+
     // todo: VoxLinks from realm - spawn vox models first before 'voxels'
     const ecs_entity_t dirt_vox = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     const ecs_entity_t vox_grass = spawn_vox_generated_invisible(world, prefab_vox_generated, grass_color);
@@ -96,9 +105,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
     // todo: make all spawn code like this instead of a for loop
     // dark block is  tasty
-    voxelLinks->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
-    voxelLinks->value[zox_block_vox_grass - 1] = spawn_realm_block_vox_grass(world, zox_block_vox_grass);
-    voxelLinks->value[zox_block_vox_flower - 1] = spawn_realm_block_vox_flower(world, zox_block_vox_flower);
+    voxels->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
+    voxels->value[zox_block_vox_grass - 1] = spawn_realm_block_vox_grass(world, zox_block_vox_grass);
+    voxels->value[zox_block_vox_flower - 1] = spawn_realm_block_vox_flower(world, zox_block_vox_flower);
 
     // dungeon block, spawns world block prefab first
     zox_neww(dungeon_block_world)
@@ -112,10 +121,10 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     ecs_entity_t dungeon_block = spawn_realm_voxel_texture(world, zox_block_dungeon_core, "dungeon_core", "block_dungeon_core");
     // add prefab for world spawning
     zox_prefab_set(dungeon_block, BlockPrefabLink, { dungeon_block_world })
-    voxelLinks->value[zox_block_dungeon_core - 1] = dungeon_block;
+    voxels->value[zox_block_dungeon_core - 1] = dungeon_block;
 
     // the rest
-    for (byte i = 0; i < voxelLinks->length; i++) {
+    for (byte i = 0; i < voxels->length; i++) {
         SpawnBlock spawn_data = {
             // .prefab_block_vox = prefab_block_vox,
             .index = (byte) (i + 1),
@@ -204,23 +213,24 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         }
         if (spawn_data.vox) {
             spawn_data.prefab = prefab_block_vox_meta;
-            voxelLinks->value[i] = spawn_block_vox_meta(world, &spawn_data);
+            voxels->value[i] = spawn_block_vox_meta(world, &spawn_data);
         } else {
             spawn_data.prefab = prefab_block;
-            voxelLinks->value[i] = spawn_block(world, &spawn_data);
+            voxels->value[i] = spawn_block(world, &spawn_data);
         }
         if (is_name_malloc) free(spawn_data.name);
-        /*if (i == zox_block_dirt - 1) zox_log(" + dirt [%s] block [%i]\n", zox_get_name(voxelLinks->value[i]), i)
-        if (i == zox_block_dark - 1) zox_log(" + dark [%s] block [%i]\n", zox_get_name(voxelLinks->value[i]), i)*/
-        // zox_log(" + voxel [%s]\n", zox_get_name(voxelLinks->value[i]))
+        /*if (i == zox_block_dirt - 1) zox_log(" + dirt [%s] block [%i]\n", zox_get_name(voxels->value[i]), i)
+        if (i == zox_block_dark - 1) zox_log(" + dark [%s] block [%i]\n", zox_get_name(voxels->value[i]), i)*/
+        // zox_log(" + voxel [%s]\n", zox_get_name(voxels->value[i]))
     }
-    zox_set(realm, VoxelsDirty, { 1 })
     // renderer
     fog_color = color_to_float3(sky_color);
     viewport_clear_color = fog_color;
     // game colors
     game_sky_color = fog_color;
     game_sky_bottom_color = fog_color;
+    zox_set(realm, VoxelLinks, { voxels->length, voxels->value })
+    zox_set(realm, VoxelsDirty, { 1 })
 #ifdef zox_log_spawn_realm_voxels
     zox_log(" > spawned all realm voxels\n")
 #endif

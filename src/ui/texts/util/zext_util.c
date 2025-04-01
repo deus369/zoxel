@@ -116,7 +116,7 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
 void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, byte *value, int length) {
     const Children *name_label_children = zox_get(parent, Children)
     ecs_entity_t e = name_label_children->value[0];
-    ZextData *zextData = zox_get_mut(e, ZextData)
+    zox_get_muter(e, ZextData, zextData)
     if (zextData->value) free(zextData->value);
     zextData->value = memcpy(malloc(length), value, length);
     zextData->length = length;
@@ -128,17 +128,21 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, b
 }
 
 byte set_entity_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+    // zox_geter(e, ZextData, oldZextData)
     zox_get_muter(e, ZextData, zextData)
     if (is_zext(zextData, text)) return 0;
+    // ZextData *zextData = &((ZextData) { 0, NULL });
     set_zext(zextData, text);
     zox_modified(e, ZextData)
+    // zox_set(e, ZextData, { zextData->length, zextData->value })
     zox_set(e, ZextDirty, { zext_update_start })
     return 1;
 }
 
 byte set_entity_with_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    zox_get_muter(e, ZextData, zextData)
+    ZextData *zextData = &((ZextData) { 0, NULL });
     set_zext(zextData, text);
+    zox_set(e, ZextData, { zextData->length, zextData->value })
     zox_set(e, ZextDirty, { zext_update_start })
     return 1;
 }

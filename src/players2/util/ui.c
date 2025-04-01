@@ -1,6 +1,5 @@
 // #define zox_log_camera_spawning
 
-
 // todo: spawn unique canvas per viewport, viewports per player
 #ifdef zox_mod_ui
 ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, const int2 dimensions, const float4 screen_to_canvas) {

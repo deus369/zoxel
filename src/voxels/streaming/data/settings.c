@@ -1,1 +1,1 @@
-const byte streaming_distance = 1; // 1 | 2 | 16
+const byte streaming_distance = 3; // 1 | 2 | 16

@@ -3,9 +3,24 @@ ecs_entity_t meta_skill_aura_death;
 ecs_entity_t meta_skill_punch;
 
 void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
-    zox_get_muter(realm, SkillLinks, skills)
+    if (!zox_has(realm, SkillLinks)) {
+        zox_log("! realm does not have SkillLinks [%lu]\n", realm)
+        return;
+    }
+    /*zox_get_muter(realm, SkillLinks, skills)
+    if (!skills) {
+        zox_log("! realm skills was null [%lu]\n", realm)
+        return;
+    }*/
     // clear previous
-    for (int i = 0; i < skills->length; i++) if (skills->value[i]) zox_delete(skills->value[i])
+    zox_geter(realm, SkillLinks, oldSkills)
+    if (oldSkills) {
+        for (int i = 0; i < oldSkills->length; i++) {
+            if (oldSkills->value[i]) zox_delete(oldSkills->value[i])
+        }
+    }
+
+    SkillLinks *skills = &((SkillLinks) { 0, NULL });
     initialize_memory_component(SkillLinks, skills, ecs_entity_t, 3)
     // aura - damage one
     // char *name = generate_name();
@@ -22,6 +37,7 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     zox_set(meta_skill_aura_life, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_life")) })
     skills->value[2] = meta_skill_aura_life;
 
+    zox_set(realm, SkillLinks, { skills->length, skills->value })
 #ifdef zox_log_realm_generate
     zox_log(" + generated realm [skills]\n")
 #endif

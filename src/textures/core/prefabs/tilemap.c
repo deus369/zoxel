@@ -9,8 +9,8 @@ ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
         add_gpu_texture(world, e);
         add_gpu_material(world, e);
     }
-    zox_prefab_add(e, TextureLinks)
-    zox_prefab_add(e, TilemapUVs)
+    zox_prefab_set(e, TextureLinks, { 0, NULL })
+    zox_prefab_set(e, TilemapUVs, { 0, NULL })
     return e;
 }
 

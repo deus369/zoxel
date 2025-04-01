@@ -23,8 +23,11 @@ ecs_entity_t spawn_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab, c
     zox_set(e, ElementBar, { percentage })
     zox_set(e, ElementBarSize, { statbar_front_mesh_scale })
     zox_set(e, RenderDisabled, { render_disabled })
-    Children *children = zox_get_mut(e, Children)
+
+    Children *children = &((Children) { 0, NULL });
+    // Children *children = zox_get_mut(e, Children)
     add_to_Children(children, spawn_elementbar3D_front(world, prefab_elementbar3D_front, ui_holder, e, (float3) { 0, 0, depth_difference }, render_disabled));
-    zox_modified(e, Children)
+    // zox_modified(e, Children)
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }

@@ -57,7 +57,7 @@ void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_arra
     dynamic_array->size += length; \
 }\
 \
-data_type* finalize##_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
+data_type* finalize_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
     if (!dynamic_array->size) {\
         dispose##_##data_type##_##array_d(dynamic_array);\
         return NULL;\

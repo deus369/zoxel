@@ -23,20 +23,27 @@ int get_chunk_index_3(int3 position, int rows, int vertical) {
 // todo: pass in through struct
 ecs_entity_t spawn_terrain_streaming(ecs_world_t *world,  const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {
     if (!zox_has(realm, TilemapLink)) {
-        zox_log(" ! realm lacking a TilemapLink.\n")
+        zox_log("! realm has no TilemapLink [%lu]\n", realm)
         return 0;
     }
-    const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
-    if (tilemap) {
+    zox_geter_value(realm, TilemapLink, ecs_entity_t, tilemap)
+    // zox_log("!!!tilemap: %lu - valid? %i\n", tilemap, zox_valid(tilemap))
+    if (zox_valid(tilemap) && zox_has(tilemap, RealmLink)) {
         zox_set(tilemap, RealmLink, { realm })
+    } else {
+        zox_log("! invalid tilemap: %lu\n", tilemap)
     }
-    ecs_entity_t terrain_world = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
+    ecs_entity_t e = spawn_terrain(world, prefab_terrain, tilemap, float3_zero, 1);
     const int3 chunk_position = int3_zero;
-    const ecs_entity_t chunk = spawn_chunk_terrain(world, prefab_chunk, terrain_world, center_position, chunk_position, real_chunk_scale);
+    const ecs_entity_t chunk = spawn_chunk_terrain(world, prefab_chunk, e, center_position, chunk_position, real_chunk_scale);
     // set_chunk_neighbors_six_directions(world, chunk, 0, 0, 0, 0, 0, 0);
-    zox_get_muter(terrain_world, ChunkLinks, chunkLinks)
+
+    ChunkLinks *chunkLinks = &((ChunkLinks) { NULL });
+    // zox_get_muter(e, ChunkLinks, chunkLinks)
     chunkLinks->value = create_int3_hashmap(2048); int3_hashmap_add(chunkLinks->value, chunk_position, chunk);
-    return terrain_world;
+    zox_set(e, ChunkLinks, { chunkLinks->value })
+
+    return e;
 }
 
 ecs_entity_t create_terrain(ecs_world_t *world, const ecs_entity_t realm, const int3 center_position, const int3 size, const ecs_entity_t prefab_terrain, const ecs_entity_t prefab_chunk) {

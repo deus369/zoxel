@@ -1,8 +1,13 @@
 void tooltip_event_icon_stat(ecs_world_t *world, const TooltipEventData *data) {
+    if (!zox_has(data->data, ZoxName)) {
+        zox_log("! e [%lu] has no ZoxName\n", data->data)
+        return;
+    }
     /*if (data->event == zox_select_state_deselected_this_frame) {
         set_entity_with_text(world, data->tooltip, "");
         zox_set(data->tooltip, RenderDisabled, { 1 })
-    } else*/ {
+    } else*/
+    {
         char result[64];
         char *name_string = NULL;
         const ZoxName *zox_name = zox_get(data->data, ZoxName)

@@ -44,7 +44,8 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
     zox_set(e, ListUIMax, { max_elements })
     zox_set(e, ElementFontSize, { font_size })
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-    Children *children = zox_get_mut(e, Children)
+    // zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
     initialize_memory_component(Children, children, ecs_entity_t, children_length)
     if (is_header) {
         // scaled_font_size + header_margins
@@ -93,7 +94,8 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world, const ecs_entity_t prefab, const 
         children->value[list_start + i] = button;
         zox_add_tag(button, ZextLabel)
     }
-    zox_modified(e, Children)
+    zox_set(e, Children, { children->length, children->value })
+    // zox_modified(e, Children)
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0 && player) {
         const byte device_mode = zox_get_value(player, DeviceMode)

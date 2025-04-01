@@ -2,9 +2,10 @@ const int quests_count = 1; // having blank items seems to b reak it
 
 void spawn_character_quests(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     if (!player) return;
-    QuestLinks *quests = zox_get_mut(e, QuestLinks)
-    if (!quests) return;
-    zox_modified(e, QuestLinks)
+    //QuestLinks *quests = zox_get_mut(e, QuestLinks)
+    //if (!quests) return;
+    //zox_modified(e, QuestLinks)
+    QuestLinks *quests = &((QuestLinks) { 0, NULL });
     initialize_memory_component(QuestLinks, quests, ecs_entity_t, quests_count)
     if (!quests->value) {
         zox_log(" ! failed allocating memory for quests\n")
@@ -18,4 +19,5 @@ void spawn_character_quests(ecs_world_t *world, const ecs_entity_t e, const ecs_
     } else {
         zox_log(" ! meta_quest_slay_slems not found\n")
     }
+    zox_set(e, QuestLinks, { quests->length, quests->value })
 }

@@ -43,7 +43,8 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
         if (!meshVertices->length) continue;
         if (!meshUVs->length) continue;
         if (meshVertices->length != meshUVs->length) {
-            zox_log("! mesh verts / uvs missmatch\n")
+            zox_field_e()
+            zox_log("! [%s] mesh verts [%i] / uvs [%i] missmatch\n", zox_get_name(e), meshVertices->length, meshUVs->length)
             continue;
         }
         update_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);

@@ -37,7 +37,7 @@ ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         .index = data->icon.index,
         .texture_size = data->icon.texture_size
     };
-    zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
     const ecs_entity_t icon = spawn_icon(world, &spawnIcon);
     add_to_Children(children, icon);
     ecs_entity_t zext = 0;
@@ -70,5 +70,6 @@ ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         zext = spawn_zext(world, &spawnZext);
         add_to_Children(children, zext);
     }
+    zox_set(e, Children, { children->length, children->value })
     return (ecs_entity_3) { e, icon, zext };
 }

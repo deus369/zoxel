@@ -10,7 +10,14 @@ void UITrailSystem(ecs_iter_t *it) {
     zox_field_out(Position3D, position3Ds, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(UIHolderLink, uiHolderLinks, uiHolderLink)
-        if (!uiHolderLink->value) continue;
+        if (!zox_valid(uiHolderLink->value)) {
+            if (uiHolderLink->value) {
+                zox_field_e()
+                zox_log("! character ui wasn't destroyed: %lu\n", e)
+                zox_delete(e)
+            }
+            continue;
+        }
         zox_field_e()
         zox_field_i(UITrail, uiTrails, uiTrail)
         zox_field_o(Position3D, position3Ds, position3D)

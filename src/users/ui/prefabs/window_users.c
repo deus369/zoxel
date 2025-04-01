@@ -34,7 +34,8 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     const int user_datas_count = user_data->length;
     const int grid_elements_count = user_datas_count; // data->window.grid_size.x * data->window.grid_size.y
     const int children_length = 1 + is_header;
-    zox_get_muter(e, Children, children)
+    // zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
     initialize_memory_component(Children, children, ecs_entity_t, children_length)
     if (children->length != children_length) {
         zox_log(" ! failed to iniitalize children\n")
@@ -96,7 +97,8 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     };
     const ecs_entity_t body = spawn_body(world, &spawn_body_data);
     children->value[is_header] = body;
-    zox_get_muter(body, Children, body_children)
+    // zox_get_muter(body, Children, body_children)
+    Children *body_children = &((Children) { 0, NULL });
     initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
     int item_index = 0;
     int array_index = 0;
@@ -134,6 +136,8 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             item_index++;
         }
     }
+    zox_set(body, Children, { body_children->length, body_children->value })
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }
 

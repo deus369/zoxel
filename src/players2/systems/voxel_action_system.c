@@ -1,6 +1,6 @@
 // left click - destroy
 void VoxelActionASystem(ecs_iter_t *it) {
-/*#ifdef zox_disable_raycasts3D
+#ifdef zox_disable_raycasts3D
     return;
 #endif
     zox_field_world()
@@ -16,5 +16,5 @@ void VoxelActionASystem(ecs_iter_t *it) {
         // gett  position of destroying:
         // using hit for now
         // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->hit.x, raycastVoxelData->hit.y, raycastVoxelData->hit.z)
-    }*/
+    }
 } zox_declare_system(VoxelActionASystem)

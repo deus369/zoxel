@@ -2,8 +2,11 @@ const int actions_count = 8; // 10; // having blank items seems to b reak it
 
 void spawn_character_actions(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
     if (!player) return;
-    zox_get_muter(e, ActionLinks, actions)
-    if (!actions) return;
+
+    ActionLinks *actions = &((ActionLinks) { 0, NULL });
+
+    //zox_get_muter(e, ActionLinks, actions)
+    //if (!actions) return;
     initialize_memory_component(ActionLinks, actions, ecs_entity_t, actions_count)
     if (!actions->value) {
         zox_log(" ! failed allocating memory for actions\n")
@@ -18,8 +21,9 @@ void spawn_character_actions(ecs_world_t *world, const ecs_entity_t e, const ecs
     if (meta_item_block_dark) {
         actions->value[4] = spawn_user_item(world, meta_item_block_dark, e);
         zox_set(actions->value[4], Quantity, { 12 })
-
     }
+
+    zox_set(e, ActionLinks, { actions->length, actions->value })
 }
 
 // block item!

@@ -1,18 +1,22 @@
 // #define zox_print_texture_files
 
-ecs_entity_t spawn_texture_filepath(ecs_world_t *world, const char *filepath) {
-    zox_instance(prefab_texture)
-    zox_name("texture_filepath")
-    zox_get_muter(e, TextureData, textureData)
-    zox_get_muter(e, TextureSize, textureSize)
-    if (textureData->value) free(textureData->value);
-    textureData->value = load_texture_from_png(filepath, &textureSize->value);
-    textureData->length = (textureSize->value.x * textureSize->value.y);
+ecs_entity_t spawn_texture_filepath(ecs_world_t *world, const ecs_entity_t prefab, const char *filepath) {
+    zox_instance(prefab)
+    // zox_name("texture_filepath")
+    TextureData *textureData = &((TextureData) { 0, NULL });
+    int2 texture_size = int2_zero;
+    // zox_get_muter(e, TextureData, textureData)
+    // zox_get_muter(e, TextureSize, textureSize)
+    // if (textureData->value) free(textureData->value);
+    textureData->value = load_texture_from_png(filepath, &texture_size);
+    textureData->length = (texture_size.x * texture_size.y);
     if (!textureData->value) {
         zox_log(" ! load error [texture null] at [%s]\n", filepath)
         zox_delete(e)
         return 0;
     }
+    zox_set(e, TextureData, { textureData->length, textureData->value })
+    zox_set(e, TextureSize, { texture_size })
 #ifdef zox_disable_io_textures
     zox_log(" ! texture io disabled at [%s]\n", filepath)
     zox_delete(e)
@@ -32,7 +36,7 @@ void load_files_textures(ecs_world_t *world) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         zox_log_io("   - [%i] [texture] [%s]", i, filepath)
-        const ecs_entity_t e = spawn_texture_filepath(world, filepath);
+        const ecs_entity_t e = spawn_texture_filepath(world, prefab_texture, filepath);
         if (e) string_hashmap_add(files_hashmap_textures, new_string_data_clone(filename), e);
         files_textures[i] = e;
     }

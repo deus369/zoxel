@@ -23,12 +23,19 @@ void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_si
 }
 
 void set_element_position(ecs_world_t *world, const ecs_entity_t e, const int2 parent_position, const int2 parent_size, const int2 canvas_size) {
-    if (!e) return;
+    if (!zox_valid(e)) {
+        return;
+    }
     int2 position = int2_zero;
-    if (zox_has(e, PixelPosition)) position = zox_get_value(e, PixelPosition)
-    else position = get_line_element_mid_point(world, e);
+    if (zox_has(e, PixelPosition)) {
+        position = zox_get_value(e, PixelPosition)
+    } else {
+        position = get_line_element_mid_point(world, e);
+    }
     float2 anchor = float2_zero;    // should i pass this in from parent?
-    if (zox_has(e, Anchor)) anchor = zox_get_value(e, Anchor)
+    if (zox_has(e, Anchor)) {
+        anchor = zox_get_value(e, Anchor)
+    }
     // calculate pixel and real positions
     const int2 position_in_canvas = get_element_pixel_position_global(parent_position, parent_size, position, anchor);
     const float2 position2D = get_element_position(position_in_canvas, canvas_size);
@@ -45,7 +52,9 @@ void set_element_position(ecs_world_t *world, const ecs_entity_t e, const int2 p
     set_line_element_real_position2D(world, e, position2D, canvas_size, position);
     if (zox_has(e, Children)) {
         int2 size = parent_size;
-        if (zox_has(e, PixelSize)) size = zox_get_value(e, PixelSize)
+        if (zox_has(e, PixelSize)) {
+            size = zox_get_value(e, PixelSize)
+        }
         const Children *children = zox_get(e, Children)
         if (!children->value) return;
         for (int i = 0; i < children->length; i++) {

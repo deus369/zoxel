@@ -35,36 +35,3 @@ byte get_text_length(const char* text) {
     zox_log(log"\n", text)\
     free(text);\
 }
-
-/*void prefab_set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
-#ifdef zox_entity_names
-    char* entity_name = get_entity_string(label, e);
-    int length = strlen(entity_name);
-    zox_prefab_set(e, ZoxName, { length, convert_string_to_zext(entity_name) })
-    free(entity_name);
-#endif
-}
-
-void set_entity_zox_name(ecs_world_t *world, ecs_entity_t e, char label[]) {
-#ifdef zox_entity_names
-    char* entity_name = get_entity_string(label, e);
-    int length = strlen(entity_name);
-    zox_set(e, ZoxName, { length, convert_string_to_zext(entity_name) })
-    // zox_log("   + [%s]\n", entity_name)
-    free(entity_name);
-#endif
-}*/
-
-/*void convert_string_zox_name(ZoxName *component, const char* text) {
-    byte text_length = strlen(text);
-    if (component->length != text_length) resize_memory_component(ZextData, component, byte, text_length)
-    for (byte i = 0; i < text_length; i++) component->value[i] = convert_ascii(text[i]);
-}*/
-
-/*void print_entity_zox_name(ecs_world_t *world, ecs_entity_t e) {
-    if (!zox_has(e, ZoxName)) return;
-    const ZoxName *zoxName = zox_get(e, ZoxName)
-    char *text = get_zext_text(zoxName);
-    zox_log("   > zext %lu [%s] length %i\n", e, text, zoxName->length)
-    free(text);
-}*/

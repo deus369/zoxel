@@ -21,7 +21,7 @@ ecs_entity_t spawn_terrain(ecs_world_t *world, const ecs_entity_t prefab, const 
     if (tilemap) {
         zox_set(e, TilemapLink, { tilemap })
         // did tilemap have a voxlink previously
-        zox_prefab_set(tilemap, VoxLink, { e })    // link tilemap to terrain
+        zox_set(tilemap, VoxLink, { e })    // link tilemap to terrain
     }
     local_terrain = e;
     return e;

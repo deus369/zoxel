@@ -1,17 +1,36 @@
-#define zox_entities_component(name)\
-zox_memory_component(name, ecs_entity_t)\
+#define zox_entities_component(name) zox_entities_component_debug(name, 0)
+
+#define zox_entities_component_debug(name, is_log)\
+zox_memory_component_debug(name, ecs_entity_t, is_log)\
+\
+void dispose2_##name(ecs_world_t *world, const name *component) {\
+    if (!component->value || !component->length) {\
+        if (is_log) {\
+            /*zox_log("- disposing nothing\n")*/\
+        }\
+        return;\
+    }\
+    if (is_log) {\
+        /*zox_log("- disposing [%i]s\n", component->length)*/\
+    }\
+    for (int j = 0; j < component->length; j++) {\
+        if (is_log) {\
+            if (zox_valid(component->value[j])) zox_log("   - [%lu] [%i of %i]\n", component->value[j], j, component->length)\
+        }\
+        zox_delete_safe(component->value[j])\
+    }\
+}\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
     zox_field_world()\
     zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_i(name, components, component)\
-        if (!component->value) continue;\
-        for (int j = 0; j < component->length; j++) {\
-            /*if (zox_valid(component->value[j])) zox_log(" - deleting character [%lu]\n", component->value[j])*/\
-            /*zox_delete(component->value[j])*/\
-            zox_delete_safe(component->value[j])\
+        if (is_log && component->length) {\
+            zox_field_e()\
+            zox_log("- chunk disposal [%lu]::%i\n", e, component->length)\
         }\
+        dispose2_##name(world, component);\
     }\
 }\
 \
@@ -54,11 +73,11 @@ byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
 }
 
 #define zox_define_entities_component2(name, ...)\
-zox_define_memory_component(name)\
-ecs_observer_init(world, &(ecs_observer_desc_t) {\
-    .filter.expr = #__VA_ARGS__,\
-    .callback = on_destroyed_##name,\
-    .events = { EcsOnRemove },\
-});
+    zox_define_memory_component(name)\
+    ecs_observer_init(world, &(ecs_observer_desc_t) {\
+        .filter.expr = #__VA_ARGS__,\
+        .callback = on_destroyed_##name,\
+        .events = { EcsOnRemove },\
+    });
 
 #define zox_define_entities_component(name) zox_define_entities_component2(name, [in] name)

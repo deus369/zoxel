@@ -12,10 +12,10 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         // these two, this npc survived the closing
         if (!zox_alive(voxLink->value)) {
             zox_field_e()
-            const ecs_entity_t chunk = zox_get_value(e, ChunkLink)
-            zox_log("! npc [%s]:[%lu] should of died with world death\n", zox_get_name(e), e)
+            zox_log("! npc not dead [%lu]\n", e)
             // for now, space physics not supported
-            zox_log("   - chunk [%lu] alive? [%i]\n", chunk, zox_alive(chunk))
+            // const ecs_entity_t chunk = zox_get_value(e, ChunkLink)
+            // zox_log("   - chunk [%lu] alive? [%i]\n", chunk, zox_alive(chunk))
             zox_delete(e)
             continue;
         }
@@ -29,9 +29,10 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     if (!realm) {
         return;
     }
-    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
-    byte block_collisions[voxelLinks->length + 1];
-    block_collisions[0] = 0;
+    zox_geter(realm, VoxelLinks, voxelLinks)
+    byte block_collisions[255]; // voxelLinks->length + 1];
+    for (int i = 0; i < 255; i++) block_collisions[i] = 0;
+    // block_collisions[0] = 0;
     for (int i = 0; i < voxelLinks->length; i++) {
         const ecs_entity_t block = voxelLinks->value[i];
         block_collisions[i + 1] = zox_gett_value(block, BlockCollider) != zox_block_air;

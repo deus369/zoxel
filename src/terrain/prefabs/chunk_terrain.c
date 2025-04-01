@@ -8,7 +8,8 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t p
     add_seed(world, e, 666);
     zox_prefab_set(e, GenerateChunk, { 0 }) // fails on samsung phone?
     // links to sub chunk things - remember: these have to be set to NULL as not set in initialization
-    zox_prefab_set(e, EntityLinks, { 0, NULL }) // character and minivox links
+    zox_prefab_set(e, EntityLinks, { 0, NULL })
+    // zox_prefab_set(e, EntityLinks, { 1, malloc(sizeof(ecs_entity_t)) })
     zox_prefab_set(e, BlocksSpawned, { 0 })
 #ifdef zox_is_flatlands
     zox_add_tag(e, FlatlandChunk)
@@ -20,9 +21,11 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t p
 #endif
     zox_add_tag(e, ChunkDebugger)
     // neighbors
-    zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
+    // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
+    ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (int i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
+    zox_prefab_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })
     return e;
 }
 
@@ -42,9 +45,12 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
         spawn_gpu_colors(world, e);
     }
     // neighbors
-    zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
+    ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
+    // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (byte i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
+    zox_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })
+
     // lod update here
     const byte camera_distance = get_camera_chunk_distance(camera_position, chunk_position);
     zox_set(e, RenderDistance, { camera_distance })

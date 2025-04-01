@@ -1,9 +1,15 @@
 
 void initialize_music(ecs_world_t *world, const ecs_entity_t realm) {
+    // add them to realm
+    if (!zox_has(realm, PlaylistLinks)) {
+        zox_log("! realm [%lu] has no PlaylistLinks\n")
+        return;
+    }
+    // zox_get_muter(realm, PlaylistLinks, playlistLinks)
+    PlaylistLinks playlistLinks2 = { 0, NULL };
+    PlaylistLinks *playlistLinks = &playlistLinks2;
     const ecs_entity_t playlist_main_menu = spawn_playlist(world, prefab_playlist);
     const ecs_entity_t playlist_game = spawn_playlist(world, prefab_playlist);
-    // add them to realm
-    zox_get_muter(realm, PlaylistLinks, playlistLinks)
     add_to_PlaylistLinks(playlistLinks, playlist_main_menu);
     add_to_PlaylistLinks(playlistLinks, playlist_game);
     // musics
@@ -12,9 +18,9 @@ void initialize_music(ecs_world_t *world, const ecs_entity_t realm) {
     // add musics to playlists
     add_music(world, playlist_main_menu, music_file);
     add_music(world, playlist_game, generated_music);
-
     // zox_set(realm, PlaylistLink, { playlist })
     // play_playlist(world, realm, 0);
     local_music = music_file;
     zox_set(local_music, MusicPlaying, { 1 })
+    zox_set(realm, PlaylistLinks, { playlistLinks->length, playlistLinks->value });
 }

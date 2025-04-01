@@ -56,7 +56,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 }
                 const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
                 if (!voxel_texture_data->value) {
-                    zox_log(" ! voxel_texture_data->value is null\n")
+                    zox_log("! voxel [?] texture [%lu] data is null\n", texture_entity)
                     texture_index++;
                     continue;
                 }

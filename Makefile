@@ -10,6 +10,7 @@
 # stores [steam, itch, google]
 # make game=zixel for zoxel2D
 resources_dir = resources
+flecs_version := "3.2.6"
 # library use
 use_system_sdl := true
 # used for apps
@@ -79,7 +80,7 @@ endif
 CC = gcc # c99 | gnu99
 OBJS = src/main.c
 # collect our source files #
-cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
+cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC -Dflecs_version=\"$(flecs_version)\"
 # supresses flecs warning
 cflags += -Wno-stringop-overread -Wno-stringop-overflow
 # make faster for release builds
@@ -118,6 +119,12 @@ linux:
 debug-make:
 	@ echo '$(make_release)'
 
+refresh-flecs:
+	@ make -f make/flecs remove-flecs
+	@ bash bash/flecs/download_flecs_source.sh "$(flecs_version)"
+	# @ make -f make/flecs download-flecs
+	@ make -f make/flecs flecs
+
 # required libraries
 prepare:
 	@ make -f make/flecs download-flecs && make -f make/flecs flecs
@@ -143,9 +150,6 @@ run:
 
 run-debug-libs:
 	LD_DEBUG=libs ./$(target)
-
-run-debug:
-	gdb ./$(target)
 
 run-server:
 	@ ./$(target) --headless --server
@@ -203,7 +207,11 @@ run-dev-debug:
 run-dev-debug-tiny:
 	@ gdb --args ./$(target_dev) --tiny
 
-# run development + valgrind
+gdb:
+	@ echo "> running gdb with args [$(args)]"
+	@ gdb ./$(target_dev) $(args)
+
+# run development + valgrind  --tool=none
 valgrind:
 	@ echo "> running valgrind with args [$(args)]"
 	@ valgrind ./$(target_dev) $(args)

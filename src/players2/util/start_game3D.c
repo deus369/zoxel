@@ -29,31 +29,34 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
 #endif
     float3 spawn_position;
     float4 spawn_rotation;
+    ecs_entity_t chunk = 0;
     if (is_new_game) {
         spawn_rotation = quaternion_identity;
         const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
         int3 chunk_position = int3_zero;
         byte3 local_position = byte3_zero;
-        const ChunkOctree *chunk_octree_above = NULL;
+        const ChunkOctree *chunk_above = NULL;
         byte found_position = 0;
-        for (int i = 4; i >= -4; i--) {
+        for (int i = 6; i >= -6; i--) {
             chunk_position.y = i;
-            const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+            chunk = int3_hashmap_get(chunk_links->value, chunk_position);
             if (!chunk) {
-                // zox_log(" > no chunk here [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z)
+                // zox_log("> no chunk here [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z)
                 continue;
             }
-            zox_geter(chunk, ChunkOctree, chunk_octree)
-            // local_position = find_position_in_chunk(chunk_octree, max_octree_depth);
-            local_position = find_position_in_chunk_with_above(chunk_octree, max_octree_depth, chunk_octree_above);
+            // zox_log("+ terrain chunk at: %i\n", i)
+            zox_geter(chunk, ChunkOctree, chunkd)
+            local_position = find_position_on_ground(chunkd, max_octree_depth, chunk_above, 1);
             if (!byte3_equals(byte3_full, local_position)) {
                 found_position = 1;
                 break;
             }
-            chunk_octree_above = chunk_octree;
+            chunk_above = chunkd;
         }
         // if (found_position) zox_log(" + found player position: chunk_position %ix%ix%i - local_position %ix%ix%i\n", chunk_position.x, chunk_position.y, chunk_position.z, local_position.x, local_position.y, local_position.z)
-        if (!found_position) zox_log(" ! failed finding spawn position for player\n")
+        if (!found_position) {
+            zox_log(" ! failed finding spawn position for player\n")
+        }
         const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
         spawn_position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f });
     } else {
@@ -62,6 +65,8 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
     }
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, spawn_position, spawn_rotation, 0, player);
     const ecs_entity_t character = character_group.x;
+    zox_log("+ player character spawned [%lu]\n", character)
+    zox_set(character, ChunkLink, { chunk })
     zox_set(player, CharacterLink, { character })
     zox_set(character, PlayerLink, { player })
     zox_set(character, CameraLink, { camera })

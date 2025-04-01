@@ -15,7 +15,9 @@ int total_memorys_allocated = 0;
     }\
 }
 
-#define zox_memory_component(name, type)\
+#define zox_memory_component(name, type) zox_memory_component_debug(name, type, 0)
+
+#define zox_memory_component_debug(name, type, is_log)\
 int name##_memorys_allocated = 0;\
 typedef struct {\
     int length;\
@@ -24,12 +26,20 @@ typedef struct {\
 zox_custom_component(name)\
 \
 void zero_##name(name *ptr) {\
-    ptr->value = NULL;\
-    ptr->length = 0;\
+    if (ptr->length) {\
+        if (is_log) {\
+            zox_log("- zerod memory ["#name"] [%i]\n", ptr->length)\
+        }\
+        ptr->length = 0;\
+    }\
+    if (ptr->value) {\
+        /*free(ptr->value);*/\
+        ptr->value = NULL;\
+    }\
 }\
 \
 void dispose_##name(name *ptr) {\
-    if (!ptr->value || !ptr->length) {\
+    if (!ptr->value && !ptr->length) {\
         return;\
     }\
     free(ptr->value);\
@@ -39,22 +49,6 @@ void dispose_##name(name *ptr) {\
     /*zox_log(" [%s] disposing of entity with memory component\n", #name)*/\
 }\
 \
-ECS_CTOR(name, ptr, {\
-    zero_##name(ptr);\
-})\
-\
-ECS_DTOR(name, ptr, {\
-    dispose_##name(ptr);\
-})\
-\
-ECS_MOVE(name, dst, src, {\
-    if (dst->value == src->value) return;\
-    dispose_##name(dst);\
-    dst->length = src->length;\
-    dst->value = src->value;\
-    zero_##name(src);\
-})\
-\
 void clone_##name(name* dst, const name* src) {\
     if (!src->value) {\
         dispose_##name(dst);\
@@ -62,7 +56,7 @@ void clone_##name(name* dst, const name* src) {\
         int memory_length = src->length * sizeof(type);\
         type *new_memory = malloc(memory_length);\
         if (!new_memory) {\
-            zox_log(" ! failed allocating memory in clone_" #name "\n")\
+            zox_log("! failed allocating memory in clone_" #name "\n")\
             return;\
         }\
         if (dst->value) {\
@@ -75,10 +69,6 @@ void clone_##name(name* dst, const name* src) {\
         name##_memorys_allocated++;\
     }\
 }\
-\
-ECS_COPY(name, dst, src, {\
-    clone_##name(dst, src);\
-})\
 \
 byte add_to_##name(name *component, const type data) {\
     if (component->value) {\
@@ -101,32 +91,66 @@ byte add_to_##name(name *component, const type data) {\
     component->value[component->length - 1] = data;\
     return 1;\
 }\
-
-/*
-component->length = 1;\
-component->value = malloc(sizeof(type));\
-component->value[0] = data;
-
-if (!src->value) {\
-    dispose_##name(dst);\
-} else {\
-    int memory_length = src->length * sizeof(type);\
-    if (dst->value) dispose##_##name(dst);\
-    dst->length = src->length;\
-    dst->value = memcpy(malloc(memory_length), src->value, memory_length);\
-    total_memorys_allocated++;\
-    name##_memorys_allocated++;\
+\
+void name##_dtor(void *ptr, int32_t count, const ecs_type_info_t *info) {\
+    name *data = ptr;\
+    for (int i = 0; i < count; i++) {\
+        if (data[i].value) {\
+            free(data[i].value);\
+            data[i].value = NULL;\
+        }\
+    }\
 }\
-*/
+\
+void name##_move(void *dst_ptr, void *src_ptr, int32_t count, const ecs_type_info_t *info) {\
+    name *dst = dst_ptr;\
+    name *src = src_ptr;\
+    for (int i = 0; i < count; i++) {\
+        dst[i].value = src[i].value;\
+        dst[i].length = src[i].length;\
+        src[i].value = NULL;\
+        src[i].length = 0;\
+    }\
+}\
+\
+void name##_ctor(void *ptr, int32_t count, const ecs_type_info_t *info) {\
+    name *arr = ptr;\
+    for (int i = 0; i < count; i++) {\
+        arr[i].length = 0;\
+        arr[i].value = NULL;\
+    }\
+}\
+\
+void name##_copy(void *dst_ptr, const void *src_ptr, int32_t count, const ecs_type_info_t *info) {\
+    name *dst = dst_ptr;\
+    const name *src = src_ptr;\
+    for (int i = 0; i < count; i++) {\
+        if (src[i].value && src[i].length > 0) {\
+            dst[i].value = malloc(src[i].length * sizeof(type));\
+            if (!dst[i].value) {\
+                dst[i].length = 0;\
+                fprintf(stderr, "Copy: "#name" Failed to allocate memory\n");\
+            } else {\
+                dst[i].length = src[i].length;\
+                memcpy(dst[i].value, src[i].value, src[i].length * sizeof(type));\
+            }\
+        } else {\
+            dst[i].length = 0;\
+            dst[i].value = NULL;\
+        }\
+    }\
+}
 
 #define zox_define_memory_component2(name, ...)\
-zox_define_component(name)\
-ecs_set_hooks(world, name, {\
-    .ctor = ecs_ctor(name),\
-    .move = ecs_move(name),\
-    .copy = ecs_copy(name),\
-    .dtor = ecs_dtor(name)\
-});
+    zox_define_component(name)\
+    ecs_set_hooks(world, name, {\
+        .dtor = name##_dtor,\
+        .move = name##_move,\
+        .ctor = name##_ctor,\
+        .copy = name##_copy,\
+    });
+
+
 #define zox_define_memory_component(name) zox_define_memory_component2(name, [out] name)
 
 #define clear_memory_component(name, component) dispose_##name(component);
@@ -137,20 +161,6 @@ ecs_set_hooks(world, name, {\
         name##_memorys_allocated++;\
     }\
 }
-
-/*
-#define clear_memory_component(component) {\
-    if (component->value) {\
-        free(component->value);\
-        component->value = NULL;\
-        component->length = 0;\
-        total_memorys_allocated--;\
-    }\
-}
-*/
-
-// component->length = new_length;
-// component->value = realloc(component->value, new_length * sizeof(data_type));
 
 #define resize_memory_component(name, component, type, new_length) {\
     if (component->length != new_length) {\
@@ -169,29 +179,6 @@ ecs_set_hooks(world, name, {\
         }\
     }\
 }
-
-/*
-#define add_to_memory_component(component, data_type, data) {\
-    if (component->value) {\
-        byte has_data = 0;\
-        for (int i = 0; i < component->length; i++) {\
-            if (component->value[i] == data) {\
-                has_data = 1;\
-                break;\
-            }\
-        }\
-        if (!has_data) {\
-            component->length++;\
-            component->value = realloc(component->value, component->length * sizeof(data_type));\
-            component->value[component->length - 1] = data;\
-        }\
-    } else {\
-        component->length = 1;\
-        component->value = malloc(sizeof(data_type));\
-        component->value[0] = data;\
-    }\
-}
-*/
 
 #define remove_from_memory_component(component, type, data) {\
     if (component->value) {\
@@ -214,32 +201,6 @@ ecs_set_hooks(world, name, {\
         }\
     }\
 }
-
-// if (ptr->value) { zox_log("      memorys decreased (dtor)\n") }
-
-/*void on_destroyed##_##name(ecs_iter_t *it) {\
-    name *components = ecs_field(it, name, 1);\
-    for (int i = 0; i < it->count; i++) {\
-        name *component = &components[i];\
-        dispose##_##name(component);\
-    }\
-}*/
-
-/*ecs_observer_init(world, &(ecs_observer_desc_t) {\
-    .filter.expr = #__VA_ARGS__,\
-    .callback = on_destroyed##_##name,\
-    .events = { EcsOnRemove },\
-});*/
-
-
-// an array of a single data type
-// uses:
-//      ECS_CTOR The constructor should initialize the component value
-//      ECS_DTOR The destructor should free resources
-//      ECS_MOVE Copy a pointer from one component to another
-//      ECS_COPY Copy one data block to another
-
-
 // this removes the character from chunk upon death
 
 #define zox_link_component(name, type, links_name, ...)\
@@ -248,9 +209,9 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     zox_field_world()\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
-        ecs_entity_t e = it->entities[i];\
+        zox_field_e()\
         name *component = &components[i];\
-        if (component->value && ecs_is_alive(world, component->value)) {\
+        if (component->value && zox_valid(component->value)) {\
             links_name *links_component = zox_get_mut(component->value, links_name)\
             remove_from_memory_component(links_component, type, e)\
             zox_modified(component->value, links_name)\
@@ -278,3 +239,105 @@ for (int i = 0; i < component->length; i++) {\
         break;\
     }\
 }
+
+/*
+.ctor = ecs_ctor(name),\
+.dtor = ecs_dtor(name),\
+.move = ecs_move(name),\
+.copy = ecs_copy(name),
+*/
+
+/*
+
+ECS_CTOR(name, ptr, {\
+    ptr->length = 0;\
+    ptr->value = NULL;\
+})
+
+ ECS_DTOR(name, ptr, {\
+ if (!ptr->length) return;\
+     if (is_log) {\
+         zox_log("[memory] dtor ["#name"] [%i]\n", ptr->length)\
+         }\
+         free(ptr->value);\
+         ptr->length = 0;\
+         ptr->value = NULL;\
+         })\
+
+ECS_MOVE(name, dst, src, {\
+    if (dst->value == src->value) return;\
+    if (!dst->length && !src->length) return;\
+    if (is_log) {\
+        zox_log("[memory] moving ["#name"] [%i to %i]\n", src->length, dst->length)\
+    }\
+    dst->length = src->length;\
+    dst->value = src->value;\
+    src->value = NULL;\
+    src->length = 0;\
+})
+
+\
+ECS_CTOR(name, ptr, {\
+    name *comp = ptr;\
+    comp->length = 0;\
+    comp->value = NULL;\
+})\
+
+\
+ECS_COPY(name, dst, src, {\
+    if (!dst->length && !src->length) return;\
+    if (is_log) {\
+        zox_log("[memory] copying ["#name"] [%i to %i]\n", src->length, dst->length)\
+    }\
+    clone_##name(dst, src);\
+})\
+
+*/
+
+/*
+#define add_to_memory_component(component, data_type, data) {\
+    if (component->value) {\
+        byte has_data = 0;\
+        for (int i = 0; i < component->length; i++) {\
+            if (component->value[i] == data) {\
+                has_data = 1;\
+                break;\
+            }\
+        }\
+        if (!has_data) {\
+            component->length++;\
+            component->value = realloc(component->value, component->length * sizeof(data_type));\
+            component->value[component->length - 1] = data;\
+        }\
+    } else {\
+        component->length = 1;\
+        component->value = malloc(sizeof(data_type));\
+        component->value[0] = data;\
+    }\
+}
+*/
+
+// if (ptr->value) { zox_log("      memorys decreased (dtor)\n") }
+
+/*void on_destroyed##_##name(ecs_iter_t *it) {\
+    name *components = ecs_field(it, name, 1);\
+    for (int i = 0; i < it->count; i++) {\
+        name *component = &components[i];\
+        dispose##_##name(component);\
+    }\
+}*/
+
+/*ecs_observer_init(world, &(ecs_observer_desc_t) {\
+    .filter.expr = #__VA_ARGS__,\
+    .callback = on_destroyed##_##name,\
+    .events = { EcsOnRemove },\
+});*/
+
+
+// an array of a single data type
+// uses:
+//      ECS_CTOR The constructor should initialize the component value
+//      ECS_DTOR The destructor should free resources
+//      ECS_MOVE Copy a pointer from one component to another
+//      ECS_COPY Copy one data block to another
+

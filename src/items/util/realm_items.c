@@ -34,19 +34,39 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
 }
 
 void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
-    const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+    if (!zox_has(realm, ItemLinks)) {
+        zox_log("! realm does not have ItemLinks [%lu]\n", realm)
+        return;
+    }
+    /*zox_get_muter(realm, ItemLinks, items)
+    if (!items) {
+        zox_log("! realm items was null [%lu]\n", realm)
+        return;
+    }*/
+    if (!zox_has(realm, VoxelLinks)) {
+        zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
+        return;
+    }
+    zox_geter(realm, VoxelLinks, voxels)
+    if (!voxels) {
+        zox_log("! realm voxels was null [%lu]\n", realm)
+        return;
+    }
     if (voxels->length == 0 || voxels->value == NULL) {
         zox_log(" ! no voxels to spawn items from\n")
         return;
     }
     // i should make a BlockItemLinks perhaps? nah  that overcomplicates
-    zox_get_muter(realm, ItemLinks, items)
     // clear previous
-    for (int i = 0; i < items->length; i++) {
-        if (items->value[i]) {
-            zox_delete(items->value[i])
+    zox_geter(realm, ItemLinks, oldItems)
+    if (oldItems) {
+        for (int i = 0; i < oldItems->length; i++) {
+            if (oldItems->value[i]) {
+                zox_delete(oldItems->value[i])
+            }
         }
     }
+    ItemLinks *items = &((ItemLinks) { 0, NULL });
     resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
     for (int i = 0; i < voxels->length; i++) {
         const ecs_entity_t block = voxels->value[i];
@@ -56,12 +76,15 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
             zox_set(block, ItemLink, { item_block_dirt })
         }
     }
+    zox_set(realm, ItemLinks, { items->length, items->value })
+
     meta_item_block_dirt = items->value[zox_block_dirt - 1];
     meta_item_block_obsidian = items->value[zox_block_obsidian - 1];
     meta_item_block_dark = items->value[zox_block_dark - 1];
     meta_item_block_dungeon_core = items->value[zox_block_dungeon_core - 1];
     meta_item_block_sand = items->value[zox_block_sand - 1];
     meta_item_block_stone = items->value[zox_block_stone - 1];
+
 #ifdef zox_log_realm_generate
     zox_log(" + generated realm [items]\n")
 #endif

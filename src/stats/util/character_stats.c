@@ -8,7 +8,9 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     float max_health = 10.0f;
     int stats_count = character_stats;
     if (player) stats_count += player_extra_stats;
-    StatLinks *statLinks = zox_get_mut(e, StatLinks)
+
+    StatLinks *statLinks = &((StatLinks) { 0, NULL });
+    // StatLinks *statLinks = zox_get_mut(e, StatLinks)
     resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
     // health
     statLinks->value[0] = spawn_user_stat(world, meta_stat_soul, e);
@@ -30,10 +32,13 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
 #ifndef zox_disable_statbars
     const ecs_entity_t statbar = spawn_elementbar3D(world, prefab_statbar3D, e, health / max_health, render_disabled);
     zox_prefab_set(statbar, StatLink, { health_stat })
-    ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
+
+    ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
+    // ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
-    zox_modified(e, ElementLinks)
+    zox_set(e, ElementLinks, { elementLinks->length, elementLinks->value })
+    // zox_modified(e, ElementLinks)
     if (player) {
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)
@@ -42,6 +47,7 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
             zox_set(healthbar_2D, StatLink, { health_stat })
         }
     }
+    zox_set(e, StatLinks, { statLinks->length, statLinks->value })
 #endif
     return health_stat;
 }

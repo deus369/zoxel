@@ -21,7 +21,8 @@ ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
     if (data->vox_offset) zox_set(e, BlockVoxOffset, { 1 })
     if (data->vox) zox_set(e, ModelLink, { data->vox }) //  && !data->bake_vox
     if (data->bake_vox) {
-        Textures *textures = zox_get_mut(e, Textures)
+        // Textures *textures = zox_get_mut(e, Textures)
+        Textures *textures = &((Textures) { 0, NULL });
         resize_memory_component(Textures, textures, ecs_entity_t, 6)
         for (int i = 0; i < 6; i++) {
             const ecs_entity_t e2 = spawn_texture(world, data->prefab_texture, voxel_texture_size);
@@ -29,7 +30,8 @@ ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
             zox_set(e2, VoxBakeSide, { i })
             textures->value[i] = e2;
         }
-        zox_modified(e, Textures)
+        // zox_modified(e, Textures)
+        zox_set(e, Textures, { textures->length, textures->value })
     }
     // zox_log(" + generated block [vox] name [%s]\n", name)
     zox_set(e, ZoxName, { text_to_zext(data->name) })

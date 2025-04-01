@@ -10,6 +10,7 @@ endif
 
 # build/libflecs.a
 # main
+flecs_version := "3.2.6"
 CC = gcc
 cflags = -std=gnu99 -D_DEFAULT_SOURCE -fPIC
 # supresses flecs warning
@@ -48,7 +49,7 @@ $(flecs_target):
 	@ $(make_flecs_big)
 
 download-flecs:
-	@ bash bash/flecs/download_flecs_source.sh
+	@ bash bash/flecs/download_flecs_source.sh "$(flecs_version)"
 
 # @ bash bash/flecs/remove_flecs.sh
 
@@ -71,7 +72,7 @@ help:
 	@echo "  > [flecs]"
 	@echo "    make $(flecs_target)	builds flecs"
 	@echo "    check-flecs			checks flecs releases"
-	@echo "    download-flecs		installs latest flecs (3.2.6)"
+	@echo "    download-flecs		installs flecs (3.2.11)"
 	@echo "    /lib/flecs.a		builds flecs library"
 	@echo "    remove-flecs		removes flecs library"
 	@echo "    get-flecs-version		get a flecs by version"

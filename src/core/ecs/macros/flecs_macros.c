@@ -8,8 +8,14 @@
 #define zox_remove(e, T) ecs_remove(world, e, T);
 
 #define zox_prefab_add(e, T)\
-ecs_add(world, e, T);\
-ecs_override_id(world, e, ecs_id(T));
+    ecs_add(world, e, T);\
+    ecs_override_id(world, e, ecs_id(T));
+
+#define zox_prefab_set(e, T, ...) {\
+    ecs_add(world, e, T);\
+    ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
+    zox_override(e, T)\
+    }
 
 #define zox_set_data(e, T, data) ecs_set_id(world, e, ecs_id(T), sizeof(T), &data);
 
@@ -25,11 +31,6 @@ void ecs_override_remove_id(ecs_world_t *world, ecs_entity_t entity, ecs_id_t id
 #define zox_override_remove(e, T) ecs_override_remove_id(world, e, ecs_id(T));
 
 #define zox_override(e, T) ecs_override_id(world, e, ecs_id(T));
-
-#define zox_prefab_set(e, T, ...) {\
-    ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
-    zox_override(e, T)\
-}
 
 #define zox_delete(e) ecs_delete(world, e);
 

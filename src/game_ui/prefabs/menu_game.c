@@ -13,11 +13,13 @@ ecs_entity_t spawn_menu_game(ecs_world_t *world, const ecs_entity_t prefab, cons
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t e = spawn_element_invisible_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
     zox_name("game_ui")
-    zox_get_muter(e, Children, game_ui_children)
-    add_to_Children(game_ui_children, spawn_crosshair(world, canvas, e));
+    Children *children = &((Children) { 0, NULL });
+    // zox_get_muter(e, Children, game_ui_children)
+    add_to_Children(children, spawn_crosshair(world, canvas, e));
 #ifndef zox_disable_statbars
-    add_to_Children(game_ui_children, spawn_statbar2D(world, canvas, e, player, character_group));
+    add_to_Children(children, spawn_statbar2D(world, canvas, e, player, character_group));
 #endif
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }
 

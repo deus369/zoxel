@@ -43,8 +43,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         }
     };
     const ecs_entity_t e = spawn_element(world, &spawn_actionbar);
-    zox_prefab_add(e, Children)
-    zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
     initialize_memory_component(Children, children, ecs_entity_t, taskbar_count)
     const int2 action_frame_size = (int2) { size, size };
     const int2 icon_size = (int2) { size - 6, size - 6 };
@@ -90,7 +89,8 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         // Active State
         if (i == 0) zox_set(frame, ActiveState, { 1 })
         set_taskbar_icon_active(world, canvas, frame, i);
-        zox_get_muter(frame, Children, frame_children)
+        // zox_get_muter(frame, Children, frame_children)
+        Children *frame_children = &((Children) { 0, NULL });
         initialize_memory_component(Children, frame_children, ecs_entity_t, 1)
         spawn_icon_data.parent.e = frame;
         spawn_icon_data.parent.position = spawn_frame_data.element.position;
@@ -101,6 +101,8 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         // texture
         char *icon_texture_name = taskbar_textures[i];
         clone_texture_to_entity(world, icon2, icon_texture_name);
+        zox_set(frame, Children, { frame_children->length, frame_children->value })
     }
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }

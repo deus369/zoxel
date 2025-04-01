@@ -20,7 +20,7 @@ zox_declare_tag(DestroyInFrame)
 zox_component_double(EventTime)
 zox_component_entity(EventInput)
 zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
-// for gameplay
+// for gameplay _debug , 1
 zox_entities_component(EntityLinks) // rename to ChunkEntities - used for characters atm
 // used for physics
 zox_component_float3(Bounds3D)

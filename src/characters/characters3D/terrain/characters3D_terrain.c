@@ -1,6 +1,13 @@
 #ifndef zox_characters3D_terrain
 #define zox_characters3D_terrain
 
+// #define zox_enable_log_spawning
+#if defined(zox_enable_log_spawning) && !defined(zox_disable_logs)
+    #define zox_log_spawning(msg, ...) zox_log_line(msg, ##__VA_ARGS__)
+#else
+    #define zox_log_spawning(msg, ...) { }
+#endif
+
 #include "settings/settings.c"
 #include "systems/characters3D_spawn_system.c"
 
@@ -24,7 +31,7 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
         const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
         if (!chunk) return;
 
-        zox_log("+ spawning npc!\n")
+        // zox_log("+ spawning npc!\n")
         float4 rotation = quaternion_identity;
         byte character_lod = 0;
         byte render_disabled = 0;
@@ -39,6 +46,7 @@ zox_begin_module(Characters3DTerrain)
     // todo: this kinda just spawns to be visible, perhaps keep low res characters onboard? in lower Lods SimuChunks!
     zox_system_1(Characters3DSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [in] ChunkOctree, [in] ChunkPosition, [in] RenderDistance, [in] RenderDisabled, [out] EntityLinks, [none] terrain.TerrainChunk)
     spawn_prefabs_characters3D_terrain(world);
+    // test function for npc spawning
     add_functions_key_down(test_spawn_character_npc);
 zox_end_module(Characters3DTerrain)
 

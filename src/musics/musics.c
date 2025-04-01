@@ -49,8 +49,6 @@ zox_begin_module(Musics)
     zox_system_1(MusicGenerateSystem, zox_pip_mainthread, [out] GenerateMusic, [out] NoteLinks, [none] Music)
     zox_system_1(MusicPlaySystem, zox_pip_mainthread, [in] MusicPlaying, [in] NoteLinks, [in] MusicSpeed, [out] MusicNote, [out] MusicTime, [none] Music)
     spawn_prefabs_musics(world);
-    zox_prefab_set(prefab_realm, PlaylistLink, { 0 })
-    zox_prefab_add(prefab_realm, PlaylistLinks)
 zox_end_module(Musics)
 
 #endif

@@ -63,7 +63,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 chunk_octree = zox_get_mut(chunk, ChunkOctree)
                 if (!chunk_octree) return 0;
                 chunk_position = new_chunk_position;
-                hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
+                // hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
             }
         }
         if (chunk_links) {

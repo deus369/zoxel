@@ -32,7 +32,7 @@ void ElementPositionSystem(ecs_iter_t *it) {
         canvasPosition->value = position_in_canvas;
         position2D->value = position_real;
         if (zox_has(e, Children)) {
-            const Children *children = zox_get(e, Children)
+            zox_geter(e, Children, children)
             for (int j = 0; j < children->length; j++) {
                 const ecs_entity_t child = children->value[j];
                 set_element_position(world, child, position_in_canvas, pixelSize->value, canvas_size);

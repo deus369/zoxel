@@ -27,8 +27,10 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     zox_set(e, FontFillColor, { data->zext.font_fill_color })
     zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
     zox_set(e, FontThickness, { data->zext.font_thickness })
-    zox_get_muter(e, ZextData, zextData)
-    zox_get_muter(e, Children, children)
+    //zox_get_muter(e, ZextData, zextData)
+    //zox_get_muter(e, Children, children)
+    Children *children = &((Children) { 0, NULL });
+    ZextData *zextData = &((ZextData) { 0, NULL });
     const int zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
     initialize_memory_component(ZextData, zextData, byte, zext_data_length)
     for (int i = 0; i < zextData->length; i++) zextData->value[i] = convert_ascii(data->zext.text[i]);
@@ -67,5 +69,7 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     }
     // this has to be done under as memory shifts a round with the points, when zox_set is called
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, pixel_size, pixel_size, data->element.anchor, data->element.layer, position2D, element_canvas_position);
+    zox_set(e, ZextData, { zextData->length, zextData->value })
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }
