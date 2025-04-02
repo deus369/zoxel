@@ -126,6 +126,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     }
     dispose_InstanceRenderCommand_array_d(commands);
     opengl_disable_opengl_program();
+    catch_basic3D_errors("! VoxInstanceRenderSystem");
 } zox_declare_system(VoxInstanceRenderSystem)
 
 

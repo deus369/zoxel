@@ -80,6 +80,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         }
         if (old_voxel) {
             data->voxel = old_voxel;
+            data->voxel_entity = voxels->value[old_voxel - 1];
             byte is_minivox = 0;
             if (voxels) {
                 // const ecs_entity_t block = voxels->value[old_voxel - 1];

@@ -19,6 +19,7 @@ zox_component_byte(RenderDistance)
 zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
+zox_component_entity(MaterialLink)
 #include "opengl/opengl.c"
 #include "vulkan/vulkan.c"
 #include "core/core.c"
@@ -52,6 +53,7 @@ zox_begin_module(Rendering)
     zox_define_component_byte(RenderDisabled)
     zox_define_component_float(Brightness)
     zox_define_component_float(Alpha)
+    zox_define_component_entity(MaterialLink)
     zox_define_increment_system(MeshDirty, EcsOnLoad)
     if (headless) {
         return;

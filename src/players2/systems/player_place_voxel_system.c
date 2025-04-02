@@ -1,5 +1,6 @@
 // right click = place
 
+// todo: use a state and implement results inside respective systems
 void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(RaycastVoxelData, raycastVoxelDatas, 1)
@@ -12,7 +13,9 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
         zox_field_i(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
         zox_field_o(ActionLinks, actionLinkss, actionLinks)
         const ecs_entity_t player = zox_get_value(e, PlayerLink)
-        if (!player) continue;
+        if (!player) {
+            continue;
+        }
         const byte action_selected = get_player_action_index(world, player);
         if (action_selected == 255) {
             triggerActionB->value = 0;
@@ -102,11 +105,10 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                                 zox_set(hit_character, LastDamager, { e })
                             }
                             spawn_sound_generated(world, instrument_violin, note_frequencies[28], 0.6, 2.4f);
-                        } else if (raycastVoxelData->voxel != 0) {
+                        } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->voxel_entity) {
                             raycast_action(world, raycastVoxelData, 0, 2);
-                            // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
                             if (zox_has(raycastVoxelData->chunk, TerrainChunk)) {
-                                const ecs_entity_t pickup = spawn_pickup(world, prefab_pickup, raycastVoxelData->position_real);
+                                const ecs_entity_t pickup = spawn_pickup(world, raycastVoxelData->position_real, raycastVoxelData->voxel_entity);
                                 const ecs_entity_t terrain = zox_get_value(raycastVoxelData->chunk, VoxLink)
                                 if (terrain && zox_has(terrain, RealmLink)) {
                                     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
@@ -125,6 +127,7 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                             } else {
                                 zox_log(" ! cannot create pickup on non terrain chunk\n")
                             }
+                            //zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
                         } else {
                             // cannot hit air
                             spawn_sound_generated(world, instrument_violin, note_frequencies[44], 0.3, 2.4f);

@@ -1,0 +1,10 @@
+#include "error.c"
+#include "primitive_square.c"
+#include "primitive_mesh.c"
+#include "shaders.c"
+#include "opengl.c"
+#include "geometry.c"
+#include "compute.c"
+#include "frame_buffer.c"
+// loads-disposes all shaders, move to higher level
+#include "opengl_main.c"

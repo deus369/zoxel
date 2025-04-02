@@ -4,6 +4,10 @@ void add_transform3Ds(ecs_world_t *world, const ecs_entity_t e, const byte is_sc
     if (is_scale) zox_prefab_set(e, Scale1D, { 1 })
 }
 
+void add_transform_matrix(ecs_world_t *world, const ecs_entity_t e) {
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+}
+
 void set_position_from_parents(ecs_world_t *world, const ecs_entity_t parent, float3 *position3D, const float3 local_position3D) {
     if (!parent || !zox_has(parent, Position3D) || !zox_has(parent, Rotation3D)) return;
     const float3 parent_position = zox_get_value(parent, Position3D)

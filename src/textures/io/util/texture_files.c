@@ -76,7 +76,21 @@ ecs_entity_t spawn_texture_filename(ecs_world_t *world, char *filename) {
 
 void clone_texture_to_entity(ecs_world_t *world, const ecs_entity_t e, char *filename) {
     const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data(filename));
-    zox_set(e, GenerateTexture, { zox_generate_texture_none })
+    if (!texture_source) {
+        zox_log_line("! texture [%s] was not found", filename)
+        return;
+    }
     clone_texture_data(world, e, texture_source);
+    zox_set(e, GenerateTexture, { zox_generate_texture_none })
+    zox_set(e, TextureDirty, { 1 })
+}
+
+void clone_texture_entity_to_entity(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t texture_source) {
+    if (!texture_source) {
+        zox_log_line("! texture [%lu] was invalid", texture_source)
+        return;
+    }
+    clone_texture_data(world, e, texture_source);
+    zox_set(e, GenerateTexture, { zox_generate_texture_none })
     zox_set(e, TextureDirty, { 1 })
 }

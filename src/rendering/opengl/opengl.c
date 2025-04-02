@@ -1,18 +1,9 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
-#include "util/import_opengl.c"
+#include "_include.c"
 #include "data/GLuint2.c"
-#include "util/error_util.c"
-#include "util/primitive_square.c"
-#include "util/primitive_mesh_util.c"
-#include "util/shaders_util.c"
-#include "util/opengl_util.c"
-#include "util/geometry_util.c"
-#include "util/compute_util.c"
-#include "util/frame_buffer.c"
-// loads / disposes all shaders, move to higher level
-#include "util/opengl_main_util.c"
+#include "util/util.c"
 
 void check_compute() {
     if (check_compute_shader_support() == EXIT_FAILURE) zox_log(" ! opengl compute is not supported\n");

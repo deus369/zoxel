@@ -10,5 +10,6 @@ typedef struct {
     float3 hit;
     float3 position_real;
     byte voxel;
+    ecs_entity_t voxel_entity;
 } RaycastVoxelData;
 zox_custom_component(RaycastVoxelData)

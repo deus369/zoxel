@@ -5,10 +5,14 @@ void VoxelActionASystem(ecs_iter_t *it) {
     zox_field_out(TriggerActionA, triggerActionAs, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(TriggerActionA, triggerActionAs, triggerActionA)
-        if (!triggerActionA->value) continue;
+        if (!triggerActionA->value) {
+            continue;
+        }
         zox_field_i(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
-        raycast_action(world, raycastVoxelData, 0, 2);
-        spawn_pickup(world, prefab_pickup, raycastVoxelData->hit);
+        if (raycastVoxelData->voxel_entity) {
+            raycast_action(world, raycastVoxelData, 0, 2);
+            spawn_pickup(world, raycastVoxelData->hit, raycastVoxelData->voxel_entity);
+        }
         triggerActionA->value = 0;
         // gett  position of destroying:
         // using hit for now

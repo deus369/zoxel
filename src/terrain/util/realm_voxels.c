@@ -15,7 +15,6 @@ ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const byte index, cha
         .index = index,
         .seed = generate_voxel_seed(index),
         .prefab_texture = prefab_vox_texture,
-        // .prefab_block_vox = prefab_block_vox,
     };
     spawn_data.name = name; // "dark";
     spawn_data.color = color_black;

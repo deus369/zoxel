@@ -3,24 +3,15 @@
 
 const GLchar* skybox_shader_source_vert = "\
 #version 320 es\n\
-in lowp vec3 vertex_position;\
+layout(location=0) in lowp vec3 vertex_position;\
 uniform highp mat4 camera_matrix;\
-uniform highp vec3 position;\
-uniform lowp vec4 rotation;\
-uniform lowp float scale;\
+uniform highp mat4 transform_matrix;\
+out highp float fog_level;\
 out lowp vec3 mesh_pos;\
 \
-vec3 float4_rotate_float3(vec4 rotation, vec3 value) {\
-    vec3 rotationXYZ = rotation.xyz; \
-    vec3 t = cross(rotationXYZ, value) * 2.0f; \
-    vec3 crossB = cross(rotationXYZ, t); \
-    vec3 scaledT = t * rotation.w; \
-    return value + scaledT + crossB; \
-}\
-\
 void main() {\
-    gl_Position = camera_matrix * vec4(position + float4_rotate_float3(rotation, vertex_position * scale), 1.0);\
-    lowp vec3 vertex_position2 = position + float4_rotate_float3(rotation, vertex_position * scale);\
+    gl_Position = camera_matrix * transform_matrix * vec4(vertex_position, 1);\
+    fog_level = gl_Position.z * gl_Position.z;\
     mesh_pos = vertex_position;\
 }";
 
@@ -30,8 +21,10 @@ uniform lowp float brightness;\
 uniform lowp vec3 sky_top_color;\
 uniform lowp vec3 sky_bottom_color;\
 uniform lowp float time;\
+uniform lowp vec4 fog_data;\
 in lowp vec3 mesh_pos;\
-out lowp vec3 color;\
+in highp float fog_level;\
+out lowp vec3 frag_color;\
 \
 lowp float rand(lowp vec2 co) {\
     return fract(sin(dot(co, vec2(12.9898,78.233))) * 43758.5453);\
@@ -58,11 +51,11 @@ lowp vec3 sky_gradient(lowp vec3 color) {\
 void main() {\
     lowp vec3 sky_top_color2 = sky_top_color;\
     lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);\
-    color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;\
-    color = sky_gradient(color);\
-    color -= vec3(1) * 0.05;\
+    frag_color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;\
+    frag_color = sky_gradient(frag_color);\
+    frag_color -= vec3(1) * 0.05;\
     lowp float noise = rand(time * mesh_pos.xy);\
-    color += vec3(noise) * 0.1;\
+    frag_color += vec3(noise) * 0.1;\
 }";
 
 /*

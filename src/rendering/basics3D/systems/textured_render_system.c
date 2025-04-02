@@ -1,5 +1,4 @@
 void TexturedRenderSystem(ecs_iter_t *it) {
-    // zox_field_world()
     zox_field_in(TransformMatrix, transformMatrixs, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
     zox_field_in(UvsGPULink, uvsGPULinks, 3)
@@ -9,7 +8,6 @@ void TexturedRenderSystem(ecs_iter_t *it) {
     zox_field_in(MaterialGPULink, materialGPULinks, 7)
     zox_field_in(TextureGPULink, textureGPULinks, 8)
     zox_field_in(MaterialTextured3D, materialTextured3Ds, 9)
-    // zox_log(" + TexturedRenderSystem [%i]\n", it->count)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         if (renderDisabled->value) continue;
@@ -44,5 +42,7 @@ void TexturedRenderSystem(ecs_iter_t *it) {
         opengl_disable_texture(0);
         opengl_disable_opengl_program();
         // zox_log(" + rendering cube [%s]\n", zox_get_name(it->entities[i]))
+        // zox_log("texture rendering [%i]\n", i)
+        catch_basic3D_errors("! TexturedRenderSystem");
     }
 } zox_declare_system(TexturedRenderSystem)

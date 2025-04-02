@@ -35,10 +35,11 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
                 // todo: base grass off dirt, as well as sand, using HSV color contrasts
                 e2 = spawn_texture_dirt(world, prefab_texture_noise, data->seed + i, data->color);
             }
-            if (data->texture_tag) zox_add_tag_id(e2, data->texture_tag);
+            if (data->texture_tag) {
+                zox_add_tag_id(e2, data->texture_tag);
+            }
             textures->value[i] = e2;
         }
-        //zox_modified(e, Textures)
         zox_set(e, Textures, { textures->length, textures->value })
     }
     // zox_log(" + generated block name [%s]\n", name)

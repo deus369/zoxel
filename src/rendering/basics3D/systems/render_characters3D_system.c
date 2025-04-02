@@ -4,7 +4,9 @@
 int zox_statistics_characters_rendered;
 // extern int zox_statistics_characters_rendered;
 void RenderCharacters3DSystem(ecs_iter_t *it) {
-    if (!material_colored3D) return;
+    if (!material_colored3D) {
+        return;
+    }
     zox_field_world()
     const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
     const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
@@ -40,12 +42,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
         opengl_render(meshIndicies->length);
-#ifdef zoxel_catch_opengl_errors
-        if (check_opengl_error_unlogged() != 0) {
-            zox_log(" > could not render character: indicies [%i] - [%ix%i:%i]\n", meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value);
-            break;
-        }
-#endif
+        catch_basic3D_errors("! RenderCharacters3DSystem");
         zox_statistics_characters_rendered++;
     }
     if (has_set_material) {
