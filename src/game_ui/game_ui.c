@@ -2,13 +2,17 @@
 #ifndef zox_mod_game_ui
 #define zox_mod_game_ui
 
+// todo: use a byte index instead for menu type
 #include "data/settings.c"
 #include "data/taskbar.c"
+#include "data/menus.c"
+zox_component_byte(MenuType)    // index for menus
 zox_declare_tag(MenuMain)
 zox_declare_tag(MenuOptions)
 zox_declare_tag(MenuPaused)
 zox_declare_tag(MenuGame)
 zox_declare_tag(MenuGameTouch)
+zox_declare_tag(MenuStart)
 zox_declare_tag(FPSDisplay)
 zox_declare_tag(QuadsCountLabel)
 zox_declare_tag(GameDebugLabel)
@@ -24,11 +28,13 @@ zox_component_double(FPSDisplayTicker)
 #include "systems/device_mode_ui_system.c"
 
 zox_begin_module(GameUI)
+    zox_define_component_byte(MenuType)
     zox_define_tag(MenuMain)
     zox_define_tag(MenuOptions)
     zox_define_tag(MenuPaused)
     zox_define_tag(MenuGame)
     zox_define_tag(MenuGameTouch)
+    zox_define_tag(MenuStart)
     zox_define_tag(FPSDisplay)
     zox_define_tag(QuadsCountLabel)
     zox_define_tag(GameDebugLabel)

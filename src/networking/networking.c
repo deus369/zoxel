@@ -46,7 +46,7 @@ void initialize_networking() {
 }
 
 zox_begin_module(Networking)
-    add_to_arguments(process_arguments_networking);
+    add_hook_terminal_command(process_arguments_networking);
     zox_define_tag(Packet)
     zox_define_tag(NetRoom)
     zox_define_tag(NetPlayer)

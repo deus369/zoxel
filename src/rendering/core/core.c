@@ -43,15 +43,15 @@ void process_arguments_rendering(ecs_world_t *world, char* args[], int count) {
 
 void initialize_rendering_core(ecs_world_t *world) {
     initialize_render_loop();
-    initialize_shader_loading();
+    initialize_hook_load_shader();
     initialize_gpu_systems();
-    add_to_arguments(process_arguments_rendering);
+    add_hook_terminal_command(process_arguments_rendering);
 }
 
 void dispose_rendering_core(ecs_world_t *world, void *ctx) {
     dispose_render_loop();
-    dispose_shader_loading();
     dispose_gpu_systems();
+    dispose_hook_load_shader();
 }
 
 zox_begin_module(RenderingCore)

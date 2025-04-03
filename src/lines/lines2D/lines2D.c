@@ -29,7 +29,7 @@ void spawn_prefabs_lines2D(ecs_world_t *world) {
 }
 
 zox_begin_module(Lines2D)
-    add_load_shader_function(&spawn_shaders_lines2D);
+    add_hook_load_shader(&spawn_shaders_lines2D);
     zox_define_tag(Line2D)
     zox_define_tag(ElementLine2D)
     zox_define_component(LineData2D)

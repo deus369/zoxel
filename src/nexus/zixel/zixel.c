@@ -24,6 +24,7 @@ byte boot_zixel(ecs_world_t *world) {
     spawn_weather(world);
     // if (!headless) spawn_music(world, prefab_music);
     spawn_players_cameras_canvases(world, game);
+    spawn_players_start_ui(world);
     // spawn_character2D(world, prefab_character2D, float2_zero);
     return EXIT_SUCCESS;
 }

@@ -19,7 +19,7 @@ zox_memory_component(BoneLinks, ecs_entity_t)
 #include "util/test.c"
 
 zox_begin_module(Bones)
-    add_load_shader_function(&spawn_shaders_bones);
+    add_hook_load_shader(&spawn_shaders_bones);
     zox_define_tag(Bone)
     zox_define_tag(Skeleton)
     zox_define_tag(SkeletonRenderer)

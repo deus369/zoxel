@@ -32,20 +32,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
     return canvas;
 }
 
-void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const char *game_name, ecs_entity_t canvas) {
-    const float2 main_menu_anchor = float2_half;
-    const int2 main_menu_position = int2_zero;
-    zoxel_main_menu = spawn_main_menu(world, player, canvas, game_name, main_menu_position, main_menu_anchor);
-    #ifdef zoxel_debug_fps
-    fps_display = spawn_fps_display(world, canvas);
-    #endif
-    #ifdef zoxel_debug_quads
-    quads_label = spawn_quad_count_label(world, canvas);
-    #endif
-    // disable until line2Ds reposition/scale based on canvas
-    spawn_canvas_edge_lines(world, canvas, 4, color_black);
-}
-
 #endif
 
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
@@ -66,7 +52,6 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
         const ecs_entity_t camera = spawn_player_camera(world, player, i, camera_position, camera_rotation, viewport_position, viewport_size, screen_to_canvas);
         const ecs_entity_t ui_camera = ui_cameras[i];
         const ecs_entity_t canvas = spawn_default_ui(world, ui_camera, viewport_size, screen_to_canvas);
-        zox_spawn_main_menu(world, player, game_name, canvas);
         zox_canvases[i] = canvas;
         zox_set(player, CanvasLink, { canvas })
         zox_set(canvas, PlayerLink, { player })
@@ -90,4 +75,21 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
         #endif
     }
     #endif
+}
+
+void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const char *game_name, ecs_entity_t canvas) {
+    const float2 main_menu_anchor = float2_half;
+    const int2 main_menu_position = int2_zero;
+    // zoxel_main_menu = spawn_main_menu(world, player, canvas, game_name, main_menu_position, main_menu_anchor);
+    spawn_main_start(world, prefab_menu_start, player, canvas, game_name, main_menu_position, main_menu_anchor);
+    // disable until line2Ds reposition/scale based on canvas
+    spawn_canvas_edge_lines(world, canvas, 4, color_black);
+}
+
+void spawn_players_start_ui(ecs_world_t *world) {
+    for (int i = 0; i < players_playing; i++) {
+        const ecs_entity_t player = zox_players[i];
+        const ecs_entity_t canvas = zox_canvases[i];
+        zox_spawn_main_menu(world, player, game_name, canvas);
+    }
 }

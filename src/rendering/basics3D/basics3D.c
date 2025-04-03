@@ -23,7 +23,7 @@ zox_begin_module(RenderingBasics3D)
     zox_define_component(MaterialVoxInstance)
     zox_define_component(MaterialBasic3D)
     define_systems_basics3D(world);
-    add_load_shader_function(&spawn_shaders_basics3D);
+    add_hook_load_shader(&spawn_shaders_basics3D);
 zox_end_module(RenderingBasics3D)
 
 #endif

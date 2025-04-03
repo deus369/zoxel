@@ -37,7 +37,7 @@ void initialize_voxes(ecs_world_t *world) {
 }
 
 zox_begin_module(Voxes)
-    add_to_arguments(process_arguments_voxes);
+    add_hook_terminal_command(process_arguments_voxes);
     zox_module_dispose(dispose_voxes)
     zox_define_tag(Vox)
     zox_define_tag(BlendVox)

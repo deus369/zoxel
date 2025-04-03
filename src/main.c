@@ -17,7 +17,7 @@ int run_main(int argc, char* argv[]) {
     zox_import_module(Zox)
     zox_import_module(ZoxGame)
     initialize_ecs_settings(world);
-    process_arguments(world, argv, argc);
+    run_hook_terminal_command(world, argv, argc);
     if (boot_event(world) == EXIT_SUCCESS) {
         engine_loop();
     } else {

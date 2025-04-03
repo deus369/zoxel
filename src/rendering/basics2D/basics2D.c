@@ -32,7 +32,7 @@ void spawn_shaders_basics2D(ecs_world_t *world) {
 }
 
 zox_begin_module(RenderingBasics2D)
-    add_load_shader_function(&spawn_shaders_basics2D);
+    add_hook_load_shader(&spawn_shaders_basics2D);
     zox_define_component(MaterialTextured2D)
     zox_define_component(MaterialAttributesRenderTexture)
     zox_render3D_system(RenderMaterial2DSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)

@@ -17,7 +17,7 @@ void spawn_shaders_weather(ecs_world_t *world) {
 }
 
 zox_begin_module(Weathers)
-    add_load_shader_function(&spawn_shaders_weather);
+    add_hook_load_shader(&spawn_shaders_weather);
     zox_define_tag(Weather)
     zox_define_tag(Skybox)
     if (!headless) {

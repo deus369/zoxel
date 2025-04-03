@@ -41,7 +41,7 @@ void test_spawn_chunk_terrain(ecs_world_t *world, int32_t keycode) {
 }
 
 zox_begin_module(Terrain)
-    add_to_arguments(process_arguments_terrain);
+    add_hook_terminal_command(process_arguments_terrain);
     zox_define_tag(FlatTerrain)
     zox_define_tag(FlatlandChunk)
     zox_define_tag(TerrainWorld)
@@ -50,7 +50,7 @@ zox_begin_module(Terrain)
     zox_define_component_entity(TerrainLink)
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);
-    add_functions_key_down(test_spawn_chunk_terrain);
+    add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)
 
 #endif

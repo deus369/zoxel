@@ -20,7 +20,7 @@ void update_statistics_particles3D() {
 }
 
 zox_begin_module(Particles3D)
-    add_load_shader_function(&spawn_shaders_particles3D);
+    add_hook_load_shader(&spawn_shaders_particles3D);
     zox_define_tag(Particle3D)
     zox_define_tag(Particle3DEmitter)
     zox_system_1(Particle3DEmitSystem, zox_pip_mainthread, [in] Position3D, [in] ParticleEmitRate, [in] Bounds3D, [in] Color, [none] Particle3DEmitter)

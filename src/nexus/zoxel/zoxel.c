@@ -39,6 +39,7 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #endif
 #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
+    spawn_players_start_ui(world);
 #endif
     intialize_game_store();
     test_steam_cloud();

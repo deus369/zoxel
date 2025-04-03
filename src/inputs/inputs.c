@@ -19,12 +19,12 @@
 #include "systems/systems.c"
 
 void module_dispose_inputs(ecs_world_t *world, void *ctx) {
-    dispose_functions_key_down();
+    dispose_hook_key_down();
 }
 
 zox_begin_module(Inputs)
     zox_module_dispose(module_dispose_inputs)
-    initialize_functions_key_down();
+    initialize_hook_key_down();
     define_components_inputs(world);
     define_systems_input(world);
     spawn_prefabs_inputs(world);

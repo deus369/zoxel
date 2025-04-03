@@ -36,7 +36,7 @@ void spawn_prefabs_lines3D(ecs_world_t *world) {
 }
 
 zox_begin_module(Lines3D)
-    add_load_shader_function(&spawn_shaders_lines3D);
+    add_hook_load_shader(&spawn_shaders_lines3D);
     zox_define_tag(Line3D)
     zox_define_tag(CubeLines)
     zox_define_component(DebugCubeLines)

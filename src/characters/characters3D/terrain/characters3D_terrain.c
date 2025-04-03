@@ -47,7 +47,7 @@ zox_begin_module(Characters3DTerrain)
     zox_system_1(Characters3DSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [in] ChunkOctree, [in] ChunkPosition, [in] RenderDistance, [in] RenderDisabled, [out] EntityLinks, [none] terrain.TerrainChunk)
     spawn_prefabs_characters3D_terrain(world);
     // test function for npc spawning
-    add_functions_key_down(test_spawn_character_npc);
+    add_hook_key_down(test_spawn_character_npc);
 zox_end_module(Characters3DTerrain)
 
 #endif

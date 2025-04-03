@@ -1,4 +1,21 @@
-zox_event_type(funfun, void, ecs_world_t*)
+zox_define_hook(load_shader, (ecs_world_t* world), (world))
+
+void load_shaders(ecs_world_t *world) {
+    if (!rendering_initialized) {
+        zox_log(" ! rendering is not initialized.\n")
+        exit(1);
+        return;
+    }
+    run_hook_load_shader(world);
+}
+
+byte get_new_shader_source_index() {
+    shaders_count++;
+    return shaders_count - 1;
+}
+
+
+/*zox_event_type(funfun, void, ecs_world_t*)
 zoxel_dynamic_array(funfun)
 funfun_array_d* load_shader_functions;
 
@@ -10,7 +27,7 @@ void dispose_shader_loading() {
     dispose_funfun_array_d(load_shader_functions);
 }
 
-void add_load_shader_function(void (*event)(ecs_world_t *)) { // } void (*)(ecs_world_t *) event) { // funfun event) {
+void add_hook_load_shader(void (*event)(ecs_world_t *)) { // } void (*)(ecs_world_t *) event) { // funfun event) {
     funfun fun_event = (funfun) { event };
     if (!headless) add_to_funfun_array_d(load_shader_functions, fun_event);
 }
@@ -20,17 +37,7 @@ void run_load_shader_function(ecs_world_t *world, int i) {
 }
 
 void load_shaders(ecs_world_t *world) {
-    if (!rendering_initialized) {
-        zox_log(" ! rendering is not initialized.\n")
-        exit(1);
-        return;
-    }
     for (int i = 0; i < load_shader_functions->size; i++) {
         run_load_shader_function(world, i);
     }
-}
-
-byte get_new_shader_source_index() {
-    shaders_count++;
-    return shaders_count - 1;
-}
+}*/

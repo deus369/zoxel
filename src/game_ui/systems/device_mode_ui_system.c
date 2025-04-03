@@ -10,6 +10,7 @@ void DeviceModeUISystem(ecs_iter_t *it) {
         if (deviceModeDirty->value == 0) return;
         zox_field_i(DeviceMode, deviceModes, deviceMode)
         if (deviceModeDirty->value == deviceMode->value) return;
+        zox_field_e()
         zox_field_i(GameLink, gameLinks, gameLink)
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value; // zox_get_value(e, CanvasLink)
@@ -28,7 +29,6 @@ void DeviceModeUISystem(ecs_iter_t *it) {
             zox_field_e()
             raycaster_select_first_button(world, e, canvas);
         } else if (deviceModeDirty->value == zox_device_mode_keyboardmouse) {
-            zox_field_e()
             raycaster_select_element(world, e, 0);
             SDL_ShowCursor(SDL_DISABLE);
         } else if (deviceModeDirty->value == zox_device_mode_touchscreen) {
@@ -36,5 +36,6 @@ void DeviceModeUISystem(ecs_iter_t *it) {
         }
         // todo: this isnt being called, fix it!
         spawn_device_gizmo(world, canvas, deviceModeDirty->value);
+        menu_start_triggered(world, e, canvas);
     }
 } zox_declare_system(DeviceModeUISystem)

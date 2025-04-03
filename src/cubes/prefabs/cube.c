@@ -3,7 +3,7 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     zox_prefab_name("prefab_cube")
     add_transform3Ds(world, e, 1);
     add_transform_matrix(world, e);
-    zox_prefab_set(e, Brightness, { 1.4f })
+    zox_prefab_set(e, Brightness, { 0.6f })
     zox_prefab_set(e, MeshDirty, { mesh_state_trigger })
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, Scale1D, { 0.125f })
@@ -37,8 +37,8 @@ ecs_entity_t spawn_cube(ecs_world_t *world, const ecs_entity_t prefab, const flo
     }*/
 
     const GLuint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
-    const GLuint material = spawn_gpu_material(world, e, shader);
     zox_set(e, ShaderLink, { shader_basic3D })
+    spawn_gpu_material(world, e, shader);
     //const MaterialTextured3D attributes = create_MaterialTextured3D(material);
     //zox_set_data(e, MaterialTextured3D, attributes)
 
