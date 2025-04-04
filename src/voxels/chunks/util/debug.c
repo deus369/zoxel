@@ -8,3 +8,9 @@ void add_to_labels_voxel_links(ecs_world_t *world, const ecs_entity_t e, text_gr
         add_to_labels_textures(world, e2, labels, entities, tree_level);
     }
 }
+
+void key_down_toggle_debug_chunks(ecs_world_t *world, int32_t keycode) {
+    if (keycode == SDLK_c) {
+        is_render_chunk_edges = !is_render_chunk_edges;
+    }
+}

@@ -4,11 +4,7 @@
 // #define zox_log_boot_game
 
 byte boot_zoxel_game(ecs_world_t *world) {
-#ifndef zox_beta
-    game_name = "zoxel";
-#else
-    game_name = "zoxel_beta";
-#endif
+    game_name = "Zoxel";
     initialize_networking();
     if (!headless) {
         const ecs_entity_t window = spawn_main_window_opengl(world, default_window_position, default_window_size, fullscreen);

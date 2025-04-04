@@ -93,6 +93,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const float2 window_position = position2D->value;
         const int2 window_pixel_position_global = canvasPosition->value;
         const int2 old_window_size = pixelSize->value;
+        // const int window_width = get_max_width(header_label, scaled_header_font_size, header_margins, labels, elements_count, scaled_font_size, button_padding.x + list_margins.x);
         int2 new_window_size = { (font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2, old_window_size.y };
         if (is_scrollbar) new_window_size.x += scrollbar_width + scrollbar_margins * 2;
         if (new_window_size.x != old_window_size.x) {

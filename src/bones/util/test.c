@@ -2,12 +2,9 @@
 
 void make_test_skeleton(ecs_world_t *world, const ecs_entity_t e) {
     const float3 test_spawn_bone_position = (float3) { 0, 0.18f, -0.03f };
-    const float3 test_bone_position = (float3) { 0, 0.58f, -0.03f };
-
+    const float3 test_bone_position = (float3) { 0, 0.28f, -0.03f };
     Children *children = &((Children) { 0, NULL });
     BoneLinks *boneLinks = &((BoneLinks) { 0, NULL });
-    // zox_get_muter(e, Children, children)
-    // zox_get_muter(e, BoneLinks, boneLinks)
 
     zox_add_tag(e, Skeleton)
     zox_add_tag(e, SkeletonRenderer)

@@ -17,9 +17,9 @@ int2 get_sdl_screen_size() {
 
 int2 get_screen_size() {
     #ifdef zoxel_on_web
-    return get_webasm_screen_size();
+        return get_webasm_screen_size();
     #else
-    return get_sdl_screen_size();
+        return get_sdl_screen_size();
     #endif
 }
 

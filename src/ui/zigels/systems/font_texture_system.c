@@ -17,11 +17,17 @@ void FontTextureSystem(ecs_iter_t *it) {
     const byte is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        if (generateTexture->value != zox_generate_texture_generate) continue;
+        if (generateTexture->value != zox_generate_texture_generate) {
+            continue;
+        }
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
-        if (textureDirty->value != 0) continue;
+        if (textureDirty->value != 0) {
+            continue;
+        }
         zox_field_i(ZigelIndex, zigelIndexs, zigelIndex)
-        if (zigelIndex->value >= font_styles_length) continue;
+        if (zigelIndex->value >= font_styles_length) {
+            continue;
+        }
         zox_field_i(TextureSize, textureSizes, textureSize)
         zox_field_i(Color, colors, color_variable)
         zox_field_i(SecondaryColor, secondaryColors, secondaryColor)
@@ -29,16 +35,21 @@ void FontTextureSystem(ecs_iter_t *it) {
         zox_field_o(TextureData, textureDatas, textureData)
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
-        if (!font) { // spacece
-            const int length = textureSize->value.x * textureSize->value.y;
+        int length = textureSize->value.x * textureSize->value.y;
+        if (length <= 0 || fontThickness->value == 0 || !font) { // spacece
+            // const int length = textureSize->value.x * textureSize->value.y;
+            if (length <= 0) {
+                length = 1;
+            }
             resize_memory_component(TextureData, textureData, color, length)
-            for (int j = 0; j < length; j++) textureData->value[j] = air_color;
+            for (int j = 0; j < length; j++) {
+                textureData->value[j] = air_color;
+            }
             // generateTexture->value = 0;
             textureDirty->value = 1;
             continue;
         }
-        const FontData *fontData = zox_get(font, FontData)
-        const int length = textureSize->value.x * textureSize->value.y;
+        zox_geter(font, FontData, fontData)
         resize_memory_component(TextureData, textureData, color, length)
         generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value);
         generateTexture->value = 0;

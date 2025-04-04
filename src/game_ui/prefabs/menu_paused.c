@@ -1,3 +1,5 @@
+const char *menu_paused_header_label = "Paused";
+
 ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
     zox_prefab_child(prefab_ui_list)
     zox_prefab_name("prefab_menu_paused")
@@ -6,7 +8,8 @@ ecs_entity_t spawn_prefab_pause_ui(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const int2 position, const float2 anchor, const byte layer) {
-    const byte font_size = 26; // 22
+    const byte header_font_size = 80;
+    const byte font_size = 42;
     const byte is_close_button = 0;
 #ifdef zox_disable_save_games
     const int labels_count = 2;
@@ -17,7 +20,7 @@ ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, co
     const text_group labels[] = { { "return" }, { "save" }, { "leave" } };
     const ClickEvent events[] = { { &button_event_return_to_game }, { &button_event_save_game }, { &button_event_end_game } };
 #endif
-    const ecs_entity_t e = spawn_ui_list(world, prefab_menu_paused, canvas, "paused", labels_count, labels_count, labels, events, position, anchor, is_close_button, font_size, layer, 0, player);
+    const ecs_entity_t e = spawn_ui_list(world, prefab_menu_paused, canvas, menu_paused_header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, header_font_size, font_size, layer, 0, player);
     zox_name("menu_paused")
     return e;
 }

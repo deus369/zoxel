@@ -31,3 +31,4 @@ const uint safety_checks_raycasting = 512;
 const float terrain_ray_length = 8;
 const float raycast_thickness = 10;
 const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
+byte is_render_chunk_edges = 0;

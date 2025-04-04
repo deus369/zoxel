@@ -33,7 +33,9 @@ int initialize_sdl_video(ecs_world_t *world) {
     // zox_log(" > screen dimensions init to [%ix%i]\n", screen_dimensions.x, screen_dimensions.y)
     print_sdl();
 #ifdef zox_include_vulkan
-    if (!load_vulkan_library()) return EXIT_FAILURE;
+    if (!load_vulkan_library()) {
+        return EXIT_FAILURE;
+    }
 //#else
 //    is_using_vulkan = 0;
 #endif

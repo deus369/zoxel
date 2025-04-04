@@ -3,7 +3,9 @@ extern ecs_entity_t spawn_menu_options(ecs_world_t *world, const ecs_entity_t pl
 void button_event_menu_options(ecs_world_t *world, const ClickEventData *event) {
     const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)
-    if (!menu) return;
+    if (!menu) {
+        return;
+    }
     zox_delete(menu)
     spawn_menu_options(world, event->clicker, canvas, int2_zero, float2_half);
 }

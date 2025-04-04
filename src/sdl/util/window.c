@@ -20,9 +20,12 @@ int get_sdl_window_header_size(SDL_Window* window) {
 }
 
 SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size) {
+    SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     #ifdef zoxel_on_android
         flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
+    #else
+        flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP; // | SDL_WINDOW_BORDERLESS;
     #endif
     SDL_Window *window = SDL_CreateWindow(game_name, position.x, position.y, size.x, size.y, flags);
     if (window == NULL) {
@@ -46,8 +49,6 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size)
     }*/
     return window;
 }
-
-
 
 SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size) {
     int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;

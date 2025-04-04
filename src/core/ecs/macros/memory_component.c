@@ -2,16 +2,25 @@ int total_memorys_allocated = 0;
 
 // assumes non zero
 #define initialize_memory_component(name, component, type, new_length) {\
-    int memory_length = new_length * sizeof(type);\
-    type *new_memory = malloc(memory_length);\
-    if (!new_memory) {\
-        zox_log(" ! failed (init) allocating memory in clone_" #name "\n")\
-        component->length = 0;\
+    const int memory_length = new_length * sizeof(type);\
+    if (memory_length > 0) {\
+        type *new_memory = malloc(memory_length);\
+        if (!new_memory) {\
+            zox_log(" ! failed (init) allocating memory in clone_" #name " [%i]\n", memory_length)\
+            component->value = NULL;\
+            component->length = 0;\
+        } else {\
+            component->value = new_memory;\
+            component->length = new_length;\
+            total_memorys_allocated++;\
+            name##_memorys_allocated++;\
+        }\
     } else {\
-        component->value = new_memory;\
-        component->length = new_length;\
-        total_memorys_allocated++;\
-        name##_memorys_allocated++;\
+        if (memory_length < 0) {\
+            zox_log(" ! cannot allocate memory in clone_" #name " [%i]\n", memory_length)\
+        }\
+        component->value = NULL;\
+        component->length = 0;\
     }\
 }
 

@@ -1,6 +1,4 @@
 // show lines on quads along chunk edge
-byte is_render_chunk_edges = 0;
-
 extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
 
 // todo: traverse chunk ChunkOctree

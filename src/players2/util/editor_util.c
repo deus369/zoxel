@@ -1,28 +1,4 @@
-byte debug_colliders = 0;
 byte debug_block_vox_bounds = 0;
-
-void toggle_debug_character_bounds(ecs_world_t *world) {
-    if (!zox_valid(local_terrain)) return;
-    debug_colliders = !debug_colliders;
-    if (debug_colliders) add_physics_debug(world, prefab_character3D);
-    else remove_physics_debug(world, prefab_character3D);
-    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
-    for (int i = 0; i < chunkLinks->value->size; i++) {
-        int3_hashmap_pair* pair = chunkLinks->value->data[i];
-        uint checks = 0;
-        while (pair != NULL && checks < max_safety_checks_hashmap) {
-            ecs_entity_t chunk = pair->value;
-            const EntityLinks *entityLinks = zox_get(chunk, EntityLinks)
-            for (int j = 0; j < entityLinks->length; j++) {
-                ecs_entity_t e2 = entityLinks->value[j];
-                if (debug_colliders) add_physics_debug(world, e2);
-                else remove_physics_debug(world, e2);
-            }
-            pair = pair->next;
-            checks++;
-        }
-    }
-}
 
 void toggle_debug_bounds_delve(ecs_world_t *world, const ChunkOctree *chunk, const byte max_depth, byte depth) {
     if (!chunk->nodes) return;
