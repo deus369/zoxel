@@ -31,11 +31,11 @@ void zox_set_entity_name(ecs_world_t *world, const ecs_entity_t e, const char* n
 }
 
 void zox_debug_spawn(ecs_world_t *world, const ecs_entity_t e, const char* name, const char* entity_type) {
-#ifdef zox_set_entity_names
-    zox_set_entity_name(world, e, name);
-#endif
 #ifdef zox_debug_spawning
     zox_log(" + spawned %s [%s] [%lu] [%s]\n", entity_type, name, e, zox_get_name(e))
+#endif
+#ifdef zox_set_entity_names
+    zox_set_entity_name(world, e, name);
 #endif
 }
 

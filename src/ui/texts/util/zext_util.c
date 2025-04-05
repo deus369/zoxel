@@ -3,8 +3,12 @@
 void set_zox_name(ZoxName *zoxName, const char* text) {
     // int text_length = strlen(text);
     const int text_length = text != NULL ? strlen(text) : 0;
-    if (zoxName->length != text_length) resize_memory_component(ZoxName, zoxName, byte, text_length)
-    for (int i = 0; i < text_length; i++) zoxName->value[i] = convert_ascii(text[i]);
+    if (zoxName->length != text_length) {
+        resize_memory_component(ZoxName, zoxName, byte, text_length)
+    }
+    for (int i = 0; i < text_length; i++) {
+        zoxName->value[i] = convert_ascii(text[i]);
+    }
 }
 
 char* get_zext_text(const TextData *textData) {

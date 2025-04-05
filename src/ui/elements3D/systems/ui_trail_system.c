@@ -28,10 +28,9 @@ void UITrailSystem(ecs_iter_t *it) {
             const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) {
                 const ecs_entity_t child = children->value[j];
-                const LocalPosition3D *child_local_position3D = zox_get(child, LocalPosition3D)
-                Position3D *child_position3D = zox_get_mut(child, Position3D)
+                zox_geter(child, LocalPosition3D, child_local_position3D)
+                zox_get_muter(child, Position3D, child_position3D)
                 set_position_from_parents(world, e, &child_position3D->value, child_local_position3D->value);
-                zox_modified(child, Position3D)
             }
         }
 #ifdef zox_debug_ui_trails

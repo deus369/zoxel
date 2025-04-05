@@ -26,17 +26,32 @@ ecs_entity_t spawn_ttf_as_font_style(ecs_world_t *world, const ecs_entity_t pref
     zox_add_tag(e, TTFFontStyle)
     zox_get_muter(e, Children, children)
     resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
-    for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
+    for (int i = 0; i < font_styles_length; i++) {
+        children->value[i] = 0;
+    }
     for (int i = 0; i < face->num_glyphs; i++) {
-        if (i >= font_styles_length) continue;
-        if (!(i >= 33 && i <= 126)) continue; // only some characters can work
-        int j = convert_ascii(i);
-        if (j == 55) continue; // space spawns above
+        if (i >= font_styles_length) {
+            continue;
+        }
+        if (!(i >= 33 && i <= 126)) {
+            continue; // only some characters can work
+        }
+        byte zigel_index = convert_ascii(i);
+        if (zigel_index == 55) {
+            continue; // space spawns above
+        }
         const char charcode = (char) i;
-        children->value[j] = spawn_font_ttf(world, prefab_font, face, face_bounds, charcode);
+        children->value[zigel_index] = spawn_font_ttf(world, prefab_font, face, face_bounds, charcode);
+        if (zigel_index == 77) {
+            zox_log("+ spawned !\n")
+        }
     }
     // todo: remove this eventually and justt  use a default font index for unknown font entities
-    for (int i = 0; i < font_styles_length; i++) if (!children->value[i] && i != 55) children->value[i] = spawn_font(world, prefab_font, font_question_mark, font_question_mark_length);
+    for (int i = 0; i < font_styles_length; i++) {
+        if (!children->value[i] && i != 55) {
+            children->value[i] = spawn_font(world, prefab_font, font_question_mark, font_question_mark_length);
+        }
+    }
     return e;
 }
 
@@ -56,9 +71,11 @@ ecs_entity_t spawn_ttf_path_as_font_style(ecs_world_t *world, const ecs_entity_t
 }
 
 ecs_entity_t spawn_ttf_from_file(ecs_world_t *world, const ecs_entity_t prefab, const FT_Library *library, const char *load_path) {
-    char* load_directory = concat_file_path(resources_path, directory_fonts);
+    // resources_path
+    char* load_directory = concat_file_path(raw_path, directory_fonts);
     char* load_directory_slash = concat_file_path(load_directory, character_slash);
     char* font_ttf = concat_file_path(load_directory_slash, load_path);
+    zox_log("> loading [%s]\n", font_ttf)
     const ecs_entity_t e = spawn_ttf_path_as_font_style(world, prefab, library, font_ttf);
     free(font_ttf);
     free(load_directory);
@@ -72,6 +89,7 @@ byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
         fprintf(stderr, " ! error: failure in initialize_ttf\n");
         return 0;
     }
+    zox_log("+ loading [%s] from resources\n", default_font_ttf)
     zox_font_style_monocraft = spawn_ttf_from_file(world, prefab, &library, default_font_ttf);
     FT_Done_FreeType(library);
     return 1;
@@ -80,6 +98,7 @@ byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
 #else
 
 byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_log("! freetype is disabled\n")
     return 0;
 }
 

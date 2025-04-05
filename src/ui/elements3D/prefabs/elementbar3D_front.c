@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_elementbar3D_front(ecs_world_t *world, const ecs_entit
     zox_prefab_set(e, Color, { front_bar_color })
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
+    // prefab_set_mesh3D_vertices(world, e, square_vertices, 4, mesh_scale);
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_front_mesh_scale);
     return e;
 }
@@ -16,6 +17,7 @@ ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t pre
     zox_set(e, ParentLink, { parent })
     zox_set(e, LocalPosition3D, { offset })
     zox_set(e, RenderDisabled, { render_disabled })
+    zox_set(e, RenderDisabled, { 1 })
     return e;
 }
 

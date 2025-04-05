@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_cube")
+    // zox_prefab_name("prefab_cube")
     add_transform3Ds(world, e, 1);
     add_transform_matrix(world, e);
     zox_prefab_set(e, Brightness, { 0.6f })

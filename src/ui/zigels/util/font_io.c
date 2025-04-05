@@ -1,6 +1,5 @@
 // save font style
 #define directory_fonts "fonts"
-// #define zox_log_font_io
 
 // todo: save properly
 byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_directory, char *filename) {
@@ -10,15 +9,15 @@ byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_d
     }
     char* directory = concat_file_path(resources_directory, directory_fonts);
     char* directory2 = concat_file_path(directory, character_slash);
-    free(directory);
     char* path = concat_file_path(directory2, filename);
-    free(directory2);
 #ifdef zox_log_font_io
     zox_log(" + saving font style entity [%s]\n", zox_get_name(e))
     zox_log("   - to zox file [%s]\n", filename)
     zox_log("   - directory [%s]\n", directory)
     zox_log("   - full path [%s]\n", path)
 #endif
+    free(directory);
+    free(directory2);
     FILE *file = fopen(path, "wb");
     if (file == NULL) {
         zox_log(" > error saving [%s]\n", path)
@@ -30,7 +29,7 @@ byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_d
     // get binary for each font and added with seperation?
     zox_geter(e, Children, children)
     if (children == NULL) {
-        zox_log(" ! error saving entity [%lu] invalid children [%s]\n", e, path)
+        zox_log("! error saving entity [%lu] invalid children [%s]\n", e, path)
         free(path);
         return 0;
     }
@@ -132,9 +131,12 @@ void load_styles(ecs_world_t *world) {
     const byte loaded_ttf = initialize_ttf(world, prefab_font_style); // load in monocraft
     if (loaded_ttf) {
         // save for now, testing
-        // save_font_style(world, zox_font_style_monocraft, "/home/deus/zoxel/resources/", "monocraft.zox");
-        // testing
-        // zox_font_style_monocraft = load_font_style(world, "monocraft.zox");
+#if defined(zox_lib_ttf) && defined(convert_fonts)
+        zox_log("+ Converting Font:\n")
+        // "/home/deus/project/zoxel/resources/"
+        save_font_style(world, zox_font_style_monocraft, resources_path, "new_font.zox");
+#endif
+    } else {
+        zox_font_style_monocraft = load_font_style(world, "monocraft.zox");
     }
-    zox_font_style_monocraft = load_font_style(world, "monocraft.zox");
 }

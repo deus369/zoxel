@@ -17,6 +17,7 @@
 #define get_asset_path(folder_path, filename) concat_file_path(resources_path, folder_path character_slash filename);
 const char *data_path = NULL;
 char *resources_path = NULL;
+char *raw_path = NULL;
 
 #include "_includes.c"
 #include "data/file_list.c"

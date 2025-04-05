@@ -36,6 +36,10 @@ void prefab_set_mesh3D_vertices(ecs_world_t *world, const ecs_entity_t e, const 
         return;
     }*/
     // zox_get_muter(e, MeshVertices, meshVertices)
+    zox_geter(e, MeshVertices, oldVertices)
+    if (oldVertices->value) {
+        free(oldVertices->value);
+    }
     MeshVertices *meshVertices = &((MeshVertices) { 0, NULL });
     resize_memory_component(MeshVertices, meshVertices, float3, length)
     for (int i = 0; i < length; i++) {

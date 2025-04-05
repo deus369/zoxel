@@ -87,12 +87,30 @@ char* initialize_base_path() {
     return base_path;
 }
 
+char* get_terminal_path_with_raw() {
+    char* cwd = getcwd(NULL, 0);  // malloc'd by glibc
+    if (!cwd) return NULL;
+    const char* suffix = "/raw/";
+    size_t cwd_len = strlen(cwd);
+    size_t suffix_len = strlen(suffix);
+    char* result = malloc(cwd_len + suffix_len + 1);
+    if (!result) {
+        free(cwd);
+        return NULL;
+    }
+    strcpy(result, cwd);
+    strcat(result, suffix);
+    free(cwd);
+    return result;
+}
+
 // sets base_path, data_path
 byte initialize_pathing() {
     #ifdef zox_disable_io
         zox_log(" ! io is disabled\n")
         return EXIT_SUCCESS;
     #endif
+    raw_path = get_terminal_path_with_raw();
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
         zox_log("! failed to get base_path\n")

@@ -65,13 +65,6 @@ char convert_to_ascii(byte input) {
     zoxel_convert_to_ascii(',', 57)
     zoxel_convert_to_ascii('/', 58)
     zoxel_convert_to_ascii('\\', 59)
-    zoxel_convert_to_ascii('_', 70)
-    zoxel_convert_to_ascii('[', 71)
-    zoxel_convert_to_ascii(']', 72)
-    zoxel_convert_to_ascii('-', 73)
-    zoxel_convert_to_ascii('+', 74)
-    zoxel_convert_to_ascii('=', 75)
-    zoxel_convert_to_ascii('%', 76)
     // numbers
     zoxel_convert_to_ascii('0', 60)
     zoxel_convert_to_ascii('1', 61)
@@ -83,12 +76,23 @@ char convert_to_ascii(byte input) {
     zoxel_convert_to_ascii('7', 67)
     zoxel_convert_to_ascii('8', 68)
     zoxel_convert_to_ascii('9', 69)
+    // more special
+    zoxel_convert_to_ascii('_', 70)
+    zoxel_convert_to_ascii('[', 71)
+    zoxel_convert_to_ascii(']', 72)
+    zoxel_convert_to_ascii('-', 73)
+    zoxel_convert_to_ascii('+', 74)
+    zoxel_convert_to_ascii('=', 75)
+    zoxel_convert_to_ascii('%', 76)
+    zoxel_convert_to_ascii('!', 77)
     return ' ';
 }
 
 char* convert_to_ascii_text(byte *input, int length) {
     char *output = malloc(sizeof(char) * length);
-    for (int i = 0; i < length; i++) output[i] = convert_to_ascii(input[i]);
+    for (int i = 0; i < length; i++) {
+        output[i] = convert_to_ascii(input[i]);
+    }
     return output;
 }
 

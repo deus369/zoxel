@@ -10,7 +10,9 @@ void add_ui_components(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) return;
+    if (headless) {
+        return;
+    }
     add_gpu_mesh(world, e);
     add_gpu_texture(world, e);
     add_gpu_uvs(world, e);

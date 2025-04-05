@@ -26,7 +26,9 @@ void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_ent
     // todo: make this generic for when component is set, event
     // this isn't systematic enough for children linking!
     Children *children = zox_get_mut(parent, Children)
-    if (add_to_Children(children, child)) zox_modified(parent, Children)
+    if (add_to_Children(children, child)) {
+        zox_modified(parent, Children)
+    }
 }
 
 void zox_debug_children(ecs_world_t *world, const ecs_entity_t parent) {

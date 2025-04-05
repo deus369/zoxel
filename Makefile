@@ -2,6 +2,9 @@
 # ===== zox ===== #
 # ==== ===== ==== #
 
+# todo: make converter - make convert command, make convert-font
+# uses freetype library to convert fonts - libfreetype6-dev
+is_convert_fonts := false
 # todo: for linux, a full build - which doesn't rely on system sdl
 	# for regular package, just use system sdl2s
 # requires: [git] [make] && make prepare
@@ -30,6 +33,9 @@ patient_cmd = echo " > please be patient :), lord deus [>,<]/)"
 finish_cmd = echo " > we are done :), lord deus -[>,O]-"
 make_libs = -Llib -Iinclude -Wl,-rpath='lib' # default paths
 make_libs += -lm -lpthread -lflecs # default libraries
+ifeq ($(is_convert_fonts), true)
+   make_libs += -lfreetype -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2  -Dzox_lib_ttf -Dconvert_fonts
+endif
 ifdef game
     make_libs +=-Dzox_game=$(game)
 else
@@ -55,7 +61,7 @@ ifeq ($(use_lib_vulkan), true)
     make_libs += -lvulkan -Dzox_include_vulkan # vulkan on linux
 endif
 ifeq ($(use_lib_ttf), true)
-   make_libs += -lfreetype -Dzox_lib_ttf -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2
+   make_libs += -lfreetype -Ibuild/freetype/freetype-2.13.2/include -I/usr/include/freetype2  -Dzox_lib_ttf
 endif
 ifeq ($(use_lib_amd), true)
    make_libs +=  -lrocm_smi64 -Dzox_lib_amd

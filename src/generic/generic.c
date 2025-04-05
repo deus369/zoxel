@@ -30,12 +30,7 @@ zox_component_byte(EntityDirty)
 zox_component_entity(EntityTarget)
 zox_component_entity(ComponentTarget)
 #include "macros/names.c"
-#include "util/generic_util.c"
-#include "util/convert_ascii.c"
-#include "util/convert_to_ascii.c"
-#include "util/name_util.c"
-#include "util/name_generation.c"
-#include "util/delay_util.c"
+#include "util/util.c"
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"
