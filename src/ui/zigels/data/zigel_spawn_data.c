@@ -1,7 +1,7 @@
 // used for spawning zigels
 typedef struct {
     byte zigel_index; // zox character code
-    int data_index;   // a link to ZextData index
+    int data_index;   // a link to TextData index
     color fill_color; // fill
     color outline_color;
 } SpawnZigelData;

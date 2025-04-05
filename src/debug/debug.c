@@ -11,7 +11,7 @@ void dispose_debug(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Debug)
-zox_system(GameDebugLabelSystem, EcsOnStore, [out] ZextDirty, [out] ZextData, [none] game.u.i.GameDebugLabel)
+zox_system(GameDebugLabelSystem, EcsOnStore, [out] ZextDirty, [out] TextData, [none] game.u.i.GameDebugLabel)
 initialize_amd();
 zox_module_dispose(dispose_debug)
 zox_end_module(Debug)

@@ -1,10 +1,10 @@
-// this needs zextData with Mesh in one entity
+// this needs textData with Mesh in one entity
 void ZextBackgroundSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(ZextDirty, zextDirtys, 2)
-    zox_field_in(ZextData, zextDatas, 3)
-    zox_field_in(ZextSize, zextSizes, 4)
-    zox_field_in(ZextPadding, zextPaddings, 5)
+    zox_field_in(TextData, textDatas, 3)
+    zox_field_in(TextSize, textSizes, 4)
+    zox_field_in(TextPadding, textPaddings, 5)
     zox_field_in(MeshAlignment, meshAlignments, 6)
     zox_field_in(CanvasLink, canvasLinks, 7)
     zox_field_out(PixelSize, pixelSizes, 8)
@@ -17,9 +17,9 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         if (zextDirty->value != zext_update_update) continue;
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         // if (generateTexture->value) return;
-        zox_field_i(ZextData, zextDatas, zextData)
-        zox_field_i(ZextSize, zextSizes, zextSize)
-        zox_field_i(ZextPadding, zextPaddings, zextPadding)
+        zox_field_i(TextData, textDatas, textData)
+        zox_field_i(TextSize, textSizes, textSize)
+        zox_field_i(TextPadding, textPaddings, textPadding)
         zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         zox_field_o(PixelSize, pixelSizes, pixelSize)
@@ -27,7 +27,7 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
         zox_field_o(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
-        const int2 size = calculate_zext_size(zextData->value, zextData->length, zextSize->value, zextPadding->value, default_line_padding);
+        const int2 size = calculate_zext_size(textData->value, textData->length, textSize->value, textPadding->value, default_line_padding);
         const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
         const float2 size2D = (float2) { size.x / canvasSizef.y, size.y / canvasSizef.y };
         pixelSize->value = size;

@@ -114,13 +114,13 @@ int2 calculate_zigel_position(const byte *data, const int length, const int data
         zigel_position.x += size.x / 2;
         zigel_position.y += size.y / 2;
     }
-    // zox_log(" i[%i] %c - xy [%ix%i] - zig pos %ix%i\n", data_index, convert_to_ascii(zextData->value[data_index]), x, y, zigel_position.x, zigel_position.y)
+    // zox_log(" i[%i] %c - xy [%ix%i] - zig pos %ix%i\n", data_index, convert_to_ascii(textData->value[data_index]), x, y, zigel_position.x, zigel_position.y)
     return zigel_position;
 }
 
 // For reusing a zigel, set all positions again to position entire text
-void set_zigel_position(ecs_world_t *world, const ZextData *zextData, const ecs_entity_t e, const int data_index, const int font_size, const byte text_alignment, const byte2 text_padding, float2 anchor, const byte zigels_count, const int2 parent_position, const int2 parent_size, const int2 canvas_size) {
-    const int2 pixel_position = calculate_zigel_position(zextData->value, zextData->length, data_index, font_size, text_alignment, text_padding, default_line_padding);
+void set_zigel_position(ecs_world_t *world, const TextData *textData, const ecs_entity_t e, const int data_index, const int font_size, const byte text_alignment, const byte2 text_padding, float2 anchor, const byte zigels_count, const int2 parent_position, const int2 parent_size, const int2 canvas_size) {
+    const int2 pixel_position = calculate_zigel_position(textData->value, textData->length, data_index, font_size, text_alignment, text_padding, default_line_padding);
     const int2 global_position = get_element_pixel_position_global(parent_position, parent_size, pixel_position, anchor);
     const float2 real_position = get_element_position(global_position, canvas_size);
     zox_set(e, CanvasPosition, { global_position })
@@ -129,8 +129,8 @@ void set_zigel_position(ecs_world_t *world, const ZextData *zextData, const ecs_
 }
 
 // spawns a text character in a place
-ecs_entity_t spawn_zext_zigel(ecs_world_t *world, const ZextData *zextData, SpawnZigel *data) {
-    data->element.position = calculate_zigel_position(zextData->value, zextData->length, data->zigel.data_index, data->element.size.x, data->zext.text_alignment, data->zext.text_padding, default_line_padding);
+ecs_entity_t spawn_zext_zigel(ecs_world_t *world, const TextData *textData, SpawnZigel *data) {
+    data->element.position = calculate_zigel_position(textData->value, textData->length, data->zigel.data_index, data->element.size.x, data->zext.text_alignment, data->zext.text_padding, default_line_padding);
     data->element.anchor = float2_half;
     return spawn_zigel(world, data);
 }

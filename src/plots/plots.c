@@ -23,7 +23,7 @@ zox_begin_module(Plots)
     zox_define_tag(PlotLabel)
     zox_define_memory_component(PlotDataDouble)
     zox_system(PlotLineSystem, EcsOnUpdate, [in] ParentLink, [in] ChildIndex, [out] LineLocalPosition2D, [none] PlotLine)
-    zox_system(PlotLabelSystem, EcsOnUpdate, [in] ParentLink, [out] ZextDirty, [out] ZextData, [none] PlotLabel)
+    zox_system(PlotLabelSystem, EcsOnUpdate, [in] ParentLink, [out] ZextDirty, [out] TextData, [none] PlotLabel)
     spawn_prefabs_plots(world);
 zox_end_module(Plots)
 

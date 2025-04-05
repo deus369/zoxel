@@ -25,7 +25,7 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size)
     #ifdef zoxel_on_android
         flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
     #else
-        flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP; // | SDL_WINDOW_BORDERLESS;
+        flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
     #endif
     SDL_Window *window = SDL_CreateWindow(game_name, position.x, position.y, size.x, size.y, flags);
     if (window == NULL) {

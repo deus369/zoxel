@@ -44,8 +44,8 @@ zox_begin_module(GameUI)
     zox_define_component_int(QuadsCount)
     zox_define_component_double(FPSDisplayTicker)
     zox_system_1(DeviceModeUISystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink, [in] CanvasLink) // note: must update before DeviceModeDirtySystem
-    zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] ZextData, [out] ZextDirty, [out] FPSDisplayTicker)
-    zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] ZextData)
+    zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] TextData, [out] ZextDirty, [out] FPSDisplayTicker)
+    zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] TextData)
     spawn_prefabs_game_ui(world);
 zox_end_module(GameUI)
 

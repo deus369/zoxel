@@ -8,11 +8,11 @@ typedef struct {
     byte2 padding;              // around zigels
     color font_fill_color;
     color font_outline_color;
-} SpawnZextData;
+} SpawnTextData;
 
 typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
     ElementSpawnData element;
-    SpawnZextData zext;
+    SpawnTextData zext;
 } SpawnZext;

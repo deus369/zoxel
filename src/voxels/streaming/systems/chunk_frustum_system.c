@@ -9,7 +9,7 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
     if (!node->nodes) return;
     if (depth == max_depth) {
         // get block_vox from nodes
-        const ecs_entity_t block_vox = ((VoxelEntityLink*) node->nodes)->value;
+        const ecs_entity_t block_vox = ((NodeEntityLink*) node->nodes)->value;
         if (zox_valid(block_vox)) {
             zox_set(block_vox, RenderDisabled, { state })
         }

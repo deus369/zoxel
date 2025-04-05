@@ -14,7 +14,7 @@ typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
     ElementSpawnData element;
-    SpawnZextData header_zext;
+    SpawnTextData header_zext;
     SpawnHeaderData header;
     SpawnButtonData close_button;
     IconFrameData icon_frame;

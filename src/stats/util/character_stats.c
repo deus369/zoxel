@@ -32,7 +32,32 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
 #ifndef zox_disable_statbars
     float ui_position = 0.43f;
     if (player) ui_position = 0.57f;
-    const ecs_entity_t statbar = spawn_elementbar3D(world, prefab_statbar3D, e, health / max_health, render_disabled, ui_position);
+    SpawnDataElementbar3D spawn_data = {
+        .canvas = {
+            .ui_holder = e,
+            .position_y = ui_position
+        },
+        .backbar = {
+            .prefab = prefab_statbar3D,
+            .render_disabled = render_disabled
+        },
+        .frontbar = {
+            .prefab = prefab_elementbar3D_front,
+            .render_disabled = render_disabled
+        },
+        .text = {
+            .prefab = prefab_text3D,
+            .render_disabled = render_disabled
+        },
+        .zigel = {
+            .prefab = prefab_zigel3D,
+            .render_disabled = render_disabled
+        },
+        .meta = {
+            .percentage = health / max_health
+        }
+    };
+    const ecs_entity_t statbar = spawn_elementbar3D(world, &spawn_data); /*prefab_statbar3D, prefab_elementbar3D_front, e, health / max_health, render_disabled, ui_position);*/
     zox_prefab_set(statbar, StatLink, { health_stat })
     ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
     // ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)

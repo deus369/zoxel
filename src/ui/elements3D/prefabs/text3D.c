@@ -1,8 +1,25 @@
-ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
-    zox_prefab()
-    zox_prefab_name("prefab_zext")
+typedef struct {
+    const char* text;
+    byte font_size;         // zigel_size
+    byte font_thickness;    // zigel_size
+    byte alignment;         // mesh_alignment
+    byte2 padding;          // around zigels
+    color font_fill_color;
+    color font_outline_color;
+} Text3DData;
+
+typedef struct {
+    // Canvas3DData canvas;
+    Element3DData text;
+    Element3DData zigel;
+    Text3DData meta;
+} SpawnDataText3D;
+
+ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
+    zox_prefab_name("prefab_text3D")
     zox_add_tag(e, Zext)
-    add_ui_plus_components_invisible(world, e);
+    // add_ui_plus_components_invisible(world, e);
     zox_prefab_set(e, TextSize, { 0 })
     zox_prefab_set(e, TextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
@@ -15,19 +32,19 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
-    const int2 element_canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
-    const float2 position2D = get_element_position(element_canvas_position, data->canvas.size);
-    zox_instance(data->element.prefab)
-    zox_name("zext")
-    zox_set(e, RenderDisabled, { data->element.render_disabled })
-    zox_set(e, TextSize, { data->zext.font_size })
-    zox_set(e, TextPadding, { data->zext.padding })
-    zox_set(e, MeshAlignment, { data->zext.alignment })
-    zox_set(e, FontFillColor, { data->zext.font_fill_color })
-    zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
-    zox_set(e, FontThickness, { data->zext.font_thickness })
-    Children *children = &((Children) { 0, NULL });
+ecs_entity_t spawn_text3D(ecs_world_t *world, const SpawnDataText3D *data) {
+    //const int2 element_canvas_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
+    //const float2 position2D = get_element_position(element_canvas_position, data->canvas.size);
+    zox_instance(data->text.prefab)
+    zox_name("text3D")
+    zox_set(e, RenderDisabled, { data->text.render_disabled })
+    zox_set(e, TextSize, { data->meta.font_size })
+    zox_set(e, TextPadding, { data->meta.padding })
+    zox_set(e, MeshAlignment, { data->meta.alignment })
+    zox_set(e, FontFillColor, { data->meta.font_fill_color })
+    zox_set(e, FontOutlineColor, { data->meta.font_outline_color })
+    zox_set(e, FontThickness, { data->meta.font_thickness })
+    /*Children *children = &((Children) { 0, NULL });
     TextData *textData = &((TextData) { 0, NULL });
     const int zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
     initialize_memory_component(TextData, textData, byte, zext_data_length)
@@ -68,6 +85,6 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     // this has to be done under as memory shifts a round with the points, when zox_set is called
     initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, pixel_size, pixel_size, data->element.anchor, data->element.layer, position2D, element_canvas_position);
     zox_set(e, TextData, { textData->length, textData->value })
-    zox_set(e, Children, { children->length, children->value })
+    zox_set(e, Children, { children->length, children->value })*/
     return e;
 }

@@ -61,9 +61,10 @@ zox_begin_module(Players2)
     zox_system_1(VirtualJoystickSystem, zox_pip_mainthread, [in] DeviceLink, [in] RaycasterResult, [in] ZevicePointer, [in] VirtualZeviceLink,  [none] inputs.Zevice)
     zox_system_1(EditorInputSystem, zox_pip_mainthread, [in] DeviceLinks, [in] CanvasLink, [none] players.Player)
     zox_system(PlayerToggleCameraSystem, EcsOnUpdate, [in] DeviceLinks, [in] CharacterLink, [in] GameLink, [none] players.Player)
-    zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
     zox_system(VoxelActionASystem, EcsOnLoad, [in] RaycastVoxelData, [out] TriggerActionA)
     zox_system_1(PlayerPlaceVoxelSystem, EcsOnLoad, [in] RaycastVoxelData, [out] ActionLinks, [out] TriggerActionB)
+    zox_system_1(RaycastGizmoSystem, zox_pip_mainthread, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
+    // zox_system(RaycastGizmoSystem, EcsOnUpdate, [in] CameraLink, [in] VoxLink, [out] RaycastVoxelData)
     initialize_players(world);
     spawn_prefabs_players2(world);
 zox_end_module(Players2)

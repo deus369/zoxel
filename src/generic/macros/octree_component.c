@@ -24,7 +24,7 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 //  > each node needs a value
 //  > each node can have extra values for voxel entity links
 //      > when setting set_voxel we can open node of different type here
-//          > make a open node function that allocates final nodes to a single VoxelEntityLink structure
+//          > make a open node function that allocates final nodes to a single NodeEntityLink structure
 //          > when spawning block vox, set link inside it
 //      > when closing a node with entity, also destroy that entity, closing would need to pass in voxel information then for struct types per voxel type
 //      >
@@ -43,7 +43,9 @@ typedef struct {
 // used to link static chunk voxel to a entity in world
 typedef struct {
     ecs_entity_t value;
-} VoxelEntityLink;
+} NodeEntityLink;
+
+// extern void delete_vox_entity_from_nodes(ecs_world_t *world, name *chunk);
 
 extern byte max_octree_depth;
 // byte max_octree_depth = 5;
@@ -55,14 +57,29 @@ struct name {\
     name *nodes;\
 }; ECS_COMPONENT_DECLARE(name);\
 \
-extern void delete_vox_entity_from_nodes(ecs_world_t *world, name *chunk);\
+byte delete_node_entity_from_##name(ecs_world_t *world, name *node) {\
+    if (!node || !node->nodes) {\
+        return 0;\
+    }\
+    NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;\
+    if (!node_entity_link) {\
+        return 0;\
+    }\
+    const ecs_entity_t e = node_entity_link->value;\
+    if (zox_valid(e)) {\
+        zox_delete(e)\
+    }\
+    return 1;\
+}\
 \
 void close_##name(name* octree, byte depth) {\
-    if (!octree->nodes) return;\
+    if (!octree->nodes) {\
+        return;\
+    }\
     /* > todo: check if entity link here, using depth check */\
     if (depth == 0) {\
         /* todo: free block vox here. */\
-        delete_vox_entity_from_nodes(world, octree);\
+        delete_node_entity_from_##name(world, octree);\
     } else {\
         depth--;\
         for (byte i = 0; i < octree_length; i++) {\
@@ -122,22 +139,44 @@ void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, 
 void open##_##name(name* octree) {\
     if (octree->nodes == NULL) {\
         open_new_##name(octree);\
-        for (byte i = 0; i < octree_length; i++) octree->nodes[i].nodes = NULL;\
+        for (byte i = 0; i < octree_length; i++) {\
+            octree->nodes[i].nodes = NULL;\
+        }\
     }\
 }\
 \
-const name* find_node##_##name(const name* node, int3 octree_position, byte depth) {\
+const type find_node_value_##name(const name* node, int3 octree_position, byte depth) {\
     /* if depth finish or if closed node, return node early */ \
-    if (depth == 0 || node->nodes == NULL) return node;\
+    if (!node) {\
+        return 0;\
+    }\
+    if (depth == 0 || node->nodes == NULL) {\
+        return node->value;\
+    }\
     depth--;\
     byte dividor = powers_of_two[depth];\
     int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
     int3 child_octree_position = (int3) { octree_position.x % dividor, octree_position.y % dividor, octree_position.z % dividor };\
-    return find_node##_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
+    return find_node_value_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
+}\
+\
+const name* find_node_##name(const name* node, int3 octree_position, byte depth) {\
+    /* if depth finish or if closed node, return node early */ \
+    if (!node) {\
+        return NULL;\
+    }\
+    if (depth == 0 || node->nodes == NULL) {\
+        return node;\
+    }\
+    depth--;\
+    byte dividor = powers_of_two[depth];\
+    int3 local_position = (int3) { octree_position.x / dividor, octree_position.y / dividor, octree_position.z / dividor };\
+    int3 child_octree_position = (int3) { octree_position.x % dividor, octree_position.y % dividor, octree_position.z % dividor };\
+    return find_node_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
 }\
 \
 /* maybe make below function use this if it isn't in the non root node */\
-const name* find_root_adjacent##_##name(const name* root, int3 position, byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
+const name* find_root_adjacent_##name(const name* root, int3 position, byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
     if (direction == direction_left) position.x--;\
     else if (direction == direction_right) position.x++;\
     else if (direction == direction_down) position.y--;\
@@ -146,39 +185,39 @@ const name* find_root_adjacent##_##name(const name* root, int3 position, byte de
     else if (direction == direction_front) position.z++;\
     byte position_bounds = powers_of_two[depth];\
     if (position.x >= 0 && position.x < position_bounds && position.y >= 0 && position.y < position_bounds && position.z >= 0 && position.z < position_bounds) {\
-        return find_node##_##name(root, position, depth);\
+        return find_node_##name(root, position, depth);\
     } else {\
         /* special case for adjacent nodes, flips position and crosses to neighbor chunk */\
         *chunk_index = direction + 1;\
         if (direction == direction_left) {\
             if (neighbors[direction] != NULL) {\
                 position.x = position_bounds - 1;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         } else if (direction == direction_right) {\
             if (neighbors[direction] != NULL) {\
                 position.x = 0;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         } else if (direction == direction_down) {\
             if (neighbors[direction] != NULL) {\
                 position.y = position_bounds - 1;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         } else if (direction == direction_up) {\
             if (neighbors[direction] != NULL) {\
                 position.y = 0;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         } else if (direction == direction_back) {\
             if (neighbors[direction] != NULL) {\
                 position.z = position_bounds - 1;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         } else if (direction == direction_front) {\
             if (neighbors[direction] != NULL) {\
                 position.z = 0;\
-                return find_node##_##name(neighbors[direction], position, depth);\
+                return find_node_##name(neighbors[direction], position, depth);\
             }\
         }\
         return NULL;\

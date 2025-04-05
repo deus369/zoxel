@@ -1,9 +1,9 @@
 void ZextParentBackgroundSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(ZextDirty, zextDirtys, 2)
-    zox_field_in(ZextData, zextDatas, 3)
-    zox_field_in(ZextSize, zextSizes, 4)
-    zox_field_in(ZextPadding, zextPaddings, 5)
+    zox_field_in(TextData, textDatas, 3)
+    zox_field_in(TextSize, textSizes, 4)
+    zox_field_in(TextPadding, textPaddings, 5)
     zox_field_in(MeshAlignment, meshAlignments, 6)
     zox_field_in(ParentLink, parentLinks, 8)
     for (int i = 0; i < it->count; i++) {
@@ -16,11 +16,11 @@ void ZextParentBackgroundSystem(ecs_iter_t *it) {
         // if (mesh_dirty) return;
         const byte generate_texture = zox_get_value(e2, GenerateTexture)
         if (generate_texture) return;
-        zox_field_i(ZextData, zextDatas, zextData)
-        zox_field_i(ZextSize, zextSizes, zextSize)
-        zox_field_i(ZextPadding, zextPaddings, zextPadding)
+        zox_field_i(TextData, textDatas, textData)
+        zox_field_i(TextSize, textSizes, textSize)
+        zox_field_i(TextPadding, textPaddings, textPadding)
         zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
-        const int2 size = calculate_zext_size(zextData->value, zextData->length, zextSize->value, zextPadding->value, default_line_padding);
+        const int2 size = calculate_zext_size(textData->value, textData->length, textSize->value, textPadding->value, default_line_padding);
         on_element_pixels_resized(world, e2, size, meshAlignment->value);
     }
 } zox_declare_system(ZextParentBackgroundSystem)

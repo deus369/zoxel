@@ -22,29 +22,29 @@ typedef struct {
 } UpdateBlockEntities;
 
 // used within cleanup code
-void delete_vox_entity_from_nodes(ecs_world_t *world, ChunkOctree *chunk) {
-    const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+/*void delete_vox_entity_from_nodes(ecs_world_t *world, ChunkOctree *chunk) {
+    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
     if (zox_valid(e3)) {
         zox_delete(e3)
     }
-}
+}*/
 
-// returns 1 if needs allocate a new VoxelEntityLink
-byte delete_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
+// returns 1 if needs allocate a new NodeEntityLink
+/*byte delete_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     if (!chunk->nodes) return 1;
-    const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
     if (zox_valid(e3)) {
         zox_delete(e3)
     } else {
         zox_log(" !!! error delete_old_voxel_by_link : minivox voxel link\n")
     }
     return 0;
-}
+}*/
 
 // assumes this is max depth voxel
 void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
     if (!chunk->nodes) return;
-    const ecs_entity_t e3 = ((VoxelEntityLink*)chunk->nodes)->value;
+    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
     if (zox_valid(e3)) {
         zox_delete(e3)
         free(chunk->nodes);
@@ -94,7 +94,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // if exists, and is same type, return!
         ChunkOctree *chunk = delve_data->chunk;
         if (chunk->nodes) {
-            const ecs_entity_t e3 = ((VoxelEntityLink*) chunk->nodes)->value;
+            const ecs_entity_t e3 = ((NodeEntityLink*) chunk->nodes)->value;
             if (zox_valid(e3)) {
                 // this means e3 has spawned
                 // we should check its the same one
@@ -139,15 +139,18 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             zox_set(e2, VoxelPosition, { delve_data->octree_position })
             // zox_set(e2, Position3D, { position_real })
         }
-        if (delete_old_voxel_by_link(world, delve_data->chunk)) {
-            chunk->nodes = malloc(sizeof(VoxelEntityLink));
+        if (!delete_node_entity_from_ChunkOctree(world, delve_data->chunk)) {
+            chunk->nodes = malloc(sizeof(NodeEntityLink));
         }
+        /*if (delete_old_voxel_by_link(world, delve_data->chunk)) {
+            chunk->nodes = malloc(sizeof(NodeEntityLink));
+        }*/
         if (!chunk->nodes) {
             zox_log(" ! failed to allocate nodes\n")
             zox_delete(e2)
             return;
         }
-        *(VoxelEntityLink*) chunk->nodes = (VoxelEntityLink){ .value = e2 };
+        *(NodeEntityLink*) chunk->nodes = (NodeEntityLink) { .value = e2 };
         // remove_old_voxel_by_link(world, chunk);
         // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
     } else {

@@ -10,5 +10,5 @@ typedef struct {
     FrameTextureData texture;
     ElementSpawnData element;
     IconData icon;  // encapsulate icon data
-    // SpawnZextData zext; // for now no label
+    // SpawnTextData zext; // for now no label
 } SpawnIconFrame;

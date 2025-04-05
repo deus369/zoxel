@@ -25,8 +25,9 @@ byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const floa
 
 byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
-    ChunkOctree *chunk_octree;
-    if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
+    const ChunkOctree *chunk_octree;
+    // if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
+    if (chunk) chunk_octree = zox_get(chunk, ChunkOctree)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     ecs_entity_t chunk_last = chunk;
     // position
@@ -60,7 +61,8 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
             if (!int3_equals(chunk_position, new_chunk_position)) {
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
                 if (!zox_valid(chunk)) return 0;
-                chunk_octree = zox_get_mut(chunk, ChunkOctree)
+                // chunk_octree = zox_get_mut(chunk, ChunkOctree)
+                chunk_octree = zox_get(chunk, ChunkOctree)
                 if (!chunk_octree) return 0;
                 chunk_position = new_chunk_position;
                 hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
@@ -147,9 +149,6 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // we performed gizmo on recursive function call
     } else if (ray_hit == ray_hit_type_character) {
         data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
-        // zox_log("raycast hit character!\n")
-        const color_rgb hit_point_line_color = (color_rgb) { 55, 45, 45 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(float3_up, 0.3f)), hit_point_line_color);
         //return ray_hit;
     } else if (ray_hit == ray_hit_type_terrain) {
         data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
@@ -166,55 +165,6 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
         render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
 #endif
-        float3 center_quad = float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * 0.501f));
-        float3 other_axis = float3_zero;
-        if (hit_normal.y != 0) {
-            other_axis.x = 1;
-            other_axis.z = 1;
-        } else if (hit_normal.x != 0) {
-            other_axis.y = 1;
-            other_axis.z = 1;
-        } else if (hit_normal.z != 0) {
-            other_axis.x = 1;
-            other_axis.y = 1;
-        }
-        other_axis = float3_multiply_float(other_axis, voxel_scale * 0.5f - voxel_scale * (0.125f / raycast_thickness));
-        if (hit_normal.z != 0) {
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
-                float3_add(center_quad, (float3) { -other_axis.x, other_axis.y, other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { -other_axis.x, other_axis.y, other_axis.z }),
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { other_axis.x, -other_axis.y, -other_axis.z }),
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
-                float3_add(center_quad, (float3) { other_axis.x, -other_axis.y, -other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-        } else {
-            // handles x and y
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, other_axis.z }),
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, -other_axis.z }),
-                float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-            render_line3D_thickness(world,
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, other_axis.z }),
-                float3_add(center_quad, (float3) { other_axis.x, other_axis.y, -other_axis.z }),
-                raycast_quad_color, raycast_thickness);
-        }
         // output chunk!
         data->chunk = chunk;
         data->position = voxel_position_local;
@@ -222,8 +172,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         data->chunk_last = chunk_last;
         data->position_last = voxel_position_local_last;
         data->position_real = voxel_to_real_position(voxel_position_local, chunk_position, chunk_size_b3, voxel_scale);
-        // zox_log(" > h [%fx%fx%f]\n", data->hit.x, data->hit.y, data->hit.z)
-        // zox_log(" > r [%fx%fx%f]\n", data->position_real.x, data->position_real.y, data->position_real.z)
+        data->voxel_scale = voxel_scale;
     } else if (ray_hit == ray_hit_type_none) {
         data->chunk = 0;
         data->position = byte3_zero;
@@ -234,16 +183,4 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         data->position_real = float3_zero;
     }
     return ray_hit;
-}
-
-// using DDA for raycasting
-void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const ecs_entity_t camera, const ecs_entity_t terrain, RaycastVoxelData *data) {
-    if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) return;
-    const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
-    const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-    const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
-    const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
-    const float3 ray_normal = zox_get_value(camera, RaycastNormal)
-    int3 chunk_position = (int3) { 255255, 255255, 255255 };
-    raycast_general(world, caster, voxels, chunk_links, chunk_position, float3_zero, default_chunk_size, 0, ray_origin, ray_normal, 0.5f, terrain_ray_length, data);
 }

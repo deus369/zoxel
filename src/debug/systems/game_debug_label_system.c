@@ -52,11 +52,11 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
     const int buffer_size = max_debug_characters;
     zox_field_world()
     zox_field_out(ZextDirty, zextDirtys, 1)
-    zox_field_out(ZextData, zextDatas, 2)
+    zox_field_out(TextData, textDatas, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value) continue;
-        zox_field_o(ZextData, zextDatas, zextData)
+        zox_field_o(TextData, textDatas, textData)
         zox_field_e()
         const ecs_entity_t canvas = get_root_canvas(world, e);
         // zox_log("canvas; %s - %i\n", zox_get_name(canvas), zox_has(canvas, PlayerLink))
@@ -203,8 +203,8 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_delta [%ix%i]", mouse_delta.x, mouse_delta.y);
 #endif
         if (buffer_index == 0) buffer[0] = '\0';
-        if (!is_zext(zextData, buffer)) {
-            set_zext(zextData, buffer);
+        if (!is_zext(textData, buffer)) {
+            set_zext(textData, buffer);
             zextDirty->value = 1;
         }
     }

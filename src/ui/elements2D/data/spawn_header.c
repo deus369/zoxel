@@ -11,6 +11,6 @@ typedef struct {
     ParentSpawnData parent;
     ElementSpawnData element;
     SpawnButtonData close_button;
-    SpawnZextData zext;
+    SpawnTextData zext;
     SpawnHeaderData header;
 } SpawnHeader;

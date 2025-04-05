@@ -53,7 +53,7 @@ void get_component_label(ecs_world_t *world, const ecs_entity_t e, const ecs_ent
     // ecs_entity_t comp = id & ECS_COMPONENT_MASK;
     buffer_index += snprintf(buffer + buffer_index, size_of_buffer, "%s", ecs_get_name(world, component));
     zox_dynamic_component_label(byte, EntityDirty)
-    else zox_dynamic_component_label(byte2, ZextPadding)
+    else zox_dynamic_component_label(byte2, TextPadding)
     else zox_dynamic_component_label(int, ID)
     else zox_dynamic_component_label(int2, DraggingDelta)
     else zox_dynamic_component_label(int3, Int3Stub)

@@ -18,7 +18,7 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     if (nodes) {
         if (voxel == 0) {
             // cleared minivox / voxel entity
-            const ecs_entity_t e3 = ((VoxelEntityLink*) nodes)->value;
+            const ecs_entity_t e3 = ((NodeEntityLink*) nodes)->value;
             if (zox_valid(e3)) {
                 zox_delete(e3)
                 free(nodes);

@@ -14,27 +14,62 @@ void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth)
     zox_modified(e, ChunkOctree)
 }
 
-byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte depth) {
-    if (node == NULL) return 0;
-    else if (node->nodes == NULL) return node->value;
-    else if (depth == 0) return node->value;
-    const byte dividor = powers_of_two_byte[depth - 1];
+// used by physics and raycasting
+// i think const was the issue
+const byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte depth) {
+    if (!node) {
+        return 0;
+    }
+    if (depth == 0) {
+        return node->value;
+    }
+    if (!(node->nodes)) {
+        return node->value;
+    }
+    const byte new_depth = depth - 1;
+    const byte dividor = powers_of_two_byte[new_depth];
     const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
-    return get_octree_voxel(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
+    const byte child_index = byte3_octree_array_index(node_position);
+    const ChunkOctree *child_node = &node->nodes[child_index];
+    return get_octree_voxel(child_node, position, new_depth);
 }
 
 // returns node, also sets voxel
-ChunkOctree* get_octree_voxel_with_node(byte *value, ChunkOctree *node, byte3 *position, const byte depth) {
-    if (node == NULL) return NULL;
+ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
+    if (!node) {
+        return NULL;
+    }
     *value = node->value;
     // if child nodes closed or depth final, return current node
-    if (node->nodes == NULL || depth == 0) return node;
+    if (depth == 0) {
+        return (ChunkOctree*) node;
+    }
+    if (!node->nodes) {
+        return (ChunkOctree*) node;
+    }
     const byte dividor = powers_of_two_byte[depth - 1];
     const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
-    return get_octree_voxel_with_node(value, &node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
+    const byte child_index = byte3_octree_array_index(node_position);
+    const ChunkOctree *child_node = &node->nodes[child_index];
+    return get_octree_voxel_with_node(value, child_node, position, depth - 1);
 }
+
+/*ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
+    if (!node) {
+        return NULL;
+    }
+    *value = node->value;
+    // if child nodes closed or depth final, return current node
+    if (node->nodes == NULL || depth == 0) {
+        return node;
+    }
+    const byte dividor = powers_of_two_byte[depth - 1];
+    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    byte3_modulus_byte(position, dividor);
+    return get_octree_voxel_with_node2(value, &node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
+}*/
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ChunkOctree *node) {
@@ -124,9 +159,13 @@ void optimize_solid_nodes(ChunkOctree *node) {
 byte get_adjacent_voxel(byte direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, byte depth, const byte edge_voxel) {
     byte chunk_index = 0;
     const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
-    if (adjacent_node && adjacent_node->value) return adjacent_node->value;
-    else if (!adjacent_node) return edge_voxel; // edge of map
-    else return 0;
+    if (adjacent_node && adjacent_node->value) {
+        return adjacent_node->value;
+    } else if (!adjacent_node) {
+        return edge_voxel; // edge of map
+    } else {
+        return 0;
+    }
 }
 
 // single voxel check!
@@ -155,7 +194,9 @@ byte is_adjacent_all_solid(byte direction, const ChunkOctree *root_node, const C
     const ChunkOctree *adjacent_node = find_adjacent_ChunkOctree(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
     if (adjacent_node == NULL) { // || depth == max_depth) {
         return edge_voxel;
-    } else if (adjacent_node->value == 0 || (voxel_solidity != NULL && !voxel_solidity[adjacent_node->value - 1])) {
+    } else if (adjacent_node->value == 0) {
+        return 0;
+    } else if (voxel_solidity && !voxel_solidity[adjacent_node->value - 1]) {
         return 0;
     } else if (adjacent_node->nodes != NULL && ((chunk_index == 0 && depth < max_depth) || (chunk_index != 0 && depth < neighbor_depths[chunk_index - 1]))) {
         depth++;

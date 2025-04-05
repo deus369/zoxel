@@ -9,6 +9,6 @@ typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
     ElementSpawnData element;
-    SpawnZextData zext;
+    SpawnTextData zext;
     SpawnButtonData button;
 } SpawnButton;
