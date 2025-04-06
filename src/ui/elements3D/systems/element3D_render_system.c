@@ -51,6 +51,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_bind_texture(textureGPULink->value);
         opengl_render(meshIndicies->length);
         // zox_log("+ rendering 3Dui (%s) [%lu]\n", zox_get_name(it->entities[i]), it->entities[i])
+        zox_log_elements3D("+ rendered element3D [%lu]", it->entities[i])
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged()) {
             zox_log(" > failed to render element3D [%i]: [%i] - [%ix%i:%i]\n", i, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value)

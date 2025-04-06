@@ -17,7 +17,6 @@ ecs_entity_t spawn_elementbar3D_front(ecs_world_t *world, const ecs_entity_t pre
     zox_set(e, ParentLink, { parent })
     zox_set(e, LocalPosition3D, { offset })
     zox_set(e, RenderDisabled, { render_disabled })
-    zox_set(e, RenderDisabled, { 1 })
     return e;
 }
 

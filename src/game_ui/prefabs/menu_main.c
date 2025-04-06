@@ -1,7 +1,7 @@
 char *label_continue = "continue"; // "old blood";
 char *label_new = "new game"; // "fresh meat";
 char *label_options = "options";
-char *label_exit = "exit!";
+char *label_exit = "exit";
 
 ecs_entity_t spawn_prefab_main_menu(ecs_world_t *world) {
     zox_prefab_child(prefab_ui_list)

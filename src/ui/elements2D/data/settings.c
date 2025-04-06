@@ -1,7 +1,6 @@
 const color back_bar_color = (color) { 66, 12, 12, 255 };
 const color back_bar_color_3D_start = (color) { 66, 12, 12, 0 };
 const color front_bar_color = (color) { 188, 25, 25, 255 };
-const float2 statbar_front_mesh_scale = (float2) { 0.17f, 0.028f };
 const color default_label_font_outline_color = (color) { 76, 33, 33, 255 };
 const color default_label_font_fill_color = (color) { 132, 12, 12, 255 };
 const color header_color = (color) { 77, 44, 33, 255 };

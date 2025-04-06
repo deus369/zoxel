@@ -4,11 +4,12 @@ const int player_extra_stats = 6;
 // todo: take in npc spawn meta data, like location, biome, etc
 ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, const byte render_disabled) {
     // stats
-    float health = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     float max_health = 10.0f;
+    float health = max_health; // (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     int stats_count = character_stats;
-    if (player) stats_count += player_extra_stats;
-
+    if (player) {
+        stats_count += player_extra_stats;
+    }
     StatLinks *statLinks = &((StatLinks) { 0, NULL });
     // StatLinks *statLinks = zox_get_mut(e, StatLinks)
     resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
@@ -31,7 +32,9 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     // character ui
 #ifndef zox_disable_statbars
     float ui_position = 0.43f;
-    if (player) ui_position = 0.57f;
+    if (player) {
+        ui_position = 0.6f;
+    }
     SpawnDataElementbar3D spawn_data = {
         .canvas = {
             .ui_holder = e,
@@ -59,12 +62,11 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     };
     const ecs_entity_t statbar = spawn_elementbar3D(world, &spawn_data);
     zox_prefab_set(statbar, StatLink, { health_stat })
+
     ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
-    // ElementLinks *elementLinks = zox_get_mut(e, ElementLinks)
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;
     zox_set(e, ElementLinks, { elementLinks->length, elementLinks->value })
-    // zox_modified(e, ElementLinks)
     if (player) {
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)

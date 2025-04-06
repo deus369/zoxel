@@ -2,14 +2,16 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_element3D")
     zox_add_tag(e, Element3D)
-    // zox_add_tag(e, FillTexture)
     zox_add_tag(e, ElementBillboard)
     zox_prefab_set(e, CameraLink, { 0 })
     zox_prefab_set(e, UIHolderLink, { 0 })
     zox_prefab_set(e, UITrail, {{ 0, 0.43f, 0 }})
     zox_prefab_set(e, Color, {{ 0, 255, 0, 255 }}) 
     add_ui_components_world(world, e, (float2) { 0.04f, 0.04f });
-    if (!headless) zox_add_tag(e, SingleMaterial)
+    if (!headless) {
+        zox_add_tag(e, SingleMaterial)
+    }
+    // zox_add_tag(e, FillTexture)
     return e;
 }
 

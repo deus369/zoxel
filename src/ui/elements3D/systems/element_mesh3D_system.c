@@ -27,5 +27,6 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         initializeElement->value = 0;
         meshDirty->value = mesh_state_trigger2;
         // zox_log("+ initialized mesh3D ui [%lu]\n", it->entities[i])
+        zox_log_elements3D("+ updated mesh for element3D [%lu]", it->entities[i])
     }
 } zox_declare_system(Element3DMeshSystem)

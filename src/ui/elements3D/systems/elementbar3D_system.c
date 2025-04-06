@@ -10,7 +10,9 @@ void Elementbar3DSystem(ecs_iter_t *it) {
         }
         // ecs_entity_t front_bar = 0; // go through list to find frontbar
         const ecs_entity_t front_bar = children->value[0];
-        if (!zox_valid(front_bar)) continue;
+        if (!zox_valid(front_bar)) {
+            continue;
+        }
         zox_geter(front_bar, InitializeElement, initializeElement)
         if (initializeElement->value) {
             continue; // removing this breaks it?!?!
@@ -32,7 +34,10 @@ void Elementbar3DSystem(ecs_iter_t *it) {
             meshDirty->value = mesh_state_trigger2;
             zox_modified(front_bar, MeshDirty)
             zox_get_muter(front_bar, MeshVertices, meshVertices2)
-            for (byte j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
+            for (byte j = 0; j < 4; j++) {
+                meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
+            }
+            zox_log_elements3D("+ updated frontbar [%lu]", it->entities[i])
         }
     }
 } zox_declare_system(Elementbar3DSystem)
