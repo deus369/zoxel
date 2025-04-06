@@ -14,7 +14,9 @@ void ZextBackgroundSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ZextDirty, zextDirtys, zextDirty)
-        if (zextDirty->value != zext_update_update) continue;
+        if (zextDirty->value != zext_update_update) {
+            continue;
+        }
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         // if (generateTexture->value) return;
         zox_field_i(TextData, textDatas, textData)

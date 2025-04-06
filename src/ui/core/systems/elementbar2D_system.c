@@ -1,4 +1,4 @@
-extern byte set_entity_with_text(ecs_world_t *world, ecs_entity_t e, const char* text);
+extern byte set_entity_text(ecs_world_t *world, ecs_entity_t e, const char* text);
 extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, byte mesh_alignment);
 
 void Elementbar2DSystem(ecs_iter_t *it) {
@@ -25,20 +25,6 @@ void Elementbar2DSystem(ecs_iter_t *it) {
         const float percentage = elementBar->value;
         const float2 scale = elementBarSize->value;
         const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
-        /*if (zox_has(front_bar, MeshVertices)) {
-            // todo: seperate this into a seperate system for 3D frontbars
-            MeshDirty *meshDirty = zox_get_mut(front_bar, MeshDirty)
-            if (meshDirty->value) continue;
-            // for our elementbar3D
-            // const MeshVertices *meshVertices = zox_get(front_bar, MeshVertices)
-            // const float test_var = (left_offset + square_vertices[2].x * scale.x * percentage);   // test right vert
-            // if (test_var == meshVertices->value[2].x) continue;
-            MeshVertices *meshVertices2 = zox_get_mut(front_bar, MeshVertices)
-            for (byte j = 0; j < 4; j++) meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
-            meshDirty->value = mesh_state_trigger2;
-            zox_modified(front_bar, MeshDirty)
-            zox_modified(front_bar, MeshVertices)
-        } else */
         if (zox_has(front_bar, MeshVertices2D)) {
             // todo: seperate this into a seperate system
             // for our elementbar2D
@@ -46,10 +32,12 @@ void Elementbar2DSystem(ecs_iter_t *it) {
                 // serious problem here!!
                 continue;
             }
-            const ecs_entity_t bar_text = children->value[1];
+            /*const ecs_entity_t bar_text = children->value[1];
             char text[16];
             snprintf(text, 16, "health [%i]", (int) (percentage * 100));
-            if (!set_entity_with_text(world, bar_text, text)) continue; // if same text, no need resize
+            if (!set_entity_text(world, bar_text, text)) {
+                continue; // if same text, no need resize
+            }*/
             const int2 pixel_size = pixelSize->value; // zox_get_value(e, PixelSize)
             int2 front_pixel_size = zox_get_value(front_bar, PixelSize)
             PixelPosition *front_pixel_position = zox_get_mut(front_bar, PixelPosition)

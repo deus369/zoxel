@@ -19,9 +19,9 @@ void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity
             char text[6];
             // sprintf(text, "x%"PRIu64"", quantity);
             sprintf(text, "x%i", quantity);
-            set_entity_with_text(world, zext, text);
+            set_entity_text(world, zext, text);
         } else {
-            set_entity_with_text(world, zext, "");
+            set_entity_text(world, zext, "");
         }
     }
 }
@@ -41,13 +41,13 @@ void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame,
                 char text[6];
                 // sprintf(text, "x%"PRIu64"", quantity);
                 sprintf(text, "x%i", quantity);
-                set_entity_with_text(world, zext, text);
+                set_entity_text(world, zext, text);
                 // zox_log("x%i\n", quantity)
             } else {
-                set_entity_with_text(world, zext, "");
+                set_entity_text(world, zext, "");
             }
         } else {
-            set_entity_with_text(world, zext, "");
+            set_entity_text(world, zext, "");
         }
     }
 }
@@ -61,13 +61,13 @@ void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t
             char text[6];
             // sprintf(text, "x%"PRIu64"", quantity);
             sprintf(text, "x%i", quantity);
-            set_entity_with_text_raw(world, zext, text);
+            set_entity_text_raw(world, zext, text);
             // zox_log("x%i\n", quantity)
         } else {
-        //    set_entity_with_text(world, zext, "");
+        //    set_entity_text(world, zext, "");
         }
     } else {
-    //    set_entity_with_text(world, zext, "");
+    //    set_entity_text(world, zext, "");
     }
 }
 

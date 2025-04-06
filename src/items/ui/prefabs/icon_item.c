@@ -9,7 +9,7 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
     } else {
         sprintf(result, "[%" PRIu64 "] x%i\n", data->data, quantity);
     }
-    set_entity_with_text(world, data->tooltip, result);
+    set_entity_text(world, data->tooltip, result);
 }
 
 ecs_entity_t spawn_prefab_icon_item(ecs_world_t *world, const ecs_entity_t prefab) {

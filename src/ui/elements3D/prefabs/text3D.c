@@ -17,6 +17,7 @@ ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_text3D")
     zox_add_tag(e, Zext)
+    zox_add_tag(e, Text3D)
     zox_prefab_set(e, TextSize, { 0 })
     zox_prefab_set(e, TextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
@@ -36,8 +37,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData *data) {
     zox_name("text3D")
     // zox_log("+ spawned text3D: %lu\n", e)
     zox_set(e, ParentLink, { data->parent })
-    // zox_set(e, RenderDisabled, { data->render_disabled })
-    zox_set(e, RenderDisabled, { 1 })
+    zox_set(e, RenderDisabled, { data->render_disabled })
     zox_set(e, TextSize, { data->font_size })
     zox_set(e, TextPadding, { data->padding })
     zox_set(e, MeshAlignment, { data->alignment })
@@ -79,5 +79,6 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData *data) {
     }
     zox_set(e, TextData, { textData->length, textData->value })
     zox_set(e, Children, { children->length, children->value })
+    debug_entity_text3D = e;
     return e;
 }

@@ -4,7 +4,7 @@ void tooltip_event_icon_stat(ecs_world_t *world, const TooltipEventData *data) {
         return;
     }
     /*if (data->event == zox_select_state_deselected_this_frame) {
-        set_entity_with_text(world, data->tooltip, "");
+        set_entity_text(world, data->tooltip, "");
         zox_set(data->tooltip, RenderDisabled, { 1 })
     } else*/
     {
@@ -35,7 +35,7 @@ void tooltip_event_icon_stat(ecs_world_t *world, const TooltipEventData *data) {
         } else {
             sprintf(result, "[%s]\n", name_string);
         }
-        set_entity_with_text(world, data->tooltip, result);
+        set_entity_text(world, data->tooltip, result);
         if (name_string) free(name_string);
         zox_set(data->tooltip, RenderDisabled, { 0 })
     }

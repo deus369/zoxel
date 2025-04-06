@@ -15,7 +15,6 @@ ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
 ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t canvas, const ecs_entity_t parent, int2 pixel_position, const int2 pixel_size, const byte2 zext_padding, const float2 anchor, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const byte render_disabled) {
     const byte front_bar_layer = layer + 1;
     const byte zext_layer = layer + 2;
-    // const color label_font_outline_color = (color) { 125, 255, 255, 255 };
     const color label_font_outline_color = (color) { 33, 33, 33, 255 };
     const color label_font_fill_color = (color) { 0, 255, 255, 255 };
     // this fits our font_size to our given pixel_size
@@ -62,12 +61,12 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, c
         }
     };
     const ecs_entity_t zext = spawn_zext(world, &zextSpawnData);
-    // Children *children = zox_get_mut(e, Children)
     Children *children = &((Children) { 0, NULL });
     resize_memory_component(Children, children, ecs_entity_t, 2)
     children->value[0] = front_bar;
     children->value[1] = zext;
-    // zox_modified(e, Children)
     zox_set(e, Children, { children->length, children->value })
+    zox_set_unique_name(front_bar, "element2D_frontbar")
+    zox_set_unique_name(zext, "element2D_text")
     return e;
 }

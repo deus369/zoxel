@@ -1,6 +1,6 @@
-
 typedef struct {
     float percentage;
+    ecs_entity_t stat;
 } Elementbar3DData;
 
 typedef struct {
@@ -27,7 +27,7 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_t spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data) {
+ecs_entity_2 spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data) {
     zox_instance(data->backbar.prefab)
     zox_name("elementbar3D")
     zox_set(e, UIHolderLink, { data->canvas.ui_holder })
@@ -44,14 +44,15 @@ ecs_entity_t spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data)
         .parent = e,
         .prefab = data->text.prefab,
         .prefab_zigel = data->zigel.prefab,
-        .text = "Health [10/10]", // "!"
+        .text = "Health [10/10]",
         .position = text_position,
-        .font_thickness = 2
+        .font_thickness = 2,
+        .render_disabled = data->text.render_disabled
     };
     const ecs_entity_t text = spawn_text3D(world, &text_data);
     add_to_Children(children, text);
     zox_set(e, Children, { children->length, children->value })
-    return e;
+    return (ecs_entity_2) { e, text };
 }
 
 //  const ecs_entity_t prefab, const ecs_entity_t prefab_front, const ecs_entity_t ui_holder, const float percentage, const byte render_disabled, const float position_y) {

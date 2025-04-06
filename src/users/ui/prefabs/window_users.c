@@ -131,7 +131,9 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             spawnIconFrame.icon.index = array_index;
             const ecs_entity_t user_data_element = user_data->value[item_index];
             body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
-            if (i == 0 && icon_frames_have_active_states) zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
+            if (i == 0 && icon_frames_have_active_states) {
+                zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
+            }
             array_index++;
             item_index++;
         }

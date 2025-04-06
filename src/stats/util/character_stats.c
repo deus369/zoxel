@@ -50,19 +50,21 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
         },
         .text = {
             .prefab = prefab_text3D,
-            .render_disabled = render_disabled
+            .render_disabled = 1
         },
         .zigel = {
             .prefab = prefab_zigel3D,
             .render_disabled = render_disabled
         },
         .meta = {
-            .percentage = health / max_health
+            .percentage = health / max_health,
+            .stat = health_stat
         }
     };
-    const ecs_entity_t statbar = spawn_elementbar3D(world, &spawn_data);
+    const ecs_entity_2 spawned_elementbar3D = spawn_elementbar3D(world, &spawn_data);
+    const ecs_entity_t statbar = spawned_elementbar3D.x;
     zox_prefab_set(statbar, StatLink, { health_stat })
-
+    zox_prefab_set(spawned_elementbar3D.y, StatLink, { health_stat })
     ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
     resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
     elementLinks->value[0] = statbar;

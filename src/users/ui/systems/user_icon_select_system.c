@@ -20,7 +20,7 @@ void UserIconSelectSystem(ecs_iter_t *it) {
         }
         // deselect event here is fine
         if (selectState->value == zox_select_state_deselected_this_frame) {
-            set_entity_with_text(world, tooltip, "");
+            set_entity_text(world, tooltip, "");
             continue;
         }
         TooltipEventData data = {

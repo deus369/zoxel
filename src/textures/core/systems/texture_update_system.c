@@ -5,7 +5,9 @@ void TextureUpdateSystem(ecs_iter_t *it) {
     zox_field_out(TextureDirty, textureDirtys, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
-        if (textureDirty->value == 0) continue;
+        if (textureDirty->value == 0) {
+            continue;
+        }
         zox_field_i(TextureData, textureDatas, textureData)
         zox_field_i(TextureSize, textureSizes, textureSize)
         if (textureData->length != textureSize->value.x * textureSize->value.y) {
