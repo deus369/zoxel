@@ -28,7 +28,9 @@ void flood_fill_texture(color* data, const int2 size, const color air_color, con
         index = int2_array_index((int2) { x, y }, size);
         if (x >= 0 && x < size.x && y >= 0 && y < size.y && !visited[index]) {
             visited[index] = 1;
-            if (color_equal(data[index], boundary_color) ||color_equal(data[index], fill_color)) continue;
+            if (color_equal(data[index], boundary_color) ||color_equal(data[index], fill_color)) {
+                continue;
+            }
             data[index] = fill_color;
             // zox_log("filling [%ix%i]\n", x, y)
             // Push neighboring pixels onto the stack (left, right, up, down)
@@ -127,7 +129,9 @@ void draw_texture_line(color* data, const int2 size, const int2 point_a, const i
 }
 
 void generate_splotches_lines(color* data, const int2 size, const FontData *fontData, const color line_color, const byte splotch_size) {
-    if (splotch_size == 0) return;
+    if (splotch_size == 0) {
+        return;
+    }
     for (int i = 0; i < fontData->length; i += 2) {
         int2 pointA = byte2_to_int2(fontData->value[i]);
         int2 pointB = byte2_to_int2(fontData->value[i + 1]);
@@ -194,17 +198,20 @@ void generate_font_lines(color* data, const int2 size, const FontData *fontData,
     }
 }
 
-void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const byte is_shapes,  byte font_thickness) {
+void generate_font_texture(color* data, const int2 size, const FontData *font_data, const color line_color,  const color fill_color, const byte is_shapes, byte font_thickness, byte outline_thickness) {
     // const color nothing = { 0, 0, 0, 0 };
     clear_texture(data, size);
-    if (!font_data->length) return;
+    if (!font_data->length) {
+        return;
+    }
     if (is_shapes) {
         generate_font_lines(data, size, font_data, line_color);
         scanline_fill_texture(data, size, nothing_font_color, line_color, fill_color);
+        generate_splotches_lines(data, size, font_data, line_color, outline_thickness);
     } else {
         font_thickness++;
+        generate_splotches_lines(data, size, font_data, line_color, font_thickness);
     }
-    generate_splotches_lines(data, size, font_data, line_color, font_thickness);
 }
 
 /*

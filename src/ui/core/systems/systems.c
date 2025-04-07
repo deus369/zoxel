@@ -3,7 +3,6 @@
 #include "element_selected_system.c"
 #include "element_position_system.c"
 #include "element_mesh2D_system.c"
-#include "elementbar2D_system.c"
 #include "canvas_resize_system.c"
 #include "canvas_stack_system.c"
 #include "window_layer_system.c"
@@ -35,7 +34,6 @@ void define_systems_elements_core(ecs_world_t *world) {
     zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)
     zox_system(ElementActiveSystem, EcsOnUpdate, [in] ActiveState, [out] Brightness, [none] Element, [none] !SelectState)
     zox_system(MouseElementSystem, zox_transforms_stage, [in] ZeviceLink, [in] Anchor, [in] CanvasLink, [out] PixelPosition, [none] MouseElement)
-    zox_system(Elementbar2DSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children, [in] PixelSize, [none] MeshVertices2D)
     if (!headless) {
         zox_system_1(ButtonClickEventSystem, zox_pip_mainthread, [in] ClickEvent, [in] ClickState, [out] Clicker, [none] Element)
         // EcsOnLoad - zox_pip_mainthread

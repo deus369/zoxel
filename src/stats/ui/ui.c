@@ -16,8 +16,8 @@ zox_begin_module(StatsUI)
     zox_define_tag(Statbar)
     zox_define_tag(MenuStats)
     zox_define_tag(IconFrameStat)
-    zox_system(StatbarSystem, EcsPostUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
-    zox_system(StatTextSystem, EcsPostUpdate, [in] StatLink, [out] TextData, [out] ZextDirty)
+    zox_system(StatbarSystem, EcsOnUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
+    zox_system(StatTextSystem, EcsOnUpdate, [in] StatLink, [out] TextData, [out] ZextDirty)
     spawn_prefabs_ui_stats(world);
 zox_end_module(StatsUI)
 

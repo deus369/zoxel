@@ -1,11 +1,21 @@
-void add_ui_components_world(ecs_world_t *world, const ecs_entity_t e, const float2 mesh_scale) {
-    prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_trigger);
-    add_ui_components(world, e);
+void add_element3D_transform(ecs_world_t *world, const ecs_entity_t e) {
     add_transform3Ds(world, e, 0);
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
-    zox_prefab_set(e, Brightness, { 1 })
+    add_ui_components(world, e);
+}
+
+void add_element3D_child(ecs_world_t *world, const ecs_entity_t e) {
+    zox_prefab_set(e, LocalPosition3D, { float3_zero })
+    zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
+    zox_prefab_set(e, ParentLink, { 0 })
+}
+
+void add_ui_components_world(ecs_world_t *world, const ecs_entity_t e, const float2 mesh_scale) {
+    add_element3D_transform(world, e);
     zox_prefab_set(e, MeshDirty, { 0 })
-    zox_prefab_set(e, RenderDisabled, { 0 }) // 1 })
+    zox_prefab_set(e, Brightness, { 1 })
+    zox_prefab_set(e, RenderDisabled, { 1 })
+    prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_trigger);
     if (!headless) {
         add_gpu_texture(world, e);
         add_gpu_mesh(world, e);

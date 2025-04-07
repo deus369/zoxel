@@ -37,7 +37,7 @@ void Elementbar3DSystem(ecs_iter_t *it) {
             for (byte j = 0; j < 4; j++) {
                 meshVertices2->value[j] = (float3) { left_offset + square_vertices[j].x * scale.x * percentage, square_vertices[j].y * scale.y, 0 };
             }
-            zox_log_elements3D("+ updated frontbar [%lu]", it->entities[i])
+            // zox_log_elements3D("+ updated frontbar [%lu]", it->entities[i])
         }
     }
 } zox_declare_system(Elementbar3DSystem)

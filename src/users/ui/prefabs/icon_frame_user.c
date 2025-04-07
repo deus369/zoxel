@@ -101,5 +101,8 @@ ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, con
     // if prefab has label tag, spawn icon label (Quantity)
     set_icon_from_user_data(world, e.x, e.y, userdata);
     set_icon_label_from_user_data_direct(world, e.z, userdata);
+    zox_set_unique_name(e.x, "icon_frame_user")
+    zox_set_unique_name(e.y, "icon_user")
+    zox_set_unique_name(e.z, "icon_label_user")
     return (ecs_entity_2) { e.x, e.y };
 }

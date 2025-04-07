@@ -14,6 +14,19 @@ byte* convert_text_to_zext(const char* text) {
     return zext;
 }
 
+void convert_zext_to_text_non_malloc(const byte *zext, int length, char* text, int max_text) {
+    if (!zext || length == 0) {
+        return;
+    }
+    if (length > max_text - 1) {
+        length = max_text - 1;
+    }
+    for (byte i = 0; i < length; i++) {
+        text[i] = convert_to_ascii(zext[i]);
+    }
+    text[length] = '\0'; // last ascii string char
+}
+
 char* convert_zext_to_text(const byte *zext, byte length) {
     if (!zext || length == 0) return "";
     byte text_length = length + 1;

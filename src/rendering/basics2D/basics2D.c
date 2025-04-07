@@ -36,8 +36,8 @@ zox_begin_module(RenderingBasics2D)
     zox_define_component(MaterialTextured2D)
     zox_define_component(MaterialAttributesRenderTexture)
     zox_render3D_system(RenderMaterial2DSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
-    zox_system_1(Mesh2DUvsUpdateSystem, zox_pip_mainthread, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [none] !MeshColorRGBs)
     zox_system_1(Mesh2DUpdateSystem, zox_pip_mainthread, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
+    zox_system_1(Mesh2DUvsUpdateSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [out] MeshDirty)
 zox_end_module(RenderingBasics2D)
 
 #endif

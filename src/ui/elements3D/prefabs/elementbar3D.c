@@ -1,15 +1,9 @@
 typedef struct {
     float percentage;
-    ecs_entity_t stat;
-} Elementbar3DData;
-
-typedef struct {
-    Canvas3DData canvas;
+    ecs_entity_t ui_holder;
+    float position_y;
     Element3DData backbar;
     Element3DData frontbar;
-    Element3DData text;
-    Element3DData zigel;
-    Elementbar3DData meta;
 } SpawnDataElementbar3D;
 
 ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab) {
@@ -27,37 +21,28 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_2 spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data) {
+ecs_entity_2 spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data, Text3DData text_data, Zigel3DData zigel_data) {
+    ecs_entity_2 output = { 0, 0 };
     zox_instance(data->backbar.prefab)
+    output.x = e;
     zox_name("elementbar3D")
-    zox_set(e, UIHolderLink, { data->canvas.ui_holder })
-    zox_set(e, UITrail, { { 0, data->canvas.position_y, 0 } })
-    zox_set(e, ElementBar, { data->meta.percentage })
+    zox_set(e, UIHolderLink, { data->ui_holder })
+    zox_set(e, UITrail, { { 0, data->position_y, 0 } })
+    zox_set(e, ElementBar, { data->percentage })
     zox_set(e, ElementBarSize, { statbar_front_mesh_scale })
     zox_set(e, RenderDisabled, { data->backbar.render_disabled })
     Children *children = &((Children) { 0, NULL });
     const float3 frontbar_position = (float3) { 0, 0, element3D_depth_difference };
-    const ecs_entity_t frontbar = spawn_elementbar3D_front(world, data->frontbar.prefab, data->canvas.ui_holder, e, frontbar_position, data->frontbar.render_disabled);
+    const ecs_entity_t frontbar = spawn_elementbar3D_front(world, data->frontbar.prefab, data->ui_holder, e, frontbar_position, data->frontbar.render_disabled);
     add_to_Children(children, frontbar);
-    const float3 text_position = (float3) { 0, 0, element3D_depth_difference * 2 };
-    Text3DData text_data = {
-        .parent = e,
-        .prefab = data->text.prefab,
-        .prefab_zigel = data->zigel.prefab,
-        .text = "Health [10/10]",
-        .position = text_position,
-        .font_thickness = 2,
-        .render_disabled = data->text.render_disabled
-    };
-    const ecs_entity_t text = spawn_text3D(world, &text_data);
-    add_to_Children(children, text);
+    if (text_data.prefab) {
+        text_data.position = (float3) { 0, 0, element3D_depth_difference * 2 };
+        zigel_data.position = text_data.position;
+        text_data.parent = e;
+        const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);
+        add_to_Children(children, text);
+        output.y = text;
+    }
     zox_set(e, Children, { children->length, children->value })
-    return (ecs_entity_2) { e, text };
+    return output;
 }
-
-//  const ecs_entity_t prefab, const ecs_entity_t prefab_front, const ecs_entity_t ui_holder, const float percentage, const byte render_disabled, const float position_y) {
-
-// const ecs_entity_t camera = main_cameras[0];
-// const ecs_entity_t canvas = zox_canvases[0];
-// zox_set(e, CameraLink, { camera })
-// zox_set(e, CanvasLink, { canvas })

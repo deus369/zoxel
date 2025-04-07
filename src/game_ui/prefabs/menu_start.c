@@ -1,4 +1,4 @@
-char *label_start = "S T A R T";
+char *label_start = "START GAME";
 
 void menu_start_triggered(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, MenuStart, menu)

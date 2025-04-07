@@ -13,12 +13,11 @@ ecs_entity_t spawn_statbar2D(ecs_world_t *world, const ecs_entity_t canvas, cons
     const int2 size = (int2) { 256, 32 };
     const byte2 padding = (byte2) { 16, 8 };
     const int2 healthbar_position = (int2) { 8, 8 - size.y / 2 };
-    const ecs_entity_t e = spawn_elementbar2D(world, prefab_statbar2D, player, canvas, parent, healthbar_position, size, padding, elementbar2D_anchor, layer, int2_half(canvas_size), canvas_size, canvas_size, 0);
-    zox_name("statbar2D")
-    // const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    if (character_group.x) {
-        // const StatLinks *statLinks = zox_get(character, StatLinks)
-        zox_set(e, StatLink, { character_group.y })
+    const ecs_entity_2 e2 = spawn_elementbar2D(world, prefab_statbar2D, player, canvas, parent, healthbar_position, size, padding, elementbar2D_anchor, layer, int2_half(canvas_size), canvas_size, canvas_size, 0);
+    zox_set_unique_name(e2.x, "statbar2D")
+    if (character_group.y) {
+        zox_set(e2.x, StatLink, { character_group.y })
+        zox_set(e2.y, StatLink, { character_group.y })
     }
-    return e;
+    return e2.x;
 }

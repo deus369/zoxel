@@ -92,8 +92,12 @@ void prefab_set_mesh_vertices_float3(ecs_world_t *world, ecs_entity_t e, const f
 
 void set_mesh_vertices_scale2D(MeshVertices2D *meshVertices2D, const float2 new_vertices[], const int length, const float2 scale2D) {
     resize_memory_component(MeshVertices2D, meshVertices2D, float2, length)
-    if (length > 0) memcpy(meshVertices2D->value, new_vertices, length * sizeof(float2));
-    for (int i = 0; i < length; i++) float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
+    if (length > 0) {
+        memcpy(meshVertices2D->value, new_vertices, length * sizeof(float2));
+    }
+    for (int i = 0; i < length; i++) {
+        float2_multiply_float2_p(&meshVertices2D->value[i], scale2D);
+    }
 }
 
 void prefab_set_mesh_uvs_float(ecs_world_t *world, ecs_entity_t e, const float uvs[], int length) {
@@ -105,7 +109,6 @@ void prefab_set_mesh_uvs_float(ecs_world_t *world, ecs_entity_t e, const float u
         return;
     }*/
     MeshUVs *meshUVs = &((MeshUVs) { 0, NULL });
-    // zox_get_muter(e, MeshUVs, meshUVs)
     resize_memory_component(MeshUVs, meshUVs, float2, length)
     memcpy(meshUVs->value, uvs, length * sizeof(float));
     zox_prefab_set(e, MeshUVs, { meshUVs->length, meshUVs->value })

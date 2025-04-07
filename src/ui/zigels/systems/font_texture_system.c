@@ -23,9 +23,6 @@ void FontTextureSystem(ecs_iter_t *it) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         zox_field_i(ZigelIndex, zigelIndexs, zigelIndex)
-        /*if (zox_has(it->entities[i], Position3D)) {
-            zox_log("> zigel font is trying to update [%s] %i %i zigel [%i]\n", zox_get_name(it->entities[i]), generateTexture->value, textureDirty->value, zigelIndex->value)
-        }*/
         if (generateTexture->value != zox_generate_texture_generate) {
             continue;
         }
@@ -60,17 +57,11 @@ void FontTextureSystem(ecs_iter_t *it) {
             }
             // generateTexture->value = 0;
             textureDirty->value = 1;
-            /*if (zox_has(it->entities[i], Position3D)) {
-                zox_log("> zigel font FAILED to update [%s] %i %i %i\n", zox_get_name(it->entities[i]), generateTexture->value, textureDirty->value, zigelIndex->value)
-            }*/
             continue;
         }
         zox_geter(font, FontData, fontData)
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value);
-        /*if (zox_has(it->entities[i], Position3D)) {
-            zox_log("> zigel font is updating [%s] %i %i %i\n", zox_get_name(it->entities[i]), generateTexture->value, textureDirty->value, zigelIndex->value)
-        }*/
+        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, 4);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates

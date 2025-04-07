@@ -1,8 +1,9 @@
 ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_elementbar2D")
-    add_ui_plus_components(world, e);
     zox_add_tag(e, FillTexture)
+    zox_add_tag(e, Elementbar2D)
+    add_ui_plus_components(world, e);
     zox_prefab_set(e, Color, { back_bar_color })
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
@@ -12,7 +13,7 @@ ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t canvas, const ecs_entity_t parent, int2 pixel_position, const int2 pixel_size, const byte2 zext_padding, const float2 anchor, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const byte render_disabled) {
+ecs_entity_2 spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t canvas, const ecs_entity_t parent, int2 pixel_position, const int2 pixel_size, const byte2 zext_padding, const float2 anchor, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const byte render_disabled) {
     const byte front_bar_layer = layer + 1;
     const byte zext_layer = layer + 2;
     const color label_font_outline_color = (color) { 33, 33, 33, 255 };
@@ -60,13 +61,13 @@ ecs_entity_t spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, c
             .font_outline_color = label_font_outline_color
         }
     };
-    const ecs_entity_t zext = spawn_zext(world, &zextSpawnData);
+    const ecs_entity_t text = spawn_zext(world, &zextSpawnData);
     Children *children = &((Children) { 0, NULL });
     resize_memory_component(Children, children, ecs_entity_t, 2)
     children->value[0] = front_bar;
-    children->value[1] = zext;
+    children->value[1] = text;
     zox_set(e, Children, { children->length, children->value })
     zox_set_unique_name(front_bar, "element2D_frontbar")
-    zox_set_unique_name(zext, "element2D_text")
-    return e;
+    zox_set_unique_name(text, "element2D_text")
+    return (ecs_entity_2) { e, text };
 }

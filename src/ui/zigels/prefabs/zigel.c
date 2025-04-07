@@ -13,12 +13,11 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_zigel(ecs_world_t *world, const SpawnZigel *data) {
-    // const int2 texture_size = data->element.size; //  (int2) { font_texture_size, font_texture_size };
     const int2 texture_size = (int2) { data->element.size.x * 2, data->element.size.y * 2 };
     const int2 global_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 position = get_element_position(global_position, data->canvas.size);
     zox_instance(prefab_zigel)
-    // zox_name("zigel")
+    zox_set_unique_name(e, "zigel")
     zox_set(e, ZigelIndex, { data->zigel.zigel_index })
     zox_set(e, FontThickness, { data->zext.font_thickness })
     zox_set(e, Color, { data->zigel.fill_color })

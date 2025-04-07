@@ -16,23 +16,27 @@ void opengl_upload_shader2D_textured(GLuint2 mesh_buffer, GLuint uv_buffer, cons
 
 void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
     // if (!ecs_query_changed(NULL, it)) return;
-    zox_field_in(MeshIndicies, meshIndiciess, 2)
-    zox_field_in(MeshVertices2D, meshVertices2Ds, 3)
-    zox_field_in(MeshUVs, meshUVss, 4)
-    zox_field_in(MeshGPULink, meshGPULinks, 5)
-    zox_field_in(UvsGPULink, uvsGPULinks, 6)
-    zox_field_in(MeshDirty, meshDirtys, 1)
+    zox_field_in(MeshIndicies, meshIndiciess, 1)
+    zox_field_in(MeshVertices2D, meshVertices2Ds, 2)
+    zox_field_in(MeshUVs, meshUVss, 3)
+    zox_field_in(MeshGPULink, meshGPULinks, 4)
+    zox_field_in(UvsGPULink, uvsGPULinks, 5)
+    zox_field_in(MeshDirty, meshDirtys, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_upload) continue;
+        if (meshDirty->value != mesh_state_upload) {
+            continue;
+        }
         zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
-        if (!meshIndicies->length) continue;
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
-        if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
         zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        if (!uvsGPULink->value) continue;
+        if (!meshIndicies->length | !meshGPULink->value.x || !meshGPULink->value.y | !uvsGPULink->value) {
+            zox_log("! [%s] uploaded mesh2D_uvs failed\n", zox_get_name(it->entities[i]))
+            continue;
+        }
         zox_field_i(MeshVertices2D, meshVertices2Ds, meshVertices2D)
         zox_field_i(MeshUVs, meshUVss, meshUVs)
         opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices2D->value, meshUVs->value, meshVertices2D->length);
+        // zox_log("> [%s] uploaded mesh2D_uvs\n", zox_get_name(it->entities[i]))
     }
 } zox_declare_system(Mesh2DUvsUpdateSystem)

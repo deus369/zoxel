@@ -11,9 +11,13 @@ void Element2DMeshSystem(ecs_iter_t *it) {
     zox_field_out(UvsGPULink, uvsGPULinks, 10)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(InitializeElement, initializeElements, initializeElement)
-        if (!initializeElement->value) continue;
+        if (!initializeElement->value) {
+            continue;
+        }
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
-        if (!canvasLink->value) continue;
+        if (!canvasLink->value) {
+            continue;
+        }
         zox_field_i(PixelSize, pixelSizes, pixelSize)
         zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
@@ -31,8 +35,9 @@ void Element2DMeshSystem(ecs_iter_t *it) {
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
-            zox_field_e()
+            // zox_log("> [%s] activated mesh2D: size [%ix%i]\n", zox_get_name(it->entities[i]), pixelSize->value.x, pixelSize->value.y)
             // doing this again?
+            zox_field_e()
             if (zox_has(e, RenderTexture)) {
                 set_render_texture_gpu(textureGPULink->value, canvas_size);
                 const ecs_entity_t camera = zox_get_value(e, CameraLink)
@@ -45,6 +50,6 @@ void Element2DMeshSystem(ecs_iter_t *it) {
             }
         }
         initializeElement->value = 0;
-        meshDirty->value = mesh_state_upload;
+        meshDirty->value = mesh_state_trigger2; // mesh_state_upload;
     }
 } zox_declare_system(Element2DMeshSystem)
