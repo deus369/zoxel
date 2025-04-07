@@ -22,7 +22,7 @@ void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, const ecs
     };
     Text3DData statbar_text_data = {
         .prefab = prefab_text3D,
-        .text = "health [10/10 "
+        .text = ""
     };
     Zigel3DData statbar_zigel_data = {
         .font_thickness = 12,

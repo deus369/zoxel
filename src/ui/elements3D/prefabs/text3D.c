@@ -22,7 +22,16 @@ ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_prefab_set(e, FontThickness, { 1 })
     zox_prefab_add(e, TextData)
     zox_prefab_add(e, Children)
+    zox_prefab_set(e, RenderDisabled, { 0 })
     return e;
+}
+
+float3 calculate_zigel3D_position(const float2 zigel3D_size, const int data_index, const int zigels_count) {
+    float3 position = float3_zero;
+    position.x += zigel3D_size.x * 0.5f;
+    position.x -= zigel3D_size.x * 0.5f * zigels_count; // centre
+    position.x += zigel3D_size.x * data_index;
+    return position;
 }
 
 ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData zigel_data) {
@@ -49,10 +58,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData
         const int data_index = calculate_zigel_data_index(textData->value, textData->length, i);
         const byte zigel_index = calculate_zigel_index(textData->value, textData->length, i);
         zigel_data.zigel_index = zigel_index;
-        zigel_data.position = data.position;
-        zigel_data.position.x += zigel3D_size.x * 0.5f;
-        zigel_data.position.x -= zigel3D_size.x * 0.5f * zigels_count; // centre
-        zigel_data.position.x += zigel3D_size.x * data_index;
+        zigel_data.position = calculate_zigel3D_position(zigel3D_size, data_index, zigels_count);
         children->value[i] = spawn_zigel3D(world, zigel_data);
     }
     zox_set(e, TextData, { textData->length, textData->value })
@@ -60,3 +66,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData
     debug_entity_text3D = e;
     return e;
 }
+
+/*zigel_data.position.x += zigel3D_size.x * 0.5f;
+ z igel_data.position.x -= zigel3D_size.x * 0.5f * zigels*_count; // centre
+ zigel_data.position.x += zigel3D_size.x * data_index;*/

@@ -1,5 +1,4 @@
 // #define zox_debug_particle3Ds
-const float default_point_thickness = 4 * 32.0f;
 #ifdef zox_debug_particle3Ds
 const float3 debug_particle_line_addition = (float3) { 0, 0.2f, 0 };
 extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);

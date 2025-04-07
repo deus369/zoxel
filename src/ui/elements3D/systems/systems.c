@@ -13,5 +13,5 @@ void define_systems_elements3D(ecs_world_t *world) {
     zox_system(UITrailSystem, zox_transforms_stage, [in] UIHolderLink, [in] UITrail, [out] Position3D)
     zox_system(Elementbar3DSystem, EcsOnUpdate, [in] ElementBar, [in] ElementBarSize, [in] Children, [none] MeshVertices)
     zox_system(TextUpdateSystem, EcsOnUpdate, [in] ZextDirty, [in] TextData, [in] Children, [none] zexts.Zext) // , [none] Text3D)
-    zox_system_1(Text3DResizeSystem, EcsOnUpdate, [in] TextData, [in] TextSize, [in] TextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] FontOutlineColor, [in] FontFillColor, [in] FontThickness, [in] ZextDirty, [out] RenderDisabled, [out] Children, [none] zexts.Zext, [none] Text3D)
+    zox_system_1(Text3DResizeSystem, EcsOnUpdate, [in] TextData, [in] FontOutlineColor, [in] FontFillColor, [in] FontThickness, [in] ZextDirty, [in] RenderDisabled, [out] Children, [none] zexts.Zext, [none] Text3D)
 }

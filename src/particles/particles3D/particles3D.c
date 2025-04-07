@@ -1,10 +1,7 @@
 #ifndef zox_mod_particles3D
 #define zox_mod_particles3D
 
-// stats
-// #define zox_disable_particles_gpu_instancing
-int zox_statistics_particles3D = 0;
-#define zox_max_particles3D 100000
+#include "data/settings.c"
 zox_declare_tag(Particle3D)
 zox_declare_tag(Particle3DEmitter)
 #include "shaders/particle_shader.c"

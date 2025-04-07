@@ -11,7 +11,7 @@ void update_text3D(ecs_world_t *world, const Children *children, const TextData 
             zox_get_muter(e, GenerateTexture, generateTexture)
             zigelIndex2->value = zigel_index;
             generateTexture->value = zox_generate_texture_trigger;
-            zox_log_text3D("    + zigel [%i] updated [%i:%i]", i, old_zigel_index, zigel_index)
+            zox_log_text("    + zigel [%i] updated [%i:%i]", i, old_zigel_index, zigel_index)
         }
     }
 }
@@ -33,10 +33,10 @@ void TextUpdateSystem(ecs_iter_t *it) {
         }
         char *debug_text = convert_zext_to_text(textData->value, textData->length);
         if (debug_text) {
-            zox_log_text3D("+ updating [%s] text: %s", zox_get_name(it->entities[i]), debug_text)
+            zox_log_text("+ updating [%s] text: %s", zox_get_name(it->entities[i]), debug_text)
             free(debug_text);
         } else {
-            zox_log_text3D("+ updating [%s] text [null]",  zox_get_name(it->entities[i]))
+            zox_log_text("+ updating [%s] text [null]",  zox_get_name(it->entities[i]))
         }
         update_text3D(world, children, textData);
     }
