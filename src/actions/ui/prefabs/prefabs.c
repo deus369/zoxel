@@ -5,7 +5,7 @@ ecs_entity_t prefab_icon_action;
 #include "icon_action.c"
 zox_user_menu_functions_minimal(Actions, Action, actions, action)
 
-ecs_entity_t spawn_menu_actions_player(ecs_world_t *world, const ecs_entity_t player) {
+ecs_entity_t spawn_player_menu_actions(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const int2 canvas_size = zox_get_value(canvas, PixelSize)

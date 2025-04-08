@@ -38,6 +38,7 @@ void run_load_shader_function(ecs_world_t *world, int i) {
 
 void load_shaders(ecs_world_t *world) {
     for (int i = 0; i < load_shader_functions->size; i++) {
-        run_load_shader_function(world, i);
+        // run_load_shader_function(world, i);
+        if (load_shader_functions->data[i].value != NULL) (*load_shader_functions->data[i].value)(world);
     }
 }*/

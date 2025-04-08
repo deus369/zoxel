@@ -1,13 +1,24 @@
 #define find_child_with_tag(parent, tag, child_name)\
-const Children *children_##tag = zox_get(parent, Children)\
-ecs_entity_t child_name = 0;\
-for (int i = 0; i < children_##tag->length; i++) {\
-    const ecs_entity_t child_e = children_##tag->value[i];\
-    if (child_e && zox_has(child_e, tag)) {\
-        child_name = child_e;\
-        break;\
-    }\
-}
+    const Children *children_##tag = zox_get(parent, Children)\
+    ecs_entity_t child_name = 0;\
+    for (int i = 0; i < children_##tag->length; i++) {\
+        const ecs_entity_t child_e = children_##tag->value[i];\
+        if (child_e && zox_has(child_e, tag)) {\
+            child_name = child_e;\
+            break;\
+        }\
+    }
+
+#define find_child_with_id(parent, id, child_name)\
+    const Children *children = zox_get(parent, Children)\
+    ecs_entity_t child_name = 0;\
+    for (int i = 0; i < children->length; i++) {\
+        const ecs_entity_t child_e = children->value[i];\
+        if (child_e && zox_has_id(child_e, id)) {\
+            child_name = child_e;\
+            break;\
+        }\
+    }
 
 #define if_has_child_with_tag(e, tag)\
 ecs_entity_t child_##tag = 0;\
@@ -20,6 +31,19 @@ for (int i = 0; i < children_##tag->length; i++) {\
     }\
 }\
 if (child_##tag)
+
+
+#define if_has_child_with_id(e, tag)\
+    ecs_entity_t child = 0;\
+    const Children *children = zox_get(e, Children)\
+    for (int i = 0; i < children->length; i++) {\
+        const ecs_entity_t child_e = children->value[i];\
+        if (child_e && zox_has_id(child_e, tag)) {\
+            child = child_e;\
+            break;\
+        }\
+    }\
+    if (child)
 
 void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t child) {
     // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)

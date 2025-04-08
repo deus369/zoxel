@@ -27,7 +27,13 @@ zox_component_double(FPSDisplayTicker)
 #include "systems/quads_display_system.c"
 #include "systems/device_mode_ui_system.c"
 
+void dispose_gameui(ecs_world_t *world, void *ctx) {
+    dispose_hook_taskbar();
+}
+
 zox_begin_module(GameUI)
+    zox_module_dispose(dispose_gameui)
+    initialize_hook_taskbar();
     zox_define_component_byte(MenuType)
     zox_define_tag(MenuMain)
     zox_define_tag(MenuOptions)
@@ -47,6 +53,11 @@ zox_begin_module(GameUI)
     zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] TextData, [out] ZextDirty, [out] FPSDisplayTicker)
     zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] TextData)
     spawn_prefabs_game_ui(world);
+    add_taskbar_button((hook_taskbar) {
+        .spawn = &spawn_player_menu_paused,
+        .component_id = MenuPaused,
+        .texture_name = "game_icon"
+    });
 zox_end_module(GameUI)
 
 #endif

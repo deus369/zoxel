@@ -6,6 +6,11 @@ void toggle_ui2(ecs_world_t *world, const ecs_entity_t e2, const ecs_entity_t e,
     }
 }
 
+#define toggle_ui_with_id(spawn_ui, id, e) {\
+    find_child_with_id(canvas, id, ui)\
+    toggle_ui2(world, e, ui, spawn_ui);\
+}
+
 #define toggle_ui_with_tag_e(spawn_ui, tag, e) {\
     find_child_with_tag(canvas, tag, ui)\
     toggle_ui2(world, e, ui, spawn_ui);\

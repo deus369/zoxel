@@ -1,7 +1,9 @@
 // todo: refactor how these work so i can just hook into user events
 
 void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const byte quantity) {
-    if (!player) return;
+    if (!player) {
+        return;
+    }
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (menu_actions) {
@@ -13,13 +15,12 @@ void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsign
     }
 }
 
-
-void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i) {
+/*void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i) {
     if (i == taskbar_items) { if_has_child_with_tag(canvas, MenuItems) zox_set(frame, ActiveState, { 1 }) }
-    else if (i == taskbar_skills) {if_has_child_with_tag(canvas, MenuSkills) zox_set(frame, ActiveState, { 1 }) }
-    else if (i == taskbar_quests) {if_has_child_with_tag(canvas, MenuQuests) zox_set(frame, ActiveState, { 1 }) }
-    else if (i == taskbar_stats) {if_has_child_with_tag(canvas, MenuStats) zox_set(frame, ActiveState, { 1 }) }
-    else if (i == taskbar_actions) {if_has_child_with_tag(canvas, MenuActions) zox_set(frame, ActiveState, { 1 }) }
+    else if (i == taskbar_skills) { if_has_child_with_tag(canvas, MenuSkills) zox_set(frame, ActiveState, { 1 }) }
+    else if (i == taskbar_quests) { if_has_child_with_tag(canvas, MenuQuests) zox_set(frame, ActiveState, { 1 }) }
+    else if (i == taskbar_stats) { if_has_child_with_tag(canvas, MenuStats) zox_set(frame, ActiveState, { 1 }) }
+    else if (i == taskbar_actions) { if_has_child_with_tag(canvas, MenuActions) zox_set(frame, ActiveState, { 1 }) }
 }
 
 void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event) {
@@ -41,3 +42,4 @@ void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event) {
     }
     zox_set(frame, ActiveState, { !zox_gett_value(frame, ActiveState) })
 }
+*/

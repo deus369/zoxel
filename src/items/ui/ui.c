@@ -9,6 +9,11 @@ zox_begin_module(ItemsUI)
     zox_define_tag(MenuItems)
     zox_define_tag(IconItem)
     spawn_prefabs_items_ui(world);
+    add_taskbar_button((hook_taskbar) {
+        .spawn = &spawn_player_menu_items,
+        .component_id = MenuItems,
+        .texture_name = "taskbar_items"
+    });
 zox_end_module(ItemsUI)
 
 #endif

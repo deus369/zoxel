@@ -8,10 +8,11 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
 
 
 // this is created in our users module
-extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i);
-extern void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event);
+// extern void set_taskbar_icon_active(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i);
+// extern void on_toggle_taskbar_icon(ecs_world_t *world, const ClickEventData *event);
 
 ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const byte layer) {
+    byte taskbar_count = hook_taskbars->size;
     int2 position = (int2) { 0, -24 * zox_ui_scale };
     float2 anchor = (float2) {0.5f, 1 };
     const int size = 48 * zox_ui_scale;
@@ -86,9 +87,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         spawn_frame_data.element.position = (int2) { position_x, 0 };
         const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
         children->value[i] = frame;
-        // Active State
-        if (i == 0) zox_set(frame, ActiveState, { 1 })
-        set_taskbar_icon_active(world, canvas, frame, i);
+        // set_taskbar_icon_active(world, canvas, frame, i);
         // zox_get_muter(frame, Children, frame_children)
         Children *frame_children = &((Children) { 0, NULL });
         initialize_memory_component(Children, frame_children, ecs_entity_t, 1)
@@ -96,12 +95,20 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         spawn_icon_data.parent.position = spawn_frame_data.element.position;
         const ecs_entity_t icon2 = spawn_element(world, &spawn_icon_data);
         frame_children->value[0] = icon2;
-        zox_set(icon2, ClickEvent, { &on_toggle_taskbar_icon })
+        // zox_set(icon2, ClickEvent, { &on_toggle_taskbar_icon })
         zox_set(icon2, IconIndex, { i })
+        // hook data
+        hook_taskbar hook = hook_taskbars->data[i];
+        taskbar_set_icons(world, canvas, frame, i);
+        zox_set(icon2, ClickEvent, { &taskbar_button_click_event })
         // texture
-        char *icon_texture_name = taskbar_textures[i];
+        char *icon_texture_name = hook.texture_name; //  taskbar_textures[i];
         clone_texture_to_entity(world, icon2, icon_texture_name);
         zox_set(frame, Children, { frame_children->length, frame_children->value })
+        // Active State
+        if (i == 0) {
+            zox_set(frame, ActiveState, { 1 })
+        }
     }
     zox_set(e, Children, { children->length, children->value })
     return e;

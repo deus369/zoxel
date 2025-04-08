@@ -19,6 +19,11 @@ zox_begin_module(StatsUI)
     zox_system(StatbarSystem, EcsOnUpdate, [in] StatLink, [out] ElementBar, [none] Statbar)
     zox_system(StatTextSystem, EcsOnUpdate, [in] StatLink, [out] TextData, [out] ZextDirty)
     spawn_prefabs_ui_stats(world);
+    add_taskbar_button((hook_taskbar) {
+        .spawn = &spawn_player_menu_stats,
+        .component_id = MenuStats,
+        .texture_name = "taskbar_stats"
+    });
 zox_end_module(StatsUI)
 
 #endif

@@ -39,7 +39,7 @@ void EditorInputSystem(ecs_iter_t *it) {
                     toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
                 }
                 // test game uis
-                else if (keyboard->u.pressed_this_frame) {
+                /*else if (keyboard->u.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, e)
                 } else if (keyboard->i.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_items_player, MenuItems, e)
@@ -47,7 +47,7 @@ void EditorInputSystem(ecs_iter_t *it) {
                     toggle_ui_with_tag_e(spawn_menu_stats_player, MenuStats, e)
                 } else if (keyboard->p.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, e)
-                }
+                }*/
 
                 // test
                 // else if (keyboard->t.pressed_this_frame) trigger_canvas_fade_transition(world, canvas);

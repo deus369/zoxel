@@ -5,8 +5,9 @@
 #define taskbar_items 4
 #define taskbar_skills 5
 #define taskbar_quests 6
+
 // todo: add skilltree
-const int taskbar_count = 13;
+/*const int taskbar_count = 13;
 char* taskbar_textures[] = {
     "game_icon",
     "taskbar_disabled", // "taskbar_status",
@@ -21,4 +22,4 @@ char* taskbar_textures[] = {
     "taskbar_disabled", // "taskbar_map",
     "taskbar_disabled", // "taskbar_lore",
     "taskbar_disabled", // "taskbar_achievements",
-};
+};*/

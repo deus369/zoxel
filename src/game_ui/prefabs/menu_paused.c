@@ -25,7 +25,7 @@ ecs_entity_t spawn_menu_paused(ecs_world_t *world, const ecs_entity_t player, co
     return e;
 }
 
-ecs_entity_t spawn_menu_paused_player(ecs_world_t *world, const ecs_entity_t player) {
+ecs_entity_t spawn_player_menu_paused(ecs_world_t *world, const ecs_entity_t player) {
     const float2 anchor = float2_half;  // (float2) { 0, 1 };
     const int2 position = int2_zero;    // (int2) { 100, -100 };
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)

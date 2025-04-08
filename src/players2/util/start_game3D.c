@@ -7,7 +7,9 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 #endif
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
-    if (!menu_actions) spawn_menu_actions_player(world, player);
+    if (!menu_actions) {
+        spawn_player_menu_actions(world, player);
+    }
 }
 
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
