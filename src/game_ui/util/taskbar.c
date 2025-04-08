@@ -25,10 +25,6 @@ void add_taskbar_button(const hook_taskbar data) {
 
 // set active stat based on ui component id
 void taskbar_set_icons(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i) {
-    /*for (int i = 0; i < load_shader_functions->size; i++) {
-        // run_load_shader_function(world, i);
-        if (load_shader_functions->data[i].value != NULL) (*load_shader_functions->data[i].value)(world);
-    }*/
     hook_taskbar hook = hook_taskbars->data[i];
     if_has_child_with_id(canvas, hook.component_id) {
         zox_set(frame, ActiveState, { 1 })
@@ -44,7 +40,6 @@ void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event)
     const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
     hook_taskbar hook = hook_taskbars->data[index];
     toggle_ui_with_id(*hook.spawn, hook.component_id, event->clicker)
-
     find_child_with_id(canvas, hook.component_id, window_ui)
     const ecs_entity_t frame = zox_get_value(event->clicked, ParentLink)
     if (!frame || !zox_has(frame, ActiveState)) {
@@ -52,6 +47,10 @@ void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event)
         return;
     }
     byte window_state = window_ui == 0;
-    zox_set(frame, ActiveState, { window_state }) // !zox_gett_value(frame, ActiveState) })
+    zox_set(frame, ActiveState, { window_state })
 
 }
+
+/*for (int i = 0; i < load_shader_functions->size; i++) {
+    if (load_shader_functions->data[i].value != NULL) (*load_shader_functions->data[i].value)(world);
+ }*/
