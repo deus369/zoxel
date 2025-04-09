@@ -52,7 +52,7 @@ zox_component_entity(ElementLink)
 #include "click_event_data.c"
 zox_function_component(ClickEvent, void, ecs_world_t*, const ClickEventData*)
 #include "tooltip_event_data.c"
-zox_function_component(TooltipEvent, void, ecs_world_t*, const TooltipEventData*)
+zox_function_component(TooltipEvent, byte, ecs_world_t*, const TooltipEventData*)
 zox_component_zext(TooltipText)
 
 void define_components_elements_core(ecs_world_t *world) {

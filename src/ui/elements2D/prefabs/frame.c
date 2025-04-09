@@ -1,37 +1,40 @@
 // a small square frame ui with an icon in it
 // used for game - action/skill/stat - uis
-ecs_entity_t spawn_prefab_icon_frame(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_frame(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_icon_frame")
-    zox_add_tag(e, IconFrame)
+    zox_prefab_name("prefab_frame")
+    zox_add_tag(e, Frame)
+    zox_prefab_add(e, Children)
     zox_set(e, Color, { default_fill_color_frame })
     zox_set(e, OutlineColor, { default_outline_color_frame })
-    zox_prefab_add(e, Children)
     return e;
 }
 
-ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
-    int2 position = data->element.position; // anchor our position
-    const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
-    const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
-    anchor_element_position2D(&position, data->element.anchor, data->element.size);
+ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame *data) {
     zox_instance(data->element.prefab)
-    // zox_name("icon_frame")
-    initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
+    zox_name("frame")
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
+    const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
+    const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
+    // anchor our position
+    int2 position = data->element.position;
+    anchor_element_position2D(&position, data->element.anchor, data->element.size);
+    initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
+    CanvasSpawnData canvas_data = data->canvas;
+    ParentSpawnData parent_data = {
+        .e = e,
+        .position = position_in_canvas,
+        .size = data->element.size
+    };
     SpawnIcon spawnIcon = {
-        .canvas = data->canvas,
-        .parent = {
-            .e = e,
-            .position = position_in_canvas,
-            .size = data->element.size
-        },
+        .canvas = canvas_data,
+        .parent = parent_data,
         .element = {
             .prefab = data->icon.prefab,
+            .layer = data->element.layer + 1,
             .size = int2_single(data->icon.size),
             .anchor = float2_half,
-            .layer = data->element.layer + 1,
         },
         .texture = data->icon.texture,
         .index = data->icon.index,
@@ -44,12 +47,8 @@ ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
     if (zox_has(data->element.prefab, IconLabel)) {
         const int font_size = 12;
         SpawnZext spawnZext = {
-            .canvas = data->canvas,
-            .parent = {
-                .e = e,
-                .position = position_in_canvas,
-                .size = spawnIcon.element.size
-            },
+            .canvas = canvas_data,
+            .parent = parent_data,
             .element = {
                 .prefab = prefab_zext,
                 .position = (int2) { -font_size - 4, font_size - 4 },
@@ -62,7 +61,6 @@ ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
                 .text = "",
                 .font_size = font_size,
                 .font_thickness = 2,
-                // .padding = padding,
                 .font_fill_color = default_font_fill_color,
                 .font_outline_color = default_font_outline_color
             }
@@ -71,6 +69,18 @@ ecs_entity_3 spawn_icon_frame(ecs_world_t *world, SpawnIconFrame *data) {
         add_to_Children(children, zext);
         zox_set_unique_name(zext, "icon_text")
     }
+
+    // icon overlay
+    const ElementSpawnData icon_overlay_data = {
+        .prefab = prefab_icon_overlay,
+        .layer = data->element.layer + 3,
+        .size = int2_single(data->icon.size / 2),
+        .render_disabled = data->element.render_disabled,
+        .anchor = float2_half,
+    };
+    ecs_entity_t icon_overlay = spawn_icon_overlay(world, canvas_data, parent_data, icon_overlay_data);
+    add_to_Children(children, icon_overlay);
+
     zox_set(e, Children, { children->length, children->value })
     return (ecs_entity_3) { e, icon, zext };
 }

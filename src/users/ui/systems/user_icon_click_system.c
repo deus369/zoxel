@@ -50,11 +50,11 @@ void UserIconClickSystem(ecs_iter_t *it) {
         swap_textures(world, e, icon_mouse_follow);
 
         // remember: this is a temporary fix for: bug where e doesn't clear on picked up items
-        const ecs_entity_t icon_frame = zox_get_value(e, ParentLink)
+        const ecs_entity_t frame = zox_get_value(e, ParentLink)
         if (is_placing_empty) {
-            set_icon_from_user_data(world, icon_frame, e, 0);
+            set_icon_from_user_data(world, frame, e, 0);
         }
-        set_icon_label_from_user_data(world, icon_frame, mouse_data);
+        set_icon_label_from_user_data(world, frame, mouse_data);
 
         // new data placed in mouse_data
         // use iconType->value and iconIndex->value to set data on character

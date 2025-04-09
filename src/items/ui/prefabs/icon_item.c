@@ -1,4 +1,7 @@
-void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
+byte tooltip_event_item(ecs_world_t *world, const TooltipEventData *data) {
+    if (!data->data || !zox_has(data->data, Item)) {
+        return 0;
+    }
     char result[64];
     const ZoxName *zox_name = zox_get(data->data, ZoxName)
     const byte quantity = zox_has(data->data, Quantity) ? zox_gett_value(data->data, Quantity) : 0;
@@ -10,12 +13,13 @@ void tooltip_event_icon_item(ecs_world_t *world, const TooltipEventData *data) {
         sprintf(result, "[%" PRIu64 "] x%i\n", data->data, quantity);
     }
     set_entity_text(world, data->tooltip, result);
+    return 1;
 }
 
 ecs_entity_t spawn_prefab_icon_item(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_icon_item")
-    zox_set(e, TooltipEvent, { &tooltip_event_icon_item })
+    zox_set(e, TooltipEvent, { &tooltip_event_item })
     zox_set(e, IconType, { zox_icon_type_item })
     return e;
 }

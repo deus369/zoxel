@@ -2,7 +2,7 @@ ecs_entity_t prefab_label;
 ecs_entity_t prefab_button;
 ecs_entity_t prefab_close_button;
 ecs_entity_t prefab_icon;
-ecs_entity_t prefab_icon_frame;
+ecs_entity_t prefab_frame;
 ecs_entity_t prefab_label_background;
 ecs_entity_t prefab_scrollbar_front;
 ecs_entity_t prefab_scrollbar;
@@ -14,13 +14,15 @@ ecs_entity_t prefab_window;
 ecs_entity_t prefab_elementbar2D;
 ecs_entity_t prefab_elementbar2D_front;
 ecs_entity_t prefab_icon_mouse_follow;
+ecs_entity_t prefab_icon_overlay;
 
 #include "label.c"
 #include "label_background.c"
 #include "button.c"
-#include "close_button.c"
+#include "icon_overlay.c"
 #include "icon.c"
-#include "icon_frame.c"
+#include "frame.c"
+#include "close_button.c"
 #include "header.c"
 #include "body.c"
 #include "window.c"
@@ -46,6 +48,7 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_elementbar2D = spawn_prefab_elementbar2D(world);
     prefab_elementbar2D_front = spawn_prefab_elementbar2D_front(world);
     prefab_icon = spawn_prefab_icon(world, prefab_element);
-    prefab_icon_frame  = spawn_prefab_icon_frame(world, prefab_element);
+    prefab_frame  = spawn_prefab_frame(world, prefab_element);
     prefab_icon_mouse_follow = spawn_prefab_icon_mouse_follow(world, prefab_element);
+    prefab_icon_overlay = spawn_prefab_icon_overlay(world, prefab_element);
 }

@@ -17,7 +17,7 @@ typedef struct {
     SpawnTextData header_zext;
     SpawnHeaderData header;
     SpawnButtonData close_button;
-    IconFrameData icon_frame;
+    FrameData frame;
     IconData icon;
     SpawnWindowUsersData window;
 } SpawnWindowUsers;

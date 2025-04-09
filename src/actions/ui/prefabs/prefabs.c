@@ -1,7 +1,7 @@
 ecs_entity_t prefab_menu_actions;
-ecs_entity_t prefab_icon_frame_action;
+ecs_entity_t prefab_frame_action;
 ecs_entity_t prefab_icon_action;
-#include "icon_frame_action.c"
+#include "frame_action.c"
 #include "icon_action.c"
 zox_user_menu_functions_minimal(Actions, Action, actions, action)
 
@@ -21,16 +21,16 @@ ecs_entity_t spawn_player_menu_actions(ecs_world_t *world, const ecs_entity_t pl
         data.window.grid_padding + (data.window.icon_size + data.window.grid_padding) * data.window.grid_size.x + data.window.grid_margins * 2,
         data.window.grid_padding + (data.window.icon_size + data.window.grid_padding) * data.window.grid_size.y + data.window.grid_margins * 2 + header_height
     };
-    data.icon_frame.prefab = prefab_icon_frame_action;
+    data.frame.prefab = prefab_frame_action;
     data.element.anchor = (float2) { 0.5f, 0 };
     data.element.position = (int2) { 0, 24 };
-    data.icon_frame.texture.fill_color = default_fill_color_frame_action;
+    data.frame.texture.fill_color = default_fill_color_frame_action;
     return spawn_window_users(world, &data);
 }
 
 void spawn_prefabs_actions_ui(ecs_world_t *world) {
-    prefab_icon_frame_action = spawn_prefab_icon_frame_action(world, prefab_icon_frame_user);
+    prefab_frame_action = spawn_prefab_frame_action(world, prefab_frame_user);
     prefab_icon_action = spawn_prefab_icon_action(world, prefab_icon_user);
     prefab_menu_actions = spawn_prefab_menu_actions(world, prefab_window_users);
-    zox_set(prefab_menu_actions, IconFramePrefabLink, { prefab_icon_frame_action })
+    zox_set(prefab_menu_actions, FramePrefabLink, { prefab_frame_action })
 }

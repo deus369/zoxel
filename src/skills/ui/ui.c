@@ -3,7 +3,6 @@
 
 zox_declare_tag(MenuSkills)
 zox_declare_tag(IconSkill)
-#include "util/tooltips.c"
 #include "prefabs/prefabs.c"
 
 zox_begin_module(UISkills)

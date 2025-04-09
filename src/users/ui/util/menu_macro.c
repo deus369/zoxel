@@ -36,7 +36,7 @@ ecs_entity_t spawn_player_menu_##name(ecs_world_t *world, const ecs_entity_t pla
     data.element.prefab = prefab_menu_##name;\
     data.icon.prefab = prefab_icon_##name2;\
     data.window.user_links_id = zox_id(Name2##Links);\
-    data.icon_frame.texture.fill_color = fill_color_frame;\
+    data.frame.texture.fill_color = fill_color_frame;\
     return spawn_window_users(world, &data);\
 }
 

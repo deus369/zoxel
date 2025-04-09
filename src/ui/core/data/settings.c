@@ -29,7 +29,7 @@ const color default_fill_color_frame = (color) { 6, 55, 55, 122 };
 const color default_outline_color_frame = (color) { 0, 0, 0, 200 };
 const color default_fill_color_icon = (color) { 88, 144, 200, 200 };
 const color default_outline_color_icon = (color) { 0, 0, 0, 144 };
-const int default_icon_frame_size = 96; // 64;
+const int default_frame_size = 96; // 64;
 const int default_icon_size = 80; // 48;
 const float default_icon_radius = 0.369f; // 16 outt  of 48 originally
 const int default_icon_texture_size = 16; // 32
@@ -45,3 +45,6 @@ const byte default_button_frame_thickness = 4;
 // pause settings
 const float pause_fade_alpha = 0.52f;
 const float pause_fade_time = 0.48f;
+
+const color icon_overlay_fill_color = (color) { 55, 255, 255, 44 };
+const color icon_overlay_outline_color = (color) { 33, 0, 0, 22 };

@@ -6,7 +6,7 @@
 ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_window_users")
-    zox_prefab_set(e, IconFramePrefabLink, { prefab_icon_frame })
+    zox_prefab_set(e, FramePrefabLink, { prefab_frame })
     return e;
 }
 
@@ -104,7 +104,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
     int item_index = 0;
     int array_index = 0;
-    const byte icon_frames_have_active_states = zox_has(data->icon_frame.prefab, ActiveState);
+    const byte active_states = zox_has(data->frame.prefab, ActiveState);
     for (int j = data->window.grid_size.y - 1; j >= 0; j--) {
         if (array_index >= body_children->length) break;
         for (int i = 0; i < data->window.grid_size.x; i++) {
@@ -113,7 +113,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                 (int) ((i - (data->window.grid_size.x / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding)),
                 (int) ((j - (data->window.grid_size.y / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding))
             };
-            SpawnIconFrame spawnIconFrame = {
+            SpawnFrame spawnFrame = {
                 .canvas = data->canvas,
                 .icon = data->icon,
                 .parent = {
@@ -122,18 +122,18 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
                     .size = spawn_body_data.element.size
                 },
                 .element = {
-                    .prefab = data->icon_frame.prefab,
+                    .prefab = data->frame.prefab,
                     .position = position,
                     .size = int2_single(data->window.icon_size),
                     .layer = icon_layer,
                     .anchor = float2_half
                 },
-                .texture = data->icon_frame.texture
+                .texture = data->frame.texture
             };
-            spawnIconFrame.icon.index = array_index;
+            spawnFrame.icon.index = array_index;
             const ecs_entity_t user_data_element = user_data->value[item_index];
-            body_children->value[array_index] = spawn_icon_frame_user(world, &spawnIconFrame, user_data_element).x;
-            if (i == 0 && icon_frames_have_active_states) {
+            body_children->value[array_index] = spawn_frame_user(world, &spawnFrame, user_data_element).x;
+            if (i == 0 && active_states) {
                 zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
             }
             array_index++;
@@ -154,12 +154,12 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
     const byte2 grid_size = (byte2) { 4, 4 };
     const int grid_padding = 6 * zox_ui_scale;
     const int grid_margins = 16 * zox_ui_scale;
-    const int icon_frame_size = default_icon_frame_size * zox_ui_scale;
+    const int frame_size = default_frame_size * zox_ui_scale;
     const int icon_size = default_icon_size * zox_ui_scale;
-    const int2 size = (int2) { grid_padding + (icon_frame_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (icon_frame_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
-    ecs_entity_t prefab_icon_frame_ = prefab_icon_frame;
-    if (zox_has(prefab, IconFramePrefabLink)) {
-        prefab_icon_frame_ = zox_get_value(prefab, IconFramePrefabLink)
+    const int2 size = (int2) { grid_padding + (frame_size + grid_padding) * grid_size.x + grid_margins * 2, grid_padding + (frame_size + grid_padding) * grid_size.y + grid_margins * 2 + header_height };
+    ecs_entity_t prefab_frame_ = prefab_frame;
+    if (zox_has(prefab, FramePrefabLink)) {
+        prefab_frame_ = zox_get_value(prefab, FramePrefabLink)
     }
     SpawnWindowUsers data = {
         .canvas = {
@@ -189,8 +189,8 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
             .font_fill_color = header_font_fill_color,
             .font_outline_color = header_font_outline_color
         },
-        .icon_frame = {
-            .prefab = prefab_icon_frame_,
+        .frame = {
+            .prefab = prefab_frame_,
             .texture = {
                 .fill_color = default_fill_color_frame,
                 .outline_color = default_outline_color_frame
@@ -208,7 +208,7 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
         .window = {
             .grid_size = grid_size,
             .grid_padding = grid_padding,
-            .icon_size = icon_frame_size,
+            .icon_size = frame_size,
             .character = character,
             .prefab_header = prefab_header,
             // .prefab_header_zext = prefab_zext,

@@ -22,11 +22,14 @@ void TooltipSystem(ecs_iter_t *it) {
             set_entity_text(world, tooltip, "");
             continue;
         }
+        zox_field_e()
         TooltipEventData data = {
             .event = selectState->value,
             .tooltip = tooltip,
-            .triggered = it->entities[i]
+            .triggered = e
         };
-        (*tooltipEvent->value)(world, &data);
+        if ((*tooltipEvent->value)(world, &data)) {
+            // hmm need to rethink this
+        }
     }
 } zox_declare_system(TooltipSystem)

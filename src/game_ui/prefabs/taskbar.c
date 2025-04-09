@@ -7,23 +7,24 @@ ecs_entity_t spawn_prefab_taskbar(ecs_world_t *world, const ecs_entity_t prefab)
 }
 
 // todo: make tooltip function just return a string
-void tooltip_event_taskbar_icon(ecs_world_t *world, const TooltipEventData *data) {
+byte tooltip_event_taskbar_icon(ecs_world_t *world, const TooltipEventData *data) {
     if (!data->triggered || !zox_has(data->triggered, TooltipText)) {
         zox_log("! issue with ui, on tooltip\n")
-        return;
+        return 0;
     }
     zox_geter(data->triggered, TooltipText, tooltip_text)
     char *result = convert_zext_to_text(tooltip_text->value, tooltip_text->length);
     // char *result = "opens a game ui";
     set_entity_text(world, data->tooltip, result);
     free(result);
+    return 1;
 }
 
 ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const byte layer) {
     byte taskbar_count = hook_taskbars->size;
     int2 position = (int2) { 0, -24 * zox_ui_scale };
     float2 anchor = (float2) { 0.5f, 1 };
-    const int frame_size = default_icon_frame_size * zox_ui_scale;
+    const int frame_size = default_frame_size * zox_ui_scale;
     const int icon_size = default_icon_size * zox_ui_scale;
     const int padding_x = 4 * zox_ui_scale;
     const int padding_y = 4 * zox_ui_scale;
@@ -63,7 +64,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
             .size = actionbar_size
         },
         .element = {
-            .prefab = prefab_icon_frame_taskbar,
+            .prefab = prefab_frame_taskbar,
             .layer = layer + 1,
             .anchor = float2_half,
             .size = int2_single(frame_size),

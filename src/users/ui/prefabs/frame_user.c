@@ -1,7 +1,6 @@
-ecs_entity_t spawn_prefab_icon_frame_user(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_frame_user(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_icon_frame_user")
-    // zox_add_tag(e, UserIconFrame)
+    zox_prefab_name("prefab_frame_user")
     zox_prefab_add(e, UserDataLink)
     zox_prefab_add(e, TooltipEvent)
     return e;
@@ -96,12 +95,12 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const
     zox_set(e, TextureDirty, { 1 })
 }
 
-ecs_entity_2 spawn_icon_frame_user(ecs_world_t *world, SpawnIconFrame *data, const ecs_entity_t userdata) {
-    const ecs_entity_3 e = spawn_icon_frame(world, data);
+ecs_entity_2 spawn_frame_user(ecs_world_t *world, SpawnFrame *data, const ecs_entity_t userdata) {
+    const ecs_entity_3 e = spawn_frame(world, data);
     // if prefab has label tag, spawn icon label (Quantity)
     set_icon_from_user_data(world, e.x, e.y, userdata);
     set_icon_label_from_user_data_direct(world, e.z, userdata);
-    zox_set_unique_name(e.x, "icon_frame_user")
+    zox_set_unique_name(e.x, "frame_user")
     zox_set_unique_name(e.y, "icon_user")
     zox_set_unique_name(e.z, "icon_label_user")
     return (ecs_entity_2) { e.x, e.y };

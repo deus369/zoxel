@@ -2,13 +2,12 @@
 typedef struct {
     ecs_entity_t prefab;
     FrameTextureData texture;
-} IconFrameData;
+} FrameData;
 
 typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
     FrameTextureData texture;
     ElementSpawnData element;
-    IconData icon;  // encapsulate icon data
-    // SpawnTextData zext; // for now no label
-} SpawnIconFrame;
+    IconData icon;
+} SpawnFrame;

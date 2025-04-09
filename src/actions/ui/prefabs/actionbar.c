@@ -53,7 +53,7 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, cons
             .size = actionbar_size
         },
         .element = {
-            .prefab = prefab_icon_frame_action,
+            .prefab = prefab_frame_action,
             .layer = layer + 1,
             .anchor = float2_half,
             .size = action_frame_size,
@@ -81,4 +81,4 @@ ecs_entity_t spawn_actionbar_player(ecs_world_t *world, const ecs_entity_t playe
 }*/
 
 // const ecs_entity_t actionbar_ui = spawn_element(world, prefab, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
-// children->value[i] = spawn_element(world, prefab_icon_frame_action, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);
+// children->value[i] = spawn_element(world, prefab_frame_action, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);
