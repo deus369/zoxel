@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_aura(ecs_world_t *world, const ecs_entity_t prefab) {
     return e;
 }
 
-ecs_entity_t spawn_meta_skill_aura(ecs_world_t *world, const ecs_entity_t prefab, const char* name, const float value, const float range, const color colorr) {
+ecs_entity_t spawn_skill_aura(ecs_world_t *world, const ecs_entity_t prefab, const char* name, const float value, const float range, const color colorr) {
     const ecs_entity_t e = spawn_meta_skill(world, prefab, name);
     // zox_instance(prefab)
     zox_prefab_set(e, SkillDamage, { value })

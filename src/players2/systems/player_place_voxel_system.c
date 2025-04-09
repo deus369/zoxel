@@ -81,10 +81,12 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
         } else if (zox_has(action_entity, Skill)) {
             // zox_log(" > toggling skill [%s]\n", zox_get_name(action_entity))
             if (zox_has(action_entity, Aura)) {
+                // Toggle Skill
                 zox_set(action_entity, SkillActive, { !zox_gett_value(action_entity, SkillActive) })
             } else if (zox_has(action_entity, Melee)) {
+                zox_set(action_entity, SkillActive, { !zox_gett_value(action_entity, SkillActive) })
                 // todo: reduce energy stat value using SkillCost, check if has enough energy
-                const float skill_damage = zox_get_value(action_entity, SkillDamage)
+                /*const float skill_damage = zox_get_value(action_entity, SkillDamage)
                 const float skill_range = zox_get_value(action_entity, SkillRange)
                 if (raycastVoxelData->distance <= skill_range) {
                     // zox_log(" > activating melee skill [%s]\n", zox_get_name(action_entity))
@@ -136,11 +138,10 @@ void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
                 } else {
                     // ray too far
                     spawn_sound_generated(world, instrument_violin, note_frequencies[44], 0.3, 2.4f);
-                }
+                }*/
             } else {
                 zox_log(" > skill not actionable yet [%s]\n", zox_get_name(action_entity))
             }
-
         } else {
             zox_log(" > action entity is not a block item\n")
         }

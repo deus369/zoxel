@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_melee(ecs_world_t *world, const ecs_entity_t prefab) {
     return e;
 }
 
-ecs_entity_t spawn_meta_skill_melee(ecs_world_t *world, const ecs_entity_t prefab, const char* name, const float value, const float range, const float cost) {
+ecs_entity_t spawn_skill_melee(ecs_world_t *world, const ecs_entity_t prefab, const char* name, const float value, const float range, const float cost) {
     const ecs_entity_t e = spawn_meta_skill(world, prefab, name);
     zox_prefab_set(e, SkillDamage, { value })
     zox_prefab_set(e, SkillRange, { range })
