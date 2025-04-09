@@ -61,7 +61,13 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     // players are richer bbeings from the aether
     if (player) {
         statLinks->value[2] = spawn_user_stat(world, meta_stat_mana, e);
-        statLinks->value[3] = spawn_user_stat(world, meta_stat_energy, e);
+
+        // statLinks->value[3] = spawn_user_stat(world, meta_stat_energy, e);
+        const ecs_entity_t stat_energy = spawn_user_stat(world, meta_stat_energy, e);
+        zox_set(stat_energy, StatValue, { 4 })
+        zox_set(stat_energy, StatValueMax, { 12 })
+        statLinks->value[3] = stat_energy;
+
         statLinks->value[4] = spawn_user_stat(world, meta_stat_regen_health, e);
         statLinks->value[5] = spawn_user_stat(world, meta_stat_regen_energy, e);
         statLinks->value[6] = spawn_user_stat(world, meta_stat_regen_mana, e);

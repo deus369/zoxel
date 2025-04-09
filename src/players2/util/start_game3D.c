@@ -5,6 +5,9 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 #ifdef zox_disable_player_ui
     return;
 #endif
+    // do this in post? spawn all at once! after loaded character
+    spawn_in_game_ui(world, player); //  character_group);
+    // also spawn canvas
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (!menu_actions) {
@@ -12,6 +15,7 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     }
 }
 
+// called on spawn terrain event
 void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
@@ -65,17 +69,15 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         // get character position/rotation
         load_character_p(&spawn_position, &spawn_rotation);
     }
+
     ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, spawn_position, spawn_rotation, 0, player);
     const ecs_entity_t character = character_group.x;
-    zox_log("+ player character spawned [%lu]\n", character)
+    // zox_log("+ player character spawned [%lu]\n", character)
     zox_set(character, ChunkLink, { chunk })
     zox_set(player, CharacterLink, { character })
     zox_set(character, PlayerLink, { player })
     zox_set(character, CameraLink, { camera })
     attach_camera_to_character(world, player, camera, character);
-    // zox_add_tag(character_group.x, Aura)
-    // do this in post? spawn all at once! after loaded character
-    spawn_in_game_ui(world, player, character_group);
 #ifndef zox_disable_save_games
     if (!is_new_game) {
         delay_event(world, &load_player_e, player, 0.01f);
@@ -90,14 +92,16 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
     // zox_log("on_spawned_terrain\n")
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     #ifdef zox_disable_player_character
-    attach_camera_to_character(world, player, camera, 0);
-    #else
-    if (game_rule_attach_to_character) {
-        spawn_vox_player_character_in_terrain(world, player);
-        // delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
-    } else {
         attach_camera_to_character(world, player, camera, 0);
-    }
+    #else
+        if (game_rule_attach_to_character) {
+            spawn_vox_player_character_in_terrain(world, player);
+            // delay_event(world, &spawn_vox_player_character_in_terrain, player, 1);
+
+            // delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
+        } else {
+            attach_camera_to_character(world, player, camera, 0);
+        }
     #endif
 
     const ecs_entity_t game = zox_get_value(player, GameLink)

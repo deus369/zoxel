@@ -11,5 +11,5 @@ void define_systems_skills(ecs_world_t *world) {
     zox_system(DotsSystem, EcsOnUpdate, [in] UserLink, [in] SpawnerLink, [in] SkillDamage, [none] Poison)
     zox_define_system_state_event_1(RealmSkills, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
     // todo: make a state system for SkillActive
-    zox_system_1(MeleeSystem, zox_pip_mainthread, [in] UserLink, [out] SkillActive, [in] SkillDamage, [in] SkillRange, [none] Melee)
+    zox_system_1(MeleeSystem, zox_pip_mainthread, [in] UserLink, [out] SkillActive, [in] SkillDamage, [in] SkillRange, [in] SkillCost, [none] Melee)
 }

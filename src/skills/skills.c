@@ -1,6 +1,7 @@
 #if !defined(zox_mod_skills) && defined(zox_mod_users)
 #define zox_mod_skills
 
+#include "data/components.c"
 #include "prefabs/prefabs.c"
 #include "util/realm_skills.c"
 #include "util/character_skills.c"

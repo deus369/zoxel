@@ -5,12 +5,9 @@ zox_declare_tag(Statbar)
 zox_declare_tag(MenuStats)
 // zox_declare_tag(FrameStat)
 #include "prefabs/prefabs.c"
+#include "util/util.c"
 #include "systems/statbar_system.c"
 #include "systems/stat_text_system.c"
-
-int get_statbars_count(ecs_world_t *world) {
-    return zox_count_entities(world, ecs_id(Statbar));
-}
 
 zox_begin_module(StatsUI)
     zox_define_tag(Statbar)

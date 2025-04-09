@@ -7,9 +7,11 @@ void MeleeSystem(ecs_iter_t *it) {
     zox_field_out(SkillActive, skillActives, 2)
     zox_field_in(SkillDamage, skillDamages, 3)
     zox_field_in(SkillRange, skillRanges, 4)
+    zox_field_in(SkillCost, skillCosts, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(UserLink, userLinks, userLink)
-        if (!zox_alive(userLink->value)) {
+        const ecs_entity_t attacking_character = userLink->value;
+        if (!zox_alive(attacking_character) || !zox_has(attacking_character, StatLinks)) {
             continue;
         }
         zox_field_o(SkillActive, skillActives, skillActive)
@@ -17,6 +19,7 @@ void MeleeSystem(ecs_iter_t *it) {
             continue;
         }
         skillActive->value = 0;
+
         zox_field_i(SkillDamage, skillDamages, skillDamage)
         if (skillDamage->value == 0) {
             continue;
@@ -25,7 +28,23 @@ void MeleeSystem(ecs_iter_t *it) {
         if (skillRange->value == 0) {
             continue;
         }
-        const ecs_entity_t attacking_character = userLink->value;
+
+        // todo: move cost use into activation system
+        zox_field_i(SkillCost, skillCosts, skillCost)
+        const StatLinks *stats = zox_get(attacking_character, StatLinks)
+        if (stats->length < 4) {
+            continue;
+        }
+        const ecs_entity_t energy = stats->value[3];
+        if (!energy || !zox_has(energy, StatValue)) {
+            continue;
+        }
+        float energy_value = zox_get_value(energy, StatValue)
+        if (energy_value < skillCost->value) {
+            continue;
+        }
+        zox_set(energy, StatValue, { energy_value - skillCost->value })
+
         const RaycastVoxelData *raycastVoxelData = zox_get(attacking_character, RaycastVoxelData)
         // todo: reduce energy stat value using SkillCost, check if has enough energy
         const float skill_damage = skillDamage->value;

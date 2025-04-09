@@ -1,5 +1,5 @@
 // right click = place
-
+// todo: rename to ActionActivateSystem
 // todo: use a state and implement results inside respective systems
 void PlayerPlaceVoxelSystem(ecs_iter_t *it) {
     zox_field_world()
