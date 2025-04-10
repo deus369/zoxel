@@ -1,4 +1,5 @@
 // disables
+// #define zox_disable_post_processing
 
 // #define zox_is_flatlands
 
@@ -36,7 +37,6 @@
 #define zox_disable_io_voxes*/
 
 // #define zox_disable_skybox
-// #define zox_disable_statbars
 // #define zox_test_settings_00
 // #define zox_is_flatlands
 
@@ -46,7 +46,6 @@
 
 // #define zoxel_catch_opengl_errors
 
-// #define zox_disable_post_processing
 // #define zox_disable_depth_buffer
 // #define zox_disable_render_texture
 
@@ -78,7 +77,6 @@
 // #define zox_disable_terrain_streaming
 // #define zox_disable_chunk_linking
 // #define zox_disable_player_character3D  // disables player character
-// #define zox_disable_statbars
 
 // #define zox_disable_render_terrain_chunks
 // #define zox_disable_render_ui_3D

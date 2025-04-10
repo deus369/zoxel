@@ -76,7 +76,10 @@ zox_begin_module(Zox)
     zox_import_module(AI)
     // space
     #if defined(zox_mod_players)
-    if (!headless) zox_import_module(Players2)
+    if (!headless) {
+        zox_import_module(Controllers)
+        zox_import_module(Space)
+    }
     #endif
     #if defined(zox_mod_debug)
     zox_import_module(Debug)

@@ -1,6 +1,7 @@
-#ifndef _zox_players2D
-#define _zox_players2D
+#ifndef zox_mod_controllers2D
+#define zox_mod_controllers2D
 
+#include "data/settings.c"
 zox_declare_tag(Player2D)
 zox_declare_tag(PlayerCharacter2D)
 #include "prefabs/player_character2D.c"
@@ -18,11 +19,11 @@ void spawn_prefabs_players2D(ecs_world_t *world) {
     spawn_prefab_player_character2D(world, prefab_character2D);
 }
 
-zox_begin_module(Players2D)
+zox_begin_module(Controllers2D)
     zox_define_tag(Player2D)
     zox_define_tag(PlayerCharacter2D)
     zox_system(Player2DMoveSystem, zox_pip_player_movement, [in] DeviceLinks, [in] CharacterLink, [none] players.Player)
     spawn_prefabs_players2D(world);
-zox_end_module(Players2D)
+zox_end_module(Controllers2D)
 
 #endif

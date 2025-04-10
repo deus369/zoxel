@@ -103,9 +103,9 @@ void update_sdl(ecs_world_t *world) { // const ecs_entity_t e) { // , const int2
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
                 opengl_restore_resources(world);
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
-                // updating_time = 0;
+                disable_time();
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-                // updating_time = 1;
+                enable_time();
             }
         }
     }

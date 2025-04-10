@@ -19,13 +19,9 @@ void StatTextSystem(ecs_iter_t *it) {
         const ZoxName *stat_name = zox_get(stat, ZoxName)
         convert_zext_to_text_non_malloc(stat_name->value, stat_name->length, stat_name_text, stat_name_text_count);
         char text[label_text_count];
-        int value = 0;
-        if (statValue->value < 1) {
-            value = floor(statValue->value);
-        } else {
-            value = ceil(statValue->value);
-        }
-        snprintf(text, label_text_count, "%s [%i/%i]", stat_name_text, value, (int) ceil(statValueMax->value));
+        int max_value = ceil(statValueMax->value);
+        int value = floor(statValue->value);
+        snprintf(text, label_text_count, "%s [%i/%i]", stat_name_text, value, max_value);
         if (!is_zext(textData, text)) {
             set_zext(textData, text);
             zextDirty->value = zext_update_start;

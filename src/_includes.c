@@ -74,5 +74,6 @@
 #include "ai/ai.c"
 // on top
 #include "editor_ui/editor_ui.c"
-#include "players2/players.c"
+#include "controllers/controllers.c"
+#include "space/space.c"
 #include "debug/debug.c"

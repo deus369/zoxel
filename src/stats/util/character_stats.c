@@ -75,7 +75,6 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
     }
     zox_set(e, StatLinks, { statLinks->length, statLinks->value })
     // character ui
-#ifndef zox_disable_statbars
     if (player) {
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)
@@ -91,6 +90,5 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
         }
     }
     spawn_new_character_uis(world, e, player, render_disabled, health_stat, health, max_health);
-#endif
     return health_stat;
 }

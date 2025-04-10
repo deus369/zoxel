@@ -1,3 +1,8 @@
+// todo: put this as a hook in game module
+
+extern ecs_entity_t prefab_player_character2D;
+extern ecs_entity_t spawn_player_character2D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t camera);
+
 void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     zox_set(camera, Position3D, { { 0, 0, 1 } })

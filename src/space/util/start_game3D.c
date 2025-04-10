@@ -1,6 +1,8 @@
 float delay_terrain_time = 0.54f;
 float delay_terrain_time2 = 0.64f;
 
+extern ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const ecs_entity_t vox, const float3 position, const float4 rotation, const byte character_lod, const ecs_entity_t player);
+
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 #ifdef zox_disable_player_ui
     return;

@@ -7,9 +7,13 @@ void Player3DJumpSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CharacterLink, characterLinks, characterLink)
         const ecs_entity_t character = characterLink->value;
-        if (!character || !zox_has(character, Character3D)) continue;
+        if (!character || !zox_has(character, Character3D)) {
+            continue;
+        }
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
-        if (disableMovement->value) continue;
+        if (disableMovement->value) {
+            continue;
+        }
         const Grounded *grounded = zox_get(character, Grounded)
         if (!grounded->value) continue;
         zox_field_i(DeviceMode, deviceModes, deviceMode)

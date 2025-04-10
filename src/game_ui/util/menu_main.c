@@ -15,7 +15,7 @@ void engine_end_delayed(ecs_world_t* world, const ecs_entity_t null) {
 }
 
 void button_event_exit_app(ecs_world_t *world, const ClickEventData *event) {
-    // zox_log(" player exiting [%s]\n", zox_get_name(player))
+    disable_time_pausing();
     // close on all players
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const PlayerLinks *players = zox_get(game, PlayerLinks)

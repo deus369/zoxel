@@ -1,6 +1,6 @@
 void Player2DMoveSystem(ecs_iter_t *it) {
     init_delta_time()
-    float2 max_delta_velocity = max_velocity;
+    float2 max_delta_velocity = max_velocity2D;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
     zox_field_world()
@@ -65,21 +65,20 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         if (float_abs(left_stick.x) > joystick_cutoff_buffer) movement.x = left_stick.x;
         if (float_abs(left_stick.y) > joystick_cutoff_buffer) movement.y = left_stick.y;
         if (!movement.x && !movement.y) continue;
-        movement.x *= player_movement_power.x;
-        movement.y *= player_movement_power.y;
+        movement.x *= player_movement_power2D.x;
+        movement.y *= player_movement_power2D.y;
         if (is_running) { // gamepad->lb.is_pressed || gamepad->rb.is_pressed) {
-            movement.x *= run_speed;
-            movement.y *= run_speed;
+            movement.x *= run_speed2D;
+            movement.y *= run_speed2D;
         }
         zox_geter(character, Velocity2D, velocity2D)
         zox_get_muter(character, Acceleration2D, acceleration2D)
         // const float2 check_velocity = velocity2D->value;
-        float2 max_speed = max_velocity;
+        float2 max_speed = max_velocity2D;
         if (is_running) {
-            max_speed.x *= run_speed;
-            max_speed.y *= run_speed;
+            max_speed.x *= run_speed2D;
+            max_speed.y *= run_speed2D;
         }
-
         float2 potential_velocity_left = { velocity2D->value.x + (acceleration2D->value.x + movement.x) * delta_time, 0 };
         float2 potential_velocity_up = { 0, velocity2D->value.y + (acceleration2D->value.y + movement.y) * delta_time };
 
@@ -89,8 +88,5 @@ void Player2DMoveSystem(ecs_iter_t *it) {
         if (float_abs(potential_velocity_up.y) < max_speed.y) {
             acceleration2D->value.y += movement.y;
         }
-
-        /*if (float_abs(check_velocity.x) < max_delta_velocity.x) acceleration2D->value.x += delta_movement.x * player_movement_power.x;
-        if (float_abs(check_velocity.y) < max_delta_velocity.y) acceleration2D->value.y += delta_movement.y * player_movement_power.y;*/
     }
 } zox_declare_system(Player2DMoveSystem)

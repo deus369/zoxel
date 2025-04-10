@@ -2,9 +2,11 @@
 #define zox_mod_game
 
 // #define zox_log_boot_game
+// #define zox_enable_log_start_game
 
 byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
+    zox_log_start_game("> boot started [%s]", game_name)
     initialize_networking();
     if (!headless) {
         const ecs_entity_t window = spawn_main_window_opengl(world, default_window_position, default_window_size, fullscreen);
@@ -39,7 +41,7 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #endif
     intialize_game_store();
     test_steam_cloud();
-    // zox_log(" ! boot completed [zoxel]\n")
+    zox_log_start_game("> boot completed [zoxel]")
     return EXIT_SUCCESS;
 }
 
@@ -47,7 +49,7 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_game_type = zox_game_mode_3D;
-#ifdef zox_mod_players2
+#ifdef zox_mod_space
     game_ui_has_taskbar = 1;
 #endif
 #ifdef zox_mod_weathers

@@ -1,5 +1,5 @@
-#ifndef zox_mod_timing
-#define zox_mod_timing
+#ifndef zox_mod_time
+#define zox_mod_time
 
 #include "_includes.c"
 #include "data/settings.c"

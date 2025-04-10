@@ -37,7 +37,7 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world, const ecs_entity_t ui_camera, 
 
 void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game) {
     #if defined(zox_mod_players) && defined(zox_mod_ui)
-    #ifdef zox_mod_players2
+    #ifdef zox_mod_space
         players_playing = spawn_players(world, game);
     #endif
     set_camera_mode_pre_defined(world);
@@ -88,9 +88,12 @@ void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ch
 }
 
 void spawn_players_start_ui(ecs_world_t *world) {
+    zox_log_start_game("> spawn_players_start_ui [%i]", players_playing)
     for (int i = 0; i < players_playing; i++) {
         const ecs_entity_t player = zox_players[i];
         const ecs_entity_t canvas = zox_canvases[i];
+        zox_log_start_game("    - player [%lu - %s]", player, zox_get_name(player))
+        zox_log_start_game("    - canvas [%lu - %s]", canvas, zox_get_name(canvas))
         zox_spawn_main_menu(world, player, game_name, canvas);
     }
 }

@@ -1,6 +1,6 @@
 #define init_delta_time() const double delta_time = zox_delta_time;
 #ifdef zox_mod_plots
-extern void add_plot_data_time(ecs_world_t *world, const double value);
+    extern void add_plot_data_time(ecs_world_t *world, const double value);
 #endif
 
 double current_time_in_seconds() {

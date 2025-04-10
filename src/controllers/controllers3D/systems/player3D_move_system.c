@@ -138,7 +138,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         // here we use two vectors for movement directions so we can limit them
         // we also use a potential velocity based on a calculated new velocity
         // (although we dont know delta_time next frame)
-        float2 max_speed = max_velocity;
+        float2 max_speed = max_velocity3D;
         if (is_running) {
             max_speed.x *= run_speed;
             max_speed.y *= run_speed;
