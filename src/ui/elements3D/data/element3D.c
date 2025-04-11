@@ -6,3 +6,12 @@ typedef struct {
     // float2 anchor;
     // byte layer;
 } Element3DData;
+
+typedef struct {
+    float position_y;
+    ecs_entity_t ui_holder;
+    ecs_entity_t prefab;
+    byte render_disabled;
+    color base_color;
+} SpawnDataElement3D;
+

@@ -1,7 +1,9 @@
 const int character_stats = 2;
 const int player_extra_stats = 6;
 
-void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, byte render_disabled, const ecs_entity_t health_stat, float health, float max_health) {
+// todo: pass in elements ui
+// todo: spawn name label in character spawning instead
+void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, byte render_disabled, const ecs_entity_t health_stat, float health, float max_health) {
     float ui_position = 0.43f;
     if (player) {
         ui_position = 0.6f;
@@ -25,23 +27,20 @@ void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, const ecs
         .text = ""
     };
     Zigel3DData statbar_zigel_data = {
-        .font_thickness = 12,
-        .resolution = 128,
         .prefab = prefab_zigel3D,
+        .font_thickness = 12,
+        .resolution = 64,
         .fill_color = (color) { 55, 255, 255, 255 },
         .outline_color = color_black
     };
     const ecs_entity_2 spawned_elementbar3D = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
     zox_prefab_set(spawned_elementbar3D.x, StatLink, { health_stat })
     zox_prefab_set(spawned_elementbar3D.y, StatLink, { health_stat })
-    ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
-    resize_memory_component(ElementLinks, elementLinks, ecs_entity_t, 1)
-    elementLinks->value[0] = spawned_elementbar3D.x;
-    zox_set(e, ElementLinks, { elementLinks->length, elementLinks->value })
+    add_to_ElementLinks(elementLinks, spawned_elementbar3D.x);
 }
 
 // todo: take in npc spawn meta data, like location, biome, etc
-ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player, const byte render_disabled) {
+ecs_entity_t on_spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, const byte render_disabled) {
     // stats
     float max_health = 10.0f;
     float health = max_health;
@@ -89,6 +88,6 @@ ecs_entity_t spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, con
             zox_log("! game_menu not found\n")
         }
     }
-    spawn_new_character_uis(world, e, player, render_disabled, health_stat, health, max_health);
+    spawn_new_character_uis(world, e, elementLinks, player, render_disabled, health_stat, health, max_health);
     return health_stat;
 }
