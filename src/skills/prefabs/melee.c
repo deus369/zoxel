@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_melee(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_set(e, SkillDamage, { 0 })
     zox_prefab_set(e, SkillRange, { 0 })
     zox_prefab_set(e, SkillCost, { 0 })
+    zox_prefab_set(e, SkillActive, { 0 })
     return e;
 }
 

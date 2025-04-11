@@ -40,4 +40,4 @@ ecs_entity_t spawn_player_menu_##name(ecs_world_t *world, const ecs_entity_t pla
     return spawn_window_users(world, &data);\
 }
 
-// Ex: zox_user_menu_functions(Skills, Skill, skills, skill)
+// Example: zox_user_menu_functions(Skills, Skill, skills, skill)

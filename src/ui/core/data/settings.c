@@ -46,5 +46,5 @@ const byte default_button_frame_thickness = 4;
 const float pause_fade_alpha = 0.52f;
 const float pause_fade_time = 0.48f;
 
-const color icon_overlay_fill_color = (color) { 55, 255, 255, 44 };
-const color icon_overlay_outline_color = (color) { 33, 0, 0, 22 };
+const color icon_overlay_fill_color = (color) {  191, 107, 6, 144 };
+const color icon_overlay_outline_color = (color) { 0, 0, 0, 0 };

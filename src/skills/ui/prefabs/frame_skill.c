@@ -1,0 +1,6 @@
+ecs_entity_t spawn_prefab_frame_skill(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
+    zox_prefab_name("prefab_frame_skill")
+    zox_add_tag(e, FrameSkill)
+    return e;
+}

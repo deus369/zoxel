@@ -132,7 +132,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             };
             spawnFrame.icon.index = array_index;
             const ecs_entity_t user_data_element = user_data->value[item_index];
-            body_children->value[array_index] = spawn_frame_user(world, &spawnFrame, user_data_element).x;
+            body_children->value[array_index] = spawn_frame_user(world, &spawnFrame, user_data_element);
             if (i == 0 && active_states) {
                 zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
             }
@@ -160,6 +160,9 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
     ecs_entity_t prefab_frame_ = prefab_frame;
     if (zox_has(prefab, FramePrefabLink)) {
         prefab_frame_ = zox_get_value(prefab, FramePrefabLink)
+        zox_log("+ prefab frame found! %s\n", zox_get_name(prefab_frame_))
+    } else {
+        zox_log("! prefab frame failed! %s\n", zox_get_name(prefab))
     }
     SpawnWindowUsers data = {
         .canvas = {
@@ -216,11 +219,3 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
     };
     return data;
 }
-
-/*ecs_entity_t spawn_window_users_player(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    SpawnWindowUsers data = get_default_spawn_window_users_data(character, canvas, canvas_size);
-    return spawn_window_users(world, &data);
-}*/

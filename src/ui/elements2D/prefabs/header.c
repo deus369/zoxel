@@ -1,14 +1,12 @@
 ecs_entity_t spawn_prefab_header(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_header")
+    add_selectable_components(world, e);
+    add_draggable_components(world, e);
+    add_frame_texture_type(world, e, default_fill_color_header, default_outline_color_header, default_button_corner, default_button_frame_thickness);
     zox_add_tag(e, Header)
     zox_add_tag(e, WindowRaycastTarget)
     zox_add_tag(e, TextureAddNoise)
-    // set more details
-    add_frame_texture_type(world, e, default_fill_color_header, default_outline_color_header, default_button_corner, default_button_frame_thickness);
-    // add_ui_plus_components(world, e);
-    add_selectable_components(world, e);
-    add_draggable_components(world, e);
     zox_prefab_add(e, Children)
     return e;
 }
@@ -98,14 +96,12 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
         .zext = data->zext
     };
     Children *children = &((Children) { 0, NULL });
-    // zox_get_mutt(e, Children, children)
     const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
     if (data->header.is_close_button) {
         const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins, 0 };
         add_to_Children(children, spawn_close_button(world, e, data->canvas.e, canvas_position, data->element.size, close_button_position, data->zext.font_size, padding, button_layer, data->canvas.size));
     }
-    // zox_modified(e, Children)
     zox_set(e, Children, { children->length, children->value })
     return e;
 }

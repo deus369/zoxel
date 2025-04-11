@@ -5,8 +5,8 @@ ecs_entity_t spawn_prefab_frame(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_name("prefab_frame")
     zox_add_tag(e, Frame)
     zox_prefab_add(e, Children)
-    zox_set(e, Color, { default_fill_color_frame })
-    zox_set(e, OutlineColor, { default_outline_color_frame })
+    zox_prefab_set(e, Color, { default_fill_color_frame })
+    zox_prefab_set(e, OutlineColor, { default_outline_color_frame })
     return e;
 }
 
@@ -69,18 +69,6 @@ ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame *data) {
         add_to_Children(children, zext);
         zox_set_unique_name(zext, "icon_text")
     }
-
-    // icon overlay
-    const ElementSpawnData icon_overlay_data = {
-        .prefab = prefab_icon_overlay,
-        .layer = data->element.layer + 3,
-        .size = int2_single(data->icon.size / 2),
-        .render_disabled = data->element.render_disabled,
-        .anchor = float2_half,
-    };
-    ecs_entity_t icon_overlay = spawn_icon_overlay(world, canvas_data, parent_data, icon_overlay_data);
-    add_to_Children(children, icon_overlay);
-
     zox_set(e, Children, { children->length, children->value })
     return (ecs_entity_3) { e, icon, zext };
 }

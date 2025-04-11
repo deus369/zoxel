@@ -4,3 +4,4 @@
 #include "spawn_window.c"
 #include "spawn_icon.c"
 #include "spawn_frame.c"
+#include "components.c"
