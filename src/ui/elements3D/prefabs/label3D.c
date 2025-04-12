@@ -18,15 +18,17 @@ ecs_entity_t spawn_label3D(ecs_world_t *world, const SpawnDataElement3D data, Te
     }
     zox_instance(data.prefab)
     zox_name("label3D")
-    zox_set(e, UIHolderLink, { data.ui_holder })
-    zox_set(e, UITrail, { { 0, data.position_y, 0 } })
+    if (data.ui_holder != 0) {
+        zox_set(e, UIHolderLink, { data.ui_holder })
+        zox_set(e, UITrail, { { 0, data.position_y, 0 } })
+    }
     zox_set(e, RenderDisabled, { data.render_disabled })
     zox_set(e, Color, { data.base_color })
-    Children *children = &((Children) { 0, NULL });
     text_data.position = (float3) { 0, 0, element3D_depth_difference * 2 };
     zigel_data.position = text_data.position;
     text_data.parent = e;
     const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);
+    Children *children = &((Children) { 0, NULL });
     add_to_Children(children, text);
     zox_set(e, Children, { children->length, children->value })
     return e;

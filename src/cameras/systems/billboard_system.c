@@ -20,6 +20,10 @@ void BillboardSystem(ecs_iter_t *it) {
             const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) {
                 ecs_entity_t child = children->value[j];
+                if (!zox_has(child, LocalRotation3D)) {
+                    // zox_log("! billboard child [%i:%s] doesn't have [LocalRotation3D]\n", j, zox_get_name(child))
+                    continue;
+                }
                 const float4 child_local_rotation3D = zox_get_value(child, LocalRotation3D)
                 Rotation3D *child_rotation3D = zox_get_mut(child, Rotation3D)
                 set_rotation_from_parents(world, e, &child_rotation3D->value, child_local_rotation3D);

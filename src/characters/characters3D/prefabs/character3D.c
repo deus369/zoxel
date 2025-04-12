@@ -90,7 +90,6 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
             float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) }})
     } else {
         zox_set(e, Position3DBounds, {{ min_x_global, max_x_global, min_y_global, max_y_global, min_z_global, max_z_global }})
-        // zox_set(e, VoxScale, { player_vox_model_scale })
     }
     if (vox_scale) zox_set(e, VoxScale, { vox_scale })
     zox_set(e, LastPosition3D, { position })

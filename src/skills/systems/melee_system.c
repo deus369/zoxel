@@ -72,6 +72,14 @@ void MeleeSystem(ecs_iter_t *it) {
                         zox_set(hit_character, LastDamager, { attacking_character })
                     }
                     spawn_sound_generated(world, instrument_violin, note_frequencies[28], 0.6, 2.4f);
+                    // damage popup
+
+                    const float3 hit_character_position = zox_get_value(hit_character, Position3D)
+                    const float3 popup_position = (float3) { hit_character_position.x, hit_character_position.y + 0.26f, hit_character_position.z };
+                    char popup_text[64];
+                    sprintf(popup_text, "%i", (int) floor(skill_damage));
+                    const color popup_color = (color) { 255, 0, 0, 255 };
+                    spawn_popup3D_easy(world, popup_text, popup_color, popup_position);
                 } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->voxel_entity) {
                     raycast_action(world, raycastVoxelData, 0, 2);
                     if (zox_has(raycastVoxelData->chunk, TerrainChunk)) {

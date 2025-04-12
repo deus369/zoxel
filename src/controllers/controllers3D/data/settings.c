@@ -19,4 +19,3 @@ const double run_accceleration = 2.2;
 const float backwards_multiplier = 0.8f;
 const float2 player_movement_power = { 17, 19 };
 const float2 max_velocity3D = { 1.24f, 1.4f }; // 60 * 60, 160 * 60 };
-#define player_vox_scale  (1 / 64.0f) * 1.6f

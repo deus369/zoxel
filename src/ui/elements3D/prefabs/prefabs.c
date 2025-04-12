@@ -18,9 +18,10 @@ void set_element_properties(ecs_world_t *world, const ecs_entity_t e, const ecs_
 #include "element3D_invisible.c"
 #include "zigel3D.c"
 #include "text3D.c"
+#include "label3D.c"
+#include "popup3D.c"
 #include "elementbar3D_front.c"
 #include "elementbar3D.c"
-#include "label3D.c"
 ecs_entity_t prefab_element3D;
 ecs_entity_t prefab_element3D_child;
 ecs_entity_t prefab_element3D_invisible;
@@ -29,6 +30,7 @@ ecs_entity_t prefab_elementbar3D_front;
 ecs_entity_t prefab_text3D;
 ecs_entity_t prefab_zigel3D;
 ecs_entity_t prefab_label3D;
+ecs_entity_t prefab_popup3D;
 
 void spawn_prefabs_elements3D(ecs_world_t *world) {
     prefab_element3D = spawn_prefab_element3D(world);
@@ -39,4 +41,5 @@ void spawn_prefabs_elements3D(ecs_world_t *world) {
     prefab_text3D = spawn_prefab_text3D(world, prefab_element3D_invisible);
     prefab_zigel3D = spawn_prefab_zigel3D(world, prefab_element3D_child);
     prefab_label3D = spawn_prefab_label3D(world, prefab_element3D);
+    prefab_popup3D = spawn_prefab_popup3D(world, prefab_element3D);
 }

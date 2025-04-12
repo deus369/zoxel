@@ -8,6 +8,7 @@ typedef struct {
     byte resolution;
     float3 position;
     byte render_disabled; // zox character code
+    float scale;
 } Zigel3DData;
 
 ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab) {
@@ -19,9 +20,8 @@ ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab)
     zox_prefab_set(e, Color, { color_white })
     zox_prefab_set(e, SecondaryColor, { color_white })
     zox_prefab_set(e, FontThickness, { 1 })
-    zox_set(e, TextureSize, { int2_single(32) })
-    // zox_set(e, Scale1D, { 2 })
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, zigel3D_size);
+    zox_set(e, TextureSize, { int2_single(32) })
     return e;
 }
 
@@ -36,5 +36,8 @@ ecs_entity_t spawn_zigel3D(ecs_world_t *world, const Zigel3DData data) {
     zox_set(e, LocalPosition3D, { data.position })
     zox_set(e, RenderDisabled, { data.render_disabled })
     zox_set(e, TextureSize, { int2_single(data.resolution) })
+    if (data.scale) {
+        zox_set(e, Scale1D, { data.scale })
+    }
     return e;
 }

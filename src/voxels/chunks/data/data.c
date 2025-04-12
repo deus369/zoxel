@@ -1,3 +1,7 @@
+// settings
+#include "settings.c"
+#include "color_settings.c"
+#include "scale.c"
 // structs
 #include "components.c"
 #include "set_voxel_data.c"
@@ -9,9 +13,6 @@
 #include "chunk_lod_state.c"
 #include "chunk_generate_states.c"
 #include "trigger_states.c"
-// settings
-#include "settings.c"
-#include "color_settings.c"
 // const data
 #include "octree.c"
 #include "mesh.c"
