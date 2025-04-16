@@ -1,7 +1,6 @@
 void GenerateVoxSystem(ecs_iter_t *it) {
     const byte unique_colors = 8;
     const int grass_random = 6;
-    // zox_change_check()
     const byte target_depth = max_octree_depth;
     const byte chunk_voxel_length = powers_of_two_byte[target_depth];
     zox_field_world()
@@ -11,7 +10,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
     zox_field_out(ColorRGBs, colorRGBss, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateVox, generateVoxs, generateVox)
-        if (!generateVox->value) continue;
+        if (!generateVox->value) {
+            continue;
+        }
         zox_field_e()
         zox_field_i(Color, colors, color2)
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
@@ -25,11 +26,21 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             colorRGBs->value[j] = color_rgb_2;
             color_rgb_multiply_float(&colorRGBs->value[j], 0.7f + 0.6f * (rand() % 100) * 0.01f);
         }
-        if (is_generate_vox_outlines) colorRGBs->value[unique_colors] = (color_rgb) { 0, 0, 0 };
+        if (is_generate_vox_outlines) {
+            colorRGBs->value[unique_colors] = (color_rgb) { 0, 0, 0 };
+        }
         byte3 size = (byte3) { chunk_voxel_length, chunk_voxel_length, chunk_voxel_length };
         fill_new_octree(chunkOctree, 0, target_depth);  // clear chunk
         if (zox_has(e, VoxRubble)) {
-            vox_rubble(chunkOctree, target_depth, size, voxel_range, 200);
+            byte rubble_height = 4;
+            if (zox_has(e, RubbleHeight)) {
+                rubble_height = zox_get_value(e, RubbleHeight)
+            }
+            int rubble_count = 200;
+            if (zox_has(e, RubbleCount)) {
+                rubble_count = zox_get_value(e, RubbleCount)
+            }
+            vox_rubble(chunkOctree, target_depth, size, voxel_range, rubble_count, rubble_height);
         } else if (zox_has(e, BlendVox)) {
             const color under_color = zox_get_value(e, SecondaryColor)
             for (int j = colors_count; j < colors_count + unique_colors; j++) {
@@ -129,10 +140,16 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             voronoi3D(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
             noise_vox(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
         }
-        if (is_generate_vox_outlines) vox_outlines(chunkOctree, target_depth, size, black_voxel);
+        if (is_generate_vox_outlines) {
+            vox_outlines(chunkOctree, target_depth, size, black_voxel);
+        }
 #ifndef zox_disable_closing_octree_nodes
         close_same_nodes(chunkOctree, max_octree_depth, 0);
 #endif
         generateVox->value = 0;
+        // zox_log("+ generated vox [%s]\n", zox_get_name(e))
+        if (zox_has(e, ChunkMeshDirty)) {
+            zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
+        }
     }
 } zox_declare_system(GenerateVoxSystem)

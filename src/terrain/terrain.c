@@ -17,10 +17,11 @@ zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
 zox_component_entity(TerrainLink)
-#include "data/data.c"
-#include "prefabs/prefabs.c"
-#include "util/util.c"
-#include "systems/systems.c"
+#include "data/_include.c"
+#include "prefabs/_include.c"
+#include "util/_include.c"
+#include "voxels/_include.c"
+#include "systems/_include.c"
 
 zox_begin_module(Terrain)
     add_hook_terminal_command(process_arguments_terrain);
@@ -32,7 +33,7 @@ zox_begin_module(Terrain)
     zox_define_component_entity(TerrainLink)
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);
-    add_hook_key_down(test_spawn_chunk_terrain);
+    // add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)
 
 #endif

@@ -8,5 +8,3 @@
 #include "game2D.c"
 #include "game3D.c"
 #include "game.c"
-#include "block_vox_grass.c"
-#include "realm_voxels.c"

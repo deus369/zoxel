@@ -15,7 +15,9 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
     zox_field_out(MeshDirty, meshDirtys, 12)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
-        if (chunkMeshDirty->value != chunk_dirty_state_update) continue;
+        if (chunkMeshDirty->value != chunk_dirty_state_update) {
+            continue;
+        }
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         zox_field_o(MeshIndicies, meshIndiciess, meshIndicies)
@@ -62,17 +64,8 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             // BuildChunkColored build_chunk_colored = { };
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }
-        // todo: fix this, unless upload fast it crashes
-        /*if (zox_has(it->entities[i], Skeleton)) {
-            meshDirty->value = mesh_state_trigger;
-        } else {
-            meshDirty->value = mesh_state_upload;
-        }*/
         meshDirty->value = mesh_state_trigger;
-
-        // did_do_timing()
-        // if (max_chunk_process_time != 0 && get_timing_passed() >= max_chunk_process_time) break;
+        // zox_log("+ built vox [%s]: [%i]\n", zox_get_name(it->entities[i]), meshIndicies->length)
     }
-    // end_timing("ChunkOctreeColorsBuildSystem")
 } zox_declare_system(ChunkOctreeColorsBuildSystem)
 

@@ -29,3 +29,11 @@ ecs_entity_t spawn_vox(ecs_world_t *world, const ecs_entity_t prefab, const ecs_
     spawn_gpu_colors(world, e);
     return e;
 }
+
+ecs_entity_t spawn_vox_basic(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_instance(prefab)
+    spawn_gpu_mesh(world, e);
+    // spawn_gpu_uvs(world, e);
+    spawn_gpu_colors(world, e);
+    return e;
+}

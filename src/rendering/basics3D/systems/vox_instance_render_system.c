@@ -86,17 +86,17 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         }*/
         zox_geter(mesh, MeshGPULink, meshGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) {
-            zox_log(" ! error with vox instance mesh link.\n")
+            zox_log(" ! [VoxInstanceRenderSystem] Error: MeshGPULink is 0 [%s]\n", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, ColorsGPULink, colorsGPULink)
         if (colorsGPULink->value == 0) {
-            zox_log(" ! error with vox instance colors link.\n")
+            zox_log(" ! [VoxInstanceRenderSystem] Error: colorsGPULink is 0 [%s]\n", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, MeshIndicies, meshIndicies)
         if (meshIndicies->length == 0) {
-            zox_log(" ! error with vox instance meshIndicies.\n")
+            zox_log(" ! [VoxInstanceRenderSystem] Error: meshIndicies is 0 [%s]\n", zox_get_name(mesh))
             continue;
         }
 

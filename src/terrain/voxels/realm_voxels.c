@@ -10,20 +10,7 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
         value_limits.x + (value_limits.y - value_limits.x) * (rand() % 100) * 0.01f };
 }
 
-ecs_entity_t spawn_realm_voxel_texture(ecs_world_t *world, const byte index, char *name, char *texture_filename) {
-    SpawnBlock spawn_data = {
-        .index = index,
-        .seed = generate_voxel_seed(index),
-        .prefab_texture = prefab_vox_texture,
-    };
-    spawn_data.name = name; // "dark";
-    spawn_data.color = color_black;
-    spawn_data.textures = 1;
-    spawn_data.texture_filename = texture_filename; // "dark_block";
-    spawn_data.prefab = prefab_block;
-    return spawn_block(world, &spawn_data);
-}
-
+// todo: spawn each voxel in individual lines
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     if (!realm) return;
 
@@ -93,34 +80,32 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 
     // todo: VoxLinks from realm - spawn vox models first before 'voxels'
     const ecs_entity_t dirt_vox = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
-    const ecs_entity_t vox_grass = spawn_vox_generated_invisible(world, prefab_vox_generated, grass_color);
+
+    /*const ecs_entity_t vox_grass = spawn_vox_generated_invisible(world, prefab_vox_generated, grass_color);
     zox_add_tag(vox_grass, BlendVox)
-    zox_set(vox_grass, SecondaryColor, { dirt_color }) // bottom half
+    zox_set(vox_grass, SecondaryColor, { dirt_color }) // bottom half*/
+
     const ecs_entity_t vox_sand = spawn_vox_generated_invisible(world, prefab_vox_generated, sand_color);
-    const ecs_entity_t vox_stone = spawn_vox_generated_invisible(world, prefab_vox_generated, stone_color);
-    const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
-    zox_add_tag(dirt_rubble, VoxRubble)
+    // const ecs_entity_t vox_stone = spawn_vox_generated_invisible(world, prefab_vox_generated, stone_color);
+    /*const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
+    zox_add_tag(dirt_rubble, VoxRubble)*/
     const ecs_entity_t vox_obsidian = spawn_vox_generated_invisible(world, prefab_vox_generated, color_obsidian);
     const ecs_entity_t vox_disabled = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });
     // todo: make all spawn code like this instead of a for loop
     // dark block is  tasty
     voxels->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
-    voxels->value[zox_block_vox_grass - 1] = spawn_realm_block_vox_grass(world, zox_block_vox_grass);
     voxels->value[zox_block_vox_flower - 1] = spawn_realm_block_vox_flower(world, zox_block_vox_flower);
+    voxels->value[zox_block_dungeon_core - 1] = spawn_dungeon_core(world);
 
-    // dungeon block, spawns world block prefab first
-    zox_neww(dungeon_block_world)
-    zox_make_prefab(dungeon_block_world)
-    zox_add_tag(dungeon_block_world, BlockDungeon)
-    zox_prefab_set(dungeon_block_world, TimerRate, { 5 })
-    zox_prefab_set(dungeon_block_world, TimerState, { 0 })
-    zox_prefab_set(dungeon_block_world, TimerTime, { 0 })
-    zox_prefab_set(dungeon_block_world, ChunkLink, { 0 })
-    // spawn block meta
-    ecs_entity_t dungeon_block = spawn_realm_voxel_texture(world, zox_block_dungeon_core, "dungeon_core", "block_dungeon_core");
-    // add prefab for world spawning
-    zox_prefab_set(dungeon_block, BlockPrefabLink, { dungeon_block_world })
-    voxels->value[zox_block_dungeon_core - 1] = dungeon_block;
+    // dirt
+    voxels->value[zox_block_dirt - 1] = spawn_realm_block_soil(world, zox_block_dirt, "dirt", dirt_color);
+    voxels->value[zox_block_grass - 1] = spawn_realm_block_soil_grass(world, zox_block_grass, "grass", dirt_color, grass_color);
+    voxels->value[zox_block_vox_grass - 1] = spawn_realm_block_grass(world, zox_block_vox_grass, grass_color);
+
+    voxels->value[zox_block_stone - 1] = spawn_realm_block_soil(world, zox_block_stone, "stone", stone_color);
+    voxels->value[zox_block_sand - 1] = spawn_realm_block_soil(world, zox_block_sand, "sand", sand_color);
+
+    voxels->value[zox_block_dirt_rubble - 1] = spawn_realm_block_rubble(world, zox_block_dirt_rubble, "rubble", dirt_color);
 
     // the rest
     for (byte i = 0; i < voxels->length; i++) {
@@ -131,49 +116,23 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             .prefab_texture = prefab_vox_texture
         };
         if (i == zox_block_dirt - 1) {
-            spawn_data.name = "dirt";
-            spawn_data.color = dirt_color;
-            spawn_data.vox = dirt_vox;
-            spawn_data.bake_vox = 1;
+            continue;
         } else if (i == zox_block_grass - 1) {
-            spawn_data.name = "grass";
-            spawn_data.color = grass_color;
-            spawn_data.vox = vox_grass;
-            spawn_data.bake_vox = 1;
+            continue;
         } else if (i == zox_block_sand - 1) {
-            spawn_data.name = "sand";
-            spawn_data.color = sand_color;
-            spawn_data.vox = vox_sand;
-            spawn_data.bake_vox = 1;
+            continue;
         } else if (i == zox_block_stone - 1) {
-            spawn_data.name = "stone";
+            continue;
+            /*spawn_data.name = "stone";
             spawn_data.color = stone_color;
             spawn_data.vox = vox_stone;
-            spawn_data.bake_vox = 1;
+            spawn_data.bake_vox = 1;*/
         } else if (i == zox_block_obsidian - 1) {
             spawn_data.name = "obsidian";
             spawn_data.color = generate_random_voxel_color();
             spawn_data.vox = vox_obsidian;
             spawn_data.bake_vox = 1;
-        } /*else if (i == zox_block_vox_flower - 1) {
-            spawn_data.name = "flower";
-            spawn_data.color = generate_random_voxel_color();
-#ifndef zox_disable_block_voxes
-            spawn_data.tag = zox_id(BlockVox);
-            spawn_data.model = zox_block_vox;
-            spawn_data.prefab_block_vox = prefab_block_vox;
-            const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("flower"));
-            if (!vox) {
-                zox_log(" ! [flower] vox not found\n")
-                continue;
-            }
-            spawn_data.vox = vox; // files_voxes[test_block_vox_index];
-            spawn_data.disable_collision = 1;
-#else
-            spawn_data.bake_vox = 1;
-            spawn_data.vox = vox_disabled;
-#endif
-        } */ else if (i == zox_block_dirt_vox - 1) {
+        } else if (i == zox_block_dirt_vox - 1) {
             spawn_data.name = "dirt_vox";
             spawn_data.color = dirt_color;
             // this is a more detailed version of dirt! non baked
@@ -188,7 +147,8 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
                 spawn_data.prefab_block_vox = prefab_block_vox;
             }
         } else if (i == zox_block_dirt_rubble - 1) {
-            spawn_data.name = "dirt_rubble";
+            continue;
+            /*spawn_data.name = "dirt_rubble";
             spawn_data.color = dirt_color;
 #ifndef zox_disable_block_voxes
             spawn_data.tag = zox_id(BlockVox);
@@ -199,7 +159,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #else
             spawn_data.bake_vox = 1;
             spawn_data.vox = vox_disabled;
-#endif
+#endif*/
         } else if (i == zox_block_vox_grass - 1 || i == zox_block_vox_flower - 1 || i == zox_block_dark - 1 || i == zox_block_dungeon_core - 1) {
             continue;
         } else {
@@ -217,10 +177,9 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
             spawn_data.prefab = prefab_block;
             voxels->value[i] = spawn_block(world, &spawn_data);
         }
-        if (is_name_malloc) free(spawn_data.name);
-        /*if (i == zox_block_dirt - 1) zox_log(" + dirt [%s] block [%i]\n", zox_get_name(voxels->value[i]), i)
-        if (i == zox_block_dark - 1) zox_log(" + dark [%s] block [%i]\n", zox_get_name(voxels->value[i]), i)*/
-        // zox_log(" + voxel [%s]\n", zox_get_name(voxels->value[i]))
+        if (is_name_malloc) {
+            free(spawn_data.name);
+        }
     }
     // renderer
     fog_color = color_to_float3(sky_color);

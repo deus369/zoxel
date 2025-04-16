@@ -15,13 +15,14 @@ byte disable_block_voxes = 0;
 zox_declare_tag(Vox)
 zox_declare_tag(BlendVox)
 zox_declare_tag(VoxRubble)
+zox_component_byte(RubbleHeight)
 zox_component_byte(GenerateVox)
 zox_component_byte(CloneVox)
 zox_component_byte(ChunkLod)
+zox_component_int(RubbleCount)
 zox_component_entity(CloneVoxLink)
 #include "prefabs/prefabs.c"
 #include "util/util.c"
-#include "systems/chunk_colors_build_system.c"
 #include "systems/chunk_octree_colors_build_system.c"
 #include "systems/bounds3D_grow_system.c"
 #include "systems/generate_vox_system.c"
@@ -42,9 +43,11 @@ zox_begin_module(Voxes)
     zox_define_tag(Vox)
     zox_define_tag(BlendVox)
     zox_define_tag(VoxRubble)
+    zox_define_component_byte(RubbleHeight)
     zox_define_component_byte(GenerateVox)
     zox_define_component_byte(ChunkLod)
     zox_define_component_byte(CloneVox)
+    zox_define_component_int(RubbleCount)
     zox_define_component_entity(CloneVoxLink)
     zox_system(Bounds3DGrowSystem, EcsOnUpdate, [in] MeshDirty, [in] ChunkSize, [in] VoxScale, [out] Bounds3D) // remember: timing specific, fucks up if changes position
     zox_system(GenerateVoxSystem, EcsOnUpdate, [in] Color, [out] GenerateVox, [out] ChunkOctree, [out] ColorRGBs, [out] ChunkMeshDirty)
