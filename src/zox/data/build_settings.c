@@ -5,6 +5,8 @@
 
 // Here? select which zoxel modules I shall use?
 
+// #define zox_transparent_voxes
+
 // #define zox_test_streaming_01
 
 // #define zox_testing_networking

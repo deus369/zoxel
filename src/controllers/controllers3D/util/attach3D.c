@@ -12,11 +12,14 @@ void set_camera_free(ecs_world_t *world, const ecs_entity_t camera, const byte i
 void set_camera_locked(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t target) {
     zox_add_tag(camera, FirstPersonCamera)
     zox_set(camera, CanRoam, { 0 })
-    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { target })
-    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { target })
+    if (camera_follow_mode == zox_camera_follow_mode_attach) {
+        zox_set(camera, ParentLink, { target })
+    } else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) {
+        zox_set(camera, CameraFollowLink, { target })
+    }
     // zox_set(camera, EternalRotation, { quaternion_identity })
     zox_remove(camera, EulerOverride)
-    set_camera_transform(world, camera, target, camera_mode);
+    set_camera_transform(world, camera, target, camera_mode, vox_model_scale);
 }
 
 void detatch_camera_from_character(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t camera, const ecs_entity_t character, const byte is_free) {
@@ -41,7 +44,9 @@ void attach_camera_to_character(ecs_world_t *world, const ecs_entity_t player, c
         return;
     }
     // player
-    if (mouse_entity) zox_set(mouse_entity, MouseLock, { 1 }) // lock mouse since attached
+    if (mouse_entity) {
+        zox_set(mouse_entity, MouseLock, { 1 }) // lock mouse since attached
+    }
     // character
     zox_set(character, DisableMovement, { 0 })
     // camera

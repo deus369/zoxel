@@ -31,7 +31,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
 }
 
 extern ecs_entity_t on_spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, const byte render_disabled);
-
 extern void spawn_character_items(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);
 extern void spawn_character_skills(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);
 extern void spawn_character_quests(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player);

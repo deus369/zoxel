@@ -28,7 +28,7 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-CameraSpawnData get_camera_preset(const byte camera_mode) {
+CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale) {
     CameraSpawnData data = { };
     if (camera_mode == zox_camera_mode_topdown) {
         data = camera_preset_top_down;
@@ -36,6 +36,10 @@ CameraSpawnData get_camera_preset(const byte camera_mode) {
         data = camera_preset_ortho;
     } else if (camera_mode == zox_camera_mode_first_person) {
         data = camera_preset_first_person;
+        // convert position with scale
+        data.position.x *= vox_model_scale;
+        data.position.y *= vox_model_scale;
+        data.position.z *= vox_model_scale;
     } else if (camera_mode == zox_camera_mode_third_person) {
         data = camera_preset_third_person;
     } else if (camera_mode == zox_camera_mode_2D) {
@@ -44,13 +48,16 @@ CameraSpawnData get_camera_preset(const byte camera_mode) {
     return data;
 }
 
-void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const byte camera_mode) {
-    if (!camera || !character) return;
+void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const byte camera_mode, const float vox_model_scale) {
+    if (!camera || !character) {
+        zox_log_line("! cannot [set_camera_transform] camera/character issue.")
+        return;
+    }
     float3 target_position = float3_zero;
     const Position3D *position3D = zox_get(character, Position3D)
     if (position3D != NULL) target_position = position3D->value;
     else target_position = (float3) { 8, 0, 8 };
-    const CameraSpawnData data = get_camera_preset(camera_mode);
+    const CameraSpawnData data = get_camera_preset(camera_mode, vox_model_scale);
     float3 euler = data.euler;
     float3_multiply_float_p(&euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(euler);
@@ -63,17 +70,17 @@ void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const e
 }
 
 byte get_camera_mode_fov(const byte camera_mode) {
-    return get_camera_preset(camera_mode).fov;
+    return get_camera_preset(camera_mode, 0).fov;
 }
 
-void set_camera_mode(ecs_world_t *world, byte new_camera_mode) {
+void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_model_scale) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) new_camera_mode = zox_camera_mode_first_person;
     if (camera_mode == new_camera_mode) return;
     camera_mode = new_camera_mode;
     const byte old_camera_follow_mode = camera_follow_mode;
     const byte camera_fov = get_camera_mode_fov(camera_mode);
-    camera_follow_mode = get_camera_preset(camera_mode).follow_mode;
+    camera_follow_mode = get_camera_preset(camera_mode, vox_model_scale).follow_mode;
     for (int i = 0; i < main_cameras_count; i++) {
         const ecs_entity_t camera = main_cameras[i];
         if (camera == 0 || !zox_valid(camera)) continue;
@@ -93,47 +100,47 @@ void set_camera_mode(ecs_world_t *world, byte new_camera_mode) {
         }
         // set up local positions and rotations
         // use a helper function so attach does the same thing
-        set_camera_transform(world, camera, character, camera_mode);
+        set_camera_transform(world, camera, character, camera_mode, vox_model_scale);
     }
 }
 
-void toggle_camera_mode(ecs_world_t *world) {
+void toggle_camera_mode(ecs_world_t *world, const float vox_model_scale) {
     byte new_camera_mode = camera_mode + 1;
     if (new_camera_mode> zox_camera_mode_topdown) new_camera_mode = 0;
-    set_camera_mode(world, new_camera_mode);
+    set_camera_mode(world, new_camera_mode, vox_model_scale);
 }
 
-void set_camera_mode_first_person(ecs_world_t *world) {
-    set_camera_mode(world, zox_camera_mode_first_person);
+void set_camera_mode_first_person(ecs_world_t *world, const float vox_model_scale) {
+    set_camera_mode(world, zox_camera_mode_first_person, vox_model_scale);
 }
 
 void set_camera_mode_third_person(ecs_world_t *world) {
-    set_camera_mode(world, zox_camera_mode_third_person);
+    set_camera_mode(world, zox_camera_mode_third_person, 0);
 }
 
 void set_camera_mode_ortho(ecs_world_t *world) {
-    set_camera_mode(world, zox_camera_mode_ortho);
+    set_camera_mode(world, zox_camera_mode_ortho, 0);
 }
 
 void set_camera_mode_topdown(ecs_world_t *world) {
-    set_camera_mode(world, zox_camera_mode_topdown);
+    set_camera_mode(world, zox_camera_mode_topdown, 0);
 }
 
 void set_camera_mode_2D(ecs_world_t *world) {
-    set_camera_mode(world, zox_camera_mode_2D);
+    set_camera_mode(world, zox_camera_mode_2D, 0);
 }
 
-void set_camera_mode_pre_defined(ecs_world_t *world) {
+void set_camera_mode_pre_defined(ecs_world_t *world, const float vox_model_scale) {
 #if defined(zox_set_camera_2D)
-    set_camera_mode_2D(world);
+    set_camera_mode_2D(world, 0);
 #elif defined(zox_set_camera_firstperson)
-    set_camera_mode_first_person(world);
+    set_camera_mode_first_person(world, vox_model_scale);
 #elif defined(zox_set_camera_thirdperson)
-    set_camera_mode_third_person(world);
+    set_camera_mode_third_person(world, 0);
 #elif defined(zox_set_camera_ortho)
-    set_camera_mode_ortho(world);
+    set_camera_mode_ortho(world, 0);
 #elif defined(zox_set_camera_topdown)
-    set_camera_mode_topdown(world);
+    set_camera_mode_topdown(world, 0);
 #endif
 }
 

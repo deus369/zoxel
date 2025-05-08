@@ -7,6 +7,7 @@
 #include "data/animation_states.c"
 zox_declare_tag(OscillatePosition3D)
 zox_component_float3(OscillateStartPosition3D)
+zox_component_float3(OscillateDeltaPosition3D)
 zox_component_byte(AnimationState)
 zox_component_double(AnimationStart) // double is time?
 zox_component_double(AnimationLength)
@@ -40,6 +41,7 @@ void prefab_add_animation(ecs_world_t *world, const ecs_entity_t e) {
 zox_begin_module(Animations)
     zox_define_tag(OscillatePosition3D)
     zox_define_component_float3(OscillateStartPosition3D)
+    zox_define_component_float3(OscillateDeltaPosition3D)
     // old
     zox_define_component_byte(AnimationState)
     zox_define_component_double(AnimationDelay)
@@ -65,7 +67,7 @@ zox_begin_module(Animations)
     zox_system(AnimationSequenceSystem, EcsPostUpdate, [in] AnimationSequence, [in] AnimationTimes, [in] AnimationTargets, [in] AnimationDelay,  [out] AnimationIndex, [out] AnimationLength, [out] AnimationStart, [out] AnimationState)
     zox_system(AnimateAlphaSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [in] AnimateSourceFloat, [in] AnimateTargetFloat, [out] Alpha)
     zox_system(FadeoutSystem, EcsOnUpdate, [in] FadeOutEvent, [in] AnimationStart, [out] Alpha)
-    zox_system(OscillateSystem, EcsOnUpdate, [in] OscillateStartPosition3D, [out] LocalPosition3D, [none] OscillatePosition3D)
+    zox_system(OscillateSystem, EcsOnUpdate, [in] OscillateStartPosition3D, [in] OscillateDeltaPosition3D, [out] LocalPosition3D, [none] OscillatePosition3D)
 zox_end_module(Animations)
 
 #endif

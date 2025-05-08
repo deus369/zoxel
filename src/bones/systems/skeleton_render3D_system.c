@@ -38,7 +38,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         if (!has_set_material) {
             has_set_material = 1;
-#ifdef zox_transparent_voxes
+#ifdef zox_transparent_skeletons
             opengl_enable_blend();
             glDisable(GL_CULL_FACE);
 #endif
@@ -80,7 +80,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_opengl_program();
-#ifdef zox_transparent_voxes
+#ifdef zox_transparent_skeletons
         opengl_disable_blend();
         glEnable(GL_CULL_FACE);
 #endif

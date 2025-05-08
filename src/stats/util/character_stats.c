@@ -4,10 +4,7 @@ const int player_extra_stats = 6;
 // todo: pass in elements ui
 // todo: spawn name label in character spawning instead
 void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, byte render_disabled, const ecs_entity_t health_stat, float health, float max_health) {
-    float ui_position = 0.43f;
-    if (player) {
-        ui_position = 0.6f;
-    }
+    float ui_position = 0.32f;
     // spawn 3D healtbar
     SpawnDataElementbar3D spawn_data = {
         .percentage = health / max_health,

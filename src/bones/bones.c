@@ -1,12 +1,18 @@
 #if !defined(zox_mod_bones) && defined(zox_mod_transforms)
 #define zox_mod_bones
 
+// #define zox_debug_bones
+// #define zox_transparent_skeletons
+
+// todo: bones should have a capsule used to generate weights - or a shape - cube shape for now - use in bone_index_generate_system
+
 zox_declare_tag(Bone)
 zox_declare_tag(Skeleton)
 zox_declare_tag(SkeletonRenderer)
 zox_declare_tag(PaintedSkeleton)
 zox_declare_tag(HeadBone)
 zox_component_float3(BonePosition)
+zox_component_float3(BoneSize)
 zox_memory_component(BoneIndexes, byte)
 zox_memory_component(BoneLinks, ecs_entity_t)
 #include "components/bone_index.c"
@@ -26,6 +32,7 @@ zox_begin_module(Bones)
     zox_define_tag(PaintedSkeleton)
     zox_define_tag(HeadBone)
     zox_define_component_float3(BonePosition)
+    zox_define_component_float3(BoneSize)
     zox_define_component(MaterialBone)
     zox_define_memory_component(BoneIndexes)
     zox_define_memory_component(BoneLinks)
@@ -33,7 +40,7 @@ zox_begin_module(Bones)
     // generating bone indexes here
     if (!headless) {
         zox_render3D_plus_system(SkeletonRender3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] BoneIndexGPULink, [in] TransformMatrix, [in] RenderDisabled, [in] BoneLinks, [none] Skeleton, [none] MeshColorRGBs, [none] !UvsGPULink)
-        zox_system(BoneIndexGenerateSystem, EcsOnUpdate, [in] MeshDirty, [in] MeshVertices, [out] BoneIndexes)
+        zox_system(BoneIndexGenerateSystem, EcsOnUpdate, [in] MeshDirty, [in] MeshVertices, [in] BoneLinks, [out] BoneIndexes)
         zox_system(BonePaintSystem, EcsPostUpdate, [in] MeshDirty, [in] BoneIndexes, [out] MeshColorRGBs, [in] PaintedSkeleton)
         zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread, [in] MeshDirty, [in] BoneIndexes, [out] BoneIndexGPULink)
     }

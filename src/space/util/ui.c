@@ -40,7 +40,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
     #ifdef zox_mod_space
         players_playing = spawn_players(world, game);
     #endif
-    set_camera_mode_pre_defined(world);
+    set_camera_mode_pre_defined(world, vox_model_scale);
     set_main_cameras((int) players_playing);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;

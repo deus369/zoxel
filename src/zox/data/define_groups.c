@@ -5,7 +5,7 @@
 #endif
 
 #ifdef zox_test_skeletons
-    #define zox_transparent_voxes
+    #define zox_transparent_skeletons
     #define zox_debug_bones
     #define zox_is_flatlands
     // #define zox_disable_npcs
