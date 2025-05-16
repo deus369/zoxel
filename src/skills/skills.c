@@ -13,6 +13,7 @@ zox_begin_module(Skills)
     define_systems_skills(world);
     zox_import_module(UISkills)
     spawn_prefabs_skills(world);
+    add_hook_spawned_character3D(&spawn_character_skills);
 zox_end_module(Skills)
 
 #endif

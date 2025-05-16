@@ -23,6 +23,7 @@ zox_begin_module(Actions)
     zox_define_user_data(Action)
     zox_import_module(ActionsUI)
     spawn_prefabs_actions(world);
+    add_hook_spawned_character3D(&spawn_character_actions);
 zox_end_module(Actions)
 
 #endif

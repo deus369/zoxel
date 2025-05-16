@@ -3,3 +3,4 @@
 #include "player_save.c"
 #include "spawn_many.c"
 #include "debug.c"
+#include "name_label.c"

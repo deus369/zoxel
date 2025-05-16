@@ -2,6 +2,7 @@ typedef struct {
     const ecs_entity_t e;
     const ecs_entity_t p;
     const char *name;
+    const byte render_disabled;
     ElementLinks *elementLinks;
 } spawned_character3D_data;
 

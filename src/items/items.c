@@ -23,6 +23,7 @@ zox_begin_module(Items)
     zox_import_module(ItemsUI)
     spawn_prefabs_items(world);
     zox_define_system_state_event_1(RealmItems, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    add_hook_spawned_character3D(&spawn_character_items);
 zox_end_module(Items)
 
 #endif
