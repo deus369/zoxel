@@ -3,16 +3,20 @@
 
 zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)
-#include "settings/settings.c"
+#include "data/settings.c"
+#include "data/hooks.c"
 #include "prefabs/prefabs.c"
-#include "util/camera_io.c"
-#include "util/character_io.c"
-#include "util/player_save.c"
-#include "util/spawn_many.c"
-#include "util/debug.c"
+#include "util/util.c"
 #include "terrain/characters3D_terrain.c"
 
+void module_dispose_characters3D(ecs_world_t *world, void *ctx) {
+    dispose_hook_spawned_character3D();
+}
+
 zox_begin_module(Characters3D)
+    zox_module_dispose(module_dispose_characters3D)
+    initialize_hook_spawned_character3D();
+    add_hook_spawned_character3D(&spawn_character_name_label);
     set_character_settings();
     zox_define_tag(Character3D)
     zox_define_component_entity(Character3DLink)
