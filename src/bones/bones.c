@@ -4,8 +4,6 @@
 // #define zox_debug_bones
 // #define zox_transparent_skeletons
 
-// todo: bones should have a capsule used to generate weights - or a shape - cube shape for now - use in bone_index_generate_system
-
 zox_declare_tag(Bone)
 zox_declare_tag(Skeleton)
 zox_declare_tag(SkeletonRenderer)

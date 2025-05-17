@@ -1,8 +1,6 @@
 float delay_terrain_time = 0.54f;
 float delay_terrain_time2 = 0.64f;
 
-extern ecs_entity_2 spawn_player_character3D_in_world(ecs_world_t *world, const ecs_entity_t vox, const float3 position, const float4 rotation, const byte character_lod, const ecs_entity_t player);
-
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 #ifdef zox_disable_player_ui
     return;
@@ -72,14 +70,20 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         load_character_p(&spawn_position, &spawn_rotation);
     }
 
-    ecs_entity_2 character_group = spawn_player_character3D_in_world(world, vox, spawn_position, spawn_rotation, 0, player);
-    const ecs_entity_t character = character_group.x;
+    spawn_character3D_data spawn_data = {
+        .player = player,
+        .vox = vox,
+        .terrain = terrain,
+        .position = spawn_position,
+        .rotation = spawn_rotation,
+    };
+    const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
     // zox_log("+ player character spawned [%lu]\n", character)
-    zox_set(character, ChunkLink, { chunk })
-    zox_set(player, CharacterLink, { character })
-    zox_set(character, PlayerLink, { player })
-    zox_set(character, CameraLink, { camera })
-    attach_camera_to_character(world, player, camera, character);
+    zox_set(e, ChunkLink, { chunk })
+    zox_set(player, CharacterLink, { e })
+    zox_set(e, PlayerLink, { player })
+    zox_set(e, CameraLink, { camera })
+    attach_camera_to_character(world, player, camera, e);
 #ifndef zox_disable_save_games
     if (!is_new_game) {
         delay_event(world, &load_player_e, player, 0.01f);

@@ -5,6 +5,7 @@ zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)
 #include "data/settings.c"
 #include "data/hooks.c"
+#include "data/spawn_character3D_data.c"
 #include "prefabs/prefabs.c"
 #include "util/util.c"
 #include "terrain/characters3D_terrain.c"

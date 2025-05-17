@@ -3,13 +3,11 @@ const int player_extra_stats = 6;
 
 #define statbar_float_position 0.32f
 
-// todo: pass in elements ui
-// todo: spawn name label in character spawning instead
-void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, byte render_disabled, const ecs_entity_t health_stat, float health, float max_health) {
+void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, byte render_disabled, const ecs_entity_t health_stat, float2 health) {
     float ui_position = statbar_float_position;
     // spawn 3D healtbar
     SpawnDataElementbar3D spawn_data = {
-        .percentage = health / max_health,
+        .percentage = health.x / health.y,
         .ui_holder = e,
         .position_y = ui_position,
         .backbar = {
@@ -39,42 +37,41 @@ void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLi
 }
 
 // todo: take in npc spawn meta data, like location, biome, etc
-ecs_entity_t on_spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, const byte render_disabled) {
+void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
     // stats
-    float max_health = 10.0f;
-    float health = max_health;
-    health =  (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
+    float2 health = (float2) { 10, 10 };
+    health.x = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
     int stats_count = character_stats;
-    if (player) {
+    if (data->p) {
         stats_count += player_extra_stats;
     }
-    StatLinks *statLinks = &((StatLinks) { 0, NULL });
-    resize_memory_component(StatLinks, statLinks, ecs_entity_t, stats_count)
+    StatLinks *stats = &((StatLinks) { 0, NULL });
+    resize_memory_component(StatLinks, stats, ecs_entity_t, stats_count)
+    data->stats = stats->value;
+    data->stats_count = stats_count;
     // health
-    statLinks->value[0] = spawn_user_stat(world, meta_stat_soul, e);
-    const ecs_entity_t health_stat = spawn_user_stat(world, meta_stat_health, e);
-    zox_set(health_stat, StatValue, { health })
-    zox_set(health_stat, StatValueMax, { max_health })
-    statLinks->value[1] = health_stat;
+    stats->value[0] = spawn_user_stat(world, meta_stat_soul, data->e);
+    const ecs_entity_t health_stat = spawn_user_stat(world, meta_stat_health, data->e);
+    zox_set(health_stat, StatValue, { health.x })
+    zox_set(health_stat, StatValueMax, { health.y })
+    stats->value[1] = health_stat;
     // players are richer bbeings from the aether
-    if (player) {
-        statLinks->value[2] = spawn_user_stat(world, meta_stat_mana, e);
-
+    if (data->p) {
+        stats->value[2] = spawn_user_stat(world, meta_stat_mana, data->e);
         // statLinks->value[3] = spawn_user_stat(world, meta_stat_energy, e);
-        const ecs_entity_t stat_energy = spawn_user_stat(world, meta_stat_energy, e);
+        const ecs_entity_t stat_energy = spawn_user_stat(world, meta_stat_energy, data->e);
         zox_set(stat_energy, StatValue, { 4 })
         zox_set(stat_energy, StatValueMax, { 12 })
-        statLinks->value[3] = stat_energy;
-
-        statLinks->value[4] = spawn_user_stat(world, meta_stat_regen_health, e);
-        statLinks->value[5] = spawn_user_stat(world, meta_stat_regen_energy, e);
-        statLinks->value[6] = spawn_user_stat(world, meta_stat_regen_mana, e);
-        statLinks->value[7] = spawn_user_stat(world, meta_stat_strength, e);
+        stats->value[3] = stat_energy;
+        stats->value[4] = spawn_user_stat(world, meta_stat_regen_health, data->e);
+        stats->value[5] = spawn_user_stat(world, meta_stat_regen_energy, data->e);
+        stats->value[6] = spawn_user_stat(world, meta_stat_regen_mana, data->e);
+        stats->value[7] = spawn_user_stat(world, meta_stat_strength, data->e);
     }
-    zox_set(e, StatLinks, { statLinks->length, statLinks->value })
+    zox_set(data->e, StatLinks, { stats->length, stats->value })
     // character ui
-    if (player) {
-        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    if (data->p) {
+        const ecs_entity_t canvas = zox_get_value(data->p, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)
         if (game_menu) {
             find_child_with_tag(game_menu, ElementBar, healthbar2D)
@@ -87,6 +84,5 @@ ecs_entity_t on_spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, 
             zox_log("! game_menu not found\n")
         }
     }
-    spawn_new_character_uis(world, e, elementLinks, player, render_disabled, health_stat, health, max_health);
-    return health_stat;
+    spawn_new_character_uis(world, data->e, data->elementLinks, data->render_disabled, health_stat, health);
 }

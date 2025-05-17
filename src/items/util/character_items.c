@@ -1,9 +1,9 @@
 const int inventory_count = 16; // 10; // having blank items seems to b reak it
 
-void spawn_character_items(ecs_world_t *world, spawned_character3D_data data) {
-    if (!data.p) return;
-    //zox_get_muter(e, ItemLinks, items)
-    //if (!items) return;
+void spawn_character_items(ecs_world_t *world, spawned_character3D_data *data) {
+    if (!data->p) {
+        return;
+    }
     ItemLinks *items = &((ItemLinks) { 0, NULL });
     initialize_memory_component(ItemLinks, items, ecs_entity_t, inventory_count)
     if (!items->value) {
@@ -22,5 +22,5 @@ void spawn_character_items(ecs_world_t *world, spawned_character3D_data data) {
     } else {
         zox_log(" ! meta_item_block not found\n")
     }*/
-    zox_set(data.e, ItemLinks, { items->length, items->value })
+    zox_set(data->e, ItemLinks, { items->length, items->value })
 }

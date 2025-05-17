@@ -1,7 +1,7 @@
 const int quests_count = 1; // having blank items seems to b reak it
 
-void spawn_character_quests(ecs_world_t *world, spawned_character3D_data data) {
-    if (!data.p) {
+void spawn_character_quests(ecs_world_t *world, spawned_character3D_data *data) {
+    if (!data->p) {
         return;
     }
     QuestLinks *quests = &((QuestLinks) { 0, NULL });
@@ -15,10 +15,10 @@ void spawn_character_quests(ecs_world_t *world, spawned_character3D_data data) {
     }
     // first block
     if (meta_quest_slay_slems) {
-        const ecs_entity_t quest_slay_slems = spawn_user_quest(world, meta_quest_slay_slems, data.e);
+        const ecs_entity_t quest_slay_slems = spawn_user_quest(world, meta_quest_slay_slems, data->e);
         quests->value[0] = quest_slay_slems;
     } else {
         zox_log(" ! meta_quest_slay_slems not found\n")
     }
-    zox_set(data.e, QuestLinks, { quests->length, quests->value })
+    zox_set(data->e, QuestLinks, { quests->length, quests->value })
 }

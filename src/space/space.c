@@ -34,12 +34,3 @@ zox_begin_module(Space)
 zox_end_module(Space)
 
 #endif
-
-// alot of systems here are actually controller ones, player + device + camera / character, or game states like pause system?
-// todo: fix block voxes not destroying
-// todo: add destruction animation
-// todo: hold to destroy
-// todo: link to inventory
-// todo: pickup items
-// todo: arm animations
-// todo: hold item animation / spawn item held

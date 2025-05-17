@@ -3,9 +3,6 @@
     extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
-// todo: Seperate area from damage, so the skill is a child of character, and it finds characters in area and applies damage at end step
-// todo: seperate skill, use sphere cast (using sphere distance) to cache nearby characters - and lookup using chunk entities and not a seperate query
-
 void DamageAuraSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(UserLink, userLinks, 1)

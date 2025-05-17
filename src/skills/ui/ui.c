@@ -1,7 +1,6 @@
 #ifndef zox_mod_ui_skills
 #define zox_mod_ui_skills
 
-// todo: when use aura skill - set overlay frame on or off
 zox_declare_tag(MenuSkills)
 zox_declare_tag(IconSkill)
 zox_declare_tag(FrameSkill)

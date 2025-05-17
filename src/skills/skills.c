@@ -17,14 +17,3 @@ zox_begin_module(Skills)
 zox_end_module(Skills)
 
 #endif
-
-// todo: damage popups
-// todo: screenshake on melee hit
-// todo: small jump forward towards target when hitting them
-// todo: time damage during hit, not just instant
-// remember: when spawned in similar pipeline, it didn't recognize components in a system also in that system, it removed dots straight away because of this..
-// sepserate damage logic
-// print who kills who
-// todo: Aura Skill Entity to remember list of effected characters?
-// todo: need ally system
-// zox_declare_user_data(Skill)

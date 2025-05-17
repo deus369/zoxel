@@ -8,12 +8,8 @@ ecs_entity_t spawn_prefab_character3D_npc(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-ecs_entity_t spawn_character3D_npc(ecs_world_t *world, const ecs_entity_t vox, const ecs_entity_t chunk, const float3 position, const float4 rotation, const byte character_lod, const byte render_disabled) {
-    const ecs_entity_2 e = spawn_character3D(world, prefab_character3D_npc, vox, position, rotation, character_lod, 0, 0, render_disabled);
-    if (chunk) {
-        zox_set(e.x, ChunkLink, { chunk })
-    } else {
-        zox_log("! CHUNK WAS INVALID\n")
-    }
-    return e.x;
+ecs_entity_t spawn_character3D_npc(ecs_world_t *world, spawn_character3D_data spawn_data) {
+    spawn_data.prefab = prefab_character3D_npc;
+    const ecs_entity_t e = spawn_character3D(world, spawn_data);
+    return e;
 }

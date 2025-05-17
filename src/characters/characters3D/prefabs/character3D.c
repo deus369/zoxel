@@ -30,14 +30,9 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     return e;
 }
 
-// need rethink hmm: pass through spawn data pointer instead, set allocated arrays of stats etc so other modules can use spawned data - ecs takes more than frame to set
-extern ecs_entity_t on_spawn_character_stats(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, const ecs_entity_t player, const byte render_disabled);
-
-ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t vox, const float3 position, const float4 rotation, const byte lod, const ecs_entity_t player, const float vox_scale, const byte render_disabled) {
-    zox_instance(prefab)
+ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data data) {
+    zox_instance(data.prefab)
     zox_name("character3D")
-    zox_set(e, RenderDisabled, { render_disabled })
-    zox_set(e, Position3D, { position })
     // make a create_bounds function tthat returns float6
     const float min_x_global = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
     const float max_x_global = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;
@@ -45,50 +40,57 @@ ecs_entity_2 spawn_character3D(ecs_world_t *world, const ecs_entity_t prefab, co
     const float max_z_global = max_x_global;
     const float min_y_global = - real_chunk_scale * terrain_vertical;
     const float max_y_global = - min_y_global + real_chunk_scale;
-    if (!player) {
+    float6 character_bounds = (float6) { min_x_global, max_x_global, min_y_global, max_y_global, min_z_global, max_z_global };
+    if (!data.player) {
         const int bounds_radius = 16;
         const int bounds_radius_y = 12;
-        const float min_x_local = position.x - bounds_radius;
-        const float max_x_local = position.x + bounds_radius;
-        const float min_z_local = position.z - bounds_radius;
-        const float max_z_local = position.z + bounds_radius;
-        const float min_y_local = position.y - bounds_radius_y;
-        const float max_y_local = position.y + bounds_radius_y;
-        zox_set(e, Position3DBounds, {{
+        const float min_x_local = data.position.x - bounds_radius;
+        const float max_x_local = data.position.x + bounds_radius;
+        const float min_z_local = data.position.z - bounds_radius;
+        const float max_z_local = data.position.z + bounds_radius;
+        const float min_y_local = data.position.y - bounds_radius_y;
+        const float max_y_local = data.position.y + bounds_radius_y;
+        character_bounds = (float6) {
             float_max(min_x_local, min_x_global), float_min(max_x_local, max_x_global),
             float_max(min_y_local, min_y_global), float_min(max_y_local, max_y_global),
-            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) }})
-    } else {
-        zox_set(e, Position3DBounds, {{ min_x_global, max_x_global, min_y_global, max_y_global, min_z_global, max_z_global }})
+            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) };
     }
-    if (vox_scale) zox_set(e, VoxScale, { vox_scale })
-    zox_set(e, LastPosition3D, { position })
-    zox_set(e, Rotation3D, { rotation })
+    // disabled bounds for now
+    zox_set(e, Position3DBounds, { character_bounds })
+    zox_set(e, RenderDisabled, { data.render_disabled })
+    zox_set(e, Position3D, { data.position })
+    zox_set(e, LastPosition3D, { data.position })
+    zox_set(e, Rotation3D, { data.rotation })
     // voxels
-    zox_set(e, VoxLink, { local_terrain })
+    if (data.terrain) {
+        zox_set(e, VoxLink, { data.terrain })
+    }
+    if (data.terrain_chunk) {
+        zox_set(e, ChunkLink, { data.terrain_chunk })
+    }
+    if (data.scale) {
+        zox_set(e, VoxScale, { data.scale })
+    }
     // clone_vox_data(world, e, vox, 1 + max_octree_depth - min_character_vox_lod);
     zox_set(e, CloneVox, { 1 })
-    zox_set(e, CloneVoxLink, { vox })
+    zox_set(e, CloneVoxLink, { data.vox })
     /// rendering
-    zox_set(e, RenderLod, { lod })
+    zox_set(e, RenderLod, { data.lod })
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
     // name
     char *name = generate_name();
     zox_set(e, ZoxName, { text_to_zext(name) })
-    ElementLinks *elementLinks = &((ElementLinks) { 0, NULL });
-    // spawn event for modules
-    const ecs_entity_t health = on_spawn_character_stats(world, e, elementLinks, player, render_disabled);
-    spawned_character3D_data data = (spawned_character3D_data) {
+    spawned_character3D_data spawned_data = (spawned_character3D_data) {
         .e = e,
-        .p = player,
+        .p = data.player,
         .name = name,
-        .render_disabled = render_disabled,
-        .elementLinks = elementLinks,
+        .render_disabled = data.render_disabled,
+        .elementLinks = &((ElementLinks) { 0, NULL }),
     };
-    run_hook_spawned_character3D(world, data);
-    // finally set data
-    zox_set(e, ElementLinks, { elementLinks->length, elementLinks->value })
+    run_hook_spawned_character3D(world, &spawned_data);
+    zox_set(e, ElementLinks, { spawned_data.elementLinks->length, spawned_data.elementLinks->value })
+    // zox_log_line("+ character [%s] has [%i] uis", name, spawned_data.elementLinks->length)
     free(name);
-    return (ecs_entity_2) { e, health };
+    return e;
 }
