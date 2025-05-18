@@ -6,5 +6,3 @@
 #include "colors_gpu_link.c"
 #include "shader_gpu_link.c"
 #include "compute_shader.c"
-#include "frame_buffer.c"
-#include "render_buffer.c"

@@ -29,18 +29,18 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         // todo: this required but breaks it for both render cameras
         if (fbo) {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-#ifdef zoxel_catch_opengl_errors
+            #ifdef zoxel_catch_opengl_errors
             if (!check_opengl_frame_buffer_status()) {
                 zox_log(" !! camera render - error on fbo [%u]\n", fbo)
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
                 continue;
             }
-#endif
+            #endif
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
-#ifdef zox_include_vulkan
+        #ifdef zox_include_vulkan
         // else { set vulkan viewport; }
-#endif
+        #endif
         if (!is_camera2D) {
             for (int j = 0; j < render3D_systems->size; j++) {
                 ecs_run(world, render3D_systems->data[j], 0, NULL);
@@ -60,46 +60,3 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         }
     }
 }
-
-void CameraRender3DSystem(ecs_iter_t *it) {
-    camera_render_update(it, 0);
-} zox_declare_system(CameraRender3DSystem)
-
-void CameraRenderUISystem(ecs_iter_t *it) {
-    camera_render_update(it, 1);
-} zox_declare_system(CameraRenderUISystem)
-
-/*GLfloat depthClearValue = 1.0f; // Adjust as needed
-glClearBufferSubData(GL_RENDERBUFFER, GL_DEPTH, 0, 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depthClearValue);*/
-
-/*if (zox_has(e, RenderBufferLink)) {
-    rbo = zox_get_value(e, RenderBufferLink)
-}*/
-/*void clear_viewport( byte is_3D) {
-    if (is_using_vulkan) {
-#ifdef zox_include_vulkan
-        vulkan_clear_viewport(viewport_clear_color);
-#endif
-    } else {
-        opengl_clear_viewport(viewport_clear_color, is_3D);
-    }
-}*/
-
-// glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-
-/*glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-if (check_opengl_error("glBindRenderbuffer")) {
-    zox_log(" > glBindRenderbuffer GL_RENDERBUFFER %i [%i %i]\n", i, fbo, rbo);
-}*/
-
-/*GLfloat colorClearValue[4] = { 0.3f, 0.1f, 0.1f, 1.0f}; // RGBA
-glClearBufferfv(GL_COLOR, 0, colorClearValue);
-if (check_opengl_error("glClearBufferfv GL_COLOR")) {
-    zox_log(" > glClearBufferfv GL_COLOR %i [%i %i]\n", i, fbo, rbo);
-}*/
-/*GLfloat depthClearValue = 1.0f; // Usually 1.0f for depth
-glClearBufferfv(GL_DEPTH, 0, &depthClearValue);
-if (check_opengl_error("glClearBufferfv GL_DEPTH")) {
-    zox_log(" > glClearBufferfv GL_DEPTH %i [%i %i]\n", i, fbo, rbo);
-}*/

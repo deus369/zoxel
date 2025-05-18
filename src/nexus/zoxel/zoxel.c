@@ -1,6 +1,9 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// todo: initialize event modules can hook onto for loading i/o
+//      - should occur after all modules are imported, but before game is booted
+// - each module should add to a load resources event for i/o game data
 // #define zox_log_boot_game
 // #define zox_enable_log_start_game
 
@@ -8,6 +11,13 @@ byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)
     initialize_networking();
+#ifdef zox_mod_voxels
+    initialize_voxes(world);
+#endif
+    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
+    const ecs_entity_t game = spawn_game(world, realm);
+    intialize_game_store();
+    zox_log_start_game("> boot completed [zoxel]")
     if (!headless) {
         const ecs_entity_t window = spawn_main_window_opengl(world, default_window_position, default_window_size, fullscreen);
         if (window == 0) {
@@ -16,32 +26,23 @@ byte boot_zoxel_game(ecs_world_t *world) {
         initialize_rendering(world);
         load_shaders(world);
         char* icon_path = get_asset_path("textures", "game_icon.png")
-#ifdef zox_mod_textures
+        #ifdef zox_mod_textures
         load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
-#endif
+        #endif
         free(icon_path);
     }
-    // load resources
-    // todo: each module should add to a load resources event for i/o game data
-#ifdef zox_mod_voxels
-    initialize_voxes(world);
-#endif
-    // Realm,  players, skybox
-    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    const ecs_entity_t game = spawn_game(world, realm);
-#ifdef zox_mod_weathers
+    // spawn after shaders exist
+    #ifdef zox_mod_weathers
     spawn_weather(world);
-#endif
-#ifdef zox_mod_musics
-    initialize_music(world, realm);
-#endif
-#ifdef zox_mod_players
+    #endif
+    #ifdef zox_mod_musics
+    spawn_realm_playlist(world, realm);
+    #endif
+    #ifdef zox_mod_players
     spawn_players_cameras_canvases(world, game);
     spawn_players_start_ui(world);
-#endif
-    intialize_game_store();
-    test_steam_cloud();
-    zox_log_start_game("> boot completed [zoxel]")
+    #endif
+    test_steam_cloud(); // idk
     return EXIT_SUCCESS;
 }
 

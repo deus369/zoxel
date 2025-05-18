@@ -6,10 +6,10 @@ void ChunkStreamSystem(ecs_iter_t *it) {
     ecs_query_t *streamers_query = it->ctx;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
     ecs_query_next(&streamers_iter);
-    if (streamers_iter.count == 0) {
+    /*if (streamers_iter.count == 0) {
         ecs_iter_fini(&streamers_iter);
         return;
-    }
+    }*/
     uint spawned_chunks = 0;
     zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
     int3 *stream_points = (int3*) streamPoints;
@@ -33,7 +33,7 @@ void ChunkStreamSystem(ecs_iter_t *it) {
         if (chunkLodDirty != 0) {
             continue;
         }
-        const byte kill_zone = renderDistance->value > streaming_distance; // + 1;
+        const byte kill_zone = renderDistance->value > render_distance; // + 1;
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         if (kill_zone) {
             zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
@@ -62,7 +62,7 @@ void ChunkStreamSystem(ecs_iter_t *it) {
                         const int3 stream_point = find_closest_point(stream_points, streamers_iter.count, neighbor_position);
                         // only spawn new chunk if within stream distance
                         const byte camera_distance = get_camera_chunk_distance(stream_point, neighbor_position);
-                        if (camera_distance <= streaming_distance) {
+                        if (camera_distance <= render_distance) {
                             neighbor = spawn_chunk_terrain(world, prefab_chunk_height, voxLink->value, stream_point, neighbor_position, real_chunk_scale);
                             zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
                             int3_hashmap_add(chunkLinks->value, neighbor_position, neighbor);

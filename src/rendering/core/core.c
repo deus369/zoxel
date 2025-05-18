@@ -71,8 +71,6 @@ zox_begin_module(RenderingCore)
     zox_define_component_w_dest(UvsGPULink)
     zox_define_component_w_dest(ColorsGPULink)
     zox_define_component_w_dest(ComputeShaderLink)
-    zox_define_component_w_dest(FrameBufferLink)
-    zox_define_component_w_dest(RenderBufferLink)
     zox_define_component_w_dest(UboGPULink)
     zox_define_component_byte(ShaderSourceIndex)
     zox_define_component_entity(ShaderLink) // links to a shader entity
@@ -87,10 +85,3 @@ zox_begin_module(RenderingCore)
 zox_end_module(RenderingCore)
 
 #endif
-
-/*#ifdef zoxel_render3D_uvs_system_overdebug
-    check_opengl_error("[pre render3D_uvs_system Error]");
-    GLint memory_used, memory_total;
-    glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
-    glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
-#endif*/

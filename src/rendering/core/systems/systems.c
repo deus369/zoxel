@@ -12,9 +12,6 @@
 #include "restore_shader_system.c"
 #include "restore_materials_system.c"
 #include "restore_meshdirty_system.c"
-#include "restore_render_buffer_system.c"
-
-#include "camera_render_system.c"
 
 void define_systems_rendering(ecs_world_t *world) {
     // dispose
@@ -33,9 +30,4 @@ void define_systems_rendering(ecs_world_t *world) {
     zox_gpu_restore_system(ShaderRestoreSystem, [in] ShaderSourceIndex, [out] ShaderGPULink)
     zox_gpu_restore_system(MaterialRestoreSystem, [in] ShaderLink, [out] MaterialGPULink)
     zox_gpu_restore_system(MeshDirtyRestoreSystem, [out] MeshDirty)
-    zox_gpu_restore_system(RenderBufferRestoreSystem, [in] ScreenDimensions, [out] FrameBufferLink, [out] RenderBufferLink)
-    zox_gpu_restore_system(RenderTextureRestoreSystem, [in] TextureGPULink, [in] PixelSize, [in] CameraLink, [none] cameras.RenderTexture)
-    // rendering
-    zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] !cameras.CameraUI)
-    zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] ScreenDimensions, [none] cameras.CameraUI)
 }

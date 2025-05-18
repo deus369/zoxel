@@ -1,7 +1,7 @@
 #define zox_hashmap_component(name, type)\
-zox_component(name, type##_##hashmap*)\
+zox_component(name, type##_hashmap*)\
 \
-void dispose_##type##_hashmap(ecs_world_t *world, type##_##hashmap* hashmap) {\
+void dispose_##type##_hashmap(ecs_world_t *world, type##_hashmap* hashmap) {\
     ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
     for (int j = 0; j < hashmap->size; j++) {\
         type##_##hashmap_pair *pair = hashmap->data[j];\
@@ -31,7 +31,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
     for (int i = 0; i < it->count; i++) {\
         zox_field_o(name, components, component)\
         if (!component->value) continue;\
-        type##_##hashmap* hashmap = component->value;\
+        type##_hashmap* hashmap = component->value;\
         component->value = NULL;\
         dispose_##type##_hashmap(world, hashmap);\
     }\

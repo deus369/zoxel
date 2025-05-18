@@ -48,11 +48,3 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log(" + generated realm [skills]\n")
 #endif
 }
-
-/*spawn_skill_aura(world, prefab_skill_aura, "death aura", -base_death_aura_damage, base_death_aura_range, (color) { 5, 5, 5, 122 });
- z ox_set(meta_skill_aura_death, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_death")) *})*/
- // meta_skill_aura_life = spawn_skill_aura(world, prefab_skill_aura, "life aura", 1, 3, (color) { 255, 255, 255, 88 });
- // zox_set(meta_skill_aura_life, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_life")) })
-
- /*meta_skill_aura_fire = spawn_skill_aura(world, prefab_skill_aura, "fire aura", -base_death_aura_damage, base_death_aura_range, (color) { 255, 5, 5, 122 });
-  z ox_set(meta_skill_aura_fire, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("aura_fire")) })*/

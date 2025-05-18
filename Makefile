@@ -91,7 +91,8 @@ cflags += -Wno-stringop-overread -Wno-stringop-overflow
 # make faster for release builds
 cflags_release = -Ofast -D NDEBUG -s
 ifneq ($(SYSTEM),Windows)
-cflags_release += -flto=auto # fuse linker plugin on linux only
+# cflags_release += -flto=auto # fuse linker plugin on linux only
+cflags_release += -flto # fuse linker plugin on linux only
 endif
 # target per build type
 target = build/$(game)-linux/$(game)

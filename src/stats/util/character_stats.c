@@ -1,6 +1,5 @@
 const int character_stats = 2;
 const int player_extra_stats = 6;
-
 #define statbar_float_position 0.32f
 
 void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t e, ElementLinks *elementLinks, byte render_disabled, const ecs_entity_t health_stat, float2 health) {

@@ -2,22 +2,10 @@ ecs_entity_t spawn_player_camera(ecs_world_t *world, const ecs_entity_t player, 
     main_menu_rotation_speed = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     float fov = get_camera_mode_fov(camera_mode);
     const ecs_entity_t e = spawn_camera_base(world, prefab_camera_game, camera_position, camera_rotation, fov, viewport_position, viewport_size, screen_to_canvas);
-    zox_add_tag(e, Camera3D)
+    initialize_camera_post_processing(world, e, viewport_size);
     const ecs_entity_t e2 = spawn_camera_ui(world, prefab_camera_ui, viewport_position, viewport_size);
     zox_set(player, CameraLink, { e })
     main_cameras[index] = e;
     ui_cameras[index] = e2;
-    // adds a frame buffer object and render buffer to the camera
-    #ifndef zox_disable_post_processing
-        zox_add_tag(e, RenderCamera)
-        #ifdef zox_log_camera_spawning
-            zox_log(" + spawnubg frame buffer object\n")
-        #endif
-        GLuint fbo = spawn_frame_buffer_object(world, e); // test fbo
-        GLuint render_buffer = spawn_render_buffer(world, e, viewport_size); // test fbo
-        if (fbo && render_buffer) {
-            connect_render_buffer_to_fbo(fbo, render_buffer);
-        }
-    #endif
     return e;
 }

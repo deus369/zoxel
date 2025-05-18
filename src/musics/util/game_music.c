@@ -1,5 +1,4 @@
-
-void initialize_music(ecs_world_t *world, const ecs_entity_t realm) {
+void spawn_realm_playlist(ecs_world_t *world, const ecs_entity_t realm) {
     // add them to realm
     if (!zox_has(realm, PlaylistLinks)) {
         zox_log("! realm [%lu] has no PlaylistLinks\n")

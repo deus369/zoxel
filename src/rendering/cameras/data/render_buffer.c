@@ -1,4 +1,3 @@
-// Define the RenderBufferLink component
 zox_component(RenderBufferLink, GLuint)
 
 // Destructor for RenderBufferLink component

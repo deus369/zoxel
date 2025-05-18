@@ -27,6 +27,7 @@ zox_component_entity(MaterialLink)
 #ifndef zox_disable_rendering3D
     #include "basics3D/basics3D.c"
 #endif
+#include "cameras/cameras.c"
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 
 byte initialize_rendering(ecs_world_t *world) {
@@ -67,6 +68,7 @@ zox_begin_module(Rendering)
     #ifdef zox_mod_rendering_basics3D
         zox_import_module(RenderingBasics3D)
     #endif
+    zox_import_module(RenderingCameras)
 zox_end_module(Rendering)
 
 #endif

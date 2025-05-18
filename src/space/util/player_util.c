@@ -12,10 +12,15 @@ void players_game_state(ecs_world_t *world, const ecs_entity_t game, const byte 
     const PlayerLinks *playerLinks = zox_get(game, PlayerLinks)
     for (int i = 0; i < playerLinks->length; i++) {
         const ecs_entity_t player = playerLinks->value[i];
-        if (previous_game_state == zox_game_start && new_game_state == zox_game_playing) player_start_game(world, player);
-        else if (previous_game_state == zox_game_playing && new_game_state == zox_game_paused) pause_player(world, player);
-        else if (previous_game_state == zox_game_paused && new_game_state == zox_game_playing) resume_player(world, player);
-        else if (new_game_state == zox_game_start) player_end_game(world, player);
+        if (previous_game_state == zox_game_start && new_game_state == zox_game_playing) {
+            player_start_game(world, player);
+        } else if (previous_game_state == zox_game_playing && new_game_state == zox_game_paused) {
+            pause_player(world, player);
+        } else if (previous_game_state == zox_game_paused && new_game_state == zox_game_playing) {
+            resume_player(world, player);
+        } else if (new_game_state == zox_game_start) {
+            player_end_game(world, player);
+        }
     }
 }
 

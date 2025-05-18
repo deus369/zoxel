@@ -18,6 +18,7 @@ int run_main(int argc, char* argv[]) {
     zox_import_module(ZoxGame)
     initialize_ecs_settings(world);
     run_hook_terminal_command(world, argv, argc);
+    // todo: pre boot event hook here for loading I/O
     if (boot_event(world) == EXIT_SUCCESS) {
         engine_loop();
     } else {
