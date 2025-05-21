@@ -19,7 +19,7 @@ zox_component_byte(BlocksSpawned)
 zoxel_octree_component(ChunkOctree, byte, 0)
 #include "raycast_voxel_data.c"
 
-void define_components_chunks(ecs_world_t *world) {
+void zox_define_components_chunks(ecs_world_t *world) {
     zox_define_tag(Chunk)
     zox_define_tag(NoiseChunk)
     zox_define_tag(ColorChunk)
@@ -36,7 +36,7 @@ void define_components_chunks(ecs_world_t *world) {
     zox_define_memory_component(ChunkNeighbors)
     zox_define_links_component(ChunkLink)
     zox_define_component_byte(OctreeDepth)
-    zoxel_octree_component_define(ChunkOctree)
+    zox_define_component_octree(ChunkOctree)
     zox_define_hashmap_component(ChunkLinks)
     zox_define_component_byte(BlocksSpawned)
     zox_define_component(RaycastVoxelData)

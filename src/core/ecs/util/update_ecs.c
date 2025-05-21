@@ -1,3 +1,5 @@
+uint ecs_run_count = 0;
+
 void update_ecs() {
     run_update_loop(world);
     if (debug_pipelines) {
@@ -5,4 +7,5 @@ void update_ecs() {
     }
     ecs_progress(world, 0);
     run_post_update_loop(world);
+    ecs_run_count++;
 }

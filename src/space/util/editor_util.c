@@ -1,9 +1,15 @@
 byte debug_block_vox_bounds = 0;
 
 void toggle_debug_bounds_delve(ecs_world_t *world, const ChunkOctree *chunk, const byte max_depth, byte depth) {
-    if (!chunk->nodes) return;
+    if (!chunk->nodes) {
+        return;
+    }
     if (depth == max_depth) {
-        const ecs_entity_t spawned_block = ((NodeEntityLink*) chunk->nodes)->value;
+        NodeEntityLink *node_entity_link = (NodeEntityLink*) chunk->nodes;
+        if (!node_entity_link) {
+            return;
+        }
+        const ecs_entity_t spawned_block = node_entity_link->value;
         if (zox_valid(spawned_block)) {
             if (debug_block_vox_bounds) add_physics_debug(world, spawned_block);
             else remove_physics_debug(world, spawned_block);

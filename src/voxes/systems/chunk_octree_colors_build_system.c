@@ -1,5 +1,6 @@
 // builds the character vox meshes
 void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
+    const byte max_depth = max_octree_depth;
     // begin_timing()
     zox_field_world()
     zox_field_in(ChunkMeshDirty, chunkMeshDirtys, 1)
@@ -53,14 +54,14 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             const byte chunk_back_max_distance = chunkNeighbors2->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[4], RenderLod)
             const byte chunk_front_max_distance = chunkNeighbors2->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors2->value[5], RenderLod)
             byte neighbor_lods[6];
-            neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance);
-            neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance);
-            neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance);
-            neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance);
-            neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance);
-            neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance);
+            neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance, max_depth);
+            neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance, max_depth);
+            neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance, max_depth);
+            neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, max_depth);
+            neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, max_depth);
+            neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
             const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
-            const byte chunk_depth = get_chunk_division_from_lod(renderLod->value);
+            const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
             // BuildChunkColored build_chunk_colored = { };
             build_chunk_octree_mesh_colors(chunkOctree, colorRGBs, meshIndicies, meshVertices, meshColorRGBs, chunk_depth, neighbors, neighbor_lods, total_mesh_offset, voxScale->value);
         }

@@ -53,10 +53,8 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
             add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
             byte black_voxel_3 = colorRGBs->length;
-
             voronoi3D(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);
             noise_vox(chunkOctree, target_depth, size, voxel_range_2, black_voxel_3);  // avoids black ones
-
             // create new chunk node here, blend two using mask?
             const byte grass_position = chunk_voxel_length - chunk_voxel_length / 3;
             byte3 voxel_position;

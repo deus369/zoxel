@@ -1,5 +1,6 @@
 void FontTextureSystem(ecs_iter_t *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
+    const byte default_font_outline = 1; // 4
     zox_change_check()
     zox_field_world()
     // todo: link each zigel to fontstyle's font
@@ -55,13 +56,12 @@ void FontTextureSystem(ecs_iter_t *it) {
             for (int j = 0; j < length; j++) {
                 textureData->value[j] = air_color;
             }
-            // generateTexture->value = 0;
             textureDirty->value = 1;
             continue;
         }
         zox_geter(font, FontData, fontData)
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, 4);
+        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, default_font_outline);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates

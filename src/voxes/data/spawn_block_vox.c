@@ -7,4 +7,5 @@ typedef struct {
     byte3 position_local;
     int3 position_global;
     float3 position_real;
+    float scale;
 } SpawnBlockVox;

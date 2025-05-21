@@ -1,15 +1,24 @@
-byte get_terrain_lod_from_camera_distance(byte distance_to_camera, byte max_camera_distance) {
+byte get_terrain_lod_from_camera_distance(byte distance_to_camera, byte max_camera_distance, const byte max_depth) {
     #ifdef zox_disable_terrain_lod_levels
-    return 0;
+        return 0;
     #endif
-    if (distance_to_camera >= max_camera_distance) return render_lod_invisible;
-    if (distance_to_camera <= initial_terrain_lod) return max_octree_depth - 5;
-    else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) return max_octree_depth - 4;
+    if (distance_to_camera >= max_camera_distance) {
+        return render_lod_invisible;
+    }
+    for (int i = 0; i <= max_depth; i++) {
+        if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * i) {
+            return i;
+        }
+    }
+    return render_lod_invisible;
+    /*if (distance_to_camera <= initial_terrain_lod) {
+        return max_octree_depth - 5;
+    } else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor) return max_octree_depth - 4;
     else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 2) return max_octree_depth - 3;
     else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 3) return max_octree_depth - 2;
     else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 4) return max_octree_depth - 1;
     else if (distance_to_camera <= initial_terrain_lod + terrain_lod_dividor * 5) return max_octree_depth;
-    else return render_lod_invisible;
+    else */
 }
 
 bounds calculate_chunk_bounds(const float3 position3D, const int3 chunk_size, const float vox_scale) {

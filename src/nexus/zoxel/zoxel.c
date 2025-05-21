@@ -11,36 +11,23 @@ byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)
     initialize_networking();
-#ifdef zox_mod_voxels
-    initialize_voxes(world);
-#endif
+    intialize_game_store();
+    #ifdef zox_mod_voxels
+        initialize_voxes(world);
+    #endif
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world, realm);
-    intialize_game_store();
     zox_log_start_game("> boot completed [zoxel]")
-    if (!headless) {
-        const ecs_entity_t window = spawn_main_window_opengl(world, default_window_position, default_window_size, fullscreen);
-        if (window == 0) {
-            return EXIT_FAILURE;
-        }
-        initialize_rendering(world);
-        load_shaders(world);
-        char* icon_path = get_asset_path("textures", "game_icon.png")
-        #ifdef zox_mod_textures
-        load_app_icon(zox_gett_value(window, SDLWindow), icon_path);
-        #endif
-        free(icon_path);
-    }
-    // spawn after shaders exist
+    // game spawning
     #ifdef zox_mod_weathers
-    spawn_weather(world);
+        spawn_weather(world);
     #endif
     #ifdef zox_mod_musics
-    spawn_realm_playlist(world, realm);
+        spawn_realm_playlist(world, realm);
     #endif
     #ifdef zox_mod_players
-    spawn_players_cameras_canvases(world, game);
-    spawn_players_start_ui(world);
+        spawn_players_cameras_canvases(world, game);
+        spawn_players_start_ui(world);
     #endif
     test_steam_cloud(); // idk
     return EXIT_SUCCESS;
@@ -50,13 +37,21 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_game_type = zox_game_mode_3D;
-#ifdef zox_mod_space
     game_ui_has_taskbar = 1;
-#endif
-#ifdef zox_mod_weathers
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
-#endif
+    // terrain_mode = terrain_mode_flatlands;
+    // max_octree_depth = 4;
+    // max_octree_depth_character = 4;
+    // render_distance = 1;
+    headless = 0;
+    // disable_npcs = 1;
+    // wait tthis breaks terrain mesh at 4 depth
+    // disable_block_voxes = 1; // fix it's positioning
+    // disable_block_vox_generation = 1;
+    render_distance = 4; // 2 | 8 | 16
+    set_max_octree_length(5);
+    is_generate_vox_outlines = 0;
 }
 
 #endif

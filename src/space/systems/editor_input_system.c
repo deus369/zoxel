@@ -9,7 +9,7 @@ void EditorInputSystem(ecs_iter_t *it) {
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(CanvasLink, canvasLinks, 2)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
+        // zox_field_e()
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value;

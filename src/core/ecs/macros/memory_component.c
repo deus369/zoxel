@@ -233,7 +233,7 @@ void on_destroyed##_##name(ecs_iter_t *it) {\
 zox_define_component(name)\
 ecs_observer_init(world, &(ecs_observer_desc_t) {\
     .filter.expr = #__VA_ARGS__,\
-    .callback = on_destroyed##_##name,\
+    .callback = on_destroyed_##name,\
     .events = { EcsOnRemove },\
 });
 

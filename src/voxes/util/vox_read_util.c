@@ -4,7 +4,7 @@
 #define VOX_FILE_SIZE "SIZE"
 #define VOX_FILE_XYZI "XYZI"
 #define VOX_FILE_RGBA "RGBA"
-#define VOX_SIZE_INT 32
+// #define VOX_SIZE_INT 32
 #define VOX_SUPPORTED_VERSION 150
 #define zoxel_voxel_vox_flipz
 // #define zoxel_debug_vox_read

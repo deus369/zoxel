@@ -3,6 +3,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 #ifdef zox_disable_terrain_generation
     return;
 #endif
+    uint update_count = 0;
     // for now while types are global
     const byte target_depth = max_octree_depth;
     const byte chunk_voxel_length = powers_of_two_byte[target_depth];
@@ -22,7 +23,10 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != chunk_generate_state_update) continue;
         zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
-        if (chunkOctree->nodes != NULL) continue; // already generated
+        if (chunkOctree->nodes != NULL) {
+            continue; // already generated
+        }
+        chunkOctree->max_depth = target_depth;
         fill_new_octree(chunkOctree, 0, target_depth);
 
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
@@ -49,7 +53,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                         } else set_voxel(&datam_dirt, data);
                     }
                 }
-                if (local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length && (global_position_y > sand_height)) {
+                if (!disable_block_vox_generation && local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length && (global_position_y > sand_height)) {
                     const int rando = rand() % 10000;
                     if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
                         voxel_position.y = local_height_raw + 1;
@@ -65,6 +69,10 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 #ifndef zox_disable_closing_octree_nodes
         close_same_nodes(chunkOctree, max_octree_depth, 0);
 #endif
+        update_count++;
+    }
+    if (update_count > 0 && zox_log_terrain_generation) {
+        zox_log_line(" - [%i] terrain [%i]", ecs_run_count, update_count)
     }
 } zox_declare_system(GrassyPlainsSystem)
 

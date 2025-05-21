@@ -18,7 +18,7 @@ void make_test_skeleton(ecs_world_t *world, const ecs_entity_t e) {
     prefab_make_skeleton(world, e);
 
     // todo: apply voxel scale to skeleton spawning
-    float scale = 1 / 64.0f; // player_vox_scale;
+    // float scale = 1 / 64.0f; // player_vox_scale;
     const float3 test_bone_size_body = (float3) { 0.08f, 0.08f, 0.08f };
     // head
     const float3 bone_head_position = (float3) { 0, 0.15f, 0 }; //  -0.03f * 0.5f };

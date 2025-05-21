@@ -1,6 +1,7 @@
 extern void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox);
 
-ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
+// todo: base this off prefab_chunk
+ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const int3 size) {
     zox_prefab()
     zox_prefab_name("prefab_vox_file")
     zox_add_tag(e, Vox)
@@ -9,8 +10,6 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
     zox_prefab_add(e, ColorRGBs)
     zox_prefab_add(e, UboGPULink)
     // extra for rendering
-    const byte max_length = 32; // todo: Calculate this from max resolution!
-    const int3 size = (int3) { max_length, max_length, max_length };
     add_chunk_octree(world, e, size);
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     // Transforms
@@ -22,7 +21,6 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world) {
     zox_prefab_set(e, MeshDirty, { 0 })
     prefab_add_mesh_basic(world, e);
     add_components_mesh_colored(world, e);
-
     return e;
 }
 

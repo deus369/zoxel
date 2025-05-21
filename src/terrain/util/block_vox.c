@@ -18,6 +18,7 @@ typedef struct {
     const byte *block_vox_offsets;
     const byte block_voxes_count;
     const float3 chunk_position_real;
+    const float scale;
     SpawnBlockVox *spawn_data;
 } UpdateBlockEntities;
 
@@ -43,15 +44,22 @@ typedef struct {
 
 // assumes this is max depth voxel
 void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
-    if (!chunk->nodes) return;
-    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
+    if (!chunk->nodes) {
+        return;
+    }
+    set_linking_ChunkOctree(chunk, 0);
+    /*NodeEntityLink *node_entity_link = (NodeEntityLink*) chunk->nodes;
+    if (!node_entity_link) {
+        return;
+    }
+    const ecs_entity_t e3 = node_entity_link->value;
     if (zox_valid(e3)) {
         zox_delete(e3)
         free(chunk->nodes);
         chunk->nodes = NULL;
     } else {
         zox_log(" !!! error remove_old_voxel_by_link : minivox voxel link\n")
-    }
+    }*/
 }
 
 void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk,  byte depth, const byte max_depth) {
@@ -68,7 +76,7 @@ void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk,  byte depth, 
 // first check if exists, if it does check if voxel type differs, for removing/adding
 // goes through nodes, if not in hashmap, it  will spawn anew
 void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, NodeDelveData *delve_data) {
-    const float voxel_scale = 0.5f; // terrain scale
+    const float voxel_scale = data->scale; // terrain scale
     if (delve_data->depth == delve_data->max_depth) {
         // if null or air, remove
         if (!delve_data->chunk || !delve_data->chunk->value) {
@@ -121,8 +129,11 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         float3 position_real = float3_from_int3(delve_data->octree_position);
         float3_multiply_float_p(&position_real, voxel_scale);
         float3_add_float3_p(&position_real, data->chunk_position_real);
+        // offset by half
         float3_add_float3_p(&position_real, (float3) { -voxel_scale * 0.5f, -voxel_scale * 0.5f, -voxel_scale * 0.5f });
-        if (data->block_vox_offsets[block_index]) float3_add_float3_p(&position_real, (float3) { 0, -0.125f, 0 });
+        if (data->block_vox_offsets[block_index]) {
+            float3_add_float3_p(&position_real, (float3) { 0, voxel_scale * -0.25f, 0 });
+        }
         data->spawn_data->position_real = position_real;
         // todo: instead of hash, replace OctreeNode with OctreeNodeEntity - link directly in the node
         ecs_entity_t e2;
@@ -137,6 +148,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             e2 = zox_instancee(block_prefab)
             zox_set(e2, ChunkLink, { data->chunk })
             zox_set(e2, VoxelPosition, { delve_data->octree_position })
+            // zox_set(e2, Scale1D, { data->spawn_data->scale })
             // zox_set(e2, Position3D, { position_real })
         }
         if (!delete_node_entity_from_ChunkOctree(world, delve_data->chunk)) {
@@ -151,6 +163,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             return;
         }
         *(NodeEntityLink*) chunk->nodes = (NodeEntityLink) { .value = e2 };
+        set_linking_ChunkOctree(chunk, 1);
         // remove_old_voxel_by_link(world, chunk);
         // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
     } else {
@@ -180,6 +193,8 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
 void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, const byte max_depth) {
+    float vox_scale = terrain_voxel_scale;
+    float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
     const byte block_voxes_count = voxels->length;
@@ -208,13 +223,15 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
         }
     }
     // convert chunk position to real
-    const float3 chunk_position_real = float3_add(float3_half, float3_multiply_float(int3_to_float3(chunkPosition->value), 16.0f)); // calculate
+    const float3 chunk_position_real = float3_add((float3) { vox_scale, vox_scale, vox_scale }, float3_multiply_float(int3_to_float3(chunkPosition->value), chunk_scale));
     SpawnBlockVox spawn_data = {
         .prefab = prefab_block_vox,
+        .scale = 0.5f * vox_scale * (float) powers_of_two[max_depth],
         .render_lod = vox_lod,
         .render_disabled = renderDisabled->value // until i get frustum to cull these
     };
     UpdateBlockEntities data = {
+        .scale = vox_scale,
         .chunk = e,
         .blocks = blocks, // metas
         .block_prefabs = block_prefabs,

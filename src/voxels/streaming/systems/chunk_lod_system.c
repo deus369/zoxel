@@ -1,9 +1,12 @@
 // this passes cameras into chunks
 // each chunk will calculate distance to nearest camera and based LOD off this distance
-const byte max_camera_distance = render_distance + 1; // 3;
 
 void ChunkLodSystem(ecs_iter_t *it) {
-    if (zox_cameras_disable_streaming) return;
+    if (zox_cameras_disable_streaming) {
+        return;
+    }
+    const byte max_camera_distance = render_distance + 1;
+    const byte max_depth = max_octree_depth;
     zox_field_world()
     ecs_query_t *streamers_query = it->ctx;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
@@ -39,7 +42,7 @@ void ChunkLodSystem(ecs_iter_t *it) {
         const byte camera_distance = get_camera_chunk_distance(stream_point, chunkPosition->value);
         if (camera_distance != renderDistance->value) {
             renderDistance->value = camera_distance;
-            const byte new_lod =  get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance);
+            const byte new_lod =  get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance, max_depth);
             zox_field_o(RenderLod, renderLods, renderLod)
             if (renderLod->value != new_lod) {
                 renderLod->value = new_lod;

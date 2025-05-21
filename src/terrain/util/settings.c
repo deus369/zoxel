@@ -21,17 +21,17 @@ void set_terrain_render_distance() {
     }
     // preset settings
 #ifdef zox_terrain_tiny
-    terrain_mode = terrain_mode_tiny;//testing
+    terrain_size = terrain_mode_tiny;//testing
 #endif
-    if (terrain_mode == terrain_mode_medium) {
+    if (terrain_size == terrain_mode_medium) {
         terrain_spawn_distance = 6;
         terrain_vertical = 1;
     }
-    if (terrain_mode == terrain_mode_large) {
+    if (terrain_size == terrain_mode_large) {
         terrain_spawn_distance = 12;
         terrain_vertical = 2;
     }
-    if (terrain_mode == terrain_mode_tiny) {
+    if (terrain_size == terrain_mode_tiny) {
         terrain_spawn_distance = 2;
         terrain_vertical = 1;
         zox_log(" + terrain mode set to [tiny]\n")

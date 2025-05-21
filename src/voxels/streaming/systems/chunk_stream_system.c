@@ -2,6 +2,8 @@ extern ecs_entity_t prefab_chunk_height;
 extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
 
 void ChunkStreamSystem(ecs_iter_t *it) {
+    const byte log_individuals = 0;
+    uint spawned_chunks = 0;
     zox_field_world()
     ecs_query_t *streamers_query = it->ctx;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);
@@ -10,7 +12,6 @@ void ChunkStreamSystem(ecs_iter_t *it) {
         ecs_iter_fini(&streamers_iter);
         return;
     }*/
-    uint spawned_chunks = 0;
     zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
     int3 *stream_points = (int3*) streamPoints;
     zox_field_in(ChunkPosition, chunkPositions, 1)
@@ -40,8 +41,10 @@ void ChunkStreamSystem(ecs_iter_t *it) {
             int3_hashmap_remove(chunkLinks->value, chunkPosition->value);
             zox_delete(e)
             #ifdef zox_enable_log_streaming
-                zox_geter_value(e, ChunkPosition, int3, chunk_position)
-                zox_log_streaming("- streaming: remove chunk [%ix%ix%i]", chunk_position.x, chunk_position.y, chunk_position.z)
+                if (log_individuals) {
+                    zox_geter_value(e, ChunkPosition, int3, chunk_position)
+                    zox_log_streaming("- streaming: remove chunk [%ix%ix%i]", chunk_position.x, chunk_position.y, chunk_position.z)
+                }
             #endif
         } else {
             const byte stream_zone = 1; // renderDistance->value < streaming_distance;
@@ -66,7 +69,9 @@ void ChunkStreamSystem(ecs_iter_t *it) {
                             neighbor = spawn_chunk_terrain(world, prefab_chunk_height, voxLink->value, stream_point, neighbor_position, real_chunk_scale);
                             zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
                             int3_hashmap_add(chunkLinks->value, neighbor_position, neighbor);
-                            zox_log_streaming("+ streaming: new [%i]s chunk [%ix%ix%i]", spawned_chunks, neighbor_position.x, neighbor_position.y, neighbor_position.z)
+                            if (log_individuals) {
+                                zox_log_streaming("+ streaming: new [%i]s chunk [%ix%ix%i]", spawned_chunks, neighbor_position.x, neighbor_position.y, neighbor_position.z)
+                            }
                             spawned_chunks++;
                         }
                     }
@@ -74,5 +79,8 @@ void ChunkStreamSystem(ecs_iter_t *it) {
                 }
             }
         }
+    }
+    if (spawned_chunks > 0) {
+        zox_log_streaming(" + [%i] spawned [%i]", ecs_run_count, spawned_chunks)
     }
 } zox_declare_system(ChunkStreamSystem)

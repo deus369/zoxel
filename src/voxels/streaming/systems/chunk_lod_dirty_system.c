@@ -16,7 +16,9 @@ void ChunkLodDirtySystem(ecs_iter_t *it) {
                 for (int k = 0; k < chunkNeighbors->length; k++) {
                     const ecs_entity_t neighbor = chunkNeighbors->value[k];
                     // if (!zox_valid(neighbor)) zox_log("AEWIJOWAE\n")
-                    if (!zox_valid(neighbor)) continue;
+                    if (!zox_valid(neighbor)) {
+                        continue;
+                    }
                     zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
                 }
             }

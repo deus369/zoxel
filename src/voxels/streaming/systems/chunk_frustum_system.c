@@ -6,10 +6,19 @@ extern int zox_statistics_characters_total;
 
 // block spawn delve function
 void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const byte max_depth, byte depth, const byte state) {
-    if (!node->nodes) return;
+    if (!node->nodes) {
+        return;
+    }
     if (depth == max_depth) {
+        if (!is_linking_ChunkOctree(node)) {
+            return;
+        }
+        NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;
+        if (!node_entity_link) {
+            return;
+        }
         // get block_vox from nodes
-        const ecs_entity_t block_vox = ((NodeEntityLink*) node->nodes)->value;
+        const ecs_entity_t block_vox = node_entity_link->value;
         if (zox_valid(block_vox)) {
             zox_set(block_vox, RenderDisabled, { state })
         }

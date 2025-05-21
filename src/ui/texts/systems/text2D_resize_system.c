@@ -22,7 +22,7 @@ void spawn_zext_zigels(ecs_world_t *world, SpawnZigel *data, Children *children,
     // Set Data for Old Zigels
     for (int i = 0; i < reuse_count; i++) {
         const ecs_entity_t e = old_children[i];
-        const byte zigel_index = calculate_zigel_index(textData->value, textData->length, i);
+        // const byte zigel_index = calculate_zigel_index(textData->value, textData->length, i);
         const int data_index = calculate_zigel_data_index(textData->value, textData->length, i);
         set_zigel_position(world, textData, e, data_index, data->element.size.y, data->zext.text_alignment, data->zext.text_padding, data->element.anchor, new_children_length, data->parent.position, data->parent.size, data->canvas.size);
         new_children[i] = e;

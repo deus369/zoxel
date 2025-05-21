@@ -12,9 +12,13 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     zox_field_out(TilemapUVs, tilemapUVss, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        if (generateTexture->value != zox_generate_texture_generate) continue;
+        if (generateTexture->value != zox_generate_texture_generate) {
+            continue;
+        }
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
-        if (textureDirty->value) continue;
+        if (textureDirty->value) {
+            continue;
+        }
         zox_field_i(TextureLinks, textureLinkss, textureLinks)
         if (textureLinks->length == 0) {
             zox_log(" ! tilemap has no textures\n")
@@ -38,13 +42,17 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         const float tile_uv_size = 1.0f / ((float) tilemapSize->value.x); // for example, 1 / 8 if size is 8
         textureSize->value.x = tilemapSize->value.x * unit_size.x;
         textureSize->value.y = tilemapSize->value.y * unit_size.y;
+        // zox_log_line("> unit_size %i - tile_uv_size %f - textureSize %i - tilemapSize %i", unit_size.x, tile_uv_size, textureSize->value.x, tilemapSize->value.x)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         int2 texture_position = int2_zero;
         int texture_index = 0;
-        for (int j = 0; j < textureData->length; j++) textureData->value[j] = color_white;
+        for (int j = 0; j < textureData->length; j++) {
+            textureData->value[j] = color_white;
+        }
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
             for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
                 if (texture_index >= textureLinks->length) {
+                    zox_log_line(" ! [tilemap generation system] texture_index OOB  index [%i]", texture_index)
                     break;
                     break;
                 }
@@ -71,8 +79,9 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                         int2 tilemap_pixel_position = int2_add(pixel_position, tilemap_position);
                         int tilemap_index = int2_array_index(tilemap_pixel_position, textureSize->value);
                         if (tilemap_index >= textureData->length) {
-                            zox_log(" ! tilemap_index >= textureData->length\n")
-                            continue;
+                            zox_log_line(" ! tilemap_index [%i] >= textureData->length [%i]", tilemap_index, textureData->length)
+                            textureDirty->value = 1;
+                            return;
                         }
                         int texture_index = int2_array_index(pixel_position, texture_size);
                         if (texture_index >= voxel_texture_data->length) {
@@ -96,6 +105,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                 }
                 const int2 tilemap_position = (int2) { texture_position.x * unit_size.x, texture_position.y * unit_size.y };
                 const float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
+                // 4 uvs per face
                 tilemapUVs->value[texture_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
                 tilemapUVs->value[texture_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
                 tilemapUVs->value[texture_index * 4 + 1] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };

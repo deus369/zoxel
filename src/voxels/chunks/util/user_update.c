@@ -1,4 +1,4 @@
-void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nodes, const byte3 position, const byte voxel, ChunkOctree *parent_node) {
+void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node, const byte3 position, const byte voxel, ChunkOctree *parent_node) {
     // zox_log("   > [%ix%ix%i] [%lu]\n", place_position.x, place_position.y, place_position.z, place_chunk)
     if (!zox_valid(chunk)) {
         // zox_log(" > no chunk raycasted\n")
@@ -7,25 +7,32 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     zox_get_muter(chunk, ChunkOctree, chunk_octree)
-    const SetVoxelTargetData datam = { .depth = max_octree_depth, .voxel = voxel, .effect_nodes = 1 };
-    SetVoxelData data2 = { .node = chunk_octree, .position = position };
+    const SetVoxelTargetData datam = {
+        .depth = max_octree_depth,
+        .voxel = voxel,
+        .effect_nodes = 1,
+    };
+    SetVoxelData data2 = {
+        .node = chunk_octree,
+        .position = position,
+    };
     // shouldb we just set nodes here?
     // oh but it opens up nodes here too
     set_voxel(&datam, data2);
     // this should only trigger if voxel updates is air, or solid (vox blocks should not close same nodes)
     // todo: if voxel type == CanBlockGroup
     // todo: only do this on node updated! and it's parent nodes
-    if (nodes) {
+    if (node) {
         if (voxel == 0) {
             // cleared minivox / voxel entity
-            const ecs_entity_t e3 = ((NodeEntityLink*) nodes)->value;
-            if (zox_valid(e3)) {
-                zox_delete(e3)
-                free(nodes);
-                nodes = NULL;
-                // if (parent_node)
-                parent_node->nodes = nodes;
-                // parent_node->nodes[child_index] = nodes;
+            if (is_linking_ChunkOctree(parent_node)) {
+                const ecs_entity_t e3 = ((NodeEntityLink*) node)->value;
+                if (zox_valid(e3)) {
+                    zox_delete(e3)
+                    free(node);
+                    node = NULL;
+                    set_linking_ChunkOctree(parent_node, 0);
+                }
             }
         }
     } else {

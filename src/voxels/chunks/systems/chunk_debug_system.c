@@ -7,6 +7,7 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 
 typedef struct {
     ecs_world_t *world;
+    const float scale;
     const ChunkOctree *chunk;
     byte3 position;
     byte depth;
@@ -15,16 +16,20 @@ typedef struct {
 } TraverseChunk;
 
 void traverse_chunk(TraverseChunk *data) {
-    if (!data->chunk) return;
+    const color_rgb debug_color = { 155, 255, 125 };
+    if (!data->chunk) {
+        return;
+    }
     if (data->depth != data->target_depth) {
         if (!data->chunk->nodes) {
             byte3 position_parent = data->position;
             byte3_multiply_byte(&position_parent, 2);
             byte node_size = powers_of_two_byte[data->depth];
-            if (!byte3_on_edge_xz(position_parent, (byte3) { node_size, node_size, node_size })) return;
-            const color_rgb debug_color = { 155, 255, 125 };
+            if (!byte3_on_edge_xz(position_parent, (byte3) { node_size, node_size, node_size })) {
+                return;
+            }
             // zox_log(" > depth [%i] line at position: %ix%ix%i\n", data->depth, data->position.x, data->position.y, data->position.z)
-            float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x / 2.0f, data->position.y / 2.0f, data->position.z / 2.0f });
+            float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x * data->scale, data->position.y * data->scale, data->position.z * data->scale });
             float3_add_float3_p(&voxel_position, (float3) { 0.25f, 0, 0.25f }); // half voxel addition
             float3 point_start = voxel_position;
             float3 point_end = float3_add(voxel_position, (float3) { 0, 1.0f, 0 });
@@ -47,8 +52,8 @@ void traverse_chunk(TraverseChunk *data) {
         if (!byte3_on_edge_xz(data->position, (byte3) { 32, 32, 32 })) return;
         const color_rgb debug_color = { 255, 0, 0 };
         // zox_log(" > depth [%i] line at position: %ix%ix%i\n", data->depth, data->position.x, data->position.y, data->position.z)
-        float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x / 2.0f, data->position.y / 2.0f, data->position.z / 2.0f });
-        float3_add_float3_p(&voxel_position, (float3) { 0.25f, 0, 0.25f }); // half voxel addition
+        float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x * data->scale, data->position.y * data->scale, data->position.z * data->scale });
+        float3_add_float3_p(&voxel_position, (float3) { 0.5f * data->scale, 0, 0.5f * data->scale }); // half voxel addition
         float3 point_start = voxel_position;
         float3 point_end = float3_add(voxel_position, (float3) { 0, 1.0f, 0 });
         render_line3D(data->world, point_start, point_end, debug_color);
@@ -64,18 +69,23 @@ void traverse_chunk(TraverseChunk *data) {
 }
 
 void ChunkDebugSystem(ecs_iter_t *it) {
-    if (!is_render_chunk_edges) return;
+    if (!is_render_chunk_edges) {
+        return;
+    }
     zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkOctree, chunkOctrees, 2)
     zox_field_in(RenderLod, renderLods, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderLod, renderLods, renderLod)
-        if (renderLod->value >= 1) continue;
+        if (renderLod->value != 0) {
+            continue;
+        }
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         TraverseChunk data = (TraverseChunk) {
             .world = world,
+            .scale = terrain_voxel_scale, //  0.5f * 2,
             .chunk = chunkOctree,
             .position = byte3_zero,
             .depth = 0,

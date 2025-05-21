@@ -4,6 +4,8 @@
 #define block_side_up 3
 #define block_side_back 4
 #define block_side_front 5
+#define block_side_none 6
+#define block_side_end 6
 
 byte byte3_on_edge_axis(const byte3 pos, const byte3 size, const byte axis) {
     return (axis == block_side_left && pos.x == 0) ||

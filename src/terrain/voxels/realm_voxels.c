@@ -12,7 +12,14 @@ float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, cons
 
 // todo: spawn each voxel in individual lines
 void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
-    if (!realm) return;
+    if (!realm) {
+        return;
+    }
+    // set voxel texture size again
+    const byte texture_dim = powers_of_two_byte[max_octree_depth];
+    voxel_texture_size = (int2) { texture_dim, texture_dim };
+    // zox_set(prefab_texture, TextureSize, { voxel_texture_size })
+    // zox_set(prefab_texture_noise, TextureSize, { voxel_texture_size })
 
     if (zox_has(realm, TilemapLink)) {
         ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
@@ -30,6 +37,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
         return;
     }
+
     /*zox_get_mutt(realm, VoxelLinks, voxels)
     if (!voxels) {
         zox_log("! realm voxels was null [%lu]\n", realm)
@@ -85,7 +93,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_add_tag(vox_grass, BlendVox)
     zox_set(vox_grass, SecondaryColor, { dirt_color }) // bottom half*/
 
-    const ecs_entity_t vox_sand = spawn_vox_generated_invisible(world, prefab_vox_generated, sand_color);
+    // const ecs_entity_t vox_sand = spawn_vox_generated_invisible(world, prefab_vox_generated, sand_color);
     // const ecs_entity_t vox_stone = spawn_vox_generated_invisible(world, prefab_vox_generated, stone_color);
     /*const ecs_entity_t dirt_rubble = spawn_vox_generated_invisible(world, prefab_vox_generated, dirt_color);
     zox_add_tag(dirt_rubble, VoxRubble)*/

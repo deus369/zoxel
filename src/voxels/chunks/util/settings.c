@@ -1,5 +1,6 @@
 void set_terrain_voxel_scale(byte depth) {
     terrain_voxel_scale = real_chunk_scale / ((float) powers_of_two[depth]);
+    zox_log_line("+ terrain_voxel_scale set to [%f]", terrain_voxel_scale)
 }
 
 void set_max_octree_length(byte new_max_octree_depth) {

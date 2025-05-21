@@ -27,9 +27,9 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, const byte *block_coll
     const byte axis_d1, float position_d1, float position_last_d1, const float offset_d1, byte *collided_d1, float *distance_d1, const byte is_negative1,
     const byte axis_d2, float position_d2, float position_last_d2, const float offset_d2, byte *collided_d2, float *distance_d2, const byte is_negative2,
     const byte axis_d3, float position_d3, float position_last_d3, const float offset_d3, byte *collided_d3, float *distance_d3, const byte is_negative3) {
-
-    if (*collided_d1 || *collided_d2 || *collided_d3) return;
-
+    if (*collided_d1 || *collided_d2 || *collided_d3)  {
+        return;
+    }
     // Update positions with offsets
     position_last_d1 += offset_d1;
     position_last_d2 += offset_d2;
@@ -37,28 +37,29 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, const byte *block_coll
     position_d1 += offset_d1;
     position_d2 += offset_d2;
     position_d3 += offset_d3;
-
     const int position_vox_last_d1 = real_position_to_voxel_position_dim(position_last_d1);
     const int position_vox_last_d2 = real_position_to_voxel_position_dim(position_last_d2);
     const int position_vox_last_d3 = real_position_to_voxel_position_dim(position_last_d3);
     const int position_vox_d1 = real_position_to_voxel_position_dim(position_d1);
     const int position_vox_d2 = real_position_to_voxel_position_dim(position_d2);
     const int position_vox_d3 = real_position_to_voxel_position_dim(position_d3);
-
-    if (position_vox_d1 == position_vox_last_d1 && position_vox_d2 == position_vox_last_d2 && position_vox_d3 == position_vox_last_d3) return;
-
+    if (position_vox_d1 == position_vox_last_d1 && position_vox_d2 == position_vox_last_d2 && position_vox_d3 == position_vox_last_d3)  {
+        return;
+    }
     // Set dimensional variables to newer points
     int3_set_d(&voxel_position, axis_d1, position_vox_d1);
     int3_set_d(&voxel_position, axis_d2, position_vox_d2);
     int3_set_d(&voxel_position, axis_d3, position_vox_d3);
-
     // Convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-    if (!zox_valid(chunk)) return;
+    if (!zox_valid(chunk))  {
+        return;
+    }
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree);
-    if (!chunk_octree) return;
-
+    if (!chunk_octree)  {
+        return;
+    }
     byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, default_chunk_size_byte3);
     if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
 
@@ -92,32 +93,35 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, const byte *block_coll
 
 // expand previous function by second dimension
 void collide_with_chunk_d2(const ChunkLinks *chunk_links, const byte *block_collisions, int3 voxel_position, const byte axis_d1, float position_d1, float position_last_d1, const float offset_d1, byte *collided_d1, float *distance_d1, const byte is_negative1, const byte axis_d2, float position_d2, float position_last_d2, const float offset_d2, byte *collided_d2, float *distance_d2, const byte is_negative2) {
-
-    if (*collided_d1 || *collided_d2) return;
-
+    if (*collided_d1 || *collided_d2)  {
+        return;
+    }
     position_last_d1 += offset_d1;
     position_last_d2 += offset_d2;
     position_d1 += offset_d1;
     position_d2 += offset_d2;
-
     const int position_vox_last_d1 = real_position_to_voxel_position_dim(position_last_d1);
     const int position_vox_last_d2 = real_position_to_voxel_position_dim(position_last_d2);
     const int position_vox_d1 = real_position_to_voxel_position_dim(position_d1);
     const int position_vox_d2 = real_position_to_voxel_position_dim(position_d2);
-    if (position_vox_d1 == position_vox_last_d1 && position_vox_d2 == position_vox_last_d2) return;
-
+    if (position_vox_d1 == position_vox_last_d1 && position_vox_d2 == position_vox_last_d2) {
+        return;
+    }
     int3_set_d(&voxel_position, axis_d1, position_vox_d1);
     int3_set_d(&voxel_position, axis_d2, position_vox_d2);
-
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-    if (!zox_valid(chunk)) return;
+    if (!zox_valid(chunk)) {
+        return;
+    }
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
-    if (!chunk_octree) return;
-
+    if (!chunk_octree) {
+        return;
+    }
     byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, default_chunk_size_byte3);
-    if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
-
+    if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3))  {
+        return;
+    }
     const byte voxel = get_octree_voxel(chunk_octree, &voxel_position_local, max_octree_depth);
     if (block_collisions[voxel]) {
         // float_abs
@@ -135,29 +139,33 @@ void collide_with_chunk_d2(const ChunkLinks *chunk_links, const byte *block_coll
 }
 
 void collide_with_chunk(const ChunkLinks *chunk_links, const byte *block_collisions, int3 voxel_position, const byte axis_d, float position_d, float position_last_d, const float offset_d, byte *collided_d, float *distance_d, const byte is_negative) {
-
-    if (*collided_d) return;
-
+    if (*collided_d) {
+        return;
+    }
     // firstt  we get our intersection line! (two points)
     position_last_d += offset_d;
     position_d += offset_d;
-
     const int position_vox_last_d = real_position_to_voxel_position_dim(position_last_d);
     const int position_vox_d = real_position_to_voxel_position_dim(position_d);
-    if (position_vox_d == position_vox_last_d) return;
+    if (position_vox_d == position_vox_last_d) {
+        return;
+    }
     // set dimensional variables to newer point
     int3_set_d(&voxel_position, axis_d, position_vox_d);
-
     // next convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, default_chunk_size);
     const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-    if (!zox_valid(chunk)) return;
+    if (!zox_valid(chunk)) {
+        return;
+    }
     const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
-    if (!chunk_octree) return;
-
+    if (!chunk_octree) {
+        return;
+    }
     byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, default_chunk_size_byte3);
-    if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) return;
-
+    if (!byte3_in_bounds(voxel_position_local, default_chunk_size_byte3)) {
+        return;
+    }
     const byte voxel = get_octree_voxel(chunk_octree, &voxel_position_local, max_octree_depth);
     if (block_collisions[voxel]) {
         *collided_d = 1 + is_negative;

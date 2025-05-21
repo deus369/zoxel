@@ -1,4 +1,6 @@
+#include "logs.c"
 #include "terrain_util.c"
+#include "game_ui.c"
 #include "resume_util.c"
 #include "editor_util.c"
 #include "touch_util.c"
@@ -10,3 +12,4 @@
 #include "voxel_ray_util.c"
 #include "camera.c"
 #include "ui.c"
+#include "debug.c"

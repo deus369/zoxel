@@ -19,10 +19,14 @@ int run_main(int argc, char* argv[]) {
     initialize_ecs_settings(world);
     run_hook_terminal_command(world, argv, argc);
     // todo: pre boot event hook here for loading I/O
-    if (boot_event(world) == EXIT_SUCCESS) {
-        engine_loop();
+    if (!headless && engine_spawn_window(world) == EXIT_SUCCESS) {
+        if (boot_event(world) == EXIT_SUCCESS) {
+            engine_loop();
+        } else {
+            zox_log_line("! [boot_event] failed")
+        }
     } else {
-        zox_log_line(" ! [boot_event] failed")
+        zox_log_line("! [engine_spawn_window] failed")
     }
     dispose_zox(world);
     return EXIT_SUCCESS;

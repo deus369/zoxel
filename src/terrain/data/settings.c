@@ -1,3 +1,4 @@
+byte zox_log_terrain_generation = 0;
 // voxes lods
 const byte max_vox_blocks = 16; // max spawned vox_blocks
 const byte max_lod_voxes = 0;
@@ -17,7 +18,7 @@ byte terrain_vertical = 2;
 const byte terrain_min_height = 8;
 const int terrain_octaves = 12;
 const float flat_height_level = -0.56f; // 0.2f;
-byte terrain_mode = 0;
+byte terrain_size = 0;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
@@ -49,12 +50,12 @@ void print_terrain_settings() {
 void process_arguments_terrain(ecs_world_t *world, char* args[], int count) {
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "--tiny") == 0) {
-            terrain_mode = terrain_mode_tiny;
+            terrain_size = terrain_mode_tiny;
             zox_log(" + tiny mode enabled\n")
         } else if (strcmp(args[i], "--medium") == 0) {
-            terrain_mode = terrain_mode_medium;
+            terrain_size = terrain_mode_medium;
         } else if (strcmp(args[i], "--large") == 0) {
-            terrain_mode = terrain_mode_large;
+            terrain_size = terrain_mode_large;
         }
     }
 }

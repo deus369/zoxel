@@ -2,7 +2,9 @@
 const byte block_vox_render_distance = 1; // 3 | 4 looks best
 
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
-    if (disable_block_voxes) return;
+    if (disable_block_voxes) {
+        return;
+    }
     zox_field_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkPosition, chunkPositions, 3)
@@ -13,7 +15,9 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_field_out(BlocksSpawned, blocksSpawneds, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
-        if (chunkLodDirty->value != chunk_lod_state_vox_blocks_spawn) continue;
+        if (chunkLodDirty->value != chunk_lod_state_vox_blocks_spawn) {
+            continue;
+        }
         zox_field_i(VoxLink, voxLinks, voxLink)
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i(RenderDistance, renderDistances, renderDistance)

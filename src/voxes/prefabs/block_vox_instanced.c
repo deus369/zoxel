@@ -12,9 +12,9 @@ ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world, const ecs_enti
     // for debug
     zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
     #ifdef zoxel_debug_bounds
-    prefab_add_cube_lines(world, e, color_rgb_white, 1);
+        prefab_add_cube_lines(world, e, color_rgb_white, 1);
     #else
-    prefab_add_cube_lines(world, e, color_rgb_white, 0);
+        prefab_add_cube_lines(world, e, color_rgb_white, 0);
     #endif
     return e;
 }
@@ -27,6 +27,7 @@ ecs_entity_t spawn_block_vox_instanced(ecs_world_t *world, const SpawnBlockVox *
     zox_set(e, RenderLod, { data->render_lod })
     zox_set(e, RenderDisabled, { data->render_disabled })
     zox_set(e, TransformMatrix, { float4x4_position(data->position_real) })
+    zox_set(e, VoxScale, { data->scale })
     // zox_set(e, CloneVoxLink, { data->vox })
     return e;
 }

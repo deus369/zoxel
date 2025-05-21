@@ -43,11 +43,11 @@ void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, co
     }
 }
 
-#define zoxel_octree_colors_build_face_d(direction_name, is_positive)\
+#define zoxel_octree_colors_build_face_d(direction_name, is_positive, face_verts)\
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
     octree_position, node_index, node_position, depth, max_depth, neighbor_lods, color_edge_voxel, NULL)) {\
     add_voxel_face_colors_d(indicies, vertices, color_rgbs, vertex_position_offset, voxel_color,\
-        voxel_scale, get_voxel_indicies_##is_positive, voxel_face_vertices##_##direction_name,\
+        voxel_scale, get_voxel_indicies_##is_positive, face_verts,\
         direction##_##direction_name);\
 }
 
@@ -70,12 +70,12 @@ void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree
             byte3 node_position = octree_positions_b[node_index];
             const byte voxel = chunk_octree->value;
             const color_rgb voxel_color = colorRGBs->value[voxel - 1];
-            zoxel_octree_colors_build_face_d(left, 0)
-            zoxel_octree_colors_build_face_d(right, 1)
-            zoxel_octree_colors_build_face_d(down, 1)
-            zoxel_octree_colors_build_face_d(up, 0)
-            zoxel_octree_colors_build_face_d(back, 0)
-            zoxel_octree_colors_build_face_d(front, 1)
+            zoxel_octree_colors_build_face_d(left, 0, voxel_face_vertices_n[0])
+            zoxel_octree_colors_build_face_d(right, 1, voxel_face_vertices_n[1])
+            zoxel_octree_colors_build_face_d(down, 1, voxel_face_vertices_n[2])
+            zoxel_octree_colors_build_face_d(up, 0, voxel_face_vertices_n[3])
+            zoxel_octree_colors_build_face_d(back, 0, voxel_face_vertices_n[4])
+            zoxel_octree_colors_build_face_d(front, 1, voxel_face_vertices_n[5])
         }
     } else {
         depth++;

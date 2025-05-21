@@ -17,18 +17,22 @@ void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth)
 // used by physics and raycasting
 // i think const was the issue
 const byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte depth) {
-    if (!node) {
+    if (node == NULL) {
         return 0;
     }
     if (depth == 0) {
         return node->value;
     }
-    if (!(node->nodes)) {
+    if (node->nodes == NULL) {
         return node->value;
     }
     const byte new_depth = depth - 1;
     const byte dividor = powers_of_two_byte[new_depth];
-    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    const byte3 node_position = (byte3) {
+        position->x / dividor,
+        position->y / dividor,
+        position->z / dividor
+    };
     byte3_modulus_byte(position, dividor);
     const byte child_index = byte3_octree_array_index(node_position);
     const ChunkOctree *child_node = &node->nodes[child_index];
@@ -72,10 +76,14 @@ ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, by
 }*/
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-void close_solid_nodes(ChunkOctree *node) {
-    if (!node->nodes) return;
+void close_solid_nodes(ChunkOctree *node, const byte max_depth) {
+    if (!node->nodes) {
+        return;
+    }
     // for all children nodes - only check higher nodes if closed children
-    for (byte i = 0; i < octree_length; i++) close_solid_nodes(&node->nodes[i]);
+    for (byte i = 0; i < octree_length; i++) {
+        close_solid_nodes(&node->nodes[i], max_depth);
+    }
     byte all_solid = 1;
     byte all_air = 1;
     for (byte i = 0; i < octree_length; i++) {
@@ -96,20 +104,28 @@ void close_solid_nodes(ChunkOctree *node) {
         }
     }
     if (all_solid || all_air) {
-        close_ChunkOctree(node, max_octree_depth);
+        close_ChunkOctree(node, max_depth);
     }
 }
 
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
 void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
-    if (node->nodes == NULL) return;
-    if (depth == max_depth) return; // make sure this doesn't try to close spawned nodes
+    if (node->nodes == NULL) {
+        return;
+    }
+    if (depth == max_depth) {
+        return; // make sure this doesn't try to close spawned nodes
+    }
     depth++;
-    for (byte i = 0; i < octree_length; i++) close_same_nodes(&node->nodes[i], max_depth, depth);
+    for (byte i = 0; i < octree_length; i++) {
+        close_same_nodes(&node->nodes[i], max_depth, depth);
+    }
     byte all_same = 1;
     byte all_same_voxel = 255;
     for (byte i = 0; i < octree_length; i++) {
-        if (node->nodes[i].nodes != NULL) return; // if a child node is open, then don't close this node
+        if (node->nodes[i].nodes != NULL) {
+            return; // if a child node is open, then don't close this node
+        }
         const byte node_value = node->nodes[i].value;
         if (all_same_voxel == 255) all_same_voxel = node_value;
         else if (all_same_voxel != node_value) {
@@ -120,7 +136,7 @@ void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
     // if (all_same && first_node_value != 0) zox_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) {
         node->value = all_same_voxel;
-        close_ChunkOctree(node, max_octree_depth);
+        close_ChunkOctree(node, max_depth);
     }
 }
 
@@ -171,7 +187,9 @@ byte get_adjacent_voxel(byte direction, const ChunkOctree *root_node, const Chun
 // single voxel check!
 byte is_adjacent_solid(byte direction, const ChunkOctree *root_node, const ChunkOctree *neighbors[], int3 position, byte depth, const byte edge_voxel, const byte *voxel_solidity) {
     byte voxel_adjacent = get_adjacent_voxel(direction, root_node, neighbors, position, depth, edge_voxel);
-    if (voxel_adjacent == 0) return 0;
+    if (voxel_adjacent == 0) {
+        return 0;
+    }
     voxel_adjacent--; // remove air from index
     return voxel_solidity[voxel_adjacent];
     /*byte chunk_index = 0;

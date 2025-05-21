@@ -19,7 +19,7 @@ void Elementbar2DSystem(ecs_iter_t *it) {
         if (initializeElement->value) {
             continue; // removing this breaks it?!?!
         }
-        zox_field_e()
+        // zox_field_e()
         zox_field_i(PixelSize, pixelSizes, pixelSize)
         zox_field_i(ElementBar, elementBars, elementBar)
         zox_field_i(ElementBarSize, elementBarSizes, elementBarSize)
@@ -35,7 +35,7 @@ void Elementbar2DSystem(ecs_iter_t *it) {
             }
             const float percentage = elementBar->value;
             const float2 scale = elementBarSize->value;
-            const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
+            // const float left_offset = - scale.x * (1.0f - percentage) * 0.5f;
             const int2 pixel_size = pixelSize->value; // zox_get_value(e, PixelSize)
             int2 front_pixel_size = zox_get_value(front_bar, PixelSize)
             PixelPosition *front_pixel_position = zox_get_mut(front_bar, PixelPosition)

@@ -3,6 +3,7 @@
 
 #include "data/settings.c"
 #include "util/engine.c"
+#include "util/window.c"
 
 // engine imports, besides sub modules, it's core is flecs
 zox_begin_module(Zox)
