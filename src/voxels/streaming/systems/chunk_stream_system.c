@@ -58,6 +58,9 @@ void ChunkStreamSystem(ecs_iter_t *it) {
                     }
                     // get position of neighbor and check terrain for it
                     const int3 neighbor_position = int3_add(chunkPosition->value, int3_directions[j]);
+                    if (neighbor_position.y < -render_distance_y || neighbor_position.y > render_distance_y) {
+                        continue;
+                    }
                     zox_geter(voxLink->value, ChunkLinks, oldChunkLinks)
                     neighbor = int3_hashmap_get(oldChunkLinks->value, neighbor_position);
                     // if not existing yet, spawn a new chunk

@@ -119,7 +119,8 @@ void ZoxGameImport(ecs_world_t *world) {
     disable_npcs = 1;
     disable_block_voxes = 1; // fix it's positioning
     disable_block_vox_generation = 1;
-    render_distance = 4;
-    set_max_octree_length(4);
+    render_distance = 16;
+    render_distance_y = 4; // 2 | 8 | 16
+    set_max_octree_length(5);
 }
 #endif

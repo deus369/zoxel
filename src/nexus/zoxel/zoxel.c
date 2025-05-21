@@ -49,7 +49,8 @@ void ZoxGameImport(ecs_world_t *world) {
     // wait tthis breaks terrain mesh at 4 depth
     // disable_block_voxes = 1; // fix it's positioning
     // disable_block_vox_generation = 1;
-    render_distance = 4; // 2 | 8 | 16
+    render_distance = 16; // 2 | 8 | 16
+    render_distance_y = 4; // 2 | 8 | 16
     set_max_octree_length(5);
     is_generate_vox_outlines = 0;
 }
