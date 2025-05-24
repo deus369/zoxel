@@ -1,17 +1,19 @@
 const byte max_position_checks = 255;
 
-int real_position_to_voxel_position_dim(const float real_position) {
-    float multiplier = default_chunk_length / real_chunk_scale;
+int real_position_to_voxel_position_dim(const float real_position, const byte depth) {
+    const byte length = powers_of_two[depth];
+    float multiplier = length / real_chunk_scale;
     return (int) floor(real_position * multiplier);
 }
 
 int3 real_position_to_voxel_position2(const float3 real_position, const float voxel_scale) {
-    const float multiplier = 1.0f / voxel_scale; // default_chunk_length / real_chunk_scale;
+    const float multiplier = 1.0f / voxel_scale;
     return (int3) { (int) floor(real_position.x * multiplier), (int) floor(real_position.y * multiplier), (int) floor(real_position.z * multiplier) };
 }
 
-int3 real_position_to_voxel_position(float3 real_position) {
-    const float multiplier = default_chunk_length / real_chunk_scale;
+int3 real_position_to_voxel_position(float3 real_position, const byte depth) {
+    const byte length = powers_of_two[depth];
+    const float multiplier = length / real_chunk_scale;
     return (int3) { (int) floor(real_position.x * multiplier), (int) floor(real_position.y * multiplier), (int) floor(real_position.z * multiplier) };
 }
 
@@ -36,8 +38,8 @@ void chunk_position_fix2(const float3 real_position, int3 *chunk_position) {
     if (real_position.z < 0) chunk_position->z -= 1;
 }
 
-int3 real_position_to_chunk_position(float3 real_position, const int3 chunk_size) {
-    int3 voxel_position = real_position_to_voxel_position(real_position);
+int3 real_position_to_chunk_position(float3 real_position, const int3 chunk_size, const byte depth) {
+    int3 voxel_position = real_position_to_voxel_position(real_position, depth);
     if (real_position.x < 0) voxel_position.x += 1;
     if (real_position.y < 0) voxel_position.y += 1;
     if (real_position.z < 0) voxel_position.z += 1;
@@ -130,10 +132,10 @@ byte3 find_position_on_ground(const ChunkOctree *chunk, const byte target_depth,
     else return byte3_full;
 }
 
-float3 local_to_real_position_character(const byte3 local_position, const int3 chunk_voxel_position, const float3 bounds) {
+float3 local_to_real_position_character(const byte3 local_position, const int3 chunk_voxel_position, const float3 bounds, const byte max_depth) {
     const int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
     float3 position = int3_to_float3(global_voxel_position);
-    float3_multiply_float_p(&position, terrain_voxel_scale);
+    float3_multiply_float_p(&position, get_terrain_voxel_scale(max_depth));
     position.y += bounds.y / 2.0f; // 0.26f; // 0.75f;
     position.y += 0.05f; // extra
     return position;

@@ -43,18 +43,6 @@ typedef struct {
     const float2 *uvs;
 } octree_face_data;
 
-/*
-#define add_voxel_face_uvs_indicies(index) mesh_data->indicies->data[mesh_data->indicies->size + index] = mesh_data->vertices->size + voxel_face_indicies[index];
-
-// #define add_voxel_face_uvs_uvs(index) mesh_data->uvs->data[mesh_data->uvs->size + index] = voxel_face_uvs[index];
-#define zox_build_voxel_face_vert(index) {\
-    float3 vertex_position = voxel_face_vertices[index];\
-    float3_add_float3_p(&vertex_position, offset);\
-    float3_multiply_float_p(&vertex_position, vert_scale);\
-    mesh_data->vertices->data[mesh_data->vertices->size + index] = vertex_position;\
-}
-*/
-
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const byte voxel, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const float2 *voxel_face_uvs, const byte direction, const float3 offset, const float vert_scale) {
@@ -165,18 +153,12 @@ void build_voxel_mesh_final(const terrain_build_data data, octree_dig_data dig, 
 
 // remember: vertex offset is just node position / voxel position
 
-// if child node is solid, dig down
-#define zox_terrain_building_dig_node(i)\
-if (dig.node->nodes[i].value) {\
-    zox_terrain_building_dig(data, dig);\
-}
-
 void zox_terrain_building_dig(const terrain_build_data data, octree_dig_data dig) {
     if (dig.depth >= data.render_depth || dig.node->nodes == NULL) {
         if (dig.node->value != 0 && data.voxel_solidity[dig.node->value - 1]) {
             dig.voxel = dig.node->value;
             dig.offset = float3_from_int3(dig.position);
-            dig.scale = octree_scales3[dig.depth];
+            dig.scale =  real_chunk_scale * octree_scales3[dig.depth];
             dig.local_position = octree_positions_b[dig.index];
             const int voxel_uvs_index = (dig.voxel - 1) * 6;
             for (byte i = 0; i < 6; i++) {

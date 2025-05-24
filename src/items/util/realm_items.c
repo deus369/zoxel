@@ -70,6 +70,11 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
     for (int i = 0; i < voxels->length; i++) {
         const ecs_entity_t block = voxels->value[i];
+        if (!block || !zox_valid(block)) {
+            zox_log_line("! block [%i] invalid", i)
+            items->value[i] = 0;
+            continue;
+        }
         items->value[i] = spawn_block_item(world, block);
         if (i == zox_block_grass - 1) {
             const ecs_entity_t item_block_dirt = items->value[zox_block_dirt - 1];

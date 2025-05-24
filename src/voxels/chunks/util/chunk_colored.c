@@ -7,12 +7,6 @@
     vertices->data[vertices->size + index] = vertex_position;\
 }
 
-float3 calculate_vox_bounds(const int3 chunk_size, const float vox_scale) {
-    float3 vox_bounds = float3_from_int3(chunk_size);
-    float3_multiply_float_p(&vox_bounds, 0.5f * vox_scale);
-    return vox_bounds;
-}
-
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
 void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, float3 vertex_position_offset, color_rgb voxel_color, const float voxel_scale, const int* voxel_face_indicies, const float3 voxel_face_vertices[], const byte direction) {
@@ -63,7 +57,7 @@ void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree
     if (chunk_octree == NULL) return;
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
         if (chunk_octree->value != 0) {
-            const float voxel_scale = octree_scales3[depth] * vox_scale;
+            const float voxel_scale = real_chunk_scale * octree_scales3[depth] * vox_scale;
             float3 vertex_position_offset = float3_from_int3(octree_position);
             float3_multiply_float_p(&vertex_position_offset, voxel_scale);
             float3_add_float3_p(&vertex_position_offset, total_mesh_offset);

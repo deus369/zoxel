@@ -2,9 +2,9 @@
 const byte block_vox_render_distance = 1; // 3 | 4 looks best
 
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
-    if (disable_block_voxes) {
+    /*if (disable_block_voxes) {
         return;
-    }
+    }*/
     zox_field_world()
     zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
     zox_field_in(ChunkPosition, chunkPositions, 3)
@@ -30,15 +30,15 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
             const byte vox_lod = get_block_voxes_lod_from_camera_distance(renderDistance->value);
             if (!blocksSpawned->value) {
                 blocksSpawned->value = 1;
-                update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, max_octree_depth);
+                update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, chunkOctree->max_depth);
             } else {
                 // here just update, no spawning (todo)
-                // update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, max_octree_depth);
+                // update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, terrain_depth);
             }
         } else if (!can_have_block_voxes) {
             if (blocksSpawned->value) {
                 blocksSpawned->value = 0;
-                delete_block_entities(world, chunkOctree, 0, max_octree_depth);
+                delete_block_entities(world, chunkOctree, 0, chunkOctree->max_depth);
             }
         }
     }

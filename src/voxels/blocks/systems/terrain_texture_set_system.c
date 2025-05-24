@@ -7,9 +7,13 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
     zox_field_out(TextureLinks, textureLinkss, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RealmLink, realmLinks, realmLink)
-        if (!zox_valid(realmLink->value) || !zox_has(realmLink->value, VoxelLinks)) continue;
+        if (!zox_valid(realmLink->value) || !zox_has(realmLink->value, VoxelLinks)) {
+            continue;
+        }
         const byte voxels_dirty = zox_get_value(realmLink->value, VoxelsDirty)
-        if (voxels_dirty == 0) continue;
+        if (voxels_dirty == 0) {
+            continue;
+        }
         // wait for realm to generate, voxels and textures
         if  (voxels_dirty <= 8) {
             zox_set(realmLink->value, VoxelsDirty, { voxels_dirty + 1 })
@@ -23,8 +27,10 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         int textures_count = 0;
         for (int j = 0; j < blocks->length; j++) {
             const ecs_entity_t block = blocks->value[j];
-            const Textures *voxel_texture_links = zox_get(block, Textures)
-            textures_count += voxel_texture_links->length;
+            if (zox_valid(block)) {
+                const Textures *voxel_texture_links = zox_get(block, Textures)
+                textures_count += voxel_texture_links->length;
+            }
         }
         resize_memory_component(TextureLinks, textureLinks, ecs_entity_t, textures_count)
         int tilemap_length = next_power_of_two(textures_count);
@@ -32,9 +38,11 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         int l = 0;
         for (int j = 0; j < blocks->length; j++) {
             const ecs_entity_t block = blocks->value[j];
-            const Textures *voxel_texture_links = zox_get(block, Textures)
-            for (int k = 0; k < voxel_texture_links->length; k++) {
-                textureLinks->value[l++] = voxel_texture_links->value[k];
+            if (zox_valid(block)) {
+                const Textures *voxel_texture_links = zox_get(block, Textures)
+                for (int k = 0; k < voxel_texture_links->length; k++) {
+                    textureLinks->value[l++] = voxel_texture_links->value[k];
+                }
             }
         }
         generateTexture->value = zox_generate_texture_trigger;

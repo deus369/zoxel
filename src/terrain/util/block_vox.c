@@ -193,7 +193,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
 void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, const byte max_depth) {
-    float vox_scale = terrain_voxel_scale;
+    float vox_scale = get_terrain_voxel_scale(max_depth);
     float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
@@ -212,14 +212,17 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
     //memset(block_prefabs, 0, block_voxes_count * sizeof(ecs_entity_t));
     //memset(block_vox_offsets, 0, block_voxes_count);
     for (int j = 0; j < block_voxes_count; j++) {
-        const ecs_entity_t block_meta = voxels->value[j];
-        blocks[j] = block_meta;
-        if (zox_gett_value(block_meta, BlockModel) == zox_block_vox) {
-            block_voxes[j] = zox_get_value(block_meta, ModelLink)
-            if (zox_has(block_meta, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block_meta, BlockVoxOffset)
+        const ecs_entity_t block = voxels->value[j];
+        if (!zox_valid(block)) {
+            continue;
         }
-        if (zox_has(block_meta, BlockPrefabLink)) {
-            block_prefabs[j] = zox_get_value(block_meta, BlockPrefabLink)
+        blocks[j] = block;
+        if (zox_gett_value(block, BlockModel) == zox_block_vox) {
+            block_voxes[j] = zox_get_value(block, ModelLink)
+            if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
+        }
+        if (zox_has(block, BlockPrefabLink)) {
+            block_prefabs[j] = zox_get_value(block, BlockPrefabLink)
         }
     }
     // convert chunk position to real

@@ -1,4 +1,3 @@
-#include "terrain_chunk_system.c"
 #include "chunk_terrain_build_system.c"
 #include "terrain_chunks_render_system.c"
 #include "chunk_bounds_debug_system.c"
@@ -11,12 +10,14 @@ zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_vo
 
 void define_systems_terrain(ecs_world_t *world) {
     // Builds our Textured Chunks (Terrain) !
-    if (!headless) zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [in] ChunkMeshDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
+    if (!headless) {
+        zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [in] ChunkMeshDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
+    }
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
     zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [out] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderDistance, [in] RenderDisabled, [out] BlocksSpawned, [none] TerrainChunk)
     zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled) // builds meshes
     #ifdef zox_debug_chunk_bounds
-    zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
+        zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
     #endif
     // generate terrain
     zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)

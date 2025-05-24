@@ -8,7 +8,9 @@ void SoundProcessSystem(ecs_iter_t *it) {
     zox_field_out(SoundDirty, soundDirtys, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ProcessSound, processSounds, processSound)
-        if (!processSound->value) continue;
+        if (!processSound->value) {
+            continue;
+        }
         zox_field_i(SoundData, soundDatas, soundData)
         if (!soundData->value) {
             zox_log("sound data issue\n")

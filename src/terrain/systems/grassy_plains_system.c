@@ -5,7 +5,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 #endif
     uint update_count = 0;
     // for now while types are global
-    const byte target_depth = max_octree_depth;
+    const byte target_depth = terrain_depth;
     const byte chunk_voxel_length = powers_of_two_byte[target_depth];
     const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
     const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
@@ -67,7 +67,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(chunkOctree, max_octree_depth, 0);
+        close_same_nodes(chunkOctree, chunkOctree->max_depth, 0);
 #endif
         update_count++;
     }

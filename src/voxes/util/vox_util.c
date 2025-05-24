@@ -29,18 +29,19 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         set_as_debug_vox(world, e);
         return;
     }
-    const byte target_depth = max_octree_depth_character;
+    const byte target_depth = character_depth;
     const byte *voxels = vox->chunks[0].xyzi.voxels;
     const byte3 vox_size_original = int3_to_byte3(vox->chunks[0].size.xyz);
     // maxed based on octree size
-    const int max_length = pow(2, max_octree_depth_character);
+    const int max_length = pow(2, target_depth);
     int3 vox_size = vox->chunks[0].size.xyz;
     if (vox_size.x > max_length) vox_size.x = max_length;
     if (vox_size.y > max_length) vox_size.y = max_length;
     if (vox_size.z > max_length) vox_size.z = max_length;
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
+    chunkOctree->max_depth = target_depth;
     fill_new_octree(chunkOctree, 0, target_depth);
-    byte2 set_octree_data = (byte2) { 1, max_octree_depth_character };
+    byte2 set_octree_data = (byte2) { 1, target_depth };
     byte3 position;
     int vox_index;
     for (position.x = 0; position.x < vox_size.x; position.x++) {
@@ -54,7 +55,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         }
     }
     optimize_solid_nodes(chunkOctree);
-    close_same_nodes(chunkOctree, max_octree_depth, 0);
+    close_same_nodes(chunkOctree, chunkOctree->max_depth, 0);
     zox_modified(e, ChunkOctree)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors
@@ -70,6 +71,7 @@ void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t
     zox_geter(source, ColorRGBs, colors_source)
     zox_get_muter(e, ColorRGBs, colors_dest)
     // clone_ChunkOctree(chunk_octree_dest, chunk_octree_source);
+    chunk_octree_dest->max_depth = chunk_octree_source->max_depth;
     clone_depth_ChunkOctree(chunk_octree_dest, chunk_octree_source, max_depth, 0);
     colors_dest->length = colors_source->length;
     const int memory_length = sizeof(color_rgb) * colors_dest->length;

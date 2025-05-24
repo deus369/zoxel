@@ -52,7 +52,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
             }
             // zox_log("+ terrain chunk at: %i\n", i)
             zox_geter(chunk, ChunkOctree, chunkd)
-            local_position = find_position_on_ground(chunkd, max_octree_depth, chunk_above, 1);
+            local_position = find_position_on_ground(chunkd, chunkd->max_depth, chunk_above, 1);
             if (!byte3_equals(byte3_full, local_position)) {
                 found_position = 1;
                 break;
@@ -63,8 +63,11 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         if (!found_position) {
             zox_log(" ! failed finding spawn position for player\n")
         }
-        const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, default_chunk_size);
-        spawn_position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f });
+        const byte depth = chunk_above != NULL ? chunk_above->max_depth : 0;
+        const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
+
+        const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, chunk_dimensions);
+        spawn_position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 1.0f, 0.5f }, depth);
     } else {
         // get character position/rotation
         load_character_p(&spawn_position, &spawn_rotation);
@@ -116,10 +119,11 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
 }
 
 void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    // }, void (*stream_end_event)(ecs_world_t*, const ecs_entity_t)) {
+    const byte depth = terrain_depth;
+    const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     const float3 position = zox_get_value(camera, Position3D)
-    int3 terrain_position = real_position_to_chunk_position(position, default_chunk_size);
+    int3 terrain_position = real_position_to_chunk_position(position, chunk_dimensions, terrain_depth);
     const ecs_entity_t game = zox_get_value(player, GameLink)
     if (!game || !zox_has(game, RealmLink)) return;
     const ecs_entity_t realm = zox_get_value(game, RealmLink)

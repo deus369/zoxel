@@ -36,7 +36,7 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
             const byte has_block_spawns = zox_get_value(chunk, BlocksSpawned)
             if (has_block_spawns) {
                 const ChunkOctree *chunk_data = zox_get(chunk, ChunkOctree)
-                toggle_debug_bounds_delve(world, chunk_data, max_octree_depth, 0);
+                toggle_debug_bounds_delve(world, chunk_data, chunk_data->max_depth, 0);
             }
             /*const BlockSpawns *blockSpawns = zox_get(chunk, BlockSpawns)
             const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;

@@ -18,12 +18,16 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     zox_name("block")
     zox_set(e, BlockIndex, { data->index })
     zox_set(e, Color, { data->color })
-    if (data->model != zox_block_air) zox_set(e, BlockModel, { data->model })
-    if (data->tag) zox_add_tag_id(e, data->tag);
-    if (data->disable_collision) zox_set(e, BlockCollider, { zox_block_air })
+    if (data->model != zox_block_air) {
+        zox_set(e, BlockModel, { data->model })
+    }
+    if (data->tag) {
+        zox_add_tag_id(e, data->tag);
+    }
+    if (data->disable_collision) {
+        zox_set(e, BlockCollider, { zox_block_air })
+    }
     if (data->textures) {
-        // zox_get_muter(e, Textures, textures)
-        // Textures *textures = zox_get_mut(e, Textures)
         Textures *textures = &((Textures) { 0, NULL });
         initialize_memory_component(Textures, textures, ecs_entity_t, data->textures)
         for (int i = 0; i < data->textures; i++) {
@@ -42,7 +46,6 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
         }
         zox_set(e, Textures, { textures->length, textures->value })
     }
-    // zox_log(" + generated block name [%s]\n", name)
     zox_set(e, ZoxName, { text_to_zext(data->name) })
     return e;
 }

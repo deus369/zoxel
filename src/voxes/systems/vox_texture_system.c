@@ -153,7 +153,6 @@ void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk
 }
 
 void VoxTextureSystem(ecs_iter_t *it) {
-    const byte max_depth = max_octree_depth;
     zox_field_in(TextureSize, textureSizes, 1)
     zox_field_in(VoxLink, voxLinks, 2)
     zox_field_in(VoxBakeSide, voxBakeSides, 3)
@@ -177,7 +176,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         const int2 texture_size = textureSize->value;
         resize_memory_component(TextureData, textureData, color, texture_size.x * texture_size.y)
-        generate_vox_texture(textureData->value, texture_size, chunk, colorRGBs->value, voxBakeSide->value, max_depth);
+        generate_vox_texture(textureData->value, texture_size, chunk, colorRGBs->value, voxBakeSide->value, chunk->max_depth);
         generate_vox_debug_texture(textureData->value, texture_size, voxBakeSide->value);
         textureDirty->value = 1; // actually not using this for tilemap!
     }

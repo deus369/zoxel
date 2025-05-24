@@ -18,7 +18,7 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
 
 ecs_entity_t spawn_character3D_player(ecs_world_t *world, spawn_character3D_data spawn_data) {
     spawn_data.prefab = prefab_character3D_player;
-    spawn_data.scale = player_vox_scale;
+    spawn_data.scale = vox_model_scale;
     // spawn_data.lod = character_lod;
     const ecs_entity_t e = spawn_character3D(world, spawn_data);
     make_test_skeleton(world, e);

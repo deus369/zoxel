@@ -1,6 +1,7 @@
 #include "chunk_lod.c"
 #include "prefabs.c"
 #include "lods.c"
+#include "bounds.c"
 #include "octrees.c"
 #include "positioning.c"
 #include "chunk_colored.c"

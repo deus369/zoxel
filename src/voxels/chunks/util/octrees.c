@@ -7,12 +7,11 @@ void fill_new_octree(ChunkOctree* node, const byte voxel, byte depth) {
     } else node->nodes = NULL;
 }
 
-// max_octree_depth
-void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth) {
+/*void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth) {
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
     fill_new_octree(chunkOctree, 0, depth);
     zox_modified(e, ChunkOctree)
-}
+}*/
 
 // used by physics and raycasting
 // i think const was the issue
@@ -294,7 +293,7 @@ void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set
         node->value = set_octree_data->x;
         return;
     }
-    byte dividor = powers_of_two_byte[set_octree_data->y - depth - 1];   // starts at default_chunk_length, ends at 1
+    byte dividor = powers_of_two_byte[set_octree_data->y - depth - 1];   // starts at chunk_length, ends at 1
     byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);
     set_octree_voxel_final(&node->nodes[byte3_octree_array_index(node_position)], position, set_octree_data, depth + 1);
@@ -305,7 +304,7 @@ byte get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
     byte voxel = 0;
     if (byte3_in_bounds(position, size)) {
         byte3 temp_position = position;
-        voxel = get_octree_voxel(node, &temp_position, max_octree_depth);
+        voxel = get_octree_voxel(node, &temp_position, node->max_depth);
     }
     return voxel;
 }
@@ -322,5 +321,5 @@ ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const byte depth) 
 
 ChunkOctree* get_node(ChunkOctree *node, const byte3 position) {
     byte3 temp_position = position;
-    return get_node_dig(node, &temp_position, max_octree_depth);
+    return get_node_dig(node, &temp_position, node->max_depth);
 }

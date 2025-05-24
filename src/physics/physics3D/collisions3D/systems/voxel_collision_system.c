@@ -1,6 +1,7 @@
 // Handles AABB to Voxel Chunk Collisions
 // todo: support multiple realms
 void VoxelCollisionSystem(ecs_iter_t *it) {
+    const byte max_depth = terrain_depth;
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     ecs_entity_t realm = 0;
@@ -35,7 +36,9 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     // block_collisions[0] = 0;
     for (int i = 0; i < voxelLinks->length; i++) {
         const ecs_entity_t block = voxelLinks->value[i];
-        block_collisions[i + 1] = zox_gett_value(block, BlockCollider) != zox_block_air;
+        if (zox_valid(block)) {
+            block_collisions[i + 1] = zox_gett_value(block, BlockCollider) != zox_block_air;
+        }
     }
     zox_field_out(Position3D, position3Ds, 3)
     zox_field_out(Velocity3D, velocity3Ds, 4)

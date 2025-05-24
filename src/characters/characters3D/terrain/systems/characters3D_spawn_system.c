@@ -1,3 +1,6 @@
+// todo: fix them not spawning in each chunk
+// todo: draw vertical beams where they spawn for 16 + seconds to debug
+
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
 // todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
@@ -39,17 +42,26 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
-        int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, default_chunk_size);
+        const byte depth = chunkOctree->max_depth;
+        const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
+        int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
         zox_log_spawning("> chunk [%lu] at [%ix%ix%i]", e, chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
         for (byte j = 0; j < characters_per_chunk_count; j++) {
             // sometimes cannot find a position
-            byte3 local_position = find_position_on_ground(chunkOctree, max_octree_depth, NULL, 0);
+            byte3 local_position;
+            // many spawn checks
+            for (byte k = 0; k < 32; k++) {
+                local_position = find_position_on_ground(chunkOctree, chunkOctree->max_depth, NULL, 0);
+                if (!byte3_equals(byte3_full, local_position)) {
+                    break;
+                }
+            }
             if (byte3_equals(byte3_full, local_position)) {
-                // zox_log("! failed to spawn npc\n")
+                zox_log_spawning("! failed to spawn npc\n")
                 continue;
             }
-            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 0.5f, 0.5f });
+            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 0.5f, 0.5f }, depth);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int vox_index = rand() % npc_vox_index_count;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));

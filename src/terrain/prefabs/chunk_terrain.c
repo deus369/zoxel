@@ -37,7 +37,7 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
             zox_add_tag(e, FlatlandChunk)
         #endif
     }
-    zox_set(e, ChunkOctree, { .max_depth = max_octree_depth })
+    zox_set(e, ChunkOctree, { .max_depth = terrain_depth })
     // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     // zox_log("New chunk neighbors: %i\n", chunkNeighbors->length)
     const float3 position3D = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
@@ -64,7 +64,7 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
     const byte camera_distance = get_camera_chunk_distance(camera_position, chunk_position);
     zox_set(e, RenderDistance, { camera_distance })
     const byte max_camera_distance = render_distance + 1;
-    const byte render_lod = get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance, max_octree_depth);
+    const byte render_lod = get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance, terrain_depth);
     zox_set(e, RenderLod, { render_lod })
     if (render_lod != render_lod_invisible) {
         zox_set(e, ChunkLodDirty, { chunk_lod_state_trigger })

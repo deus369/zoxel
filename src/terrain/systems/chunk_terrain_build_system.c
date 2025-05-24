@@ -31,10 +31,7 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
     octree_dig_data dig = {
         .parent = NULL,
         .node = chunk_octree,
-        .scale = 2 * terrain_voxel_scale,
-        // .index = 0,
-        // .position = int3_zero,
-        // .depth = 0, // start here and increase
+        .scale = 2 * get_terrain_voxel_scale(max_depth),
     };
     zox_terrain_building_dig(data, dig);
     // sizes
@@ -54,13 +51,14 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
     on_memory_component_created(meshUVs, MeshUVs)
 }
 
+
 #define set_neightbor_chunk_data(dir)\
 if (chunkNeighbors->length == 6) {\
     const byte index = direction##_##dir;\
     const ecs_entity_t neighbor = chunkNeighbors->value[index];\
     if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, ChunkOctree)) {\
         zox_geter_value(neighbor, RenderLod, byte, neighbor_lod)\
-        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, max_depth);\
+        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, chunkOctree->max_depth);\
         neighbors[index] = zox_get(neighbor, ChunkOctree);\
     } else {\
         neighbor_depths[index] = 0;\
@@ -69,11 +67,7 @@ if (chunkNeighbors->length == 6) {\
 }
 
 void ChunkTerrainBuildSystem(ecs_iter_t *it) {
-#ifdef zox_disable_chunk_building
-    return;
-#endif
     uint updated_count = 0;
-    const byte max_depth = max_octree_depth;
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     int voxels_length = 0;
@@ -179,6 +173,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
         zox_field_o(MeshUVs, meshUVss, meshUVs)
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
         if (renderLod->value != render_lod_invisible) {
+            zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
             const ChunkOctree *neighbors[chunkNeighbors->length];
             byte neighbor_depths[chunkNeighbors->length];
             set_neightbor_chunk_data(left)
@@ -187,12 +182,11 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(up)
             set_neightbor_chunk_data(back)
             set_neightbor_chunk_data(front)
-            zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
 
             const byte is_max_depth_chunk = renderLod->value == 0;
-            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, max_depth);
+            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, chunkOctree->max_depth);
 
-            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, max_depth);
+            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, chunkOctree->max_depth);
         }
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         meshDirty->value = mesh_state_trigger;

@@ -1,11 +1,16 @@
 void generate_terrain(ChunkOctree* chunk_octree, byte depth, float3 position, float scale) {
     const uint32_t seed = global_seed;
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, seed, terrain_octaves);
-    if (octree_noise < octree_min_height) octree_noise = octree_min_height;
+    if (octree_noise < octree_min_height) {
+        octree_noise = octree_min_height;
+    }
     // octree_noise += octree_height_addition * octree_perlin_noise(position.x, position.y, position.z, octree_persistence, octree_frequency);
-    if (position.y <= octree_noise) chunk_octree->value = 1;
-    else chunk_octree->value = 0;
-    if (depth < max_octree_depth && chunk_octree->value) {
+    if (position.y <= octree_noise) {
+        chunk_octree->value = 1;
+    } else {
+        chunk_octree->value = 0;
+    }
+    if (depth < chunk_octree->max_depth && chunk_octree->value) {
         depth++;
         scale = scale * 0.5f;
         open_ChunkOctree(chunk_octree);
@@ -22,7 +27,7 @@ void generate_terrain(ChunkOctree* chunk_octree, byte depth, float3 position, fl
                 break;
             }
         }
-        if (is_all_solid) close_ChunkOctree(chunk_octree, max_octree_depth);
+        if (is_all_solid) close_ChunkOctree(chunk_octree, chunk_octree->max_depth);
 #endif
     }
 }

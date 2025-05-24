@@ -8,7 +8,7 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     zox_get_muter(chunk, ChunkOctree, chunk_octree)
     const SetVoxelTargetData datam = {
-        .depth = max_octree_depth,
+        .depth = chunk_octree->max_depth,
         .voxel = voxel,
         .effect_nodes = 1,
     };
@@ -36,7 +36,7 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
             }
         }
     } else {
-        close_same_nodes(chunk_octree, max_octree_depth, 0);
+        close_same_nodes(chunk_octree, chunk_octree->max_depth, 0);
     }
     zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
     zox_set(chunk, ChunkMeshDirty, { chunk_dirty_state_trigger })

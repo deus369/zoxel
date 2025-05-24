@@ -13,8 +13,8 @@ if (did_collide##_##d) {\
     collision_point.d = position_new.d + collision_offset.d;\
     /* convert real position to voxel one */\
     float voxel_point = 0;\
-    if (did_collide##_##d == 1) voxel_point = floor(collision_point.d * terrain_voxel_scale_inverse) / terrain_voxel_scale_inverse;\
-    else voxel_point = ceil(collision_point.d * terrain_voxel_scale_inverse) / terrain_voxel_scale_inverse;\
+    if (did_collide##_##d == 1) voxel_point = floor(collision_point.d * get_terrain_voxel_scale_inverse(max_depth)) / get_terrain_voxel_scale_inverse(max_depth);\
+    else voxel_point = ceil(collision_point.d * get_terrain_voxel_scale_inverse(max_depth)) / get_terrain_voxel_scale_inverse(max_depth);\
     /* convert real position to voxel one */\
     float delta = collision_point.d - voxel_point;\
     position3D->value.d = position_new.d - delta;\
@@ -31,8 +31,8 @@ if (did_collide##_##d) {\
     collision_point.d = position_new.d + collision_offset.d;\
     /* convert real position to voxel one */\
     float voxel_point;\
-    if (did_collide##_##d == 1) voxel_point = floor(collision_point.d * terrain_voxel_scale_inverse) / terrain_voxel_scale_inverse;\
-    else voxel_point = ceil(collision_point.d * terrain_voxel_scale_inverse) / terrain_voxel_scale_inverse;\
+    if (did_collide##_##d == 1) voxel_point = floor(collision_point.d * get_terrain_voxel_scale_inverse(max_depth)) / get_terrain_voxel_scale_inverse(max_depth);\
+    else voxel_point = ceil(collision_point.d * get_terrain_voxel_scale_inverse(max_depth)) / get_terrain_voxel_scale_inverse(max_depth);\
     /* convert real position to voxel one */\
     float delta = (position_last.d + collision_offset.d) - voxel_point;\
     position3D->value.d = position_last.d - delta;\

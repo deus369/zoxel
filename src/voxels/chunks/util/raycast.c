@@ -77,8 +77,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         byte old_voxel = 0;
         if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
             byte3 temp = voxel_position_local;
-            // old_voxel = get_octree_voxel(chunk_octree, &temp, max_octree_depth);
-            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, max_octree_depth);
+            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, chunk_octree->max_depth);
         }
         if (old_voxel) {
             data->voxel = old_voxel;
@@ -155,7 +154,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // hit point
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * terrain_voxel_scale)), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(chunk_octree->max_depth))), hit_point_line_color);
 #endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);

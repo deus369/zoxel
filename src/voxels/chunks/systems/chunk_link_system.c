@@ -7,8 +7,11 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
     ecs_entity_t old_chunk = chunkLink->value;
     if (old_chunk != new_chunk) {
         // set characters link to chunk
-        if (!zox_alive(new_chunk)) chunkLink->value = 0;
-        else chunkLink->value = new_chunk;
+        if (!zox_alive(new_chunk)) {
+            chunkLink->value = 0;
+        } else {
+            chunkLink->value = new_chunk;
+        }
         // if player, dont link chunk to character
         if (zox_has(e, DisableReverseLinkChunk)) return;
         // Set RenderLod and RenderDisabled based on chunk!
@@ -58,6 +61,8 @@ void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e,
 }
 
 void ChunkLinkSystem(ecs_iter_t *it) {
+    const byte depth = terrain_depth;
+    const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     zox_field_out(Position3D, position3Ds, 2)
@@ -72,8 +77,9 @@ void ChunkLinkSystem(ecs_iter_t *it) {
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_o(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_o(ChunkLink, chunkLinks, chunkLink)
+
         const float3 real_position = position3D->value;
-        const int3 new_chunk_position = real_position_to_chunk_position(real_position, default_chunk_size);
+        const int3 new_chunk_position = real_position_to_chunk_position(real_position, chunk_dimensions, terrain_depth);
         if (!chunkLink->value) {
             set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
         } else if (!int3_equals(new_chunk_position, chunkPosition->value)) {

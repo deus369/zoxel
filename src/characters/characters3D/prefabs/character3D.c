@@ -44,19 +44,26 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     if (!data.player) {
         const int bounds_radius = 16;
         const int bounds_radius_y = 12;
+
         const float min_x_local = data.position.x - bounds_radius;
         const float max_x_local = data.position.x + bounds_radius;
-        const float min_z_local = data.position.z - bounds_radius;
-        const float max_z_local = data.position.z + bounds_radius;
+
         const float min_y_local = data.position.y - bounds_radius_y;
         const float max_y_local = data.position.y + bounds_radius_y;
-        character_bounds = (float6) {
+
+        const float min_z_local = data.position.z - bounds_radius;
+        const float max_z_local = data.position.z + bounds_radius;
+        /*character_bounds = (float6) {
             float_max(min_x_local, min_x_global), float_min(max_x_local, max_x_global),
             float_max(min_y_local, min_y_global), float_min(max_y_local, max_y_global),
-            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) };
+            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) };*/
+        character_bounds = (float6) {
+            min_x_local, max_x_local,
+            min_y_local, max_y_local,
+            min_z_local, max_z_local };
+        zox_set(e, Position3DBounds, { character_bounds })
     }
     // disabled bounds for now
-    zox_set(e, Position3DBounds, { character_bounds })
     zox_set(e, RenderDisabled, { data.render_disabled })
     zox_set(e, Position3D, { data.position })
     zox_set(e, LastPosition3D, { data.position })
@@ -71,7 +78,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     if (data.scale) {
         zox_set(e, VoxScale, { data.scale })
     }
-    // clone_vox_data(world, e, vox, 1 + max_octree_depth - min_character_vox_lod);
     zox_set(e, CloneVox, { 1 })
     zox_set(e, CloneVoxLink, { data.vox })
     /// rendering

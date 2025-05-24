@@ -8,7 +8,7 @@
 #define zox_block_dark 6
 #define zox_block_dungeon_core 7
 // voxes
-#define zox_block_dirt_vox 8
+#define zox_block_dirt_vox 8    // bigger rubble
 #define zox_block_dirt_rubble 9
 #define zox_block_vox_grass 10
 #define zox_block_vox_flower 11

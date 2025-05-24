@@ -13,10 +13,9 @@ ecs_entity_t spawn_realm_block_soil(ecs_world_t *world, const byte index, char* 
         .vox = vox,
         .bake_vox = 1,
     };
-    if (disable_block_voxes) {
-        data.bake_vox = 1;
+    /*if (disable_block_voxes) {
         data.vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
-    }
+    }*/
     const ecs_entity_t e = spawn_block_vox_meta(world, &data);
     return e;
 }
@@ -38,10 +37,10 @@ ecs_entity_t spawn_realm_block_soil_grass(ecs_world_t *world, const byte index, 
         .vox = vox,
         .bake_vox = 1,
     };
-    if (disable_block_voxes) {
+    /*if (disable_block_voxes) {
         data.bake_vox = 1;
         data.vox = spawn_vox_generated_invisible(world, prefab_vox_generated, top_color);
-    }
+    }*/
     const ecs_entity_t e = spawn_block_vox_meta(world, &data);
     return e;
 }

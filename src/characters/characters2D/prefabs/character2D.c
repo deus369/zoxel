@@ -23,7 +23,6 @@ ecs_entity_t spawn_character2D(ecs_world_t *world, const ecs_entity_t prefab, co
     const GLuint2 shader = zox_get_value(shader_textured2D, ShaderGPULink)
     spawn_gpu_material(world, e, shader);
     spawn_gpu_texture(world, e);
-
     clone_texture_to_entity(world, e, "taskbar_body");
     return e;
 }

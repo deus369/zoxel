@@ -5,7 +5,9 @@ void Bounds3DGrowSystem(ecs_iter_t *it) {
     zox_field_out(Bounds3D, bounds3Ds, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_generate) continue;
+        if (meshDirty->value != mesh_state_generate) {
+            continue;
+        }
         zox_field_i(ChunkSize, chunkSizes, chunkSize)
         zox_field_i(VoxScale, voxScales, voxScale)
         zox_field_o(Bounds3D, bounds3Ds, bounds3D)

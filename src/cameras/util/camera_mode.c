@@ -144,11 +144,11 @@ void set_camera_mode_pre_defined(ecs_world_t *world, const float vox_model_scale
 #endif
 }
 
-extern byte max_octree_depth;
+extern byte terrain_depth;
 
 // sets camera to main menu location
 void set_camera_transform_to_main_menu(float3 *camera_position, float4 *camera_rotation) {
-    const float overall_voxel_scale = powers_of_two[max_octree_depth]; //  32.0f;
+    const float overall_voxel_scale = powers_of_two[terrain_depth]; //  32.0f;
     camera_position->x = 0.25f * overall_voxel_scale;
     camera_position->y = 0.1f * overall_voxel_scale;
     camera_position->z = 0.25f * overall_voxel_scale;

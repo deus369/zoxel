@@ -41,17 +41,37 @@ void ZoxGameImport(ecs_world_t *world) {
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
     // terrain_mode = terrain_mode_flatlands;
-    // max_octree_depth = 4;
-    // max_octree_depth_character = 4;
-    // render_distance = 1;
+
     headless = 0;
-    // disable_npcs = 1;
-    // wait tthis breaks terrain mesh at 4 depth
-    // disable_block_voxes = 1; // fix it's positioning
-    // disable_block_vox_generation = 1;
-    render_distance = 16; // 2 | 8 | 16
-    render_distance_y = 4; // 2 | 8 | 16
-    set_max_octree_length(5);
+
+    // wait this breaks terrain mesh at 4 depth
+
+    // terrain
+    initial_terrain_lod = 2; // 3 | 2
+    terrain_lod_dividor = 4; // 2 | 3
+    render_distance = 6; // 2 | 4 | 8 | 16 | 32
+    render_distance_y = 2; // 1 | 2 | 4
+    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
+    terrain_depth = 4;
+
+    // block voxes
+    disable_block_vox_generation = 1;
+    disable_block_voxes = 1;
+    block_vox_depth = 5;
+
+    // npcs
+    disable_npcs = 1;
+    character_depth = 5;
+    vox_model_scale = 1 / 32.0f;
+
+    zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
+    zox_prefab_set(prefab_character3D, VoxScale, { vox_model_scale })
+    zox_prefab_set(prefab_character3D_npc, VoxScale, { vox_model_scale })
+
+    // todo: set block vox resolution to 5
+    // todo: use component max depths on terrain
+    // todo: fix the texture blocks - use textures generate a regular vox model
+
     is_generate_vox_outlines = 0;
 }
 

@@ -6,7 +6,7 @@ void ChunkLodSystem(ecs_iter_t *it) {
         return;
     }
     const byte max_camera_distance = render_distance + 1;
-    const byte max_depth = max_octree_depth;
+    const byte max_depth = terrain_depth;
     zox_field_world()
     ecs_query_t *streamers_query = it->ctx;
     ecs_iter_t streamers_iter = ecs_query_iter(world, streamers_query);

@@ -220,7 +220,7 @@ gdb:
 # run development + valgrind  --tool=none
 valgrind:
 	@ echo "> running valgrind with args [$(args)]"
-	@ valgrind ./$(target_dev) $(args)
+	@ valgrind --track-origins=yes ./$(target_dev) $(args)
 
 run-drmemory:
 	@ drmemory -light -callstack_max_frames 32 -malloc_max_frames 32  -- $(target_dev) $(args)

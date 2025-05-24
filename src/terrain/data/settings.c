@@ -37,7 +37,7 @@ const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_re
 void print_terrain_settings() {
     zox_log(" > terrain settings set\n")
     // zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
-    zox_log("     + octree depth is [%i]\n", max_octree_depth)
+    zox_log("     + terrain_depth is [%i]\n", terrain_depth)
     zox_log("     + render distance is [%i]\n", terrain_spawn_distance)
     zox_log("     + terrain vertical is [%i]\n", terrain_vertical)
     zox_log("     + lod dividor is [%i]\n", terrain_lod_dividor)
