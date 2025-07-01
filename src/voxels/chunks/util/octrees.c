@@ -9,12 +9,6 @@ void fill_new_octree(ChunkOctree* node, const byte voxel, byte depth) {
     } else node->nodes = NULL;
 }
 
-/*void initialize_new_chunk_octree(ecs_world_t *world, ecs_entity_t e, byte depth) {
-    ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
-    fill_new_octree(chunkOctree, 0, depth);
-    zox_modified(e, ChunkOctree)
-}*/
-
 // used by physics and raycasting
 // i think const was the issue
 const byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte depth) {
@@ -77,13 +71,13 @@ ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, by
 }*/
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-void close_solid_nodes(ChunkOctree *node, const byte max_depth) {
+void close_solid_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_depth) {
     if (!node->nodes) {
         return;
     }
     // for all children nodes - only check higher nodes if closed children
     for (byte i = 0; i < octree_length; i++) {
-        close_solid_nodes(&node->nodes[i], max_depth);
+        close_solid_nodes(world, &node->nodes[i], max_depth);
     }
     byte all_solid = 1;
     byte all_air = 1;
@@ -105,12 +99,12 @@ void close_solid_nodes(ChunkOctree *node, const byte max_depth) {
         }
     }
     if (all_solid || all_air) {
-        close_ChunkOctree(node, max_depth);
+        close_ChunkOctree(world, node, max_depth);
     }
 }
 
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
-void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
+void close_same_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_depth, byte depth) {
     if (node->nodes == NULL) {
         return;
     }
@@ -119,7 +113,7 @@ void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
     }
     depth++;
     for (byte i = 0; i < octree_length; i++) {
-        close_same_nodes(&node->nodes[i], max_depth, depth);
+        close_same_nodes(world, &node->nodes[i], max_depth, depth);
     }
     byte all_same = 1;
     byte all_same_voxel = 255;
@@ -137,7 +131,7 @@ void close_same_nodes(ChunkOctree *node, const byte max_depth, byte depth) {
     // if (all_same && first_node_value != 0) zox_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) {
         node->value = all_same_voxel;
-        close_ChunkOctree(node, max_depth);
+        close_ChunkOctree(world, node, max_depth);
     }
 }
 
@@ -299,7 +293,7 @@ byte get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
     byte voxel = 0;
     if (byte3_in_bounds(position, size)) {
         byte3 temp_position = position;
-        voxel = get_octree_voxel(node, &temp_position, node->max_depth);
+        voxel = get_octree_voxel(node, &temp_position, node->linked);
     }
     return voxel;
 }
@@ -316,5 +310,5 @@ ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const byte depth) 
 
 ChunkOctree* get_node(ChunkOctree *node, const byte3 position) {
     byte3 temp_position = position;
-    return get_node_dig(node, &temp_position, node->max_depth);
+    return get_node_dig(node, &temp_position, node->linked);
 }

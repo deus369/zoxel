@@ -64,7 +64,7 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         //    .node = update_node,
         //    .position = position,
         //};
-        voxel_action(world, chunkLink->value, update_node->nodes, position, place_type, update_node);
+        voxel_action(world, chunkLink->value, update_node, position, place_type);
         //raycast_action(world, &raycastVoxelData, place_type, 2);
     }
 } zox_declare_system(DungeonBlockSystem)

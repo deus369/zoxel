@@ -15,9 +15,6 @@ void VoxelActionASystem(ecs_iter_t *it) {
             spawn_pickup(world, raycastVoxelData->hit, raycastVoxelData->voxel_entity);
         }
         triggerActionA->value = 0;
-        // gett  position of destroying:
-        // using hit for now
-        // zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->hit.x, raycastVoxelData->hit.y, raycastVoxelData->hit.z)
     }
 } zox_declare_system(VoxelActionASystem)
 #endif

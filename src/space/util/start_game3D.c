@@ -59,7 +59,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
             }
             // zox_log("+ terrain chunk at: %i\n", i)
             zox_geter(chunk, ChunkOctree, chunkd)
-            local_position = find_position_on_ground(chunkd, chunkd->max_depth, chunk_above, 1);
+            local_position = find_position_on_ground(chunkd, chunkd->linked, chunk_above, 1);
             if (!byte3_equals(byte3_full, local_position)) {
                 found_position = 1;
                 break;
@@ -70,7 +70,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         if (!found_position) {
             zox_log(" ! failed finding spawn position for player\n")
         }
-        const byte depth = chunk_above != NULL ? chunk_above->max_depth : 0;
+        const byte depth = chunk_above != NULL ? chunk_above->linked : 0;
         const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
 
         const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, chunk_dimensions);

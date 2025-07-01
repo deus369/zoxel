@@ -19,7 +19,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
         const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
         SetVoxelData data = { .node = chunkOctree };
         byte3 voxel_position;
-        chunkOctree->max_depth = target_depth;
+        chunkOctree->linked = target_depth;
         fill_new_octree(chunkOctree, 0, target_depth);
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
@@ -39,7 +39,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(chunkOctree, target_depth, 0);
+        close_same_nodes(world, chunkOctree, target_depth, 0);
 #endif
         update_count++;
     }

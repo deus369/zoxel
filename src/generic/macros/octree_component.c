@@ -3,6 +3,8 @@ typedef struct {
     ecs_entity_t value;
 } NodeEntityLink;
 
+#define linked_state 255
+
 // todo: Seperate: voxel octree shoudl be seperate to entity component
 
 #define zoxel_octree_component(name, type, default_value)\
@@ -12,38 +14,41 @@ typedef struct name name;\
 struct name {\
     type value;\
     name *nodes;\
-    byte max_depth;\
+    byte linked;\
 }; ECS_COMPONENT_DECLARE(name);\
 \
 byte is_linking_##name(const name *node) {\
-    return node && node->max_depth == 255;\
+    return node && node->linked == linked_state;\
 }\
 \
-void set_linking_##name(name *node, byte is_linking) {\
-    if (node != NULL) {\
+void link_node_##name(name *node, const ecs_entity_t e) {\
+    if (!node || node->nodes || node->linked == linked_state) {\
         return;\
     }\
-    if (is_linking_##name(node) == is_linking) {\
-        return;\
+    node->linked = linked_state;\
+    node->nodes = malloc(sizeof(NodeEntityLink));\
+    *(NodeEntityLink*) node->nodes = (NodeEntityLink) { e };\
+}\
+\
+byte unlink_node_##name(ecs_world_t *world, name *node) {\
+    if (!node || node->linked != linked_state || !node->nodes) {\
+        return 0;\
     }\
-    if (is_linking) {\
-        node->max_depth = 255;\
-    } else {\
-        NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
-        if (zox_valid(link->value)) {\
-            zox_delete(link->value)\
-        }\
-        free(node->nodes);\
-        node->nodes = NULL;\
-        node->max_depth = 0;\
+    NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
+    if (zox_valid(link->value)) {\
+        zox_delete(link->value)\
     }\
+    free(node->nodes);\
+    node->nodes = NULL;\
+    node->linked = 0;\
+    return 1;\
 }\
 \
 byte delete_node_entity_from_##name(ecs_world_t *world, name *node) {\
     if (!node || !node->nodes) {\
         return 0;\
     }\
-    if (node->max_depth != 255) {\
+    if (node->linked != linked_state) {\
         return 0;\
     }\
     NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;\
@@ -54,22 +59,22 @@ byte delete_node_entity_from_##name(ecs_world_t *world, name *node) {\
     if (zox_valid(e)) {\
         zox_delete(e)\
     }\
-    set_linking_##name(node, 0);\
+    unlink_node_##name(world, node);\
     return 1;\
 }\
 \
-void close_##name(name* node, byte depth) {\
+void close_##name(ecs_world_t *world, name* node, byte depth) {\
     if (!node->nodes) {\
         return;\
     }\
+    if (delete_node_entity_from_##name(world, node)) {\
+        return;\
+    }\
     /* > todo: check if entity link here, using depth check */\
-    if (depth == 0) {\
-        /* todo: free block vox here. */\
-        delete_node_entity_from_##name(world, node);\
-    } else {\
+    if (depth) {\
         depth--;\
         for (byte i = 0; i < octree_length; i++) {\
-            close_##name(&node->nodes[i], depth);\
+            close_##name(world, &node->nodes[i], depth);\
         }\
     }\
     free(node->nodes);\
@@ -82,16 +87,20 @@ void open_new_##name(name* node) {\
     /*zox_log(" > opening node [%i + 1 = %i :: %i]\n", sizeof(name*), sizeof(name), (sizeof(name) * octree_length))*/\
     node->nodes = malloc(sizeof(name) * octree_length);\
     for (byte i = 0; i < octree_length; i++) {\
-        node->nodes[i].nodes = NULL;\
-        node->nodes[i].max_depth = 0;\
+        node->nodes[i] = (name) {\
+            .nodes = NULL,\
+            .linked = 0,\
+        };\
     }\
     node_memory += 1;\
 }\
 \
 void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
-    dst->max_depth = src->max_depth;\
-    if (src->nodes) {\
+    dst->linked = src->linked;\
+    if (src->linked) {\
+        dst->nodes = src->nodes;\
+    } else if (src->nodes) {\
         open_new_##name(dst);\
         for (byte i = 0; i < octree_length; i++) {\
             clone_##name(&dst->nodes[i], &src->nodes[i]);\
@@ -103,7 +112,7 @@ void clone_##name(name* dst, const name* src) {\
 \
 void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte depth) {\
     dst->value = src->value;\
-    dst->max_depth = src->max_depth;\
+    dst->linked = src->linked;\
     depth++;\
     if (src->nodes && depth <= max_depth) {\
         open_new_##name(dst);\
@@ -125,7 +134,7 @@ void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, 
     if (depth == target_depth) {\
         dst->value = src->value;\
         dst->nodes = src->nodes;\
-        /*dst->nodes = NULL;*/\
+        dst->linked = src->linked;\
     } else {\
         if (src->nodes && dst->nodes) {\
             depth++;\
@@ -274,13 +283,13 @@ ECS_CTOR(name, ptr, {\
     /*zox_log(" > creating chunk [%s]\n", ptr->nodes == NULL ? "closed nodes" : "open nodes")*/\
     ptr->nodes = NULL;\
     ptr->value = default_value;\
-    ptr->max_depth = 0;\
+    ptr->linked = 0;\
 })\
 \
 ECS_COPY(name, dst, src, {\
     /*zox_log(" > copying chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes")*/\
     /* shouldn't i just set pointersh ere?? */\
-    dst->max_depth = src->max_depth;\
+    /*dst->linked = src->linked;*/\
     clone_##name(dst, src);\
     /*close_##name(dst, dst->max_depth);*/\
 })\
@@ -288,18 +297,18 @@ ECS_COPY(name, dst, src, {\
 ECS_MOVE(name, dst, src, {\
     /*zox_log(" > moving chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes")*/\
     dst->nodes = src->nodes;\
-    dst->value = src->value;\
-    dst->max_depth = src->max_depth;\
     src->nodes = NULL;\
+    dst->value = src->value;\
     src->value = default_value;\
-    /*src->max_depth = 0;*/\
+    dst->linked = src->linked;\
+    src->linked = 0;\
 })\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
     name *components = ecs_field(it, name, 1);\
     for (int i = 0; i < it->count; i++) {\
         name *component = &components[i];\
-        close_##name(component, component->max_depth);\
+        close_##name(it->world, component, component->linked);\
     }\
 }\
 
@@ -315,61 +324,3 @@ void on_destroyed_##name(ecs_iter_t *it) {\
         .callback = on_destroyed_##name,\
         .events = { EcsOnRemove },\
     });
-
-/*
-ecs_set_hooks(world, name, {\
-    .ctor = name##_ctor,\
-    .dtor = name##_dtor,\
-    .move = name##_move,\
-    .copy = name##_copy,\
-});
-*/
-
-// , [out] name
-
-/*#define zoxel_octree_component_define2(name, ...)\
- * zox_define_component(name)\
- * ecs_set_hooks(world, name, {\
- *    .ctor = ecs_ctor(name),\
- *    .move = ecs_move(name),\
- *    .copy = ecs_copy(name),\
- * });\
- *
- * */
-
-// __attribute__((aligned(9)))
-
-// structs used for voxels at max depth
-
-// todo: if nodes is at end, instead of making nodes 8 length, make single! idk yet... this refactors hard
-
-//  > each node needs children links, if a parent
-//  > each node needs a value
-//  > each node can have extra values for voxel entity links
-//      > when setting set_voxel we can open node of different type here
-//          > make a open node function that allocates final nodes to a single NodeEntityLink structure
-//          > when spawning block vox, set link inside it
-//      > when closing a node with entity, also destroy that entity, closing would need to pass in voxel information then for struct types per voxel type
-//      >
-
-// links to node and child nodes, using entity component to find depth
-// if less then max depth, this is null or 8 length
-// if max depth, this is assigned to a value node
-/* typedef struct {
- *    void *node;
- * } Node;
- *
- * typedef struct {
- *    byte value;
- * } VoxelNode; */
-
-// extern void delete_vox_entity_from_nodes(ecs_world_t *world, name *chunk);
-
-/*
-.dtor = ecs_dtor(name)\
-ECS_DTOR(name, ptr, {\
-    zox_log_line("> destroying chunk [%s] - depth [%i]", ptr->nodes == NULL ? "closed nodes" : "open nodes", ptr->max_depth)\
-    close_##name(ptr, ptr->max_depth);\
-    ptr->max_depth = 0;\
-})
-*/

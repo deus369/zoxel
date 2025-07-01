@@ -1,11 +1,15 @@
 byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
-    if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) return 0;
+    if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) {
+        return 0;
+    }
     byte hit_character = 0;
     zox_geter(chunk, EntityLinks, entity_links)
     *closest_t = FLT_MAX;
     for (int i = 0; i < entity_links->length; i++) {
         const ecs_entity_t character = entity_links->value[i];
-        if (!character || !zox_valid(character) || caster == character || !zox_has(character, Position3D) || !zox_has(character, Bounds3D)) continue;
+        if (!character || !zox_valid(character) || caster == character || !zox_has(character, Position3D) || !zox_has(character, Bounds3D)) {
+            continue;
+        }
         const float3 position3D = zox_get_value(character, Position3D)
         const float3 bounds3D = zox_get_value(character, Bounds3D)
         const bounds character_bounds = { .center = position3D, .extents = bounds3D };
@@ -27,7 +31,9 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     // setup voxel data
     const ChunkOctree *chunk_octree;
     // if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
-    if (chunk) chunk_octree = zox_get(chunk, ChunkOctree)
+    if (chunk) {
+        chunk_octree = zox_get(chunk, ChunkOctree)
+    }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     ecs_entity_t chunk_last = chunk;
     // position
@@ -60,10 +66,14 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
             const int3 new_chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_size);
             if (!int3_equals(chunk_position, new_chunk_position)) {
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
-                if (!zox_valid(chunk)) return 0;
+                if (!zox_valid(chunk)) {
+                    return 0;
+                }
                 // chunk_octree = zox_get_mut(chunk, ChunkOctree)
                 chunk_octree = zox_get(chunk, ChunkOctree)
-                if (!chunk_octree) return 0;
+                if (!chunk_octree) {
+                    return 0;
+                }
                 chunk_position = new_chunk_position;
                 hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
             }
@@ -71,13 +81,16 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         if (chunk_links) {
             voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_size_b3);
         } else {
-            if (int3_in_bounds(voxel_position, chunk_size)) voxel_position_local = int3_to_byte3(voxel_position);
-            else voxel_position_local = (byte3) { 255, 255, 255 }; // failure!
+            if (int3_in_bounds(voxel_position, chunk_size)) {
+                voxel_position_local = int3_to_byte3(voxel_position);
+            } else {
+                voxel_position_local = (byte3) { 255, 255, 255 }; // failure!
+            }
         }
         byte old_voxel = 0;
         if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
             byte3 temp = voxel_position_local;
-            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, chunk_octree->max_depth);
+            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, chunk_octree->linked);
         }
         if (old_voxel) {
             data->voxel = old_voxel;
@@ -134,8 +147,11 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
             ray_distance = ray_add.z;
             voxel_position.z += step_direction.z;
             ray_add.z += ray_unit_size.z;
-            if (step_direction.z >= 0) hit_normal = int3_backward;
-            else hit_normal = int3_forward;
+            if (step_direction.z >= 0) {
+                hit_normal = int3_backward;
+            } else {
+                hit_normal = int3_forward;
+            }
         }
         // cache
         chunk_last = chunk;
@@ -154,7 +170,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // hit point
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(chunk_octree->max_depth))), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(chunk_octree->linked))), hit_point_line_color);
 #endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);

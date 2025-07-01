@@ -176,7 +176,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
         const int2 texture_size = textureSize->value;
         resize_memory_component(TextureData, textureData, color, texture_size.x * texture_size.y)
-        generate_vox_texture(textureData->value, texture_size, chunk, colorRGBs->value, voxBakeSide->value, chunk->max_depth);
+        generate_vox_texture(textureData->value, texture_size, chunk, colorRGBs->value, voxBakeSide->value, chunk->linked);
         generate_vox_debug_texture(textureData->value, texture_size, voxBakeSide->value);
         textureDirty->value = 1; // actually not using this for tilemap!
     }

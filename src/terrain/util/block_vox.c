@@ -22,53 +22,14 @@ typedef struct {
     SpawnBlockVox *spawn_data;
 } UpdateBlockEntities;
 
-// used within cleanup code
-/*void delete_vox_entity_from_nodes(ecs_world_t *world, ChunkOctree *chunk) {
-    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
-    if (zox_valid(e3)) {
-        zox_delete(e3)
-    }
-}*/
-
-// returns 1 if needs allocate a new NodeEntityLink
-/*byte delete_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
-    if (!chunk->nodes) return 1;
-    const ecs_entity_t e3 = ((NodeEntityLink*)chunk->nodes)->value;
-    if (zox_valid(e3)) {
-        zox_delete(e3)
-    } else {
-        zox_log(" !!! error delete_old_voxel_by_link : minivox voxel link\n")
-    }
-    return 0;
-}*/
-
-// assumes this is max depth voxel
-void remove_old_voxel_by_link(ecs_world_t *world, ChunkOctree *chunk) {
-    if (!chunk->nodes) {
+void delete_block_entities(ecs_world_t *world, ChunkOctree *node,  byte depth, const byte max_depth) {
+    if (unlink_node_ChunkOctree(world, node)) {
         return;
     }
-    set_linking_ChunkOctree(chunk, 0);
-    /*NodeEntityLink *node_entity_link = (NodeEntityLink*) chunk->nodes;
-    if (!node_entity_link) {
-        return;
-    }
-    const ecs_entity_t e3 = node_entity_link->value;
-    if (zox_valid(e3)) {
-        zox_delete(e3)
-        free(chunk->nodes);
-        chunk->nodes = NULL;
-    } else {
-        zox_log(" !!! error remove_old_voxel_by_link : minivox voxel link\n")
-    }*/
-}
-
-void delete_block_entities(ecs_world_t *world, ChunkOctree *chunk,  byte depth, const byte max_depth) {
-    if (depth == max_depth) {
-        remove_old_voxel_by_link(world, chunk);
-    } else if (chunk->nodes) {
+    if (depth != max_depth && node->nodes) {
         depth++;
         for (byte i = 0; i < octree_length; i++) {
-            delete_block_entities(world, &chunk->nodes[i], depth, max_depth);
+            delete_block_entities(world, &node->nodes[i], depth, max_depth);
         }
     }
 }
@@ -79,12 +40,16 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
     const float voxel_scale = data->scale; // terrain scale
     if (delve_data->depth == delve_data->max_depth) {
         // if null or air, remove
-        if (!delve_data->chunk || !delve_data->chunk->value) {
-            remove_old_voxel_by_link(world, delve_data->chunk);
+        ChunkOctree *node = delve_data->chunk;
+        if (!node) {
+            return; // air returns!
+        }
+        if (!node->value) {
+            unlink_node_ChunkOctree(world, node);
             return; // air returns!
         }
         // cheeck if out of bounds
-        const byte block_index = delve_data->chunk->value - 1;
+        const byte block_index = node->value - 1;
         if (block_index >= data->block_voxes_count) {
             zox_log(" ! block_index out of bounds %i of %i\n", block_index, data->block_voxes_count)
             return;
@@ -93,16 +58,15 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // zox_has(block_meta, BlockPrefabLink);
         // cheeck if vox model - if meta data is block vox type, spawn, otherwise, remove
         if (!block_prefab) {
-            remove_old_voxel_by_link(world, delve_data->chunk);
+            unlink_node_ChunkOctree(world, node);
             return;
         }
         // + spawn block vox
         data->spawn_data->position_local = int3_to_byte3(delve_data->octree_position);
         // if exists already, shouldn't we check if is the same block vox type?
         // if exists, and is same type, return!
-        ChunkOctree *chunk = delve_data->chunk;
-        if (chunk->nodes) {
-            const ecs_entity_t e3 = ((NodeEntityLink*) chunk->nodes)->value;
+        if (node->nodes) {
+            const ecs_entity_t e3 = ((NodeEntityLink*) node->nodes)->value;
             if (zox_valid(e3)) {
                 // this means e3 has spawned
                 // we should check its the same one
@@ -151,21 +115,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             // zox_set(e2, Scale1D, { data->spawn_data->scale })
             // zox_set(e2, Position3D, { position_real })
         }
-        if (!delete_node_entity_from_ChunkOctree(world, delve_data->chunk)) {
-            chunk->nodes = malloc(sizeof(NodeEntityLink));
-        }
-        /*if (delete_old_voxel_by_link(world, delve_data->chunk)) {
-            chunk->nodes = malloc(sizeof(NodeEntityLink));
-        }*/
-        if (!chunk->nodes) {
-            zox_log(" ! failed to allocate nodes\n")
-            zox_delete(e2)
-            return;
-        }
-        *(NodeEntityLink*) chunk->nodes = (NodeEntityLink) { .value = e2 };
-        set_linking_ChunkOctree(chunk, 1);
-        // remove_old_voxel_by_link(world, chunk);
-        // zox_log(" + spawned vox model: depth %i - scale %f - %ix%ix%i - r [%fx%fx%f] - [%i]\n", depth, voxel_scale, octree_position.x, octree_position.y, octree_position.z, position_real.x, position_real.y, position_real.z, count_byte3_hashmap(block_spawns->value))
+        link_node_ChunkOctree(node, e2);
     } else {
         int3 octree_position = delve_data->octree_position;
         int3_multiply_int_p(&octree_position, 2);
@@ -183,8 +133,15 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 #ifndef zox_disable_block_spawns_hash
             // traverse down with null nodes, making sure to clean up vox spawns on closed nodes
             for (byte i = 0; i < octree_length; i++) {
-                delve_data2.octree_position = int3_add(octree_position, octree_positions[i]);
-                update_block_entities(world, data, &delve_data2);
+                // delve_data2.octree_position = int3_add(octree_position, octree_positions[i]);
+                NodeDelveData delve_data_child = {
+                    .chunk = &delve_data->chunk->nodes[i],
+                    .octree_position = int3_add(octree_position, octree_positions[i]),
+                    .depth = delve_data->depth + 1,
+                    .max_depth = delve_data->max_depth
+                };
+                update_block_entities(world, data, &delve_data_child);
+                // update_block_entities(world, data, &delve_data2);
             }
 #endif
         }

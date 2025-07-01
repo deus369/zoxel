@@ -1,4 +1,5 @@
-void generate_terrain(ChunkOctree* chunk_octree, byte depth, float3 position, float scale) {
+void generate_terrain(ecs_world_t *world, ChunkOctree* chunk_octree, byte depth, float3 position, float scale) {
+    const byte max_depth = chunk_octree->linked;
     const uint32_t seed = global_seed;
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, seed, terrain_octaves);
     if (octree_noise < octree_min_height) {
@@ -10,13 +11,13 @@ void generate_terrain(ChunkOctree* chunk_octree, byte depth, float3 position, fl
     } else {
         chunk_octree->value = 0;
     }
-    if (depth < chunk_octree->max_depth && chunk_octree->value) {
+    if (depth < max_depth && chunk_octree->value) {
         depth++;
         scale = scale * 0.5f;
         open_ChunkOctree(chunk_octree);
         for (byte i = 0; i < octree_length; i++) {
             float3 node_position = float3_add(position, float3_multiply_float(float3_from_int3(octree_positions[i]), scale));
-            generate_terrain(&chunk_octree->nodes[i], depth, node_position, scale);
+            generate_terrain(world, &chunk_octree->nodes[i], depth, node_position, scale);
         }
         // check all children
 #ifndef zoxel_disable_close_nodes
@@ -27,7 +28,9 @@ void generate_terrain(ChunkOctree* chunk_octree, byte depth, float3 position, fl
                 break;
             }
         }
-        if (is_all_solid) close_ChunkOctree(chunk_octree, chunk_octree->max_depth);
+        if (is_all_solid) {
+            close_ChunkOctree(world, chunk_octree, chunk_octree->linked);
+        }
 #endif
     }
 }

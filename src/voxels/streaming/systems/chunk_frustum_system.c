@@ -99,7 +99,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
 // -=- Block Spawns -=-
             if (zox_gett_value(it->entities[i], BlocksSpawned)) {
                 zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
-                set_chunk_block_spawns_render_disabled(world, chunkOctree, chunkOctree->max_depth, 0, renderDisabled->value);
+                set_chunk_block_spawns_render_disabled(world, chunkOctree, chunkOctree->linked, 0, renderDisabled->value);
             }
 // -=- -=- -=- -=- -=- -=-
         }

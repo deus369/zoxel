@@ -18,13 +18,7 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t p
     zox_set(e, RenderDisabled, { 1 })
 #endif
     zox_add_tag(e, ChunkDebugger)
-    // neighbors
     zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } })
-    // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    /*ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
-    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
-    for (int i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
-    zox_prefab_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })*/
     return e;
 }
 
@@ -38,9 +32,6 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
             zox_add_tag(e, FlatlandChunk)
         #endif
     }
-    // zox_set(e, ChunkOctree, { .max_depth = terrain_depth })
-    // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    // zox_log("New chunk neighbors: %i\n", chunkNeighbors->length)
     const float3 position3D = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
     zox_set(e, Position3D, { position3D })
     zox_set(e, VoxLink, { terrain })

@@ -58,7 +58,7 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
     const ecs_entity_t neighbor = chunkNeighbors->value[index];\
     if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, ChunkOctree)) {\
         zox_geter_value(neighbor, RenderLod, byte, neighbor_lod)\
-        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, chunkOctree->max_depth);\
+        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, chunkOctree->linked);\
         neighbors[index] = zox_get(neighbor, ChunkOctree);\
     } else {\
         neighbor_depths[index] = 0;\
@@ -184,9 +184,9 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(front)
 
             const byte is_max_depth_chunk = renderLod->value == 0;
-            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, chunkOctree->max_depth);
+            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, chunkOctree->linked);
 
-            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, chunkOctree->max_depth);
+            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, chunkOctree->linked);
         }
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         meshDirty->value = mesh_state_trigger;

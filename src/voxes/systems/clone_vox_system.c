@@ -27,9 +27,9 @@ void CloneVoxSystem(ecs_iter_t *it) {
         } else {
             chunkLod->value++;
         }
-        chunkOctree->max_depth = chunk_octree_source->max_depth;
+        chunkOctree->linked = chunk_octree_source->linked;
         clone_at_depth_ChunkOctree(chunkOctree, chunk_octree_source, chunkLod->value, 0);
-        const byte target_depth = chunkOctree->max_depth - min_block_vox_lod;
+        const byte target_depth = chunkOctree->linked - min_block_vox_lod;
         if (chunkLod->value == target_depth) {
             zox_geter(source, ChunkSize, source_chunk_size)
             zox_geter(source, ColorRGBs, colors_source)

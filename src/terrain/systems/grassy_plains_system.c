@@ -28,41 +28,41 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             continue;
         }
 
-        chunkOctree->max_depth = max_depth;
+        chunkOctree->linked = max_depth;
 
-        const byte chunk_voxel_length = powers_of_two_byte[chunkOctree->max_depth];
+        const byte chunk_voxel_length = powers_of_two_byte[max_depth];
         const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
         const SetVoxelTargetData datam_dirt = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_dirt,
             .effect_nodes = 1
         };
         const SetVoxelTargetData datam_dirt_grass = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_grass,
             .effect_nodes = 1
         };
         const SetVoxelTargetData datam_sand = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_sand,
             .effect_nodes = 1
         };
         const SetVoxelTargetData datam_grass = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_vox_grass,
             .effect_nodes = 1
         };
         const SetVoxelTargetData datam_flower = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_vox_flower,
             .effect_nodes = 1
         };
         const SetVoxelTargetData datam_rubble = {
-            .depth = chunkOctree->max_depth,
+            .depth = max_depth,
             .voxel = zox_block_dirt_rubble,
             .effect_nodes = 1
         };
-        fill_new_octree(chunkOctree, 0, chunkOctree->max_depth);
+        fill_new_octree(chunkOctree, 0, max_depth);
 
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
@@ -109,7 +109,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(chunkOctree, chunkOctree->max_depth, 0);
+        close_same_nodes(world, chunkOctree, chunkOctree->linked, 0);
 #endif
         update_count++;
     }

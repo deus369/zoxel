@@ -57,7 +57,7 @@ void ZoxGameImport(ecs_world_t *world) {
     // render distance settings
     initial_terrain_lod = 1; // 2 |3
     terrain_lod_dividor = 3; // 2 | 3 | 4
-    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    render_distance = 8; // 2 | 4 | 8 | 16 | 32
     render_distance_y = 3; // 1 | 2 | 4
 
     // fix prefabs

@@ -42,7 +42,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
-        const byte depth = chunkOctree->max_depth;
+        const byte depth = chunkOctree->linked;
         const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
@@ -52,7 +52,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             byte3 local_position;
             // many spawn checks
             for (byte k = 0; k < 32; k++) {
-                local_position = find_position_on_ground(chunkOctree, chunkOctree->max_depth, NULL, 0);
+                local_position = find_position_on_ground(chunkOctree, chunkOctree->linked, NULL, 0);
                 if (!byte3_equals(byte3_full, local_position)) {
                     break;
                 }

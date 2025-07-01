@@ -34,7 +34,7 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             zox_field_i(ColorRGBs, colorRGBss, colorRGBs)
             zox_field_i(ChunkSize, chunkSizes, chunkSize)
             zox_field_i(VoxScale, voxScales, voxScale)
-            const byte max_depth = chunkOctree->max_depth;
+            const byte max_depth = chunkOctree->linked;
             const ChunkOctree *chunk_left = chunkNeighbors2->value[0] == 0 ? NULL : zox_get(chunkNeighbors2->value[0], ChunkOctree)
             const ChunkOctree *chunk_right = chunkNeighbors2->value[1] == 0 ? NULL : zox_get(chunkNeighbors2->value[1], ChunkOctree)
             const ChunkOctree *chunk_down = chunkNeighbors2->value[2] == 0 ? NULL : zox_get(chunkNeighbors2->value[2], ChunkOctree)

@@ -39,7 +39,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     if (vox_size.y > max_length) vox_size.y = max_length;
     if (vox_size.z > max_length) vox_size.z = max_length;
     ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
-    chunkOctree->max_depth = target_depth;
+    chunkOctree->linked = target_depth;
     fill_new_octree(chunkOctree, 0, target_depth);
     byte2 set_octree_data = (byte2) { 1, target_depth };
     byte3 position;
@@ -55,7 +55,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         }
     }
     optimize_solid_nodes(chunkOctree);
-    close_same_nodes(chunkOctree, chunkOctree->max_depth, 0);
+    close_same_nodes(world, chunkOctree, chunkOctree->linked, 0);
     zox_modified(e, ChunkOctree)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors

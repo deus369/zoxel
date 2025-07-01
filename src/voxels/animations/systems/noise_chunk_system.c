@@ -15,7 +15,7 @@ void NoiseChunkOctreeSystem(ecs_iter_t *it) {
         byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
         random_fill_octree(chunkOctree, 1, chunk_depth);
 #ifndef zox_disable_closing_octree_nodes
-        close_solid_nodes(chunkOctree, chunkOctree->max_depth);
+        close_solid_nodes(world, chunkOctree, chunkOctree->linked);
 #endif
         generateChunk->value = 0;
         chunkDirty->value = 1;

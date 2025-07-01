@@ -16,5 +16,5 @@ void zox_define_systems_chunks(ecs_world_t *world) {
     zox_system_1(ChunkDebugSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkOctree, [in] RenderLod, [none] ChunkDebugger)
     // multithreads
     zox_system(ChunkEntitiesLodSystem, EcsOnUpdate, [in] ChunkLodDirty, [in] RenderDistance, [in] EntityLinks)
-    zox_system(ChunkFindNeighborSystem, EcsOnUpdate, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [out] ChunkNeighbors, [none] ChunkTextured)
+    zox_system(ChunkFindNeighborSystem, EcsOnLoad, [in] ChunkPosition, [in] VoxLink, [in] RenderLod, [out] ChunkNeighbors, [none] ChunkTextured)
 }

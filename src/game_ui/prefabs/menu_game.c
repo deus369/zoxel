@@ -1,4 +1,4 @@
-// #define spawn_stats_on_game_menu
+#define spawn_stats_on_game_menu
 
 #ifdef spawn_stats_on_game_menu
     extern void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, const ecs_entity_t player, Children *children);
