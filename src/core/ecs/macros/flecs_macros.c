@@ -133,7 +133,7 @@ if (zox_has(prefab, Children)) {\
 #define zox_clone(prefab) const ecs_entity_t e = ecs_clone(world, 0, prefab, 1);
 
 // checks if entity is valid
-#define zox_valid(e) (e && ecs_is_valid(world, e))
+#define zox_valid(e) (e && ecs_is_valid(world, e) && ecs_is_alive(world, e))
 #define zox_alive(e) (e && ecs_is_alive(world, e))
 
 // using IDs (entities for types)

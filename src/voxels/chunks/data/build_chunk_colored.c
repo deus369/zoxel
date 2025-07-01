@@ -1,4 +1,3 @@
-
 typedef struct {
     // chunk
     const ChunkOctree *chunk_octree;

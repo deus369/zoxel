@@ -19,16 +19,14 @@ zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_sele
 #include "inputs/zevice_click_system.c"
 
 void define_systems_elements_core(ecs_world_t *world) {
-    zox_filter(ui_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] Selectable)
-    zox_filter(pixel_positions_query, [none] Element, [in] PixelPosition, [none] ParentLink, [none] Anchor, [none] CanvasLink, [none] Position2D, [none] CanvasPosition)
-    zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, ui_query, [in] Raycaster, [in] DeviceLink, [out] RaycasterTarget, [out] WindowRaycasted)
+    zox_filter(raycast_query, [none] Element, [in] CanvasPosition, [in] PixelSize, [in] Layer2D, [in] RenderDisabled, [none] Selectable)
+    zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, raycast_query, [in] Raycaster, [in] DeviceLink, [out] RaycasterTarget, [out] WindowRaycasted)
     // inputs
     zox_system(ZeviceClickSystem, EcsPostUpdate, [in] DeviceLink, [in] RaycasterTarget, [in] WindowRaycasted, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Zevice)
     zox_system(DeviceClickSystem, EcsPostUpdate, [in] PlayerLink, [in] RaycasterTarget, [in] WindowRaycasted, [in] Children, [out] RaycasterResult, [out] ClickingEntity, [out] WindowTarget, [none] inputs.Device)
 
     zox_system(ElementNavigationSystem, EcsPostUpdate, [in] DeviceLinks, [in] DeviceMode, [out] NavigatorState, [out] NavigatorTimer, [out] RaycasterTarget)
-    // EcsPreUpdate pixel_positions_query,
-    zox_system_ctx(ElementPositionSystem, EcsOnLoad, pixel_positions_query, [in] PixelPosition, [in] PixelSize, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition, [none] Element)
+    zox_system(ElementPositionSystem, EcsOnLoad, [in] PixelPosition, [in] PixelSize, [in] ParentLink, [in] Anchor, [in] CanvasLink, [out] Position2D, [out] CanvasPosition, [none] Element)
     zox_system(CanvasStackSystem, EcsOnLoad, [in] Children, [out] WindowToTop, [out] WindowsLayers, [out] WindowsCount, [none] Canvas)
     zox_system(WindowLayerSystem, EcsOnLoad, [in] SetWindowLayer, [in] CanvasLink, [in] Children, [out] WindowLayer, [out] Layer2D, [none] Window)
     zox_system(ElementSelectedSystem, EcsOnUpdate, [none] Element, [in] SelectState, [out] Brightness)

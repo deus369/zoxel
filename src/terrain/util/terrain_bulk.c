@@ -24,7 +24,7 @@ ecs_entity_t create_terrain_bulk(ecs_world_t *world, const ecs_entity_t prefab, 
         const int3 chunk_position = chunk_positions[i];
         chunkPositions[i].value = chunk_position;
         position3Ds[i].value = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
-        renderLods[i].value = get_camera_chunk_distance(int3_zero, chunk_position);
+        renderLods[i].value = get_camera_chunk_distance_xz(int3_zero, chunk_position);
         voxLinks[i].value = terrain_world;
         if (!headless) {
             meshGPULinks[i].value = spawn_gpu_mesh_buffers();

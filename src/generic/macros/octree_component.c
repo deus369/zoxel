@@ -16,7 +16,7 @@ struct name {\
 }; ECS_COMPONENT_DECLARE(name);\
 \
 byte is_linking_##name(const name *node) {\
-    return node != NULL && node->max_depth == 255;\
+    return node && node->max_depth == 255;\
 }\
 \
 void set_linking_##name(name *node, byte is_linking) {\
@@ -81,11 +81,16 @@ void close_##name(name* node, byte depth) {\
 void open_new_##name(name* node) {\
     /*zox_log(" > opening node [%i + 1 = %i :: %i]\n", sizeof(name*), sizeof(name), (sizeof(name) * octree_length))*/\
     node->nodes = malloc(sizeof(name) * octree_length);\
+    for (byte i = 0; i < octree_length; i++) {\
+        node->nodes[i].nodes = NULL;\
+        node->nodes[i].max_depth = 0;\
+    }\
     node_memory += 1;\
 }\
 \
 void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
+    dst->max_depth = src->max_depth;\
     if (src->nodes) {\
         open_new_##name(dst);\
         for (byte i = 0; i < octree_length; i++) {\
@@ -98,6 +103,7 @@ void clone_##name(name* dst, const name* src) {\
 \
 void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte depth) {\
     dst->value = src->value;\
+    dst->max_depth = src->max_depth;\
     depth++;\
     if (src->nodes && depth <= max_depth) {\
         open_new_##name(dst);\
@@ -112,7 +118,9 @@ void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte d
 \
 void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, byte depth) {\
     if (target_depth > 0 && depth == target_depth - 1) {\
-        if (src->nodes) open_new_##name(dst);\
+        if (src->nodes) {\
+            open_new_##name(dst);\
+        }\
     }\
     if (depth == target_depth) {\
         dst->value = src->value;\
@@ -131,9 +139,6 @@ void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, 
 void open_##name(name* node) {\
     if (node->nodes == NULL) {\
         open_new_##name(node);\
-        for (byte i = 0; i < octree_length; i++) {\
-            node->nodes[i].nodes = NULL;\
-        }\
     }\
 }\
 \
@@ -162,7 +167,7 @@ const type find_node_value_##name(const name* node, int3 position, byte depth) {
 \
 const name* find_node_##name(const name* node, int3 position, byte depth) {\
     /* if depth finish or if closed node, return node early */ \
-    if (!node) {\
+    if (node == NULL) {\
         return NULL;\
     }\
     if (depth == 0 || node->nodes == NULL) {\
@@ -185,12 +190,22 @@ const name* find_node_##name(const name* node, int3 position, byte depth) {\
 \
 /* maybe make below function use this if it isn't in the non root node */\
 const name* find_root_adjacent_##name(const name* root, int3 position, byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
-    if (direction == direction_left) position.x--;\
-    else if (direction == direction_right) position.x++;\
-    else if (direction == direction_down) position.y--;\
-    else if (direction == direction_up) position.y++;\
-    else if (direction == direction_back) position.z--;\
-    else if (direction == direction_front) position.z++;\
+    if (root == NULL) {\
+        return NULL;\
+    }\
+    if (direction == direction_left) {\
+        position.x--;\
+    } else if (direction == direction_right) {\
+        position.x++;\
+    } else if (direction == direction_down)  {\
+        position.y--;\
+    } else if (direction == direction_up)  {\
+        position.y++;\
+    } else if (direction == direction_back)  {\
+        position.z--;\
+    } else if (direction == direction_front)  {\
+        position.z++;\
+    }\
     byte position_bounds = powers_of_two[depth];\
     if (position.x >= 0 && position.x < position_bounds && position.y >= 0 && position.y < position_bounds && position.z >= 0 && position.z < position_bounds) {\
         return find_node_##name(root, position, depth);\
@@ -249,7 +264,10 @@ const name* find_adjacent_##name(const name* root, const name* node, int3 positi
             if (node_position.z != 1) return &node->nodes[node_index_with_front[node_index]];\
         }\
     }\
-    return find_root_adjacent_##name(root, position, depth, direction, neighbors, chunk_index);\
+    if (root != NULL) {\
+        return find_root_adjacent_##name(root, position, depth, direction, neighbors, chunk_index);\
+    }\
+    return NULL;\
 }\
 \
 ECS_CTOR(name, ptr, {\

@@ -19,11 +19,12 @@ ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t p
 #endif
     zox_add_tag(e, ChunkDebugger)
     // neighbors
+    zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } })
     // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
+    /*ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (int i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
-    zox_prefab_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })
+    zox_prefab_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })*/
     return e;
 }
 
@@ -37,7 +38,7 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
             zox_add_tag(e, FlatlandChunk)
         #endif
     }
-    zox_set(e, ChunkOctree, { .max_depth = terrain_depth })
+    // zox_set(e, ChunkOctree, { .max_depth = terrain_depth })
     // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     // zox_log("New chunk neighbors: %i\n", chunkNeighbors->length)
     const float3 position3D = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
@@ -51,17 +52,17 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
         spawn_gpu_colors(world, e);
     }
     // neighbors
-    ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
+    /*ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
     // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     for (byte i = 0; i < 6; i++) {
         chunkNeighbors->value[i] = 0;
     }
-    zox_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })
+    zox_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })*/
 
     // lod update here
     // todo: just start this as invisible and update with streaming systems
-    const byte camera_distance = get_camera_chunk_distance(camera_position, chunk_position);
+    const byte camera_distance = get_camera_chunk_distance_xz(camera_position, chunk_position);
     zox_set(e, RenderDistance, { camera_distance })
     const byte max_camera_distance = render_distance + 1;
     const byte render_lod = get_terrain_lod_from_camera_distance(camera_distance, max_camera_distance, terrain_depth);

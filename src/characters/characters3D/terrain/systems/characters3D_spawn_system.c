@@ -4,7 +4,7 @@
 // notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
 // get function from AI module for now
 // todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
-extern ecs_entity_t spawn_character3D_npc(ecs_world_t *world, spawn_character3D_data spawn_data);
+ecs_entity_t prefab_character3D_terrain_spawning;
 
 // default_chunk_length
 // todo: predict spawn size from octree?
@@ -67,6 +67,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
             if (vox) {
                 spawn_character3D_data spawn_data = {
+                    .prefab = prefab_character3D_terrain_spawning,
                     .vox = vox,
                     .terrain = voxLink->value,
                     .terrain_chunk = e,
@@ -75,7 +76,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                     .lod = vox_lod,
                     .render_disabled = renderDisabled->value,
                 };
-                const ecs_entity_t character = spawn_character3D_npc(world, spawn_data);
+                const ecs_entity_t character = spawn_character3D(world, spawn_data);
                 add_to_ecs_entity_t_array_d(entities, character);
                 // add_to_EntityLinks(entityLinks, character);
                 zox_log_spawning("   + npc: %lu [%i of %i]",  character, (j + 1), (characters_per_chunk_count))

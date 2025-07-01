@@ -1,4 +1,7 @@
 ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    if (!prefab) {
+        return 0;
+    }
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_character3D")
     zox_add_tag(e, Character3D)

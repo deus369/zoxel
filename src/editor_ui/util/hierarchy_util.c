@@ -15,8 +15,6 @@ extern ecs_entity_t prefab_zigel;
 extern ecs_entity_t prefab_realm;
 extern ecs_entity_t prefab_block;
 extern ecs_entity_t prefab_texture;
-// realm -> world
-extern ecs_entity_t local_terrain;
 
 void add_entity_to_labels(ecs_world_t *world, const ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int tree_level) {
     if (!e) return;

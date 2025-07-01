@@ -33,8 +33,8 @@ zox_begin_module(Sounds)
     zox_module_dispose(dispose_sounds)
     define_components_sounds(world);
     define_systems_sounds(world);
+    spawn_prefabs_sounds(world);    // make sure spawn before initializing
     initialize_sounds(world);
-    spawn_prefabs_sounds(world);
 zox_end_module(Sounds)
 
 #endif

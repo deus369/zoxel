@@ -1,29 +1,38 @@
 void on_element_clicked(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t ui) {
-    if (zox_has(ui, Clickable)) {
+    if (ui && zox_has(ui, Clickable)) {
         zox_set(ui, ClickState, { zox_click_state_trigger_clicked })
         zox_set(ui, Clicker, { player })
     }
 }
 
 void on_element_released(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t ui) {
-    if (zox_has(ui, Clickable)) {
+    if (ui && zox_has(ui, Clickable)) {
         zox_set(ui, ClickState, { zox_click_state_trigger_released })
         zox_set(ui, Clicker, { player })
     }
 }
 
 void set_raycast_target_children(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t target) {
+    if (!zox_valid(e)) {
+        return;
+    }
     if (zox_has(e, RaycasterTarget)) {
         const ecs_entity_t last_target = zox_get_value(e, RaycasterTarget)
-        if (last_target) zox_set(last_target, SelectState, { zox_select_state_trigger_deselect })
+        if (zox_valid(last_target)) {
+            zox_set(last_target, SelectState, { zox_select_state_trigger_deselect })
+        }
         zox_set(e, RaycasterTarget, { target })
-        if (target) zox_set(target, SelectState, { zox_select_state_trigger_selected })
+        if (zox_valid(target)) {
+            zox_set(target, SelectState, { zox_select_state_trigger_selected })
+        }
     }
     if (zox_has(e, Children)) {
         zox_geter(e, Children, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
-            if (!child) continue;
+            if (!zox_valid(child)) {
+                continue;
+            }
             set_raycast_target_children(world, child, target);
         }
     }
@@ -31,7 +40,9 @@ void set_raycast_target_children(ecs_world_t *world, const ecs_entity_t e, const
         zox_geter(e, DeviceLinks, children)
         for (int i = 0; i < children->length; i++) {
             const ecs_entity_t child = children->value[i];
-            if (!child) continue;
+            if (!zox_valid(child)) {
+                continue;
+            }
             set_raycast_target_children(world, child, target);
         }
     }

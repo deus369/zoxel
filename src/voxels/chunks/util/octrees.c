@@ -2,8 +2,10 @@ void fill_new_octree(ChunkOctree* node, const byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
-        open_new_ChunkOctree(node);
-        for (byte i = 0; i < octree_length; i++) fill_new_octree(&node->nodes[i], voxel, depth);
+        open_ChunkOctree(node);
+        for (byte i = 0; i < octree_length; i++) {
+            fill_new_octree(&node->nodes[i], voxel, depth);
+        }
     } else node->nodes = NULL;
 }
 
@@ -191,14 +193,6 @@ byte is_adjacent_solid(byte direction, const ChunkOctree *root_node, const Chunk
     }
     voxel_adjacent--; // remove air from index
     return voxel_solidity[voxel_adjacent];
-    /*byte chunk_index = 0;
-    const ChunkOctree *adjacent_node = find_root_adjacent_ChunkOctree(root_node, position, depth, direction, neighbors, &chunk_index);
-    // if (adjacent_node == NULL) zox_log("  > adjacent node is null: %ix%ix%i - depth %i\n", position.x, position.y, position.z, depth);
-    if (adjacent_node == NULL) return edge_voxel;
-    //if (adjacent_node->value) zox_log("  > adjacent node is solid: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
-    //if (!adjacent_node->value) zox_log("  > adjacent node is air: %ix%ix%i - depth %i - direction %i\n", position.x, position.y, position.z, depth, direction);
-    if (adjacent_node->value) return 1;
-    else return 0;*/
 }
 
 // Check all voxels on a side, instead of just one, a big voxel with 4 small voxels on its side should be face culled.
@@ -268,9 +262,10 @@ void fill_octree(ChunkOctree* node, const byte voxel, byte depth) {
 void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
     byte depth_reached = data.depth == datam->depth;
     if (datam->effect_nodes && !depth_reached && !data.node->nodes) {
-        open_new_ChunkOctree(data.node);
-        for (byte i = 0; i < octree_length; i++) data.node->nodes[i].nodes = NULL;
-        for (byte i = 0; i < octree_length; i++) data.node->nodes[i].value = data.node->value;
+        open_ChunkOctree(data.node);
+        for (byte i = 0; i < octree_length; i++) {
+            data.node->nodes[i].value = data.node->value;
+        }
     }
     if (depth_reached || datam->voxel != 0) data.node->value = datam->voxel;
     if (depth_reached || !data.node->nodes) return;

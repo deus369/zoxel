@@ -2,17 +2,16 @@ float delay_terrain_time = 0.54f;
 float delay_terrain_time2 = 0.64f;
 
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
-#ifdef zox_disable_player_ui
-    return;
-#endif
     // do this in post? spawn all at once! after loaded character
     spawn_in_game_ui(world, player); //  character_group);
     // also spawn canvas
+#ifdef zox_mod_actions_ui
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (!menu_actions) {
         spawn_player_menu_actions(world, player);
     }
+#endif
 }
 
 // called on spawn terrain event
@@ -22,13 +21,21 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         zox_log(" ! [tall_cube] not found on player\n")
     }
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    if (!camera) return;
+    if (!camera) {
+        return;
+    }
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    if (!game) return;
+    if (!game) {
+        return;
+    }
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    if (!realm) return;
+    if (!realm) {
+        return;
+    }
     const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
-    if (!terrain) return;
+    if (!terrain) {
+        return;
+    }
     byte is_new_game = 1;
 #ifndef zox_disable_save_games
     is_new_game = !has_save_game_file(game_name, "player.dat");

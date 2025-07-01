@@ -5,9 +5,13 @@ void StreamEndEventSystem(ecs_iter_t *it) {
     zox_field_out(StreamEndEvent, events, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(StreamEndEvent, events, event)
-        if (!event->value) continue;
+        if (!event->value) {
+            continue;
+        }
         zox_field_i(ChunkLinks, chunkLinkss, chunkLinks)
-        if (!chunkLinks->value || ! chunkLinks->value->size) continue;
+        if (!chunkLinks->value || ! chunkLinks->value->size) {
+            continue;
+        }
         // check all chunkLinks chunks if chunks are dirty
         byte is_skip = 0;
         for (int j = 0; j < chunkLinks->value->size; j++) {

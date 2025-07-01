@@ -18,6 +18,10 @@ byte get_camera_chunk_distance(const int3 camera_position, const int3 chunk_posi
     return (byte) int3_max(chunk_position, camera_position);
 }
 
+byte get_camera_chunk_distance_xz(const int3 camera_position, const int3 chunk_position) {
+    return (byte) int3_max_xz((int3) { chunk_position.x, 0, chunk_position.z }, camera_position);
+}
+
 byte get_voxes_lod_from_camera_distance(const byte distance_to_camera) {
     byte lod;
     if (distance_to_camera <= init_lod_voxes) lod = 0;

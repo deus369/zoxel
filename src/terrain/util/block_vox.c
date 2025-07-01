@@ -219,7 +219,9 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
         blocks[j] = block;
         if (zox_gett_value(block, BlockModel) == zox_block_vox) {
             block_voxes[j] = zox_get_value(block, ModelLink)
-            if (zox_has(block, BlockVoxOffset)) block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
+            if (zox_has(block, BlockVoxOffset)) {
+                block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
+            }
         }
         if (zox_has(block, BlockPrefabLink)) {
             block_prefabs[j] = zox_get_value(block, BlockPrefabLink)

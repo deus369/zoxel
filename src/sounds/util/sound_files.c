@@ -1,4 +1,3 @@
-
 void load_files_sounds() {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     FileList files = get_files(load_directory);

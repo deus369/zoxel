@@ -6,14 +6,13 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     }
     // return to regular ui
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    if (!zox_alive(character)) return;
+    if (!zox_alive(character)) {
+        return;
+    }
     if (can_roam == 0) { // not roaming, return character movement
         zox_set(character, DisableMovement, { 0 })
     }
-    if (!zox_has(character, StatLinks)) return;
-    // const StatLinks *statLinks = zox_get(character, StatLinks)
-    // find_array_component_with_tag(statLinks, HealthStat, health_stat)
-    spawn_in_game_ui(world, player); // , (ecs_entity_2) { character, health_stat });
+    spawn_in_game_ui(world, player);
 }
 
 void resume_player(ecs_world_t *world, const ecs_entity_t player) {

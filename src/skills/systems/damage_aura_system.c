@@ -4,6 +4,10 @@
 #endif
 
 void DamageAuraSystem(ecs_iter_t *it) {
+    ecs_query_t *query = it->ctx;
+    if (!query) {
+        return;
+    }
     zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_in(SkillActive, skillActives, 2)
@@ -12,32 +16,44 @@ void DamageAuraSystem(ecs_iter_t *it) {
     zox_field_in(Color, colors, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(UserLink, userLinks, userLink)
-        if (!zox_alive(userLink->value)) continue;
+        if (!zox_alive(userLink->value)) {
+            continue;
+        }
         zox_field_i(SkillActive, skillActives, skillActive)
-        if (!skillActive->value) continue;
+        if (!skillActive->value) {
+            continue;
+        }
         zox_field_i(SkillDamage, skillDamages, skillDamage)
-        if (skillDamage->value == 0) continue;
+        if (skillDamage->value == 0) {
+            continue;
+        }
         zox_field_i(SkillRange, skillRanges, skillRange)
-        if (skillRange->value == 0) continue;
-        zox_field_i(Color, colors, colorr)
+        if (skillRange->value == 0) {
+            continue;
+        }
         zox_field_e()
+        zox_field_i(Color, colors, colorr)
         // zox_get_prefab(prefab_aura, e)
         const ecs_entity_t user = userLink->value;
         const Position3D *position3D = zox_get(userLink->value, Position3D)
         // todo: Get Chunk' Characters instead, this could potentially go through tens of thousands..
         // get nearby characters using distance formula
         // make this spherecast
-        ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
-        while(ecs_query_next(&it2)) {
+        ecs_iter_t it2 = ecs_query_iter(world, query);
+        while (ecs_query_next(&it2)) {
             const Dead *deads = ecs_field(&it2, Dead, 1);
             const Position3D *position3D2s = ecs_field(&it2, Position3D, 2);
             Children *childrens = ecs_field(&it2, Children, 3);
             DotLinks *dotLinkss = ecs_field(&it2, DotLinks, 4);
             for (int j = 0; j < it2.count; j++) {
                 const ecs_entity_t e2 = it2.entities[j];
-                if (user == e2) continue;
+                if (user == e2) {
+                    continue;
+                }
                 const Dead *dead = &deads[j];
-                if (dead->value) continue;
+                if (dead->value) {
+                    continue;
+                }
                 const Position3D *position3D2 = &position3D2s[j];
                 Children *children = &childrens[j];
                 DotLinks *dotLinks = &dotLinkss[j];
@@ -47,7 +63,9 @@ void DamageAuraSystem(ecs_iter_t *it) {
                 // get poison, that  was initiated by this aura user
                 for (int k = 0; k < dotLinks->length; k++) {
                     const ecs_entity_t dot = dotLinks->value[k];
-                    if (!zox_has(dot, SkillLink)) continue;
+                    if (!zox_has(dot, SkillLink)) {
+                        continue;
+                    }
                     const ecs_entity_t skill_spawner = zox_get_value(dot, SkillLink)
                     // zox_get_prefab(prefab_aura, e)
                     // if added in this function, SpawnerLink doesn't get added into flecs table until after the function, so the dot will not have component access yet, assume we havn't added a dot yet from the current user
@@ -79,15 +97,3 @@ void DamageAuraSystem(ecs_iter_t *it) {
         ecs_iter_fini(&it2);
     }
 } zox_declare_system(DamageAuraSystem)
-
-
-/*if (poisoned_entity && distance > damage_radius) {
-    // actually for removal here
-    remove_from_DotLinks(dotLinks, poisoned_entity);
-    zox_delete(poisoned_entity)
-    if (children->length) {
-        const ecs_entity_t particle3D_emitter = children->value[0];
-        remove_from_memory_component(children, ecs_entity_t, particle3D_emitter)
-        zox_delete(particle3D_emitter)
-    }
-} else */

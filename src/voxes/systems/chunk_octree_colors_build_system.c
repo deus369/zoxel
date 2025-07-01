@@ -31,10 +31,6 @@ void ChunkOctreeColorsBuildSystem(ecs_iter_t *it) {
             // if (renderDisabled->value) continue;
             zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
             zox_field_i(ChunkNeighbors, chunkNeighbors, chunkNeighbors2)
-            if (chunkNeighbors2->length != 6) {
-                zox_log("! invalid chunkNeighbors in chunk_colors_build_system\n")
-                continue;
-            }
             zox_field_i(ColorRGBs, colorRGBss, colorRGBs)
             zox_field_i(ChunkSize, chunkSizes, chunkSize)
             zox_field_i(VoxScale, voxScales, voxScale)

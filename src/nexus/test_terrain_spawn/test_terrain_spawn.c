@@ -14,6 +14,26 @@ const byte log_meshes = 0;
 const byte log_chunks = 0;
 const byte log_lods = 0;
 
+ecs_entity_t test_spawn_realm(ecs_world_t *world, const int seed) {
+    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
+    set_noise_seed(seed);
+    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
+    int run_count = 0;
+    while (run_count <= 64) {
+        update_ecs();
+        zox_geter_value(realm, GenerateRealm, byte, realm_state);
+        if (realm_state == zox_generate_realm_end) {
+            break;
+        }
+        run_count++;
+    }
+    return realm;
+}
+
+void test_spawn_terrain(ecs_world_t *world) {
+
+}
+
 byte test_terrain_spawn(ecs_world_t *world) {
     uint lagged_frames = 0;
     const int test_seed = 666;
@@ -30,24 +50,12 @@ byte test_terrain_spawn(ecs_world_t *world) {
     initialize_networking();
     initialize_voxes(world);
     double test_start = current_time_in_seconds();
-    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    const ecs_entity_t game = spawn_game(world, realm);
-    set_noise_seed(test_seed);
-    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
+    const ecs_entity_t realm = test_spawn_realm(world, test_seed);
+    // const ecs_entity_t game = spawn_game(world, realm);
     int run_count = 0;
-    while (run_count <= 64) {
-        update_ecs();
-        zox_geter_value(realm, GenerateRealm, byte, realm_state);
-        if (realm_state == zox_generate_realm_end) {
-            break;
-        }
-        run_count++;
-    }
-
     double time_since_start = (current_time_in_seconds() - test_start);
     zox_log_line("### ### ### ### ###")
     zox_log_line("! [S]:spawned terrain at frame [%i] time [%f]", ecs_run_count - 1, current_time_in_seconds())
-
     const ecs_entity_t streamer = spawn_streamer(world, prefab_streamer, int3_zero);
     const ecs_entity_t terrain = spawn_terrain_streaming(world, realm, int3_zero, (int3) { terrain_spawn_distance, terrain_vertical, terrain_spawn_distance }, prefab_terrain, prefab_chunk_height);
     zox_set(terrain, RealmLink, { realm })
@@ -178,33 +186,22 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     zox_game_type = zox_game_mode_3D;
     boot_event = test_terrain_spawn;
-    // terrain_mode = terrain_mode_flatlands;
     headless = 0; // 0 | 1
-
+    // terrain_mode = terrain_mode_flatlands;
     // zox_log_terrain_generation = 1;
-    /*disable_npcs = 1;
-    disable_block_voxes = 1; // fix it's positioning
-    disable_block_vox_generation = 1;
-    render_distance = 16;
-    render_distance_y = 2; // 2 | 8 | 16
-    terrain_depth = 4;
-    initial_terrain_lod = 3; // 3 | 2
-    terrain_lod_dividor = 3; // 2 | 3
-    block_vox_depth = 5;
-    character_depth = 5;*/
 
-    // terrain
-    render_distance = 6; // 2 | 4 | 8 | 16 | 32
-    render_distance_y = 2; // 1 | 2 | 8 | 16
+    // scaling
     real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32 etc
-    initial_terrain_lod = 2; // 3 | 2
-    terrain_lod_dividor = 4; // 2 | 3
     terrain_depth = 4;
+
+    // render distance
+    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    render_distance_y = 3; // 1 | 2 | 8 | 16
+    initial_terrain_lod = 2; // 3 | 2
+    terrain_lod_dividor = 3; // 2 | 3
 
     // block voes
     block_vox_depth = 5;
-
-
     disable_block_vox_generation = 1;
     disable_block_voxes = 1;
 
@@ -212,5 +209,8 @@ void ZoxGameImport(ecs_world_t *world) {
     character_depth = 5;
     vox_model_scale = 1 / 32.0f;
     disable_npcs = 1;
+
+    // terrain options
+    optimize_generation_lods = 1;
 }
 #endif

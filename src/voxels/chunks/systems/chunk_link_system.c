@@ -34,10 +34,10 @@ void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
             EntityLinks *entityLinks = zox_get_mut(old_chunk, EntityLinks)
             remove_from_memory_component(entityLinks, ecs_entity_t, e)
             zox_modified(old_chunk, EntityLinks)
-            #ifdef zox_debug_chunk_link_system
+#ifdef zox_debug_chunk_link_system
             const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
             zox_log(" > chunk [%lu] removed e [%" PRIu64 "] [%ix%ix%i]\n", old_chunk, e, chunk_position.x, chunk_position.y, chunk_position.z)
-            #endif
+#endif
         }
         // add entity to new chunk
         if (zox_valid(new_chunk)) {

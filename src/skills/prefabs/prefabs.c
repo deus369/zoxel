@@ -10,8 +10,6 @@ ecs_entity_t prefab_poison;
 #include "poison.c"
 
 void spawn_prefabs_skills(ecs_world_t *world) {
-    zox_prefab_add(prefab_realm, SkillLinks)
-    zox_prefab_add(prefab_character3D, SkillLinks)
     // skill prefab
     prefab_skill = spawn_prefab_skill(world);
     zox_prefab_set(prefab_skill, SkillActive, { 0 })
@@ -20,4 +18,11 @@ void spawn_prefabs_skills(ecs_world_t *world) {
     prefab_skill_melee = spawn_prefab_melee(world, prefab_skill);
     prefab_skill_aura = spawn_prefab_aura(world, prefab_skill);
     prefab_poison = spawn_prefab_poison(world);
+    // link to core
+    if (prefab_realm) {
+        zox_prefab_add(prefab_realm, SkillLinks)
+    }
+    if (prefab_character3D) {
+        zox_prefab_add(prefab_character3D, SkillLinks)
+    }
 }

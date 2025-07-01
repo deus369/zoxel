@@ -123,28 +123,27 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(TilemapGenerationSystem)
 
+/*byte is_generating = 0;
+for (int j = 0; j < textureLinks->length; j++) {
+    const ecs_entity_t texture = textureLinks->value[j];
+    if (zox_gett_value(texture, GenerateTexture)) {
+        is_generating = 1;
+        break;
+    }
+}
+if (is_generating) {
+    zox_log(" > tilemap texture data still generating\n")
+    continue;
+}*/
+/*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
+tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
+tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };*/
 
-        /*byte is_generating = 0;
-        for (int j = 0; j < textureLinks->length; j++) {
-            const ecs_entity_t texture = textureLinks->value[j];
-            if (zox_gett_value(texture, GenerateTexture)) {
-                is_generating = 1;
-                break;
-            }
-        }
-        if (is_generating) {
-            zox_log(" > tilemap texture data still generating\n")
-            continue;
-        }*/
-                /*tilemapUVs->value[texture_entity_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
-                tilemapUVs->value[texture_entity_index * 4 + 1] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
-                tilemapUVs->value[texture_entity_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
-                tilemapUVs->value[texture_entity_index * 4 + 3] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };*/
-
-                // set voxel uvs here
-                /*float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
-                tilemapUVs->value[texture_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
-                tilemapUVs->value[texture_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
-                tilemapUVs->value[texture_index * 4 + 1] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };
-                tilemapUVs->value[texture_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
-                zox_log(" + placed [%i] texture in tilemap s [%ix%i] p [%ix%i]\n", texture_index, texture_size.x, texture_size.y, tilemap_position.x, tilemap_position.y)*/
+// set voxel uvs here
+/*float2 tile_uv = (float2) { tilemap_position.x / (float) textureSize->value.x, tilemap_position.y / (float) textureSize->value.y };
+tilemapUVs->value[texture_index * 4 + 3] = (float2) { tile_uv.x, tile_uv.y + tile_uv_size };
+tilemapUVs->value[texture_index * 4 + 2] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y + tile_uv_size };
+tilemapUVs->value[texture_index * 4 + 1] = (float2) { tile_uv.x + tile_uv_size, tile_uv.y };
+tilemapUVs->value[texture_index * 4 + 0] = (float2) { tile_uv.x, tile_uv.y };
+zox_log(" + placed [%i] texture in tilemap s [%ix%i] p [%ix%i]\n", texture_index, texture_size.x, texture_size.y, tilemap_position.x, tilemap_position.y)*/

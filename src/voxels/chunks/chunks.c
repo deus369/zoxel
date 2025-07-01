@@ -1,10 +1,12 @@
 #ifndef zox_mod_voxels_chunks
 #define zox_mod_voxels_chunks
 
-#include "data/_include.c"
-#include "util/_include.c"
-#include "prefabs/_include.c"
-#include "systems/_include.c"
+#include "states/_.c"
+#include "components/_.c"
+#include "data/_.c"
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "systems/_.c"
 
 zox_begin_module(Chunks)
     zox_define_components_chunks(world);

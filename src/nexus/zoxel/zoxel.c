@@ -1,6 +1,9 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// todo: when increasing lod, generate terrain first
+// todo: fix: when render lod initial set to 2, the instances dissapear
+
 // todo: initialize event modules can hook onto for loading i/o
 //      - should occur after all modules are imported, but before game is booted
 // - each module should add to a load resources event for i/o game data
@@ -41,38 +44,43 @@ void ZoxGameImport(ecs_world_t *world) {
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
     // terrain_mode = terrain_mode_flatlands;
-
     headless = 0;
-
     // wait this breaks terrain mesh at 4 depth
 
-    // terrain
-    initial_terrain_lod = 2; // 3 | 2
-    terrain_lod_dividor = 4; // 2 | 3
-    render_distance = 6; // 2 | 4 | 8 | 16 | 32
-    render_distance_y = 2; // 1 | 2 | 4
+    // scaling
     real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
     terrain_depth = 4;
-
-    // block voxes
-    disable_block_vox_generation = 1;
-    disable_block_voxes = 1;
     block_vox_depth = 5;
-
-    // npcs
-    disable_npcs = 1;
     character_depth = 5;
     vox_model_scale = 1 / 32.0f;
 
-    zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
-    zox_prefab_set(prefab_character3D, VoxScale, { vox_model_scale })
-    zox_prefab_set(prefab_character3D_npc, VoxScale, { vox_model_scale })
+    // render distance settings
+    initial_terrain_lod = 1; // 2 |3
+    terrain_lod_dividor = 3; // 2 | 3 | 4
+    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    render_distance_y = 3; // 1 | 2 | 4
+
+    // fix prefabs
+    if (prefab_vox) {
+        zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
+    }
+    if (prefab_character3D) {
+        zox_prefab_set(prefab_character3D, VoxScale, { vox_model_scale })
+    }
+    if (prefab_character3D_npc) {
+        zox_prefab_set(prefab_character3D_npc, VoxScale, { vox_model_scale })
+    }
 
     // todo: set block vox resolution to 5
     // todo: use component max depths on terrain
     // todo: fix the texture blocks - use textures generate a regular vox model
 
+    // debug
     is_generate_vox_outlines = 0;
+    disable_npcs = 1;
+    disable_block_vox_generation = 0;
+    // disable_block_voxes = 1;
+    game_rule_attach_to_character = 1;
 }
 
 #endif

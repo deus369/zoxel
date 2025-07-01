@@ -11,7 +11,6 @@ zox_component_entity(PlayerPauseEvent)
 #include "util/pause_util.c"
 #include "prefabs/_include.c"
 #include "util/_include.c"
-#include "tests/aura.c"
 #include "systems/_include.c"
 
 zox_begin_module(Space)

@@ -8,11 +8,13 @@ void add_chunk_octree(ecs_world_t *world, const ecs_entity_t e, const int3 size)
     zox_prefab_set(e, RenderDistance, { 255 })
     zox_prefab_set(e, ChunkLodDirty, { 0 }) // chunk_lod_state_spawning })
     zox_prefab_set(e, VoxLink, { 0 })
-    zox_prefab_add(e, ChunkOctree)
-    zox_prefab_add(e, ChunkNeighbors)
+    // zox_prefab_add(e, ChunkOctree)
+    zox_prefab_set(e, ChunkOctree, { .max_depth = 0 })
+    zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } })
+    /*zox_prefab_add(e, ChunkNeighbors)
     zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
     resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
-    for (byte i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;
+    for (byte i = 0; i < 6; i++) chunkNeighbors->value[i] = 0;*/
 }
 
 ecs_entity_t spawn_prefab_chunk(ecs_world_t *world) {

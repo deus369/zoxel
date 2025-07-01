@@ -73,7 +73,7 @@
 #include "maps/maps.c"
 #include "ai/ai.c"
 // on top
-#include "editor_ui/editor_ui.c"
 #include "controllers/controllers.c"
 #include "space/space.c"
+#include "editor_ui/editor_ui.c"
 #include "debug/debug.c"

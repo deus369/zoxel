@@ -1,3 +1,4 @@
+#ifdef zox_mod_actions
 // right click = place
 // todo: use a state and implement results inside respective systems
 // todo: move item activate to a seperate item system
@@ -96,3 +97,4 @@ void ActionActivateSystem(ecs_iter_t *it) {
         triggerActionB->value = 0;
     }
 } zox_declare_system(ActionActivateSystem)
+#endif

@@ -12,7 +12,6 @@ ecs_entity_t prefab_vox_file;
 ecs_entity_t prefab_vox_generated;
 ecs_entity_t prefab_block_vox_instanced;
 ecs_entity_t prefab_vox_texture;
-extern ecs_entity_t prefab_particle3D;
 
 void zox_define_prefabs_voxes(ecs_world_t *world) {
     const byte max_length = 32; // todo: Calculate this from max resolution!

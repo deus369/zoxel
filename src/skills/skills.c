@@ -7,6 +7,7 @@
 #include "util/character_skills.c"
 #include "systems/systems.c"
 #include "ui/ui.c"
+#include "tests/aura.c"
 
 zox_begin_module(Skills)
     define_components_skills(world);
@@ -14,6 +15,7 @@ zox_begin_module(Skills)
     zox_import_module(UISkills)
     spawn_prefabs_skills(world);
     add_hook_spawned_character3D(&spawn_character_skills);
+    // add_hook_key_down(key_down_test_aura);
 zox_end_module(Skills)
 
 #endif

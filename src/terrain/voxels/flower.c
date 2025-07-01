@@ -25,7 +25,7 @@ ecs_entity_t spawn_realm_block_vox_flower(ecs_world_t *world, const byte index) 
         spawn_data.tag = 0;
     } else {
         spawn_data.vox = vox;
-        //  string_hashmap_get(files_hashmap_voxes, new_string_data("grass"));
+        spawn_data.vox_offset = 1;
         if (!spawn_data.vox) {
             zox_log(" ! [grass] vox not found\n")
             return 0;

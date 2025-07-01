@@ -10,6 +10,7 @@ zox_component_entity(GameLink)
 #include "prefabs/prefabs.c"
 #include "util/game_events.c"
 #include "systems/game_state_system.c"
+#include "games2D/games2D.c"
 
 void initialize_games(ecs_world_t *world) {
     initialize_events_games();

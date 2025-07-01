@@ -40,24 +40,19 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
         zox_field_i(MeshVertices, meshVerticess, meshVertices)
         zox_field_i(MeshUVs, meshUVss, meshUVs)
         zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        if (!meshGPULink->value.x || !meshGPULink->value.y) continue;
-        if (!uvsGPULink->value) continue;
-        if (!colorsGPULink->value) continue;
-        if (!meshIndicies->length) continue;
-        if (!meshVertices->length) continue;
-        if (!meshUVs->length) continue;
+        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !colorsGPULink->value || !meshIndicies->length || !meshVertices->length || !meshUVs->length) {
+            continue;
+        }
         if (meshVertices->length != meshUVs->length) {
             zox_field_e()
             zox_log("! [%s] mesh verts [%i] / uvs [%i] missmatch\n", zox_get_name(e), meshVertices->length, meshUVs->length)
             continue;
         }
         update_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
-        // zox_log(" + uploaded textured mesh [%s]\n", zox_get_name(it->entities[i]))
 #ifdef zoxel_time_mesh_uvs_update_system
         did_do_timing()
         update_count++;
 #endif
-        // zox_log_line("  + uploaded textured mesh [%s]", zox_get_name(it->entities[i]))
     }
 #ifdef zoxel_time_mesh_uvs_update_system
     //  end_timing("    - mesh_uvs_update_system")

@@ -1,12 +1,6 @@
 // for any elements with parent that is canvas
 void ElementPositionSystem(ecs_iter_t *it) {
     zox_field_world()
-    ecs_query_t *change_query = it->ctx;
-    ecs_iter_t it2 = ecs_query_iter(world, change_query);
-    while (ecs_query_next(&it2)) {
-        if (it2.table != it->table) ecs_query_skip(&it2);
-    }
-    ecs_iter_fini(&it2);
     zox_field_in(PixelPosition, pixelPositions, 1)
     zox_field_in(PixelSize, pixelSizes, 2)
     zox_field_in(ParentLink, parentLinks, 3)
@@ -21,7 +15,9 @@ void ElementPositionSystem(ecs_iter_t *it) {
         zox_field_i(ParentLink, parentLinks, parentLink)
         zox_field_i(Anchor, anchors, anchor)
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
-        if (!zox_valid(canvasLink->value) || parentLink->value != canvasLink->value) continue;
+        if (!zox_valid(canvasLink->value) || parentLink->value != canvasLink->value) {
+            continue;
+        }
         zox_field_o(Position2D, position2Ds, position2D)
         zox_field_o(CanvasPosition, canvasPositions, canvasPosition)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)

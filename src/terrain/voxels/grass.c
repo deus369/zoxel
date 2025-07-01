@@ -1,6 +1,4 @@
 ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const color block_color) {
-    // const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data("grass"));
-    // const ecs_entity_t vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
     const ecs_entity_t vox = spawn_vox_basic(world, prefab_vox);
     zox_set(vox, Color, { block_color })
     zox_add_tag(vox, VoxRubble)
@@ -9,7 +7,6 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     zox_set_unique_name(vox, "realm_block_grass")
     zox_set(vox, RubbleHeight, { 24 })
     zox_set(vox, RubbleCount, { 8000 })
-
     if (!vox) {
         zox_log(" ! grass_vox model not found.\n")
     }
@@ -39,7 +36,3 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     const ecs_entity_t e = spawn_block_vox_meta(world, &data);
     return e;
 }
-
-// zox_instance_named(prefab_block_vox_instanced, prefab_block_vox2)
-// todo: spawn a new prefab here to edit - make sure its destroyed after, do we have a EntityLinkDestroyer, make this purely for generic disposal
-// add ubo to grass_vox - the vox_file object

@@ -1,5 +1,3 @@
-
-
 typedef struct {
     ChunkOctree *node;
     byte3 position;

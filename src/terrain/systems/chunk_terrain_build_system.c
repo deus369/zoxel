@@ -53,7 +53,7 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
 
 
 #define set_neightbor_chunk_data(dir)\
-if (chunkNeighbors->length == 6) {\
+{\
     const byte index = direction##_##dir;\
     const ecs_entity_t neighbor = chunkNeighbors->value[index];\
     if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, ChunkOctree)) {\
@@ -71,7 +71,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
     int voxels_length = 0;
-    ecs_entity_t terrain;
+    ecs_entity_t terrain = 0;
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
@@ -108,8 +108,12 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     int uvs_index = 0;
     for (int j = 0; j < voxels_length; j++) {
         const ecs_entity_t block = voxelLinks->value[j];
+        if (!zox_valid(block)) {
+            build_data.solidity[j] = 1;
+            continue;
+        }
         // solidity
-        if (!zox_valid(block) || !zox_has(block, BlockModel)) {
+        if (!zox_has(block, BlockModel)) {
             build_data.solidity[j] = 1;
         } else {
             build_data.solidity[j] = zox_gett_value(block, BlockModel) == zox_block_solid;
@@ -157,10 +161,6 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             //continue;
         }*/
         zox_field_i(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
-        if (chunkNeighbors->length == 0) {
-            zox_log(" ! chunkNeighbors issue...\n")
-            continue;
-        }
         zox_field_i(RenderLod, renderLods, renderLod)
         if (renderLod->value == render_lod_uninitialized) {
             zox_log(" ! render_lod_uninitialized...\n")
@@ -174,8 +174,8 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
         if (renderLod->value != render_lod_invisible) {
             zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
-            const ChunkOctree *neighbors[chunkNeighbors->length];
-            byte neighbor_depths[chunkNeighbors->length];
+            const ChunkOctree *neighbors[6];
+            byte neighbor_depths[6];
             set_neightbor_chunk_data(left)
             set_neightbor_chunk_data(right)
             set_neightbor_chunk_data(down)

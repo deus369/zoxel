@@ -7,7 +7,6 @@ ecs_entity_t spawn_prefab_player_character2D(ecs_world_t *world, const ecs_entit
     zox_add_tag(e, PlayerCharacter2D)
     zox_prefab_set(e, CameraLink, { 0 })
     zox_prefab_set(e, DisableMovement, { 0 })
-    prefab_player_character2D = e;
     return e;
 }
 

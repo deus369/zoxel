@@ -38,7 +38,7 @@ void add_components_mesh_colored(ecs_world_t *world, const ecs_entity_t e) {
 
 void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 4)
+    // resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 4)
     chunkNeighbors->value[0] = chunk_left;
     chunkNeighbors->value[1] = chunk_right;
     chunkNeighbors->value[2] = chunk_back;
@@ -47,7 +47,7 @@ void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_
 
 void set_chunk_neighbors_six_directions(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_down, ecs_entity_t chunk_up, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {
     zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
+    // resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
     chunkNeighbors->value[0] = chunk_left;
     chunkNeighbors->value[1] = chunk_right;
     chunkNeighbors->value[2] = chunk_down;

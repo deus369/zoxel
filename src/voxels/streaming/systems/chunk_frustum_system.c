@@ -1,8 +1,10 @@
 const float fudge_frustum_extents = 2.0f;
-extern int zox_statistics_chunks_visible;
+/*extern int zox_statistics_chunks_visible;
 extern int zox_statistics_chunks_total;
 extern int zox_statistics_characters_visible;
-extern int zox_statistics_characters_total;
+extern int zox_statistics_characters_total;*/
+
+// Note: uses zox_set here for children setting
 
 // block spawn delve function
 void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const byte max_depth, byte depth, const byte state) {
@@ -32,9 +34,10 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
 
 // this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(ecs_iter_t *it) {
-#ifdef zox_disable_frustum_culling
-    return;
-#endif
+    ecs_query_t *query = it->ctx;
+    if (!query) {
+        return;
+    }
     zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)
@@ -47,46 +50,45 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_field_i(ChunkSize, chunkSizes, chunkSize)
         zox_field_i(VoxScale, voxScales, voxScale)
         zox_field_i(EntityLinks, entityLinkss, entityLinks)
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
-        // const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
-        byte is_viewed = 1;
-        ecs_iter_t it2 = ecs_query_iter(world, it->ctx);
-        while(ecs_query_next(&it2)) {
-            const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);
-#ifndef zox_disable_frustum_planes
-            const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
-#endif
-            for (int j = 0; j < it2.count; j++) {
+        byte is_viewed = 0; // 1;
+        ecs_iter_t streamers_iter = ecs_query_iter(world, query);
+        while (ecs_query_next(&streamers_iter)) {
+            if (is_viewed) {
+                continue;
+            }
+            const Position3DBounds *position3DBoundss = ecs_field(&streamers_iter, Position3DBounds, 1);
+            const CameraPlanes *cameraPlaness = ecs_field(&streamers_iter, CameraPlanes, 2);
+            for (int j = 0; j < streamers_iter.count; j++) {
                 const Position3DBounds *position3DBounds = &position3DBoundss[j];
                 is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
-#ifndef zox_disable_frustum_planes
                 if (is_viewed) {
                     const CameraPlanes *cameraPlanes = &cameraPlaness[j];
                     is_viewed = is_in_frustum(cameraPlanes->value, chunk_bounds);
                 }
-#endif
-#ifdef zox_disable_frustum_checks
-                is_viewed = 1;
-#endif
-                if (is_viewed) break;
+                if (is_viewed) {
+                    break;
+                }
             }
-            if (is_viewed) break;
         }
-        ecs_iter_fini(&it2);
+        ecs_iter_fini(&streamers_iter);
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
             for (int j = 0; j < entityLinks->length; j++) {
                 const ecs_entity_t e2 = entityLinks->value[j];
                 zox_set(e2, RenderDisabled, { renderDisabled->value })
-                if (!zox_has(e2, ElementLinks)) continue;
+                if (!zox_has(e2, ElementLinks)) {
+                    continue;
+                }
                 const ElementLinks *entity_elements = zox_get(e2, ElementLinks)
                 for (int k = 0; k < entity_elements->length; k++) {
                     const ecs_entity_t e3 = entity_elements->value[k];
                     zox_set(e3, RenderDisabled, { renderDisabled->value })
-                    if (!zox_has(e3, Children)) continue;
+                    if (!zox_has(e3, Children)) {
+                        continue;
+                    }
                     const Children *element_children = zox_get(e3, Children)
                     for (int l = 0; l < element_children->length; l++) {
                         const ecs_entity_t e4 = element_children->value[l];
@@ -96,30 +98,16 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
 // -=- Block Spawns -=-
             if (zox_gett_value(it->entities[i], BlocksSpawned)) {
+                zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
                 set_chunk_block_spawns_render_disabled(world, chunkOctree, chunkOctree->max_depth, 0, renderDisabled->value);
             }
-            /* if (block_spawns_initialized) {
-                for (int j = 0; j < blockSpawns->value->size; j++) {
-                    const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
-                    uint checks = 0;
-                    while (pair != NULL && checks < max_safety_checks_hashmap) {
-                        const ecs_entity_t e2 = pair->value;
-                        if (e2 && zox_valid(e2)) zox_set(e2, RenderDisabled, { renderDisabled->value })
-                        pair = pair->next;
-                        checks++;
-                    }
-                }
-            }*/
 // -=- -=- -=- -=- -=- -=-
         }
-        // int block_spawns_count = block_spawns_initialized ? count_byte3_hashmap(blockSpawns->value) : 0;
-        if (is_viewed) {
-            zox_statistics_chunks_visible++;
-            zox_statistics_characters_visible += entityLinks->length;
-            // if (block_spawns_initialized) zox_statistics_block_voxes_visible += block_spawns_count;
-        }
-        zox_statistics_characters_total += entityLinks->length;
-        // zox_statistics_block_voxes_total += block_spawns_count;
+        //if (is_viewed) {
+            //zox_statistics_chunks_visible++;
+            //zox_statistics_characters_visible += entityLinks->length;
+        //}
+        //zox_statistics_characters_total += entityLinks->length;
     }
-    zox_statistics_chunks_total += it->count;
+    //zox_statistics_chunks_total += it->count;
 } zox_declare_system(ChunkFrustumSystem)

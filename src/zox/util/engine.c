@@ -22,7 +22,9 @@ void engine_loop() {
 #else
     signal(SIGINT, handle_terminal_close);     // Handles closing from control + c
     signal(SIGSEGV, handle_segfault);
-    while (running) update_ecs();
+    while (running) {
+        update_ecs();
+    }
 #endif
 }
 

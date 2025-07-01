@@ -60,7 +60,7 @@ void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame,
 }
 
 void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t zext, const ecs_entity_t data) {
-    if (!zext) {
+    if (!zox_valid(zext) || !zox_valid(data)) {
         return;
     }
     if (zox_has(data, Quantity)) {

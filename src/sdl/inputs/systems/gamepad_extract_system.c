@@ -1,3 +1,4 @@
+#ifdef zox_lib_sdl
 void GamepadExtractSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(Children, childrens, 1)
@@ -10,3 +11,4 @@ void GamepadExtractSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(GamepadExtractSystem)
+#endif

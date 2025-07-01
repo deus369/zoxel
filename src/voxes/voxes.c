@@ -7,10 +7,10 @@
  *
  * */
 
-#include "data/_include.c"
-#include "prefabs/_include.c"
-#include "util/_include.c"
-#include "systems/_include.c"
+#include "data/_.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "systems/_.c"
 
 void dispose_voxes(ecs_world_t *world, void *ctx) {
     dispose_files_voxes(world);

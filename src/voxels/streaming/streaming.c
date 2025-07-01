@@ -1,14 +1,7 @@
 #ifndef zox_mod_streaming
 #define zox_mod_streaming
 
-// #define zox_enable_log_streaming
-
-#if defined(zox_enable_log_streaming) && !defined(zox_disable_logs)
-    #define zox_log_streaming(msg, ...) zox_log_line(msg, ##__VA_ARGS__)
-#else
-    #define zox_log_streaming(msg, ...) { }
-#endif
-
+#include "util/_.c"
 #include "data/settings.c"
 zox_declare_tag(Streamer)
 zox_declare_tag(StreamedChunk)
@@ -17,7 +10,7 @@ zox_component_byte(StreamDirty)
 zox_function_component(StreamEndEvent, void, ecs_world_t*, const ecs_entity_t)
 ecs_entity_t prefab_streamer;
 #include "prefabs/streamer.c"
-#include "systems/systems.c"
+#include "systems/_.c"
 
 zox_begin_module(Streaming)
     zox_define_tag(Streamer)

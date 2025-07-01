@@ -60,7 +60,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
                 // then next in canvas system, reset windows layers to top of window stack
                 zox_set(canvas, WindowToTop, { windowTarget->value })
             }
-            if (zox_has(raycasterTarget->value, Dragable)) {
+            if (raycasterTarget->value && zox_has(raycasterTarget->value, Dragable)) {
                 byte drag_mode = zox_drag_mode_none;
                 if (device_mode == zox_device_mode_keyboardmouse) drag_mode = zox_drag_mode_mouse;
                 else if (device_mode == zox_device_mode_touchscreen) drag_mode = zox_drag_mode_finger;

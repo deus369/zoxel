@@ -1,5 +1,9 @@
-// todo: find a way to hook this into the game uis
-extern void button_event_switch_action(ecs_world_t *world, const ClickEventData *event);
+// #define spawn_actions_on_touch_menu
+
+// todo: From actions UI, add to menu_game_touch - need prefabs with children
+#ifdef spawn_actions_on_touch_menu
+    extern void button_event_switch_action(ecs_world_t *world, const ClickEventData *event);
+#endif
 extern void button_event_jump(ecs_world_t *world, const ClickEventData *event);
 extern void button_event_attack(ecs_world_t *world, const ClickEventData *event);
 
@@ -58,10 +62,12 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
         button_size,
         bottom_padding + (button_size + button_padding) * 1 };
     add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_pause, float2_zero, button_size, (ClickEvent) { &button_event_pause_game }));
+#ifdef spawn_actions_on_touch_menu
     const int2 position_action_switch = (int2) {
         button_size,
         bottom_padding + (button_size + button_padding) * 2 };
     add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_action_switch, float2_zero, button_size, (ClickEvent) { &button_event_switch_action }));
+#endif
     // right side - jump and attack
     const float2 anchor_right = (float2) { 1, 0 };
     const int2 position_jump = (int2) {

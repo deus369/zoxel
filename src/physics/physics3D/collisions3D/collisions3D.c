@@ -9,9 +9,7 @@ zox_declare_tag(SphereCollider)
 zox_component_float(BasicCollider)
 zox_component_float(SphereRadius)
 zox_function_component(OverlapEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
-#include "util/detect_util.c"
-#include "util/response_util.c"
-#include "util/prefab_util.c"
+#include "util/_include.c"
 #include "systems/voxel_collision_system.c"
 #include "systems/sphere_collide_system.c"
 #include "systems/sphere_collider_draw_system.c"

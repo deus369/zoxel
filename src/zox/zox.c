@@ -37,7 +37,6 @@ zox_begin_module(Zox)
     #ifdef zox_mod_ui
     zox_import_module(Elements)
     zox_import_module(GameUI)
-    zox_import_module(EditorUI)
     #endif
     zox_import_module(Lines)
     zox_import_module(Plots)
@@ -82,8 +81,9 @@ zox_begin_module(Zox)
         zox_import_module(Space)
     }
     #endif
+    zox_import_module(EditorUI)
     #if defined(zox_mod_debug)
-    zox_import_module(Debug)
+        zox_import_module(Debug)
     #endif
 zox_end_module(Zox)
 

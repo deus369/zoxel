@@ -4,6 +4,8 @@ int joystick_axes;
 int last_axis_index;
 int last_clicked_index = 0;
 
+#ifdef zox_lib_sdl
+
 float get_gamepad_axis(SDL_Joystick *joystick, const int index) {
     if (index < 0 || index > 10) return 0; // deadzone limits
     int raw_value = SDL_JoystickGetAxis(joystick, index);
@@ -237,3 +239,10 @@ void debug_stick(const PhysicalStick *physical_stick, const char *button_name) {
         zox_log(" > [%s] stick pushed [%fx%f]\n", button_name, physical_stick->value.x, physical_stick->value.y)
     }
 }
+#else
+
+void initialize_sdl_gamepads() { }
+
+void handle_new_sdl_gamepad(ecs_world_t *world, const SDL_Event event) { }
+
+#endif

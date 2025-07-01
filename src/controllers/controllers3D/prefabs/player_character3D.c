@@ -1,5 +1,8 @@
-ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
-    zox_prefab_child(prefab_character3D)
+ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    if (!prefab) {
+        return 0;
+    }
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_character3D_player")
     zox_add_tag(e, PlayerCharacter)
     zox_add_tag(e, PlayerCharacter3D)
@@ -11,8 +14,10 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world) {
     zox_prefab_set(e, TriggerActionB, { 0 })
     zox_prefab_set(e, RaycastVoxelData, { })
     // Pickups
+#ifdef zox_mod_pickups
     zox_add_tag(e, PickUpperer)
     prefab_add_sphere_collider(world, e, 0.16f);
+#endif
     return e;
 }
 

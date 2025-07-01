@@ -37,18 +37,30 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     find_child_with_tag(canvas, Taskbar, taskbar)
     if (taskbar) zox_delete(taskbar)
 
+#ifdef zox_mod_users_ui
     find_child_with_tag(canvas, MenuStatus, menu_status)
     if (menu_status) zox_delete(menu_status)
+#endif
+#ifdef zox_mod_items_ui
     find_child_with_tag(canvas, MenuItems, menu_items)
     if (menu_items) zox_delete(menu_items)
+#endif
+#ifdef zox_mod_stats_ui
     find_child_with_tag(canvas, MenuStats, menu_stats)
     if (menu_stats) zox_delete(menu_stats)
+#endif
+#ifdef zox_mod_skills_ui
     find_child_with_tag(canvas, MenuSkills, menu_skills)
     if (menu_skills) zox_delete(menu_skills)
+#endif
+#ifdef zox_mod_quests_ui
     find_child_with_tag(canvas, MenuQuests, menu_quests)
     if (menu_quests) zox_delete(menu_quests)
+#endif
+#ifdef zox_mod_actions_ui
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (menu_actions) zox_delete(menu_actions)
+#endif
 
     dispose_menu_game(world, player);
     trigger_canvas_fade_transition(world, canvas, 0.5, 1.0);
