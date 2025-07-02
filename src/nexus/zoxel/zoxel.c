@@ -47,11 +47,12 @@ void ZoxGameImport(ecs_world_t *world) {
 
     // render distance settings
     initial_terrain_lod = 2; // 2 |3
-    terrain_lod_dividor = 4; // 2 | 3 | 4
-    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    terrain_lod_dividor = 2; // 2 | 3 | 4
+    render_distance = 8; // 2 | 4 | 8 | 16 | 32
     render_distance_y = 4; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
     block_spawn_chance_grass = 2024;
+    fog_density = 0.05f;
 
     // fix prefabs
     if (prefab_vox) {

@@ -7,6 +7,8 @@ float fog_density = 0.03f; // 0326f;
 float3 viewport_clear_color = (float3) { 0.0f, 0.0f, 0.0f };
 
 float get_fog_density() {
-    if (is_render_fog) return fog_density * fog_density;
+    if (is_render_fog) {
+        return fog_density * fog_density;
+    }
     else return 0.0f;
 }
