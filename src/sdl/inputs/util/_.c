@@ -1,0 +1,7 @@
+#include "sdl_key.c"
+#include "keyboard.c"
+#include "mouse.c"
+#include "touchscreen.c"
+#include "gamepad.c"
+#include "input.c"
+#include "cursor.c"
