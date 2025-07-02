@@ -50,7 +50,7 @@ void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_
         byte3 local_position = byte3_zero;
         const ChunkOctree *chunk_above = NULL;
         byte found_position = 0;
-        for (int i = 6; i >= -6; i--) {
+        for (int i = render_distance_y; i >= -render_distance_y; i--) {
             chunk_position.y = i;
             chunk = int3_hashmap_get(chunk_links->value, chunk_position);
             if (!chunk) {
@@ -111,8 +111,8 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
         attach_camera_to_character(world, player, camera, 0);
     #else
         if (game_rule_attach_to_character) {
-            spawn_vox_player_character_in_terrain(world, player);
-            // delay_event(world, &spawn_vox_player_character_in_terrain, player, 1);
+            // spawn_vox_player_character_in_terrain(world, player);
+            delay_event(world, &spawn_vox_player_character_in_terrain, player, 1);
 
             // delay_event(world, &spawn_vox_player_character_in_terrain, player, delay_terrain_time);
         } else {

@@ -46,8 +46,3 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, cons
     zox_name("main_menu")
     return e;
 }
-
-/*labels_count = 2;
-const text_group labels[] = { { label_new }, { label_options } };
-const ClickEvent events[] = { { &button_event_new_game }, { &button_event_menu_options } };
-e = spawn_ui_list(world, prefab_main_menu, canvas, header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0, player);*/

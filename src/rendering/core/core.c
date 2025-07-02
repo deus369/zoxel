@@ -17,11 +17,11 @@ zox_memory_component(MeshUVs, float2)
 zox_memory_component(MeshColors, color)
 zox_memory_component(MeshColorRGBs, color_rgb)
 #include "components/components.c"
-#include "util/util.c"
+#include "util/_.c"
 #include "prefabs/shader.c"
 #include "prefabs/material.c"
 #include "prefabs/renderer_instance.c"
-#include "systems/systems.c"
+#include "systems/_.c"
 
 ecs_entity_t prefab_renderer_instance;
 

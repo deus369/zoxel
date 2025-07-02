@@ -1,3 +1,5 @@
+byte is_raycast_minivoxes = 0;  // its broken atm
+
 byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const float3 ray_origin, const float3 ray_normal, const ecs_entity_t chunk, RaycastVoxelData *data, float *closest_t) {
     if (!zox_valid(chunk) || !zox_has(chunk, EntityLinks)) {
         return 0;
@@ -29,10 +31,10 @@ byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const floa
 
 byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
-    const ChunkOctree *chunk_octree;
-    // if (chunk) chunk_octree = zox_get_mut(chunk, ChunkOctree)
+    const ChunkOctree *node;
+    // if (chunk) node = zox_get_mut(chunk, ChunkOctree)
     if (chunk) {
-        chunk_octree = zox_get(chunk, ChunkOctree)
+        node = zox_get(chunk, ChunkOctree)
     }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     ecs_entity_t chunk_last = chunk;
@@ -48,12 +50,21 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     const float3 ray_unit_size = (float3) { 1.0f / float_abs(ray_normal.x), 1.0f / float_abs(ray_normal.y), 1.0f / float_abs(ray_normal.z) };
     // get first difference
     float3 ray_add = float3_zero;
-    if (ray_normal.x < 0) ray_add.x = (ray_origin_scaled.x - voxel_position.x);
-    else ray_add.x = ((float) voxel_position.x + 1 - ray_origin_scaled.x);
-    if (ray_normal.y < 0) ray_add.y = (ray_origin_scaled.y - (float) voxel_position.y);
-    else ray_add.y = ((float) voxel_position.y + 1 - ray_origin_scaled.y);
-    if (ray_normal.z < 0) ray_add.z = (ray_origin_scaled.z - (float) voxel_position.z);
-    else ray_add.z = ((float) voxel_position.z + 1 - ray_origin_scaled.z);
+    if (ray_normal.x < 0) {
+        ray_add.x = (ray_origin_scaled.x - voxel_position.x);
+    } else {
+        ray_add.x = ((float) voxel_position.x + 1 - ray_origin_scaled.x);
+    }
+    if (ray_normal.y < 0) {
+        ray_add.y = (ray_origin_scaled.y - (float) voxel_position.y);
+    } else {
+        ray_add.y = ((float) voxel_position.y + 1 - ray_origin_scaled.y);
+    }
+    if (ray_normal.z < 0) {
+        ray_add.z = (ray_origin_scaled.z - (float) voxel_position.z);
+    } else {
+        ray_add.z = ((float) voxel_position.z + 1 - ray_origin_scaled.z);
+    }
     float3_multiply_float3_p(&ray_add, ray_unit_size);
     byte ray_hit = 0;
     int3 hit_normal = int3_zero;
@@ -69,9 +80,9 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 if (!zox_valid(chunk)) {
                     return 0;
                 }
-                // chunk_octree = zox_get_mut(chunk, ChunkOctree)
-                chunk_octree = zox_get(chunk, ChunkOctree)
-                if (!chunk_octree) {
+                // node = zox_get_mut(chunk, ChunkOctree)
+                node = zox_get(chunk, ChunkOctree)
+                if (!node) {
                     return 0;
                 }
                 chunk_position = new_chunk_position;
@@ -90,20 +101,19 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         byte old_voxel = 0;
         if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
             byte3 temp = voxel_position_local;
-            data->node = get_octree_voxel_with_node(&old_voxel, chunk_octree, &temp, chunk_octree->linked);
+            data->node = get_octree_voxel_with_node(&old_voxel, node, &temp, node->linked);
         }
         if (old_voxel) {
             data->voxel = old_voxel;
             data->voxel_entity = voxels->value[old_voxel - 1];
             byte is_minivox = 0;
-            if (voxels) {
-                // const ecs_entity_t block = voxels->value[old_voxel - 1];
-                // is_minivox = zox_has(block, BlockVox);
-            }
-            if (is_minivox) {
-                /*const BlockSpawns *spawns = zox_get(chunk, BlockSpawns)
-                if (spawns->value && spawns->value->data) {
-                    const ecs_entity_t block_spawn = byte3_hashmap_get(spawns->value, voxel_position_local);
+            if (is_raycast_minivoxes) {
+                if (voxels) {
+                    const ecs_entity_t block = voxels->value[old_voxel - 1];
+                    is_minivox = zox_has(block, BlockVox);
+                }
+                if (is_minivox) {
+                    ecs_entity_t block_spawn = get_node_entity_ChunkOctree(node);
                     if (block_spawn && zox_has(block_spawn,  Position3D)) {
                         float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
                         float3 block_position = zox_get_value(block_spawn, Position3D)
@@ -117,7 +127,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                             break;
                         }
                     }
-                }*/
+                }
             } else { // if solid block
                 ray_hit = 1;
                 // if (!chunk_links) zox_log(" > [%f] raycasted minivox [%ix%ix%i]\n", ray_distance, voxel_position.x, voxel_position.y, voxel_position.z)
@@ -170,7 +180,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // hit point
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(chunk_octree->linked))), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node->linked))), hit_point_line_color);
 #endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);

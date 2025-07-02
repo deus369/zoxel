@@ -98,7 +98,7 @@ byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
 #else
 
 byte initialize_ttf(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_log("! freetype is disabled\n")
+    // zox_log("! freetype is disabled\n")
     return 0;
 }
 

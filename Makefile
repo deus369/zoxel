@@ -8,6 +8,10 @@ CFLAGS  := -fPIC -O3
 # -Wno-stringop-overread -Wno-stringop-overflow
 
 CFLAGS_DEV := -fPIC -Wall -O0 -ggdb3 -g
+# catching memory errors >
+# CFLAGS_DEV += -fsanitize=address,undefined
+# catching leaks >
+# CFLAGS_DEV += -fsanitize=address,leak -fno-omit-frame-pointer
              # -Wno-stringop-overread -Wno-stringop-overflow
 
 INCLUDES:= -Iinclude

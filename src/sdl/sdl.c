@@ -8,7 +8,7 @@
 #include "prefabs/app_sdl.c"
 #include "data/settings.c"
 #include "inputs/inputs.c"
-#include "util/util.c"
+#include "util/_.c"
 
 zox_begin_module(Sdl)
     zox_module_dispose(dispose_apps_sdl)

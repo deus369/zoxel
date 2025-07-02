@@ -1,8 +1,5 @@
 void SphereCollideSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(SphereRadius, sphereRadiuss, 2)
@@ -15,8 +12,8 @@ void SphereCollideSystem(ecs_iter_t *it) {
         zox_field_e()
         zox_field_i(Position3D, position3Ds, position3D)
         zox_field_i(SphereRadius, sphereRadiuss, sphereRadius)
-        ecs_iter_t it2 = ecs_query_iter(world, query);
-        while(ecs_query_next(&it2)) {
+        zox_sys_query_begin()
+        while (zox_sys_query_loop()) {
             const Position3D *position3Ds2 = ecs_field(&it2, Position3D, 1);
             const SphereRadius *sphereRadiuss2 = ecs_field(&it2, SphereRadius, 2);
             const CollisionDisabled *collisionDisableds2 = ecs_field(&it2, CollisionDisabled, 3);
@@ -45,6 +42,6 @@ void SphereCollideSystem(ecs_iter_t *it) {
                 }
             }
         }
-        ecs_iter_fini(&it2);
+        zox_sys_query_end()
     }
 } zox_declare_system(SphereCollideSystem)

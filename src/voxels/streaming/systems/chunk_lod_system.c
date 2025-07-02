@@ -6,34 +6,31 @@ void ChunkLodSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) {
         return;
     }
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     const byte max_camera_distance = render_distance + 1;
     const byte max_depth = terrain_depth;
     zox_field_world()
     byte streamers_dirty = 0;
     int3 *stream_points = NULL;
     int stream_points_length = 0;
-    ecs_iter_t streamers_iter = ecs_query_iter(world, query);
-    while (ecs_query_next(&streamers_iter)) {
+    zox_sys_query_begin()
+    while (zox_sys_query_loop()) {
         if (streamers_dirty) {
             continue;
         }
-        zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
-        zox_field_in_iter(&streamers_iter, StreamDirty, streamDirtys, 2)
-        for (int i = 0; i < streamers_iter.count; i++) {
+        zox_field_in_iter(&it2, StreamPoint, streamPoints, 1)
+        zox_field_in_iter(&it2, StreamDirty, streamDirtys, 2)
+        for (int i = 0; i < it2.count; i++) {
             zox_field_i(StreamDirty, streamDirtys, streamDirty)
             if (streamDirty->value == zox_general_state_dirty) {
                 stream_points = (int3*) streamPoints;
-                stream_points_length = streamers_iter.count;
+                stream_points_length = it2.count;
                 streamers_dirty = 1;
                 break;
             }
         }
     }
-    ecs_iter_fini(&streamers_iter);
+    zox_sys_query_end()
     if (!streamers_dirty) {
         return;
     }

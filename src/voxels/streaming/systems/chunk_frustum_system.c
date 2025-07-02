@@ -34,10 +34,7 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
 
 // this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(ChunkSize, chunkSizes, 2)
@@ -54,14 +51,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
         byte is_viewed = 0; // 1;
-        ecs_iter_t streamers_iter = ecs_query_iter(world, query);
-        while (ecs_query_next(&streamers_iter)) {
+        zox_sys_query_begin()
+        while (zox_sys_query_loop()) {
             if (is_viewed) {
                 continue;
             }
-            const Position3DBounds *position3DBoundss = ecs_field(&streamers_iter, Position3DBounds, 1);
-            const CameraPlanes *cameraPlaness = ecs_field(&streamers_iter, CameraPlanes, 2);
-            for (int j = 0; j < streamers_iter.count; j++) {
+            const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);
+            const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
+            for (int j = 0; j < it2.count; j++) {
                 const Position3DBounds *position3DBounds = &position3DBoundss[j];
                 is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
                 if (is_viewed) {
@@ -73,7 +70,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
             }
         }
-        ecs_iter_fini(&streamers_iter);
+        zox_sys_query_end()
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
             for (int j = 0; j < entityLinks->length; j++) {

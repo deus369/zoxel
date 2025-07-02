@@ -16,6 +16,7 @@ zox_component_byte(BlocksSpawned)
 zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
 #include "neighbors.c"
 // dynamic
+#include "octree_component.c"
 zoxel_octree_component(ChunkOctree, byte, 0)
 #include "chunk_links.c"
 // more

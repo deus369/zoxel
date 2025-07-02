@@ -7,7 +7,6 @@
 #include "data/octree_helper.c"
 #include "data/text_group.c"
 #include "data/ecs_entity_2.c"
-#include "macros/octree_component.c"
 zox_component_byte(GenericEvent)
 zox_component_byte(EntityInitialize)
 zox_component_int2(ScreenDimensions)

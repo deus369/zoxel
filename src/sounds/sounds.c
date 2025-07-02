@@ -5,11 +5,11 @@
 byte audio_enabled = 0;
 #include "data/instrument_types.c"
 #include "data/settings.c"
-#include "components/components.c"
-#include "prefabs/prefabs.c"
-#include "util/util.c"
-#include "instruments/instruments.c"
-#include "systems/systems.c"
+#include "components/_.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "instruments/_.c"
+#include "systems/_.c"
 
 void initialize_sounds(ecs_world_t *world) {
 #ifndef zox_lib_sdl_mixer

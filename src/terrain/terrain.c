@@ -11,17 +11,18 @@
 #if !defined(zox_mod_terrain) && defined(zox_mod_voxels)
 #define zox_mod_terrain
 
+#include "settings/_.c"
 zox_declare_tag(FlatTerrain)
 zox_declare_tag(FlatlandChunk)
 zox_declare_tag(TerrainWorld)
 zox_declare_tag(TerrainChunk)
 zox_declare_tag(ChunkTerrain)
 zox_component_entity(TerrainLink)
-#include "data/_include.c"
-#include "prefabs/_include.c"
-#include "util/_include.c"
-#include "voxels/_include.c"
-#include "systems/_include.c"
+#include "data/_.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "voxels/_.c"
+#include "systems/_.c"
 
 zox_begin_module(Terrain)
     add_hook_terminal_command(process_arguments_terrain);

@@ -12,7 +12,7 @@ const byte tiny_curve = 24; // 1 * 16;
 const byte font_lowerCurve = 32; // 2 * 16;
 const byte middleSideX = 128; // 8 * 16;
 
-const byte font_question_mark_length = 9 * 2;
+const byte font_question_mark_length = 8 * 2;
 const byte2 font_question_mark[] = {
     { font_left_side, font_top_side }, { font_right_side, font_top_side },  // top line
     { font_left_side, font_top_side }, { font_left_side, font_lowerTopSide },
@@ -342,7 +342,7 @@ const byte2 font_upper_b[] = {
     { font_right_side, font_upperMiddleSideY + curve }, { font_right_side - curve, font_upperMiddleSideY },
 };
 
-const int font_lower_c_length = 8 * 2;
+const int font_lower_c_length = 7 * 2;
 const byte2 font_lower_c[] = {
     { font_left_side + font_lowerCurve, font_lowerTopSide }, { font_right_side - font_lowerCurve, font_lowerTopSide },
     { font_right_side - font_lowerCurve, font_lowerTopSide }, { font_right_side, font_lowerTopSide - font_lowerCurve / 2 },

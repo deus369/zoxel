@@ -1,3 +1,7 @@
+int get_random_pallete_note(const byte *pallete, int array_length) {
+   return pallete[rand() % array_length];
+}
+
 void MusicGenerateSystem(ecs_iter_t *it) {
     const byte lowest_note = 12;
     const byte highest_note = 36;
@@ -32,25 +36,25 @@ void MusicGenerateSystem(ecs_iter_t *it) {
             for (int k = 0; k < sounds_per_verse; k++) {
                 int music_note = first_note;
                 if (palete_type == music_palette_creepy) {
-                    music_note += music_palette_values_creepy[rand() % 8];
+                    music_note += get_random_pallete_note(music_palette_values_creepy, 7);
                 } else if (palete_type == music_palette_happy) {
-                    music_note += music_palette_values_happy[rand() % 8];
+                    music_note += get_random_pallete_note(music_palette_values_happy, 7);
                 } else if (palete_type == music_palette_blues) {
-                    music_note += music_palette_values_blues[rand() % 6];
+                    music_note += get_random_pallete_note(music_palette_values_blues, 5);
                 } else if (palete_type == music_palette_blues2) {
-                    music_note += music_palette_values_blues2[rand() % 8];
+                    music_note += get_random_pallete_note(music_palette_values_blues2, 7);
                 } else if (palete_type == music_palette_romantic) {
-                    music_note += music_palette_values_romantic[rand() % 7];
+                    music_note += get_random_pallete_note(music_palette_values_romantic, 6);
                 } else if (palete_type == music_palette_epic) {
-                    music_note += music_palette_values_epic[rand() % 7];
+                    music_note += get_random_pallete_note(music_palette_values_epic, 6);
                 } else if (palete_type == music_palette_jazz) {
-                    music_note += music_palette_values_jazz[rand() % 6];
+                    music_note += get_random_pallete_note(music_palette_values_jazz, 5);
                 } else if (palete_type == music_palette_rock) {
-                    music_note += music_palette_values_rock[rand() % 7];
+                    music_note += get_random_pallete_note(music_palette_values_rock, 6);
                 } else if (palete_type == music_palette_techno) {
-                    music_note += music_palette_values_techno[rand() % 8];
+                    music_note += get_random_pallete_note(music_palette_values_techno, 7);
                 } else if (palete_type == music_palette_funk) {
-                    music_note += music_palette_values_funk[rand() % 6];
+                    music_note += get_random_pallete_note(music_palette_values_funk, 5);
                 }
                 if (rand() % 100 >= music_note_skip) {
                     music_note = 0;

@@ -25,11 +25,12 @@ ecs_entity_t load_music_file(ecs_world_t *world, const ecs_entity_t prefab, cons
     resize_memory_component(NoteLinks, noteLinks, ecs_entity_t, loaded_note_count)
     float music_length = 0;
     // zox_log("   - music speed: %f\n", music_speed)
+    const byte instrument = music_load_instrument; // instrument_piano_file
     for (int i = 0; i < loaded_note_count; i++) {
         MidiNote note = loaded_notes[i];
         int note_index = find_note_index(note.frequency);
         // double test_frequency = note_frequencies[note_index];
-        noteLinks->value[i] = spawn_note(world, prefab_note, note_index, instrument_piano_file, note.length, 1);
+        noteLinks->value[i] = spawn_note(world, prefab_note, note_index, instrument, note.length, 1);
         music_length += note.length;
         // zox_log("   - %i - Frequency: %.2f : %.2f Hz, Start time: %.2f, Length: %.2f\n", i + 1, note.frequency, test_frequency, note.time, note.length)
     }

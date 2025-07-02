@@ -1,37 +1,28 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
-// todo: when increasing lod, generate terrain first
-// todo: fix: when render lod initial set to 2, the instances dissapear
-
-// todo: initialize event modules can hook onto for loading i/o
-//      - should occur after all modules are imported, but before game is booted
-// - each module should add to a load resources event for i/o game data
-// #define zox_log_boot_game
-// #define zox_enable_log_start_game
-
 byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)
     initialize_networking();
     intialize_game_store();
-    #ifdef zox_mod_voxels
-        initialize_voxes(world);
-    #endif
+#ifdef zox_mod_voxels
+    initialize_voxes(world);
+#endif
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world, realm);
     zox_log_start_game("> boot completed [zoxel]")
     // game spawning
-    #ifdef zox_mod_weathers
-        spawn_weather(world);
-    #endif
-    #ifdef zox_mod_musics
-        spawn_realm_playlist(world, realm);
-    #endif
-    #ifdef zox_mod_players
-        spawn_players_cameras_canvases(world, game);
-        spawn_players_start_ui(world);
-    #endif
+#ifdef zox_mod_weathers
+    spawn_weather(world);
+#endif
+#ifdef zox_mod_musics
+    spawn_realm_playlist(world, realm);
+#endif
+#ifdef zox_mod_players
+    spawn_players_cameras_canvases(world, game);
+    spawn_players_start_ui(world);
+#endif
     test_steam_cloud(); // idk
     return EXIT_SUCCESS;
 }
@@ -55,10 +46,12 @@ void ZoxGameImport(ecs_world_t *world) {
     vox_model_scale = 1 / 32.0f;
 
     // render distance settings
-    initial_terrain_lod = 1; // 2 |3
-    terrain_lod_dividor = 3; // 2 | 3 | 4
-    render_distance = 8; // 2 | 4 | 8 | 16 | 32
-    render_distance_y = 3; // 1 | 2 | 4
+    initial_terrain_lod = 2; // 2 |3
+    terrain_lod_dividor = 4; // 2 | 3 | 4
+    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    render_distance_y = 4; // 1 | 2 | 4
+    block_vox_render_at_lod = 0; // now using lod minimum
+    block_spawn_chance_grass = 2024;
 
     // fix prefabs
     if (prefab_vox) {
@@ -71,10 +64,6 @@ void ZoxGameImport(ecs_world_t *world) {
         zox_prefab_set(prefab_character3D_npc, VoxScale, { vox_model_scale })
     }
 
-    // todo: set block vox resolution to 5
-    // todo: use component max depths on terrain
-    // todo: fix the texture blocks - use textures generate a regular vox model
-
     // debug
     is_generate_vox_outlines = 0;
     disable_npcs = 1;
@@ -84,3 +73,16 @@ void ZoxGameImport(ecs_world_t *world) {
 }
 
 #endif
+
+// todo: when increasing lod, generate terrain first
+// todo: fix: when render lod initial set to 2, the instances dissapear
+
+// todo: initialize event modules can hook onto for loading i/o
+//      - should occur after all modules are imported, but before game is booted
+// - each module should add to a load resources event for i/o game data
+// #define zox_log_boot_game
+// #define zox_enable_log_start_game
+
+// todo: set block vox resolution to 5
+// todo: use component max depths on terrain
+// todo: fix the texture blocks - use textures generate a regular vox model

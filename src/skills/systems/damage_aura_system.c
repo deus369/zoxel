@@ -4,10 +4,7 @@
 #endif
 
 void DamageAuraSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_in(SkillActive, skillActives, 2)
@@ -39,8 +36,8 @@ void DamageAuraSystem(ecs_iter_t *it) {
         // todo: Get Chunk' Characters instead, this could potentially go through tens of thousands..
         // get nearby characters using distance formula
         // make this spherecast
-        ecs_iter_t it2 = ecs_query_iter(world, query);
-        while (ecs_query_next(&it2)) {
+        zox_sys_query_begin()
+        while (zox_sys_query_loop()) {
             const Dead *deads = ecs_field(&it2, Dead, 1);
             const Position3D *position3D2s = ecs_field(&it2, Position3D, 2);
             Children *childrens = ecs_field(&it2, Children, 3);
@@ -94,6 +91,6 @@ void DamageAuraSystem(ecs_iter_t *it) {
                 }
             }
         }
-        ecs_iter_fini(&it2);
+        zox_sys_query_end()
     }
 } zox_declare_system(DamageAuraSystem)

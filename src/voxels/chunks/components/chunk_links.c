@@ -2,7 +2,7 @@
 zox_component(ChunkLinks, int3_hashmap*)
 
 void dispose_hashmap_int3(ecs_world_t *world, int3_hashmap* hashmap) {
-    if (hashmap->data == NULL) {
+    if (!hashmap || !hashmap->data || !hashmap->size) {
         return;
     }
     for (int j = 0; j < hashmap->size; j++) {
@@ -23,11 +23,10 @@ void on_destroyed_ChunkLinks(ecs_iter_t *it) {
     zox_field_out(ChunkLinks, components, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(ChunkLinks, components, component)
-        if (!component->value) {
-            continue;
+        if (component->value) {
+            int3_hashmap* hashmap = component->value;
+            dispose_hashmap_int3(world, hashmap);
+            component->value = NULL;
         }
-        int3_hashmap* hashmap = component->value;
-        dispose_hashmap_int3(world, hashmap);
-        component->value = NULL;
     }
 }

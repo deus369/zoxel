@@ -71,7 +71,7 @@ void MeleeSystem(ecs_iter_t *it) {
                         }
                         zox_set(hit_character, LastDamager, { attacking_character })
                     }
-                    spawn_sound_generated(world, instrument_violin, note_frequencies[28], 0.6, 2.4f);
+                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, 2.4f);
                     // damage popup
 
                     const float3 hit_character_position = zox_get_value(hit_character, Position3D)
@@ -95,7 +95,7 @@ void MeleeSystem(ecs_iter_t *it) {
                                 const ecs_entity_t item = zox_get_value(voxel, ItemLink)
                                 if (item) zox_set(pickup, ItemLink, { item })
                             }
-                            spawn_sound_generated(world, instrument_violin, note_frequencies[34], 0.6, 2.4f);
+                            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[34], 0.6, 2.4f);
                         } else {
                             zox_log(" ! terrain is invalid\n")
                         }
@@ -105,12 +105,12 @@ void MeleeSystem(ecs_iter_t *it) {
                     //zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
                 } else {
                     // cannot hit air
-                    spawn_sound_generated(world, instrument_violin, note_frequencies[44], 0.3, 2.4f);
+                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, 2.4f);
                 }
             }
         } else {
             // ray too far
-            spawn_sound_generated(world, instrument_violin, note_frequencies[44], 0.3, 2.4f);
+            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, 2.4f);
         }
     }
 } zox_declare_system(MeleeSystem)

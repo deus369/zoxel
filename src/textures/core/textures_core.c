@@ -1,10 +1,10 @@
 #ifndef zox_mod_textures_core
 #define zox_mod_textures_core
 
-#include "data/_include.c"
-#include "util/_include.c"
-#include "prefabs/_include.c"
-#include "systems/_include.c"
+#include "data/_.c"
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "systems/_.c"
 #include "tests/test_texture.c"
 
 zox_begin_module(TexturesCore)

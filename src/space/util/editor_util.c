@@ -33,10 +33,12 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
         uint checks = 0;
         while (pair != NULL && checks < max_safety_checks_hashmap) {
             ecs_entity_t chunk = pair->value;
-            const byte has_block_spawns = zox_get_value(chunk, BlocksSpawned)
-            if (has_block_spawns) {
-                const ChunkOctree *chunk_data = zox_get(chunk, ChunkOctree)
-                toggle_debug_bounds_delve(world, chunk_data, chunk_data->linked, 0);
+            if (zox_valid(chunk)) {
+                const byte has_block_spawns = zox_get_value(chunk, BlocksSpawned)
+                if (has_block_spawns) {
+                    const ChunkOctree *node = zox_get(chunk, ChunkOctree)
+                    toggle_debug_bounds_delve(world, node, node->linked, 0);
+                }
             }
             /*const BlockSpawns *blockSpawns = zox_get(chunk, BlockSpawns)
             const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
@@ -55,7 +57,6 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
                     }
                 }
             }*/
-
             pair = pair->next;
             checks++;
         }

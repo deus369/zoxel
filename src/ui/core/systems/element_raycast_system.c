@@ -1,8 +1,5 @@
 void ElementRaycastSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     zox_field_world()
     zox_field_in(Raycaster, raycasters, 1)
     zox_field_in(DeviceLink, deviceLinks, 2)
@@ -32,8 +29,8 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         ecs_entity_t ui_selected = 0;
         int window_layer = -1;
         ecs_entity_t window_selected = 0;
-        ecs_iter_t it2 = ecs_query_iter(world, query);
-        while (ecs_query_next(&it2)) {
+        zox_sys_query_begin()
+        while (zox_sys_query_loop()) {
             const CanvasPosition *canvasPositions = ecs_field(&it2, CanvasPosition, 2);
             const PixelSize *pixelSizes = ecs_field(&it2, PixelSize, 3);
             const Layer2D *layer2Ds = ecs_field(&it2, Layer2D, 4);
@@ -87,7 +84,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 }
             }
         }
-        ecs_iter_fini(&it2);
+        zox_sys_query_end()
         // if only exists to block others (like Window's)
         if (ui_selected && !zox_has(ui_selected, SelectState)) {
             ui_selected = 0;

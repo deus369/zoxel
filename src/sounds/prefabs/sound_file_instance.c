@@ -7,34 +7,32 @@ ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab
         zox_log("! cannot spawn sound from file, no prefab\n")
         return 0;
     }
+#ifdef zox_lib_sdl_mixer
+    zox_geter(sound_file, SDLSound, sdl_sound)
+    int memory_length = sdl_sound->value.alen;
+    if (memory_length == 0) {
+        return 0;
+    }
+#endif
     zox_instance(prefab)
     zox_name("sound_file")
     zox_set(e, SoundVolume, { default_sound_volume_loaded })
     #ifdef zox_lib_sdl_mixer
-        const SDLSound *sdl_sound = zox_get(sound_file, SDLSound)
-        const float sound_length = zox_get_value(sound_file, SoundLength)
-        int memory_length = sdl_sound->value.alen;
-        int array_length = memory_length / sizeof(float);
-        float *new_data = (float*) malloc(memory_length);
-        if (!new_data) {
-            zox_log("! failed to malloc for sound: %s\n", zox_get_name(sound_file))
-        } else {
-            memcpy(new_data, sdl_sound->value.abuf, memory_length);
-            zox_set(e, SoundData, { array_length, new_data })
-            zox_set(e, SoundLength, { sound_length })
-            // if processed or dirty, this doesn't need to be set here
-            /*zox_set(e, SDLSound, { (Mix_Chunk) {
-                .volume = global_master_volume,
-            *            // .volume = sdl_sound->value.volume,
-                .alen = memory_length,
-                .abuf = (void*) new_data // sdl_sound->value.abuf
-            } })*/
-        }
-        // wait this won't clear, so we need SDLData t too'
-        //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
-    #else
-        zox_log(" ! sound cannot play as no SDL_MIXER\n")
-    #endif
+    const float sound_length = zox_get_value(sound_file, SoundLength)
+    int array_length = memory_length / sizeof(float);
+    float *new_data = (float*) malloc(memory_length);
+    if (!new_data) {
+        zox_log("! failed to malloc for sound: %s\n", zox_get_name(sound_file))
+    } else {
+        memcpy(new_data, sdl_sound->value.abuf, memory_length);
+        zox_set(e, SoundData, { array_length, new_data })
+        zox_set(e, SoundLength, { sound_length })
+    }
+    // wait this won't clear, so we need SDLData t too'
+    //Mix_LoadWAV(sound_file_names[0]) }); //  sounds[0] });
+#else
+    zox_log(" ! sound cannot play as no SDL_MIXER\n")
+#endif
     return e;
 }
 
@@ -63,3 +61,10 @@ ecs_entity_t spawn_sound_from_file_name(ecs_world_t *world, const ecs_entity_t p
 // Mix_Chunk *sound_data_cloned = clone_mix_chunk(sound_data);
 // zox_set(e, SDLSound, { sdl_sound->value })
 // unless we justt  copy over
+// if processed or dirty, this doesn't need to be set here
+/*zox_set(e, SDLSound, { (Mix_Chunk) {
+ . v*olume = global_master_volume,
+*            // .volume = sdl_sound->value.volume,
+.alen = memory_length,
+.abuf = (void*) new_data // sdl_sound->value.abuf
+} })*/

@@ -12,15 +12,10 @@ void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indi
     zox_prefab_set(e, MeshIndicies, { meshIndicies->length, meshIndicies->value })
 }
 
-void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 vertices[], int length) {
-    if (headless) {
+void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 *vertices, int length) {
+    if (headless || !vertices) {
         return;
     }
-    /*if (!zox_has(e, MeshVertices2D)) {
-        zox_log("! [%lu] has no MeshVertices2D\n")
-        return;
-    }
-    zox_get_muter(e, MeshVertices2D, meshVertices2D)*/
     MeshVertices2D *meshVertices2D = &((MeshVertices2D) { 0, NULL });
     resize_memory_component(MeshVertices2D, meshVertices2D, float2, length)
     memcpy(meshVertices2D->value, vertices, length * sizeof(float2));

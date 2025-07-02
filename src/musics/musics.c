@@ -1,10 +1,7 @@
 #ifndef zox_mod_musics
 #define zox_mod_musics
 
-#define zox_test_music_files
-
-const int music_note_skip = 89;
-const float default_music_volume = 2.2f;
+#include "settings/_.c"
 zox_declare_tag(Note)
 zox_declare_tag(Music)
 zox_declare_tag(Looping)

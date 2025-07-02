@@ -1,26 +1,23 @@
 extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
 
 void ChunkSpawnSystem(ecs_iter_t *it) {
-    ecs_query_t *query = it->ctx;
-    if (!query) {
-        return;
-    }
+    zox_sys_query()
     zox_field_world()
     const byte log_individuals = 0;
     uint spawned_chunks = 0;
     int3 *stream_points = NULL;
     int stream_points_length = 0;
     byte iterated = 0;
-    ecs_iter_t streamers_iter = ecs_query_iter(world, query);
-    while(ecs_query_next(&streamers_iter)) {
+    zox_sys_query_begin()
+    while (zox_sys_query_loop()) {
         if (!iterated) {
             iterated = 1;
-            zox_field_in_iter(&streamers_iter, StreamPoint, streamPoints, 1)
+            zox_field_in_iter(&it2, StreamPoint, streamPoints, 1)
             stream_points = (int3*) streamPoints;
-            stream_points_length = streamers_iter.count;
+            stream_points_length = it2.count;
         }
     }
-    ecs_iter_fini(&streamers_iter);
+    zox_sys_query_end()
     if (stream_points_length == 0) {
         return;
     }

@@ -1,14 +1,10 @@
 #ifndef zox_sdl_inputs
 #define zox_sdl_inputs
 
-typedef int32_t SDL_Keycode;
-byte global_any_fingers_down = 0;
+#include "data/settings.c"
 #include "data/sdl_gamepad.c"
-#include "util/util.c"
-#include "systems/gamepad_extract_system.c"
-#include "systems/touchscreen_extract_system.c"
-#include "systems/mouse_extract_system.c"
-#include "systems/mouse_constrain_system.c"
+#include "util/_.c"
+#include "systems/_.c"
 
 void initialize_apps_input(ecs_world_t *world) {
     initialize_sdl_input();
