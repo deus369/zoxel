@@ -47,14 +47,20 @@ void ZoxGameImport(ecs_world_t *world) {
     character_depth = 5;
     vox_model_scale = 1 / 32.0f;
 
+    // physics
+    friction3D = 800; // 560;
+    air_friction3D = 80; // 40;
+
     // render distance settings
     initial_terrain_lod = 2; // 2 |3
     terrain_lod_dividor = 2; // 2 | 3 | 4
-    render_distance = 8; // 2 | 4 | 8 | 16 | 32
+    render_distance = 6; // 2 | 4 | 8 | 16 | 32
     render_distance_y = 4; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
-    block_spawn_chance_grass = 2024;
+    block_spawn_chance_grass = 1024;
     fog_density = 0.05f;
+    character_render_distance = 2;   // not used yet
+    characters_per_chunk_count = 1; // 0 | 1 | 4 | 8 | 16 | 64
 
     // fix prefabs
     if (prefab_vox) {
@@ -69,10 +75,10 @@ void ZoxGameImport(ecs_world_t *world) {
 
     // debug
     is_generate_vox_outlines = 0;
-    disable_npcs = 1;
     disable_block_vox_generation = 0;
     // disable_block_voxes = 1;
     game_rule_attach_to_character = 1;
+    disable_npcs = 0;
 }
 
 #endif

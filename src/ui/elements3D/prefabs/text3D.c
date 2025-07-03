@@ -42,13 +42,14 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData
     zox_instance(data.prefab)
     zox_name("text3D")
     zox_set(e, ParentLink, { data.parent })
+    zox_set(e, LocalPosition3D, { data.position })
     zox_set(e, TextPadding, { data.padding })
     zox_set(e, MeshAlignment, { data.alignment })
     zox_set(e, FontThickness, { zigel_data.font_thickness })
     zox_set(e, FontFillColor, { zigel_data.fill_color })
     zox_set(e, FontOutlineColor, { zigel_data.outline_color })
-    zox_set(e, LocalPosition3D, { data.position })
     zox_set(e, Text3DScale, { zigel_data.scale })
+    zox_set(e, TextSize, { zigel_data.resolution })
     Children *children = &((Children) { 0, NULL });
     TextData *textData = &((TextData) { 0, NULL });
     const int zext_data_length = data.text != NULL ? strlen(data.text) : 0;

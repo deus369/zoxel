@@ -2,9 +2,9 @@
 #define statbar_float_height + 0.048f
 
 void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *data) {
-    if (!data->p) {
+    /*if (!data->p) {
         return;
-    }
+    }*/
     float ui_position = statbar_float_position + statbar_float_height;
     const SpawnDataElement3D label3D_spawn_data = {
         .prefab = prefab_label3D,
@@ -18,8 +18,8 @@ void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *da
     };
     Zigel3DData label3D_zigel_data = {
         .prefab = prefab_zigel3D,
-        .font_thickness = 10,
-        .resolution = 64,
+        .font_thickness = 4,
+        .resolution = 32,
         .fill_color = (color) { 255, 255, 255, 255 },
         .outline_color = (color) { 5, 15, 5, 122 }
     };

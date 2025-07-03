@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_set(e, ChunkPosition, { int3_chaos })
     zox_prefab_set(e, VoxelPosition, { int3_zero})
     // Vox
-    zox_prefab_set(e, CloneVox, { 0})
+    zox_prefab_set(e, CloneVox, { 0 })
     zox_prefab_set(e, CloneVoxLink, { 0 })
     zox_prefab_set(e, ChunkLod, { 255 })
     // animation
@@ -80,12 +80,8 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     if (data.scale) {
         zox_set(e, VoxScale, { data.scale })
     }
-    zox_set(e, CloneVox, { 1 })
     zox_set(e, CloneVoxLink, { data.vox })
-    /// rendering
-    zox_set(e, RenderLod, { data.lod })
-    spawn_gpu_mesh(world, e);
-    spawn_gpu_colors(world, e);
+    zox_set(e, CloneVox, { 1 })
     // name
     char *name = generate_name();
     zox_set(e, ZoxName, { text_to_zext(name) })
@@ -96,8 +92,13 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
         .render_disabled = data.render_disabled,
         .elementLinks = &((ElementLinks) { 0, NULL }),
     };
+    // user hooks
     run_hook_spawned_character3D(world, &spawned_data);
     zox_set(e, ElementLinks, { spawned_data.elementLinks->length, spawned_data.elementLinks->value })
     free(name);
+    /// rendering
+    zox_set(e, RenderLod, { data.lod })
+    spawn_gpu_mesh(world, e);
+    spawn_gpu_colors(world, e);
     return e;
 }

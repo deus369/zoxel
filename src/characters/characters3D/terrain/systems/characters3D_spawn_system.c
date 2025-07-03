@@ -78,8 +78,8 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 };
                 const ecs_entity_t character = spawn_character3D(world, spawn_data);
                 add_to_ecs_entity_t_array_d(entities, character);
-                // add_to_EntityLinks(entityLinks, character);
-                zox_log_spawning("   + npc: %lu [%i of %i]",  character, (j + 1), (characters_per_chunk_count))
+                add_to_EntityLinks(entityLinks, character);
+                zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (characters_per_chunk_count))
             } else {
                 zox_log("! vox not found for [%s]\n", npc_voxes[vox_index])
             }
@@ -91,6 +91,5 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         if (entityLinks->length >= 1) {
             zox_log_spawning("  > total: %i", entityLinks->length)
         }
-        break;
     }
 } zox_declare_system(Characters3DSpawnSystem)

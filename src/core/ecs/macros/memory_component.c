@@ -239,15 +239,23 @@ ecs_observer_init(world, &(ecs_observer_desc_t) {\
 
 #define zox_define_links_component(name) zox_define_links_component2(name, [out] name)
 
+#define find_array_component_with_tag2(value, length, tag, name)\
+    ecs_entity_t name = 0;\
+    for (int i = 0; i < length; i++) {\
+        if (zox_has(value[i], tag)) {\
+            name = value[i];\
+            break;\
+        }\
+    }
 
 #define find_array_component_with_tag(component, tag, name)\
-ecs_entity_t name = 0;\
-for (int i = 0; i < component->length; i++) {\
-    if (zox_has(component->value[i], tag)) {\
-        name = component->value[i];\
-        break;\
-    }\
-}
+    ecs_entity_t name = 0;\
+    for (int i = 0; i < component->length; i++) {\
+        if (zox_has(component->value[i], tag)) {\
+            name = component->value[i];\
+            break;\
+        }\
+    }
 
 #define find_array_component_with_tag_id(component, tag_id, name)\
 ecs_entity_t name = 0;\

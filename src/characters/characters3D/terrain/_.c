@@ -1,9 +1,10 @@
 #ifndef zox_characters3D_terrain
 #define zox_characters3D_terrain
 
-#include "settings/settings.c"
-#include "util/log.c"
-#include "util/debug.c"
+// #define zox_enable_log_spawning
+
+#include "settings/_.c"
+#include "util/_.c"
 #include "systems/characters3D_spawn_system.c"
 
 zox_begin_module(Characters3DTerrain)

@@ -41,7 +41,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
         int length = textureSize->value.x * textureSize->value.y;
-        if (length <= 0 || fontThickness->value == 0 || !font) { // spacece
+        if (length <= 0 || fontThickness->value == 0 || !zox_valid(font)) { // spacece
             /*if (!font) {
                 zox_log("! font invalid, cannot generate font\n")
             }

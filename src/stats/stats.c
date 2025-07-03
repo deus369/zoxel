@@ -16,6 +16,7 @@ zox_begin_module(Stats)
     add_hook_spawned_character3D(&spawn_character_stats);
     // set_prefab_debug_label(world, &get_label_player_stats);
     set_prefab_debug_label(world, &get_label_player_element_links);
+    zox_import_module(StatsUI)
 zox_end_module(Stats)
 
 #endif

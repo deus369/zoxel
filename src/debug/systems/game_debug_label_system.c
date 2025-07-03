@@ -43,6 +43,7 @@ int debug_label_device(ecs_world_t *world, const ecs_entity_t device, char buffe
 }
 
 void GameDebugLabelSystem(ecs_iter_t *it) {
+        return;
     time_update_debug_label_system += zox_delta_time;
     if (time_update_debug_label_system >= time_update_debug_label_system_rate) {
        time_update_debug_label_system = 0;

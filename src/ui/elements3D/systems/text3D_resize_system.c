@@ -60,7 +60,8 @@ void Text3DResizeSystem(ecs_iter_t *it) {
     zox_field_in(ZextDirty, zextDirtys, 5)
     zox_field_in(RenderDisabled, renderDisableds, 6)
     zox_field_in(Text3DScale, text3DScales, 7)
-    zox_field_out(Children, childrens, 8)
+    zox_field_in(TextSize, textSizes, 8)
+    zox_field_out(Children, childrens, 9)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ZextDirty, zextDirtys, zextDirty)
         if (zextDirty->value != zext_update_update) {
@@ -85,9 +86,10 @@ void Text3DResizeSystem(ecs_iter_t *it) {
         zox_field_i(FontOutlineColor, fontOutlineColors, fontOutlineColor)
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
         zox_field_i(Text3DScale, text3DScales, text3DScale)
+        zox_field_i(TextSize, textSizes, textSize)
         Zigel3DData zigel_data = {
             .prefab = prefab_zigel3D,
-            .resolution = 128,
+            .resolution = textSize->value, // 128,
         };
         zigel_data.parent = e;
         zigel_data.font_thickness = fontThickness->value;

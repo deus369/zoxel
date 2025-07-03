@@ -1,4 +1,13 @@
+const double time_update_system_stat_text_rate = 0.5;
+double time_update_system_stat_text = 0;
+
 void StatTextSystem(ecs_iter_t *it) {
+    time_update_system_stat_text += zox_delta_time;
+    if (time_update_system_stat_text >= time_update_system_stat_text_rate) {
+        time_update_system_stat_text = 0;
+    } else {
+        return;
+    }
     int stat_name_text_count = 32;
     int label_text_count = 64;
     char stat_name_text[stat_name_text_count];
@@ -8,8 +17,7 @@ void StatTextSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(StatLink, statLinks, statLink)
         const ecs_entity_t stat = statLink->value;
-        if (!stat || !zox_has(stat, StatValue) || !zox_has(stat, StatValueMax) || !zox_has(stat, ZoxName)) {
-            // zox_log("! text not linked to statbar\n")
+        if (!zox_valid(stat) || !zox_has(stat, StatValue) || !zox_has(stat, StatValueMax) || !zox_has(stat, ZoxName)) {
             continue;
         }
         zox_field_o(TextData, textDatas, textData)

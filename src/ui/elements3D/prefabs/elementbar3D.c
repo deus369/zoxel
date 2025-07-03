@@ -36,7 +36,7 @@ ecs_entity_2 spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data,
     const ecs_entity_t frontbar = spawn_elementbar3D_front(world, data->frontbar.prefab, data->ui_holder, e, frontbar_position, data->frontbar.render_disabled);
     add_to_Children(children, frontbar);
     if (text_data.prefab) {
-        text_data.position = (float3) { 0, 0, element3D_depth_difference * 2 };
+        text_data.position = (float3) { 0, 0, element3D_depth_difference * 4 };
         zigel_data.position = text_data.position;
         text_data.parent = e;
         const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);

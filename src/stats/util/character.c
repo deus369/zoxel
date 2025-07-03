@@ -2,7 +2,8 @@ const int character_stats = 2;
 const int player_extra_stats = 5;
 #define statbar_float_position 0.32f
 
-void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t character, ElementLinks *elementLinks, byte render_disabled, const ecs_entity_t health_stat, float2 health) {
+// move this to stats_ui
+/*void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t character, ElementLinks *elementLinks, byte render_disabled, const ecs_entity_t health_stat, float2 health) {
     float ui_position = statbar_float_position;
     // spawn 3D healtbar
     SpawnDataElementbar3D spawn_data = {
@@ -30,11 +31,11 @@ void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t character, E
         .outline_color = color_black
     };
     const ecs_entity_2 e = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
-    zox_prefab_set(e.x, StatLink, { health_stat })
-    zox_prefab_set(e.y, StatLink, { health_stat })
+    zox_set(e.x, StatLink, { health_stat })
+    zox_set(e.y, StatLink, { health_stat })
     add_to_ElementLinks(elementLinks, e.x);
     zox_set(e.x, ElementHolder, { character })
-}
+}*/
 
 // todo: take in npc spawn meta data, like location, biome, etc
 void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
@@ -99,5 +100,5 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
         }
     }
     // spawns overhead ui
-    spawn_new_character_uis(world, data->e, data->elementLinks, data->render_disabled, health_stat, health);
+    // spawn_new_character_uis(world, data->e, data->elementLinks, data->render_disabled, health_stat, health);
 }
