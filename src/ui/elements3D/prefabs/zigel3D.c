@@ -5,6 +5,7 @@ typedef struct {
     color fill_color;
     color outline_color;
     byte font_thickness;
+    byte font_outline;
     byte resolution;
     float3 position;
     byte render_disabled; // zox character code
@@ -20,6 +21,7 @@ ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab)
     zox_prefab_set(e, Color, { color_white })
     zox_prefab_set(e, SecondaryColor, { color_white })
     zox_prefab_set(e, FontThickness, { 1 })
+    zox_prefab_set(e, FontOutlineThickness, { 1 })
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, zigel3D_size);
     zox_set(e, TextureSize, { int2_single(2) })
     return e;
@@ -31,6 +33,7 @@ ecs_entity_t spawn_zigel3D(ecs_world_t *world, const Zigel3DData data) {
     zox_set(e, ParentLink, { data.parent })
     zox_set(e, ZigelIndex, { data.zigel_index })
     zox_set(e, FontThickness, { data.font_thickness })
+    zox_set(e, FontOutlineThickness, { data.font_outline })
     zox_set(e, Color, { data.fill_color })
     zox_set(e, SecondaryColor, { data.outline_color })
     zox_set(e, LocalPosition3D, { data.position })

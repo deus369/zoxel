@@ -3,3 +3,6 @@ const float2 statbar_front_mesh_scale = (float2) { 0.34f, 0.04f };
 const float2 text3D_size = (float2) { 0.024f, 0.024f };
 const float2 zigel3D_size = (float2) { 0.019f, 0.019f };
 const float element3D_depth_difference = 0.0012f;
+int text3D_resolution = 24;
+int text3D_thickness = 3;
+int text3D_outline = 0;

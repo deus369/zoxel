@@ -23,8 +23,9 @@ void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data 
     };
     Zigel3DData statbar_zigel_data = {
         .prefab = prefab_zigel3D,
-        .font_thickness = 4,
-        .resolution = 32,
+        .font_thickness = text3D_thickness,
+        .font_outline = text3D_outline,
+        .resolution = text3D_resolution,
         .fill_color = (color) { 55, 255, 255, 200 },
         .outline_color = color_black
     };

@@ -18,8 +18,9 @@ void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *da
     };
     Zigel3DData label3D_zigel_data = {
         .prefab = prefab_zigel3D,
-        .font_thickness = 4,
-        .resolution = 32,
+        .font_thickness = text3D_thickness,
+        .font_outline = text3D_outline,
+        .resolution = text3D_resolution,
         .fill_color = (color) { 255, 255, 255, 255 },
         .outline_color = (color) { 5, 15, 5, 122 }
     };

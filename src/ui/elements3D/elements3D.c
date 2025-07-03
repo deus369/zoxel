@@ -6,6 +6,7 @@ zox_declare_tag(Text3D)
 zox_component_float3(UITrail)
 zox_component_float(Text3DScale)
 #include "data/_.c"
+#include "settings/_.c"
 #include "util/_.c"
 #include "prefabs/_.c"
 #include "util/popup.c"

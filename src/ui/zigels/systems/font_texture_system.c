@@ -1,6 +1,6 @@
 void FontTextureSystem(ecs_iter_t *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
-    const byte default_font_outline = 1; // 4
+    // const byte default_font_outline = 1; // 4
     zox_change_check()
     zox_field_world()
     // todo: link each zigel to fontstyle's font
@@ -16,10 +16,11 @@ void FontTextureSystem(ecs_iter_t *it) {
     zox_field_in(Color, colors, 2)
     zox_field_in(SecondaryColor, secondaryColors, 3)
     zox_field_in(TextureSize, textureSizes, 4)
-    zox_field_out(FontThickness, fontThicknesss, 5)
-    zox_field_out(TextureData, textureDatas, 6)
-    zox_field_out(TextureDirty, textureDirtys, 7)
-    zox_field_out(GenerateTexture, generateTextures, 8)
+    zox_field_in(FontThickness, fontThicknesss, 5)
+    zox_field_in(FontOutlineThickness, fontOutlineThicknesss, 6)
+    zox_field_out(TextureData, textureDatas, 7)
+    zox_field_out(TextureDirty, textureDirtys, 8)
+    zox_field_out(GenerateTexture, generateTextures, 9)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         zox_field_o(TextureDirty, textureDirtys, textureDirty)
@@ -37,6 +38,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         zox_field_i(Color, colors, color_variable)
         zox_field_i(SecondaryColor, secondaryColors, secondaryColor)
         zox_field_i(FontThickness, fontThicknesss, fontThickness)
+        zox_field_i(FontOutlineThickness, fontOutlineThicknesss, fontOutlineThickness)
         zox_field_o(TextureData, textureDatas, textureData)
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
@@ -61,7 +63,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         }
         zox_geter(font, FontData, fontData)
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, default_font_outline);
+        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, fontOutlineThickness->value);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates

@@ -11,6 +11,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
     zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }})
     zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
     zox_prefab_set(e, FontThickness, { 1 })
+    zox_prefab_set(e, FontOutlineThickness, { 1 })
     zox_prefab_add(e, TextData)
     zox_prefab_set(e, Children, { 0, NULL })
     return e;

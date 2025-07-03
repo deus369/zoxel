@@ -60,7 +60,7 @@ void ZoxGameImport(ecs_world_t *world) {
     block_spawn_chance_grass = 1024;
     fog_density = 0.05f;
     character_render_distance = 2;   // not used yet
-    characters_per_chunk_count = 1; // 0 | 1 | 4 | 8 | 16 | 64
+    characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64
 
     // fix prefabs
     if (prefab_vox) {
