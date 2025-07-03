@@ -36,7 +36,6 @@ zox_begin_module(Zox)
     zox_import_module(Bones)
     #ifdef zox_mod_ui
     zox_import_module(Elements)
-    zox_import_module(GameUI)
     #endif
     zox_import_module(Lines)
     zox_import_module(Plots)
@@ -52,6 +51,9 @@ zox_begin_module(Zox)
     zox_import_module(Particles)
     zox_import_module(Blueprints)
     zox_import_module(Characters)
+    #ifdef zox_mod_ui
+    zox_import_module(GameUI)
+    #endif
     // user data
     zox_import_module(Users)
     zox_import_module(Combat)

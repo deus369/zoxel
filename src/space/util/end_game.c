@@ -11,8 +11,6 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player) {
     if (taskbar) {
         zox_delete(taskbar)
     }
-    // convert this like menu_game
-    dispose_menu_game_touch(world, player);
 
     trigger_canvas_fade_transition(world, canvas, 0.5, 1.0);
 

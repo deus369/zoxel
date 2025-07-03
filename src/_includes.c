@@ -32,7 +32,6 @@
 #include "animations/animations.c"
 #include "bones/bones.c"
 #include "ui/ui.c"
-#include "game_ui/game_ui.c"
 #include "lines/lines.c"
 #include "plots/plots.c"
 #include "genetics/genetics.c"
@@ -48,6 +47,7 @@
 #include "blueprints/blueprints.c"
 #include "characters/characters.c"
 #include "dungeons/dungeons.c"
+#include "game_ui/game_ui.c"
 // user data
 #include "users/users.c"
 #include "combat/combat.c"

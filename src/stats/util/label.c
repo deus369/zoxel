@@ -42,7 +42,7 @@ uint add_label_stat_value(ecs_world_t *world, const ecs_entity_t character, cons
 }
 
 // new label ui
-uint get_label_stats(ecs_world_t *world, const ecs_entity_t player, char *buffer, const uint size, uint index) {
+uint get_label_player_stats(ecs_world_t *world, const ecs_entity_t player, char *buffer, const uint size, uint index) {
     if (!player) {
         index += snprintf(buffer + index, size - index, "! invalid player\n");
         return index;
@@ -91,7 +91,7 @@ void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dyn
     }
 }
 
-uint get_label_element_links(ecs_world_t *world, const ecs_entity_t player, char *buffer, const uint size, uint index) {
+uint get_label_player_element_links(ecs_world_t *world, const ecs_entity_t player, char *buffer, const uint size, uint index) {
     if (!zox_valid(player)) {
         index += snprintf(buffer + index, size - index, "! invalid player\n");
         return index;

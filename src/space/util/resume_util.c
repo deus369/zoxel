@@ -2,7 +2,9 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     const byte can_roam = zox_get_value(camera, CanRoam)
     if (can_roam == 0 || can_roam == 2) {
-        if (mouse_entity) zox_set(mouse_entity, MouseLock, { 1 })
+        if (mouse_entity) {
+            zox_set(mouse_entity, MouseLock, { 1 })
+        }
     }
     // return to regular ui
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
@@ -27,7 +29,6 @@ void resume_player(ecs_world_t *world, const ecs_entity_t player) {
     ecs_entity_t previous_event = zox_get_value(player, PlayerPauseEvent)
     if (zox_valid(previous_event)) {
         zox_delete(previous_event)
-        // zox_log("deleted old event\n")
     }
     zox_set(player, PlayerPauseEvent, { pause_event })
 }

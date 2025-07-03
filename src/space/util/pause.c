@@ -16,17 +16,19 @@ void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     spawn_player_menu_paused(world, player);
 }
 
-extern void dispose_menu_game_touch(ecs_world_t *world, const ecs_entity_t player);
+extern void dispose_menu_game(ecs_world_t *world, const ecs_entity_t player);
 
 void pause_player(ecs_world_t *world, const ecs_entity_t player) {
+    dispose_menu_game(world, player); // check this, ingame ui should now be linked to player, got from canvas
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    dispose_menu_game_touch(world, player); // check this, ingame ui should now be linked to player, got from canvas
     disable_inputs_until_release(world, player, zox_device_mode_none, 1);
     const byte can_roam = zox_get_value(camera, CanRoam)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     if (can_roam == 0) { // if attached to character
-        if (zox_alive(character)) zox_set(character, DisableMovement, { 1 })
+        if (zox_alive(character)) {
+            zox_set(character, DisableMovement, { 1 })
+        }
     } else if (can_roam == 2) {
         zox_set(camera, CanRoam, { 1 })
     }

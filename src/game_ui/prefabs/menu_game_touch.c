@@ -48,7 +48,7 @@ ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, co
     return e;
 }
 
-ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas) {
+ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t player, const ecs_entity_t canvas) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const ecs_entity_t e = spawn_element_invisible_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
     zox_name("menu_game_touch")
@@ -79,20 +79,35 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
         bottom_padding + (button_size + button_padding) * 2 };
     add_to_Children(children, spawn_button_game(world, canvas, e, canvas_size, position_attack, anchor_right, button_size, (ClickEvent) { &button_event_attack }));
 #endif
+    // link to character
+    zox_geter(player, CharacterLink, characterLink)
+    zox_get_muter(characterLink->value, ElementLinks, elementLinks)
+    add_to_ElementLinks(elementLinks, e);
+    zox_set(e, ElementHolder, { characterLink->value })
     return e;
 }
 
 // called from game state changes
-void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
+void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas) {
+    if (!zox_valid(canvas)) {
+        return;
+    }
     find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
-    if (!game_menu_touch) {
-        spawn_menu_game_touch(world, prefab_menu_game_touch, canvas);
+    if (!zox_valid(game_menu_touch)) {
+        spawn_menu_game_touch(world, prefab_menu_game_touch, player, canvas);
     }
 }
 
-void dispose_game_menu_touch(ecs_world_t *world, const ecs_entity_t canvas) {
+void dispose_menu_game_touch(ecs_world_t *world, const ecs_entity_t player) {
+    if (!zox_valid(player)) {
+        return;
+    }
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    if (!zox_valid(canvas)) {
+        return;
+    }
     find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
-    if (game_menu_touch) {
+    if (zox_valid(game_menu_touch)) {
         zox_delete(game_menu_touch)
     }
 }
