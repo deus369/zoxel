@@ -3,8 +3,8 @@
 
 zox_declare_tag(MenuActions)
 zox_declare_tag(IconAction)
-#include "prefabs/prefabs.c"
-#include "util/action_util.c"
+#include "prefabs/_.c"
+#include "util/_.c"
 
 zox_begin_module(ActionsUI)
     zox_define_tag(MenuActions)

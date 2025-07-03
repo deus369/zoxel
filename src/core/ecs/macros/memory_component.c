@@ -249,6 +249,15 @@ for (int i = 0; i < component->length; i++) {\
     }\
 }
 
+#define find_array_component_with_tag_id(component, tag_id, name)\
+ecs_entity_t name = 0;\
+for (int i = 0; i < component->length; i++) {\
+    if (zox_has_id(component->value[i], tag_id)) {\
+        name = component->value[i];\
+        break;\
+    }\
+}
+
 /*
 .ctor = ecs_ctor(name),\
 .dtor = ecs_dtor(name),\

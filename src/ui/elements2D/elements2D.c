@@ -1,10 +1,10 @@
 #ifndef zox_elements2D
 #define zox_elements2D
 
-#include "data/data.c"
-#include "prefabs/prefabs.c"
-#include "util/util.c"
-#include "systems/systems.c"
+#include "data/_.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "systems/_.c"
 
 zox_begin_module(Elements2D)
     define_components_elements2D(world);

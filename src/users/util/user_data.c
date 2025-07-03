@@ -26,21 +26,20 @@ ecs_entity_t spawn_prefab_##name(ecs_world_t *world) {\
 }\
 \
 /* generic meta spawn function*/\
-ecs_entity_t spawn_meta_##name(ecs_world_t *world, const ecs_entity_t prefab, const char *source_name) {\
+ecs_entity_t spawn_meta_##name(ecs_world_t *world, const ecs_entity_t prefab, const char *name) {\
     zox_prefab_child(prefab)\
-    /*zox_prefab_name("meta_"label)*/\
-    zox_name(source_name)\
+    zox_set_name(e, name)\
     ZoxName *zoxName = &((ZoxName) { 0, NULL });\
-    set_zox_name(zoxName, source_name);\
+    set_zox_name(zoxName, name);\
     zox_set(e, ZoxName, { zoxName->length, zoxName->value })\
     return e;\
 }\
 \
-ecs_entity_t spawn_meta_##name##_zox_name(ecs_world_t *world, const ecs_entity_t prefab, const ZoxName *source_name) {\
+ecs_entity_t spawn_meta_##name##_zox_name(ecs_world_t *world, const ecs_entity_t prefab, const ZoxName *name) {\
     zox_prefab_child(prefab)\
     zox_name("meta_"label)\
     ZoxName *zoxName = &((ZoxName) { 0, NULL });\
-    clone_ZoxName(zoxName, source_name);\
+    clone_ZoxName(zoxName, name);\
     zox_set(e, ZoxName, { zoxName->length, zoxName->value })\
     return e;\
 }\

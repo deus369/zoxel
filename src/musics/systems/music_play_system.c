@@ -19,7 +19,9 @@ void MusicPlaySystem(ecs_iter_t *it) {
         if (noteLinks->length > 0 && musicTime->value >= musicSpeed->value) {
             musicTime->value -= musicSpeed->value;
             musicNote->value++;
-            if (musicNote->value >= noteLinks->length) musicNote->value = 0;
+            if (musicNote->value >= noteLinks->length) {
+                musicNote->value = 0;
+            }
             const ecs_entity_t note = noteLinks->value[musicNote->value];
             const int music_note = zox_get_value(note, SoundFrequencyIndex)
             // const int music_note = musicData->value[musicNote->value];

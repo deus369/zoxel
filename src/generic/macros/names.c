@@ -43,7 +43,7 @@ void zox_debug_spawn(ecs_world_t *world, const ecs_entity_t e, const char* name,
 #endif
 }
 
-#define zox_prefab_name(label) zox_debug_spawn(world, e, label, "prefab");
+#define zox_prefab_name(label) zox_debug_spawn(world, e, "prefab_"label, "prefab");
 
 #define zox_name(label) zox_debug_spawn(world, e, label, "instance");
 

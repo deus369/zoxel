@@ -15,7 +15,9 @@ void dispose2_##name(ecs_world_t *world, const name *component) {\
     }\
     for (int j = 0; j < component->length; j++) {\
         if (is_log) {\
-            if (zox_valid(component->value[j])) zox_log("   - [%lu] [%i of %i]\n", component->value[j], j, component->length)\
+            if (zox_valid(component->value[j])) {\
+                zox_log("   - [%lu] [%i of %i]\n", component->value[j], j, component->length)\
+            }\
         }\
         zox_delete_safe(component->value[j])\
     }\
@@ -26,9 +28,12 @@ void on_destroyed_##name(ecs_iter_t *it) {\
     zox_field_in(name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_i(name, components, component)\
-        if (is_log && component->length) {\
+        if (!component->length) {\
+            continue;\
+        }\
+        if (is_log) {\
             zox_field_e()\
-            zox_log("- chunk disposal [%lu]::%i\n", e, component->length)\
+            zox_log("- disposing [%s]'s [%s] (%i)\n", zox_get_name(e), #name, component->length)\
         }\
         dispose2_##name(world, component);\
     }\
@@ -50,7 +55,9 @@ void remove_index_from_##name(name *component, const int i) {\
 }\
 \
 byte remove_from_##name(name *component, const ecs_entity_t data) {\
-    if (!component || !component->value) return 0;\
+    if (!component || !component->value) {\
+        return 0;\
+    }\
     for (int i = 0; i < component->length; i++) {\
         if (component->value[i] == data) {\
             remove_index_from_##name(component, i);\
@@ -61,15 +68,23 @@ byte remove_from_##name(name *component, const ecs_entity_t data) {\
 }\
 \
 byte is_in_##name(name *component, const ecs_entity_t data) {\
-    if (!component->value) return 0;\
-        for (int i = 0; i < component->length; i++)\
-            if (component->value[i] == data) return 1;\
+    if (!component || !component->value) {\
+        return 0;\
+    }\
+    for (int i = 0; i < component->length; i++) {\
+        if (component->value[i] == data) {\
+            return 1;\
+        }\
+    }\
     return 0;\
 }\
 \
 byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
-    if (!is_in_##name(component, data)) return add_to_##name(component, data);\
-    else return 0;\
+    if (!is_in_##name(component, data)) {\
+        return add_to_##name(component, data);\
+    } else {\
+        return 0;\
+    }\
 }
 
 #define zox_define_entities_component2(name, ...)\
@@ -80,4 +95,5 @@ byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
         .events = { EcsOnRemove },\
     });
 
-#define zox_define_entities_component(name) zox_define_entities_component2(name, [in] name)
+#define zox_define_entities_component(name)\
+    zox_define_entities_component2(name, [in] name)

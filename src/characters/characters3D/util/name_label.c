@@ -23,6 +23,7 @@ void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *da
         .fill_color = (color) { 255, 255, 255, 255 },
         .outline_color = (color) { 5, 15, 5, 122 }
     };
-    const ecs_entity_t label3D = spawn_label3D(world, label3D_spawn_data, label3D_text_data, label3D_zigel_data);
-    add_to_ElementLinks(data->elementLinks, label3D);
+    const ecs_entity_t e = spawn_label3D(world, label3D_spawn_data, label3D_text_data, label3D_zigel_data);
+    add_to_ElementLinks(data->elementLinks, e);
+    zox_set(e, ElementHolder, { data->e })
 }

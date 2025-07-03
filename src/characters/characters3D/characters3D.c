@@ -3,12 +3,10 @@
 
 zox_declare_tag(Character3D)
 zox_component_entity(Character3DLink)
-#include "data/settings.c"
-#include "data/hooks.c"
-#include "data/spawn_character3D_data.c"
-#include "prefabs/prefabs.c"
-#include "util/util.c"
-#include "terrain/characters3D_terrain.c"
+#include "data/_.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "terrain/_.c"
 
 void module_dispose_characters3D(ecs_world_t *world, void *ctx) {
     dispose_hook_spawned_character3D();

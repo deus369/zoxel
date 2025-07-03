@@ -29,6 +29,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     const float2 real_position = get_element_position(canvas_position, data->canvas.size);
     anchor_element_position2D(&position, data->element.anchor, data->element.size);
     zox_instance(data->element.prefab)
+    zox_set_name(e, data->header_zext.text)
     // zox_set_unique_name(e, data->header_zext.text)
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data->canvas.size, data->element.size, data->element.anchor);
@@ -106,9 +107,13 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     int array_index = 0;
     const byte active_states = zox_has(data->frame.prefab, ActiveState);
     for (int j = data->window.grid_size.y - 1; j >= 0; j--) {
-        if (array_index >= body_children->length) break;
+        if (array_index >= body_children->length) {
+            break;
+        }
         for (int i = 0; i < data->window.grid_size.x; i++) {
-            if (array_index >= body_children->length) break;
+            if (array_index >= body_children->length) {
+                break;
+            }
             const int2 position = {
                 (int) ((i - (data->window.grid_size.x / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding)),
                 (int) ((j - (data->window.grid_size.y / 2.0f) + 0.5f) * (data->window.icon_size + data->window.grid_padding))
@@ -142,6 +147,10 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     }
     zox_set(body, Children, { body_children->length, body_children->value })
     zox_set(e, Children, { children->length, children->value })
+    // add to characters element links and link to character
+    zox_get_muter(character, ElementLinks, elementLinks)
+    add_to_ElementLinks(elementLinks, e);
+    zox_set(e, ElementHolder, { character })
     return e;
 }
 

@@ -1,7 +1,4 @@
 // refactor this, module updates can add debug lines to it per frame
-const int max_debug_characters = 1024;
-double time_update_debug_label_system_rate = 1.0;
-double time_update_debug_label_system = 0;
 
 // #define zox_debug_ui_memorys_allocated
 // #define zox_debug_ui_device_mode

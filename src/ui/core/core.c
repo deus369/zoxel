@@ -1,10 +1,10 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
-#include "data/data.c"
-#include "util/util.c"
-#include "prefabs/prefabs.c"
-#include "systems/systems.c"
+#include "data/_.c"
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "systems/_.c"
 
 zox_begin_module(ElementsCore)
     define_components_elements_core(world);

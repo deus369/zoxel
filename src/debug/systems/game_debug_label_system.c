@@ -63,7 +63,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (!canvas || !zox_has(canvas, PlayerLink)) continue;
         const ecs_entity_t player = zox_get_value(canvas, PlayerLink)
         if (!player) continue;
-        const ecs_entity_t character = zox_get_value(player, CharacterLink)
+        // const ecs_entity_t character = zox_get_value(player, CharacterLink)
 #ifdef zox_debug_ui_device_mode
         const DeviceMode *deviceMode = zox_get(player, DeviceMode)
 #endif
@@ -99,12 +99,12 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         buffer_index = get_label_camera_frustum(world, player, buffer, buffer_size, buffer_index);
 #endif
         // Player / Character
-#ifdef zox_debug_ui_player_level
+/*#ifdef zox_debug_ui_player_level
         buffer_index = get_label_local_character_level(world, character, buffer, buffer_size, buffer_index);
 #endif
 #ifdef zox_debug_ui_player_health
         buffer_index = get_label_local_character_health(world, character, buffer, buffer_size, buffer_index);
-#endif
+#endif*/
 #ifdef zox_debug_player_element_links
         buffer_index = get_label_element_links(world, player, buffer, buffer_size, buffer_index);
         buffer_index = get_label_element_links(world, character, buffer, buffer_size, buffer_index);

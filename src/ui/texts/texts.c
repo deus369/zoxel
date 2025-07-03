@@ -11,14 +11,12 @@ zox_component_int(TextSize)
 zox_component_byte2(TextPadding)
 zox_component_double(AnimateZext)
 zox_component_zext(TextData)
-#include "data/settings.c"
-#include "data/zext_update.c"
-#include "data/zext_spawn_data.c"
+#include "data/_.c"
 #include "util/zigel_util.c"
 #include "util/resize_util.c"
-#include "prefabs/prefabs.c"
+#include "prefabs/_.c"
 #include "util/zext_util.c"
-#include "systems/systems.c"
+#include "systems/_.c"
 
 zox_begin_module(Zexts)
     zox_define_tag(Zext)

@@ -1,0 +1,8 @@
+// just quick references
+ecs_entity_t realm_stat_soul;
+ecs_entity_t realm_stat_health;
+ecs_entity_t realm_stat_energy;
+ecs_entity_t realm_stat_mana;
+ecs_entity_t realm_stat_regen_health;
+ecs_entity_t realm_stat_regen_energy;
+ecs_entity_t realm_stat_regen_mana;

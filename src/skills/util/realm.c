@@ -1,11 +1,3 @@
-ecs_entity_t meta_skill_punch;
-ecs_entity_t meta_skill_aura_life;
-ecs_entity_t meta_skill_aura_death;
-ecs_entity_t meta_skill_aura_fire;
-const int realm_skills_count = 4;
-const float base_death_aura_damage = 1;
-const float base_death_aura_range = 3;
-
 ecs_entity_t spawn_realm_skill_aura(ecs_world_t *world, char *name, char *texture_name, const float damage, const float range, const color particle_color) {
     const ecs_entity_t e = spawn_skill_aura(world, prefab_skill_aura, name, damage, range, particle_color);
     zox_set(e, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data(texture_name)) })

@@ -37,18 +37,15 @@ void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event)
         zox_log("! taskbar button index [%i] out of bounds [%i]\n", index, hook_taskbars->size)
         return;
     }
-    const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
     hook_taskbar hook = hook_taskbars->data[index];
-    toggle_ui_with_id(*hook.spawn, hook.component_id, event->clicker)
-    find_child_with_id(canvas, hook.component_id, window_ui)
+    const ecs_entity_t window_ui = toggle_ui_with_id(world, *hook.spawn, hook.component_id, event->clicker);
     const ecs_entity_t frame = zox_get_value(event->clicked, ParentLink)
-    if (!frame || !zox_has(frame, ActiveState)) {
+    if (!zox_valid(frame) || !zox_has(frame, ActiveState)) {
         zox_log(" ! invalid frame\n")
         return;
     }
-    byte window_state = window_ui == 0;
+    byte window_state = zox_valid(window_ui);
     zox_set(frame, ActiveState, { window_state })
-
 }
 
 /*for (int i = 0; i < load_shader_functions->size; i++) {

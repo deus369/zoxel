@@ -12,7 +12,7 @@ void remove_physics_debug(ecs_world_t *world, const ecs_entity_t e) {
     zox_remove(e, ColorRGB)*/
 }
 
-void add_physics3D(ecs_world_t *world, const ecs_entity_t e) {
+void add_physics3D(ecs_world_t *world, const ecs_entity_t e, const float3 bounds) {
     zox_add_tag(e, Frictioned)
     zox_prefab_set(e, LastPosition3D, { float3_zero })
     zox_prefab_set(e, InitializePhysics3D, { 0 })
@@ -21,9 +21,10 @@ void add_physics3D(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, Omega3D, { quaternion_identity })
     zox_prefab_set(e, Alpha3D, { quaternion_identity })
     zox_prefab_set(e, Gravity3D, { { 0.0f, physics3D_gravity, 0.0f } })
-    zox_prefab_set(e, Bounds3D, { { 0.5f, 0.5f, 0.5f } })
+    zox_prefab_set(e, Bounds3D, { bounds })
     zox_prefab_set(e, Grounded, { 0 })
     zox_prefab_set(e, Jump, { 0 })
+    zox_prefab_set(e, DisableMovement, { 0 })
 #ifdef zoxel_debug_bounds
     prefab_add_cube_lines(world, e, color_rgb_white, 1);
 #else

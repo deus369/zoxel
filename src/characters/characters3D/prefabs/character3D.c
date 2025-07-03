@@ -3,13 +3,16 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
         return 0;
     }
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_character3D")
+    zox_prefab_name("character3D")
     zox_add_tag(e, Character3D)
-    // transform
-    add_physics3D(world, e);
-    zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
+    // generation
+    add_seed(world, e, 999);
+    // name
+    zox_prefab_add(e, ZoxName)
+    // physics
+    add_physics3D(world, e, (float3) { 0.25f, 0.25f, 0.25f });
+    // constraints
     zox_prefab_set(e, Position3DBounds, { float6_zero })
-    zox_prefab_set(e, DisableMovement, { 0 })
     // voxels
     zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, VoxLink, { 0 })
@@ -23,11 +26,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     // animation
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
-    // generation
-    add_seed(world, e, 999);
-    // name
-    zox_prefab_add(e, ZoxName)
-    // more
+    // hierarchy
     zox_prefab_add(e, Children)         // for bones, particles, etc (transforms)
     zox_prefab_add(e, ElementLinks)     // uis
     return e;
@@ -99,7 +98,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     };
     run_hook_spawned_character3D(world, &spawned_data);
     zox_set(e, ElementLinks, { spawned_data.elementLinks->length, spawned_data.elementLinks->value })
-    // zox_log_line("+ character [%s] has [%i] uis", name, spawned_data.elementLinks->length)
     free(name);
     return e;
 }

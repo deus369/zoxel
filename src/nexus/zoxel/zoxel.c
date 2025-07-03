@@ -1,6 +1,8 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// todo: we should just BOOT in engine, and just set settings here
+
 byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)

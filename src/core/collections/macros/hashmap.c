@@ -85,6 +85,7 @@ byte name##_has(name* map, key_type key_raw) {\
     int checks = 0;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) {\
+            pthread_rwlock_unlock(&map->lock);\
             return 1;\
         }\
         pair = pair->next;\
@@ -143,7 +144,10 @@ void name##_dispose(name* map) {\
 }\
 \
 int count_##name(name* map) {\
-    if (!map || map->size == 0) return 0;\
+    if (!map || map->size == 0) {\
+        return 0;\
+    }\
+    pthread_rwlock_rdlock(&map->lock);\
     int count = 0;\
     for (int i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
@@ -155,5 +159,6 @@ int count_##name(name* map) {\
             checks++;\
         }\
     }\
+    pthread_rwlock_unlock(&map->lock);\
     return count;\
 }

@@ -13,7 +13,8 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player) {
 #ifdef zoxel_mouse_emulate_touch
     is_touch = 1;
 #endif
-    spawn_menu_game(world, prefab_menu_game, player); // , character_group, canvas);
+    zox_geter(player, CharacterLink, characterLink)
+    spawn_menu_game(world, prefab_menu_game, player, characterLink->value);
     if (is_touch) {
         spawn_in_game_ui_touch(world, canvas);
     }

@@ -85,10 +85,14 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world, const ecs_entity_t prefab
 // called from game state changes
 void spawn_in_game_ui_touch(ecs_world_t *world, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
-    if (!game_menu_touch) spawn_menu_game_touch(world, prefab_menu_game_touch, canvas);
+    if (!game_menu_touch) {
+        spawn_menu_game_touch(world, prefab_menu_game_touch, canvas);
+    }
 }
 
 void dispose_game_menu_touch(ecs_world_t *world, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, MenuGameTouch, game_menu_touch)
-    if (game_menu_touch) zox_delete(game_menu_touch)
+    if (game_menu_touch) {
+        zox_delete(game_menu_touch)
+    }
 }

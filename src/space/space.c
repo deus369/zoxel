@@ -8,10 +8,9 @@
 #include "data/settings.c"
 zox_component_entity(PlayerPauseEvent)
 #include "states/player_state.c"
-#include "util/pause_util.c"
-#include "prefabs/_include.c"
-#include "util/_include.c"
-#include "systems/_include.c"
+#include "prefabs/_.c"
+#include "util/_.c"
+#include "systems/_.c"
 
 zox_begin_module(Space)
     if (headless) {
@@ -22,7 +21,7 @@ zox_begin_module(Space)
     add_to_event_game_state((zox_game_event) { &players_game_state });
     spawn_prefabs_players2(world);
     // add_hook_key_down(key_down_test_aura);
-    add_hook_key_down(key_down_toggle_streaming);
+    // add_hook_key_down(key_down_toggle_streaming);
 zox_end_module(Space)
 
 #endif

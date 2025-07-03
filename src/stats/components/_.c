@@ -1,0 +1,30 @@
+zox_declare_tag(StatState)
+zox_declare_tag(StatRegen)
+zox_declare_tag(StatAttribute)
+zox_declare_tag(StatLevel)
+zox_component_float(StatValue)
+zox_component_float(StatValueMax)
+zox_component_float(ExperienceValue)
+zox_component_float(ExperienceMax)
+zox_entities_component(DotLinks)
+zox_declare_user_data(Stat)
+zox_create_user_data_prefabs(Stat, stat, "stat")
+// special stats
+zox_declare_tag(HealthStat)
+zox_declare_tag(StatSoul)
+
+void zox_define_components_stats(ecs_world_t *world) {
+    zox_define_tag(StatState)
+    zox_define_tag(StatRegen)
+    zox_define_tag(StatAttribute)
+    zox_define_tag(StatLevel)
+    zox_define_user_data(Stat)
+    zox_define_component_float(StatValue)
+    zox_define_component_float(StatValueMax)
+    zox_define_component_float(ExperienceValue)
+    zox_define_component_float(ExperienceMax)
+    zox_define_entities_component(DotLinks)
+    // special stats
+    zox_define_tag(HealthStat)
+    zox_define_tag(StatSoul)
+}

@@ -5,6 +5,7 @@
 #include "systems.c"
 #include "filters.c"
 #include "entities.c"
+#include "entities_child.c"
 #include "query.c"
 #include "reset_system.c"
 #include "memory_component.c"

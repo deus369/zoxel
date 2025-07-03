@@ -15,3 +15,8 @@
 //      - if solid, and its in air of higher size, now need open node
 //      - if air inside solid, solid is higher, now need open node
 //      - if air and only one solid, and now all air, need close node
+
+// todo: Give Health a level too, when it takes damage or heals, it gains xp
+// todo: Give HealthRegen a level, when regens more health, it gains xp
+// todo: Give Strength a level, when you do actions like lifting, it gains xp (carrying things?)
+// todo: create a custom debug label here with a key to toggle...
