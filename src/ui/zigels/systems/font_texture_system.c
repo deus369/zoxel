@@ -5,7 +5,9 @@ void FontTextureSystem(ecs_iter_t *it) {
     zox_field_world()
     // todo: link each zigel to fontstyle's font
     ecs_entity_t zox_font_style = get_font_style_using();
-    if (!zox_font_style || !zox_has(zox_font_style, Children)) return;
+    if (!zox_font_style || !zox_has(zox_font_style, Children)) {
+        return;
+    }
     zox_geter(zox_font_style, Children, font_style_children)
     if (!font_style_children) {
         zox_log("! font_style_children is NULL\n")
@@ -43,14 +45,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
         int length = textureSize->value.x * textureSize->value.y;
-        if (length <= 0 || fontThickness->value == 0 || !zox_valid(font)) { // spacece
-            /*if (!font) {
-                zox_log("! font invalid, cannot generate font\n")
-            }
-            if (fontThickness->value == 0) {
-                zox_log("! fontThickness is 0, cannot generate font\n")
-            }*/
-            // const int length = textureSize->value.x * textureSize->value.y;
+        if (length <= 0 || fontThickness->value == 0 || !zox_valid(font)) {
             if (length <= 0) {
                 length = 1;
             }

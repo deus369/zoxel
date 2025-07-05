@@ -8,7 +8,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
     zox_prefab_set(e, Color, { color_white })
     zox_prefab_set(e, SecondaryColor, { color_white })
     zox_prefab_set(e, FontThickness, { 1 })
-    zox_prefab_set(e, FontOutlineThickness, { 0 })
+    zox_prefab_set(e, FontOutlineThickness, { 2 })
     zox_prefab_set(e, TextureSize, { int2_single(4) })
     return e;
 }

@@ -15,11 +15,11 @@ void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *da
     };
     Zigel3DData label3D_zigel_data = {
         .prefab = prefab_zigel3D,
-        .font_thickness = text3D_thickness,
-        .font_outline = text3D_outline,
+        .font_thickness = text3D_fill_thickness,
+        .font_outline = text3D_outline_thickness,
         .resolution = text3D_resolution,
-        .fill_color = (color) { 255, 255, 255, 255 },
-        .outline_color = (color) { 5, 15, 5, 122 }
+        .fill_color = label3D_font_color_fill,
+        .outline_color = label3D_font_color_outline
     };
     const ecs_entity_t e = spawn_label3D(world, label3D_spawn_data, label3D_text_data, label3D_zigel_data);
     add_to_ElementLinks(data->elementLinks, e);

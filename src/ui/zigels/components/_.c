@@ -1,0 +1,27 @@
+zox_declare_tag(FontStyle)
+zox_declare_tag(TTFFontStyle)
+zox_declare_tag(Font)
+zox_declare_tag(FontTexture)
+zox_declare_tag(Zigel)
+zox_component_byte(FontThickness)
+zox_component_byte(FontOutlineThickness)
+zox_component_byte(ZigelIndex)
+zox_component_color(FontFillColor)
+zox_component_color(FontOutlineColor)
+zox_component_entity(FontLink)
+zox_memory_component(FontData, byte2) // line points used for generating a font texture
+
+void zox_define_components_zigels(ecs_world_t *world) {
+    zox_define_tag(FontStyle)
+    zox_define_tag(TTFFontStyle)
+    zox_define_tag(Font)
+    zox_define_tag(FontTexture)
+    zox_define_tag(Zigel)
+    zox_define_component_byte(FontThickness)
+    zox_define_component_byte(FontOutlineThickness)
+    zox_define_component_byte(ZigelIndex)
+    zox_define_component_color(FontFillColor)
+    zox_define_component_color(FontOutlineColor)
+    zox_define_memory_component(FontData)
+    zox_define_component_entity(FontLink)
+}

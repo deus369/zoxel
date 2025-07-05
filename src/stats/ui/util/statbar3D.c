@@ -22,11 +22,11 @@ void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data 
     };
     Zigel3DData statbar_zigel_data = {
         .prefab = prefab_zigel3D,
-        .font_thickness = text3D_thickness,
-        .font_outline = text3D_outline,
         .resolution = text3D_resolution,
-        .fill_color = (color) { 55, 255, 255, 200 },
-        .outline_color = color_black
+        .font_thickness = text3D_fill_thickness,
+        .font_outline = text3D_outline_thickness,
+        .fill_color = statbar3D_font_color_fill,
+        .outline_color = statbar3D_font_color_outline
     };
     const ecs_entity_2 e = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
     add_to_ElementLinks(data->elementLinks, e.x);

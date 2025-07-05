@@ -1,4 +1,3 @@
-#include "settings.c"
 #include "save_data_font_style.c"
 #include "parent_spawn_data.c"
 #include "canvas_spawn_data.c"
