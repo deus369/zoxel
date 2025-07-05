@@ -10,10 +10,10 @@ void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
 }
 
 TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t terrain) {
-    byte spawns_in_air = 0;
-    zox_geter(terrain, VoxScale, voxScale)
     const float3 bounds = (float3) { 0.5f, 1.0, 0.5f };
+    // zox_geter(terrain, VoxScale, voxScale)
     zox_geter(terrain, ChunkLinks, chunk_links)
+    byte spawns_in_air = 0;
     ecs_entity_t chunk = 0;
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;

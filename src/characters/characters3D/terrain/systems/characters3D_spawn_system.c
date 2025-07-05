@@ -35,7 +35,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         const byte depth = chunkOctree->linked;
-        zox_geter(voxLink->value, VoxScale, voxScale)
+        // zox_geter(voxLink->value, VoxScale, voxScale)
         int chunk_length = powers_of_two[depth];
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);

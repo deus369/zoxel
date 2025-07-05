@@ -88,7 +88,9 @@ float generate_noise_2D(float2 point, float frequency) {
 
 
 void set_noise_seed(uint32_t seed) {
-    if (global_seed == seed) return;
+    if (global_seed == seed) {
+        return;
+    }
     global_seed = seed;
     // zox_log(" + seed set [%" PRIu32 "]\n", global_seed)
     srand(seed);

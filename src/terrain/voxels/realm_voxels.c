@@ -44,7 +44,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     }
 
     // dirt color - hsv - hue saturation value
-    const float2 dirt_hue = (float2) { 0, 360 };
+    /*const float2 dirt_hue = (float2) { 0, 360 };
     const float2 dirt_value = (float2) { 28, 36 };
     const float2 dirt_saturation = (float2) { 33, 43 };
     float3 dirt_hsv = generate_hsv_v_s(dirt_hue, dirt_value, dirt_saturation);
@@ -73,7 +73,15 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     const color stone_color = hsv_to_color(stone_hsv);
     const color sky_color = hsv_to_color(sky_hsv);
     const color obsidian_color = hsv_to_color((float3) { rand() % 360, 33, 33 });
-
+    */
+    zox_geter(realm, Colors, realm_colors);
+    byte color_index = 0;
+    const color dirt_color = realm_colors->value[color_index++];
+    const color grass_color = realm_colors->value[color_index++];
+    const color sand_color = realm_colors->value[color_index++];
+    const color stone_color = realm_colors->value[color_index++];
+    const color sky_color = realm_colors->value[color_index++];
+    const color obsidian_color = realm_colors->value[color_index++];
     // todo: VoxLinks from realm - spawn vox models first before 'voxels'
 
     /*const ecs_entity_t vox_obsidian = spawn_vox_generated_invisible(world, prefab_vox_generated, obsidian_color);*/
@@ -109,7 +117,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 #ifdef zox_log_spawn_realm_voxels
     zox_log(" > spawned all realm voxels\n")
 #endif
-#ifdef zox_log_realm_colors
+/*#ifdef zox_log_realm_colors
     zox_log(" + soil hsv: %fx%fx%f\n", dirt_hsv.x, dirt_hsv.y, dirt_hsv.z)
     zox_log(" + soil color: %ix%ix%i\n", dirt_color.r, dirt_color.g, dirt_color.b)
     zox_log(" + grass_hsv: %fx%fx%f\n", grass_hsv.x, grass_hsv.y, grass_hsv.z)
@@ -117,7 +125,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_log(" + sand_color: %xx%xx%x\n", sand_color.r, sand_color.g, sand_color.b)
     zox_log(" + stone_color: %xx%xx%x\n", stone_color.r, stone_color.g, stone_color.b)
     zox_log(" + stone_hsv: %fx%fx%f\n", stone_hsv.x, stone_hsv.y, stone_hsv.z)
-#endif
+#endif*/
 #ifdef zox_log_realm_generate
     zox_log(" + generated realm [voxels]\n")
 #endif

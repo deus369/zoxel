@@ -57,3 +57,44 @@ void dispose_component_ids() {
     dispose_component_ids_color_rgb();
     dispose_component_ids_zext();
 }
+
+zox_component_byte(GenericEvent)
+zox_component_byte(EntityInitialize)
+zox_component_int2(ScreenDimensions)
+// identitys
+zox_component_int(ID)
+zox_component_long_int(Seed)
+zox_component_zext(ZoxName)
+// time events
+zox_declare_tag(DestroyInFrame)
+zox_component_double(EventTime)
+zox_component_entity(EventInput)
+zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
+// for gameplay _debug , 1
+zox_entities_component(EntityLinks) // rename to ChunkEntities - used for characters atm
+// used for physics
+zox_component_float3(Bounds3D)
+zox_component_float6(Position3DBounds)
+// used for editor
+zox_component_byte(EntityDirty)
+zox_component_entity(EntityTarget)
+zox_component_entity(ComponentTarget)
+
+void zox_define_components_generic(ecs_world_t *world) {
+    zox_define_tag(DestroyInFrame)
+    zox_define_component_byte(EntityInitialize)
+    zox_define_component_byte(EntityDirty)
+    zox_define_component_byte(GenericEvent)
+    zox_define_component_int2(ScreenDimensions)
+    zox_define_component_int(ID)
+    zox_define_component_long_int(Seed)
+    zox_define_component_double(EventTime)
+    zox_define_component_float3(Bounds3D)
+    zox_define_component_float6(Position3DBounds)
+    zox_define_component_entity(EntityTarget)
+    zox_define_component_entity(ComponentTarget)
+    zox_define_component_entity(EventInput)
+    zox_define_component(TimedEvent)
+    zox_define_component_zext(ZoxName)
+    zox_define_entities_component(EntityLinks)
+}

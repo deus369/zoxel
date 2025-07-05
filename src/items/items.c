@@ -16,7 +16,6 @@ zox_begin_module(Items)
     add_hook_spawned_character3D(&spawn_character_items);
     spawn_prefabs_items(world);
     zox_import_module(ItemsUI)
-    // set_prefab_debug_label(world, &get_label_player_items);
 zox_end_module(Items)
 
 #endif

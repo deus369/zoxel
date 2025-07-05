@@ -3,6 +3,10 @@ const color debug_color_fill = (color) { 0, 255, 0, 255 }; // { 132, 177, 212, 2
 
 // sets update function
 void set_prefab_debug_label(ecs_world_t *world, DebugLabelEvent value) {
+    if (!zox_valid(prefab_game_debug_label)) {
+        zox_log_error("prefab_game_debug_label has not spawned yet")
+        return;
+    }
     zox_set(prefab_game_debug_label, DebugLabelData, { value })
 }
 

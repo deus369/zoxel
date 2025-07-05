@@ -12,12 +12,7 @@
 #define zox_mod_terrain
 
 #include "settings/_.c"
-zox_declare_tag(FlatTerrain)
-zox_declare_tag(FlatlandChunk)
-zox_declare_tag(TerrainWorld)
-zox_declare_tag(TerrainChunk)
-zox_declare_tag(ChunkTerrain)
-zox_component_entity(TerrainLink)
+#include "components/_.c"
 #include "data/_.c"
 #include "prefabs/_.c"
 #include "util/_.c"
@@ -26,13 +21,8 @@ zox_component_entity(TerrainLink)
 
 zox_begin_module(Terrain)
     add_hook_terminal_command(process_arguments_terrain);
-    zox_define_tag(FlatTerrain)
-    zox_define_tag(FlatlandChunk)
-    zox_define_tag(TerrainWorld)
-    zox_define_tag(TerrainChunk)
-    zox_define_tag(ChunkTerrain)
-    zox_define_component_entity(TerrainLink)
-    define_systems_terrain(world);
+    zox_define_components_terrain(world);
+    zox_define_systems_terrain(world);
     spawn_prefabs_terrain(world);
     // add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)

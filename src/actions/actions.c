@@ -11,7 +11,6 @@ zox_begin_module(Actions)
     spawn_prefabs_actions(world);
     add_hook_spawned_character3D(&spawn_character_actions);
     zox_import_module(ActionsUI)
-    // set_prefab_debug_label(world, &get_label_player_actions);
 zox_end_module(Actions)
 
 #endif

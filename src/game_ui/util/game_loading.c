@@ -25,6 +25,7 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
     create_new_save_directory(game_name);
     save_realm(game_name, "seed.dat", &realm_save);
 #endif
+    zox_set(realm, Seed, { realm_save.seed })
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);
 }
@@ -36,6 +37,7 @@ void button_event_continue_game(ecs_world_t *world, const ClickEventData *event)
     // todo: spawn realm data like voxels/stats/skills when starting new game
     load_realm(game_name, "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
+    zox_set(realm, Seed, { realm_save.seed })
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);
 }

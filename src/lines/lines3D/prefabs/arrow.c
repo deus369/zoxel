@@ -1,4 +1,4 @@
-ecs_entity_t spawn_arrow3D(ecs_world_t *world, const float3 point, const float3 normal, const float arrow_radius, const float thickness, const double life_time) {
+void spawn_arrow3D(ecs_world_t *world, const float3 point, const float3 normal, const float arrow_radius, const float thickness, const double life_time) {
     const float3 pointB = float3_add(point, normal);
     spawn_line3D(world, point, pointB, thickness, life_time);
     const float3 pointC = float3_sub(point, float3_multiply_float(normal, -0.1f));

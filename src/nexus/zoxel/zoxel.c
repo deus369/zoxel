@@ -77,6 +77,14 @@ void ZoxGameImport(ecs_world_t *world) {
     // disable_block_voxes = 1;
     game_rule_attach_to_character = 1;
     disable_npcs = 0;
+
+    set_prefab_debug_label(world, &get_label_realm_colors);
+    // set_prefab_debug_label(world, &get_label_player_element_links);
+    // set_prefab_debug_label(world, &get_label_player_stats);
+    // set_prefab_debug_label(world, &get_label_player_items);
+    // set_prefab_debug_label(world, &get_label_player_skills);
+    // set_prefab_debug_label(world, &get_label_player_actions);
+    // set_prefab_debug_label(world, &get_label_player_quests);
 }
 
 #endif

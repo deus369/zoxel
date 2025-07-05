@@ -23,8 +23,8 @@
 #include "sounds/sounds.c"
 #include "nodes/nodes.c"
 #include "realms/realms.c"
-#include "colors/colors.c"
 #include "games/games.c"
+#include "colors/colors.c"
 #include "raycasts/raycasts.c"
 // inner core
 #include "textures/textures.c"
