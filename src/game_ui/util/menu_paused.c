@@ -4,7 +4,7 @@ void button_event_end_game(ecs_world_t *world, const ClickEventData *event) {
     if (!menu_paused) return;
     zox_delete(menu_paused)*/
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
-    const PlayerLinks *players = zox_get(game, PlayerLinks)
+    zox_geter(game, PlayerLinks, players)
     for (int i = 0; i < players->length; i++) {
         const ecs_entity_t e = players->value[i];
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)

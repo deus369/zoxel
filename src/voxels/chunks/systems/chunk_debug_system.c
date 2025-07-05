@@ -85,7 +85,7 @@ void ChunkDebugSystem(ecs_iter_t *it) {
         zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         TraverseChunk data = (TraverseChunk) {
             .world = world,
-            .scale = get_terrain_voxel_scale(chunkOctree->linked), //  0.5f * 2,
+            .scale = get_terrain_voxel_scale(chunkOctree->linked),
             .chunk = chunkOctree,
             .position = byte3_zero,
             .depth = 0,

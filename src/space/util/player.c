@@ -1,17 +1,16 @@
 void add_player(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t player) {
-    PlayerLinks *playerLinks = zox_get_mut(e, PlayerLinks)
-    byte new_length = playerLinks->length + 1;
-    resize_memory_component(PlayerLinks, playerLinks, ecs_entity_t, new_length)
-    playerLinks->value[new_length - 1] = player;
-    zox_modified(e, PlayerLinks)
+    zox_get_muter(e, PlayerLinks, players)
+    byte new_length = players->length + 1;
+    resize_memory_component(PlayerLinks, players, ecs_entity_t, new_length)
+    players->value[new_length - 1] = player;
     zox_set(player, GameLink, { e })
 }
 
 // game state implementation for players module
 void players_game_state(ecs_world_t *world, const ecs_entity_t game, const byte previous_game_state, const byte new_game_state) {
-    const PlayerLinks *playerLinks = zox_get(game, PlayerLinks)
-    for (int i = 0; i < playerLinks->length; i++) {
-        const ecs_entity_t player = playerLinks->value[i];
+    zox_geter(game, PlayerLinks, players)
+    for (int i = 0; i < players->length; i++) {
+        const ecs_entity_t player = players->value[i];
         if (previous_game_state == zox_game_start && new_game_state == zox_game_playing) {
             player_start_game(world, player);
         } else if (previous_game_state == zox_game_playing && new_game_state == zox_game_paused) {

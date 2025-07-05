@@ -30,9 +30,11 @@ ecs_entity_t spawn_label_background(ecs_world_t *world, const ecs_entity_t prefa
             .render_disabled = render_disabled,
         },
         .zext = {
+            .font_resolution = 32,
             .text = text,
             .font_size = font_size,
             .font_thickness = 1,
+            .font_outline_thickness = 1,
             .alignment = alignment,
             .padding = padding,
             .font_fill_color = label_font_fill_color,

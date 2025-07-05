@@ -18,7 +18,7 @@ void button_event_exit_app(ecs_world_t *world, const ClickEventData *event) {
     disable_time_pausing();
     // close on all players
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
-    const PlayerLinks *players = zox_get(game, PlayerLinks)
+    zox_geter(game, PlayerLinks, players)
     for (int i = 0; i < players->length; i++) {
         const ecs_entity_t e = players->value[i];
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)

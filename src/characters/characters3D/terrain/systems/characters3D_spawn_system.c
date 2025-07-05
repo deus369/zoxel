@@ -1,6 +1,7 @@
 ecs_entity_t prefab_character3D_terrain_spawning;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
+    const float3 position_offset = (float3) { 0.25f, 0.25f, 0.25f };
     if (disable_npcs) {
         return;
     }
@@ -34,7 +35,9 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         // find if chunk has any air position - free place to spawn - spawn characters in this chunk
         const ChunkPosition *chunkPosition = &chunkPositions[i];
         const byte depth = chunkOctree->linked;
-        const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
+        zox_geter(voxLink->value, VoxScale, voxScale)
+        int chunk_length = powers_of_two[depth];
+        const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
         ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
         zox_log_spawning("> chunk [%lu] at [%ix%ix%i]", e, chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
@@ -42,7 +45,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             // sometimes cannot find a position
             byte3 local_position;
             // many spawn checks
-            for (byte k = 0; k < 32; k++) {
+            for (byte k = 0; k < chunk_length; k++) {
                 local_position = find_position_on_ground(chunkOctree, chunkOctree->linked, NULL, 0);
                 if (!byte3_equals(byte3_full, local_position)) {
                     break;
@@ -52,7 +55,9 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 zox_log_spawning("! failed to spawn npc\n")
                 continue;
             }
-            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, (float3) { 0.5f, 0.5f, 0.5f }, depth);
+
+            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, position_offset, depth, 1); // voxScale->value);
+
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int vox_index = rand() % npc_vox_index_count;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));

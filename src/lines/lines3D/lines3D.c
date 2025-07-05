@@ -6,9 +6,7 @@ zox_component(LineData3D, float6)     // The two points in a line3D
 zox_declare_tag(CubeLines)
 zox_component_byte(DebugCubeLines)
 zox_component(CubeLinesThickness, float)
-#include "prefabs/line3D.c"
-#include "prefabs/temporary_line3D.c"
-#include "prefabs/cube_lines.c"
+#include "prefabs/_.c"
 #include "shaders/line3D.c"
 #include "systems/line3D_render_system.c"
 #include "systems/cube_line_render_system.c"

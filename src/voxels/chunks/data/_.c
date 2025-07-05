@@ -6,6 +6,7 @@
 #include "set_voxel_data.c"
 #include "set_voxel_target_data.c"
 #include "build_chunk_colored.c"
+#include "terrain_place.c"
 // data consts
 #include "octree.c"
 #include "mesh.c"

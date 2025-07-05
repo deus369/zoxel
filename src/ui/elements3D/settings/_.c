@@ -2,7 +2,7 @@
 int text3D_resolution = 8;  // 8 | 16 | 32
 int text3D_fill_thickness = 1;   // 4
 int text3D_outline_thickness = 0;
-const color statbar3D_font_color_fill = (color) { 33, 8, 33, 205 };
+const color statbar3D_font_color_fill = (color) { 33, 233, 233, 205 };
 const color statbar3D_font_color_outline = (color) { 155, 12, 12, 0 };
 // label3D
 const color label3D_font_color_fill = (color) { 122, 222, 199, 205 };

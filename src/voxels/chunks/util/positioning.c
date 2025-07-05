@@ -94,7 +94,9 @@ float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_posit
 // uses chunk above for air check
 // chunk_above used purely for top of chunk checks
 byte3 find_position_on_ground(const ChunkOctree *chunk, const byte target_depth, const ChunkOctree *chunk_above, const byte spawns_in_air) {
-    if (chunk == NULL) return byte3_full;
+    if (chunk == NULL) {
+        return byte3_full;
+    }
     const byte chunk_length = powers_of_two_byte[target_depth];
     byte checks_count = 0;
     byte3 local_position = byte3_full;
@@ -128,15 +130,21 @@ byte3 find_position_on_ground(const ChunkOctree *chunk, const byte target_depth,
         checks_count++;
     }
     // return find_position_in_chunk(chunk_octree, target_depth);
-    if (spawns_in_air) return local_position; // just for player
+    if (spawns_in_air) {
+        return local_position; // just for player
+    }
     else return byte3_full;
 }
 
-float3 local_to_real_position_character(const byte3 local_position, const int3 chunk_voxel_position, const float3 bounds, const byte max_depth) {
-    const int3 global_voxel_position = int3_add(chunk_voxel_position, byte3_to_int3(local_position));
-    float3 position = int3_to_float3(global_voxel_position);
-    float3_multiply_float_p(&position, get_terrain_voxel_scale(max_depth));
-    position.y += bounds.y / 2.0f; // 0.26f; // 0.75f;
+float3 local_to_real_position_character(const byte3 in_chunk_position, const int3 chunk_grid_position, const float3 bounds, const byte depth, const float vox_scale) {
+    const float scale = get_terrain_voxel_scale(depth) * vox_scale;
+    const int3 grid_position = int3_add(chunk_grid_position, byte3_to_int3(in_chunk_position));
+    float3 position = int3_to_float3(grid_position);
+    // zox_log("scale: %f", scale)
+    float3_multiply_float_p(&position, scale);
+    position.x += scale / 2.0f;
+    position.z += scale / 2.0f;
+    position.y += bounds.y / 2.0f;
     position.y += 0.05f; // extra
     return position;
 }

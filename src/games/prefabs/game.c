@@ -13,6 +13,7 @@ ecs_entity_t spawn_game(ecs_world_t *world, const ecs_entity_t realm) {
     zox_name("game")
     if (realm) {
         zox_set(e, RealmLink, { realm })
+        zox_set(realm, GameLink, { e })
     }
     return e;
 }

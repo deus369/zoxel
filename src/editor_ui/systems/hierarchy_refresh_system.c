@@ -20,13 +20,19 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     zox_field_out(TextureSize, textureSizes, 12)
     zox_field_out(Children, childrens, 13)
     for (int i = 0; i < it->count; i++) {
-        const ecs_entity_t e = it->entities[i];
+        zox_field_e()
         zox_field_o(HierarchyUIDirty, hierarchyUIDirtys, hierarchyUIDirty)
-        if (!hierarchyUIDirty->value) continue;
+        if (!hierarchyUIDirty->value) {
+            continue;
+        }
         zox_field_o(Children, childrens, children)
-        if (!children->value || children->length < 2) continue; // children issues
+        if (!children->value || children->length < 2) {
+            continue; // children issues
+        }
         const ecs_entity_t scrollbar = children->value[1];
-        if (!scrollbar) continue; // no scrollbar
+        if (!scrollbar) {
+            continue; // no scrollbar
+        }
         const ecs_entity_t header = children->value[0];
         zox_field_i(Position2D, position2Ds, position2D)
         zox_field_i(CanvasPosition, canvasPositions, canvasPosition)

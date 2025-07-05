@@ -46,11 +46,15 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
         float3 position = (float3) { 4, 12, 4 };
 
         const ecs_entity_t terrain = zox_get_value(local_realm, TerrainLink)
-        if (!terrain) return;
+        if (!terrain) {
+            return;
+        }
 
-        const ChunkLinks *chunk_links = zox_get(terrain, ChunkLinks)
+        zox_geter(terrain, ChunkLinks, chunk_links)
         const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
-        if (!chunk) return;
+        if (!chunk) {
+            return;
+        }
 
         // zox_log("+ spawning npc!\n")
         float4 rotation = quaternion_identity;
