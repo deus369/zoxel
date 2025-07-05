@@ -17,7 +17,7 @@ ecs_entity_t spawn_popup3D(ecs_world_t *world, const SpawnDataElement3D data, Te
     zox_instance(data.prefab)
     zox_name("popup3D")
     zox_set(e, Color, { data.base_color })
-    float3 depth_position = (float3) { 0, 0, element3D_depth_difference * 2 };
+    float3 depth_position = (float3) { 0, 0, element3D_depth_difference };
     text_data.position = depth_position;
     text_data.parent = e;
     zigel_data.position = depth_position;

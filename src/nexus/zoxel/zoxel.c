@@ -1,8 +1,6 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
-// todo: we should just BOOT in engine, and just set settings here
-
 byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)
@@ -82,16 +80,3 @@ void ZoxGameImport(ecs_world_t *world) {
 }
 
 #endif
-
-// todo: when increasing lod, generate terrain first
-// todo: fix: when render lod initial set to 2, the instances dissapear
-
-// todo: initialize event modules can hook onto for loading i/o
-//      - should occur after all modules are imported, but before game is booted
-// - each module should add to a load resources event for i/o game data
-// #define zox_log_boot_game
-// #define zox_enable_log_start_game
-
-// todo: set block vox resolution to 5
-// todo: use component max depths on terrain
-// todo: fix the texture blocks - use textures generate a regular vox model

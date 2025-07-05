@@ -41,7 +41,8 @@ void component_name##IncrementSystem(ecs_iter_t *it) {\
     }\
 } zox_declare_system(component_name##IncrementSystem)
 
-#define zox_define_increment_system(component, pip, ...) zox_system(component##IncrementSystem, pip, [out] component, __VA_ARGS__)
+#define zox_define_increment_system(component, pip, ...)\
+    zox_system(component##IncrementSystem, pip, [out] component, __VA_ARGS__)
 
 #define zox_set_system(system_name, component_name, t, v)\
 void system_name(ecs_iter_t *it) {\

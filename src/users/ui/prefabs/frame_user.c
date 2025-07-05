@@ -90,7 +90,7 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const
         return;
     }
     if (!zox_has(data, TextureLink)) {
-        zox_log(" ! issue with data texture [%s] ? %i\n", zox_get_name(data), zox_has(data, TextureLink))
+        zox_log_error("[%s] has no texture link component: %i", zox_get_name(data), zox_has(data, TextureLink))
         return;
     }
     const ecs_entity_t texture = zox_get_value(data, TextureLink)
@@ -98,7 +98,7 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const
         clear_texture_data(world, e);
         zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
         zox_set(e, TextureSize, { int2_single(default_icon_texture_size) })
-        zox_log(" ! texture is invalid from [%s]\n", zox_get_name(data))
+        zox_log_error("[%s] has no texture", zox_get_name(data))
         return;
     }
     zox_set(e, GenerateTexture, { zox_generate_texture_none })
@@ -108,8 +108,6 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const
 
 ecs_entity_t spawn_frame_user(ecs_world_t *world, SpawnFrame *data, const ecs_entity_t userdata) {
     const ecs_entity_3 e = spawn_frame(world, data);
-    // zox_set(e.x, UserDataLink, { userdata })
-    // if prefab has label tag, spawn icon label (Quantity)
     set_icon_from_user_data(world, e.x, e.y, userdata);
     set_icon_label_from_user_data_direct(world, e.z, userdata);
     zox_set_unique_name(e.x, "frame_user")

@@ -71,7 +71,7 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     for (int i = 0; i < voxels->length; i++) {
         const ecs_entity_t block = voxels->value[i];
         if (!block || !zox_valid(block)) {
-            zox_log_line("! block [%i] invalid", i)
+            zox_log_error("! block [%i] invalid", i)
             items->value[i] = 0;
             continue;
         }

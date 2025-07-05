@@ -14,6 +14,7 @@ ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_add_tag(e, Text3D)
     zox_prefab_set(e, MeshAlignment, { 0 })
     zox_prefab_set(e, TextSize, { 0 })
+    zox_prefab_set(e, TextResolution, { 0 })
     zox_prefab_set(e, TextPadding, { byte2_zero })
     zox_prefab_set(e, ZextDirty, { 0 })
     zox_prefab_set(e, ParentLink, { 0 })
@@ -73,7 +74,3 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData
     debug_entity_text3D = e;
     return e;
 }
-
-/*zigel_data.position.x += zigel3D_size.x * 0.5f;
- z igel_data.position.x -= zigel3D_size.x * 0.5f * zigels*_count; // centre
- zigel_data.position.x += zigel3D_size.x * data_index;*/

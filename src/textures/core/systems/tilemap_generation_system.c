@@ -42,7 +42,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         const float tile_uv_size = 1.0f / ((float) tilemapSize->value.x); // for example, 1 / 8 if size is 8
         textureSize->value.x = tilemapSize->value.x * unit_size.x;
         textureSize->value.y = tilemapSize->value.y * unit_size.y;
-        // zox_log_line("> unit_size %i - tile_uv_size %f - textureSize %i - tilemapSize %i", unit_size.x, tile_uv_size, textureSize->value.x, tilemapSize->value.x)
+        // zox_log("> unit_size %i - tile_uv_size %f - textureSize %i - tilemapSize %i", unit_size.x, tile_uv_size, textureSize->value.x, tilemapSize->value.x)
         resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
         int2 texture_position = int2_zero;
         int texture_index = 0;
@@ -52,19 +52,19 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
             for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
                 if (texture_index >= textureLinks->length) {
-                    zox_log_line(" ! [tilemap generation system] texture_index OOB  index [%i]", texture_index)
+                    zox_log_error("[tilemap generation system] texture_index OOB  index [%i]", texture_index)
                     break;
                     break;
                 }
                 const ecs_entity_t texture_entity = textureLinks->value[texture_index];
                 if (!zox_valid(texture_entity) || !zox_has(texture_entity, TextureData)) {
-                    zox_log(" ! [tilemap generation system] texture null [%lu] - index [%i]\n", texture_entity, texture_index)
+                    zox_log_error("[tilemap generation system] texture null [%lu] - index [%i]", texture_entity, texture_index)
                     texture_index++;
                     continue;
                 }
                 const TextureData *voxel_texture_data = zox_get(texture_entity, TextureData)
                 if (!voxel_texture_data->value) {
-                    zox_log("! voxel [?] texture [%lu] data is null\n", texture_entity)
+                    zox_log_error("voxel [?] texture [%lu] data is null", texture_entity)
                     texture_index++;
                     continue;
                 }
@@ -79,7 +79,7 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
                         int2 tilemap_pixel_position = int2_add(pixel_position, tilemap_position);
                         int tilemap_index = int2_array_index(tilemap_pixel_position, textureSize->value);
                         if (tilemap_index >= textureData->length) {
-                            zox_log_line(" ! tilemap_index [%i] >= textureData->length [%i]", tilemap_index, textureData->length)
+                            zox_log_error("tilemap_index [%i] >= textureData->length [%i]", tilemap_index, textureData->length)
                             textureDirty->value = 1;
                             return;
                         }

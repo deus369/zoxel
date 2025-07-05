@@ -1,8 +1,4 @@
-#define spawn_stats_on_game_menu
-
-#ifdef spawn_stats_on_game_menu
-    extern void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, const ecs_entity_t player, Children *children);
-#endif
+extern void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, const ecs_entity_t player, Children *children);
 
 ecs_entity_t spawn_prefab_menu_game(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
@@ -20,11 +16,8 @@ ecs_entity_t spawn_menu_game(ecs_world_t *world, const ecs_entity_t prefab, cons
     zox_name("menu_game")
     Children *children = &((Children) { 0, NULL });
     add_to_Children(children, spawn_crosshair(world, canvas, e));
-    // spawn character uis too
-#ifdef spawn_stats_on_game_menu
     spawn_menu_game_stats(world, e, player, children);
     zox_set(e, Children, { children->length, children->value })
-#endif
     // link to character
     zox_get_muter(character, ElementLinks, elementLinks)
     add_to_ElementLinks(elementLinks, e);

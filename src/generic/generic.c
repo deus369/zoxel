@@ -1,12 +1,8 @@
 #ifndef zox_mod_generic
 #define zox_mod_generic
 
-#include "components/components.c"
-#include "data/color.c"
-#include "data/color_rgb.c"
-#include "data/octree_helper.c"
-#include "data/text_group.c"
-#include "data/ecs_entity_2.c"
+#include "components/_.c"
+#include "data/_.c"
 zox_component_byte(GenericEvent)
 zox_component_byte(EntityInitialize)
 zox_component_int2(ScreenDimensions)
@@ -29,7 +25,7 @@ zox_component_byte(EntityDirty)
 zox_component_entity(EntityTarget)
 zox_component_entity(ComponentTarget)
 #include "macros/names.c"
-#include "util/util.c"
+#include "util/_.c"
 #include "prefabs/generic_event.c"
 #include "systems/destroy_in_frame_system.c"
 #include "systems/generic_event_debug_system.c"

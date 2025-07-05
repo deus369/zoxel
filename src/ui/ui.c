@@ -10,7 +10,7 @@
 zox_begin_module(Elements)
     zox_import_module(ElementsCore)
     zox_import_module(Zigels)
-    zox_import_module(Zexts)
+    zox_import_module(Texts)
     zox_import_module(Elements2D)
     zox_import_module(Elements3D)
 zox_end_module(Elements)

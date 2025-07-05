@@ -39,7 +39,7 @@ void initialize_ecs_settings(ecs_world_t *world) {
 }
 
 ecs_world_t* open_ecs(int argc, char* argv[]) {
-    // zox_log_line("> flecs version [%s]", flecs_version)
+    // zox_log("> flecs version [%s]", flecs_version)
     return ecs_init_w_args(argc, argv);
 }
 

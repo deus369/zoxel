@@ -1,8 +1,7 @@
 void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data *data) {
-    const ecs_entity_t health_stat = data->stats[1];
-    // find_array_component_with_tag2(data->stats, data->stats_count, HealthStat, health_stat)
+    const ecs_entity_t health_stat = data->stats[stat_index_health];
     if (!zox_valid(health_stat)) {
-        zox_log("! health stat not found [spawn_character3D_healthbar3D].\n")
+        zox_log_error("health stat not found [spawn_character3D_healthbar3D]")
         return;
     }
     const float ui_position = statbar_float_position;

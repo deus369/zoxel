@@ -8,9 +8,9 @@ void intialize_game_store() {
     if (initialize_steam()) {
         authenticate_user();
         is_steam_running = 1;
-        zox_log("> game store [steam]\n")
+        zox_log("> game store [steam]")
     } else {
-        zox_log("! steam failed to initialize\n")
+        zox_log_error("! steam failed to initialize")
     }
 }
 
@@ -34,7 +34,7 @@ void unlock_achievement(const char* achievement) {
 
 #else
 
-void intialize_game_store() { zox_log(" > game store [none]\n") }
+void intialize_game_store() { } //  zox_log(" > game store [none]")
 void dispose_game_store() { }
 void unlock_achievement(const char* achievement) {
 #ifdef zox_log_achievements

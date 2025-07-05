@@ -2,46 +2,11 @@ const int character_stats = 2;
 const int player_extra_stats = 5;
 #define statbar_float_position 0.32f
 
-// move this to stats_ui
-/*void spawn_new_character_uis(ecs_world_t *world, const ecs_entity_t character, ElementLinks *elementLinks, byte render_disabled, const ecs_entity_t health_stat, float2 health) {
-    float ui_position = statbar_float_position;
-    // spawn 3D healtbar
-    SpawnDataElementbar3D spawn_data = {
-        .percentage = health.x / health.y,
-        .ui_holder = character,
-        .position_y = ui_position,
-        .backbar = {
-            .prefab = prefab_statbar3D,
-            .render_disabled = render_disabled
-        },
-        .frontbar = {
-            .prefab = prefab_elementbar3D_front,
-            .render_disabled = render_disabled
-        },
-    };
-    Text3DData statbar_text_data = {
-        .prefab = prefab_text3D,
-        .text = ""
-    };
-    Zigel3DData statbar_zigel_data = {
-        .prefab = prefab_zigel3D,
-        .font_thickness = 12,
-        .resolution = 64,
-        .fill_color = (color) { 55, 255, 255, 255 },
-        .outline_color = color_black
-    };
-    const ecs_entity_2 e = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
-    zox_set(e.x, StatLink, { health_stat })
-    zox_set(e.y, StatLink, { health_stat })
-    add_to_ElementLinks(elementLinks, e.x);
-    zox_set(e.x, ElementHolder, { character })
-}*/
-
-// todo: take in npc spawn meta data, like location, biome, etc
 void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
-    // stats
+    // generate numbers here
     float2 health = (float2) { 10, 10 };
     health.x = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
+
     int stats_count = character_stats;
     if (data->p) {
         stats_count += player_extra_stats;
@@ -50,13 +15,18 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
     resize_memory_component(StatLinks, stats, ecs_entity_t, stats_count)
     data->stats = stats->value;
     data->stats_count = stats_count;
-    // health
-    stats->value[0] = spawn_user_stat(world, realm_stat_soul, data->e);
-    const ecs_entity_t health_stat = spawn_user_stat(world, realm_stat_health, data->e);
-    zox_set(health_stat, StatValue, { health.x })
-    zox_set(health_stat, StatValueMax, { health.y })
-    stats->value[1] = health_stat;
-    // players are richer bbeings from the aether
+
+    // Stat: Soul
+    const ecs_entity_t stat_soul = spawn_user_stat(world, realm_stat_soul, data->e);
+    stats->value[stat_index_soul] = stat_soul;
+
+    // Stat: Health
+    const ecs_entity_t stat_health = spawn_user_stat(world, realm_stat_health, data->e);
+    zox_set(stat_health, StatValue, { health.x })
+    zox_set(stat_health, StatValueMax, { health.y })
+    stats->value[stat_index_health] = stat_health;
+
+    // players are richer beings from the aether
     if (data->p) {
         const ecs_entity_t game = zox_get_value(data->p, GameLink)
         const ecs_entity_t realm = zox_get_value(game, RealmLink)
@@ -81,6 +51,7 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
             }
         }
     }
+
     zox_set(data->e, StatLinks, { stats->length, stats->value })
     data->stats = stats->value;
     data->stats_count = stats->length;
@@ -88,17 +59,18 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
     if (data->p) {
         const ecs_entity_t canvas = zox_get_value(data->p, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)
-        if (game_menu) {
+        if (zox_valid(game_menu)) {
             find_child_with_tag(game_menu, ElementBar, healthbar2D)
-            zox_set(healthbar2D, StatLink, { health_stat })
-            // set to text
-            const Children *statbar2D_children = zox_get(healthbar2D, Children)
-            const ecs_entity_t healtbar2D_text = statbar2D_children->value[1];
-            zox_set(healtbar2D_text, StatLink, { health_stat })
+            if (zox_valid(healthbar2D)) {
+                zox_set(healthbar2D, StatLink, { stat_health })
+                zox_geter(healthbar2D, Children, statbar2D_children)
+                if (statbar2D_children->length >= 1) {
+                    const ecs_entity_t healtbar2D_text = statbar2D_children->value[1];
+                    zox_set(healtbar2D_text, StatLink, { stat_health })
+                }
+            }
         } else {
-            zox_log("! game_menu not found\n")
+            zox_log_error("game_menu [MenuGame] not found")
         }
     }
-    // spawns overhead ui
-    // spawn_new_character_uis(world, data->e, data->elementLinks, data->render_disabled, health_stat, health);
 }

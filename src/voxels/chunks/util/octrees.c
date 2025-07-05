@@ -128,7 +128,6 @@ void close_same_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_dept
             break;
         }
     }
-    // if (all_same && first_node_value != 0) zox_log("  > closing same node [%i]\n", first_node_value);
     if (all_same) {
         node->value = all_same_voxel;
         close_ChunkOctree(world, node, max_depth);

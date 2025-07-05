@@ -31,7 +31,7 @@ void MeleeSystem(ecs_iter_t *it) {
 
         // todo: move cost use into activation system
         zox_field_i(SkillCost, skillCosts, skillCost)
-        const StatLinks *stats = zox_get(attacking_character, StatLinks)
+        zox_geter(attacking_character, StatLinks, stats)
         if (stats->length < 4) {
             continue;
         }
@@ -51,10 +51,11 @@ void MeleeSystem(ecs_iter_t *it) {
         const float skill_range = skillRange->value;
         if (raycastVoxelData->distance <= skill_range) {
             // zox_log(" > activating melee skill [%s]\n", zox_get_name(action_entity))
-            if (raycastVoxelData->chunk) {
-                if (zox_has(raycastVoxelData->chunk, Character3D)) {
-                    const ecs_entity_t hit_character = raycastVoxelData->chunk;
-                    const StatLinks *hit_character_stats = zox_get(hit_character, StatLinks)
+            const ecs_entity_t hit_chunk = raycastVoxelData->chunk;
+            if (hit_chunk) {
+                if (zox_has(hit_chunk, Character3D)) {
+                    const ecs_entity_t hit_character = hit_chunk;
+                    zox_geter(hit_character, StatLinks, hit_character_stats)
                     find_array_component_with_tag(hit_character_stats, HealthStat, health_stat)
                     if (!health_stat) {
                         zox_log(" ! user had no health\n")
@@ -82,9 +83,9 @@ void MeleeSystem(ecs_iter_t *it) {
                     spawn_popup3D_easy(world, popup_text, popup_color, popup_position);
                 } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->voxel_entity) {
                     raycast_action(world, raycastVoxelData, 0, 2);
-                    if (zox_has(raycastVoxelData->chunk, TerrainChunk)) {
+                    if (zox_has(hit_chunk, TerrainChunk)) {
                         const ecs_entity_t pickup = spawn_pickup(world, raycastVoxelData->position_real, raycastVoxelData->voxel_entity);
-                        const ecs_entity_t terrain = zox_get_value(raycastVoxelData->chunk, VoxLink)
+                        const ecs_entity_t terrain = zox_get_value(hit_chunk, VoxLink)
                         if (terrain && zox_has(terrain, RealmLink)) {
                             const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
                             const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
@@ -97,12 +98,11 @@ void MeleeSystem(ecs_iter_t *it) {
                             }
                             spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[34], 0.6, 2.4f);
                         } else {
-                            zox_log(" ! terrain is invalid\n")
+                            zox_log_error("terrain is invalid")
                         }
                     } else {
-                        zox_log(" ! cannot create pickup on non terrain chunk\n")
+                        zox_log_error("cannot create pickup on non terrain chunk")
                     }
-                    //zox_log(" > spawned pickup at [%fx%fx%f]\n", raycastVoxelData->position_real.x, raycastVoxelData->position_real.y, raycastVoxelData->position_real.z)
                 } else {
                     // cannot hit air
                     spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, 2.4f);

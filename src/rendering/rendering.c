@@ -2,8 +2,8 @@
 #define zox_mod_rendering
 
 // #define zox_disable_rendering3D
-#define render_lod_invisible 254
 #define render_lod_uninitialized 255
+#define render_lod_invisible 254
 byte rendering_initialized = 0;
 #include "data/renderer_types.c"
 #include "data/mesh_alignment_types.c"

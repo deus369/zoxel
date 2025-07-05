@@ -49,14 +49,17 @@ CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale)
 }
 
 void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const byte camera_mode, const float vox_model_scale) {
-    if (!camera || !character) {
-        zox_log_line("! cannot [set_camera_transform] camera/character issue.")
+    if (!zox_valid(camera) || !zox_valid(character)) {
+        zox_log_error("! cannot [set_camera_transform] camera/character issue.")
         return;
     }
     float3 target_position = float3_zero;
     const Position3D *position3D = zox_get(character, Position3D)
-    if (position3D != NULL) target_position = position3D->value;
-    else target_position = (float3) { 8, 0, 8 };
+    if (position3D != NULL) {
+        target_position = position3D->value;
+    } else {
+        target_position = (float3) { 8, 0, 8 };
+    }
     const CameraSpawnData data = get_camera_preset(camera_mode, vox_model_scale);
     float3 euler = data.euler;
     float3_multiply_float_p(&euler, degreesToRadians);
@@ -75,15 +78,21 @@ byte get_camera_mode_fov(const byte camera_mode) {
 
 void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_model_scale) {
     // remove 2 camera modes for now
-    if (new_camera_mode == zox_camera_mode_free) new_camera_mode = zox_camera_mode_first_person;
-    if (camera_mode == new_camera_mode) return;
+    if (new_camera_mode == zox_camera_mode_free) {
+        new_camera_mode = zox_camera_mode_first_person;
+    }
+    if (camera_mode == new_camera_mode) {
+        return;
+    }
     camera_mode = new_camera_mode;
     const byte old_camera_follow_mode = camera_follow_mode;
     const byte camera_fov = get_camera_mode_fov(camera_mode);
     camera_follow_mode = get_camera_preset(camera_mode, vox_model_scale).follow_mode;
     for (int i = 0; i < main_cameras_count; i++) {
         const ecs_entity_t camera = main_cameras[i];
-        if (camera == 0 || !zox_valid(camera)) continue;
+        if (camera == 0 || !zox_valid(camera)) {
+            continue;
+        }
         zox_set(camera, CameraMode, { camera_mode })
         zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
@@ -92,11 +101,17 @@ void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_m
         else character = zox_get_value(camera, CameraFollowLink)
         if (old_camera_follow_mode != camera_follow_mode) {
             // remove old link
-            if (old_camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { 0 })
-            else zox_set(camera, CameraFollowLink, { 0 })
+            if (old_camera_follow_mode == zox_camera_follow_mode_attach) {
+                zox_set(camera, ParentLink, { 0 })
+            } else {
+                zox_set(camera, CameraFollowLink, { 0 })
+            }
             // reattach
-            if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { character })
-            else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { character })
+            if (camera_follow_mode == zox_camera_follow_mode_attach) {
+                zox_set(camera, ParentLink, { character })
+            } else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) {
+                zox_set(camera, CameraFollowLink, { character })
+            }
         }
         // set up local positions and rotations
         // use a helper function so attach does the same thing
@@ -106,7 +121,9 @@ void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_m
 
 void toggle_camera_mode(ecs_world_t *world, const float vox_model_scale) {
     byte new_camera_mode = camera_mode + 1;
-    if (new_camera_mode> zox_camera_mode_topdown) new_camera_mode = 0;
+    if (new_camera_mode> zox_camera_mode_topdown) {
+        new_camera_mode = 0;
+    }
     set_camera_mode(world, new_camera_mode, vox_model_scale);
 }
 

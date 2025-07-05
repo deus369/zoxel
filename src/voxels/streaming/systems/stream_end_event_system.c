@@ -1,4 +1,4 @@
-// runs even when all chunks have stopped generating
+// A state checker for stream loading
 void StreamEndEventSystem(ecs_iter_t *it) {
     zox_field_in(EventInput, eventInputs, 1)
     zox_field_in(ChunkLinks, chunkLinkss, 2)
@@ -18,19 +18,32 @@ void StreamEndEventSystem(ecs_iter_t *it) {
             int3_hashmap_pair* pair = chunkLinks->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
-                ecs_entity_t chunk = pair->value;
-                const byte valid_chunk = zox_valid(chunk) && zox_has(chunk, GenerateChunk) && zox_has(chunk, ChunkMeshDirty) && zox_has(chunk, ChunkLodDirty);
-                if (!valid_chunk || zox_gett_value(chunk, GenerateChunk) || zox_gett_value(chunk, ChunkMeshDirty) || zox_gett_value(chunk, ChunkLodDirty)) {
+                const ecs_entity_t chunk = pair->value;
+                if (!zox_valid(chunk) || !zox_has(chunk, GenerateChunk) || !zox_has(chunk, ChunkMeshDirty) || !zox_has(chunk, ChunkLodDirty)) {
+                    zox_log_error("chunk invalid in stream end system [%lu]", chunk)
                     is_skip = 1;
+                } else if (zox_gett_value(chunk, RenderLod) == render_lod_uninitialized) {
+                    is_skip = 1;
+                } else if (zox_gett_value(chunk, ChunkMeshDirty)) {
+                    is_skip = 1;
+                } else if (zox_gett_value(chunk, ChunkLodDirty)) {
+                    is_skip = 1;
+                } else if (zox_gett_value(chunk, GenerateChunk)) {
+                    is_skip = 1;
+                }
+                if (is_skip) {
                     break;
                 }
                 int3_hashmap_pair* next_pair = pair->next;
                 pair = next_pair;
                 checks++;
             }
-            if (is_skip) break;
+            if (is_skip) {
+                break;
+            }
         }
         if (!is_skip) {
+            // zox_log("+ terrain spawning ended spawning at [%f]", zox_current_time)
             // we should check if all chunks have finished here
             zox_field_world()
             zox_field_i(EventInput, eventInputs, eventInput)
@@ -39,8 +52,3 @@ void StreamEndEventSystem(ecs_iter_t *it) {
         }
     }
 } zox_declare_system(StreamEndEventSystem)
-
-// zox_field_i(StreamDirty, streamDirtys, streamDirty)
-// todo: use this to trigger a check when done state on chunks
-// for now we check per frame
-// if (streamDirty->value) continue;

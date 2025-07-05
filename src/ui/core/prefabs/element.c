@@ -16,7 +16,6 @@ ecs_entity_t spawn_element(ecs_world_t *world, ElementSpawn *data) {
     initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, data->element.position_in_canvas);
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
-    // zox_log(" > element spawned [%ix%i]\n", data->element.size.x, data->element.size.y)
     return e;
 }
 

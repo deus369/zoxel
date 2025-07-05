@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_terrain_chunk(ecs_world_t *world, const ecs_entity_t prefab, const int3 size) {
+ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const int3 size) {
     zox_prefab_child(prefab)
     add_components_mesh_textured(world, e);
     // Terrain / Generation

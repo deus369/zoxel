@@ -11,7 +11,9 @@ void AnimateAlphaSystem(ecs_iter_t *it) {
     zox_field_out(Alpha, alphas, 7)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(AnimationState, animationTypes, animationType)
-        if (animationType->value != zox_animate_alpha) continue;
+        if (animationType->value != zox_animate_alpha) {
+            continue;
+        }
         zox_field_i(AnimationStart, animationStarts, animationStart)
         zox_field_i(AnimationLength, animationLengths, animationLength)
         zox_field_i(AnimationDelay, animationDelays, animationDelay)
@@ -19,12 +21,11 @@ void AnimateAlphaSystem(ecs_iter_t *it) {
         zox_field_i(AnimateTargetFloat, animateTargetFloats, animateTargetFloat)
         zox_field_o(Alpha, alphas, alpha)
         double animation_time = (time - (animationStart->value + animationDelay->value)) / animationLength->value;
-        if (animation_time < 0) animation_time = 0;
-        else if (animation_time > 1) animation_time = 1;
+        if (animation_time < 0) {
+            animation_time = 0;
+        } else if (animation_time > 1) {
+            animation_time = 1;
+        }
         alpha->value = float_lerp(animateSourceFloat->value, animateTargetFloat->value, animation_time);
-        // zox_log("   > animating alpha [%f] at time [%f] source [%f] target [%f]\n", alpha->value, animation_time, animateSourceFloat->value, animateTargetFloat->value)
-        // if (animation_time == 1 && alpha->value == 0) zox_set(it->entities[i], RenderDisabled, { 1 })
     }
 } zox_declare_system(AnimateAlphaSystem)
-
-// need to add event at end that disables rendering

@@ -10,10 +10,13 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
     zox_field_out(AnimationState, animationStates, 8)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(AnimationIndex, animationIndexs, animationIndex)
-        if (animationIndex->value == 255) continue;
-        // if (animationState->value == zox_animation_none) continue;
+        if (animationIndex->value == 255) {
+            continue;
+        }
         zox_field_i(AnimationSequence, animationSequences, animationSequence)
-        if (!animationSequence->length) continue;
+        if (!animationSequence->length) {
+            continue;
+        }
         if (animationIndex->value > animationSequence->length) {
             animationIndex->value = 255;
             continue;
@@ -47,8 +50,6 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
                 zox_set(e, AnimateTargetFloat, { target_float })
                 // increase index
                 animationIndex->value = animationIndex->value + 1;
-                // zox_log(" + set next anim [%i] at [%f]\n", animationIndex->value, time)
-                // zox_log(" + src [%f] to [%f]\n", source_float, target_float)
             }
         }
     }

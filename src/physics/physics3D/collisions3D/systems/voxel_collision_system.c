@@ -7,21 +7,10 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     ecs_entity_t realm = 0;
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) {
-            continue;
-        }
-        // these two, this npc survived the closing
-        if (!zox_alive(voxLink->value)) {
+        if (!zox_valid(voxLink->value) || !zox_has(voxLink->value, RealmLink)) {
             zox_field_e()
-            zox_log("! npc not dead [%s]\n", zox_get_name(e))
-            // for now, space physics not supported
-            // const ecs_entity_t chunk = zox_get_value(e, ChunkLink)
-            // zox_log("   - chunk [%lu] alive? [%i]\n", chunk, zox_alive(chunk))
+            zox_log_error("! npc not dead [%s]", zox_get_name(e))
             zox_delete(e)
-            continue;
-        }
-        if (!zox_has(voxLink->value, RealmLink)) {
-            // zox_log("! terrain not found to have a realm link\n")
             continue;
         }
         realm = zox_get_value(voxLink->value, RealmLink)
@@ -32,7 +21,9 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
     }
     zox_geter(realm, VoxelLinks, voxelLinks)
     byte block_collisions[255]; // voxelLinks->length + 1];
-    for (int i = 0; i < 255; i++) block_collisions[i] = 0;
+    for (int i = 0; i < 255; i++) {
+        block_collisions[i] = 0;
+    }
     // block_collisions[0] = 0;
     for (int i = 0; i < voxelLinks->length; i++) {
         const ecs_entity_t block = voxelLinks->value[i];
@@ -66,9 +57,13 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
             zox_log("     + real position was [%fx%fx%f]\n", collision_point_real.x, collision_point_real.y, collision_point_real.z);
         }
 #endif
-        if (!voxLink->value || !zox_alive(voxLink->value)) continue; // these shouldn't be here
-        const ChunkLinks *chunkLinks = zox_get(voxLink->value, ChunkLinks)
-        if (!chunkLinks) continue;
+        if (!zox_valid(voxLink->value)) {
+            continue; // these shouldn't be here
+        }
+        zox_geter(voxLink->value, ChunkLinks, chunkLinks)
+        if (!chunkLinks) {
+            continue;
+        }
         const float3 position_last = lastPosition3D->value;
         const float3 position_new = position3D->value;
         float3 collision_point_real = position3D->value;
@@ -80,10 +75,14 @@ void VoxelCollisionSystem(ecs_iter_t *it) {
         detect_voxel_collisions()
         respond_to_collisions()
         // keeps grounded for an additional frame
-        if (did_collide_y && is_falling) grounded->value = 1;
-        else {
-            if (grounded->value == 1) grounded->value = 2;
-            else grounded->value = 0;
+        if (did_collide_y && is_falling) {
+            grounded->value = 1;
+        } else {
+            if (grounded->value == 1) {
+                grounded->value = 2;
+            } else {
+                grounded->value = 0;
+            }
         }
         lastPosition3D->value = position3D->value;
 #ifdef zoxel_debug_basic_collision3D_system

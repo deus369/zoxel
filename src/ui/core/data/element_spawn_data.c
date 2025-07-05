@@ -3,6 +3,7 @@ typedef struct {
     ecs_entity_t prefab;
     int2 position;
     int2 size;
+    int2 texture_size;
     float2 anchor;
     byte layer;
     byte render_disabled;

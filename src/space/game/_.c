@@ -1,0 +1,7 @@
+#include "game_ui.c"
+#include "start_game2D.c"
+#include "start_game3D.c"
+#include "start_game.c"
+#include "end_game2D.c"
+#include "end_game3D.c"
+#include "end_game.c"

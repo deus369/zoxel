@@ -40,9 +40,7 @@ void add_voxel_face_colors_d(int_array_d *indicies, float3_array_d* vertices, co
 #define zoxel_octree_colors_build_face_d(direction_name, is_positive, face_verts)\
 if (!is_adjacent_all_solid(direction##_##direction_name, root_node, parent_node, neighbors,\
     octree_position, node_index, node_position, depth, max_depth, neighbor_lods, color_edge_voxel, NULL)) {\
-    add_voxel_face_colors_d(indicies, vertices, color_rgbs, vertex_position_offset, voxel_color,\
-        voxel_scale, get_voxel_indicies_##is_positive, face_verts,\
-        direction##_##direction_name);\
+    add_voxel_face_colors_d(indicies, vertices, color_rgbs, vertex_position_offset, voxel_color, voxel_scale, get_voxel_indicies_##is_positive, face_verts, direction##_##direction_name);\
 }
 
 // basically it goes downwards even if upper value nodes are air
@@ -54,16 +52,23 @@ if (!(chunk_octree->nodes[i].nodes == NULL && chunk_octree->nodes[i].value == 0)
 }
 
 void build_octree_chunk_colors_d(const ChunkOctree *root_node, const ChunkOctree *parent_node, const ChunkOctree *chunk_octree, const ChunkOctree *neighbors[], const byte neighbor_lods[], const ColorRGBs *colorRGBs, int_array_d *indicies, float3_array_d* vertices, color_rgb_array_d* color_rgbs, const byte max_depth, byte depth, int3 octree_position, const byte node_index, const float3 total_mesh_offset, const float vox_scale) {
-    if (chunk_octree == NULL) return;
+    if (chunk_octree == NULL) {
+        return;
+    }
     if (depth >= max_depth || chunk_octree->nodes == NULL) {
-        if (chunk_octree->value != 0) {
+        const byte voxel = chunk_octree->value;
+        if (voxel) {
+            const byte voxel_index = voxel - 1;
+            if (voxel_index >= colorRGBs->length) {
+                // warning here?
+                return;
+            }
+            const color_rgb voxel_color = colorRGBs->value[voxel_index];
             const float voxel_scale = real_chunk_scale * octree_scales3[depth] * vox_scale;
             float3 vertex_position_offset = float3_from_int3(octree_position);
             float3_multiply_float_p(&vertex_position_offset, voxel_scale);
             float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
             byte3 node_position = octree_positions_b[node_index];
-            const byte voxel = chunk_octree->value;
-            const color_rgb voxel_color = colorRGBs->value[voxel - 1];
             zoxel_octree_colors_build_face_d(left, 0, voxel_face_vertices_n[0])
             zoxel_octree_colors_build_face_d(right, 1, voxel_face_vertices_n[1])
             zoxel_octree_colors_build_face_d(down, 1, voxel_face_vertices_n[2])

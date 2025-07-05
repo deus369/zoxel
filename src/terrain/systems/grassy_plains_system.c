@@ -23,7 +23,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
 
         byte max_depth = optimize_generation_lods ?  get_chunk_terrain_depth_from_lod(renderLod->value, target_depth) : target_depth;
-        // zox_log_line("> [optimize_generation_lods:%i] - render_depth: %i", optimize_generation_lods,  render_depth)
+        // zox_log("> [optimize_generation_lods:%i] - render_depth: %i", optimize_generation_lods,  render_depth)
         if (max_depth == 0) {
             continue;
         }
@@ -114,6 +114,6 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         update_count++;
     }
     if (update_count > 0 && zox_log_terrain_generation) {
-        zox_log_line(" - [%i] terrain [%i]", ecs_run_count, update_count)
+        zox_log(" - [%i] terrain [%i]", ecs_run_count, update_count)
     }
 } zox_declare_system(GrassyPlainsSystem)

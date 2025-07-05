@@ -3,7 +3,7 @@ void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indi
         return;
     }
     if (!zox_has(e, MeshIndicies)) {
-        zox_log("! [%lu] has no MeshIndicies\n")
+        zox_log_error("[%lu] has no MeshIndicies")
         return;
     }
     MeshIndicies *meshIndicies = &((MeshIndicies) { 0, NULL });
@@ -26,11 +26,6 @@ void prefab_set_mesh3D_vertices(ecs_world_t *world, const ecs_entity_t e, const 
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshVertices)) {
-        zox_log("! [%lu] has no MeshVertices\n")
-        return;
-    }*/
-    // zox_get_muter(e, MeshVertices, meshVertices)
     zox_geter(e, MeshVertices, oldVertices)
     if (oldVertices->value) {
         free(oldVertices->value);
@@ -47,10 +42,6 @@ void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb co
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshColorRGBs)) {
-        zox_log("! [%lu] has no MeshColorRGBs\n")
-        return;
-    }*/
     MeshColorRGBs *meshColorRGBs = &((MeshColorRGBs) { 0, NULL });
     resize_memory_component(MeshColorRGBs, meshColorRGBs, color_rgb, length)
     for (int i = 0; i < length; i++) meshColorRGBs->value[i] = color;
@@ -61,10 +52,6 @@ void prefab_set_mesh_vertices_float(ecs_world_t *world, ecs_entity_t e, const fl
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshVertices)) {
-        zox_log("! [%lu] has no MeshVertices\n")
-        return;
-    }*/
     MeshVertices *meshVertices = &((MeshVertices) { 0, NULL });
     resize_memory_component(MeshVertices, meshVertices, float3, length)
     memcpy(meshVertices->value, vertices, length * sizeof(float));
@@ -75,10 +62,6 @@ void prefab_set_mesh_vertices_float3(ecs_world_t *world, ecs_entity_t e, const f
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshVertices)) {
-        zox_log("! [%lu] has no MeshVertices\n")
-        return;
-    }*/
     MeshVertices *meshVertices = &((MeshVertices) { 0, NULL });
     resize_memory_component(MeshVertices, meshVertices, float3, length)
     if (length > 0) memcpy(meshVertices->value, vertices, length * sizeof(float3));
@@ -99,10 +82,6 @@ void prefab_set_mesh_uvs_float(ecs_world_t *world, ecs_entity_t e, const float u
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshUVs)) {
-        zox_log("! [%lu] has no MeshUVs\n")
-        return;
-    }*/
     MeshUVs *meshUVs = &((MeshUVs) { 0, NULL });
     resize_memory_component(MeshUVs, meshUVs, float2, length)
     memcpy(meshUVs->value, uvs, length * sizeof(float));
@@ -113,16 +92,12 @@ void prefab_set_mesh_uvs_float2(ecs_world_t *world, ecs_entity_t e, const float2
     if (headless) {
         return;
     }
-    /*if (!zox_has(e, MeshUVs)) {
-        zox_log("! [%lu] has no MeshUVs\n")
-        return;
-    }*/
     MeshUVs *meshUVs = &((MeshUVs) { 0, NULL });
     resize_memory_component(MeshUVs, meshUVs, float2, length)
     if (meshUVs->value) {
         memcpy(meshUVs->value, uvs, length * sizeof(float2));
     } else {
-        zox_log("! meshUVs realloc failed")
+        zox_log_error("meshUVs realloc failed")
     }
     zox_prefab_set(e, MeshUVs, { meshUVs->length, meshUVs->value })
 }

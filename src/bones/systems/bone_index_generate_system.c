@@ -46,9 +46,9 @@ void BoneIndexGenerateSystem(ecs_iter_t *it) {
                 }
                 /*if (j >= meshVertices->length - 100) {
                     zox_log("Bone Vert Index Found: %i (vert %i)\n", k, j)
-                    zox_log_line("  > position: %fx%fx%f", position.x, position.y, position.z)
-                    zox_log_line("  > lower: %fx%fx%f", lower.x, lower.y, lower.z)
-                    zox_log_line("  > upper: %fx%fx%f", upper.x, upper.y, upper.z)
+                    zox_log("  > position: %fx%fx%f", position.x, position.y, position.z)
+                    zox_log("  > lower: %fx%fx%f", lower.x, lower.y, lower.z)
+                    zox_log("  > upper: %fx%fx%f", upper.x, upper.y, upper.z)
                 }*/
             }
             // for each position, check all bones, and see if it is within them

@@ -4,6 +4,9 @@ void update_text3D(ecs_world_t *world, const Children *children, const TextData 
     const int update_count = integer_min(children->length, new_children_length);
     for (int i = 0; i < update_count; i++) {
         const ecs_entity_t e = children->value[i];
+        if (!zox_valid(e)) {
+            continue;
+        }
         const byte zigel_index = calculate_zigel_index(textData->value, textData->length, i);
         const byte old_zigel_index = zox_get_value(e, ZigelIndex)
         if (old_zigel_index != zigel_index) {
@@ -16,6 +19,7 @@ void update_text3D(ecs_world_t *world, const Children *children, const TextData 
     }
 }
 
+// just updates previous zigels to new data
 void TextUpdateSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(ZextDirty, zextDirtys, 1)
@@ -39,5 +43,7 @@ void TextUpdateSystem(ecs_iter_t *it) {
             zox_log_text("+ updating [%s] text [null]",  zox_get_name(it->entities[i]))
         }
         update_text3D(world, children, textData);
+        // zox_field_e()
+        // zox_log("+ updating text [%s]", zox_get_name(e))
     }
 } zox_declare_system(TextUpdateSystem)

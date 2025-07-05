@@ -76,11 +76,11 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, b
 
 byte set_entity_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
     if (!zox_has(e, TextData)) {
-        zox_log_line("! [%s] has not got TextData", zox_get_name(e))
+        zox_log("! [%s] has not got TextData", zox_get_name(e))
         return 0;
     }
     if (!zox_has(e, ZextDirty)) {
-        zox_log_line("! [%s] has not got ZextDirty", zox_get_name(e))
+        zox_log("! [%s] has not got ZextDirty", zox_get_name(e))
         return 0;
     }
     zox_get_mutt(e, TextData, textData)

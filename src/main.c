@@ -5,13 +5,13 @@
 
 int run_main(int argc, char* argv[]) {
     #ifndef zox_mod_game
-        zox_log_line(" ! game not loaded")
+        zox_log(" ! game not loaded")
         return EXIT_FAILURE;
     #endif
     fetch_pc_info();
     ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (world == NULL) {
-        zox_log_line(" ! ecs failed to initialize.")
+        zox_log(" ! ecs failed to initialize.")
         return EXIT_FAILURE;
     }
     zox_import_module(Zox)
@@ -23,10 +23,10 @@ int run_main(int argc, char* argv[]) {
         if (boot_event(world) == EXIT_SUCCESS) {
             engine_loop();
         } else {
-            zox_log_line("! [boot_event] failed")
+            zox_log("! [boot_event] failed")
         }
     } else {
-        zox_log_line("! [engine_spawn_window] failed")
+        zox_log("! [engine_spawn_window] failed")
     }
     dispose_zox(world);
     return EXIT_SUCCESS;

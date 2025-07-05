@@ -1,16 +1,13 @@
 #define statbar_float_position 0.32f
-#define statbar_float_height + 0.048f
+#define statbar_float_height 0.048f
 
 void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *data) {
-    /*if (!data->p) {
-        return;
-    }*/
     float ui_position = statbar_float_position + statbar_float_height;
     const SpawnDataElement3D label3D_spawn_data = {
         .prefab = prefab_label3D,
         .ui_holder = data->e,
         .position_y = ui_position,
-        .base_color = (color) { 5, 5, 5, 88 }, // background color
+        // .base_color = (color) { 5, 5, 5, 88 }, // background color
     };
     Text3DData label3D_text_data = {
         .prefab = prefab_text3D,

@@ -6,12 +6,12 @@
 byte test_realm_spawn(ecs_world_t *world) {
     const int test_seed = 666;
     game_name = "test_realm_spawn";
-    zox_log_line("> started [%s]", game_name)
+    zox_log("> started [%s]", game_name)
     headless = 1;
     initialize_networking();
     initialize_voxes(world);
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    zox_log_line("> seed [%i]", test_seed)
+    zox_log("> seed [%i]", test_seed)
     set_noise_seed(test_seed);
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     int run_count = 0;
@@ -20,18 +20,18 @@ byte test_realm_spawn(ecs_world_t *world) {
         update_ecs();
         if (pre_realm_state == zox_generate_realm_items) {
             zox_geter(realm, ItemLinks, itemLinks)
-            zox_log_line("  - state [%i] items [%i]", pre_realm_state, itemLinks->length)
+            zox_log("  - state [%i] items [%i]", pre_realm_state, itemLinks->length)
         }
         run_count++;
         zox_geter_value(realm, GenerateRealm, byte, realm_state);
-        zox_log_line("> run_count [%i] state [%i]", run_count, realm_state)
+        zox_log("> run_count [%i] state [%i]", run_count, realm_state)
         if (realm_state == zox_generate_realm_end) {
             break;
         }
     }
-    zox_log_line("> ended [%s]", game_name)
+    zox_log("> ended [%s]", game_name)
     // print timings per generation
-    zox_log_line("> exiting game")
+    zox_log("> exiting game")
     return EXIT_FAILURE; // close game
 }
 

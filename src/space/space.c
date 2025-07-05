@@ -9,6 +9,7 @@
 zox_component_entity(PlayerPauseEvent)
 #include "states/player_state.c"
 #include "prefabs/_.c"
+#include "game/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 

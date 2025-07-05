@@ -55,10 +55,6 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
 
         const float min_z_local = data.position.z - bounds_radius;
         const float max_z_local = data.position.z + bounds_radius;
-        /*character_bounds = (float6) {
-            float_max(min_x_local, min_x_global), float_min(max_x_local, max_x_global),
-            float_max(min_y_local, min_y_global), float_min(max_y_local, max_y_global),
-            float_max(min_z_local, min_z_global), float_min(max_z_local, max_z_global) };*/
         character_bounds = (float6) {
             min_x_local, max_x_local,
             min_y_local, max_y_local,

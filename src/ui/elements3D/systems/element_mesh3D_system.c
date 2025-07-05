@@ -14,19 +14,18 @@ void Element3DMeshSystem(ecs_iter_t *it) {
         if (meshDirty->value) {
             continue;
         }
+        initializeElement->value = 0;
+        meshDirty->value = mesh_state_trigger2;
         if (!headless) {
             zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
-            zox_field_o(UvsGPULink, uvsGPULinks, uvsGPULink)
             zox_field_o(TextureGPULink, textureGPULinks, textureGPULink)
+            zox_field_o(UvsGPULink, uvsGPULinks, uvsGPULink)
             zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
             colorsGPULink->value = spawn_gpu_generic_buffer();
         }
-        initializeElement->value = 0;
-        meshDirty->value = mesh_state_trigger2;
-        // zox_log("+ initialized mesh3D ui [%lu]\n", it->entities[i])
         zox_log_elements3D("+ updated mesh for element3D [%lu]", it->entities[i])
     }
 } zox_declare_system(Element3DMeshSystem)

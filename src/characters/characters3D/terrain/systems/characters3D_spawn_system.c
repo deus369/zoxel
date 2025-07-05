@@ -1,14 +1,5 @@
-// todo: fix them not spawning in each chunk
-// todo: draw vertical beams where they spawn for 16 + seconds to debug
-
-// notes: to test, set terrain to 1x1x1 chunks, disable physics, enable this systems logging
-// get function from AI module for now
-// todo: reorganize, perhaps move t this module up to gameplay - or a world module, that handles terrain better procedural generation stuff
 ecs_entity_t prefab_character3D_terrain_spawning;
 
-// default_chunk_length
-// todo: predict spawn size from octree?
-// todo: handle bounds resize by shifting positions
 void Characters3DSpawnSystem(ecs_iter_t *it) {
     if (disable_npcs) {
         return;

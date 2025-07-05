@@ -19,7 +19,7 @@ void DotsSystem(ecs_iter_t *it) {
             continue;
         }
         zox_field_i(SpawnerLink, spawnerLinks, spawnerLink)
-        const StatLinks *statLinks = zox_get(userLink->value, StatLinks)
+        zox_geter(userLink->value, StatLinks, statLinks)
         // find health stat, maybe poison should target a stat type directly??
         find_array_component_with_tag(statLinks, HealthStat, health_stat)
         if (!health_stat) {

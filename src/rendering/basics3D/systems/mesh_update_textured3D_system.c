@@ -57,7 +57,7 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
 #ifdef zoxel_time_mesh_uvs_update_system
     //  end_timing("    - mesh_uvs_update_system")
     if (update_count > 0) {
-        zox_log_line(" - [%i] gpu+ [%i]", ecs_run_count, update_count)
+        zox_log(" - [%i] gpu+ [%i]", ecs_run_count, update_count)
     }
 #endif
 } zox_declare_system(Mesh3DTexturedUploadSystem)

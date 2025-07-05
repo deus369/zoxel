@@ -7,7 +7,7 @@ byte tooltip_event_action(ecs_world_t *world, const TooltipEventData *data) {
         return tooltip_event_skill(world, data);
     } else {
         if (data->data) {
-            zox_log(" ! uknown action highlighted [%s]\n", zox_get_name(data->data))
+            zox_log(" ! uknown action highlighted [%s]", zox_get_name(data->data))
         }
         return 0;
     }

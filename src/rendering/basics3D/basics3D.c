@@ -4,16 +4,14 @@
 // #define is_catch_basic3D_errors
 zox_declare_tag(MeshBasic3D)
 zox_declare_tag(TexturedMesh3D)
-#include "shaders/shaders.c"
-#include "components/material3D.c"
-#include "components/material3D_textured.c"
-#include "components/material3D_colored.c"
+#include "shaders/_.c"
+#include "components/_.c"
 #ifndef zox_disable_rendering_instances
     #include "components/material_vox_instance.c"
     #include "shaders/vox_instance.c"
 #endif
-#include "util/util.c"
-#include "systems/systems.c"
+#include "util/_.c"
+#include "systems/_.c"
 
 zox_begin_module(RenderingBasics3D)
     zox_define_tag(MeshBasic3D)

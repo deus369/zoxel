@@ -44,6 +44,6 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
         update_count++;
     }
     if (update_count > 0 && zox_log_terrain_generation) {
-        zox_log_line(" - [%i] flat [%i]", ecs_run_count, update_count)
+        zox_log(" - [%i] flat [%i]", ecs_run_count, update_count)
     }
 } zox_declare_system(ChunkFlatlandSystem)

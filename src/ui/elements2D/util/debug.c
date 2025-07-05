@@ -3,7 +3,7 @@ ecs_entity_t test_elementbar2D_front = 0;
 void test_key_element_front2D(ecs_world_t *world, int32_t keycode) {
     if (keycode == SDLK_f) {
         // zox_log("> [%lu] test statbar_front2D\n", test_elementbar2D_front)
-        zox_log_line("> test statbar_front2D")
+        zox_log("> test statbar_front2D")
         if (!zox_valid(test_elementbar2D_front)) {
             zox_log("   - [%lu] bad statbar_front2D\n", test_elementbar2D_front)
         } else {
