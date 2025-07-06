@@ -1,4 +1,4 @@
-![zoxel banner](https://pbs.twimg.com/media/GvGarlgbAAA3jG-?format=jpg&name=small)
+![zoxel banner](https://pbs.twimg.com/media/GvGarlgbAAA3jG-?format=png&name=large)
 
 ### What is Zoxel?
 
@@ -8,6 +8,41 @@
 * Open‑source GPL license
 * Voxels, stats, items, skills, quests, dialogue & more
 * Experience the thrill of discovery & adventure!
+
+---
+
+### The Docs
+
+The ultimate plan [ todo list ](todo.md)
+
+Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
+
+Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
+
+---
+
+### The Socials
+
+  - [ twitter ](https://twitter.com/deusxyz)
+  - [ mastodon ](https://mastodon.gamedev.place/@deus)
+  - [ itchio ](https://deusxyz.itch.io/zoxel-foss)
+  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s)
+  - [_github_](https://github.com/deus369/zoxel)
+  - [ codeberg ](https://codeberg.org/deus/zoxel)
+
+---
+
+### How do I Build?
+
+```bash
+git clone https://codeberg.org/deus/zoxel
+cd zoxel
+mkdir build
+mkdir build/zoxel-linux
+cp -R resources build/zoxel-linux/resources
+make
+make run
+```
 
 ---
 
@@ -50,36 +85,3 @@ sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-de
 ```
 
 ---
-
-### How do I Build?
-
-```bash
-git clone https://codeberg.org/deus/zoxel
-cd zoxel
-mkdir build
-mkdir build/zoxel-linux
-cp -R resources build/zoxel-linux/resources
-make
-make run
-```
-
----
-
-### The Docs
-
-The ultimate plan - [ todo list ](todo.md)
-
-Building is on - [zoxelder](https://codeberg.org/deus/zoxelder)
-
-Flecs requires 3.2.7 - [flecsing](https://codeberg.org/deus/flecsing)
-
----
-
-### The Socials
-
-  - [ twitter ](https://twitter.com/deusxyz)
-  - [ mastodon ](https://mastodon.gamedev.place/@deus)
-  - [ itchio ](https://deusxyz.itch.io/zoxel-foss)
-  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s)
-  - [ codeberg ](https://codeberg.org/deus/zoxel)
-  - [_github_](https://github.com/deus369/zoxel)
