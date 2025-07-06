@@ -1,30 +1,39 @@
-### the whats
+![zoxel banner](https://pbs.twimg.com/media/GvGarlgbAAA3jG-?format=jpg&name=large)
+
+### What is Zoxel?
 
 * a procedural simulation game
-* inspired by
-  - warcraft
-  - minecraft
-  - cube world
-* zoxel uses flat module structure, built with flecs chaos
-* with voxels, stats, skills, quests, dialogue, magic & more
-* experience the thrill of discovery & adventure
+* a open‑source gpl license
+* inspired by warcraft, minecraft and cube world
+* a flat module structure, built with flecs chaos
+* with voxels, stats, items, skills, quests, dialogue & more
+* experience the thrill of discovery & adventure!
 
 ---
 
-### the builds
+### How do I Build?
 
 ```bash
 git clone https://codeberg.org/deus/zoxel
 cd zoxel
 mkdir build
 mkdir build/zoxel-linux
+cp -R resources build/zoxel-linux/resources
 make
 make run
 ```
 
 ---
 
-### the socials
+### The Docs
+
+zoxels ultimate plan - [ todo list ](todo.md)
+
+building is now on - [zoxelder](https://codeberg.org/deus/zoxelder)
+
+---
+
+### The Socials
 
   - [ mastodon ](https://mastodon.gamedev.place/@deus)
   - [ twitter ](https://twitter.com/deusxyz)
@@ -33,14 +42,4 @@ make run
 
 ---
 
-### the docs
-
-[ todo list ](todo.md)
-
-* GPL license: allows for open‑source collaboration and innovation
-
----
-
-– platform building is now on [zoxelder](https://codeberg.org/deus/zoxelder) -
-
-– open source code on [ codeberg ](https://codeberg.org/deus/zoxel) –
+> found on [ codeberg ](https://codeberg.org/deus/zoxel)
