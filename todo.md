@@ -4,6 +4,22 @@
 
 * from Zoxel Unity
 
+User Interfaces
+- [ ] a more animated main menu
+- [ ] dialogue systems
+- [ ] quests, trackers, map markers, character overhead gizmos
+- [ ] maps and minimaps
+- [ ] new realm ui
+- [ ] new world ui
+- [ ] new character ui
+- [ ] terminal in game
+
+IO
+- [ ] Autosaving
+- [ ] Save and load chunk edits
+- [ ] Save and load npcs
+- [ ] Save and load items/skills/stats etc
+
 Graphics
 - [ ] lighting
 - [ ] ambient occlusion
@@ -35,21 +51,6 @@ Combat
 - [ ] screen shake
 - [ ] npcs to drop items
 - [ ] player and monster respawning
-
-User Interfaces
-- [ ] dialogue systems
-- [ ] quests, trackers, map markers, character overhead gizmos
-- [ ] maps and minimaps
-- [ ] new realm ui
-- [ ] new world ui
-- [ ] new character ui
-- [ ] terminal in game
-
-IO
-- [ ] Autosaving
-- [ ] Save and load chunk edits
-- [ ] Save and load npcs
-- [ ] Save and load items/skills/stats etc
 
 Blocks
 - [ ] Chests

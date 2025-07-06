@@ -15,7 +15,8 @@ CFLAGS_DEV := -fPIC -Wall -O0 -ggdb3 -g
              # -Wno-stringop-overread -Wno-stringop-overflow
 
 INCLUDES:= -Iinclude
-LDFLAGS := -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
+LDFLAGS := -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
+LDFLAGS += -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images # in game defines
 
 GAME    := zoxel
 SRCS    := src/main.c
