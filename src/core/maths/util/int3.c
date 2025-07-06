@@ -163,3 +163,7 @@ int3 find_closest_point(const int3* points, const int points_length, const int3 
     }
     return closest_point;
 }
+
+int3 int3_single(int value) {
+    return (int3) { value, value, value };
+}

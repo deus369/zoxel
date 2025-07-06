@@ -1,12 +1,34 @@
+// called from game state changes
+void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player) {
+    #ifdef zox_disable_player_ui
+    return;
+    #endif
+    if (!zox_has(player, DeviceMode) || !zox_has(player, CanvasLink)) {
+        zox_log("! invalid player in [spawn_in_game_ui]\n")
+        return;
+    }
+    const byte device_mode = zox_get_value(player, DeviceMode)
+    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    byte is_touch = device_mode == zox_device_mode_touchscreen;
+    #ifdef zoxel_mouse_emulate_touch
+    is_touch = 1;
+    #endif
+    zox_geter(player, CharacterLink, characterLink)
+    spawn_menu_game(world, prefab_menu_game, player, characterLink->value);
+    if (is_touch) {
+        spawn_in_game_ui_touch(world, player, canvas);
+    }
+}
+
 void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
     spawn_in_game_ui(world, player);
-#ifdef zox_mod_actions_ui
+    #ifdef zox_mod_actions_ui
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (!menu_actions) {
         spawn_player_menu_actions(world, player);
     }
-#endif
+    #endif
 }
 
 TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t terrain) {
@@ -57,7 +79,6 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
 
 // NOTE: WE NOW NEED TO SPAWN TERRAIN CHUNK HERE IF IT DOESN"T EXIST!
 //      - streaming breaks if all chunks die..
-
 void spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
@@ -80,14 +101,15 @@ void spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_entity_t 
         return;
     }
     byte is_new_game = 1;
-#ifndef zox_disable_save_games
+    #ifndef zox_disable_save_games
     is_new_game = !has_save_game_file(game_name, "player.dat");
-#endif
+    #endif
     TerrainPlace spawn_place;
     if (is_new_game) {
         spawn_place = find_position_in_terrain(world, terrain);
     } else {
         // get character position/rotation
+        spawn_place.chunk = 0;
         load_character_p(&spawn_place.spawn_position, &spawn_place.spawn_rotation);
     }
     spawn_character3D_data spawn_data = {
@@ -98,7 +120,9 @@ void spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_entity_t 
         .player = player,
     };
     const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
-    zox_set(e, ChunkLink, { spawn_place.chunk })
+    if (spawn_place.chunk) {
+        zox_set(e, ChunkLink, { spawn_place.chunk })
+    }
     zox_set(player, CharacterLink, { e })
     zox_set(e, PlayerLink, { player })
     zox_set(e, CameraLink, { camera })
@@ -110,63 +134,5 @@ void spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_entity_t 
         delay_event(world, &save_player_e, player, 2);
     }
 #endif
-    delay_event(world, &post_player_start_game, player, 0.1);
-}
-
-void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    #ifdef zox_disable_player_character
-        attach_camera_to_character(world, player, camera, 0);
-    #else
-        if (game_rule_attach_to_character) {
-            spawn_character3D_player_in_terrain(world, player);
-        } else {
-            attach_camera_to_character(world, player, camera, 0);
-        }
-    #endif
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    play_playlist(world, realm, 1);
-}
-
-void fix_camera_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    const byte depth = terrain_depth;
-    const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    const float3 position = zox_get_value(camera, Position3D)
-    int3 terrain_position = real_position_to_chunk_position(position, chunk_dimensions, terrain_depth);
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    if (!game || !zox_has(game, RealmLink)) {
-        return;
-    }
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    if (!realm || !zox_has(realm, TerrainLink)) {
-        return;
-    }
-    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
-    if (!terrain) {
-        return;
-    }
-    zox_set(camera, StreamPoint, { terrain_position })
-    zox_set(camera, VoxLink, { terrain })
-    zox_set(camera, StreamDirty, { zox_general_state_trigger })
-    zox_set(terrain, EventInput, { player })
-    zox_set(terrain, StreamEndEvent, { on_spawned_terrain })
-    // zox_log("+ terrain spawning started at [%f]", zox_current_time)
-}
-
-// spawn character and set camera to streaming terrain
-void player_start_game3D_delayed(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    float3 spawn_position = (float3) { 8, 8.5f, 8 };
-    float4 spawn_rotation = quaternion_identity;
-#ifndef zox_disable_save_games
-    const byte is_new_game = !has_save_game_file(game_name, "player.dat");
-    if (!is_new_game) {
-        load_character_p(&spawn_position, &spawn_rotation);
-    }
-#endif
-    zox_set(camera, Position3D, { spawn_position })
-    zox_set(camera, Rotation3D, { spawn_rotation })
-    delay_event(world, &fix_camera_in_terrain, player, 0.01f);
+    delay_event(world, &post_player_start_game, player, 0.01);
 }

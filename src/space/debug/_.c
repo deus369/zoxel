@@ -1,2 +1,7 @@
 #include "death.c"
+#include "fall_through_terrain.c"
 #include "game.c"
+#include "particle_system.c"
+#include "streaming.c"
+#include "terrain.c"
+#include "ui.c"

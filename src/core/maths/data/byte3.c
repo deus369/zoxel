@@ -2,6 +2,10 @@ byte byte3_equals(const byte3 a, const byte3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
+byte3 byte3_single(const byte a) {
+    return (byte3) { a, a, a };
+}
+
 int byte3_array_index(const byte3 input, const byte3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }

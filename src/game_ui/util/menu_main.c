@@ -23,7 +23,9 @@ void button_event_exit_app(ecs_world_t *world, const ClickEventData *event) {
         const ecs_entity_t e = players->value[i];
         const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
         find_child_with_tag(canvas, MenuMain, menu)
-        if (menu) zox_delete(menu)
+        if (menu) {
+            zox_delete(menu)
+        }
         trigger_canvas_fade_in(world, canvas);
     }
     delay_event(world, &engine_end_delayed, 0, 2.0f);

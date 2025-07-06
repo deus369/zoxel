@@ -10,7 +10,7 @@ void destroy_main_menu(ecs_world_t *world, const ecs_entity_t player) {
 
 void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    zox_set(game, GameStateTarget, { zox_game_playing })
+    zox_set(game, GameStateTarget, { zox_game_load })
 }
 
 void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {

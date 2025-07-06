@@ -91,6 +91,16 @@ float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_posit
     return position;
 }
 
+float3 voxel_position_to_real_position(const int3 voxel_position, const byte3 chunk_size, const float voxel_scale) {
+    float3 position = int3_to_float3(voxel_position);
+    float3_multiply_float_p(&position, voxel_scale);
+    // middle of voxel position
+    position.x += voxel_scale / 2;
+    position.y += voxel_scale / 2;
+    position.z += voxel_scale / 2;
+    return position;
+}
+
 // uses chunk above for air check
 // chunk_above used purely for top of chunk checks
 byte3 find_position_on_ground(const ChunkOctree *chunk, const byte target_depth, const ChunkOctree *chunk_above, const byte spawns_in_air) {

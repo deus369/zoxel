@@ -4,7 +4,6 @@
 #include "touch.c"
 #include "voxel_ray.c"
 #include "camera.c"
+#include "character3D_player.c"
 #include "ui.c"
 #include "player.c"
-#include "debug.c"
-#include "debug_keys.c"

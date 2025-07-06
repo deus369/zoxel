@@ -9,8 +9,8 @@
 zox_component_entity(PlayerPauseEvent)
 #include "states/player_state.c"
 #include "prefabs/_.c"
-#include "game/_.c"
 #include "util/_.c"
+#include "game/_.c"
 #include "systems/_.c"
 #include "debug/_.c"
 
@@ -28,6 +28,7 @@ zox_begin_module(Space)
     add_hook_key_down(toggle_player_death);
     add_hook_key_down(toggle_test_particle_system);
     add_hook_key_down(test_game_end);
+    add_hook_key_down(test_fall_through_terrain);
 zox_end_module(Space)
 
 #endif

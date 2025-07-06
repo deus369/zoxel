@@ -161,7 +161,7 @@ void collide_with_chunk(ecs_world_t *world, const ChunkLinks *chunk_links, const
     if (!zox_valid(chunk)) {
         return;
     }
-    const ChunkOctree *chunk_octree = zox_get(chunk, ChunkOctree)
+    zox_geter(chunk, ChunkOctree, chunk_octree)
     if (!chunk_octree) {
         return;
     }

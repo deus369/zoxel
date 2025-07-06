@@ -1,41 +1,23 @@
 // Handles AABB to Voxel Chunk Collisions
-// todo: support multiple realms
+// todo: support multiple realms - use a hashmap for realms, and cache their data per terrain here
 void VoxelCollisionSystem(ecs_iter_t *it) {
-    const byte max_depth = terrain_depth;
+    const byte max_depth = terrain_depth;   // todo: use chunk max depths here
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
-    ecs_entity_t realm = 0;
-    for (int i = 0; i < it->count; i++) {
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!zox_valid(voxLink->value) || !zox_has(voxLink->value, RealmLink)) {
-            zox_field_e()
-            zox_log_error("! npc not dead [%s]", zox_get_name(e))
-            zox_delete(e)
-            continue;
-        }
-        realm = zox_get_value(voxLink->value, RealmLink)
-        break;
-    }
-    if (!realm) {
-        return;
-    }
-    zox_geter(realm, VoxelLinks, voxelLinks)
-    byte block_collisions[255]; // voxelLinks->length + 1];
-    for (int i = 0; i < 255; i++) {
-        block_collisions[i] = 0;
-    }
-    // block_collisions[0] = 0;
-    for (int i = 0; i < voxelLinks->length; i++) {
-        const ecs_entity_t block = voxelLinks->value[i];
-        if (zox_valid(block)) {
-            block_collisions[i + 1] = zox_gett_value(block, BlockCollider) != zox_block_air;
-        }
-    }
     zox_field_out(Position3D, position3Ds, 3)
     zox_field_out(Velocity3D, velocity3Ds, 4)
     zox_field_out(LastPosition3D, lastPosition3Ds, 5)
     zox_field_in(Bounds3D, bounds3Ds, 6)
     zox_field_out(Grounded, groundeds, 7)
+    // find realm first
+    const VoxelLinks *voxels = get_first_terrain_voxels(world, voxLinks, it->count);
+    if (!voxels) {
+        return;
+    }
+    byte block_collisions[voxels->length + 1]; // 255];
+    get_block_collisions(world, voxels, block_collisions);
+
+    // now do collisions
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
         zox_field_i(Bounds3D, bounds3Ds, bounds3D)

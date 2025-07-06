@@ -30,7 +30,7 @@ The ultimate plan [ todo list ](todo.md)
 
 Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
 
-Flecs (v3.2.8) [_flecsing_](https://codeberg.org/deus/flecsing)
+Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
 
 ---
 
@@ -84,3 +84,9 @@ sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-de
   - [ codeberg ](https://codeberg.org/deus/zoxel)
 
 ---
+
+### Some Notes
+
+ - Flecs 3.2.8, prefab tags dont check properly
+ - Flecs 3.2.9 to 3.2.12 have crashes when exiting game
+ - Need to refactor for 4, so have no tried yet

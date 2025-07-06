@@ -29,31 +29,31 @@ void ActionActivateSystem(ecs_iter_t *it) {
             triggerActionB->value = 0;
             continue;
         }
-        const ecs_entity_t action_entity = actionLinks->value[action_selected];
+        const ecs_entity_t action = actionLinks->value[action_selected];
         // no action assigned
-        if (!action_entity) {
+        if (!action) {
             triggerActionB->value = 0;
             continue;
         }
-        if (zox_has(action_entity, Skill)) {
-            // zox_log(" > toggling skill [%s]\n", zox_get_name(action_entity))
-            if (zox_has(action_entity, Aura)) {
+        if (zox_has(action, Skill)) {
+            // zox_log(" > toggling skill [%s]\n", zox_get_name(action))
+            if (zox_has(action, Aura)) {
                 // Toggle Skill
-                zox_set(action_entity, SkillActive, { !zox_gett_value(action_entity, SkillActive) })
-            } else if (zox_has(action_entity, Melee)) {
-                zox_set(action_entity, SkillActive, { !zox_gett_value(action_entity, SkillActive) })
+                zox_set(action, SkillActive, { !zox_gett_value(action, SkillActive) })
+            } else if (zox_has(action, Melee)) {
+                zox_set(action, SkillActive, { !zox_gett_value(action, SkillActive) })
             } else {
-                zox_log("! uknown skill type [%s]\n", zox_get_name(action_entity))
+                zox_log("! uknown skill type [%s]\n", zox_get_name(action))
             }
-        } else if (zox_has(action_entity, Item)) {
+        } else if (zox_has(action, Item)) {
             // if item quantity > 0
-            byte quantity = zox_get_value(action_entity, Quantity)
+            byte quantity = zox_get_value(action, Quantity)
             if (quantity == 0) {
                 zox_log(" ! cannot place with zero quantity")
             } else {
                 byte is_use_quantity = 0;
-                if (zox_has(action_entity, ItemBlock)) {
-                    const ecs_entity_t block = zox_get_value(action_entity, BlockLink)
+                if (zox_has(action, ItemBlock)) {
+                    const ecs_entity_t block = zox_get_value(action, BlockLink)
                     if (block) {
                         // todo: check placing on type and normal
                         const byte block_index = zox_get_value(block, BlockIndex)
@@ -64,12 +64,12 @@ void ActionActivateSystem(ecs_iter_t *it) {
                 if (is_use_quantity) {
                     quantity--;
                     if (quantity > 0) {
-                        zox_set(action_entity, Quantity, { quantity })
+                        zox_set(action, Quantity, { quantity })
                         on_set_quantity(world, player, action_selected, quantity);
                     } else {
                         // set action to nullptr
                         // destroy entity
-                        zox_delete(action_entity)
+                        zox_delete(action)
                         actionLinks->value[action_selected] = 0;
                         // now set ui
                         // now to effect ui!
@@ -92,7 +92,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
                 }
             }
         } else {
-            zox_log(" > action entity is not a block item\n")
+            zox_log_error("action is not a block item", zox_get_name(action))
         }
         triggerActionB->value = 0;
     }

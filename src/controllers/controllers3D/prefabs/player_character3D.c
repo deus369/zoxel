@@ -27,5 +27,6 @@ ecs_entity_t spawn_character3D_player(ecs_world_t *world, spawn_character3D_data
     // spawn_data.lod = character_lod;
     const ecs_entity_t e = spawn_character3D(world, spawn_data);
     make_test_skeleton(world, e);
+    zox_name("character3D_player")
     return e;
 }

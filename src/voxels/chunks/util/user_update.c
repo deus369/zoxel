@@ -1,4 +1,4 @@
-void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node, const byte3 position, const byte voxel) {
+void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node, const byte3 position, const byte voxel, const float3 position_real) {
     if (!node || !zox_valid(chunk)) {
         return;
     }
@@ -7,7 +7,35 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
         unlink_node_ChunkOctree(world, node);
     } else if (node->linked != linked_state) {
         // spawn node entity here!
-        zox_log("+ Todo: Place Block [Vox]: [%ix%ix%i] - depth [%i] - linked: [%i]\n", position.x, position.y, position.z, base_node->linked, node->linked)
+        zox_geter(chunk, VoxLink, voxLink)
+        zox_geter(voxLink->value, RealmLink, realmLink)
+        zox_geter(realmLink->value, VoxelLinks, voxels)
+        if (voxel - 1 >= voxels->length) {
+            zox_log_error("voxel [%i] is out of range [%i]", voxel, voxels->length)
+            return;
+        }
+        const ecs_entity_t block = voxels->value[voxel - 1];
+        if (zox_has(block, BlockPrefabLink)) {
+            zox_geter(block, BlockPrefabLink, block_prefab)
+            zox_log("+ Todo: Place Block [Vox]: [%ix%ix%i] - depth [%i] - linked: [%i]", position.x, position.y, position.z, base_node->linked, node->linked)
+            // real position
+            /*SpawnBlockVox spawn_data = {
+                .prefab = block_prefab,
+                .vox = zox_get_value(block, ModelLink),
+                .block_index = voxel - 1,
+                .position_local = position,
+                // .position_global =
+                .position_real = position_real,
+                .scale = 0.25f,
+                // .render_lod =
+                // .render_disabled =
+            };
+            if (zox_has(block_prefab, BlockVox)) {
+                e2 = spawn_block_vox(world, &spawn_data);
+            } else if (zox_has(block_prefab, RendererInstance)) {
+                e2 = spawn_block_vox_instanced(world, &spawn_data);
+            }*/
+        }
     }
     // set node voxel data
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
@@ -51,5 +79,5 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const byte
         position = data->position_last;
         chunk = data->chunk_last;
     }
-    voxel_action(world, chunk, data->node, position, voxel);
+    voxel_action(world, chunk, data->node, position, voxel, data->position_real);
 }

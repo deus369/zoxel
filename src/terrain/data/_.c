@@ -2,3 +2,5 @@
 #include "chunk_textured_build_data.c"
 #include "mesh_uvs_build_data.c"
 #include "terrain_mode.c"
+#include "node_delve_data.c"
+#include "update_block_entities.c"

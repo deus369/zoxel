@@ -1,7 +1,7 @@
 ecs_entity_t prefab_character3D_terrain_spawning;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    const float3 position_offset = (float3) { 0.25f, 0.25f, 0.25f };
+    const float3 bounds = (float3) { 0.25f, 0.5f, 0.25f };
     if (disable_npcs) {
         return;
     }
@@ -29,17 +29,20 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             continue;
         }
         zox_field_i(RenderDistance, renderDistances, renderDistance)
+        if (renderDistance->value > character_render_distance) {
+            continue;
+        }
         zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_i(VoxLink, voxLinks, voxLink)
-        const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
-        // find if chunk has any air position - free place to spawn - spawn characters in this chunk
-        const ChunkPosition *chunkPosition = &chunkPositions[i];
         const byte depth = chunkOctree->linked;
-        // zox_geter(voxLink->value, VoxScale, voxScale)
         int chunk_length = powers_of_two[depth];
+        const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
-        ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
+        // find if chunk has any air position - free place to spawn - spawn characters in this chunk
+        // zox_geter(voxLink->value, VoxScale, voxScale)
+        // ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(initial_dynamic_array_size);
         zox_log_spawning("> chunk [%lu] at [%ix%ix%i]", e, chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
         for (byte j = 0; j < characters_per_chunk_count; j++) {
             // sometimes cannot find a position
@@ -56,8 +59,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                 continue;
             }
 
-            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, position_offset, depth, 1); // voxScale->value);
-
+            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, depth, 1); // voxScale->value);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
             int vox_index = rand() % npc_vox_index_count;
             const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
@@ -73,17 +75,17 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                     .render_disabled = renderDisabled->value,
                 };
                 const ecs_entity_t character = spawn_character3D(world, spawn_data);
-                add_to_ecs_entity_t_array_d(entities, character);
+                // add_to_ecs_entity_t_array_d(entities, character);
                 add_to_EntityLinks(entityLinks, character);
                 zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (characters_per_chunk_count))
             } else {
                 zox_log("! vox not found for [%s]\n", npc_voxes[vox_index])
             }
         }
-        clear_memory_component(EntityLinks, entityLinks);
-        entityLinks->length = entities->size;
-        entityLinks->value = finalize_ecs_entity_t_array_d(entities);
-        on_memory_component_created(entityLinks, EntityLinks)
+        // clear_memory_component(EntityLinks, entityLinks);
+        // entityLinks->length = entities->size;
+        // entityLinks->value = finalize_ecs_entity_t_array_d(entities);
+        // on_memory_component_created(entityLinks, EntityLinks)
         if (entityLinks->length >= 1) {
             zox_log_spawning("  > total: %i", entityLinks->length)
         }

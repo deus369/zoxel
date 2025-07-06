@@ -1,13 +1,13 @@
 byte tooltip_event_action(ecs_world_t *world, const TooltipEventData *data) {
     if (zox_has(data->data, Item)) {
-        // zox_log(" > item highlighted\n")
         return tooltip_event_item(world, data);
     } else if (zox_has(data->data, Skill)) {
-        // zox_log(" > skill highlighted\n")
         return tooltip_event_skill(world, data);
     } else {
         if (data->data) {
             zox_log(" ! uknown action highlighted [%s]", zox_get_name(data->data))
+            set_entity_text(world, data->tooltip, "unknown one");
+            return 1;
         }
         return 0;
     }

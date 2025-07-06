@@ -56,7 +56,9 @@ void DungeonBlockSystem(ecs_iter_t *it) {
                 if (find) break;
             }
         }
-        if (!find) continue;
+        if (!find) {
+            continue;
+        }
         /*if (position.x == voxel_position.x && position.y == voxel_position.y && position.z == voxel_position.z) {
             zox_log("Dungeon Block cannot implode.\n")
             continue;
@@ -67,7 +69,8 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         //    .node = update_node,
         //    .position = position,
         //};
-        voxel_action(world, chunkLink->value, update_node, position, place_type);
+        float3 real_position = voxel_position_to_real_position(voxel_position, byte3_single(powers_of_two[node->linked]), default_vox_scale);
+        voxel_action(world, chunkLink->value, update_node, position, place_type, real_position);
         //raycast_action(world, &raycastVoxelData, place_type, 2);
     }
 } zox_declare_system(DungeonBlockSystem)

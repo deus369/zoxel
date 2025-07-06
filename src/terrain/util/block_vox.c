@@ -1,26 +1,6 @@
-#define zox_disable_block_spawns_hash
 // todo: don't use any constants here for numbers
 // todo: use voxel scale passed in
-
 // keeps track of the node, position, depth as we dig
-typedef struct {
-    ChunkOctree *chunk; // const
-    int3 octree_position;
-    byte depth;
-    const byte max_depth;
-} NodeDelveData;
-
-typedef struct {
-    const ecs_entity_t chunk;
-    const ecs_entity_t *blocks;
-    const ecs_entity_t *block_voxes;
-    const ecs_entity_t *block_prefabs;
-    const byte *block_vox_offsets;
-    const byte block_voxes_count;
-    const float3 chunk_position_real;
-    const float scale;
-    SpawnBlockVox *spawn_data;
-} UpdateBlockEntities;
 
 void delete_block_entities(ecs_world_t *world, ChunkOctree *node,  byte depth, const byte max_depth) {
     if (unlink_node_ChunkOctree(world, node)) {
@@ -65,8 +45,9 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         data->spawn_data->position_local = int3_to_byte3(delve_data->octree_position);
         // if exists already, shouldn't we check if is the same block vox type?
         // if exists, and is same type, return!
-        if (node->nodes) {
-            const ecs_entity_t e3 = ((NodeEntityLink*) node->nodes)->value;
+        if (node->linked == linked_state) {
+            const ecs_entity_t e3 = get_node_entity_ChunkOctree(node);
+            // ((NodeEntityLink*) node->nodes)->value;
             if (zox_valid(e3)) {
                 // this means e3 has spawned
                 // we should check its the same one
@@ -115,11 +96,12 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             // zox_set(e2, Scale1D, { data->spawn_data->scale })
             // zox_set(e2, Position3D, { position_real })
         }
+        // finally we link our node to our new block entity
         link_node_ChunkOctree(node, e2);
     } else {
         int3 octree_position = delve_data->octree_position;
         int3_multiply_int_p(&octree_position, 2);
-        if (delve_data->chunk && delve_data->chunk->nodes) {
+        if (delve_data->chunk && delve_data->chunk->nodes && delve_data->chunk->linked != linked_state) {
             for (byte i = 0; i < octree_length; i++) {
                 NodeDelveData delve_data_child = {
                     .chunk = &delve_data->chunk->nodes[i],
@@ -130,10 +112,8 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                 update_block_entities(world, data, &delve_data_child);
             }
         } else {
-#ifndef zox_disable_block_spawns_hash
             // traverse down with null nodes, making sure to clean up vox spawns on closed nodes
-            for (byte i = 0; i < octree_length; i++) {
-                // delve_data2.octree_position = int3_add(octree_position, octree_positions[i]);
+            /*for (byte i = 0; i < octree_length; i++) {
                 NodeDelveData delve_data_child = {
                     .chunk = &delve_data->chunk->nodes[i],
                     .octree_position = int3_add(octree_position, octree_positions[i]),
@@ -141,9 +121,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                     .max_depth = delve_data->max_depth
                 };
                 update_block_entities(world, data, &delve_data_child);
-                // update_block_entities(world, data, &delve_data2);
-            }
-#endif
+            }*/
         }
     }
 }

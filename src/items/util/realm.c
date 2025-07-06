@@ -7,9 +7,9 @@ ecs_entity_t meta_item_block_dungeon_core;
 
 ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
     if (zox_valid(block) && zox_has(block, ZoxName) && zox_has(block, Textures)) {
-        // get block dataww
-        const ZoxName *voxel_name = zox_get(block, ZoxName)
-        const Textures *textures = zox_get(block, Textures)
+        // get block data
+        zox_geter(block, ZoxName, voxel_name)
+        zox_geter(block, Textures, textures)
         // spawn item
         const ecs_entity_t e = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
         if (textures->length > 0) {
@@ -38,11 +38,6 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
         zox_log("! realm does not have ItemLinks [%lu]\n", realm)
         return;
     }
-    /*zox_get_muter(realm, ItemLinks, items)
-    if (!items) {
-        zox_log("! realm items was null [%lu]\n", realm)
-        return;
-    }*/
     if (!zox_has(realm, VoxelLinks)) {
         zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
         return;
@@ -70,7 +65,7 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
     for (int i = 0; i < voxels->length; i++) {
         const ecs_entity_t block = voxels->value[i];
-        if (!block || !zox_valid(block)) {
+        if (!zox_valid(block)) {
             zox_log_error("! block [%i] invalid", i)
             items->value[i] = 0;
             continue;
@@ -91,6 +86,6 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
     meta_item_block_stone = items->value[zox_block_stone - 1];
 
 #ifdef zox_log_realm_generate
-    zox_log(" + generated realm [items]\n")
+    zox_log(" + generated realm [items]")
 #endif
 }
