@@ -35,7 +35,7 @@ Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
 ### How do I Build?
 
 ```bash
-git clone https://codeberg.org/deus/zoxel
+git clone --depth=1 https://codeberg.org/deus/zoxel
 cd zoxel
 mkdir build
 mkdir build/zoxel-linux
