@@ -6,9 +6,13 @@
 #include zox_nexus_defines
 
 // engine modules
-#include "core/core.c"
+#include "core/logs/_.c"
+#include "core/collections/_.c"
+#include "core/maths/_.c"
+#include "flecs/_.c"
 
 // todo: include all these automatically
+#include "core/_.c"
 #include "generic/generic.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"

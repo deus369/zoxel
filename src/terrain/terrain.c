@@ -20,10 +20,12 @@
 #include "systems/_.c"
 
 zox_begin_module(Terrain)
-    add_hook_terminal_command(process_arguments_terrain);
+    set_terrain_render_distance();
     define_components_terrain(world);
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);
+    add_hook_terminal_command(process_arguments_terrain);
+    add_to_event_game_state((zox_game_event) { &game_state_terrain });
     // add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)
 

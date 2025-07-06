@@ -19,7 +19,7 @@ zox_begin_module(Elements3D)
     zox_define_component_float(Text3DScale)
     define_systems_elements3D(world);
     spawn_prefabs_elements3D(world);
-    add_hooks(world);
+    // add_hook_key_down(key_down_update_text3D);
 zox_end_module(Elements3D)
 
 #endif

@@ -20,21 +20,25 @@ zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
 zox_component_entity(MaterialLink)
-#include "opengl/opengl.c"
-#include "vulkan/vulkan.c"
-#include "core/core.c"
-#include "basics2D/basics2D.c"
-#ifndef zox_disable_rendering3D
-    #include "basics3D/basics3D.c"
-#endif
-#include "cameras/cameras.c"
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
+#include "opengl/_.c"
+#include "vulkan/_.c"
+#include "core/_.c"
+#include "basics2D/_.c"
+#ifndef zox_disable_rendering3D
+    #include "basics3D/_.c"
+#endif
+#include "cameras/_.c"
 
 byte initialize_rendering(ecs_world_t *world) {
     rendering_initialized = 1;
-    if (headless) return EXIT_SUCCESS;
-    else if (is_using_vulkan) return initialize_vulkan(world); // SDL_WINDOW_VULKAN
-    else return initialize_opengl(world);
+    if (headless) {
+        return EXIT_SUCCESS;
+    } else if (!is_using_vulkan) {
+        return initialize_opengl(world);
+    } else {
+        return initialize_vulkan(world); // SDL_WINDOW_VULKAN
+    }
 }
 
 void dispose_rendering(ecs_world_t *world, void *ctx) {

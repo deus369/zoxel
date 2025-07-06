@@ -12,31 +12,7 @@ zox_component_entity(PlayerPauseEvent)
 #include "game/_.c"
 #include "util/_.c"
 #include "systems/_.c"
-
-void toggle_player_death(ecs_world_t *world, int32_t keycode) {
-    if (keycode == SDLK_j) {
-        zox_log("> player character death toggling")
-        if (!zox_valid(local_realm) || !zox_has(local_realm, GameLink)) {
-            zox_log_error("no realm (local)")
-            return;
-        }
-        zox_geter(local_realm, GameLink, gameLink)
-        if (!zox_valid(gameLink->value)) {
-            zox_log_error("realm has no game")
-            return;
-        }
-        zox_geter(gameLink->value, PlayerLinks, players)
-        const ecs_entity_t player = players->value[0];
-        zox_geter(player, CharacterLink, characterLink)
-        if (zox_valid(characterLink->value)) {
-            zox_log("- killing player character")
-            zox_delete(characterLink->value)
-        } else {
-            zox_log("+ spawning player character")
-            spawn_vox_player_character_in_terrain(world, player);
-        }
-    }
-}
+#include "debug/_.c"
 
 zox_begin_module(Space)
     if (headless) {
@@ -44,11 +20,14 @@ zox_begin_module(Space)
     }
     zox_define_component_entity(PlayerPauseEvent)
     define_systems_players2(world);
-    add_to_event_game_state((zox_game_event) { &players_game_state });
     spawn_prefabs_players2(world);
+    add_to_event_game_state((zox_game_event) { &players_game_state });
     // add_hook_key_down(key_down_test_aura);
     // add_hook_key_down(key_down_toggle_streaming);
+    add_hook_key_down(toggle_life_terrain);
     add_hook_key_down(toggle_player_death);
+    add_hook_key_down(toggle_test_particle_system);
+    add_hook_key_down(test_game_end);
 zox_end_module(Space)
 
 #endif

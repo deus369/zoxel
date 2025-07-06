@@ -23,7 +23,5 @@ void define_systems_terrain(ecs_world_t *world) {
     zox_system(ChunkFlatlandSystem, EcsOnUpdate, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkOctree, [none] FlatlandChunk)
     zox_system_ctx(GrassyPlainsSystem, EcsOnUpdate, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [in] RenderLod, [out] GenerateChunk, [out] ChunkOctree, [none] !FlatlandChunk)
     zox_system(DungeonBlockSystem, EcsOnUpdate, [in] TimerState, [in] ChunkLink, [none] blocks.BlockDungeon)
-    set_terrain_render_distance();
-    add_to_event_game_state((zox_game_event) { &realms_game_state });
     zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, GenerateRealm)
 }

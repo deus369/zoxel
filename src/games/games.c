@@ -9,7 +9,7 @@ zox_component_entity(GameLink)
 #include "data/data.c"
 #include "prefabs/prefabs.c"
 #include "util/game_events.c"
-#include "systems/game_state_system.c"
+#include "systems/_.c"
 #include "games2D/games2D.c"
 
 void initialize_games(ecs_world_t *world) {
@@ -21,14 +21,13 @@ void dispose_games(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Games)
-    add_hook_terminal_command(process_arguments_games);
-    zox_module_dispose(dispose_games)
     zox_define_tag(Game)
     zox_define_component_byte(GameState)
     zox_define_component_byte(GameStateTarget)
     zox_define_component_entity(GameLink)
-    // main thread due to
-    zox_system_1(GameStateSystem, EcsPostUpdate, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState, [none] Game)
+    zox_system_1(GameStateSystem, EcsPreStore, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState, [none] Game)
+    zox_module_dispose(dispose_games)
+    add_hook_terminal_command(process_arguments_games);
     spawn_prefabs_games(world);
     initialize_games(world);
 zox_end_module(Games)

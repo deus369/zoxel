@@ -1,9 +1,19 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
-#include "_include.c"
+#define GL_GLEXT_PROTOTYPES
+    #ifdef zox_lib_sdl_direct
+        #include <SDL_opengl.h>
+    #else
+    #ifdef USE_SDL_3
+        #include <SDL3/SDL_opengl.h>
+    #else
+        #include <SDL2/SDL_opengl.h>
+    #endif
+#endif
+
 #include "data/GLuint2.c"
-#include "util/util.c"
+#include "util/_.c"
 
 void check_compute() {
     if (check_compute_shader_support() == EXIT_FAILURE) zox_log(" ! opengl compute is not supported\n");

@@ -1,6 +1,12 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// log types
+// #define zox_enable_log_ios
+// #define zox_enable_log_input
+// #define zox_enable_log_ui
+// #define zox_enable_log_shader
+
 byte boot_zoxel_game(ecs_world_t *world) {
     game_name = "Zoxel";
     zox_log_start_game("> boot started [%s]", game_name)

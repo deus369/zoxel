@@ -6,26 +6,11 @@ void add_player(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t pla
     zox_set(player, GameLink, { e })
 }
 
-// game state implementation for players module
-void players_game_state(ecs_world_t *world, const ecs_entity_t game, const byte previous_game_state, const byte new_game_state) {
-    zox_geter(game, PlayerLinks, players)
-    for (int i = 0; i < players->length; i++) {
-        const ecs_entity_t player = players->value[i];
-        if (previous_game_state == zox_game_start && new_game_state == zox_game_playing) {
-            player_start_game(world, player);
-        } else if (previous_game_state == zox_game_playing && new_game_state == zox_game_paused) {
-            pause_player(world, player);
-        } else if (previous_game_state == zox_game_paused && new_game_state == zox_game_playing) {
-            resume_player(world, player);
-        } else if (new_game_state == zox_game_start) {
-            player_end_game(world, player);
-        }
-    }
-}
-
 int spawn_players(ecs_world_t *world, const ecs_entity_t game) {
     int players = 0;
-    if (headless) return players;   // no players in headless mode
+    if (headless) {
+        return players;   // no players in headless mode
+    }
     spawn_connected_devices(world);
     if (is_split_screen) {
         players = 2;

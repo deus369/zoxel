@@ -15,16 +15,18 @@ void GameStateSystem(ecs_iter_t *it) {
     zox_field_out(GameState, gameStates, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RealmLink, realmLinks, realmLink)
-        if (!realmLink->value) continue;
+        if (!realmLink->value || zox_gett_value(realmLink->value, GenerateRealm)) {
+            continue;
+        }
         zox_field_i(GameStateTarget, gameStateTargets, gameStateTarget)
         zox_field_o(GameState, gameStates, gameState)
-        if (gameStateTarget->value == gameState->value) continue;
-        /*if (zox_gett_value(realmLink->value, GenerateRealm)) zox_log(" > generating realm still [%i]\n", zox_gett_value(realmLink->value, GenerateRealm))*/
-        if (zox_gett_value(realmLink->value, GenerateRealm)) continue; // still generating
-        // do the things
+        if (gameStateTarget->value == gameState->value) {
+            continue;
+        }
         zox_field_e()
-        trigger_event_game(world, e, gameState->value, gameStateTarget->value);
-        gameState->value = gameStateTarget->value;
-        // zox_log(" > game state set to [%i]\n", gameState->value)
+        byte old_state = gameState->value;
+        byte new_state = gameStateTarget->value;
+        gameState->value = new_state;
+        trigger_event_game(world, e, old_state, gameStateTarget->value);
     }
 } zox_declare_system(GameStateSystem)

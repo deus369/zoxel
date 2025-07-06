@@ -58,7 +58,7 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
 // NOTE: WE NOW NEED TO SPAWN TERRAIN CHUNK HERE IF IT DOESN"T EXIST!
 //      - streaming breaks if all chunks die..
 
-void spawn_vox_player_character_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
+void spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!vox) {
         zox_log_error("[tall_cube] not found on player")
@@ -119,7 +119,7 @@ void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
         attach_camera_to_character(world, player, camera, 0);
     #else
         if (game_rule_attach_to_character) {
-            spawn_vox_player_character_in_terrain(world, player);
+            spawn_character3D_player_in_terrain(world, player);
         } else {
             attach_camera_to_character(world, player, camera, 0);
         }

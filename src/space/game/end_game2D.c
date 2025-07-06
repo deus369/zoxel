@@ -1,4 +1,4 @@
-void player_end_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
+void player_end_game2D(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)

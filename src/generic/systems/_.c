@@ -3,6 +3,6 @@
 #include "timed_event_system.c"
 
 void define_systems_generic(ecs_world_t *world) {
-    zox_system(DestroyInFrameSystem, EcsPreStore, [none] DestroyInFrame)
-    zox_system_1(TimedEventSystem, zox_pip_mainthread, [in] TimedEvent, [in] EventInput, [out] EventTime)
+    zox_system_1(TimedEventSystem, EcsPreStore, [in] TimedEvent, [in] EventInput, [out] EventTime)
+    zox_system(DestroyInFrameSystem, EcsOnStore, [none] DestroyInFrame)
 }

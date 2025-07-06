@@ -4,19 +4,19 @@
  *      > Maths, Generics, App, Rendering, Files, Etc
  *
  *  The Lowest of the Lows
-*/
+ */
 #ifndef zox_mod_core
 #define zox_mod_core
 
-#include "_includes.c"
-#include "defines/platform_defines.c"
-#include "logs/logs.c"
-#include "collections/collections.c"
-#include "maths/maths.c"
-#include "platforms/platforms.c"
-#include "ecs/ecs.c"
-#include "terminals/terminals.c"
-#include "pathing/pathing.c"
+#include <signal.h> // used for detecting cancel
+#include <string.h> // who uses this?
+#include <stdlib.h> // for malloc & free
+#include <stdio.h>  // just for sprintf and perror
+
+#include "platforms/defines.c"
+#include "platforms/_.c"
+#include "terminals/_.c"
+#include "pathing/_.c"
 
 void module_dispose_core(ecs_world_t *world, void *ctx) {
     dispose_hook_terminal_command();
@@ -45,16 +45,12 @@ zox_begin_module(Core)
     if (initialize_pathing() == EXIT_FAILURE) {
         zox_log(" ! FAILED PATHING\n")
         return;
-    }
-    set_noise_seed(get_unique_time_seed());
-    #if zoxel_on_web
+    } else {
+        set_noise_seed(get_unique_time_seed());
+        #if zoxel_on_web
         add_to_update_loop(update_web_canvas);
-    #endif
+        #endif
+    }
 zox_end_module(Core)
-
-/*#ifdef __WINE__
- z ox_*log("  > inside wine\n")
- exit(0)
- #endif*/
 
 #endif

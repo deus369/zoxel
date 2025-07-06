@@ -1,6 +1,4 @@
 const uint max_safety_checks_hashmap = 1024;
-#include <pthread.h>
-// pthread_rwlock_t map->lock = PTHREAD_RWLOCK_INITIALIZER;
 
 // default hash is uint32_t
 #define zox_hashmap(name, type, type_zero, key_type, hash_type, convert_to_hash)\

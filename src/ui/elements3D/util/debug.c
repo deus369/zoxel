@@ -10,7 +10,3 @@ void key_down_update_text3D(ecs_world_t *world, int32_t keycode) {
         set_entity_text(world, e, "Hello World");
     }
 }
-
-void add_hooks(ecs_world_t *world) {
-    add_hook_key_down(key_down_update_text3D);
-}

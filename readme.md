@@ -11,27 +11,6 @@
 
 ---
 
-### The Docs
-
-The ultimate plan [ todo list ](todo.md)
-
-Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
-
-Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
-
----
-
-### The Socials
-
-  - [ twitter ](https://twitter.com/deusxyz)
-  - [ mastodon ](https://mastodon.gamedev.place/@deus)
-  - [ itchio ](https://deusxyz.itch.io/zoxel-foss)
-  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s)
-  - [_github_](https://github.com/deus369/zoxel)
-  - [ codeberg ](https://codeberg.org/deus/zoxel)
-
----
-
 ### How do I Build?
 
 ```bash
@@ -42,6 +21,16 @@ cp -R resources build/resources
 make
 make run
 ```
+
+---
+
+### The Docs
+
+The ultimate plan [ todo list ](todo.md)
+
+Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
+
+Flecs (v3.2.8) [_flecsing_](https://codeberg.org/deus/flecsing)
 
 ---
 
@@ -82,5 +71,16 @@ sudo pacman -S git gcc make glibc sdl2 sdl2_image sdl2_mixer glew
 ```bash
 sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-dev
 ```
+
+---
+
+### The Socials
+
+  - [ twitter ](https://twitter.com/deusxyz)
+  - [ mastodon ](https://mastodon.gamedev.place/@deus)
+  - [ itchio ](https://deusxyz.itch.io/zoxel-foss)
+  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s)
+  - [_github_](https://github.com/deus369/zoxel)
+  - [ codeberg ](https://codeberg.org/deus/zoxel)
 
 ---

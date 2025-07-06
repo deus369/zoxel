@@ -10,7 +10,7 @@ void destroy_main_menu(ecs_world_t *world, const ecs_entity_t player) {
 
 void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
-    set_game_state_target(world, game, zox_game_playing);
+    zox_set(game, GameStateTarget, { zox_game_playing })
 }
 
 void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
@@ -26,7 +26,6 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
     save_realm(game_name, "seed.dat", &realm_save);
 #endif
     zox_set(realm, Seed, { realm_save.seed })
-    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);
 }
 
@@ -38,6 +37,5 @@ void button_event_continue_game(ecs_world_t *world, const ClickEventData *event)
     load_realm(game_name, "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
     zox_set(realm, Seed, { realm_save.seed })
-    zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     begin_play_game(world, event->clicker);
 }

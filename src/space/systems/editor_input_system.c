@@ -1,7 +1,3 @@
-ecs_entity_t big_old_particle_zone = 0;
-const int test_particle_zone_spawn_rate = 100;
-const float3 big_old_particle_zone_bounds = (float3) { 32, 32, 32 };
-// max should be around 10k
 
 // todo: move to add key event
 void EditorInputSystem(ecs_iter_t *it) {
@@ -20,15 +16,6 @@ void EditorInputSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->x.pressed_this_frame) {
                     toggle_debug_block_voxes_bounds(world);
-                } else if (keyboard->k.pressed_this_frame) {
-                    if (big_old_particle_zone) {
-                        zox_delete(big_old_particle_zone)
-                        big_old_particle_zone = 0;
-                        return;
-                    }
-                    zox_log(" + spawning a big old particle zone\n")
-                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, 0, test_particle_zone_spawn_rate, float3_multiply_float(big_old_particle_zone_bounds, 2), (color) { 158, 118, 44, 200 });
-                    big_old_particle_zone = particle3D_emitter;
                 }
                 // toggle uis
                 else if (keyboard->m.pressed_this_frame) {
