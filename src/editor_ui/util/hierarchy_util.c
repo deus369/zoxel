@@ -124,7 +124,7 @@ void button_event_clicked_hierarchy(ecs_world_t *world, const ClickEventData *ev
 // like text, sets the list of text onto the ui element list
 void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity, const ecs_entity_t canvas, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const byte button_layer, const byte2 button_padding, const int button_inner_margins, const byte font_size, const byte list_start, const int2 list_margins, const byte is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
     // resize scrollbar
-    resize_window_scrollbar(children, window_size, canvas_size, elements_visible, labels_count);
+    resize_window_scrollbar(world, children, window_size, canvas_size, elements_visible, labels_count);
     // refresh elements
     const int childrens_length = list_start + labels_count;
     // destroy previous ones

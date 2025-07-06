@@ -1,11 +1,14 @@
 void DungeonBlockSystem(ecs_iter_t *it) {
     // todo: add generic timer for these
     // todo: every 5 seconds, build a new block along connects dungeon bricks (dark blocks)
+    zox_field_world()
     zox_field_in(TimerState, timerStates, 1)
     zox_field_in(ChunkLink, chunkLinks, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(TimerState, timerStates, timerState)
-        if (timerState->value == 0) continue;
+        if (timerState->value == 0) {
+            continue;
+        }
         zox_field_i(ChunkLink, chunkLinks, chunkLink)
         ChunkOctree *node = zox_get_mut(chunkLink->value, ChunkOctree) // get node function
         // const int3 size = zox_get_value(chunkLink->value, ChunkSize)

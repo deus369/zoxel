@@ -1,16 +1,8 @@
-const double time_update_system_stat_text_rate = 0.1;
-double time_update_system_stat_text = 0;
-
 void StatTextSystem(ecs_iter_t *it) {
-    /*time_update_system_stat_text += zox_delta_time;
-    if (time_update_system_stat_text >= time_update_system_stat_text_rate) {
-        time_update_system_stat_text = 0;
-    } else {
-        return;
-    }*/
     int stat_name_text_count = 32;
     int label_text_count = 64;
     char stat_name_text[stat_name_text_count];
+    zox_field_world()
     zox_field_in(StatLink, statLinks, 1)
     zox_field_out(TextData, textDatas, 2)
     zox_field_out(ZextDirty, zextDirtys, 3)

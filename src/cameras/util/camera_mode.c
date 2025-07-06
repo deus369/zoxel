@@ -13,9 +13,11 @@ void resize_camera(ecs_world_t *world, const ecs_entity_t e, const int2 viewport
     if (e && zox_alive(e)) zox_set(e, ScreenDimensions, { viewport_size })
 }
 
-void resize_cameras(const int2 screen_size) {
+void resize_cameras(ecs_world_t *world, const int2 screen_size) {
     for (int i = 0; i < main_cameras_count; i++) {
-        if (!zox_valid(main_cameras[i])) continue;
+        if (!zox_valid(main_cameras[i])) {
+            continue;
+        }
         const float4 screen_to_canvas = zox_get_value(main_cameras[i], ScreenToCanvas)
         const int2 viewport_size = screen_to_canvas_size(screen_size, screen_to_canvas);
         const int2 viewport_position = screen_to_canvas_position(screen_size, screen_to_canvas);

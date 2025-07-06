@@ -4,7 +4,7 @@
 #include "data/settings.c"
 zox_declare_tag(Player2D)
 zox_declare_tag(PlayerCharacter2D)
-#include "prefabs/_include.c"
+#include "prefabs/_.c"
 #include "systems/player2D_move_system.c"
 #include "util/label.c"
 

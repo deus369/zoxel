@@ -13,7 +13,7 @@ zox_create_user_data_prefabs(Stat, stat, "stat")
 zox_declare_tag(HealthStat)
 zox_declare_tag(StatSoul)
 
-void zox_define_components_stats(ecs_world_t *world) {
+void define_components_stats(ecs_world_t *world) {
     zox_define_tag(StatState)
     zox_define_tag(StatRegen)
     zox_define_tag(StatAttribute)

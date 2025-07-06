@@ -7,7 +7,7 @@
 #include "dungeon_block_system.c"
 zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
-void zox_define_systems_terrain(ecs_world_t *world) {
+void define_systems_terrain(ecs_world_t *world) {
     // Builds our Textured Chunks (Terrain) !
     if (!headless) {
         zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [in] ChunkMeshDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)

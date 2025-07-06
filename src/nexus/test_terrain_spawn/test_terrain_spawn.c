@@ -20,7 +20,7 @@ ecs_entity_t test_spawn_realm(ecs_world_t *world, const int seed) {
     zox_set(realm, GenerateRealm, { zox_generate_realm_start })
     int run_count = 0;
     while (run_count <= 64) {
-        update_ecs();
+        update_ecs(world);
         zox_geter_value(realm, GenerateRealm, byte, realm_state);
         if (realm_state == zox_generate_realm_end) {
             break;
@@ -64,7 +64,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
     run_count = 0;
     while (run_count <= 4096) {
         double time_start = current_time_in_seconds();
-        update_ecs();
+        update_ecs(world);
         double time_end = current_time_in_seconds();
         double time_since_start = (time_end - test_start);
         run_count++;
@@ -120,7 +120,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
     while (run_count <= 256) {
         // process stream movement
         double time_start = current_time_in_seconds();
-        update_ecs();
+        update_ecs(world);
         double time_end = current_time_in_seconds();
         time_since_start = (time_end - test_start);
         run_count++;

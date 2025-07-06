@@ -89,7 +89,9 @@ void get_component_label(ecs_world_t *world, const ecs_entity_t e, const ecs_ent
 
 // sets inspector ui compponents, the inspector ui
 void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity, const ecs_entity_t e) {
-    if (!zox_alive(window_entity) || !zox_alive(e)) return;
+    if (!zox_alive(window_entity) || !zox_alive(e)) {
+        return;
+    }
     const ecs_type_t *type = ecs_get_type(world, e);
     const ecs_id_t *type_ids = type->array;
     const int components_count = type->count; // int32_t
@@ -117,7 +119,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
     const int labels_count = components_count + is_entity_name_label;
     const int childrens_length = list_start + labels_count;
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
-    resize_window_scrollbar(children, window_size, canvas_size, elements_visible, labels_count);
+    resize_window_scrollbar(world, children, window_size, canvas_size, elements_visible, labels_count);
     if (is_entity_name_label) {
         const int list_index = 0;
         const int child_index = list_start + list_index;

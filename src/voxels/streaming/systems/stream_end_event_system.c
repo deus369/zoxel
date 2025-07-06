@@ -1,5 +1,6 @@
 // A state checker for stream loading
 void StreamEndEventSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(EventInput, eventInputs, 1)
     zox_field_in(ChunkLinks, chunkLinkss, 2)
     zox_field_out(StreamEndEvent, events, 3)

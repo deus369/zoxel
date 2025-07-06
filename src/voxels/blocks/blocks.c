@@ -12,7 +12,7 @@
 #include "systems/terrain_texture_set_system.c"
 
 zox_begin_module(Blocks)
-    zox_define_components_blocks(world);
+    define_components_blocks(world);
     zox_system(TerrainTextureSetSystem, EcsOnUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
     spawn_prefabs_blocks(world);
 zox_end_module(Blocks)

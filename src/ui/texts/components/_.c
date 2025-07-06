@@ -10,7 +10,7 @@ zox_component_int(TextSize)
 zox_component_double(AnimateZext)
 zox_component_zext(TextData)
 
-void zox_define_components_texts(ecs_world_t *world) {
+void define_components_texts(ecs_world_t *world) {
     zox_define_tag(Zext)
     zox_define_tag(ZextLabel)
     zox_define_tag(ZextRenderEnabler)

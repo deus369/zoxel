@@ -1,10 +1,11 @@
 void NoiseChunkOctreeSystem(ecs_iter_t *it) {
-    zox_change_check()
     const byte max_depth = terrain_depth;
-    ChunkDirty *chunkDirtys = ecs_field(it, ChunkDirty, 2);
-    ChunkOctree *chunkOctrees = ecs_field(it, ChunkOctree, 3);
-    const RenderLod *renderLods = ecs_field(it, RenderLod, 4);
-    GenerateChunk *generateChunks = ecs_field(it, GenerateChunk, 5);
+    zox_change_check()
+    zox_field_world()
+    zox_field_in(RenderLod, renderLods, 4)
+    zox_field_out(ChunkDirty, chunkDirtys, 2)
+    zox_field_out(ChunkOctree, chunkOctrees, 3)
+    zox_field_out(GenerateChunk, generateChunks, 5)
     for (int i = 0; i < it->count; i++) {
         GenerateChunk *generateChunk = &generateChunks[i];
         if (generateChunk->value == 0) continue;

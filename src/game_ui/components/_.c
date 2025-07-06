@@ -15,7 +15,7 @@ zox_component_int(QuadsCount)
 zox_component_double(FPSDisplayTicker)
 #include "debug_label_data.c"
 
-void zox_define_components_game_ui(ecs_world_t *world) {
+void define_components_game_ui(ecs_world_t *world) {
     zox_define_component_byte(MenuType)
     zox_define_tag(MenuMain)
     zox_define_tag(MenuOptions)

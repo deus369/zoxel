@@ -12,7 +12,7 @@ void spawn_connected_devices(ecs_world_t *world) {
     mouse_entity = spawn_mouse(world);
     touchscreen_entity = spawn_touchscreen(world, prefab_touchscreen, viewport_dimensions);
 #ifndef zoxel_disable_gamepads
-    initialize_sdl_gamepads();
+    initialize_sdl_gamepads(world);
 #else
     zox_log(" ! gamepads are disabled\n")
 #endif

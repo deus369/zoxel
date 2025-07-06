@@ -1,6 +1,7 @@
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
 void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
+    zox_field_world()
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     if (is_element_line) {
@@ -18,9 +19,13 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
     for (int i = 0; i < it->count; i++) {
         if (is_element_line) {
             zox_field_i(Layer2D, layer2Ds, layer2D)
-            if (layer2D->value != renderer_layer) continue; // render per layer
+            if (layer2D->value != renderer_layer) {
+                continue; // render per layer
+            }
             zox_field_e()
-            if (get_root_canvas_camera(world, e) != renderer_camera) continue;
+            if (get_root_canvas_camera(world, e) != renderer_camera) {
+                continue;
+            }
         }
         zox_field_i(LineData2D, lineData2Ds, lineData2D)
         zox_field_i(LineThickness, lineThicknesss, lineThickness)

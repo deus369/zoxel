@@ -17,7 +17,7 @@ byte test_realm_spawn(ecs_world_t *world) {
     int run_count = 0;
     while (run_count <= 64) {
         zox_geter_value(realm, GenerateRealm, byte, pre_realm_state)
-        update_ecs();
+        update_ecs(world;
         if (pre_realm_state == zox_generate_realm_items) {
             zox_geter(realm, ItemLinks, itemLinks)
             zox_log("  - state [%i] items [%i]", pre_realm_state, itemLinks->length)

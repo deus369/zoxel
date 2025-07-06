@@ -1,4 +1,4 @@
-ecs_world_t *world;
+ecs_world_t *local_world;
 byte profiler = 1;
 byte use_cores = 1;
 byte is_multithreading = 1;

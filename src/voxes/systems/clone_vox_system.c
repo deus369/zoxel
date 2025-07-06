@@ -2,6 +2,7 @@
 // todo: set lod here instead of just applying RenderLod only with ChunkMeshDirty -> keeps memory down
 
 void CloneVoxSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(CloneVoxLink, cloneVoxLinks, 1)
     zox_field_out(CloneVox, cloneVoxes, 2)
     zox_field_out(ChunkOctree, chunkOctrees, 3)

@@ -12,7 +12,7 @@ zox_create_user_data_prefabs(Item, item, "item")
 zox_begin_module(Items)
     zox_define_tag(ItemBlock)
     zox_define_user_data(Item)
-    zox_define_systems_items(world);
+    define_systems_items(world);
     add_hook_spawned_character3D(&spawn_character_items);
     spawn_prefabs_items(world);
     zox_import_module(ItemsUI)

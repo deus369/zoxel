@@ -17,7 +17,7 @@ void initialize_sounds(ecs_world_t *world) {
     return;
 #endif
     if (initialize_sdl_mixer() == EXIT_SUCCESS) {
-        load_files_sounds();
+        load_files_sounds(world);
         audio_enabled = 1;
     } else {
         zox_log(" ! audio files not loaded")

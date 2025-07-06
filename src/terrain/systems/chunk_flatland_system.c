@@ -3,6 +3,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
     uint update_count = 0;
     const byte target_depth = terrain_depth;
     const byte chunk_voxel_length = powers_of_two_byte[target_depth];
+    zox_field_world()
     zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_out(GenerateChunk, generateChunks, 3)
     zox_field_out(ChunkOctree, chunkOctrees, 4)

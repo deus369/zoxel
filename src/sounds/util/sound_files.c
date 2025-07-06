@@ -1,4 +1,4 @@
-void load_files_sounds() {
+void load_files_sounds(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     FileList files = get_files(load_directory);
     sound_files_count = files.count;

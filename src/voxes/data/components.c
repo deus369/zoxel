@@ -8,7 +8,7 @@ zox_component_byte(ChunkLod)
 zox_component_int(RubbleCount)
 zox_component_entity(CloneVoxLink)
 
-void zox_define_components_voxes(ecs_world_t *world) {
+void define_components_voxes(ecs_world_t *world) {
     zox_define_tag(Vox)
     zox_define_tag(BlendVox)
     zox_define_tag(VoxRubble)

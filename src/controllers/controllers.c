@@ -2,8 +2,8 @@
 #define zox_mod_controllers
 
 #include "data/settings.c"
-#include "controllers2D/controllers2D.c"
-#include "controllers3D/controllers3D.c"
+#include "controllers2D/_.c"
+#include "controllers3D/_.c"
 #include "free_roam/free_roam.c"
 
 zox_begin_module(Controllers)

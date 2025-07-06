@@ -10,7 +10,7 @@
 #include "systems/_.c"
 
 zox_begin_module(Zigels)
-    zox_define_components_zigels(world);
+    define_components_zigels(world);
     zox_filter(fonts, [none] FontTexture, [out] GenerateTexture)
     zox_system_ctx(FontTextureSystem, zox_pip_zigels, fonts, [in] ZigelIndex, [in] Color, [in] SecondaryColor, [in] TextureSize, [in] FontThickness, [in] FontOutlineThickness, [out] TextureData, [out] TextureDirty, [out] GenerateTexture, [none] FontTexture)
     spawn_prefabs_zigels(world);

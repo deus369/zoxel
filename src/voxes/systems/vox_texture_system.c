@@ -153,6 +153,7 @@ void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk
 }
 
 void VoxTextureSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(TextureSize, textureSizes, 1)
     zox_field_in(VoxLink, voxLinks, 2)
     zox_field_in(VoxBakeSide, voxBakeSides, 3)

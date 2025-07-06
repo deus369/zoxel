@@ -2,7 +2,10 @@ extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_
 
 // this is more like a non blend pass!
 void RenderTextureRenderSystem(ecs_iter_t *it) {
-    if (!material_render_texture) return;
+    zox_field_world()
+    if (!material_render_texture) {
+        return;
+    }
     const GLuint material_link = zox_get_value(material_render_texture, MaterialGPULink)
     const MaterialAttributesRenderTexture *material_attributes = zox_get(material_render_texture, MaterialAttributesRenderTexture)
     byte has_set_material = 0;

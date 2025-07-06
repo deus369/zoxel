@@ -8,7 +8,7 @@
 #include "camera_planes_draw_system.c"
 #include "billboard_system.c"
 
-void zox_define_systems_cameras(ecs_world_t *world) {
+void define_systems_cameras(ecs_world_t *world) {
     zox_system(Camera2DFollowSystem, EcsPostUpdate, [in] CanRoam, [in] CameraTarget, [out] Position3D, [out] Rotation3D, [none] CameraFollower2D)
     zox_system(Camera3DFollowSystem, EcsOnUpdate, [in] CameraFollowLink, [in] LocalPosition3D, [out] Position3D)
     zox_system(ViewMatrixSystem, zox_camera_stage, [in] TransformMatrix, [in] ProjectionMatrix, [out] ViewMatrix)

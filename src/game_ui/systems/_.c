@@ -3,7 +3,7 @@
 #include "device_mode_ui_system.c"
 #include "debug_label_system.c"
 
-void zox_define_systems_game_ui(ecs_world_t *world) {
+void define_systems_game_ui(ecs_world_t *world) {
     zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] TextData, [out] ZextDirty, [out] FPSDisplayTicker)
     zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] TextData)
     zox_system(DebugLabelSystem, EcsOnStore, [in] PlayerLink, [in] DebugLabelData, [out] ZextDirty, [out] TextData, [none] game.u.i.GameDebugLabel)

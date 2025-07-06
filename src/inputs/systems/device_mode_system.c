@@ -1,6 +1,9 @@
 // #define zox_debug_log_device_mode_system
 void DeviceModeSystem(ecs_iter_t *it) {
-    if (!auto_switch_device) return;
+    zox_field_world()
+    if (!auto_switch_device) {
+        return;
+    }
     zox_field_in(DeviceLinks, deviceLinks, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(DeviceModeDirty, deviceModeDirtys, 3)
@@ -11,7 +14,9 @@ void DeviceModeSystem(ecs_iter_t *it) {
         byte using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];
-            if (!device) continue;
+            if (!device) {
+                continue;
+            }
             if (deviceMode->value == zox_device_mode_keyboardmouse) {
                 if (zox_has(device, Keyboard)) {
                     zox_geter(device, Keyboard, keyboard)

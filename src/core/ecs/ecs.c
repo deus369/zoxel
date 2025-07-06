@@ -1,10 +1,7 @@
 #include "_includes.c"
 #include "macros/_.c"
-#include "data/entity_dynamic_array.c"
-#include "data/general_fun.c"
-#include "data/settings.c"
-#include "data/entity_hashmap.c"
-#include "util/util.c"
+#include "data/_.c"
+#include "util/_.c"
 
 void initialize_flecs_profiler(ecs_world_t* world) {
 #ifdef zox_using_profiler
@@ -45,8 +42,9 @@ ecs_world_t* open_ecs(int argc, char* argv[]) {
 
 ecs_world_t* initialize_ecs(int argc, char* argv[], byte cores) {
     use_cores = cores;
-    world = open_ecs(argc, argv);
-    return world;
+    ecs_world_t *new_world = open_ecs(argc, argv);
+    local_world = new_world;
+    return new_world;
 }
 
 void dispose_ecs(ecs_world_t *world) {

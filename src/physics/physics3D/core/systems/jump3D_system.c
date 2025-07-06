@@ -1,5 +1,6 @@
 void Jump3DSystem(ecs_iter_t *it) {
     init_delta_time()
+    zox_field_world()
     zox_field_in(DisableMovement, disableMovements, 1)
     zox_field_out(Jump, jumps, 2)
     zox_field_out(Acceleration3D, acceleration3Ds, 3)

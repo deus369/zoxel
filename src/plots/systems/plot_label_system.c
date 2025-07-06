@@ -1,4 +1,5 @@
 void PlotLabelSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(ParentLink, parentLinks, 1)
     zox_field_out(ZextDirty, zextDirtys, 2)
     zox_field_out(TextData, textDatas, 3)

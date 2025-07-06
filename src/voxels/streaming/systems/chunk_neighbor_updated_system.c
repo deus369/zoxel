@@ -1,5 +1,6 @@
 // refresh mesh if neighbor updates
 void ChunkNeighborUpdatedSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(ChunkNeighbors, chunkNeighborss, 1)
     zox_field_out(ChunkMeshDirty, chunkMeshDirtys, 2)
     for (int i = 0; i < it->count; i++) {

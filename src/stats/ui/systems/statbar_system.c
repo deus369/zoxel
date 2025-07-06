@@ -1,4 +1,5 @@
 void StatbarSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(StatLink, statLinks, 1)
     zox_field_out(ElementBar, elementBars, 2)
     for (int i = 0; i < it->count; i++) {

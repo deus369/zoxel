@@ -16,14 +16,14 @@ void handle_terminal_close(int sig) {
 }
 
 // handles loop with special check on web builds
-void engine_loop() {
+void engine_loop(ecs_world_t *world) {
 #ifdef zoxel_on_web
-    emscripten_set_main_loop(&update_ecs, -1, 1); // old - 60, 1);
+    emscripten_set_main_loop(&update_ecs_local, -1, 1); // old - 60, 1);
 #else
     signal(SIGINT, handle_terminal_close);     // Handles closing from control + c
     signal(SIGSEGV, handle_segfault);
     while (running) {
-        update_ecs();
+        update_ecs(world);
     }
 #endif
 }

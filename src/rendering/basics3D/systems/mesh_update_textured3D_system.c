@@ -1,5 +1,3 @@
-// #define zoxel_time_mesh_uvs_update_system
-
 void update_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer, const GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
@@ -15,11 +13,6 @@ void update_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer,
 }
 
 void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
-    // if (!ecs_query_changed(NULL, it)) return;
-#ifdef zoxel_time_mesh_uvs_update_system
-    int update_count = 0;
-    begin_timing()
-#endif
     zox_field_in(MeshIndicies, meshIndiciess, 1)
     zox_field_in(MeshVertices, meshVerticess, 2)
     zox_field_in(MeshUVs, meshUVss, 3)
@@ -44,20 +37,11 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
             continue;
         }
         if (meshVertices->length != meshUVs->length) {
+            zox_field_world()
             zox_field_e()
-            zox_log("! [%s] mesh verts [%i] / uvs [%i] missmatch\n", zox_get_name(e), meshVertices->length, meshUVs->length)
+            zox_log_error("[%s] mesh verts [%i] / uvs [%i] missmatch", zox_get_name(e), meshVertices->length, meshUVs->length)
             continue;
         }
         update_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
-#ifdef zoxel_time_mesh_uvs_update_system
-        did_do_timing()
-        update_count++;
-#endif
     }
-#ifdef zoxel_time_mesh_uvs_update_system
-    //  end_timing("    - mesh_uvs_update_system")
-    if (update_count > 0) {
-        zox_log(" - [%i] gpu+ [%i]", ecs_run_count, update_count)
-    }
-#endif
 } zox_declare_system(Mesh3DTexturedUploadSystem)

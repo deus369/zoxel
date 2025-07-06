@@ -6,6 +6,7 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     const byte lowest_note = 12;
     const byte highest_note = 36;
     const byte note_verse_difference = 6;
+    zox_field_world()
     zox_field_out(GenerateMusic, generateMusics, 1)
     zox_field_out(NoteLinks, noteLinkss, 2)
     // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);

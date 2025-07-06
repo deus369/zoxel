@@ -9,8 +9,8 @@
 #include "systems/_.c"
 
 zox_begin_module(Chunks)
-    zox_define_components_chunks(world);
-    zox_define_systems_chunks(world);
+    define_components_chunks(world);
+    define_systems_chunks(world);
     spawn_prefabs_chunks(world);
     add_hook_key_down(key_down_toggle_debug_chunks);
 zox_end_module(Chunks)

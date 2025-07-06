@@ -9,13 +9,11 @@ void generate_colors(long int seed, Colors *colors) {
     const float2 grass_value = (float2) { 44, 54 };
     const float2 grass_saturation = (float2) { 38, 48 };
     float3 grass_hsv = generate_hsv_v_s(grass_hue, grass_value, grass_saturation);
-    // float3 grass_hsv = (float3) { dirt_hsv.x - 360, dirt_hsv.y, dirt_hsv.z };
     if (hsv_to_color(grass_hsv).r > hsv_to_color(dirt_hsv).r)
     {
         float soil_hue = dirt_hsv.x;
         dirt_hsv.x = grass_hsv.x;
         grass_hsv.x = soil_hue;
-        // zox_log(" > grass red was greater, swapping hues\n")
     }
     const int sand_hue_shift = 40;
     float3 sand_hsv = (float3) { dirt_hsv.x - sand_hue_shift + (rand() % sand_hue_shift * 2), dirt_hsv.y + 8 + rand() % 8, dirt_hsv.z + 8 + rand() % 8 };

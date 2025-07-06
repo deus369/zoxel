@@ -6,6 +6,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     // for now while types are global
     const byte target_depth = terrain_depth;
     const uint32_t seed = global_seed;
+    zox_field_world()
     zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_in(RenderLod, renderLods, 3)
     zox_field_out(GenerateChunk, generateChunks, 4)

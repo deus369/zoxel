@@ -12,7 +12,7 @@ zox_begin_module(StatsUI)
     zox_define_tag(Statbar)
     zox_define_tag(MenuStats)
     zox_define_tag(StatsLabel)
-    zox_define_systems_stats_ui(world);
+    define_systems_stats_ui(world);
     spawn_prefabs_ui_stats(world);
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_player_menu_stats,

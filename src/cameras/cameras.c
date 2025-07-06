@@ -10,8 +10,8 @@
 #include "tests/planes_tests.c"
 
 zox_begin_module(Cameras)
-    zox_define_components_cameras(world);
-    zox_define_systems_cameras(world);
+    define_components_cameras(world);
+    define_systems_cameras(world);
     spawn_prefabs_cameras(world);
 zox_end_module(Cameras)
 

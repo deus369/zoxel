@@ -27,7 +27,7 @@ zox_declare_tag(RenderTexture)
 zox_component_entity(RenderTextureLink)
 zox_component_entity(RenderCameraLink)
 
-void zox_define_components_cameras(ecs_world_t *world) {
+void define_components_cameras(ecs_world_t *world) {
     zox_define_tag(Camera)
     zox_define_tag(Camera2D)
     zox_define_tag(Camera3D)

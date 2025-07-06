@@ -1,6 +1,8 @@
-// extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 void ElementRenderSystem(ecs_iter_t *it) {
-    if (!material_textured2D) return;
+    zox_field_world()
+    if (!material_textured2D) {
+        return;
+    }
     const GLuint material_link = zox_get_value(material_textured2D, MaterialGPULink)
     const MaterialTextured2D *material_attributes = zox_get(material_textured2D, MaterialTextured2D)
     byte has_set_material = 0;
@@ -31,7 +33,9 @@ void ElementRenderSystem(ecs_iter_t *it) {
         zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
         zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) continue;
+        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) {
+            continue;
+        }
         if (!has_set_material) {
             has_set_material = 1;
             opengl_enable_blend();

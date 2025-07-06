@@ -1,5 +1,5 @@
 // todo: make a viewport_dirty byte on app, cameras linked to app viewport can refresh
-extern void resize_cameras(const int2 screen_size);
+extern void resize_cameras(ecs_world_t *world, const int2 screen_size);
 
 int2 get_sdl_screen_size() {
     int2 screen_size = int2_zero;
@@ -24,10 +24,12 @@ int2 get_screen_size() {
 }
 
 void on_viewport_resized(ecs_world_t *world, const int2 new_size) {
-    if (int2_equals(new_size, viewport_dimensions)) return;
+    if (int2_equals(new_size, viewport_dimensions)) {
+        return;
+    }
     viewport_dimensions = new_size;
     if(viewport_dimensions.y <= 0) viewport_dimensions.y = 1;
-    resize_cameras(viewport_dimensions); // set viewport size - triggers canvas resizing
+    resize_cameras(world, viewport_dimensions); // set viewport size - triggers canvas resizing
 }
 
 void sdl_set_fullscreen(SDL_Window* window, byte is_fullscreen) {

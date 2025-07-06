@@ -20,7 +20,7 @@ zox_begin_module(Colorz)
     zox_define_component_color_rgb(SecondaryColorRGB)
     zox_define_memory_component(ColorRGBs)
     zox_define_memory_component(Colors)
-    zox_define_systems_colors(world);
+    define_systems_colors(world);
     if (prefab_realm) {
         zox_prefab_add(prefab_realm, Colors)
     }

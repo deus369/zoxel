@@ -15,7 +15,7 @@ zox_entities_component(VoxelLinks)
 zox_component_entity(BlockLink)
 zox_component_entity(BlockPrefabLink)
 
-void zox_define_components_blocks(ecs_world_t *world) {
+void define_components_blocks(ecs_world_t *world) {
     zox_define_tag(Voxel)
     zox_define_tag(Block)
     zox_define_tag(BlockVox)

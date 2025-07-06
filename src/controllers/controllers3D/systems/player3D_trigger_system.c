@@ -1,5 +1,3 @@
-// todo: Steamdeck LT and RT buttons
-
 void Player3DTriggerSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
@@ -8,9 +6,13 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CharacterLink, characterLinks, characterLink)
         ecs_entity_t character = characterLink->value;
-        if (!character || !zox_has(character, Character3D)) continue;
+        if (!character || !zox_has(character, Character3D)) {
+            continue;
+        }
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)
-        if (disableMovement->value) continue;
+        if (disableMovement->value) {
+            continue;
+        }
         byte is_triggered_a = 0;
         // byte is_triggered_b = 0;
         zox_field_i(DeviceMode, deviceModes, deviceMode)
@@ -39,7 +41,9 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                         const DeviceButtonType *deviceButtonType = zox_get(zevice, DeviceButtonType)
                         if (deviceButtonType->value == zox_device_button_x || deviceButtonType->value == zox_device_button_rt) {
                             const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
-                            if (zeviceDisabled->value) continue;
+                            if (zeviceDisabled->value) {
+                                continue;
+                            }
                             const ZeviceButton *zeviceButton = zox_get(zevice, ZeviceButton)
                             if (devices_get_pressed_this_frame(zeviceButton->value)){
                                 is_triggered_a = 1;
@@ -47,7 +51,9 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                             }
                         } else if (deviceButtonType->value == zox_device_button_y || deviceButtonType->value == zox_device_button_lt) {
                             const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
-                            if (zeviceDisabled->value) continue;
+                            if (zeviceDisabled->value) {
+                                continue;
+                            }
                             const ZeviceButton *zeviceButton = zox_get(zevice, ZeviceButton)
                             if (devices_get_pressed_this_frame(zeviceButton->value)) {
                                  // is_triggered_b = 1;

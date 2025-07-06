@@ -23,7 +23,7 @@
  */
 
 // Function for 3-dimensional collision detection
-void collide_with_chunk_d3(const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position,
+void collide_with_chunk_d3(ecs_world_t *world, const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position,
     const byte axis_d1, float position_d1, float position_last_d1, const float offset_d1, byte *collided_d1, float *distance_d1, const byte is_negative1,
     const byte axis_d2, float position_d2, float position_last_d2, const float offset_d2, byte *collided_d2, float *distance_d2, const byte is_negative2,
     const byte axis_d3, float position_d3, float position_last_d3, const float offset_d3, byte *collided_d3, float *distance_d3, const byte is_negative3) {
@@ -89,7 +89,7 @@ void collide_with_chunk_d3(const ChunkLinks *chunk_links, const byte max_depth, 
 }
 
 // expand previous function by second dimension
-void collide_with_chunk_d2(const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position, const byte axis_d1, float position_d1, float position_last_d1, const float offset_d1, byte *collided_d1, float *distance_d1, const byte is_negative1, const byte axis_d2, float position_d2, float position_last_d2, const float offset_d2, byte *collided_d2, float *distance_d2, const byte is_negative2) {
+void collide_with_chunk_d2(ecs_world_t *world, const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position, const byte axis_d1, float position_d1, float position_last_d1, const float offset_d1, byte *collided_d1, float *distance_d1, const byte is_negative1, const byte axis_d2, float position_d2, float position_last_d2, const float offset_d2, byte *collided_d2, float *distance_d2, const byte is_negative2) {
     if (*collided_d1 || *collided_d2)  {
         return;
     }
@@ -138,7 +138,7 @@ void collide_with_chunk_d2(const ChunkLinks *chunk_links, const byte max_depth, 
     }
 }
 
-void collide_with_chunk(const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position, const byte axis_d, float position_d, float position_last_d, const float offset_d, byte *collided_d, float *distance_d, const byte is_negative) {
+void collide_with_chunk(ecs_world_t *world, const ChunkLinks *chunk_links, const byte max_depth, const byte *block_collisions, int3 voxel_position, const byte axis_d, float position_d, float position_last_d, const float offset_d, byte *collided_d, float *distance_d, const byte is_negative) {
     if (*collided_d) {
         return;
     }

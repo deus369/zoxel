@@ -16,8 +16,8 @@ void dispose_gameui(ecs_world_t *world, void *ctx) {
 zox_begin_module(GameUI)
     zox_module_dispose(dispose_gameui)
     initialize_hook_taskbar();
-    zox_define_components_game_ui(world);
-    zox_define_systems_game_ui(world);
+    define_components_game_ui(world);
+    define_systems_game_ui(world);
     spawn_prefabs_game_ui(world);
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_player_menu_paused,

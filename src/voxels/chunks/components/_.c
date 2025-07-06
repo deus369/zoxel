@@ -22,7 +22,7 @@ zoxel_octree_component(ChunkOctree, byte, 0)
 // more
 #include "raycast_voxel_data.c"
 
-void zox_define_components_chunks(ecs_world_t *world) {
+void define_components_chunks(ecs_world_t *world) {
     zox_define_tag(Chunk)
     zox_define_tag(NoiseChunk)
     zox_define_tag(ColorChunk)

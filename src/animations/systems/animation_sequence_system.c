@@ -1,5 +1,6 @@
 void AnimationSequenceSystem(ecs_iter_t *it) {
     const double time = zox_current_time;
+    zox_field_world()
     zox_field_in(AnimationSequence, animationSequences, 1)
     zox_field_in(AnimationTimes, animationTimess, 2)
     zox_field_in(AnimationTargets, animationTargetss, 3)

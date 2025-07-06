@@ -38,8 +38,7 @@ Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
 git clone --depth=1 https://codeberg.org/deus/zoxel
 cd zoxel
 mkdir build
-mkdir build/zoxel-linux
-cp -R resources build/zoxel-linux/resources
+cp -R resources build/resources
 make
 make run
 ```

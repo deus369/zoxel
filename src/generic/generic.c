@@ -19,8 +19,8 @@ void spawn_prefabs_generic(ecs_world_t *world) {
 zox_begin_module(Generic)
     zox_module_dispose(dispose_generic)
     initialize_component_ids();
-    zox_define_components_generic(world);
-    zox_define_systems_generic(world);
+    define_components_generic(world);
+    define_systems_generic(world);
     spawn_prefabs_generic(world);
 zox_end_module(Generic)
 

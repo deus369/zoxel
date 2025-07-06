@@ -26,7 +26,7 @@ zox_begin_module(CorePhysics3D)
     zox_define_component_byte(Jump)
     zox_define_tag(Jumper)
     zox_define_component_float3(Gravity3D)
-    zox_define_systems_physics3D(world);
+    define_systems_physics3D(world);
 zox_end_module(CorePhysics3D)
 
 #endif

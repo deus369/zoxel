@@ -22,8 +22,8 @@ void initialize_voxes(ecs_world_t *world) {
 
 zox_begin_module(Voxes)
     zox_module_dispose(dispose_voxes)
-    zox_define_components_voxes(world);
-    zox_define_systems_voxes(world);
+    define_components_voxes(world);
+    define_systems_voxes(world);
     zox_define_prefabs_voxes(world);
     add_hook_terminal_command(process_arguments_voxes);
 zox_end_module(Voxes)

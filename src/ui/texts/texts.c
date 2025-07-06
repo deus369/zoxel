@@ -10,8 +10,8 @@
 #include "systems/_.c"
 
 zox_begin_module(Texts)
-    zox_define_components_texts(world);
-    zox_define_systems_texts(world);
+    define_components_texts(world);
+    define_systems_texts(world);
     spawn_prefabs_texts(world);
 zox_end_module(Texts)
 

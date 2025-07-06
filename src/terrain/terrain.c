@@ -21,8 +21,8 @@
 
 zox_begin_module(Terrain)
     add_hook_terminal_command(process_arguments_terrain);
-    zox_define_components_terrain(world);
-    zox_define_systems_terrain(world);
+    define_components_terrain(world);
+    define_systems_terrain(world);
     spawn_prefabs_terrain(world);
     // add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)

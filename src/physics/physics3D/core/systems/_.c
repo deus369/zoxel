@@ -10,7 +10,7 @@
 #include "random_jump3D_system.c"
 #include "position3D_bounds_system.c" //  move to transforms
 
-void zox_define_systems_physics3D(ecs_world_t *world) {
+void define_systems_physics3D(ecs_world_t *world) {
     zox_system(Velocity3DSystem, zox_pip_physics, [out] Position3D, [in] Velocity3D)
     zox_system(Omega3DSystem, zox_pip_physics, [in] Omega3D, [out] Rotation3D)
     zox_system(Physics3DDisableSystem, zox_pip_physics, [out] InitializePhysics3D, [out] Position3D, [out] Velocity3D)

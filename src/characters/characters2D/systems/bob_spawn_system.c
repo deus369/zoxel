@@ -2,12 +2,12 @@
 
 // forward declarations
 
-int GetBobCount() {
+int GetBobCount(ecs_world_t *world) {
     return ecs_count(world, Position2D);
 }
 
 void PrintBobSpawnSystem(ecs_world_t *world) {
-    zox_log("    Bobs Spawned [%i]\n", GetBobCount())
+    zox_log("    Bobs Spawned [%i]\n", GetBobCount(world))
 }
 
 //! Here for now, spawns a one man bobarmy.

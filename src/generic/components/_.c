@@ -80,7 +80,7 @@ zox_component_byte(EntityDirty)
 zox_component_entity(EntityTarget)
 zox_component_entity(ComponentTarget)
 
-void zox_define_components_generic(ecs_world_t *world) {
+void define_components_generic(ecs_world_t *world) {
     zox_define_tag(DestroyInFrame)
     zox_define_component_byte(EntityInitialize)
     zox_define_component_byte(EntityDirty)

@@ -7,7 +7,7 @@ zox_increment_system_with_reset(GenerateChunk, chunk_generate_state_end)
 #include "chunk_debug_system.c"
 #include "chunk_find_neighbor_system.c"
 
-void zox_define_systems_chunks(ecs_world_t *world) {
+void define_systems_chunks(ecs_world_t *world) {
     zox_define_increment_system(ChunkDirty, EcsOnLoad)
     zox_define_increment_system(ChunkMeshDirty, EcsOnLoad)
     zox_define_increment_system(GenerateChunk, EcsOnLoad)

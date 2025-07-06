@@ -5,7 +5,7 @@ int2 get_element_label_position(int index, const byte font_size, const byte2 but
 }
 
 
-void resize_window_scrollbar(Children *children, const int2 window_size, const int2 canvas_size, const int elements_visible, const int labels_count) {
+void resize_window_scrollbar(ecs_world_t *world, Children *children, const int2 window_size, const int2 canvas_size, const int elements_visible, const int labels_count) {
     const ecs_entity_t scrollbar = children->value[1];
     const ecs_entity_t scrollbar_front = zox_gett_value(scrollbar, Children)[0];
     const int scrollbar_height = (int) window_size.y * ( float_min(1, (float) elements_visible / (float) labels_count));
