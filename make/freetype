@@ -1,9 +1,0 @@
-# ===== ===== ===== #
-# ===== freetype ===== #
-# ===== ===== ===== #
-
-.PHONY: freetype
-
-freetype:
-	@ $(patient_cmd)
-	@ bash bash/freetype/install.sh

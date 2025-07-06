@@ -1,4 +1,0 @@
-# cameras
-
-- [ ] screenspace ao
-- [ ]

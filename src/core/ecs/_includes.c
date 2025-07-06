@@ -1,4 +1,3 @@
-// #include <inttypes.h> // For PRIu64
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM
