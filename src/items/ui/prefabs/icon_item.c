@@ -10,7 +10,7 @@ byte tooltip_event_item(ecs_world_t *world, const TooltipEventData *data) {
         sprintf(result, "[%s] x%i\n", name_string, quantity);
         free(name_string);
     } else {
-        sprintf(result, "[%" PRIu64 "] x%i\n", data->data, quantity);
+        sprintf(result, "[%lu] x%i\n", data->data, quantity);
     }
     set_entity_text(world, data->tooltip, result);
     return 1;
