@@ -1,14 +1,18 @@
+// zox_flecs_3 | zox_flecs_4
+#define zox_flecs_3
+// #define zox_enable_log_new_system
+
 #define FLECS_CUSTOM_BUILD
 #define FLECS_MODULE
 #define FLECS_SYSTEM
 #define FLECS_PIPELINE
 #include <flecs.h>
-// zox_flecs_3 | zox_flecs_4
-#define zox_flecs_3
-// #define zox_enable_log_new_system
+
 #include "macros/_.c"
 #include "data/_.c"
 #include "util/_.c"
+#include "components/_.c"
+#include "systems/_.c"
 
 ecs_world_t* open_ecs(int argc, char* argv[]) {
     ecs_world_t* new_world = ecs_init_w_args(argc, argv);

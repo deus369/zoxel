@@ -1,6 +1,3 @@
-#define zox_declare_tag(name)\
-    ECS_DECLARE(name);
-
 int zox_statistics_components = 0;
 
 #define zox_custom_component(name)\
@@ -17,9 +14,9 @@ int zox_statistics_components = 0;
     zox_statistics_components++;
 
 #define zox_event_type(name, return_type, ...)\
-typedef struct {\
-    return_type (*value)(__VA_ARGS__);\
-} name;
+    typedef struct {\
+        return_type (*value)(__VA_ARGS__);\
+    } name;
 
 #define zox_function_component(name, return_type, ...)\
     typedef struct {\
@@ -27,11 +24,9 @@ typedef struct {\
     } name;\
     zox_custom_component(name)
 
-#define zox_define_tag(name)\
-    ECS_TAG_DEFINE(world, name);
-
 #define zox_define_component_w_dest(name)\
-    zox_define_component(name) ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
+    zox_define_component(name)\
+    ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
 
 #define zox_define_destruction(name)\
     ecs_set_hooks(world, name, { .dtor = ecs_dtor(name) });
@@ -40,7 +35,8 @@ typedef struct {\
     zox_define_component(name)\
     zox_observe(on_destroyed##_##name, EcsOnRemove, __VA_ARGS__)
 
-#define zox_define_entity_parent_component(name) zox_define_entity_parent_component2(name, [out] name)
+#define zox_define_entity_parent_component(name) \
+    zox_define_entity_parent_component2(name, [out] name)
 
 #define component_id_list(name)\
     ecs_entity_t_array_d* component_ids##_##name;\

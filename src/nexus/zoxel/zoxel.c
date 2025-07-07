@@ -40,10 +40,11 @@ byte boot_zoxel_game(ecs_world_t *world) {
 void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
+    zox_debug_id(Block)
     zox_debug_print_systems(world, 1);
     zox_debug_print_components(world, 1);
-    zox_game_type = zox_game_mode_3D;
 
+    zox_game_type = zox_game_mode_3D;
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
     // terrain_mode = terrain_mode_flatlands;
@@ -89,9 +90,8 @@ void ZoxGameImport(ecs_world_t *world) {
     // disable_block_voxes = 1;
     game_rule_attach_to_character = 1;
     disable_npcs = 0;
-#ifdef zox_mod_ui
     game_ui_has_taskbar = 1;
-#endif
+    test_actions_skills = 1;
 
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);
@@ -104,8 +104,6 @@ void ZoxGameImport(ecs_world_t *world) {
     // fades
     is_start_game_delays = 1;
     is_end_game_delays = 1;
-
-    zox_debug_id(ScreenDimensions)
 }
 
 #endif

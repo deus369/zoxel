@@ -1,4 +1,5 @@
-#define zox_entities_component(name) zox_entities_component_debug(name, 0)
+#define zox_entities_component(name)\
+    zox_entities_component_debug(name, 0)
 
 #define zox_entities_component_debug(name, is_log)\
 zox_memory_component_debug(name, ecs_entity_t, is_log)\

@@ -35,7 +35,10 @@ run-val: dev
 clean:
 	rm -rf build
 
-.PHONY: all clean run dev run-dev run-gdb run-val
+flecs:
+	cd ../flecsing && make clean && make download && make refresh
+
+.PHONY: all run dev run-dev run-gdb run-val clean
 
 # catching memory errors >
 # 	CFLAGS_DEV += -fsanitize=address,undefined
