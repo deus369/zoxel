@@ -5,15 +5,22 @@ extern void raycaster_select_element(ecs_world_t *world, const ecs_entity_t rayc
 
 // this disables any buttons (zevices) of a device, until they are released, then they get auto re enabled
 void disable_inputs_until_release(ecs_world_t *world, const ecs_entity_t player, const byte new_device_mode, const byte old_mode) {
-    if (old_mode == 0) return; // no need disable on start
-    if (!player) return;
-
-    if (new_device_mode != zox_device_mode_gamepad) raycaster_select_element(world, player, 0);
-
+    if (old_mode == 0) {
+        return; // no need disable on start
+    }
+    if (!zox_valid(player)) {
+        return;
+    }
+    if (new_device_mode != zox_device_mode_gamepad) {
+        // zox_log_error("Need to reenable this function and refactor it.")
+        raycaster_select_element(world, player, 0);
+    }
     const DeviceLinks *deviceLinks = zox_get(player, DeviceLinks)
     for (int j = 0; j < deviceLinks->length; j++) {
         ecs_entity_t device = deviceLinks->value[j];
-        if (!device) continue;
+        if (!zox_valid(device)) {
+            continue;
+        }
         if (zox_has(device, Gamepad)) {
             const Children *zevices = zox_get(device, Children)
             for (int k = 0; k < zevices->length; k++) {

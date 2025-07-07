@@ -22,8 +22,4 @@ void on_destroyed_##name(ecs_iter_t *it) {\
 
 #define zox_define_component_entities_child(name)\
     zox_define_component_entity(name)\
-    ecs_observer_init(world, &(ecs_observer_desc_t) {\
-        .filter.expr = #name,\
-        .callback = on_destroyed_##name,\
-        .events = { EcsOnRemove },\
-    });
+    zox_observe_expr(on_destroyed_##name, EcsOnRemove, "[in] "#name)

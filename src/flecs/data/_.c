@@ -2,3 +2,6 @@
 #include "general_fun.c"
 #include "settings.c"
 #include "entity_hashmap.c"
+#include "tags.c"
+#include "ctx2.c"
+#include "component_states.c"

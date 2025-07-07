@@ -1,7 +1,7 @@
 ecs_entity_t spawn_prefab_keyboard(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("keyboard")
-    zox_add(e, Keyboard)
+    zox_prefab_add(e, Keyboard)
     return e;
 }
 

@@ -45,7 +45,7 @@ zox_begin_module(Neurals)
     zox_system(NeuronFeedForwardSystem, EcsOnUpdate, [out] Signal, [none] Neuron, [none] !OutputNeuron)
 
     #ifdef zox_render_brain
-    zox_system_1(NeuronRenderSystem, zox_pip_mainthread, [in] Position2D, [none] Neuron)
+    zox_system_1(NeuronRenderSystem, zox_pip_mainthread, [in] transforms2.d.Position2D, [none] Neuron)
     zox_system_1(ConnectionRenderSystem, zox_pip_mainthread, [in] ConnectionData, [in] Weight, [in] Signal, [in] Transfer, [none] Connection)
     #endif
     spawn_prefabs_neurals(world);

@@ -5,13 +5,13 @@ extern void engine_end(); // engine
 extern byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
 
 // todo: get position2 to work
-ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const byte fullscreen) {
+ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const byte fullscreen, const char *name) {
     int2 window_size = size;
     if (fullscreen) {
         window_size = screen_dimensions;
     }
     const int2 position = get_window_position(window_size, screen_dimensions);
-    SDL_Window* sdl_window = create_sdl_window(position, window_size, fullscreen);
+    SDL_Window* sdl_window = create_sdl_window(position, window_size, fullscreen, name);
     if (sdl_window == NULL) {
         zox_log("    ! opengl did not create sdl_window, exiting zoxel\n")
         running = 0;
@@ -24,11 +24,6 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 
         return 0;
     }
     return e;
-}
-
-// opengl
-ecs_entity_t spawn_main_window_opengl(ecs_world_t *world, int2 position, int2 size, const byte fullscreen) {
-    return spawn_window_opengl(world, position, size, fullscreen);
 }
 
 byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e) {

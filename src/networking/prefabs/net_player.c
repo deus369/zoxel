@@ -6,10 +6,10 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     zox_add_tag(e, NetPlayer)
     zox_add_tag(e, PacketReciever)
     zox_add_tag(e, PacketSender)
-    zox_add(e, NetAddress)
-    zox_add(e, NetPort)
-    zox_add(e, TargetNetAddress)
-    zox_add(e, TargetNetPort)
+    zox_prefab_add(e, NetAddress)
+    zox_prefab_add(e, NetPort)
+    zox_prefab_add(e, TargetNetAddress)
+    zox_prefab_add(e, TargetNetPort)
     zox_prefab_set(e, SocketLink, { -1 })
     prefab_net_player = e;
     return e;

@@ -19,7 +19,7 @@ int get_sdl_window_header_size(SDL_Window* window) {
     return 0;
 }
 
-SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size) {
+SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size, const char *name) {
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     #ifdef zoxel_on_android
@@ -27,7 +27,7 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size)
     #else
         flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
     #endif
-    SDL_Window *window = SDL_CreateWindow(game_name, position.x, position.y, size.x, size.y, flags);
+    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (window == NULL) {
         zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
         return window;
@@ -50,12 +50,12 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size)
     return window;
 }
 
-SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size) {
+SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size, const char *name) {
     int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
     #ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
     #endif
-    SDL_Window *window = SDL_CreateWindow(game_name, position.x, position.y, size.x, size.y, flags);
+    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (window == NULL) {
         zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
         return window;
@@ -68,12 +68,12 @@ SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size)
 }
 
 // opengl only now
-SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte fullscreen) {
+SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte fullscreen, const char *name) {
     byte is_resizeable = 1;
     #ifdef zoxel_on_android
     is_resizeable = 0;
     #endif
-    SDL_Window* window = create_sdl_window_basic_opengl(position, size);
+    SDL_Window* window = create_sdl_window_basic_opengl(position, size, name);
     /* if (window == NULL && is_using_vulkan) {
         zox_log(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
         is_using_vulkan = 0;

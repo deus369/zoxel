@@ -10,18 +10,18 @@ zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_vo
 void define_systems_terrain(ecs_world_t *world) {
     // Builds our Textured Chunks (Terrain) !
     if (!headless) {
-        zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] VoxLink,  [in] ChunkOctree, [in] RenderLod, [in] ChunkNeighbors, [in] VoxScale, [in] RenderDisabled, [in] ChunkMeshDirty, [out] MeshIndicies, [out] MeshVertices, [out] MeshUVs, [out] MeshColorRGBs, [out] MeshDirty, [none] chunks.ChunkTextured)
+        zox_system(ChunkTerrainBuildSystem, EcsOnUpdate, [in] voxels.VoxLink,  [in] chunks.ChunkOctree, [in] rendering.RenderLod, [in] chunks.ChunkNeighbors, [in] blocks.VoxScale, [in] rendering.RenderDisabled, [in] chunks.ChunkMeshDirty, [out] rendering.core.MeshIndicies, [out] rendering.core.MeshVertices, [out] rendering.core.MeshUVs, [out] rendering.core.MeshColorRGBs, [out] rendering.MeshDirty, [none] chunks.ChunkTextured)
     }
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
-    zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] ChunkLodDirty, [out] ChunkOctree, [in] ChunkPosition, [in] VoxLink, [in] RenderDistance, [in] RenderDisabled, [out] BlocksSpawned, [in] RenderLod, [none] TerrainChunk)
-    zox_render3D_system(TerrainChunksRenderSystem, [in] TransformMatrix, [in] MeshGPULink, [in] UvsGPULink, [in] ColorsGPULink, [in] MeshIndicies, [in] VoxLink, [in] RenderDisabled) // builds meshes
+    zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread, [in] chunks.ChunkLodDirty, [out] chunks.ChunkOctree, [in] chunks.ChunkPosition, [in] voxels.VoxLink, [in] rendering.RenderDistance, [in] rendering.RenderDisabled, [out] chunks.BlocksSpawned, [in] rendering.RenderLod, [none] TerrainChunk)
+    zox_render3D_system(TerrainChunksRenderSystem, [in] transforms3.d.TransformMatrix, [in] rendering.core.MeshGPULink, [in] rendering.core.UvsGPULink, [in] rendering.core.ColorsGPULink, [in] rendering.core.MeshIndicies, [in] voxels.VoxLink, [in] rendering.RenderDisabled) // builds meshes
 #ifdef zox_debug_chunk_bounds
-    zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] Position3D, [in] ChunkSize, [in] VoxScale, [in] RenderDisabled, [none] TerrainChunk)
+    zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread, [in] transforms3.d.Position3D, [in] chunks.ChunkSize, [in] blocks.VoxScale, [in] rendering.RenderDisabled, [none] TerrainChunk)
 #endif
     // generate terrain
-    zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] GenerateChunk)
-    zox_system(ChunkFlatlandSystem, EcsOnUpdate, [none] TerrainChunk, [in] ChunkPosition, [out] GenerateChunk, [out] ChunkOctree, [none] FlatlandChunk)
-    zox_system_ctx(GrassyPlainsSystem, EcsOnUpdate, generateTerrainChunkQuery, [none] TerrainChunk, [in] ChunkPosition, [in] RenderLod, [out] GenerateChunk, [out] ChunkOctree, [none] !FlatlandChunk)
-    zox_system(DungeonBlockSystem, EcsOnUpdate, [in] TimerState, [in] ChunkLink, [none] blocks.BlockDungeon)
-    zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, GenerateRealm)
+    zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] chunks.GenerateChunk)
+    zox_system(ChunkFlatlandSystem, EcsOnUpdate, [none] TerrainChunk, [in] chunks.ChunkPosition, [out] chunks.GenerateChunk, [out] chunks.ChunkOctree, [none] FlatlandChunk)
+    zox_system_ctx(GrassyPlainsSystem, EcsOnUpdate, generateTerrainChunkQuery, [none] TerrainChunk, [in] chunks.ChunkPosition, [in] rendering.RenderLod, [out] chunks.GenerateChunk, [out] chunks.ChunkOctree, [none] !FlatlandChunk)
+    zox_system(DungeonBlockSystem, EcsOnUpdate, [in] timing.TimerState, [in] chunks.ChunkLink, [none] blocks.BlockDungeon)
+    zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
 }

@@ -7,24 +7,33 @@
 
 // if non zero, moves to target state
 #define zox_increment_system(component_name, target)\
+\
 void component_name##IncrementSystem(ecs_iter_t *it) {\
     zox_field_out(component_name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_o(component_name, components, component)\
-        if (!component->value) continue;\
-        else if (component->value < target) component->value++;\
+        if (!component->value) {\
+            continue;\
+        } else if (component->value < target) {\
+            component->value++;\
+        }\
     }\
 } zox_declare_system(component_name##IncrementSystem)
 
 // if non zero, moves to target state, then resets
 #define zox_increment_system_with_reset(component_name, target)\
+\
 void component_name##IncrementSystem(ecs_iter_t *it) {\
     zox_field_out(component_name, components, 1)\
     for (int i = 0; i < it->count; i++) {\
         zox_field_o(component_name, components, component)\
-        if (!component->value) continue;\
-        else if (component->value == target) component->value = 0;\
-        else component->value++;\
+        if (!component->value) {\
+            continue;\
+        } else if (component->value == target) {\
+            component->value = 0;\
+        } else {\
+            component->value++;\
+        }\
         /*zox_log(" + %lu is incrementing %s [%s - %i]\n", it->entities[i], #component_name, #target, component->value)*/\
     }\
 } zox_declare_system(component_name##IncrementSystem)
@@ -43,6 +52,9 @@ void component_name##IncrementSystem(ecs_iter_t *it) {\
 
 #define zox_define_increment_system(component, pip, ...)\
     zox_system(component##IncrementSystem, pip, [out] component, __VA_ARGS__)
+
+#define zox_define_increment_system_external(component, full_path_component, pip, ...)\
+    zox_system(component##IncrementSystem, pip, [out] full_path_component, __VA_ARGS__)
 
 #define zox_set_system(system_name, component_name, t, v)\
 void system_name(ecs_iter_t *it) {\
@@ -66,9 +78,11 @@ void system_name(ecs_iter_t *it) {\
 // create systems that call function when state hits
 
 
-#define zox_define_system_state_event(system_name, pip, component, ...) zox_system(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
+#define zox_define_system_state_event(system_name, pip, component, ...)\
+    zox_system(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
 
-#define zox_define_system_state_event_1(system_name, pip, component, ...) zox_system_1(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
+#define zox_define_system_state_event_1(system_name, pip, component, ...)\
+    zox_system_1(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
 
 #define zox_declare_system_state_event(system_name, component, target, function)\
 void system_name##StateEventSystem(ecs_iter_t *it) {\

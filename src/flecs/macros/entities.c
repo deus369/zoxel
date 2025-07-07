@@ -89,11 +89,7 @@ byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
 
 #define zox_define_entities_component2(name, ...)\
     zox_define_memory_component(name)\
-    ecs_observer_init(world, &(ecs_observer_desc_t) {\
-        .filter.expr = #__VA_ARGS__,\
-        .callback = on_destroyed_##name,\
-        .events = { EcsOnRemove },\
-    });
+    zox_observe(on_destroyed_##name, EcsOnRemove, __VA_ARGS__)
 
 #define zox_define_entities_component(name)\
     zox_define_entities_component2(name, [in] name)

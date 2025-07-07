@@ -142,7 +142,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window_entity,
         ecs_entity_t component = 0;
         // const char *text = ""; // labels->data[i].text
         char text[inspector_component_size_buffer];
-        if (ECS_HAS_ID_FLAG(id, OVERRIDE)) {
+        if (zox_is_override(id)) {
             // component = id & ECS_COMPONENT_MASK;
             // get_component_label(world, e, component, text);
             const ecs_entity_t component2 = id & ECS_COMPONENT_MASK;

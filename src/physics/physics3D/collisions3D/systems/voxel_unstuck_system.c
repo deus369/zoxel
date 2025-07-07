@@ -6,9 +6,6 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
     const float unstuck_push = 1.0f;
     zox_field_world()
     zox_field_in(VoxLink, voxLinks, 1)
-    // zox_field_in(ChunkLink, chunkLinks, 2)
-    // zox_field_in(ChunkPosition, chunkPositions, 3)
-    // zox_field_in(Bounds3D, bounds3Ds, 4)
     zox_field_out(Position3D, position3Ds, 5)
     // find realm first
     const VoxelLinks *voxels = get_first_terrain_voxels(world, voxLinks, it->count);
@@ -19,9 +16,6 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
     get_block_collisions(world, voxels, block_collisions);
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
-        // zox_field_i(Bounds3D, bounds3Ds, bounds3D)
-        // zox_field_i(ChunkLink, chunkLinks, chunkLink)
-        // zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_o(Position3D, position3Ds, position3D)
 
         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
@@ -49,7 +43,7 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
         }
         if (voxel && block_collisions[voxel]) {
             position3D->value.y += unstuck_push;
-            zox_field_e()
+            // zox_field_e()
             // zox_log("> [%s] was stuck inside voxel [%ix%ix%i:%i]", zox_get_name(e), voxel_position.x, voxel_position.y, voxel_position.z, voxel)
         }
     }

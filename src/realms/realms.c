@@ -13,8 +13,7 @@ zox_begin_module(Realms)
     zox_define_tag(Realm)
     zox_define_component_byte(GenerateRealm)
     zox_define_component_entity(RealmLink)
-    // why is Realm tag not working here??
-    zox_define_increment_system(GenerateRealm, EcsOnLoad) //, [none] Realm)
+    zox_define_increment_system(GenerateRealm, EcsOnLoad, [none] Realm)
     spawn_prefabs_realms(world);
 zox_end_module(Realms)
 

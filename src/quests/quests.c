@@ -10,7 +10,7 @@ zox_declare_system_state_event(RealmQuests, GenerateRealm, zox_generate_realm_qu
 
 zox_begin_module(Quests)
     zox_define_user_data(Quest)
-    zox_define_system_state_event_1(RealmQuests, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    zox_define_system_state_event_1(RealmQuests, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     add_hook_spawned_character3D(&spawn_character_quests);
     spawn_prefabs_quests(world);
     zox_import_module(UIQuests)

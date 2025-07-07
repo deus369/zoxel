@@ -17,7 +17,7 @@ zox_begin_module(Combat)
     zox_define_component_byte(Dead)
     zox_define_component_double(DiedTime)
     zox_define_component_entity(LastDamager)
-    zox_system(DeathCleanSystem, EcsOnUpdate, [in] Dead, [in] DiedTime)
+    zox_system(DeathCleanSystem, EcsOnUpdate, [in] combat.Dead, [in] DiedTime)
     spawn_prefabs_combat(world);
 zox_end_module(Combat)
 

@@ -1,6 +1,7 @@
-extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
+// extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 void SoundDebugSystem(ecs_iter_t *it) {
+#ifdef zox_mod_lines2D
     if (!zox_visualize_sounds) return;
     zox_field_world()
     byte has_begun = 0;
@@ -28,4 +29,5 @@ void SoundDebugSystem(ecs_iter_t *it) {
             spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, debug_sound_thickness, decay_time);
         }
     }
+#endif
 } zox_declare_system(SoundDebugSystem)

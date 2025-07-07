@@ -4,8 +4,8 @@
 #include "debug_label_system.c"
 
 void define_systems_game_ui(ecs_world_t *world) {
-    zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] TextData, [out] ZextDirty, [out] FPSDisplayTicker)
-    zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] ZextDirty, [out] TextData)
-    zox_system(DebugLabelSystem, EcsOnStore, [in] PlayerLink, [in] DebugLabelData, [out] ZextDirty, [out] TextData, [none] game.u.i.GameDebugLabel)
-    zox_system_1(DeviceModeUISystem, EcsOnUpdate, [in] DeviceMode, [in] DeviceModeDirty, [in] GameLink, [in] CanvasLink) // note: must update before
+    zox_system(FpsDisplaySystem, EcsOnUpdate, [none] FPSDisplay, [out] texts.TextData, [out] texts.ZextDirty, [out] FPSDisplayTicker)
+    zox_system(QuadsLabelSystem, EcsOnUpdate, [none] QuadsCountLabel, [out] QuadsCount, [out] texts.ZextDirty, [out] texts.TextData)
+    zox_system(DebugLabelSystem, EcsOnStore, [in] players.PlayerLink, [in] DebugLabelData, [out] texts.ZextDirty, [out] texts.TextData, [none] game.u.i.GameDebugLabel)
+    zox_system_1(DeviceModeUISystem, EcsOnUpdate, [in] inputs.DeviceMode, [in] inputs.DeviceModeDirty, [in] games.GameLink, [in] elements.core.CanvasLink) // note: must update before
 }

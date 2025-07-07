@@ -35,9 +35,9 @@ zox_begin_module(RenderingBasics2D)
     add_hook_load_shader(&spawn_shaders_basics2D);
     zox_define_component(MaterialTextured2D)
     zox_define_component(MaterialAttributesRenderTexture)
-    zox_render3D_system(RenderMaterial2DSystem, [in] Position2D, [in] Rotation2D, [in] Scale1D, [in] Brightness, [in] MaterialGPULink, [in] TextureGPULink, [none] !MeshGPULink)
-    zox_system_1(Mesh2DUpdateSystem, zox_pip_mainthread, [out] MeshDirty, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshGPULink, [in] MaterialGPULink, [none] !MeshUVs, [none] !MeshColorRGBs)
-    zox_system_1(Mesh2DUvsUpdateSystem, zox_pip_mainthread, [in] MeshIndicies, [in] MeshVertices2D, [in] MeshUVs, [in] MeshGPULink, [in] UvsGPULink, [out] MeshDirty)
+    zox_render3D_system(RenderMaterial2DSystem, [in] transforms2.d.Position2D, [in] transforms2.d.Rotation2D, [in] transforms.Scale1D, [in] rendering.Brightness, [in] rendering.core.MaterialGPULink, [in] rendering.core.TextureGPULink, [none] !rendering.core.MeshGPULink)
+    zox_system_1(Mesh2DUpdateSystem, zox_pip_mainthread, [out] rendering.MeshDirty, [in] rendering.core.MeshIndicies, [in] rendering.core.MeshVertices2D, [in] rendering.core.MeshGPULink, [in] rendering.core.MaterialGPULink, [none] !rendering.core.MeshUVs, [none] !rendering.core.MeshColorRGBs)
+    zox_system_1(Mesh2DUvsUpdateSystem, zox_pip_mainthread, [in] rendering.core.MeshIndicies, [in] rendering.core.MeshVertices2D, [in] rendering.core.MeshUVs, [in] rendering.core.MeshGPULink, [in] rendering.core.UvsGPULink, [out] rendering.MeshDirty)
 zox_end_module(RenderingBasics2D)
 
 #endif

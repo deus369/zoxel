@@ -20,6 +20,6 @@ void QuadsLabelSystem(ecs_iter_t *it) {
         zextDirty->value = 1;
     }
 #ifndef zoxel_on_windows
-    //if (!system_updated) ecs_query_skip(it);   // skip changes if isn't has_set
+    //if (!system_updated) zox_skip()   // skip changes if isn't has_set
 #endif
 } zox_declare_system(QuadsLabelSystem)

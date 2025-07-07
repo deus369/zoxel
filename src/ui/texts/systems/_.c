@@ -5,11 +5,11 @@
 zox_increment_system_with_reset(ZextDirty, zext_update_end)
 
 void define_systems_texts(ecs_world_t *world) {
-    zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] ZextDirty, [out] TextData)
-    zox_system_1(Text2DResizeSystem, EcsPreStore, [in] TextData, [in] TextSize, [in] TextPadding, [in] Layer2D, [in] CanvasPosition, [in] PixelSize, [in] MeshAlignment, [in] FontOutlineColor, [in] FontFillColor, [in] FontThickness, [in] FontOutlineThickness, [in] TextResolution, [in] ZextDirty, [out] RenderDisabled, [out] Children, [none] Zext, [none] Text2D)
+    zox_system(AnimateTextSystem, zox_pipelines_zext_textures, [out] AnimateZext, [out] texts.ZextDirty, [out] texts.TextData)
+    zox_system_1(Text2DResizeSystem, EcsPreStore, [in] texts.TextData, [in] texts.TextSize, [in] TextPadding, [in] elements.core.Layer2D, [in] elements.core.CanvasPosition, [in] transforms2.d.PixelSize, [in] rendering.MeshAlignment, [in] zigels.FontOutlineColor, [in] zigels.FontFillColor, [in] zigels.FontThickness, [in] zigels.FontOutlineThickness, [in] TextResolution, [in] texts.ZextDirty, [out] rendering.RenderDisabled, [out] hierarchys.Children, [none] Zext, [none] Text2D)
     zox_define_increment_system(ZextDirty, EcsOnLoad, [none] Zext)
     if (!headless) {
-        zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] TextData, [in] TextSize, [in] TextPadding, [in] MeshAlignment, [in] CanvasLink, [in] ParentLink)
-        zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] ZextDirty, [in] TextData, [in] TextSize, [in] TextPadding, [in] MeshAlignment, [in] CanvasLink, [out] PixelSize, [out] TextureSize, [out] GenerateTexture, [out] MeshVertices2D, [out] MeshDirty)
+        zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] texts.ZextDirty, [in] texts.TextData, [in] texts.TextSize, [in] TextPadding, [in] rendering.MeshAlignment, [in] elements.core.CanvasLink, [in] hierarchys.ParentLink)
+        zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds, [none] Zext, [in] texts.ZextDirty, [in] texts.TextData, [in] texts.TextSize, [in] TextPadding, [in] rendering.MeshAlignment, [in] elements.core.CanvasLink, [out] transforms2.d.PixelSize, [out] textures.core.TextureSize, [out] textures.core.GenerateTexture, [out] rendering.core.MeshVertices2D, [out] rendering.MeshDirty)
     }
 }

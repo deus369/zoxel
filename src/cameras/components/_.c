@@ -1,4 +1,3 @@
-
 zox_declare_tag(Camera)
 zox_declare_tag(Camera2D)
 zox_declare_tag(Camera3D)
@@ -17,7 +16,7 @@ zox_component_entity(CameraFollowLink)
 zox_component_int2(ScreenPosition)
 zox_component_float4(ScreenToCanvas)
 zox_component(ProjectionMatrix, float4x4)
-zox_component(ViewMatrix, float4x4) // todo: rename to ViewProjectionMatrix instead
+zox_component(ViewMatrix, float4x4) // todo: rename to ViewProjectionMatrix
 // zox_component(ViewProjectionMatrix, float4x4)
 zox_memory_component(FrustumCorners, double3)
 zox_memory_component(CameraPlanes, plane)

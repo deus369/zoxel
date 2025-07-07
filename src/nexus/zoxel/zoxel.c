@@ -8,16 +8,20 @@
 // #define zox_enable_log_shader
 
 byte boot_zoxel_game(ecs_world_t *world) {
-    game_name = "Zoxel";
-    zox_log_start_game("> boot started [%s]", game_name)
-    initialize_networking();
     intialize_game_store();
+#ifdef zox_mod_networking
+    initialize_networking();
+#endif
 #ifdef zox_mod_voxels
     initialize_voxes(world);
 #endif
+#ifdef zox_mod_realms
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
+#endif
+#ifdef zox_mod_games
+    game_name = "Zoxel";
     const ecs_entity_t game = spawn_game(world, realm);
-    zox_log_start_game("> boot completed [zoxel]")
+#endif
     // game spawning
 #ifdef zox_mod_weathers
     spawn_weather(world);
@@ -25,7 +29,7 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_musics
     spawn_realm_playlist(world, realm);
 #endif
-#ifdef zox_mod_players
+#ifdef zox_mod_ui
     spawn_players_cameras_canvases(world, game);
     spawn_players_start_ui(world);
 #endif
@@ -36,8 +40,10 @@ byte boot_zoxel_game(ecs_world_t *world) {
 void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
+    zox_debug_print_systems(world, 1);
+    zox_debug_print_components(world, 1);
     zox_game_type = zox_game_mode_3D;
-    game_ui_has_taskbar = 1;
+
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
     menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
     // terrain_mode = terrain_mode_flatlands;
@@ -83,6 +89,9 @@ void ZoxGameImport(ecs_world_t *world) {
     // disable_block_voxes = 1;
     game_rule_attach_to_character = 1;
     disable_npcs = 0;
+#ifdef zox_mod_ui
+    game_ui_has_taskbar = 1;
+#endif
 
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);
@@ -95,6 +104,8 @@ void ZoxGameImport(ecs_world_t *world) {
     // fades
     is_start_game_delays = 1;
     is_end_game_delays = 1;
+
+    zox_debug_id(ScreenDimensions)
 }
 
 #endif

@@ -48,8 +48,11 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world, ecs_entity_t canvas, const ecs_
     if (canvas == 0) canvas = zox_canvases[0];
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     ecs_entity_t e;
-    if (life_time == 0.0) e = ecs_new_w_pair(world, EcsIsA, prefab_ui_line2D);
-    else e = ecs_new_w_pair(world, EcsIsA, prefab_temporary_ui_line2D);
+    if (life_time == 0.0) {
+        e = zox_instancee(prefab_ui_line2D)
+    } else {
+        e = zox_instancee(prefab_temporary_ui_line2D)
+    }
     zox_name("ui_line2D")
     zox_set(e, CanvasLink, { canvas })
     const float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };

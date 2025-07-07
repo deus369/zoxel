@@ -25,15 +25,15 @@ zox_begin_module(Raycasts)
     zox_define_component_entity(RaycasterTarget)
     zox_define_component_float3(RaycastOrigin)
     zox_define_component_float3(RaycastNormal)
-    // zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] DeviceLinks, [in] DeviceMode, [out] Raycaster)
-    zox_system(ZeviceRaycasterSystem, zox_pip_raycasting, [in] ZevicePointerPosition, [in] ZevicePointer, [out] Raycaster)
+    // zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] inputs.DeviceLinks, [in] inputs.DeviceMode, [out] raycasts.Raycaster)
+    zox_system(ZeviceRaycasterSystem, zox_pip_raycasting, [in] inputs.ZevicePointerPosition, [in] inputs.ZevicePointer, [out] raycasts.Raycaster)
     #ifndef zox_debug_camera_rays
-    zox_system(CameraRaySystem, zox_pip_raycasting, [in] FrustumCorners, [out] RaycastOrigin, [out] RaycastNormal)
+    zox_system(CameraRaySystem, zox_pip_raycasting, [in] cameras.FrustumCorners, [out] raycasts.RaycastOrigin, [out] raycasts.RaycastNormal)
     #else
-    zox_system_1(CameraRaySystem, zox_pip_mainthread, [in] FrustumCorners, [out] RaycastOrigin, [out] RaycastNormal)
+    zox_system_1(CameraRaySystem, zox_pip_mainthread, [in] cameras.FrustumCorners, [out] raycasts.RaycastOrigin, [out] raycasts.RaycastNormal)
     #endif
     #ifdef zox_debug_rays
-    zox_system_1(RayDebugSystem, zox_pip_mainthread, [in] RaycastOrigin, [in] RaycastNormal)
+    zox_system_1(RayDebugSystem, zox_pip_mainthread, [in] raycasts.RaycastOrigin, [in] raycasts.RaycastNormal)
     #endif
     prefab_set_game_prefabs(world);
 zox_end_module(Raycasts)

@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world, const ecs_entity_t prefab) {
     const int3 chunk_size = (int3) { 16, 16, 16 };
-    const ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, prefab);
+    zox_instance(prefab)
     ecs_add_id(world, e, EcsPrefab);
     prefab_add_chunk_colors(world, e);
     zox_prefab_set(e, ChunkSize, { chunk_size })

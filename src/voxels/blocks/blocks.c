@@ -13,7 +13,7 @@
 
 zox_begin_module(Blocks)
     define_components_blocks(world);
-    zox_system(TerrainTextureSetSystem, EcsOnUpdate, [in] RealmLink, [out] GenerateTexture, [out] TilemapSize, [out] TextureLinks, [none] textures.core.Tilemap)
+    zox_system(TerrainTextureSetSystem, EcsOnUpdate, [in] realms.RealmLink, [out] textures.core.GenerateTexture, [out] textures.core.TilemapSize, [out] textures.core.TextureLinks, [none] textures.core.Tilemap)
     spawn_prefabs_blocks(world);
 zox_end_module(Blocks)
 

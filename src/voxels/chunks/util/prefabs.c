@@ -9,15 +9,15 @@ void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
 
 void prefab_add_mesh_basic(ecs_world_t *world, const ecs_entity_t e) {
     if (headless) return;
-    zox_add(e, MeshIndicies)
-    zox_add(e, MeshVertices)
+    zox_prefab_add(e, MeshIndicies)
+    zox_prefab_add(e, MeshVertices)
     add_gpu_mesh(world, e);
 }
 
 void add_components_mesh_textured(ecs_world_t *world, const ecs_entity_t e) {
     if (headless) return;
-    zox_add(e, MeshUVs)
-    zox_add(e, MeshColorRGBs)
+    zox_prefab_add(e, MeshUVs)
+    zox_prefab_add(e, MeshColorRGBs)
     add_gpu_uvs(world, e);
     add_gpu_texture(world, e);
     add_gpu_colors(world, e);

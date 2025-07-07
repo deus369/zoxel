@@ -14,7 +14,7 @@ zox_component_byte(MeshDirty)
 zox_component_entity(MeshLink)
 zox_component_byte(TextureDirty)
 zox_component_byte(MeshAlignment)
-zox_component_byte(RenderLod)       // The resolution of each chunk, distance to nearest camera
+zox_component_byte(RenderLod)
 zox_component_byte(RenderDistance)
 zox_component_byte(RenderDisabled)
 zox_component_float(Brightness)

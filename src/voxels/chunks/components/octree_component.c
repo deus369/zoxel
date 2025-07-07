@@ -327,8 +327,4 @@ void on_destroyed_##name(ecs_iter_t *it) {\
         .move = ecs_move(name),\
         .copy = ecs_copy(name),\
     });\
-    ecs_observer_init(world, &(ecs_observer_desc_t) {\
-        .filter.expr = "[out] "#name,\
-        .callback = on_destroyed_##name,\
-        .events = { EcsOnRemove },\
-    });
+    zox_observe_expr(on_destroyed_##name, EcsOnRemove, "[out] "#name)

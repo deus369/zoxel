@@ -36,9 +36,9 @@ zox_begin_module(Lines2D)
     zox_define_component(LinePosition2D)
     zox_define_component(LineLocalPosition2D)
     zox_define_component(LineAnchor)
-    zox_system(Line2DElementSystem, zox_pipelines_pre_render, [in] LinePosition2D, [in] CanvasLink, [out] LineData2D, [none] Line2D)
-    zox_render3D_system(Line2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] !ElementLine2D)
-    zox_render2D_system(ElementLine2DRenderSystem, [in] LineData2D, [in] LineThickness, [in] Color, [in] Layer2D, [none] Line2D, [none] ElementLine2D)
+    zox_system(Line2DElementSystem, zox_pipelines_pre_render, [in] LinePosition2D, [in] elements.core.CanvasLink, [out] LineData2D, [none] Line2D)
+    zox_render3D_system(Line2DRenderSystem, [in] LineData2D, [in] lines.LineThickness, [in] colorz.Color, [in] elements.core.Layer2D, [none] Line2D, [none] !ElementLine2D)
+    zox_render2D_system(ElementLine2DRenderSystem, [in] LineData2D, [in] lines.LineThickness, [in] colorz.Color, [in] elements.core.Layer2D, [none] Line2D, [none] ElementLine2D)
     spawn_prefabs_lines2D(world);
 zox_end_module(Lines2D)
 

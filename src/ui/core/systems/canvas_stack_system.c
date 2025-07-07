@@ -26,7 +26,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
     zox_field_out(WindowsCount, windowsCounts, 4)
     for (int i = 0; i < it->count; i++) {
         zox_field_o(WindowToTop, windowToTops, windowToTop)
-        if (!windowToTop->value) {
+        if (!zox_valid(windowToTop->value)) {
             continue;
         }
         if (!zox_has(windowToTop->value, Window) || zox_has(windowToTop->value, IgnoreWindowLayering)) {

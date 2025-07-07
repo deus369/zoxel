@@ -22,6 +22,6 @@ void StatRegenSystem(ecs_iter_t *it) {
         }
     }
 #ifndef zoxel_on_windows
-    //if (!system_updated) ecs_query_skip(it);
+    //if (!system_updated) zox_skip()
 #endif
 } zox_declare_system(StatRegenSystem)

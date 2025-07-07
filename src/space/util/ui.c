@@ -46,7 +46,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
     float4 camera_rotation = quaternion_identity;
     for (int i = 0; i < players_playing; i++) {
         const ecs_entity_t player = zox_players[i];
-        set_camera_transform_to_main_menu(&camera_position, &camera_rotation);
+        set_camera_transform_to_main_menu(&camera_position, &camera_rotation, terrain_depth);
         const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
         const int2 viewport_size = screen_to_canvas_size(viewport_dimensions, screen_to_canvas);
         const int2 viewport_position = screen_to_canvas_position(viewport_dimensions, screen_to_canvas);

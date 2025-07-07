@@ -30,11 +30,7 @@ void on_destroyed_##name(ecs_iter_t *it) {\
 }
 
 #define zox_define_hashmap_component2(name, ...)\
-zox_define_component(name)\
-ecs_observer_init(world, &(ecs_observer_desc_t) {\
-    .filter.expr = #__VA_ARGS__,\
-    .callback = on_destroyed_##name,\
-    .events = { EcsOnRemove },\
-});
+    zox_define_component(name)\
+    zox_observe(on_destroyed_##name, EcsOnRemove, __VA_ARGS__)
 
 #define zox_define_hashmap_component(name) zox_define_hashmap_component2(name, [out] name)

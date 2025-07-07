@@ -11,7 +11,7 @@ zox_declare_system_state_event(RealmAchievements, GenerateRealm, zox_generate_re
 
 zox_begin_module(Achievements)
     zox_define_user_data(Achievement)
-    zox_define_system_state_event_1(RealmAchievements, EcsOnLoad, GenerateRealm) // , [none] realms.Realm)
+    zox_define_system_state_event_1(RealmAchievements, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
 zox_end_module(Achievements)
 
 #endif

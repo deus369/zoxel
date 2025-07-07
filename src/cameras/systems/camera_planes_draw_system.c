@@ -1,3 +1,5 @@
+extern void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
+
 void CameraPlanesDrawSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(CameraPlanes, cameraPlaness, 1)

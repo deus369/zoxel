@@ -18,5 +18,5 @@ void AnimateNoiseSystem(ecs_iter_t *it) {
             }
         }
     }
-    if (!changed) ecs_query_skip(it);
+    if (!changed) zox_skip()
 } zox_declare_system(AnimateNoiseSystem)

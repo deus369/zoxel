@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_realm(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_realm(ecs_world_t *world, const ecs_entity_t prefab) {
-    if (!prefab) {
+    if (!zox_valid(prefab)) {
         zox_log("! prefab_realm is null.\n")
         return 0;
     }

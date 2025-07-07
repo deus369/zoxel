@@ -11,7 +11,7 @@ zox_declare_tag(PlayerCharacter2D)
 zox_begin_module(Controllers2D)
     zox_define_tag(Player2D)
     zox_define_tag(PlayerCharacter2D)
-    zox_system(Player2DMoveSystem, zox_pip_player_movement, [in] DeviceLinks, [in] CharacterLink, [none] players.Player)
+    zox_system(Player2DMoveSystem, zox_pip_player_movement, [in] inputs.DeviceLinks, [in] characters.CharacterLink, [none] players.Player)
     spawn_prefabs_players2D(world);
 zox_end_module(Controllers2D)
 

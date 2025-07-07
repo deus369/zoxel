@@ -1,5 +1,9 @@
 int engine_spawn_window(ecs_world_t *world) {
-    const ecs_entity_t window = spawn_main_window_opengl(world, default_window_position, default_window_size, fullscreen);
+#ifdef zox_mod_games
+    const ecs_entity_t window = spawn_window_opengl(world, default_window_position, default_window_size, fullscreen, game_name);
+#else
+    const ecs_entity_t window = spawn_window_opengl(world, default_window_position, default_window_size, fullscreen, "nogame");
+#endif
     if (window == 0) {
         return EXIT_FAILURE;
     }

@@ -13,7 +13,7 @@ zox_begin_module(UISkills)
     zox_define_tag(IconSkill)
     zox_define_tag(FrameSkill)
     // note: action uis doesn't have same things'
-    zox_system(SkillOverlaySystem, EcsOnUpdate, [in] UserDataLink, [in] Children, [none] elements2.d.Icon)
+    zox_system(SkillOverlaySystem, EcsOnUpdate, [in] users.UserDataLink, [in] hierarchys.Children, [none] elements2.d.Icon)
     spawn_prefabs_ui_skills(world);
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_player_menu_skills,

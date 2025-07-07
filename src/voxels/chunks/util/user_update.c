@@ -16,10 +16,11 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
         }
         const ecs_entity_t block = voxels->value[voxel - 1];
         if (zox_has(block, BlockPrefabLink)) {
-            zox_geter(block, BlockPrefabLink, block_prefab)
             zox_log("+ Todo: Place Block [Vox]: [%ix%ix%i] - depth [%i] - linked: [%i]", position.x, position.y, position.z, base_node->linked, node->linked)
             // real position
-            /*SpawnBlockVox spawn_data = {
+            /*
+            zox_geter(block, BlockPrefabLink, block_prefab)
+            SpawnBlockVox spawn_data = {
                 .prefab = block_prefab,
                 .vox = zox_get_value(block, ModelLink),
                 .block_index = voxel - 1,

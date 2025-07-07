@@ -43,7 +43,6 @@
 zox_begin_module(Sdl)
     zox_module_dispose(dispose_apps_sdl)
     define_components_sdl(world);
-    zox_import_module(SdlInputs)
     initialize_apps_sdl(world);
     // spawn just one prefab
     spawn_prefab_app_sdl(world);
@@ -51,6 +50,7 @@ zox_begin_module(Sdl)
     add_to_update_loop(update_sdl);
     add_to_post_update_loop(app_update_gpu);
     set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
+    zox_import_module(SdlInputs)
 zox_end_module(Sdl)
 
 #endif

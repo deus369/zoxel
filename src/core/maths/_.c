@@ -14,8 +14,8 @@
 
 #include "data/constants.c"
 #include "util/float_util.c"
-#include "data/data.c"
-#include "util/util.c"
+#include "data/_.c"
+#include "util/_.c"
 #include "tests/test_quadrants.c"
 
 zoxel_dynamic_array(int)

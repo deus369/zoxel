@@ -5,6 +5,7 @@ ecs_entity_t spawn_prefab_zevice_pointer(ecs_world_t *world) {
     zox_prefab_set(e, ID, { 0 })
     zox_prefab_set(e, ZeviceDisabled, { 0 })
     zox_prefab_set(e, ZevicePointer, { 0 })
+    zox_prefab_set(e, ZevicePointerOld, { 0 })
     zox_prefab_set(e, ZevicePointerPosition, { int2_zero })
     zox_prefab_set(e, ZevicePointerDelta, { int2_zero })
     zox_prefab_set(e, DeviceButtonType, { 0 })

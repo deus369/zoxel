@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_music(ecs_world_t *world) {
     zox_prefab_set(e, MusicPlaying, { 0 })
     zox_prefab_set(e, MusicNote, { 0 })
     // zox_prefab_set(e, InstrumentType, { instrument_piano })
-    zox_add(e, NoteLinks)
+    zox_prefab_add(e, NoteLinks)
     return e;
 }
 

@@ -12,11 +12,11 @@
 #ifndef zox_mod_inputs
 #define zox_mod_inputs
 
-#include "data/data.c"
-#include "components/components.c"
-#include "util/util.c"
-#include "prefabs/prefabs.c"
-#include "systems/systems.c"
+#include "data/_.c"
+#include "components/_.c"
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "systems/_.c"
 
 void module_dispose_inputs(ecs_world_t *world, void *ctx) {
     dispose_hook_key_down();

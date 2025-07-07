@@ -1,5 +1,5 @@
 // this is used for visually representing data
-#ifndef zox_mod_plots
+#if !defined(zox_mod_plots) && defined(zox_mod_lines2D)
 #define zox_mod_plots
 
 ecs_entity_t plot_window_time;
@@ -22,8 +22,8 @@ zox_begin_module(Plots)
     zox_define_tag(PlotLine)
     zox_define_tag(PlotLabel)
     zox_define_memory_component(PlotDataDouble)
-    zox_system(PlotLineSystem, EcsOnUpdate, [in] ParentLink, [in] ChildIndex, [out] LineLocalPosition2D, [none] PlotLine)
-    zox_system(PlotLabelSystem, EcsOnUpdate, [in] ParentLink, [out] ZextDirty, [out] TextData, [none] PlotLabel)
+    zox_system(PlotLineSystem, EcsOnUpdate, [in] hierarchys.ParentLink, [in] hierarchys.ChildIndex, [out] lines2.d.LineLocalPosition2D, [none] PlotLine)
+    zox_system(PlotLabelSystem, EcsOnUpdate, [in] hierarchys.ParentLink, [out] texts.ZextDirty, [out] texts.TextData, [none] PlotLabel)
     spawn_prefabs_plots(world);
 zox_end_module(Plots)
 

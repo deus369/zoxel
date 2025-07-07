@@ -37,10 +37,10 @@ zox_begin_module(Bones)
     zox_define_component_w_dest(BoneIndexGPULink)
     // generating bone indexes here
     if (!headless) {
-        zox_render3D_plus_system(SkeletonRender3DSystem, [in] MeshIndicies, [in] MeshGPULink, [in] ColorsGPULink, [in] BoneIndexGPULink, [in] TransformMatrix, [in] RenderDisabled, [in] BoneLinks, [none] Skeleton, [none] MeshColorRGBs, [none] !UvsGPULink)
-        zox_system(BoneIndexGenerateSystem, EcsOnUpdate, [in] MeshDirty, [in] MeshVertices, [in] BoneLinks, [out] BoneIndexes)
-        zox_system(BonePaintSystem, EcsPostUpdate, [in] MeshDirty, [in] BoneIndexes, [out] MeshColorRGBs, [in] PaintedSkeleton)
-        zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread, [in] MeshDirty, [in] BoneIndexes, [out] BoneIndexGPULink)
+        zox_render3D_plus_system(SkeletonRender3DSystem, [in] rendering.core.MeshIndicies, [in] rendering.core.MeshGPULink, [in] rendering.core.ColorsGPULink, [in] BoneIndexGPULink, [in] transforms3.d.TransformMatrix, [in] rendering.RenderDisabled, [in] BoneLinks, [none] Skeleton, [none] rendering.core.MeshColorRGBs, [none] !rendering.core.UvsGPULink)
+        zox_system(BoneIndexGenerateSystem, EcsOnUpdate, [in] rendering.MeshDirty, [in] rendering.core.MeshVertices, [in] BoneLinks, [out] BoneIndexes)
+        zox_system(BonePaintSystem, EcsPostUpdate, [in] rendering.MeshDirty, [in] BoneIndexes, [out] rendering.core.MeshColorRGBs, [in] PaintedSkeleton)
+        zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread, [in] rendering.MeshDirty, [in] BoneIndexes, [out] BoneIndexGPULink)
     }
     spawn_prefabs_bones(world);
 zox_end_module(Bones)

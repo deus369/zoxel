@@ -25,7 +25,7 @@ zox_begin_module(Games)
     zox_define_component_byte(GameState)
     zox_define_component_byte(GameStateTarget)
     zox_define_component_entity(GameLink)
-    zox_system_1(GameStateSystem, EcsPreStore, [in] realms.RealmLink, [in] GameStateTarget, [out] GameState, [none] Game)
+    zox_system_1(GameStateSystem, EcsPreStore, realms.RealmLink, [in] GameStateTarget, [out] GameState, [none] Game)
     zox_module_dispose(dispose_games)
     add_hook_terminal_command(process_arguments_games);
     spawn_prefabs_games(world);

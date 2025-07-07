@@ -9,11 +9,15 @@ void WindowLayerSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(SetWindowLayer, setWindowLayers, setWindowLayer)
         zox_field_o(WindowLayer, windowLayers, windowLayer)
-        if (windowLayer->value == setWindowLayer->value) continue;
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
-        if (!canvasLink->value) continue;
         zox_field_i(Children, childrens, children)
         zox_field_o(Layer2D, layer2Ds, layer2D)
+        if (windowLayer->value == setWindowLayer->value) {
+            continue;
+        }
+        if (!zox_valid(canvasLink->value) || !zox_has(canvasLink->value, WindowsLayers)) {
+            continue;
+        }
         const byte layers_per_window = zox_get_value(canvasLink->value, WindowsLayers)
         windowLayer->value = setWindowLayer->value;
         const byte window_layer = windowLayer->value;

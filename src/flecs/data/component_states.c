@@ -1,0 +1,11 @@
+#define zox_component_type_none 0
+#define zox_component_type_byte 1
+#define zox_component_type_int 2
+#define zox_component_type_int2 3
+#define zox_component_type_long_int 4
+#define zox_component_type_float 5
+#define zox_component_type_float2 6
+#define zox_component_type_float3 7
+#define zox_component_type_float4 8
+#define zox_component_type_float4x4 9
+#define zox_component_type_ecs_entity_t 10

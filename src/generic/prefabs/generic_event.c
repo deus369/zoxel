@@ -9,7 +9,6 @@ void spawn_prefab_generic_event(ecs_world_t *world) {
 }
 
 ecs_entity_t spawn_generic_event(ecs_world_t *world, byte state) {
-    // ecs_entity_t e = ecs_new_w_pair(world, EcsIsA, generic_event_prefab);
     zox_instance(generic_event_prefab)
     zox_name("event")
     zox_set(e, GenericEvent, { state })

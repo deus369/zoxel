@@ -1,8 +1,11 @@
 // This should only update when either ScreenDimensions or FieldOfView changes
 void ProjectionMatrixSystem(ecs_iter_t *it) {
 #ifdef main_thread_projection_matrix_system
-    if (!ecs_query_changed(NULL, it)) return;
+    zox_skip_if_unchanged(1)
 #endif
+/*
+    if (!ecs_query_changed(NULL, it)) return;
+*/
 #ifdef zox_use_orthographic_projection
     zox_field_world()
 #endif
@@ -14,7 +17,9 @@ void ProjectionMatrixSystem(ecs_iter_t *it) {
         zox_field_i(ScreenDimensions, screenDimensionss, screenDimensions)
         const int screen_width = screenDimensions->value.x;
         const int screen_height = screenDimensions->value.y;
-        if(screen_height <= 0) continue;
+        if(screen_height <= 0) {
+            continue;
+        }
         const float aspect_ratio = ((float) screen_width) / ((float) screen_height);
         zox_field_i(FieldOfView, fieldOfViews, fieldOfView)
         zox_field_i(CameraNearDistance, cameraNearDistances, cameraNearDistance)

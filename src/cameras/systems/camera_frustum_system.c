@@ -1,3 +1,5 @@
+extern void draw_frustum(ecs_world_t *world, float3 *frustum, const color_rgb debug_color);
+
 void CameraFrustumSystem(ecs_iter_t *it) {
     if (zox_cameras_disable_streaming) return;
     zox_field_in(ViewMatrix, viewMatrixs, 1)
@@ -22,18 +24,3 @@ void CameraFrustumSystem(ecs_iter_t *it) {
         calculate_planes_from_frustum_d3(frustumCorners->value, cameraPlanes->value);
     }
 } zox_declare_system(CameraFrustumSystem)
-
-/*        debug_camera_transform = transformMatrix->value;
-        // fix_frustum_normals(transformMatrix->value, cameraPlanes->value);
-#ifdef zox_test_frustum
-        // plane *planes2 = create_test_planes(16);
-        plane *planes2 = create_test_planes_position(debug_plane_position, debug_plane_distance);
-        for (int i = 0; i < 6; i++) cameraPlanes->value[i] = planes2[i];
-        free(planes2);
-#endif
-#ifdef zox_test_frustum2
-        plane *planes2 = create_test_planes_position((float3) { transformMatrix->value.w.x, transformMatrix->value.w.y, transformMatrix->value.w.z }, debug_plane_distance);
-        for (int i = 0; i < 6; i++) cameraPlanes->value[i] = planes2[i];
-        free(planes2);
-        // normalize_planes(cameraPlanes->value);
-#endif*/

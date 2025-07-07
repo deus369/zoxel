@@ -17,3 +17,5 @@
 #include "int3_hashmap.c"
 #include "byte3_hashmap.c"
 #include "string_hashmap.c"
+#include "bounds.c"
+#include "plane.c"
