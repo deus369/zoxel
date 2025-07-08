@@ -93,7 +93,7 @@ void ZoxGameImport(ecs_world_t *world) {
     disable_npcs = 0;
     game_ui_has_taskbar = 1;
     test_actions_skills = 1;
-    test_items_blocks = 0;
+    test_items_blocks = 1;
 
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);

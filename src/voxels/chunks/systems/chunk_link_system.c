@@ -13,7 +13,7 @@ byte set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
     // remove entity from old chunk
     if (zox_valid(old_chunk)) {
         zox_get_muter(old_chunk, EntityLinks, entityLinks)
-        remove_from_memory_component(entityLinks, ecs_entity_t, e)
+        remove_from_EntityLinks(entityLinks, e);
 #ifdef zox_debug_chunk_link_system
         const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
         zox_log(" > chunk [%s] removed e [%s] [%ix%ix%i]\n", zox_get_name(old_chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z)

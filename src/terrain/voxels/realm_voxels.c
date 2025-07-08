@@ -63,7 +63,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 
     // gamey blocks
     voxels->value[zox_block_dark - 1] = spawn_realm_voxel_texture(world, zox_block_dark, "dark", "block_dark");
-    voxels->value[zox_block_dungeon_core - 1] = spawn_dungeon_core(world);
+    voxels->value[zox_block_dungeon_core - 1] = spawn_block_dungeon_core(world);
 
     zox_set(realm, VoxelLinks, { voxels->length, voxels->value })
     zox_set(realm, VoxelsDirty, { 1 })

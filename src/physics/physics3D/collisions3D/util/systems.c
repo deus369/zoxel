@@ -1,5 +1,3 @@
-
-
 const VoxelLinks* get_first_terrain_voxels(ecs_world_t *world, const VoxLink *voxLinks, int count) {
     ecs_entity_t realm = 0;
     for (int i = 0; i < count; i++) {
@@ -17,6 +15,7 @@ const VoxelLinks* get_first_terrain_voxels(ecs_world_t *world, const VoxLink *vo
     return voxels;
 }
 
+// contains air!
 void get_block_collisions(ecs_world_t *world, const VoxelLinks *voxels, byte *collisions) {
     collisions[0] = 0;    // air
     for (int i = 0; i < voxels->length; i++) {

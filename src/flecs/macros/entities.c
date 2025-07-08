@@ -2,7 +2,7 @@
     zox_entities_component_debug(name, 0)
 
 #define zox_entities_component_debug(name, is_log)\
-zox_memory_component_debug(name, ecs_entity_t, is_log)\
+zox_memory_component_with_remove_logging(name, ecs_entity_t, is_log)\
 \
 void dispose2_##name(ecs_world_t *world, const name *component) {\
     if (!component->value || !component->length) {\
@@ -40,34 +40,6 @@ void on_destroyed_##name(ecs_iter_t *it) {\
     }\
 }\
 \
-void remove_index_from_##name(name *component, const int i) {\
-    /* shift list down, as we are removing i*/\
-    for (int j = i; j < component->length - 1; j++) {\
-        component->value[j] = component->value[j + 1];\
-    }\
-    /* resize list: length = length - 1*/\
-    component->length--;\
-    if (component->length == 0) {\
-        free(component->value);\
-        component->value = NULL;\
-    } else {\
-        component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
-    }\
-}\
-\
-byte remove_from_##name(name *component, const ecs_entity_t data) {\
-    if (!component || !component->value) {\
-        return 0;\
-    }\
-    for (int i = 0; i < component->length; i++) {\
-        if (component->value[i] == data) {\
-            remove_index_from_##name(component, i);\
-            return 1;\
-        }\
-    }\
-    return 0;\
-}\
-\
 byte is_in_##name(name *component, const ecs_entity_t data) {\
     if (!component || !component->value) {\
         return 0;\
@@ -94,3 +66,31 @@ byte add_unique_to_##name(name *component, const ecs_entity_t data) {\
 
 #define zox_define_entities_component(name)\
     zox_define_entities_component2(name, [in] name)
+
+/*
+void remove_index_from_##name(name *component, const int i) {\
+    for (int j = i; j < component->length - 1; j++) {\
+        component->value[j] = component->value[j + 1];\
+    }\
+    component->length--;\
+    if (component->length == 0) {\
+        free(component->value);\
+        component->value = NULL;\
+    } else {\
+        component->value = realloc(component->value, component->length * sizeof(ecs_entity_t));\
+    }\
+}\
+\
+byte remove_from_##name(name *component, const ecs_entity_t data) {\
+    if (!component || !component->value) {\
+        return 0;\
+    }\
+    for (int i = 0; i < component->length; i++) {\
+        if (component->value[i] == data) {\
+            remove_index_from_##name(component, i);\
+            return 1;\
+        }\
+    }\
+    return 0;\
+}\
+*/

@@ -40,7 +40,7 @@ void DamageAuraRemoveSystem(ecs_iter_t *it) {
                         }
                     }
                     if (particle3D_emitter) {
-                        remove_from_memory_component(children, ecs_entity_t, particle3D_emitter)
+                        remove_from_Children(children, particle3D_emitter);
                         zox_delete(particle3D_emitter)
                     }
                 }

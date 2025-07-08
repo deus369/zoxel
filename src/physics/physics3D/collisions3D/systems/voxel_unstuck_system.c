@@ -12,8 +12,8 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
     if (!voxels) {
         return;
     }
-    byte block_collisions[voxels->length + 1];
-    get_block_collisions(world, voxels, block_collisions);
+    byte colliders[voxels->length + 1];
+    get_block_collisions(world, voxels, colliders);
     for (int i = 0; i < it->count; i++) {
         zox_field_i(VoxLink, voxLinks, voxLink)
         zox_field_o(Position3D, position3Ds, position3D)
@@ -39,12 +39,7 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
         if (!voxel) {
             continue;
         }
-        const byte voxel_index = voxel - 1;
-        if (voxel_index >= voxels->length) {
-            zox_log_error("[voxel out of range] [%i >= %i]", voxel, voxels->length)
-            break;
-        }
-        if (block_collisions[voxel_index]) {
+        if (colliders[voxel]) {
             position3D->value.y += unstuck_push;
             // zox_field_e()
             // zox_log("> [%s] was stuck inside voxel [%ix%ix%i:%i]", zox_get_name(e), voxel_position.x, voxel_position.y, voxel_position.z, voxel)

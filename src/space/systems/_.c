@@ -13,7 +13,6 @@
 void define_systems_players2(ecs_world_t *world) {
     zox_system(QolShortcutsSystem, EcsOnUpdate, [in] inputs.DeviceLinks, [none] players.Player)
     zox_system(PlayerShortcutsSystem, EcsOnUpdate, [in] inputs.DeviceLinks, [in] games.GameLink, [none] players.Player)
-
     // zox_pipelines_pre_render
     // zox_system_1(PlayerShortcutsMainThreadSystem, zox_pip_mainthread, [in] inputs.DeviceLinks, [in] elements.core.CanvasLink, [none] players.Player)
     zox_system_1(PlayerTestSystem, zox_pip_mainthread, [in] inputs.DeviceLinks, [in] elements.core.CanvasLink, [none] players.Player)

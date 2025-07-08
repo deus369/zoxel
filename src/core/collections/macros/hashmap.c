@@ -18,7 +18,9 @@ typedef struct {\
 } name;\
 \
 hash_type name##_hash(hash_type key, hash_type size) {\
-    if (size == 0) return -1;\
+    if (size == 0) {\
+        return -1;\
+    }\
     return key % size;\
 }\
 \

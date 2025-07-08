@@ -11,15 +11,15 @@ ecs_entity_t spawn_realm_block_rubble(ecs_world_t *world, const byte index, char
 
     // use instanced mesh prefab
     SpawnBlock data = {
-        .index = (byte) (index),
-        .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
         .prefab_texture = prefab_vox_texture,
+        .prefab_block_vox = prefab_block_vox,
+        .vox = vox,
+        .tag = zox_id(BlockVox),
+        .index = (byte) (index + 1),
+        .seed = generate_voxel_seed(index),
         .name = name,
         .color = block_color,
-        .vox = vox,
-        .prefab_block_vox = prefab_block_vox,
-        .tag = zox_id(BlockVox),
         .model = zox_block_vox,
         .disable_collision = 1,
     };
