@@ -10,11 +10,12 @@ void voxel_action(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *nod
         zox_geter(chunk, VoxLink, voxLink)
         zox_geter(voxLink->value, RealmLink, realmLink)
         zox_geter(realmLink->value, VoxelLinks, voxels)
-        if (voxel - 1 >= voxels->length) {
-            zox_log_error("voxel [%i] is out of range [%i]", voxel, voxels->length)
+        const byte voxel_index = voxel - 1;
+        if (voxel_index >= voxels->length) {
+            zox_log_error("voxel [%i] is out of range [%i]", voxel_index, voxels->length)
             return;
         }
-        const ecs_entity_t block = voxels->value[voxel - 1];
+        const ecs_entity_t block = voxels->value[voxel_index];
         if (zox_has(block, BlockPrefabLink)) {
             zox_log("+ Todo: Place Block [Vox]: [%ix%ix%i] - depth [%i] - linked: [%i]", position.x, position.y, position.z, base_node->linked, node->linked)
             // real position

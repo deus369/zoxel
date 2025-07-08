@@ -29,6 +29,7 @@ zox_begin_module(Space)
     add_hook_key_down(toggle_test_particle_system);
     add_hook_key_down(test_game_end);
     add_hook_key_down(test_fall_through_terrain);
+    add_hook_key_down(spawn_tilemap_ui);
 zox_end_module(Space)
 
 #endif

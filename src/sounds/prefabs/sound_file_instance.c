@@ -1,6 +1,6 @@
 ecs_entity_t spawn_sound_from_file(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t sound_file) {
     if (!sound_file) {
-        zox_log(" ! sound_file invalid\n")
+        zox_log_error(" ! sound_file invalid [spawn_sound_from_file]")
         return 0;
     }
     if (!prefab) {

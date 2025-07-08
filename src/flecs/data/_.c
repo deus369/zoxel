@@ -5,3 +5,4 @@
 #include "tags.c"
 #include "ctx2.c"
 #include "component_states.c"
+#include "stats.c"

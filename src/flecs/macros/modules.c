@@ -12,10 +12,11 @@
 #define zox_begin_module(name)\
     void name##Import(ecs_world_t *world) {\
         zox_module(name)\
+        zox_statistics_modules++;\
         zox_debug_module(world, #name, ecs_id(name));
 
 #define zox_end_module(name)\
-        /* end timings here */\
+    /* end timings here */\
 }
 
 void zox_debug_module(ecs_world_t *world, const char *name, const ecs_entity_t module_type) {

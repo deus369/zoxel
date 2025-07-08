@@ -37,24 +37,6 @@ void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs
     }
 }
 
-ecs_entity_t tilemap_ui = 0;
-
-void spawn_tilemap_ui(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t canvas, const ecs_entity_t realm) {
-    const int2 size = (int2) { 320, 320 };
-    if (keyboard->_8.pressed_this_frame) {
-        if (tilemap_ui) {
-            zox_delete(tilemap_ui)
-            tilemap_ui = 0;
-            return;
-        }
-        const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
-        const int2 position = (int2) { 8, 8 };
-        tilemap_ui = spawn_element_texture(world, canvas, tilemap, position, size);
-        spawn_sound_from_file(world, prefab_sound, 0);
-        // zox_log(" + spawned tilemap ui\n")
-    }
-}
-
 void test_sounds(ecs_world_t *world, const Keyboard *keyboard) {
     /*if (keyboard->_1.pressed_this_frame || keyboard->_2.pressed_this_frame || keyboard->_3.pressed_this_frame || keyboard->_4.pressed_this_frame || keyboard->_5.pressed_this_frame || keyboard->_6.pressed_this_frame || keyboard->_7.pressed_this_frame || keyboard->_8.pressed_this_frame) spawn_sound_from_file(world, prefab_sound, 0);
     */
@@ -99,7 +81,6 @@ void PlayerTestSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device, Keyboard)
                 test_sounds(world, keyboard);
                 // brain_test_controls(world, keyboard, canvas);
-                spawn_tilemap_ui(world, keyboard, canvas, local_realm);
                 test_raycast(world, keyboard, local_realm, it->entities[i]);
 #ifndef zox_on_startup_spawn_main_menu
                 if (keyboard->g.pressed_this_frame) {

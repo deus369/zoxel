@@ -41,6 +41,7 @@ void ZoxGameImport(ecs_world_t *world) {
     zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_debug_id(Block)
+    zox_debug_print_modules(world, 1);
     zox_debug_print_systems(world, 1);
     zox_debug_print_components(world, 1);
 
@@ -92,14 +93,16 @@ void ZoxGameImport(ecs_world_t *world) {
     disable_npcs = 0;
     game_ui_has_taskbar = 1;
     test_actions_skills = 1;
+    test_items_blocks = 0;
 
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);
     // set_prefab_debug_label(world, &get_label_player_stats);
     // set_prefab_debug_label(world, &get_label_player_items);
     // set_prefab_debug_label(world, &get_label_player_skills);
-    set_prefab_debug_label(world, &get_label_player_actions);
+    // set_prefab_debug_label(world, &get_label_player_actions);
     // set_prefab_debug_label(world, &get_label_player_quests);
+    set_prefab_debug_label(world, &get_label_player_chunk_link);
 
     // fades
     is_start_game_delays = 1;

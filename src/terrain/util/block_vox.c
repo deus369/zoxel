@@ -31,7 +31,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // cheeck if out of bounds
         const byte block_index = node->value - 1;
         if (block_index >= data->block_voxes_count) {
-            zox_log(" ! block_index out of bounds %i of %i\n", block_index, data->block_voxes_count)
+            zox_log_error("block_index out of bounds %i of %i", block_index, data->block_voxes_count)
             return;
         }
         const ecs_entity_t block_prefab = data->block_prefabs[block_index];
@@ -111,17 +111,6 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                 };
                 update_block_entities(world, data, &delve_data_child);
             }
-        } else {
-            // traverse down with null nodes, making sure to clean up vox spawns on closed nodes
-            /*for (byte i = 0; i < octree_length; i++) {
-                NodeDelveData delve_data_child = {
-                    .chunk = &delve_data->chunk->nodes[i],
-                    .octree_position = int3_add(octree_position, octree_positions[i]),
-                    .depth = delve_data->depth + 1,
-                    .max_depth = delve_data->max_depth
-                };
-                update_block_entities(world, data, &delve_data_child);
-            }*/
         }
     }
 }

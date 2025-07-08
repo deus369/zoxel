@@ -21,7 +21,6 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
         const int3 chunk_position = real_position_to_chunk_position(position3D->value, chunk_dimensions, depth);
         const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
-
         if (!zox_valid(chunk)) {
             continue;
         }
@@ -37,11 +36,15 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
         byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
         // voxel
         const byte voxel = get_octree_voxel(node, &voxel_position_local, node->linked);
-        if (voxel >= voxels->length) {
-            zox_log_error("voxel [%i] out of range [0-%i]", voxel, voxels->length)
+        if (!voxel) {
+            continue;
+        }
+        const byte voxel_index = voxel - 1;
+        if (voxel_index >= voxels->length) {
+            zox_log_error("[voxel out of range] [%i >= %i]", voxel, voxels->length)
             break;
         }
-        if (voxel && block_collisions[voxel]) {
+        if (block_collisions[voxel_index]) {
             position3D->value.y += unstuck_push;
             // zox_field_e()
             // zox_log("> [%s] was stuck inside voxel [%ix%ix%i:%i]", zox_get_name(e), voxel_position.x, voxel_position.y, voxel_position.z, voxel)

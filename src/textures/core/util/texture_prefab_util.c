@@ -29,7 +29,11 @@ void clear_texture_data(ecs_world_t *world, const ecs_entity_t e) {
 
 void clone_texture_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source) {
     if (!source || !zox_has(source, TextureSize) || !zox_has(source, TextureData)) {
-        zox_log("! failure with clone_texture_data [%lu] > source [%lu]\n", e, source)
+        if (!source) {
+            zox_log_error("[texture not found] [%s]", zox_get_name(e))
+        } else {
+            zox_log_error("[texture invalid] [%s] > source [%s]", zox_get_name(e), zox_get_name(source))
+        }
         return;
     }
     const TextureData *source_data = zox_get(source, TextureData)

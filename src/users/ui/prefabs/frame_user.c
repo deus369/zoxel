@@ -88,13 +88,15 @@ void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const
         zox_log_error("[%s] has no texture link component: %i", zox_get_name(data), zox_has(data, TextureLink))
         return;
     }
-    const ecs_entity_t texture = zox_get_value(data, TextureLink)
+    ecs_entity_t texture = zox_get_value(data, TextureLink)
     if (!texture) {
-        clear_texture_data(world, e);
+        const ecs_entity_t blank = string_hashmap_get(files_hashmap_textures, new_string_data("blank"));
+        texture = blank;
+        /*clear_texture_data(world, e);
         zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
         zox_set(e, TextureSize, { int2_single(default_icon_texture_size) })
         zox_log_error("[%s] has no texture", zox_get_name(data))
-        return;
+        return;*/
     }
     zox_set(e, GenerateTexture, { zox_generate_texture_none })
     clone_texture_data(world, e, texture);

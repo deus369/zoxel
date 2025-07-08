@@ -5,3 +5,4 @@
 #include "streaming.c"
 #include "terrain.c"
 #include "ui.c"
+#include "tilemap.c"

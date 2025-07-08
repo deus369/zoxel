@@ -1,14 +1,10 @@
 #ifndef zox_voxels_blocks
 #define zox_voxels_blocks
 
-// todo: implement BlockCollider in physics
-#include "data/model_types.c"
-#include "data/block_types.c"
-#include "data/block_sides.c"
-#include "data/spawn_block.c"
+#include "data/_.c"
 #include "components/_.c"
 #include "util/generation_util.c"
-#include "prefabs/prefabs.c"
+#include "prefabs/_.c"
 #include "systems/terrain_texture_set_system.c"
 
 zox_begin_module(Blocks)

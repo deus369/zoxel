@@ -7,6 +7,7 @@
 #include "util/_.c"
 #include "prefabs/_.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(Chunks)
     define_components_chunks(world);

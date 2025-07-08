@@ -85,7 +85,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     if (!zox_valid(realm) || !zox_has(realm, VoxelLinks)) {
         return;
     }
-    const VoxelLinks *voxelLinks = zox_get(realm, VoxelLinks)
+    zox_geter(realm, VoxelLinks, voxelLinks)
     voxels_length = voxelLinks->length;
     if (voxels_length == 0) {
         return; // if failed to find terrain parents
@@ -94,7 +94,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     if (!zox_valid(tilemap) || !zox_has(tilemap, TilemapUVs)) {
         return;
     }
-    const TilemapUVs *tilemap_uvs = zox_get(tilemap, TilemapUVs)
+    zox_geter(tilemap, TilemapUVs, tilemap_uvs)
     if (tilemap_uvs->value == NULL || tilemap_uvs->length == 0) {
         // zox_log(" ! tilemap troubles in chunk building: %lu %i\n", tilemap, tilemap_uvs->length)
         return; // if tilemap generating still
@@ -128,8 +128,9 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             // per voxel, 24 uvs
             for (byte k = 0; k < 6; k++) {
                 build_data.uvs[voxel_uv_indexes_index + k] = uvs_index;
-                uvs_index += 4;
+                // uvs_index += 4;
             }
+            uvs_index += 4;
         } else {
             // for 6 sides textured voxes
             for (byte k = 0; k < 6; k++) {

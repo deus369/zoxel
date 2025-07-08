@@ -29,12 +29,21 @@ void generate_colors(long int seed, Colors *colors) {
     const color sky_color = hsv_to_color(sky_hsv);
     const color obsidian_color = hsv_to_color((float3) { rand() % 360, 33, 33 });
     byte i = 0;
+    colors->value[i++] = sky_color;
     colors->value[i++] = dirt_color;
     colors->value[i++] = grass_color;
     colors->value[i++] = sand_color;
     colors->value[i++] = stone_color;
-    colors->value[i++] = sky_color;
     colors->value[i++] = obsidian_color;
+#ifdef zox_log_realm_colors
+    zox_log(" + soil hsv: %fx%fx%f", dirt_hsv.x, dirt_hsv.y, dirt_hsv.z)
+    zox_log(" + soil color: %ix%ix%i", dirt_color.r, dirt_color.g, dirt_color.b)
+    zox_log(" + grass_hsv: %fx%fx%f", grass_hsv.x, grass_hsv.y, grass_hsv.z)
+    zox_log(" + grass_color: %ix%ix%i", grass_color.r, grass_color.g, grass_color.b)
+    zox_log(" + sand_color: %xx%xx%x", sand_color.r, sand_color.g, sand_color.b)
+    zox_log(" + stone_color: %xx%xx%x", stone_color.r, stone_color.g, stone_color.b)
+    zox_log(" + stone_hsv: %fx%fx%f", stone_hsv.x, stone_hsv.y, stone_hsv.z)
+#endif
 }
 
 void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
@@ -43,13 +52,17 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
         return;
     }
     zox_geter(realm, Seed, seed)
-    zox_geter(realm, Colors, old_colors)
-    if (old_colors->length) {
-        free(old_colors->value);
+    zox_geter(realm, Colors, old_data)
+    if (old_data->length) {
+        free(old_data->value);
     }
-    // todo: clear old ones!
     Colors *colors = &((Colors) { 0, NULL });
     resize_memory_component(Colors, colors, color, 6)
     generate_colors(seed->value, colors);
     zox_set(realm, Colors, { .value = colors->value, .length = colors->length })
+    // rendering: set global game colors
+    fog_color = color_to_float3(colors->value[0]);
+    viewport_clear_color = fog_color;
+    game_sky_color = fog_color;
+    game_sky_bottom_color = fog_color;
 }

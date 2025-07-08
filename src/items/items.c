@@ -1,6 +1,7 @@
 #if !defined(zox_mod_items) && defined(zox_mod_users)
 #define zox_mod_items
 
+byte test_items_blocks = 0;
 zox_declare_tag(ItemBlock)
 zox_declare_user_data(Item)
 zox_create_user_data_prefabs(Item, item, "item")

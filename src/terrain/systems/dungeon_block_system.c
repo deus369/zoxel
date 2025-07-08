@@ -63,12 +63,14 @@ void DungeonBlockSystem(ecs_iter_t *it) {
             zox_log("Dungeon Block cannot implode.\n")
             continue;
         }*/
-        // zox_log("Dungeon Block Placing: %lu [%ix%ix%i]\n", it->entities[i], position.x, position.y, position.z)
+        //
         //RaycastVoxelData raycastVoxelData = {
         //    .chunk = chunkLink->value,
         //    .node = update_node,
         //    .position = position,
         //};
+        zox_field_e()
+        zox_log("+ Dungeon Block Placing: %s [%ix%ix%i]: %i", zox_get_name(e), position.x, position.y, position.z, place_type)
         float3 real_position = voxel_position_to_real_position(voxel_position, byte3_single(powers_of_two[node->linked]), default_vox_scale);
         voxel_action(world, chunkLink->value, update_node, position, place_type, real_position);
         //raycast_action(world, &raycastVoxelData, place_type, 2);

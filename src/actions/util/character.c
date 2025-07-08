@@ -30,9 +30,6 @@ void spawn_character_actions(ecs_world_t *world, spawned_character3D_data *data)
         }
     }
     if (test_actions_blocks) {
-        /*if (meta_item_block_dark) {
-            actions->value[place_index++] = spawn_user_item(world, meta_item_block_dark, data->e);
-        }*/
         if (meta_item_block_dungeon_core) {
             actions->value[place_index++] = spawn_user_item(world, meta_item_block_dungeon_core, data->e);
         }

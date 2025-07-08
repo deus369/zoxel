@@ -1,5 +1,3 @@
-int zox_statistics_components = 0;
-
 #define zox_custom_component(name)\
     ECS_COMPONENT_DECLARE(name);
 

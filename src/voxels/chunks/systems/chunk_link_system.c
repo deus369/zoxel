@@ -1,66 +1,60 @@
 // #define zox_debug_chunk_link_system
 extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
 
-void set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t chunk) {
+byte set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t chunk) {
     if (!zox_valid(chunk)) {
-        return;
+        return 0;
     }
     ecs_entity_t old_chunk = chunkLink->value;
-    if (old_chunk != chunk) {
-        // set characters link to chunk
-        if (!zox_alive(chunk)) {
-            chunkLink->value = 0;
-        } else {
-            chunkLink->value = chunk;
-            // zox_log("[set_entity_chunk] setting character [%lu] chunk: %lu", e, chunk)
-        }
-        // if player, dont link chunk to character
-        if (zox_has(e, DisableReverseLinkChunk)) {
-            return;
-        }
-        // Set RenderLod and RenderDisabled based on chunk!
-        if (chunk) {
-            // now render distabled
-            const byte chunk_render_disabled = zox_get_value(chunk, RenderDisabled)
-            const byte character_render_disabled = zox_get_value(e, RenderDisabled)
-            if (character_render_disabled != chunk_render_disabled) {
-                zox_set(e, RenderDisabled, { chunk_render_disabled })
-            }
-            // now lod
-            const byte chunk_render_lod = zox_get_value(chunk, RenderLod)
-            const byte character_render_lod = zox_get_value(e, RenderLod)
-            if (character_render_lod != chunk_render_lod) {
-                zox_set(e, RenderLod, { chunk_render_lod })
-            }
-        }
-        // remove entity from old chunk
-        if (zox_valid(old_chunk)) {
-            zox_get_muter(old_chunk, EntityLinks, entityLinks)
-            remove_from_memory_component(entityLinks, ecs_entity_t, e)
+    if (old_chunk == chunk) {
+        return 0;
+    }
+    chunkLink->value = chunk;
+    // remove entity from old chunk
+    if (zox_valid(old_chunk)) {
+        zox_get_muter(old_chunk, EntityLinks, entityLinks)
+        remove_from_memory_component(entityLinks, ecs_entity_t, e)
 #ifdef zox_debug_chunk_link_system
-            const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
-            zox_log(" > chunk [%s] removed e [%s] [%ix%ix%i]\n", zox_get_name(old_chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z)
+        const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
+        zox_log(" > chunk [%s] removed e [%s] [%ix%ix%i]\n", zox_get_name(old_chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z)
 #endif
+    }
+    // add entity to new chunk
+    if (zox_valid(chunk)) {
+        zox_mut_begin(chunk, EntityLinks, entityLinks)
+        if (add_to_EntityLinks(entityLinks, e)) {
+            zox_mut_end(chunk, EntityLinks)
         }
-        // add entity to new chunk
-        if (zox_valid(chunk)) {
-            EntityLinks *entityLinks = zox_get_mut(chunk, EntityLinks)
-            if (add_to_EntityLinks(entityLinks, e)) {
-                zox_modified(chunk, EntityLinks)
-            }
 #ifdef zox_debug_chunk_link_system
-            const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
-            zox_log(" > chunk [%s] added e [%s] [%ix%ix%i] at length [%i]\n", zox_get_name(chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
+        const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
+        zox_log(" > chunk [%s] added e [%s] [%ix%ix%i] at length [%i]\n", zox_get_name(chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
 #endif
+    }
+    // zox_log("[set_entity_chunk] setting character [%lu] chunk: %lu", e, chunk)
+    // Set RenderLod and RenderDisabled based on chunk!
+    if (chunk) {
+        // now render distabled
+        const byte chunk_render_disabled = zox_get_value(chunk, RenderDisabled)
+        const byte character_render_disabled = zox_get_value(e, RenderDisabled)
+        if (character_render_disabled != chunk_render_disabled) {
+            zox_set(e, RenderDisabled, { chunk_render_disabled })
+        }
+        // now lod
+        const byte chunk_render_lod = zox_get_value(chunk, RenderLod)
+        const byte character_render_lod = zox_get_value(e, RenderLod)
+        if (character_render_lod != chunk_render_lod) {
+            zox_set(e, RenderLod, { chunk_render_lod })
         }
     }
+    return 1;
 }
 
 void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e, const VoxLink *voxLink, ChunkLink *chunkLink, ChunkPosition *chunkPosition, int3 chunk_position) {
-    chunkPosition->value = chunk_position;
     zox_geter(voxLink->value, ChunkLinks, chunkLinks)
-    const ecs_entity_t found_chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
-    set_entity_chunk(world, e, chunkLink, found_chunk);
+    const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
+    if (set_entity_chunk(world, e, chunkLink, chunk)) {
+        chunkPosition->value = chunk_position;
+    }
 }
 
 void ChunkLinkSystem(ecs_iter_t *it) {

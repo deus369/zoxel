@@ -8,27 +8,28 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RealmLink, realmLinks, realmLink)
         if (!zox_valid(realmLink->value) || !zox_has(realmLink->value, VoxelLinks)) {
+            zox_log_error("invalid realm in [TerrainTextureSetSystem]")
             continue;
         }
-        const byte voxels_dirty = zox_get_value(realmLink->value, VoxelsDirty)
-        if (voxels_dirty == 0) {
+        zox_geter(realmLink->value, VoxelsDirty, voxelsDirty)
+        if (!voxelsDirty->value) {
             continue;
         }
         // wait for realm to generate, voxels and textures
-        if  (voxels_dirty <= 8) {
-            zox_set(realmLink->value, VoxelsDirty, { voxels_dirty + 1 })
+        zox_geter(realmLink->value, GenerateRealm, generateRealm)
+        if (generateRealm->value) {
             continue;
         }
-        zox_set(realmLink->value, VoxelsDirty, { 0 })
         zox_field_o(GenerateTexture, generateTextures, generateTexture)
         zox_field_o(TilemapSize, tilemapSizes, tilemapSize)
         zox_field_o(TextureLinks, textureLinkss, textureLinks)
-        const VoxelLinks *blocks = zox_get(realmLink->value, VoxelLinks)
+        zox_set(realmLink->value, VoxelsDirty, { 0 })
+        zox_geter(realmLink->value, VoxelLinks, blocks)
         int textures_count = 0;
         for (int j = 0; j < blocks->length; j++) {
             const ecs_entity_t block = blocks->value[j];
             if (zox_valid(block)) {
-                const Textures *voxel_texture_links = zox_get(block, Textures)
+                zox_geter(block, Textures, voxel_texture_links)
                 textures_count += voxel_texture_links->length;
             }
         }
