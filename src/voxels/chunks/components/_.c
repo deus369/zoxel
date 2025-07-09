@@ -1,4 +1,4 @@
-#include "octree_component.c"
+#include "node.c"
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)
 zox_declare_tag(ChunkDebugger)
@@ -12,11 +12,11 @@ zox_component_byte(ChunkLodDirty)
 zox_component_byte(GenerateChunk)
 zox_component_int3(ChunkPosition)
 zox_component_int3(ChunkSize)
-zox_component_byte(OctreeDepth)
 zox_component_byte(BlocksSpawned)
 zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
+zox_component_node(ChunkOctree, byte, 0)    // todo: Rename to VoxelNode
+zox_component_byte(NodeDepth)
 #include "neighbors.c"
-zoxel_octree_component(ChunkOctree, byte, 0)
 #include "chunk_links.c"
 #include "raycast_voxel_data.c"
 
@@ -34,11 +34,11 @@ void define_components_chunks(ecs_world_t *world) {
     zox_define_component_byte(ChunkLodDirty)
     zox_define_component_int3(ChunkSize)
     zox_define_component_byte(GenerateChunk)
-    zox_define_component_byte(OctreeDepth)
     zox_define_component_byte(BlocksSpawned)
     zox_define_component(RaycastVoxelData)
     zox_define_component(ChunkNeighbors)
     zox_define_links_component(ChunkLink)
-    zox_define_component_octree(ChunkOctree)
+    zox_define_component_node(ChunkOctree)
+    zox_define_component_byte(NodeDepth)
     zox_define_hashmap_component(ChunkLinks)
 }

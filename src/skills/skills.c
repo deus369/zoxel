@@ -1,8 +1,8 @@
 #if !defined(zox_mod_skills) && defined(zox_mod_users)
 #define zox_mod_skills
 
-#include "components/_.c"
 #include "data/_.c"
+#include "components/_.c"
 #include "prefabs/_.c"
 #include "util/_.c"
 #include "systems/_.c"

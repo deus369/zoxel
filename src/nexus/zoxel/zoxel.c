@@ -62,15 +62,15 @@ void ZoxGameImport(ecs_world_t *world) {
     // physics
     friction3D = 800; // 560;
     air_friction3D = 120; // 40;
-    zox_jump_power = 106; // 124.0f
+    zox_jump_power = 116; // 124.0f
     // zox_default_gravity.y = -8;
     bounce_lost_force = 0.3f;
 
     // render distance settings
     initial_terrain_lod = 2; // 2 |3
     terrain_lod_dividor = 2; // 2 | 3 | 4
-    render_distance = 8; // 2 | 4 | 8 | 16 | 32
-    render_distance_y = 4; // 1 | 2 | 4
+    render_distance = 10; // 2 | 4 | 8 | 16 | 32
+    render_distance_y = 2; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
     block_spawn_chance_grass = 1024;
     fog_density = 0.034f;
@@ -95,8 +95,9 @@ void ZoxGameImport(ecs_world_t *world) {
     game_rule_attach_to_character = 1;
     disable_npcs = 0;
     game_ui_has_taskbar = 1;
-    test_actions_skills = 1;
+    test_actions_skills = 0;
     test_items_blocks = 1;
+    test_all_skills = 1;
 
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);

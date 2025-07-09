@@ -55,21 +55,6 @@ ChunkOctree* get_voxel_node_at_depth(byte *value, const ChunkOctree *node, byte3
     return get_voxel_node_at_depth(value, child_node, position, depth - 1);
 }
 
-/*ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
-    if (!node) {
-        return NULL;
-    }
-    *value = node->value;
-    // if child nodes closed or depth final, return current node
-    if (node->nodes == NULL || depth == 0) {
-        return node;
-    }
-    const byte dividor = powers_of_two_byte[depth - 1];
-    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
-    byte3_modulus_byte(position, dividor);
-    return get_octree_voxel_with_node2(value, &node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
-}*/
-
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
 void close_solid_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_depth) {
     if (!node->nodes) {
@@ -208,22 +193,36 @@ byte is_adjacent_all_solid(byte direction, const ChunkOctree *root_node, const C
         for (byte i = 0; i < octree_length; i++) {
             const byte3 local_position = octree_positions_b[i];
             if (direction == direction_left) {
-                if (local_position.x != 0) continue;
+                if (local_position.x != 0) {
+                    continue;
+                }
             } else if (direction == direction_right) {
-                if (local_position.x != 1) continue;
+                if (local_position.x != 1) {
+                    continue;
+                }
             } else if (direction == direction_down) {
-                if (local_position.y != 0) continue;
+                if (local_position.y != 0) {
+                    continue;
+                }
             } else if (direction == direction_up) {
-                if (local_position.y != 1) continue;
+                if (local_position.y != 1) {
+                    continue;
+                }
             } else if (direction == direction_back) {
-                if (local_position.z != 0) continue;
+                if (local_position.z != 0) {
+                    continue;
+                }
             } else if (direction == direction_front) {
-                if (local_position.z != 1) continue;
+                if (local_position.z != 1) {
+                    continue;
+                }
             } else {
                 continue;
             }
             // check underneath nodes
-            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]), i, local_position, depth, max_depth, neighbor_depths, edge_voxel, voxel_solidity) == 0) return 0;
+            if (is_adjacent_all_solid(direction, root_node, &adjacent_node->nodes[i], neighbors, int3_add(octree_position, octree_positions[i]), i, local_position, depth, max_depth, neighbor_depths, edge_voxel, voxel_solidity) == 0) {
+                return 0;
+            }
         }
     }
     return 1;
@@ -236,9 +235,13 @@ void random_fill_octree(ChunkOctree* node, byte voxel, byte depth) {
         open_ChunkOctree(node);
         for (int i = 0; i < octree_length; i++) random_fill_octree(&node->nodes[i], voxel, depth);
     } else {
-        if (rand() % 101 >= fill_octree_random_rate) node->value = 0;
-        else if (rand() % 101 >= fill_octree_random_rate2) node->value = 2;
-        else if (rand() % 101 >= fill_octree_random_rate3) node->value = 3;
+        if (rand() % 101 >= fill_octree_random_rate) {
+            node->value = 0;
+        } else if (rand() % 101 >= fill_octree_random_rate2) {
+            node->value = 2;
+        } else if (rand() % 101 >= fill_octree_random_rate3) {
+            node->value = 3;
+        }
     }
 }
 
@@ -247,7 +250,9 @@ void fill_octree(ChunkOctree* node, const byte voxel, byte depth) {
     if (depth > 0) {
         depth--;
         open_ChunkOctree(node);
-        for (byte i = 0; i < octree_length; i++) fill_octree(&node->nodes[i], voxel, depth);
+        for (byte i = 0; i < octree_length; i++) {
+            fill_octree(&node->nodes[i], voxel, depth);
+        }
     }
 }
 // todo: also close nodes if setting, check if all nodes in the block are same
@@ -304,8 +309,12 @@ byte get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
 
 
 ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const byte depth) {
-    if (node == NULL) return NULL;
-    if (node->nodes == NULL || depth == 0) return node;
+    if (node == NULL) {
+        return NULL;
+    }
+    if (node->nodes == NULL || depth == 0) {
+        return node;
+    }
     const byte dividor = powers_of_two_byte[depth - 1];
     const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
     byte3_modulus_byte(position, dividor);

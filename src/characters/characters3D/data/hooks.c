@@ -8,4 +8,4 @@ typedef struct {
     ElementLinks *elementLinks;
 } spawned_character3D_data;
 
-zox_define_hook(spawned_character3D, (ecs_world_t* world, spawned_character3D_data *data), (world, data))
+zox_hook(spawned_character3D, (ecs_world_t* world, spawned_character3D_data *data), (world, data))

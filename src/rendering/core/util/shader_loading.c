@@ -1,4 +1,4 @@
-zox_define_hook(load_shader, (ecs_world_t* world), (world))
+zox_hook(load_shader, (ecs_world_t* world), (world))
 
 void load_shaders(ecs_world_t *world) {
     if (!rendering_initialized) {

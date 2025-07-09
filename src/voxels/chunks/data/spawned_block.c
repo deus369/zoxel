@@ -8,4 +8,4 @@ typedef struct {
     ChunkOctree *node;
 } spawned_block_data;
 
-zox_define_hook(spawned_block, (ecs_world_t* world, spawned_block_data *data), (world, data))
+zox_hook(spawned_block, (ecs_world_t* world, spawned_block_data *data), (world, data))

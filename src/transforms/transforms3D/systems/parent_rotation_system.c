@@ -5,7 +5,9 @@ void ParentRotationSystem(ecs_iter_t *it) {
     zox_field_out(Rotation3D, rotation3Ds, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ParentLink, parentLinks, parentLink)
-        if (!zox_valid(parentLink->value)) continue;
+        if (!zox_valid(parentLink->value)) {
+            continue;
+        }
         zox_field_i(LocalRotation3D, localRotation3Ds, localRotation3D)
         zox_field_o(Rotation3D, rotation3Ds, rotation3D)
         set_rotation_from_parents(world, parentLink->value, &rotation3D->value, localRotation3D->value);

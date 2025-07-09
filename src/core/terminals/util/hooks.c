@@ -1,4 +1,4 @@
-zox_define_hook(terminal_command, (ecs_world_t* world, char* args[], int count), (world, args, count))
+zox_hook(terminal_command, (ecs_world_t* world, char* args[], int count), (world, args, count))
 
 /*terminal_inputs_array_d* terminal_functions;
 

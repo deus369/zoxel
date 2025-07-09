@@ -1,4 +1,3 @@
-// todo: attach this data as component to player
 typedef struct {
     byte voxel;
     ecs_entity_t voxel_entity;

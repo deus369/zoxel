@@ -73,7 +73,8 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
     // extra for rendering
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     // Transforms
-    add_transform3Ds(world, e, 0);
+    zox_prefab_set(e, Position3D, { float3_zero })
+    zox_prefab_set(e, Rotation3D, { float4_identity })
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     // Rendering
     zox_prefab_set(e, Brightness, { 1.0f })

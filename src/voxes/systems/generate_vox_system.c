@@ -1,3 +1,5 @@
+// todo: seperate out into generation functions
+
 void GenerateVoxSystem(ecs_iter_t *it) {
     const byte unique_colors = 8;
     const int grass_random = 6;
@@ -131,13 +133,23 @@ void GenerateVoxSystem(ecs_iter_t *it) {
                     }
                 }
             }
-        } else {
+        } else if (zox_has(e, VoxNoisey)) {
+            color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
+            color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
+            add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
+            byte black_voxel_3 = colorRGBs->length;
+            noise_vox(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
+        } else if (zox_has(e, VoxSoil)) {
             color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
             color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
             add_to_ColorRGBs(colorRGBs, dirt_dark_voxel);
             byte black_voxel_3 = colorRGBs->length;
             voronoi3D(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
             noise_vox(chunkOctree, target_depth, size, voxel_range, black_voxel_3);
+        } else {
+            zox_log_error("unknown vox type [%s]", zox_get_name(e))
+            generateVox->value = 0;
+            continue;
         }
         if (is_generate_vox_outlines) {
             vox_outlines(chunkOctree, target_depth, size, black_voxel);
@@ -146,9 +158,9 @@ void GenerateVoxSystem(ecs_iter_t *it) {
         close_same_nodes(world, chunkOctree, target_depth, 0);
 #endif
         generateVox->value = 0;
-        // zox_log("+ generated vox [%s]\n", zox_get_name(e))
         if (zox_has(e, ChunkMeshDirty)) {
             zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
         }
+        zox_log("+ generated vox [%s]", zox_get_name(e))
     }
 } zox_declare_system(GenerateVoxSystem)

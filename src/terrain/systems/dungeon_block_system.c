@@ -1,6 +1,7 @@
 // todo: place roof
 // todo: place walls
 // todo: place in neighbor chunks too
+// todo: every 5 seconds, build a new block along connects dungeon bricks (dark blocks)
 
 typedef struct {
     byte3 position;
@@ -8,7 +9,6 @@ typedef struct {
 } TerrainPlacePosition;
 
 void DungeonBlockSystem(ecs_iter_t *it) {
-    // todo: every 5 seconds, build a new block along connects dungeon bricks (dark blocks)
     zox_field_world()
     zox_field_in(TimerState, timerStates, 1)
     zox_field_in(ChunkLink, chunkLinks, 2)

@@ -1,4 +1,4 @@
-zox_define_hook(key_down, (ecs_world_t* world, int32_t keycode), (world, keycode))
+zox_hook(key_down, (ecs_world_t* world, int32_t keycode), (world, keycode))
 
 /*
  * zox_event_type(keyevent, void, ecs_world_t*, int32_t)

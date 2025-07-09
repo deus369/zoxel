@@ -1,10 +1,17 @@
+// how to hook:
+//  - call initialize_hook_##name in module
+//  - call dispose_hook_##name in module_dispose
+//  - call add_hook_##name in hooking  modules
+//  - call run_hook_##name in function where we want to hook into
+
 // todo: whenever define, add to initialize / dispose events for our core module (so i dont have to manually add those)
+
 #define unwrap_args(...) __VA_ARGS__
 
-#define zox_define_hook(name, args_decl, arg_names) \
-zox_event_type(hook_##name, void, unwrap_args args_decl) \
-zoxel_dynamic_array(hook_##name) \
-hook_##name##_array_d* functions_##name; \
+#define zox_hook(name, args_decl, arg_names)\
+zox_event_type(hook_##name, void, unwrap_args args_decl)\
+zoxel_dynamic_array(hook_##name)\
+hook_##name##_array_d* functions_##name;\
 \
 void initialize_hook_##name() { \
     functions_##name = create_hook_##name##_array_d(initial_dynamic_array_size); \
@@ -28,7 +35,7 @@ void run_hook_##name args_decl { \
 }
 
 
-/*#define zox_define_hook(name, args_decl, arg_names) \
+/*#define zox_hook(name, args_decl, arg_names) \
     void initialize_functions_##name() { } \
     void dispose_functions_##name() { }\
     void add_functions_##name(void (*event) args_decl) { } \

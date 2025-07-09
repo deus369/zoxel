@@ -7,7 +7,7 @@ typedef struct {
 
 // todo: Seperate: voxel octree shoudl be seperate to entity component
 
-#define zoxel_octree_component(name, type, default_value)\
+#define zox_component_node(name, type, default_value)\
 \
 typedef struct name name;\
 \
@@ -270,17 +270,29 @@ const name* find_adjacent_##name(const name* root, const name* node, int3 positi
     byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
     if (node != NULL) {\
         if (direction == direction_left) {\
-            if (node_position.x != 0) return &node->nodes[node_index_with_left[node_index]];\
+            if (node_position.x != 0) {\
+                return &node->nodes[node_index_with_left[node_index]];\
+            }\
         } else if (direction == direction_right) {\
-            if (node_position.x != 1) return &node->nodes[node_index_with_right[node_index]];\
+            if (node_position.x != 1) {\
+                return &node->nodes[node_index_with_right[node_index]];\
+            }\
         } else if (direction == direction_down) {\
-            if (node_position.y != 0) return &node->nodes[node_index_with_down[node_index]];\
+            if (node_position.y != 0) {\
+                return &node->nodes[node_index_with_down[node_index]];\
+            }\
         } else if (direction == direction_up) {\
-            if (node_position.y != 1) return &node->nodes[node_index_with_up[node_index]];\
+            if (node_position.y != 1) {\
+                return &node->nodes[node_index_with_up[node_index]];\
+            }\
         } else if (direction == direction_back) {\
-            if (node_position.z != 0) return &node->nodes[node_index_with_back[node_index]];\
+            if (node_position.z != 0) {\
+                return &node->nodes[node_index_with_back[node_index]];\
+            }\
         } else if (direction == direction_front) {\
-            if (node_position.z != 1) return &node->nodes[node_index_with_front[node_index]];\
+            if (node_position.z != 1) {\
+                return &node->nodes[node_index_with_front[node_index]];\
+            }\
         }\
     }\
     if (root != NULL) {\
@@ -290,22 +302,16 @@ const name* find_adjacent_##name(const name* root, const name* node, int3 positi
 }\
 \
 ECS_CTOR(name, ptr, {\
-    /*zox_log(" > creating chunk [%s]\n", ptr->nodes == NULL ? "closed nodes" : "open nodes")*/\
     ptr->nodes = NULL;\
     ptr->value = default_value;\
     ptr->linked = 0;\
 })\
 \
 ECS_COPY(name, dst, src, {\
-    /*zox_log(" > copying chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes")*/\
-    /* shouldn't i just set pointersh ere?? */\
-    /*dst->linked = src->linked;*/\
     clone_##name(dst, src);\
-    /*close_##name(dst, dst->max_depth);*/\
 })\
 \
 ECS_MOVE(name, dst, src, {\
-    /*zox_log(" > moving chunk [%s]\n", dst->nodes == NULL ? "closed nodes" : "open nodes")*/\
     dst->nodes = src->nodes;\
     src->nodes = NULL;\
     dst->value = src->value;\
@@ -322,7 +328,7 @@ void on_destroyed_##name(ecs_iter_t *it) {\
     }\
 }\
 
-#define zox_define_component_octree(name)\
+#define zox_define_component_node(name)\
     zox_define_component(name)\
     ecs_set_hooks(world, name, {\
         .ctor = ecs_ctor(name),\

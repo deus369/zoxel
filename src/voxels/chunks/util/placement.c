@@ -1,6 +1,5 @@
-// t this is for spawninng voxel
-//  should take in event for future voxels
-
+// this is for spawninng voxel
+//      should take in event for future voxels
 // note: it only supports placing and removing, not swapping
 void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node, const byte3 position_local, int3 position_global, const byte voxel, const float3 position_real) {
     if (!node || !zox_valid(chunk)) {
@@ -11,12 +10,7 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
     if (!voxel) {
         if (is_linked_ChunkOctree(node)) {
             unlink_node_ChunkOctree(world, node);
-            /*if (is_linked_ChunkOctree(node)) {
-                zox_log_error("FAILED to spawn instance for block %ix%ix%i", position_global.x, position_global.y, position_global.z)
-            }*/
-        }/* else {
-            zox_log_error("!!! block was not vox! %ix%ix%i", position_global.x, position_global.y, position_global.z)
-        }*/
+        }
     }
     // set node voxel data
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
@@ -54,11 +48,6 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
             .node = node,
         };
         run_hook_spawned_block(world, &spawned_data);
-        /*if (!is_linked_ChunkOctree(node)) {
-            zox_log_error("failed to spawn instance for block %ix%ix%i", position_global.x, position_global.y, position_global.z)
-        } else {
-            zox_log("!!! block now vox! %ix%ix%i", position_global.x, position_global.y, position_global.z)
-        }*/
     }
 
     // if not linked block
@@ -99,9 +88,6 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const byte
         position_real = data->position_real_last;
         chunk = data->chunk_last;
         node = data->node_last;
-    }
-    if (!node) {
-        zox_log_error("no node here")
     }
     place_block(world, chunk, node, position_local, position_global, voxel, position_real);
 }

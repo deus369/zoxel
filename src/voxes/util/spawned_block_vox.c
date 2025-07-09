@@ -26,11 +26,10 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
     ecs_entity_t e2;
     if (zox_has(prefab, BlockVox)) {
         e2 = spawn_block_vox(world, &spawn_data);
-        zox_log("   - [BlockVox]")
     } else if (zox_has(prefab, RendererInstance)) {
         e2 = spawn_block_vox_instanced(world, &spawn_data);
-        zox_log("   - [RendererInstance]")
     } else {
+        // zox_log("   - [DungeonCore]")
         // dungeon blocks
         e2 = zox_instancee(prefab)
         zox_set(e2, ChunkLink, { data->chunk })
@@ -38,13 +37,12 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
         zox_set(e2, VoxelPosition, { byte3_to_int3(data->position_local) })
         // zox_set(e2, Scale1D, { data->spawn_data->scale })
         // zox_set(e2, Position3D, { position_real })
-        zox_log("   - [DungeonCore]")
     }
     link_node_ChunkOctree(data->node, e2);
     /*zox_log("+ Placing Block [%s]: linked: [%i]", zox_get_name(data->block), data->node->linked)
     zox_log("   - local [%ix%ix%i] ", spawn_data.position_local.x, spawn_data.position_local.y, spawn_data.position_local.z)
     zox_log("   - global [%ix%ix%i] ", spawn_data.position_global.x, spawn_data.position_global.y, spawn_data.position_global.z)
     zox_log("   - real [%fx%fx%f] ", spawn_data.position_real.x, spawn_data.position_real.y, spawn_data.position_real.z)*/
-    spawn_line3D(world, spawn_data.position_real, float3_add(spawn_data.position_real, (float3) { 0, 2, 0 }), 2, 3);
+    // spawn_line3D(world, spawn_data.position_real, float3_add(spawn_data.position_real, (float3) { 0, 2, 0 }), 2, 3);
 
 }
