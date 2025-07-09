@@ -1,16 +1,20 @@
 // todo: attach this data as component to player
 typedef struct {
-    ecs_entity_t chunk;
-    ChunkOctree *node;
-    byte3 position;
-    ecs_entity_t chunk_last;
-    byte3 position_last;
-    int3 normal;
-    float distance;
-    float3 hit;
-    float3 position_real;
     byte voxel;
     ecs_entity_t voxel_entity;
+    byte3 position;
+    int3 position_global;
+    float3 position_real;
     float voxel_scale;
+    ecs_entity_t chunk;
+    ChunkOctree *node;
+    float3 hit;
+    int3 normal;
+    float distance;
+    byte3 position_last;
+    int3 position_global_last;
+    float3 position_real_last;
+    ecs_entity_t chunk_last;
+    ChunkOctree *node_last;
 } RaycastVoxelData;
 zox_custom_component(RaycastVoxelData)

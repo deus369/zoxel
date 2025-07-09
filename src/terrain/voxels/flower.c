@@ -1,6 +1,6 @@
 ecs_entity_t spawn_block_flower(ecs_world_t *world, const byte index) {
     SpawnBlock spawn_data = {
-        .index = (byte) (index + 1),
+        .index = (byte) (index),
         .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
         .name = "flower",

@@ -55,6 +55,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
                 if (zox_has(action, ItemBlock)) {
                     const ecs_entity_t block = zox_get_value(action, BlockLink)
                     if (block) {
+                        // zox_log("! placing block %s", zox_get_name(block))
                         // todo: check placing on type and normal
                         const byte block_index = zox_get_value(block, BlockIndex)
                         raycast_action(world, raycastVoxelData, block_index, 1);

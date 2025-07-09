@@ -85,7 +85,7 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         //    .position = position,
         //};
         float3 real_position = voxel_position_to_real_position(voxel_position, byte3_single(powers_of_two[node->linked]), default_vox_scale);
-        voxel_action(world, chunkLink->value, update_node, int3_to_byte3(position), place_type, real_position);
+        place_block(world, chunkLink->value, update_node, int3_to_byte3(position), voxel_position, place_type, real_position);
         zox_mut_end(chunk, ChunkOctree)
         //raycast_action(world, &raycastVoxelData, place_type, 2);
         // zox_log("+ Dungeon Block Placing: %s [%ix%ix%i]: %i", zox_get_name(e), position.x, position.y, position.z, place_type)

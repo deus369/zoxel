@@ -62,7 +62,7 @@ void player_start_game(ecs_world_t *world, const ecs_entity_t player, const byte
         zox_delete(main_menu)
     }
     if (is_delays) {
-        trigger_canvas_fade_transition(world, canvas, start_game_delay_terrain, 0.4f);
+        trigger_canvas_fade_transition(world, canvas, start_game_delay_terrain, start_game_delay_terrain2);
     }
     if (zox_game_type == zox_game_mode_3D) {
         if (is_delays) {

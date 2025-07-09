@@ -32,18 +32,23 @@ byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const floa
 byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
     const ChunkOctree *node;
-    // if (chunk) node = zox_get_mut(chunk, ChunkOctree)
+    byte chunk_depth;
     if (chunk) {
         node = zox_get(chunk, ChunkOctree)
+        chunk_depth = node->linked;
     }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
-    ecs_entity_t chunk_last = chunk;
     // position
-    byte3 voxel_position_local;
+    byte3 position_local;
+    int3 position_global;
     byte3 voxel_position_local_last;
+    int3 position_global_last;
+    float3 position_real_last;
+    ecs_entity_t chunk_last = chunk;
+    ChunkOctree *node_last = NULL;
     // zero for terrain raycasting
     float3 local_ray_origin = float3_sub(ray_origin, chunk_position_real);
-    int3 voxel_position = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
+    position_global = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
     const float3 ray_origin_scaled = float3_multiply_float(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
     // ray
     const int3 step_direction = float3_to_int3(float3_sign(ray_normal));
@@ -51,19 +56,19 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     // get first difference
     float3 ray_add = float3_zero;
     if (ray_normal.x < 0) {
-        ray_add.x = (ray_origin_scaled.x - voxel_position.x);
+        ray_add.x = (ray_origin_scaled.x - position_global.x);
     } else {
-        ray_add.x = ((float) voxel_position.x + 1 - ray_origin_scaled.x);
+        ray_add.x = ((float) position_global.x + 1 - ray_origin_scaled.x);
     }
     if (ray_normal.y < 0) {
-        ray_add.y = (ray_origin_scaled.y - (float) voxel_position.y);
+        ray_add.y = (ray_origin_scaled.y - (float) position_global.y);
     } else {
-        ray_add.y = ((float) voxel_position.y + 1 - ray_origin_scaled.y);
+        ray_add.y = ((float) position_global.y + 1 - ray_origin_scaled.y);
     }
     if (ray_normal.z < 0) {
-        ray_add.z = (ray_origin_scaled.z - (float) voxel_position.z);
+        ray_add.z = (ray_origin_scaled.z - (float) position_global.z);
     } else {
-        ray_add.z = ((float) voxel_position.z + 1 - ray_origin_scaled.z);
+        ray_add.z = ((float) position_global.z + 1 - ray_origin_scaled.z);
     }
     float3_multiply_float3_p(&ray_add, ray_unit_size);
     byte ray_hit = 0;
@@ -74,34 +79,34 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     uint checks = 0;
     while (ray_distance <= ray_length && checks < safety_checks_raycasting) {
         if (chunk_links) {
-            const int3 new_chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_size);
+            const int3 new_chunk_position = voxel_position_to_chunk_position(position_global, chunk_size);
             if (!int3_equals(chunk_position, new_chunk_position)) {
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
                 if (!zox_valid(chunk)) {
                     return 0;
                 }
-                // node = zox_get_mut(chunk, ChunkOctree)
                 node = zox_get(chunk, ChunkOctree)
                 if (!node) {
                     return 0;
                 }
+                chunk_depth = node->linked;
                 chunk_position = new_chunk_position;
                 hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
             }
         }
         if (chunk_links) {
-            voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_size_b3);
+            position_local = get_local_position_byte3(position_global, chunk_position, chunk_size_b3);
         } else {
-            if (int3_in_bounds(voxel_position, chunk_size)) {
-                voxel_position_local = int3_to_byte3(voxel_position);
+            if (int3_in_bounds(position_global, chunk_size)) {
+                position_local = int3_to_byte3(position_global);
             } else {
-                voxel_position_local = (byte3) { 255, 255, 255 }; // failure!
+                position_local = (byte3) { 255, 255, 255 }; // failure!
             }
         }
         byte old_voxel = 0;
-        if (byte3_in_bounds(voxel_position_local, chunk_size_b3)) {
-            byte3 temp = voxel_position_local;
-            data->node = get_octree_voxel_with_node(&old_voxel, node, &temp, node->linked);
+        if (byte3_in_bounds(position_local, chunk_size_b3)) {
+            byte3 temp = position_local;
+            data->node = get_voxel_node_at_depth(&old_voxel, node, &temp, chunk_depth);
         }
         if (old_voxel) {
             data->voxel = old_voxel;
@@ -130,7 +135,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 }
             } else { // if solid block
                 ray_hit = 1;
-                // if (!chunk_links) zox_log(" > [%f] raycasted minivox [%ix%ix%i]\n", ray_distance, voxel_position.x, voxel_position.y, voxel_position.z)
+                // if (!chunk_links) zox_log(" > [%f] raycasted minivox [%ix%ix%i]\n", ray_distance, position_global.x, position_global.y, position_global.z)
                 break;
             }
         }
@@ -143,19 +148,25 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // Traverse the grid with DDA
         if (ray_add.x < ray_add.y && ray_add.x < ray_add.z) {
             ray_distance = ray_add.x;
-            voxel_position.x += step_direction.x;
+            position_global.x += step_direction.x;
             ray_add.x += ray_unit_size.x;
-            if (step_direction.x >= 0) hit_normal = int3_left;
-            else hit_normal = int3_right;
+            if (step_direction.x >= 0) {
+                hit_normal = int3_left;
+            } else {
+                hit_normal = int3_right;
+            }
         } else if (ray_add.y < ray_add.z) {
             ray_distance = ray_add.y;
-            voxel_position.y += step_direction.y;
+            position_global.y += step_direction.y;
             ray_add.y += ray_unit_size.y;
-            if (step_direction.y >= 0) hit_normal = int3_down;
-            else hit_normal = int3_up;
+            if (step_direction.y >= 0) {
+                hit_normal = int3_down;
+            } else {
+                hit_normal = int3_up;
+            }
         } else {
             ray_distance = ray_add.z;
-            voxel_position.z += step_direction.z;
+            position_global.z += step_direction.z;
             ray_add.z += ray_unit_size.z;
             if (step_direction.z >= 0) {
                 hit_normal = int3_backward;
@@ -163,11 +174,13 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 hit_normal = int3_forward;
             }
         }
-        // cache
+        // caches
+        voxel_position_local_last = position_local;
+        position_global_last = position_global;
+        position_real_last = voxel_to_real_position(position_local, chunk_position, chunk_size_b3, voxel_scale);
         chunk_last = chunk;
-        voxel_position_local_last = voxel_position_local;
-        // safety
-        checks++;
+        node_last = data->node;
+        checks++; // safety first
     }
     data->distance = ray_distance;
     if (ray_hit == ray_hit_type_block_vox) {
@@ -183,7 +196,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node->linked))), hit_point_line_color);
 #endif
         // voxel normal
-        float3 voxel_position_real = float3_multiply_float(int3_to_float3(voxel_position), voxel_scale);
+        float3 voxel_position_real = float3_multiply_float(int3_to_float3(position_global), voxel_scale);
         float3_add_float3_p(&voxel_position_real, (float3) { voxel_scale / 2.0f, voxel_scale / 2.0f, voxel_scale / 2.0f }); // add half voxel
         float3_add_float3_p(&voxel_position_real, chunk_position_real);
 #ifdef zox_debug_hit_normal
@@ -191,21 +204,29 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
 #endif
         // output chunk!
-        data->chunk = chunk;
-        data->position = voxel_position_local;
-        data->normal = hit_normal;
-        data->chunk_last = chunk_last;
-        data->position_last = voxel_position_local_last;
-        data->position_real = voxel_to_real_position(voxel_position_local, chunk_position, chunk_size_b3, voxel_scale);
+        data->position = position_local;
+        data->position_global = position_global;
+        data->position_real = voxel_to_real_position(position_local, chunk_position, chunk_size_b3, voxel_scale);
         data->voxel_scale = voxel_scale;
+        data->chunk = chunk;
+        data->normal = hit_normal;
+        data->position_last = voxel_position_local_last;
+        data->position_global_last = position_global_last;
+        data->position_real_last = position_real_last;
+        data->chunk_last = chunk_last;
+        data->node_last = node_last;
     } else if (ray_hit == ray_hit_type_none) {
         data->chunk = 0;
         data->position = byte3_zero;
+        data->position_global = int3_zero;
         data->normal = int3_zero;
-        data->chunk_last = 0;
-        data->position_last = byte3_zero;
         data->hit = float3_zero;
         data->position_real = float3_zero;
+        data->position_last = byte3_zero;
+        data->position_global_last = int3_zero;
+        data->position_real_last = float3_zero;
+        data->chunk_last = 0;
+        data->node_last = NULL;
     }
     return ray_hit;
 }

@@ -17,7 +17,7 @@ struct name {\
     byte linked;\
 }; ECS_COMPONENT_DECLARE(name);\
 \
-byte is_linking_##name(const name *node) {\
+byte is_linked_##name(const name *node) {\
     return node && node->linked == linked_state;\
 }\
 \
@@ -45,6 +45,8 @@ byte unlink_node_##name(ecs_world_t *world, name *node) {\
     NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
     if (zox_valid(link->value)) {\
         zox_delete(link->value)\
+    } else {\
+        zox_log_error("issue with linked voxel instance %lu", link->value)\
     }\
     free(node->nodes);\
     node->nodes = NULL;\

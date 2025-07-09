@@ -1,6 +1,7 @@
 const float end_game_delay = 0.8f;
 const float end_game_delay2 = 1.0f;
-const float start_game_delay_terrain = 1.2f;
+const double start_game_delay_terrain = 1.5;
+const double start_game_delay_terrain2 = 2.5;
 const float end_game_delay_fade = 1;
 // others
 byte block_vox_render_at_lod = 0; // 3 | 4 looks best

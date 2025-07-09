@@ -35,7 +35,7 @@ const byte get_octree_voxel(const ChunkOctree *node, byte3 *position, const byte
 }
 
 // returns node, also sets voxel
-ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
+ChunkOctree* get_voxel_node_at_depth(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
     if (!node) {
         return NULL;
     }
@@ -52,7 +52,7 @@ ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, by
     byte3_modulus_byte(position, dividor);
     const byte child_index = byte3_octree_array_index(node_position);
     const ChunkOctree *child_node = &node->nodes[child_index];
-    return get_octree_voxel_with_node(value, child_node, position, depth - 1);
+    return get_voxel_node_at_depth(value, child_node, position, depth - 1);
 }
 
 /*ChunkOctree* get_octree_voxel_with_node(byte *value, const ChunkOctree *node, byte3 *position, const byte depth) {
@@ -252,7 +252,7 @@ void fill_octree(ChunkOctree* node, const byte voxel, byte depth) {
 }
 // todo: also close nodes if setting, check if all nodes in the block are same
 
-void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
+ChunkOctree* set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
     byte depth_reached = data.depth == datam->depth;
     if (datam->effect_nodes && !depth_reached && !data.node->nodes) {
         open_ChunkOctree(data.node);
@@ -260,14 +260,19 @@ void set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
             data.node->nodes[i].value = data.node->value;
         }
     }
-    if (depth_reached || datam->voxel != 0) data.node->value = datam->voxel;
-    if (depth_reached || !data.node->nodes) return;
+    // wait this overrides child nodes, rather than reevaluating them
+    if (depth_reached || datam->voxel) {
+        data.node->value = datam->voxel;
+    }
+    if (depth_reached || !data.node->nodes) {
+        return data.node;
+    }
     const byte dividor = powers_of_two_byte[datam->depth - data.depth - 1]; // difference LoD
     byte3 node_position = (byte3) { data.position.x / dividor, data.position.y / dividor, data.position.z / dividor };
     byte3_modulus_byte(&data.position, dividor);
     data.node = &data.node->nodes[byte3_octree_array_index(node_position)];
     data.depth++;
-    set_voxel(datam, data);
+    return set_voxel(datam, data);
 }
 
 void set_octree_voxel(ChunkOctree *node, byte3 *position, const byte2 *set_octree_data, byte depth) {

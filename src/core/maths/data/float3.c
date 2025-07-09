@@ -27,6 +27,14 @@ void float3_make_zero(float3* value) {
     value->z = 0;
 }
 
+float3 float3_halve(const float3 input) {
+    return (float3) { input.x * 0.5f, input.y * 0.5f, input.z * 0.5f };
+}
+
+float3 float3_single(const float input) {
+    return (float3) { input, input, input };
+}
+
 float3 float3_multiply_float(const float3 input, const float mul) {
     return (float3) { input.x * mul, input.y * mul, input.z * mul };
 }

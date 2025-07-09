@@ -12,7 +12,7 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
         return;
     }
     if (depth == max_depth) {
-        if (!is_linking_ChunkOctree(node)) {
+        if (!is_linked_ChunkOctree(node)) {
             return;
         }
         NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;

@@ -12,10 +12,10 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     }
     // use instanced mesh prefab
     SpawnBlock data = {
-        .index = (byte) (index + 1),
+        .name = "grass",
+        .index = (byte) (index),
         .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
-        .name = "grass",
         .color = generate_random_voxel_color(),
         .tag = zox_id(BlockVox),
         .model = zox_block_vox,

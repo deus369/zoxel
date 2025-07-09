@@ -61,7 +61,10 @@ void ZoxGameImport(ecs_world_t *world) {
 
     // physics
     friction3D = 800; // 560;
-    air_friction3D = 80; // 40;
+    air_friction3D = 120; // 40;
+    zox_jump_power = 106; // 124.0f
+    // zox_default_gravity.y = -8;
+    bounce_lost_force = 0.3f;
 
     // render distance settings
     initial_terrain_lod = 2; // 2 |3

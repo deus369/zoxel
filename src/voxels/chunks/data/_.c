@@ -10,3 +10,5 @@
 // data consts
 #include "octree.c"
 #include "mesh.c"
+// hooks
+#include "spawned_block.c"

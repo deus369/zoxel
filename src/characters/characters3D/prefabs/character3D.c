@@ -82,6 +82,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     // name
     char *name = generate_name();
     zox_set(e, ZoxName, { text_to_zext(name) })
+    // user hooks
     spawned_character3D_data spawned_data = (spawned_character3D_data) {
         .e = e,
         .p = data.player,
@@ -89,8 +90,8 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
         .render_disabled = data.render_disabled,
         .elementLinks = &((ElementLinks) { 0, NULL }),
     };
-    // user hooks
     run_hook_spawned_character3D(world, &spawned_data);
+    // done!
     zox_set(e, ElementLinks, { spawned_data.elementLinks->length, spawned_data.elementLinks->value })
     free(name);
     /// rendering

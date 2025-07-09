@@ -20,7 +20,7 @@ void add_physics3D(ecs_world_t *world, const ecs_entity_t e, const float3 bounds
     zox_prefab_set(e, Acceleration3D, { { 0, 0, 0 } })
     zox_prefab_set(e, Omega3D, { quaternion_identity })
     zox_prefab_set(e, Alpha3D, { quaternion_identity })
-    zox_prefab_set(e, Gravity3D, { { 0.0f, physics3D_gravity, 0.0f } })
+    zox_prefab_set(e, Gravity3D, { zox_default_gravity })
     zox_prefab_set(e, Bounds3D, { bounds })
     zox_prefab_set(e, Grounded, { 0 })
     zox_prefab_set(e, Jump, { 0 })

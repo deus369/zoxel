@@ -16,7 +16,7 @@ void define_systems_physics3D(ecs_world_t *world) {
     zox_system(Physics3DDisableSystem, zox_pip_physics, [out] InitializePhysics3D, [out] transforms3.d.Position3D, [out] core.physics3.d.Velocity3D)
     zox_system(Gravity3DSystem, zox_pip_physics, [in] Gravity3D, [in] core.physics3.d.Grounded, [out] core.physics3.d.Acceleration3D)
     zox_system(RandomJump3DSystem, zox_pip_physics, [in] core.physics3.d.Grounded, [out] Jump, [none] Jumper)
-    zox_system(Jump3DSystem, zox_pip_physics, [in] physics.DisableMovement, [out] Jump, [out] core.physics3.d.Acceleration3D)
+    zox_system(Jump3DSystem, zox_pip_physics, [in] physics.DisableMovement, [in] core.physics3.d.Velocity3D, [out] Jump, [out] core.physics3.d.Acceleration3D)
     zox_system(Friction3DSystem, zox_pip_physics, [in] core.physics3.d.Grounded, [in] core.physics3.d.Velocity3D, [out] core.physics3.d.Acceleration3D, [none] physics.Frictioned)
     zox_system(Dissipation3DSystem, zox_pip_physics, [none] physics.Frictioned, [in] Omega3D, [out] Alpha3D)
     zox_system(Acceleration3DSystem, zox_pip_physics, [out] core.physics3.d.Acceleration3D, [out] core.physics3.d.Velocity3D)
