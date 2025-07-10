@@ -6,36 +6,39 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         return;
     }
     zox_field_world()
-    zox_field_in(ChunkLodDirty, chunkLodDirtys, 1)
-    zox_field_in(ChunkOctree, chunkOctrees, 2)
-    zox_field_in(ChunkPosition, chunkPositions, 3)
-    zox_field_in(RenderDistance, renderDistances, 4)
-    zox_field_in(RenderDisabled, renderDisableds, 5)
-    zox_field_in(VoxLink, voxLinks, 6)
-    zox_field_out(EntityLinks, entityLinkss, 7)
+    byte fi = 1;
+    zox_field_in(ChunkLodDirty, chunkLodDirtys, fi++)
+    zox_field_in(ChunkOctree, chunkOctrees, fi++)
+    zox_field_in(NodeDepth, nodeDepths, fi++)
+    zox_field_in(ChunkPosition, chunkPositions, fi++)
+    zox_field_in(RenderDistance, renderDistances, fi++)
+    zox_field_in(RenderDisabled, renderDisableds, fi++)
+    zox_field_in(VoxLink, voxLinks, fi++)
+    zox_field_out(EntityLinks, entityLinkss, fi++)
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
         zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
+        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i(NodeDepth, nodeDepths, nodeDepth)
+        zox_field_i(RenderDistance, renderDistances, renderDistance)
+        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
+        zox_field_i(VoxLink, voxLinks, voxLink)
+        zox_field_o(EntityLinks, entityLinkss, entityLinks)
         if (chunkLodDirty->value != chunk_lod_state_characters_spawn) {
             continue;
         }
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         if (chunkOctree->nodes == NULL) {
             continue;   // if basically all air or solid, no need to spawn
         }
-        zox_field_o(EntityLinks, entityLinkss, entityLinks)
         // if already spawned, skip spawning, only update LODs
         if (entityLinks->length) {
             continue;
         }
-        zox_field_i(RenderDistance, renderDistances, renderDistance)
         if (renderDistance->value > character_render_distance) {
             continue;
         }
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        const byte depth = chunkOctree->linked;
+        const byte depth = nodeDepth->value;
         int chunk_length = powers_of_two[depth];
         const byte vox_lod = get_voxes_lod_from_camera_distance(renderDistance->value);
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
@@ -49,7 +52,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             byte3 local_position;
             // many spawn checks
             for (byte k = 0; k < chunk_length; k++) {
-                local_position = find_position_on_ground(chunkOctree, chunkOctree->linked, NULL, 0);
+                local_position = find_position_on_ground(chunkOctree, depth, NULL, 0);
                 if (!byte3_equals(byte3_full, local_position)) {
                     break;
                 }

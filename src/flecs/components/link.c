@@ -1,4 +1,4 @@
-#define zox_link_component(name, type, links_name, ...)\
+#define zox_component_link(name, type, links_name, ...)\
     zox_component(name, type)\
     void on_destroyed##_##name(ecs_iter_t *it) {\
         zox_field_world()\

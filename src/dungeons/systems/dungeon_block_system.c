@@ -20,9 +20,10 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         zox_field_e()
         zox_field_i(ChunkLink, chunkLinks, chunkLink)
         const ecs_entity_t chunk = chunkLink->value;
+        zox_geter_value(chunk, NodeDepth, byte, node_depth)
         zox_mut_begin(chunk, ChunkOctree, node) // get node function
         // zox_geter(chunk, ChunkNeighbors, chunkNeighbors)
-        int3 chunk_bounds = int3_single(powers_of_two[node->linked]);
+        int3 chunk_bounds = int3_single(powers_of_two[node_depth]);
         // const int3 size = zox_get_value(chunkLink->value, ChunkSize)
         const int3 voxel_position = zox_get_value(e, VoxelPosition)
         // get closest grass block
@@ -59,12 +60,17 @@ void DungeonBlockSystem(ecs_iter_t *it) {
                     if (x == 0 && z == radius && y != 0 && y != height) {
                         continue;
                     }
-                    update_node = get_node(node, int3_to_byte3(position));
+                    update_node = get_node(node, node_depth, int3_to_byte3(position));
                     if (!update_node) {
                         continue;
                     }
                     if (update_node->value == place_type) {
                         continue;
+                    }
+                    // can only place in air
+                    if (place_type && update_node->value) {
+                        place_type = 0;
+                        // continue;
                     }
                     find = 1;
                 }
@@ -84,7 +90,7 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         //    .node = update_node,
         //    .position = position,
         //};
-        float3 real_position = voxel_position_to_real_position(voxel_position, byte3_single(powers_of_two[node->linked]), default_vox_scale);
+        float3 real_position = voxel_position_to_real_position(voxel_position, int3_to_byte3(chunk_bounds), default_vox_scale);
         place_block(world, chunkLink->value, update_node, int3_to_byte3(position), voxel_position, place_type, real_position);
         zox_mut_end(chunk, ChunkOctree)
         //raycast_action(world, &raycastVoxelData, place_type, 2);

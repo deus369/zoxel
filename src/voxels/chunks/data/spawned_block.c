@@ -4,6 +4,7 @@ typedef struct {
     const byte3 position_local;
     const int3 position_global;
     const float3 position_real;
+    const float scale;
     const ecs_entity_t chunk;
     ChunkOctree *node;
 } spawned_block_data;

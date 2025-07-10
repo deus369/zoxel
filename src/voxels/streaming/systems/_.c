@@ -15,14 +15,51 @@ void define_systems_streaming(ecs_world_t *world) {
     // main thread
     zox_system_1(StreamEndEventSystem, zox_pip_mainthread, [in] generic.EventInput, [in] chunks.ChunkLinks, [out] StreamEndEvent)
     // multi threads
-    zox_system(StreamPointSystem, EcsOnUpdate, [in] transforms3.d.Position3D, [in] voxels.VoxLink, [out] StreamPoint, [out] StreamDirty, [none] Streamer)
-    zox_system_ctx(ChunkFrustumSystem, EcsOnUpdate, filter_cameras, [in] transforms3.d.Position3D, [in] chunks.ChunkSize, [in] blocks.VoxScale, [in] generic.EntityLinks, [in] chunks.ChunkOctree, [out] rendering.RenderDisabled, [none] StreamedChunk)
+    zox_system(StreamPointSystem, EcsOnUpdate,
+        [in] transforms3.d.Position3D,
+        [in] voxels.VoxLink,
+        [out] StreamPoint,
+        [out] StreamDirty,
+        [none] Streamer)
+    zox_system_ctx(ChunkFrustumSystem, EcsOnUpdate, filter_cameras,
+        [in] transforms3.d.Position3D,
+        [in] chunks.ChunkSize,
+        [in] blocks.VoxScale,
+        [in] generic.EntityLinks,
+        [in] chunks.ChunkOctree,
+        [in] chunks.NodeDepth,
+        [out] rendering.RenderDisabled,
+        [none] StreamedChunk)
     zox_filter(streamers2, [in] StreamPoint, [in] StreamDirty)
-    zox_system_ctx(ChunkLodSystem, EcsOnUpdate, streamers2, [in] chunks.ChunkPosition, [out] rendering.RenderLod, [out] chunks.ChunkLodDirty, [out] rendering.RenderDistance, [none] StreamedChunk)
-    zox_system(ChunkLodDirtySystem, EcsOnUpdate, [in] chunks.ChunkLodDirty, [in] rendering.RenderLod, [out] chunks.GenerateChunk, [out] chunks.ChunkMeshDirty, [none] StreamedChunk)
-    zox_system(ChunkNeighborUpdatedSystem, EcsPostUpdate, [in] chunks.ChunkNeighbors, [out] chunks.ChunkMeshDirty, [none] StreamedChunk)
+    zox_system_ctx(ChunkLodSystem, EcsOnUpdate, streamers2,
+        [in] chunks.ChunkPosition,
+        [out] rendering.RenderLod,
+        [out] chunks.ChunkLodDirty,
+        [out] rendering.RenderDistance,
+        [none] StreamedChunk)
+    zox_system(ChunkLodDirtySystem, EcsOnUpdate,
+        [in] chunks.ChunkLodDirty,
+        [in] rendering.RenderLod,
+        [out] chunks.GenerateChunk,
+        [out] chunks.ChunkMeshDirty,
+        [none] StreamedChunk)
+    zox_system(ChunkNeighborUpdatedSystem, EcsPostUpdate,
+        [in] chunks.ChunkNeighbors,
+        [out] chunks.ChunkMeshDirty,
+        [none] StreamedChunk)
     // streams
     zox_filter(streamers, [in] StreamPoint)
-    zox_system_ctx_1(ChunkSpawnSystem, zox_pip_mainthread, streamers, [in] chunks.ChunkPosition, [in] voxels.VoxLink, [in] rendering.RenderDistance, [out] chunks.ChunkNeighbors, [none] StreamedChunk)
-    zox_system(ChunkDieSystem, EcsOnStore, [in] voxels.VoxLink, [in] chunks.ChunkPosition, [in] rendering.RenderDistance, [in] chunks.ChunkLodDirty, [in] rendering.RenderLod, [none] StreamedChunk)
+    zox_system_ctx_1(ChunkSpawnSystem, zox_pip_mainthread, streamers,
+        [in] chunks.ChunkPosition,
+        [in] voxels.VoxLink,
+        [in] rendering.RenderDistance,
+        [out] chunks.ChunkNeighbors,
+        [none] StreamedChunk)
+    zox_system(ChunkDieSystem, EcsOnStore,
+        [in] voxels.VoxLink,
+        [in] chunks.ChunkPosition,
+        [in] rendering.RenderDistance,
+        [in] chunks.ChunkLodDirty,
+        [in] rendering.RenderLod,
+        [none] StreamedChunk)
 }

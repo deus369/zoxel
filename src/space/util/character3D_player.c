@@ -40,6 +40,7 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;
     const ChunkOctree *chunk_above = NULL;
+    byte node_depth = 0;
     byte found_position = 0;
     for (int i = render_distance_y; i >= -render_distance_y; i--) {
         chunk_position.y = i;
@@ -48,7 +49,8 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
             continue;
         }
         zox_geter(chunk, ChunkOctree, chunkd)
-        local_position = find_position_on_ground(chunkd, chunkd->linked, chunk_above, spawns_in_air);
+        node_depth = zox_get_value(chunk, NodeDepth)
+        local_position = find_position_on_ground(chunkd, node_depth, chunk_above, spawns_in_air);
         if (!byte3_equals(byte3_full, local_position)) {
             found_position = 1;
             break;
@@ -58,11 +60,10 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
     if (!found_position) {
         zox_log_error("failed finding spawn position for player")
     }
-    const byte depth = chunk_above != NULL ? chunk_above->linked : 0;
-    int chunk_length = powers_of_two[depth];
+    int chunk_length = powers_of_two[node_depth];
     const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
     const int3 chunk_voxel_position = get_chunk_voxel_position(chunk_position, chunk_dimensions);
-    const float3 spawn_position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, depth, 1); // voxScale->value);
+    const float3 spawn_position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, node_depth, 1); // voxScale->value);
 
     // zox_log("Terrain Place Found [%fx%fx%f]", spawn_position.x, spawn_position.y, spawn_position.z)
 

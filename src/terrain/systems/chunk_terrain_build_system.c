@@ -58,7 +58,7 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
     const ecs_entity_t neighbor = chunkNeighbors->value[index];\
     if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, ChunkOctree)) {\
         zox_geter_value(neighbor, RenderLod, byte, neighbor_lod)\
-        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, chunkOctree->linked);\
+        neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, node_depth);\
         neighbors[index] = zox_get(neighbor, ChunkOctree);\
     } else {\
         neighbor_depths[index] = 0;\
@@ -69,7 +69,8 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
 void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     uint updated_count = 0;
     zox_field_world()
-    zox_field_in(VoxLink, voxLinks, 1)
+    byte fi = 1;
+    zox_field_in(VoxLink, voxLinks, fi++)
     int voxels_length = 0;
     ecs_entity_t terrain = 0;
     for (int i = 0; i < it->count; i++) {
@@ -139,19 +140,29 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             }
         }
     }
-    zox_field_in(ChunkOctree, chunkOctrees, 2)
-    zox_field_in(RenderLod, renderLods, 3)
-    zox_field_in(ChunkNeighbors, chunkNeighborss, 4)
-    zox_field_in(VoxScale, voxScales, 5)
+    zox_field_in(ChunkOctree, chunkOctrees, fi++)
+    zox_field_in(NodeDepth, nodeDepths, fi++)
+    zox_field_in(RenderLod, renderLods, fi++)
+    zox_field_in(ChunkNeighbors, chunkNeighborss, fi++)
+    zox_field_in(VoxScale, voxScales, fi++)
     // zox_field_in(RenderDisabled, renderDisableds, 6)
-    zox_field_in(ChunkMeshDirty, chunkMeshDirtys, 7)
-    zox_field_out(MeshIndicies, meshIndiciess, 8)
-    zox_field_out(MeshVertices, meshVerticess, 9)
-    zox_field_out(MeshUVs, meshUVss, 10)
-    zox_field_out(MeshColorRGBs, meshColorRGBss, 11)
-    zox_field_out(MeshDirty, meshDirtys, 12)
+    zox_field_in(ChunkMeshDirty, chunkMeshDirtys, fi++)
+    zox_field_out(MeshIndicies, meshIndiciess, fi++)
+    zox_field_out(MeshVertices, meshVerticess, fi++)
+    zox_field_out(MeshUVs, meshUVss, fi++)
+    zox_field_out(MeshColorRGBs, meshColorRGBss, fi++)
+    zox_field_out(MeshDirty, meshDirtys, fi++)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
+        zox_field_i(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
+        zox_field_i(RenderLod, renderLods, renderLod)
+        zox_field_i(VoxScale, voxScales, voxScale)
+        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_i(NodeDepth, nodeDepths, nodeDepth)
+        zox_field_o(MeshIndicies, meshIndiciess, meshIndicies)
+        zox_field_o(MeshVertices, meshVerticess, meshVertices)
+        zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
+        zox_field_o(MeshUVs, meshUVss, meshUVs)
         if (chunkMeshDirty->value != chunk_dirty_state_update) {
             continue;
         }
@@ -161,20 +172,13 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             // todo: add prerequisite for states -> renderDisabled must be 0 for trigger to change to update
             //continue;
         }*/
-        zox_field_i(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
-        zox_field_i(RenderLod, renderLods, renderLod)
         if (renderLod->value == render_lod_uninitialized) {
             zox_log(" ! render_lod_uninitialized...\n")
             continue;
         }
-        zox_field_i(VoxScale, voxScales, voxScale)
-        zox_field_o(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_o(MeshVertices, meshVerticess, meshVertices)
-        zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        zox_field_o(MeshUVs, meshUVss, meshUVs)
+        byte node_depth = nodeDepth->value;
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
         if (renderLod->value != render_lod_invisible) {
-            zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
             const ChunkOctree *neighbors[6];
             byte neighbor_depths[6];
             set_neightbor_chunk_data(left)
@@ -185,9 +189,9 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(front)
 
             const byte is_max_depth_chunk = renderLod->value == 0;
-            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, chunkOctree->linked);
+            const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, node_depth);
 
-            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, chunkOctree->linked);
+            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, node_depth);
         }
         zox_field_o(MeshDirty, meshDirtys, meshDirty)
         meshDirty->value = mesh_state_trigger;

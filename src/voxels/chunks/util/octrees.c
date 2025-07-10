@@ -298,11 +298,11 @@ void set_octree_voxel_final(ChunkOctree *node, byte3 *position, const byte2 *set
 }
 
 
-byte get_voxel(ChunkOctree *node, const byte3 position, const byte3 size) {
+byte get_voxel(ChunkOctree *node, const byte node_depth, const byte3 position, const byte3 size) {
     byte voxel = 0;
     if (byte3_in_bounds(position, size)) {
         byte3 temp_position = position;
-        voxel = get_octree_voxel(node, &temp_position, node->linked);
+        voxel = get_octree_voxel(node, &temp_position, node_depth);
     }
     return voxel;
 }
@@ -321,7 +321,7 @@ ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const byte depth) 
     return get_node_dig(&node->nodes[byte3_octree_array_index(node_position)], position, depth - 1);
 }
 
-ChunkOctree* get_node(ChunkOctree *node, const byte3 position) {
+ChunkOctree* get_node(ChunkOctree *node, const byte node_depth, const byte3 position) {
     byte3 temp_position = position;
-    return get_node_dig(node, &temp_position, node->linked);
+    return get_node_dig(node, &temp_position, node_depth);
 }

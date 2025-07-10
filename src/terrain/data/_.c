@@ -4,3 +4,4 @@
 #include "terrain_mode.c"
 #include "node_delve_data.c"
 #include "update_block_entities.c"
+#include "spawn_blocks.c"

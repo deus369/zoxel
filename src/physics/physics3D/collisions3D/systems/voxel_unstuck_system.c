@@ -29,13 +29,13 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
             continue;
         }
         zox_geter(chunk, ChunkOctree, node)
-        // const int3 chunk_dimensions = int3_single(powers_of_two[node->linked]);
+        zox_geter_value(chunk, NodeDepth, byte, node_depth)
         const byte3 chunk_dimensions_b3 = int3_to_byte3(chunk_dimensions);
         // positions
-        const int3 voxel_position = real_position_to_voxel_position(position3D->value, node->linked);
+        const int3 voxel_position = real_position_to_voxel_position(position3D->value, node_depth);
         byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
         // voxel
-        const byte voxel = get_octree_voxel(node, &voxel_position_local, node->linked);
+        const byte voxel = get_octree_voxel(node, &voxel_position_local, node_depth);
         if (!voxel) {
             continue;
         }

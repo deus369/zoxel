@@ -5,19 +5,22 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
     if (!node || !zox_valid(chunk)) {
         return;
     }
+    zox_geter_value(chunk, NodeDepth, byte, node_depth)
     zox_get_muter(chunk, ChunkOctree, base_node)
+    float scale = get_terrain_voxel_scale(node_depth);
+    // assume we checked if get_voxel == place_voxel
     // need to delete before node updated
-    if (!voxel) {
-        if (is_linked_ChunkOctree(node)) {
-            unlink_node_ChunkOctree(world, node);
-        }
+    //if (!voxel) {
+    if (is_linked_ChunkOctree(node)) {
+        unlink_node_ChunkOctree(world, node);
     }
+    //}
     // set node voxel data
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     // zox_get_muter(chunk, ChunkOctree, base_node)
     const SetVoxelTargetData datam = {
-        .depth = base_node->linked,
+        .depth = node_depth,
         .voxel = voxel,
         .effect_nodes = 1,
     };
@@ -46,13 +49,14 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
             .position_real = position_real,
             .chunk = chunk,
             .node = node,
+            .scale = scale,
         };
         run_hook_spawned_block(world, &spawned_data);
     }
 
     // if not linked block
     if (!is_linked_ChunkOctree(node)) {
-        close_same_nodes(world, base_node, base_node->linked, 0);
+        close_same_nodes(world, base_node, node_depth, 0);
     }
 
     // - Refresh Meshes

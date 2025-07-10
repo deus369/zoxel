@@ -6,8 +6,7 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
         zox_log_error("null node in [spawned_block_vox]")
         return;
     }
-    float scale = get_terrain_voxel_scale(4);
-    // real position
+    // gett block data
     zox_geter_value(data->block, BlockPrefabLink, ecs_entity_t, prefab)
     zox_geter_value_safe(data->block, ModelLink, ecs_entity_t, vox)
     SpawnBlockVox spawn_data = {
@@ -17,11 +16,11 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
         .position_local = data->position_local,
         .position_global = data->position_global,
         .position_real = data->position_real,
-        .scale = scale,
+        .scale = data->scale,
     };
     // offset property
     if (zox_has(data->block, BlockVoxOffset) && zox_gett_value(data->block, BlockVoxOffset)) {
-        float3_add_float3_p(&spawn_data.position_real, (float3) { 0, scale * -0.25f, 0 });
+        float3_add_float3_p(&spawn_data.position_real, (float3) { 0, data->scale * -0.25f, 0 });
     }
     ecs_entity_t e2;
     if (zox_has(prefab, BlockVox)) {
@@ -44,5 +43,4 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
     zox_log("   - global [%ix%ix%i] ", spawn_data.position_global.x, spawn_data.position_global.y, spawn_data.position_global.z)
     zox_log("   - real [%fx%fx%f] ", spawn_data.position_real.x, spawn_data.position_real.y, spawn_data.position_real.z)*/
     // spawn_line3D(world, spawn_data.position_real, float3_add(spawn_data.position_real, (float3) { 0, 2, 0 }), 2, 3);
-
 }

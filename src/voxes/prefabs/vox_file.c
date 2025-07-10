@@ -29,19 +29,19 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
         set_as_debug_vox(world, e);
         return;
     }
-    const byte target_depth = character_depth;
+    const byte node_depth = character_depth;
+    zox_set(e, NodeDepth, { node_depth })
     const byte *voxels = vox->chunks[0].xyzi.voxels;
     const byte3 vox_size_original = int3_to_byte3(vox->chunks[0].size.xyz);
     // maxed based on octree size
-    const int max_length = pow(2, target_depth);
+    const int max_length = pow(2, node_depth);
     int3 vox_size = vox->chunks[0].size.xyz;
     if (vox_size.x > max_length) vox_size.x = max_length;
     if (vox_size.y > max_length) vox_size.y = max_length;
     if (vox_size.z > max_length) vox_size.z = max_length;
-    ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
-    chunkOctree->linked = target_depth;
-    fill_new_octree(chunkOctree, 0, target_depth);
-    byte2 set_octree_data = (byte2) { 1, target_depth };
+    zox_muter(e, ChunkOctree, node)
+    fill_new_octree(node, 0, node_depth);
+    byte2 set_octree_data = (byte2) { 1, node_depth };
     byte3 position;
     int vox_index;
     for (position.x = 0; position.x < vox_size.x; position.x++) {
@@ -50,12 +50,12 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
                 vox_index = byte3_array_index(position, vox_size_original);
                 set_octree_data.x = voxels[vox_index];
                 byte3 node_position = position;
-                set_octree_voxel_final(chunkOctree, &node_position, &set_octree_data, 0);
+                set_octree_voxel_final(node, &node_position, &set_octree_data, 0);
             }
         }
     }
-    optimize_solid_nodes(chunkOctree);
-    close_same_nodes(world, chunkOctree, chunkOctree->linked, 0);
+    optimize_solid_nodes(node);
+    close_same_nodes(world, node, node_depth, 0);
     zox_modified(e, ChunkOctree)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors

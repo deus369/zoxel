@@ -35,7 +35,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     byte chunk_depth;
     if (chunk) {
         node = zox_get(chunk, ChunkOctree)
-        chunk_depth = node->linked;
+        chunk_depth = zox_get_value(chunk, NodeDepth)
     }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     // position
@@ -89,7 +89,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 if (!node) {
                     return 0;
                 }
-                chunk_depth = node->linked;
+                chunk_depth = zox_get_value(chunk, NodeDepth)
                 chunk_position = new_chunk_position;
                 hit_character = raycast_character(world, caster, ray_origin, ray_normal, chunk, data, &closest_t);
             }
@@ -193,7 +193,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
         // hit point
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node->linked))), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node_depth))), hit_point_line_color);
 #endif
         // voxel normal
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(position_global), voxel_scale);

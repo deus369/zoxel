@@ -19,7 +19,13 @@
 #include "voxels/_.c"
 #include "systems/_.c"
 
+void module_dispose_terrain(ecs_world_t *world, void *ctx) {
+    dispose_hook_spawn_blocks();
+}
+
 zox_begin_module(Terrain)
+    zox_module_dispose(module_dispose_terrain);
+    initialize_hook_spawn_blocks();
     set_terrain_render_distance();
     define_components_terrain(world);
     define_systems_terrain(world);

@@ -13,7 +13,7 @@ zox_component_byte(GenerateChunk)
 zox_component_int3(ChunkPosition)
 zox_component_int3(ChunkSize)
 zox_component_byte(BlocksSpawned)
-zox_link_component(ChunkLink, ecs_entity_t, EntityLinks)
+zox_component_link(ChunkLink, ecs_entity_t, EntityLinks)
 zox_component_node(ChunkOctree, byte, 0)    // todo: Rename to VoxelNode
 zox_component_byte(NodeDepth)
 #include "neighbors.c"

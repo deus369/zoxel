@@ -26,10 +26,14 @@ hash_type name##_hash(hash_type key, hash_type size) {\
 \
 name* create_##name(hash_type size) {\
     if (size == 0) {\
-        zox_log("! cannot have a zero hashmap [%s]\n", #name)\
+        zox_log("! cannot have a zero hashmap [%s]", #name)\
         return NULL;\
     }\
     name* map = malloc(sizeof(name));\
+    if (!map) {\
+        zox_log_error("error creating hashmap [%s]\n", #name)\
+        return NULL;\
+    }\
     map->size = size;\
     /*calloc zeroes out data*/\
     map->data = calloc(size, sizeof(name##_pair*));\

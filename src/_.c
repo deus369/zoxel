@@ -138,9 +138,9 @@ zox_begin_module(Zox)
     zox_import_module(Particles)
     zox_import_module(Blueprints)
     zox_import_module(Characters)
-    #ifdef zox_mod_ui
+    zox_import_module(Dungeons)
     zox_import_module(GameUI)
-    #endif
+
     // user data
     zox_import_module(Users)
     zox_import_module(Combat)

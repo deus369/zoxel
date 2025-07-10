@@ -26,10 +26,10 @@ $(TARGET_DEV): $(SRCS)
 run-dev: dev
 	./$(TARGET_DEV)
 
-run-gdb: dev
+gdb: dev
 	gdb ./$(TARGET_DEV)
 
-run-val: dev
+valgrind: dev
 	valgrind ./$(TARGET_DEV)
 
 clean:

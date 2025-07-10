@@ -13,11 +13,28 @@
 zox_begin_module(RenderingCameras)
     zox_define_component_w_dest(RenderBufferLink)
     zox_define_component_w_dest(FrameBufferLink)
-    zox_gpu_restore_system(RenderBufferRestoreSystem, [in] generic.ScreenDimensions, [out] FrameBufferLink, [out] RenderBufferLink)
-    zox_gpu_restore_system(RenderTextureRestoreSystem, [in] rendering.core.TextureGPULink, [in] transforms2.d.PixelSize, [in] cameras.CameraLink, [none] cameras.RenderTexture)
+    zox_gpu_restore_system(RenderBufferRestoreSystem,
+        [in] generic.ScreenDimensions,
+        [out] FrameBufferLink,
+        [out] RenderBufferLink)
+    zox_gpu_restore_system(RenderTextureRestoreSystem,
+        [in] rendering.core.TextureGPULink,
+        [in] transforms2.d.PixelSize,
+        [in] cameras.CameraLink,
+        [none] cameras.RenderTexture)
     // rendering
-    zox_system_1(CameraRender3DSystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] generic.ScreenDimensions, [none] !cameras.CameraUI)
-    zox_system_1(CameraRenderUISystem, zox_pipelines_rendering, [in] cameras.ViewMatrix, [in] cameras.FieldOfView, [in] cameras.ScreenPosition, [in] generic.ScreenDimensions, [none] cameras.CameraUI)
+    zox_system_1(CameraRender3DSystem, zox_pipelines_rendering,
+        [in] cameras.ViewMatrix,
+        [in] cameras.FieldOfView,
+        [in] cameras.ScreenPosition,
+        [in] generic.ScreenDimensions,
+        [none] !cameras.CameraUI)
+    zox_system_1(CameraRenderUISystem, zox_pipelines_rendering,
+        [in] cameras.ViewMatrix,
+        [in] cameras.FieldOfView,
+        [in] cameras.ScreenPosition,
+        [in] generic.ScreenDimensions,
+        [none] cameras.CameraUI)
 zox_end_module(RenderingCameras)
 
 #endif

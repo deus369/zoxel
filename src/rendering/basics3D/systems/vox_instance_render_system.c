@@ -55,6 +55,10 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
                 .mesh = instanceLink->value,
                 .transforms = create_float4x4_array_d(128)
             };
+            if (!command.transforms) {
+                // errored out
+                break;
+            }
             add_to_float4x4_array_d(command.transforms, transformMatrix->value);
             add_to_InstanceRenderCommand_array_d(commands, command);
             // zox_log(" [%i] created new command %lu - %i\n", i, instanceLink->value, commands->size)
@@ -78,6 +82,9 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     // render now
     for (int i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
+        if (!command.transforms) {
+            continue;
+        }
         const ecs_entity_t mesh = command.mesh;
         /*zox_geter(mesh, UboGPULink, uboGPULink)
         if (uboGPULink->value == 0) {
@@ -102,18 +109,19 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
 
         // zox_log(" [%i] rendering %lu - %i - UBO %i\n", i, mesh, command.transforms->size, uboGPULink->value)
 
+        // command.transforms->data = realloc(command.transforms->data, command.transforms->size * sizeof(float4x4));
         // set mesh verts
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
 
-        // command.transforms->data = realloc(command.transforms->data, command.transforms->size * sizeof(float4x4));
         int render_count = command.transforms->size;
         // update transform data
         glBindBuffer(GL_UNIFORM_BUFFER, uboGPULink->value);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, render_count * sizeof(float4x4), command.transforms->data);
         // draw
         glDrawElementsInstanced(GL_TRIANGLES, meshIndicies->length, GL_UNSIGNED_INT, 0, render_count);
+
         // reset the things
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
         opengl_disable_buffer(material_attributes->vertex_color);
