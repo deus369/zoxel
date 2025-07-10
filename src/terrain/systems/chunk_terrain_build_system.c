@@ -69,13 +69,15 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
 void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     uint updated_count = 0;
     zox_field_world()
-    byte fi = 1;
-    zox_field_in(VoxLink, voxLinks, fi++)
+    zox_sys_begin()
+    zox_sys_in(VoxLink)
     int voxels_length = 0;
     ecs_entity_t terrain = 0;
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) continue;
+        zox_sys_i(VoxLink, voxLink)
+        if (!voxLink->value) {
+            continue;
+        }
         terrain = voxLink->value;
         break;
     }
@@ -140,38 +142,32 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             }
         }
     }
-    zox_field_in(ChunkOctree, chunkOctrees, fi++)
-    zox_field_in(NodeDepth, nodeDepths, fi++)
-    zox_field_in(RenderLod, renderLods, fi++)
-    zox_field_in(ChunkNeighbors, chunkNeighborss, fi++)
-    zox_field_in(VoxScale, voxScales, fi++)
-    // zox_field_in(RenderDisabled, renderDisableds, 6)
-    zox_field_in(ChunkMeshDirty, chunkMeshDirtys, fi++)
-    zox_field_out(MeshIndicies, meshIndiciess, fi++)
-    zox_field_out(MeshVertices, meshVerticess, fi++)
-    zox_field_out(MeshUVs, meshUVss, fi++)
-    zox_field_out(MeshColorRGBs, meshColorRGBss, fi++)
-    zox_field_out(MeshDirty, meshDirtys, fi++)
+    zox_sys_in(ChunkOctree)
+    zox_sys_in(NodeDepth)
+    zox_sys_in(RenderLod)
+    zox_sys_in(ChunkNeighbors)
+    zox_sys_in(VoxScale)
+    zox_sys_in(ChunkMeshDirty)
+    zox_sys_out(MeshIndicies)
+    zox_sys_out(MeshVertices)
+    zox_sys_out(MeshUVs)
+    zox_sys_out(MeshColorRGBs)
+    zox_sys_out(MeshDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
-        zox_field_i(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
-        zox_field_i(RenderLod, renderLods, renderLod)
-        zox_field_i(VoxScale, voxScales, voxScale)
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
-        zox_field_i(NodeDepth, nodeDepths, nodeDepth)
-        zox_field_o(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_o(MeshVertices, meshVerticess, meshVertices)
-        zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        zox_field_o(MeshUVs, meshUVss, meshUVs)
+        zox_sys_i(ChunkMeshDirty, chunkMeshDirty)
+        zox_sys_i(ChunkNeighbors, chunkNeighbors)
+        zox_sys_i(RenderLod, renderLod)
+        zox_sys_i(VoxScale, voxScale)
+        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(NodeDepth, nodeDepth)
+        zox_sys_o(MeshIndicies, meshIndicies)
+        zox_sys_o(MeshVertices, meshVertices)
+        zox_sys_o(MeshColorRGBs, meshColorRGBs)
+        zox_sys_o(MeshUVs, meshUVs)
+        zox_sys_o(MeshDirty, meshDirty)
         if (chunkMeshDirty->value != chunk_dirty_state_update) {
             continue;
         }
-        /*zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value)
-        {
-            // todo: add prerequisite for states -> renderDisabled must be 0 for trigger to change to update
-            //continue;
-        }*/
         if (renderLod->value == render_lod_uninitialized) {
             zox_log(" ! render_lod_uninitialized...\n")
             continue;
@@ -187,13 +183,10 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(up)
             set_neightbor_chunk_data(back)
             set_neightbor_chunk_data(front)
-
             const byte is_max_depth_chunk = renderLod->value == 0;
             const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, node_depth);
-
             build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, node_depth);
         }
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
         meshDirty->value = mesh_state_trigger;
         updated_count++;
     }

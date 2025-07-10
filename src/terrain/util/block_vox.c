@@ -3,7 +3,7 @@
 // keeps track of the node, position, depth as we dig
 
 void delete_block_entities(ecs_world_t *world, ChunkOctree *node,  byte depth, const byte max_depth) {
-    if (unlink_node_ChunkOctree(world, node)) {
+    if (destroy_node_entity_ChunkOctree(world, node)) {
         return;
     }
     if (depth != max_depth && node->nodes) {
@@ -25,7 +25,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             return; // air returns!
         }
         if (!node->value) {
-            unlink_node_ChunkOctree(world, node);
+            destroy_node_entity_ChunkOctree(world, node);
             return; // air returns!
         }
         // cheeck if out of bounds
@@ -38,14 +38,14 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // zox_has(block_meta, BlockPrefabLink);
         // cheeck if vox model - if meta data is block vox type, spawn, otherwise, remove
         if (!block_prefab) {
-            unlink_node_ChunkOctree(world, node);
+            destroy_node_entity_ChunkOctree(world, node);
             return;
         }
         // + spawn block vox
         data->spawn_data->position_local = int3_to_byte3(delve_data->octree_position);
         // if exists already, shouldn't we check if is the same block vox type?
         // if exists, and is same type, return!
-        if (node->linked == linked_state) {
+        if (is_linked_ChunkOctree(node)) {
             const ecs_entity_t e3 = get_node_entity_ChunkOctree(node);
             // ((NodeEntityLink*) node->nodes)->value;
             if (zox_valid(e3)) {
@@ -102,7 +102,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
     } else {
         int3 octree_position = delve_data->octree_position;
         int3_multiply_int_p(&octree_position, 2);
-        if (delve_data->chunk && delve_data->chunk->nodes && delve_data->chunk->linked != linked_state) {
+        if (delve_data->chunk && delve_data->chunk->nodes && !is_linked_ChunkOctree(delve_data->chunk)) {
             for (byte i = 0; i < octree_length; i++) {
                 NodeDelveData delve_data_child = {
                     .chunk = &delve_data->chunk->nodes[i],

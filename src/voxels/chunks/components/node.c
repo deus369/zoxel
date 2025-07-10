@@ -3,7 +3,8 @@ typedef struct {
     ecs_entity_t value;
 } NodeEntityLink;
 
-#define linked_state 255
+#define node_type_voxel 0
+#define node_type_instance 255
 
 // todo: Seperate: voxel octree shoudl be seperate to entity component
 
@@ -14,82 +15,66 @@ typedef struct name name;\
 struct name {\
     type value;\
     name *nodes;\
-    byte linked;\
-}; ECS_COMPONENT_DECLARE(name);\
+    byte type;\
+};\
+zox_custom_component(name)\
+\
+byte has_children_##name(const name *node) {\
+    return node && node->nodes && node->type == node_type_voxel;\
+}\
 \
 byte is_linked_##name(const name *node) {\
-    return node && node->linked == linked_state;\
+    return node && node->type == node_type_instance;\
 }\
 \
 void link_node_##name(name *node, const ecs_entity_t e) {\
-    if (!node || node->nodes || node->linked == linked_state) {\
+    if (!node || node->nodes || node->type == node_type_instance) {\
         return;\
     }\
-    node->linked = linked_state;\
+    node->type = node_type_instance;\
     node->nodes = malloc(sizeof(NodeEntityLink));\
     *(NodeEntityLink*) node->nodes = (NodeEntityLink) { e };\
 }\
 \
-ecs_entity_t get_node_entity_##name(const name *node) {\
-    if (!node || !node->nodes || node->linked != linked_state) {\
+const ecs_entity_t get_node_entity_##name(const name *node) {\
+    if (!is_linked_##name(node)) {\
         return 0;\
-    }\
-    NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
-    return link->value;\
-}\
-\
-byte unlink_node_##name(ecs_world_t *world, name *node) {\
-    if (!node || node->linked != linked_state || !node->nodes) {\
-        return 0;\
-    }\
-    NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
-    if (zox_valid(link->value)) {\
-        zox_delete(link->value)\
     } else {\
-        zox_log_error("issue with linked voxel instance %lu", link->value)\
+        NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
+        return link->value;\
     }\
-    free(node->nodes);\
-    node->nodes = NULL;\
-    node->linked = 0;\
-    return 1;\
 }\
 \
-byte delete_node_entity_from_##name(ecs_world_t *world, name *node) {\
-    if (!node || !node->nodes) {\
+byte destroy_node_entity_##name(ecs_world_t *world, name *node) {\
+    if (!is_linked_##name(node)) {\
         return 0;\
     }\
-    if (node->linked != linked_state) {\
-        return 0;\
-    }\
-    NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;\
-    if (!node_entity_link) {\
-        return 0;\
-    }\
-    const ecs_entity_t e = node_entity_link->value;\
+    const ecs_entity_t e = get_node_entity_##name(node);\
     if (zox_valid(e)) {\
         zox_delete(e)\
-    }\
-    unlink_node_##name(world, node);\
-    return 1;\
-}\
-\
-void close_##name(ecs_world_t *world, name* node, byte depth) {\
-    if (!node->nodes) {\
-        return;\
-    }\
-    if (delete_node_entity_from_##name(world, node)) {\
-        return;\
-    }\
-    /* > todo: check if entity link here, using depth check */\
-    if (depth) {\
-        depth--;\
-        for (byte i = 0; i < octree_length; i++) {\
-            close_##name(world, &node->nodes[i], depth);\
-        }\
+    } else {\
+        zox_log_error("invalid node entity [%lu]", e)\
     }\
     free(node->nodes);\
     node->nodes = NULL;\
-    node_memory -= 1;\
+    node->type = 0;\
+    return 1;\
+}\
+\
+void dispose_##name(ecs_world_t *world, name* node) {\
+    if (!node->nodes) {\
+        return;\
+    } else if (destroy_node_entity_##name(world, node)) {\
+        return;\
+    } else {\
+        /* > todo: check if entity link here, using depth check */\
+        for (byte i = 0; i < octree_length; i++) {\
+            dispose_##name(world, &node->nodes[i]);\
+        }\
+        free(node->nodes);\
+        node->nodes = NULL;\
+        node_memory -= 1;\
+    }\
     /*zox_log(" > freeing node [%i]\n", (sizeof(name) * octree_length))*/\
 }\
 \
@@ -99,7 +84,7 @@ void open_new_##name(name* node) {\
     for (byte i = 0; i < octree_length; i++) {\
         node->nodes[i] = (name) {\
             .nodes = NULL,\
-            .linked = 0,\
+            .type = node_type_voxel,\
         };\
     }\
     node_memory += 1;\
@@ -107,8 +92,8 @@ void open_new_##name(name* node) {\
 \
 void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
-    dst->linked = src->linked;\
-    if (src->linked) {\
+    dst->type = src->type;\
+    if (src->type) {\
         dst->nodes = src->nodes;\
     } else if (src->nodes) {\
         open_new_##name(dst);\
@@ -122,7 +107,7 @@ void clone_##name(name* dst, const name* src) {\
 \
 void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte depth) {\
     dst->value = src->value;\
-    dst->linked = src->linked;\
+    dst->type = src->type;\
     depth++;\
     if (src->nodes && depth <= max_depth) {\
         open_new_##name(dst);\
@@ -144,7 +129,7 @@ void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, 
     if (depth == target_depth) {\
         dst->value = src->value;\
         dst->nodes = src->nodes;\
-        dst->linked = src->linked;\
+        dst->type = src->type;\
     } else {\
         if (src->nodes && dst->nodes) {\
             depth++;\
@@ -304,7 +289,7 @@ const name* find_adjacent_##name(const name* root, const name* node, int3 positi
 ECS_CTOR(name, ptr, {\
     ptr->nodes = NULL;\
     ptr->value = default_value;\
-    ptr->linked = 0;\
+    ptr->type = 0;\
 })\
 \
 ECS_COPY(name, dst, src, {\
@@ -316,17 +301,19 @@ ECS_MOVE(name, dst, src, {\
     src->nodes = NULL;\
     dst->value = src->value;\
     src->value = default_value;\
-    dst->linked = src->linked;\
-    src->linked = 0;\
+    dst->type = src->type;\
+    src->type = 0;\
 })\
 \
-void on_destroyed_##name(ecs_iter_t *it) {\
-    name *components = ecs_field(it, name, 1);\
+void dispose_system_##name(ecs_iter_t *it) {\
+    zox_sys_world()\
+    zox_sys_begin()\
+    zox_sys_out(name)\
     for (int i = 0; i < it->count; i++) {\
-        name *component = &components[i];\
-        close_##name(it->world, component, component->linked);\
+        zox_sys_o(name, component)\
+        dispose_##name(world, component);\
     }\
-}\
+}
 
 #define zox_define_component_node(name)\
     zox_define_component(name)\
@@ -335,4 +322,4 @@ void on_destroyed_##name(ecs_iter_t *it) {\
         .move = ecs_move(name),\
         .copy = ecs_copy(name),\
     });\
-    zox_observe_expr(on_destroyed_##name, EcsOnRemove, "[out] "#name)
+    zox_observe_expr(dispose_system_##name, EcsOnRemove, "[out] "#name)

@@ -13,11 +13,12 @@ void define_systems_voxes(ecs_world_t *world) {
         [out] textures.core.TextureData,
         [out] rendering.TextureDirty,
         [none] textures.core.VoxTexture)
+    // remember: timing specific, fucks up if changes position
     zox_system(Bounds3DGrowSystem, EcsOnUpdate,
         [in] rendering.MeshDirty,
         [in] chunks.ChunkSize,
         [in] blocks.VoxScale,
-        [out] generic.Bounds3D) // remember: timing specific, fucks up if changes position
+        [out] generic.Bounds3D)
     zox_system(GenerateVoxSystem, EcsOnUpdate,
         [in] colorz.Color,
         [out] GenerateVox,

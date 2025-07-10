@@ -1,22 +1,26 @@
 void NoiseChunkOctreeSystem(ecs_iter_t *it) {
     const byte max_depth = terrain_depth;
     zox_change_check()
-    zox_field_world()
-    zox_field_in(RenderLod, renderLods, 4)
-    zox_field_out(ChunkDirty, chunkDirtys, 2)
-    zox_field_out(ChunkOctree, chunkOctrees, 3)
-    zox_field_out(GenerateChunk, generateChunks, 5)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(RenderLod)
+    zox_sys_in(NodeDepth)
+    zox_sys_out(ChunkDirty)
+    zox_sys_out(ChunkOctree)
+    zox_sys_out(GenerateChunk)
     for (int i = 0; i < it->count; i++) {
-        GenerateChunk *generateChunk = &generateChunks[i];
-        if (generateChunk->value == 0) continue;
-        ChunkDirty *chunkDirty = &chunkDirtys[i];
-        if (chunkDirty->value != 0) continue;
-        const RenderLod *renderLod = &renderLods[i];
-        ChunkOctree *chunkOctree = &chunkOctrees[i];
-        byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
-        random_fill_octree(chunkOctree, 1, chunk_depth);
+        zox_sys_i(RenderLod, renderLod)
+        zox_sys_i(NodeDepth, nodeDepth)
+        zox_sys_o(ChunkDirty, chunkDirty)
+        zox_sys_o(ChunkOctree, chunkOctree)
+        zox_sys_o(GenerateChunk, generateChunk)
+        if (generateChunk->value == 0 || chunkDirty->value != 0) {
+            continue;
+        }
+        // byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
+        random_fill_octree(chunkOctree, 1, nodeDepth->value);
 #ifndef zox_disable_closing_octree_nodes
-        close_solid_nodes(world, chunkOctree, chunkOctree->linked);
+        close_solid_nodes(world, chunkOctree);
 #endif
         generateChunk->value = 0;
         chunkDirty->value = 1;

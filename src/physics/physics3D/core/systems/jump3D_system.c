@@ -1,7 +1,6 @@
 void Jump3DSystem(ecs_iter_t *it) {
     const float jump_power = zox_jump_power;
     init_delta_time()
-    zox_field_world()
     zox_field_in(DisableMovement, disableMovements, 1)
     zox_field_in(Velocity3D, velocity3Ds, 2)
     zox_field_out(Jump, jumps, 3)

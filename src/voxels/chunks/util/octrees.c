@@ -56,13 +56,13 @@ ChunkOctree* get_voxel_node_at_depth(byte *value, const ChunkOctree *node, byte3
 }
 
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-void close_solid_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_depth) {
-    if (!node->nodes) {
+void close_solid_nodes(ecs_world_t *world, ChunkOctree *node) {
+    if (!has_children_ChunkOctree(node)) {
         return;
     }
     // for all children nodes - only check higher nodes if closed children
     for (byte i = 0; i < octree_length; i++) {
-        close_solid_nodes(world, &node->nodes[i], max_depth);
+        close_solid_nodes(world, &node->nodes[i]);
     }
     byte all_solid = 1;
     byte all_air = 1;
@@ -84,21 +84,17 @@ void close_solid_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_dep
         }
     }
     if (all_solid || all_air) {
-        close_ChunkOctree(world, node, max_depth);
+        dispose_ChunkOctree(world, node);
     }
 }
 
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
-void close_same_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_depth, byte depth) {
-    if (node->nodes == NULL) {
+void close_same_nodes(ecs_world_t *world, ChunkOctree *node) {
+    if (!has_children_ChunkOctree(node)) {
         return;
     }
-    if (depth == max_depth) {
-        return; // make sure this doesn't try to close spawned nodes
-    }
-    depth++;
     for (byte i = 0; i < octree_length; i++) {
-        close_same_nodes(world, &node->nodes[i], max_depth, depth);
+        close_same_nodes(world, &node->nodes[i]);
     }
     byte all_same = 1;
     byte all_same_voxel = 255;
@@ -107,15 +103,16 @@ void close_same_nodes(ecs_world_t *world, ChunkOctree *node, const byte max_dept
             return; // if a child node is open, then don't close this node
         }
         const byte node_value = node->nodes[i].value;
-        if (all_same_voxel == 255) all_same_voxel = node_value;
-        else if (all_same_voxel != node_value) {
+        if (all_same_voxel == 255) {
+            all_same_voxel = node_value;
+        } else if (all_same_voxel != node_value) {
             all_same = 0;
             break;
         }
     }
     if (all_same) {
         node->value = all_same_voxel;
-        close_ChunkOctree(world, node, max_depth);
+        dispose_ChunkOctree(world, node);
     }
 }
 
@@ -306,7 +303,6 @@ byte get_voxel(ChunkOctree *node, const byte node_depth, const byte3 position, c
     }
     return voxel;
 }
-
 
 ChunkOctree* get_node_dig(ChunkOctree *node, byte3 *position, const byte depth) {
     if (node == NULL) {

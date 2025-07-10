@@ -35,23 +35,23 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctre
 // this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_sys_query()
-    zox_field_world()
-    byte fi = 1;
-    zox_field_in(Position3D, position3Ds, fi++)
-    zox_field_in(ChunkSize, chunkSizes, fi++)
-    zox_field_in(VoxScale, voxScales, fi++)
-    zox_field_in(EntityLinks, entityLinkss, fi++)
-    zox_field_in(ChunkOctree, chunkOctrees, fi++)
-    zox_field_in(NodeDepth, nodeDepths, fi++)
-    zox_field_out(RenderDisabled, renderDisableds, fi++)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(ChunkSize)
+    zox_sys_in(VoxScale)
+    zox_sys_in(EntityLinks)
+    zox_sys_in(ChunkOctree)
+    zox_sys_in(NodeDepth)
+    zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(ChunkSize, chunkSizes, chunkSize)
-        zox_field_i(VoxScale, voxScales, voxScale)
-        zox_field_i(EntityLinks, entityLinkss, entityLinks)
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
-        zox_field_i(NodeDepth, nodeDepths, nodeDepth)
-        zox_field_o(RenderDisabled, renderDisableds, renderDisabled)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(ChunkSize, chunkSize)
+        zox_sys_i(VoxScale, voxScale)
+        zox_sys_i(EntityLinks, entityLinks)
+        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(NodeDepth, nodeDepth)
+        zox_sys_o(RenderDisabled, renderDisabled)
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
         byte is_viewed = 0; // 1;

@@ -116,7 +116,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(world, chunkOctree, node_depth, 0);
+        close_same_nodes(world, chunkOctree);
 #endif
         update_count++;
     }

@@ -9,7 +9,7 @@ zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_vo
 void define_systems_terrain(ecs_world_t *world) {
     zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // generate terrain
-    zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] chunks.GenerateChunk)
+    // zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] chunks.GenerateChunk)
     zox_system(ChunkFlatlandSystem, EcsOnUpdate,
         [none] TerrainChunk,
         [in] chunks.ChunkPosition,

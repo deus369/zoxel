@@ -12,7 +12,7 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
     // need to delete before node updated
     //if (!voxel) {
     if (is_linked_ChunkOctree(node)) {
-        unlink_node_ChunkOctree(world, node);
+        destroy_node_entity_ChunkOctree(world, node);
     }
     //}
     // set node voxel data
@@ -56,7 +56,7 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
 
     // if not linked block
     if (!is_linked_ChunkOctree(node)) {
-        close_same_nodes(world, base_node, node_depth, 0);
+        close_same_nodes(world, base_node);
     }
 
     // - Refresh Meshes

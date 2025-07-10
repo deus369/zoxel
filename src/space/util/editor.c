@@ -23,40 +23,29 @@ void toggle_debug_bounds_delve(ecs_world_t *world, const ChunkOctree *chunk, con
 }
 
 void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
-    if (!zox_valid(local_terrain)) return;
+    if (!zox_valid(local_terrain)) {
+        return;
+    }
     debug_block_vox_bounds = !debug_block_vox_bounds;
-    if (debug_block_vox_bounds) add_physics_debug(world, prefab_block_vox);
-    else remove_physics_debug(world, prefab_block_vox);
-    const ChunkLinks *chunkLinks = zox_get(local_terrain, ChunkLinks)
+    if (debug_block_vox_bounds) {
+        add_physics_debug(world, prefab_block_vox);
+    } else {
+        remove_physics_debug(world, prefab_block_vox);
+    }
+    zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];
         uint checks = 0;
         while (pair != NULL && checks < max_safety_checks_hashmap) {
             ecs_entity_t chunk = pair->value;
             if (zox_valid(chunk)) {
-                const byte has_block_spawns = zox_get_value(chunk, BlocksSpawned)
-                if (has_block_spawns) {
-                    const ChunkOctree *node = zox_get(chunk, ChunkOctree)
-                    toggle_debug_bounds_delve(world, node, node->linked, 0);
+                zox_geter_value(chunk, BlocksSpawned, byte, blocks_spawned)
+                if (blocks_spawned) {
+                    zox_geter(chunk, ChunkOctree, node)
+                    zox_geter_value(chunk, NodeDepth, byte, node_depth)
+                    toggle_debug_bounds_delve(world, node, node_depth, 0);
                 }
             }
-            /*const BlockSpawns *blockSpawns = zox_get(chunk, BlockSpawns)
-            const byte block_spawns_initialized = blockSpawns->value && blockSpawns->value->data;
-            if (block_spawns_initialized) {
-                for (int j = 0; j < blockSpawns->value->size; j++) {
-                    const byte3_hashmap_pair* pair = blockSpawns->value->data[j];
-                    uint checks2 = 0;
-                    while (pair != NULL && checks2 < max_safety_checks_hashmap) {
-                        const ecs_entity_t e2 = pair->value;
-                        if (e2 && zox_valid(e2)) {
-                            if (debug_block_vox_bounds) add_physics_debug(world, e2);
-                            else remove_physics_debug(world, e2);
-                        }
-                        pair = pair->next;
-                        checks2++;
-                    }
-                }
-            }*/
             pair = pair->next;
             checks++;
         }

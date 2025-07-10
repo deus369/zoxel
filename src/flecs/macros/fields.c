@@ -22,25 +22,25 @@
 #define zox_field_e()\
     const ecs_entity_t e = it->entities[i];
 
+// new
 
-/**
-Chose one pipeline tag for each type of system.
-    EcsOnLoad
-    EcsPostLoad
-    EcsPreUpdate
-    EcsOnUpdate
-    EcsOnValidate
-    EcsPostUpdate
-    EcsPreStore
-    EcsOnStore
-*/
-// the idea is to move the element before the ui is raycasted
-// mouse exact - outside loop before it
-// mouse drag - DraggerEndSystem - EcsOnLoad
-// ElementDragSystem - EcsPostLoad
-// position ui children - ElementPositionSystem - EcsPreUpdate
-// raycast new positioned ones - ElementRaycastSystem - EcsOnUpdate
-// respond to raycasting ui - EcsOnValidate
-// respond to click events - WindowCloseSystem - EcsPostUpdate
-//! Used to respond to first level events.
-// #define zoxel_event_respond_system_main_thread(system_name, tag_name, event_component_name) zox_system_1(system_name, EcsPreStore, [out] tag_name, [in] event_component_name);
+#define zox_sys_world()\
+    ecs_world_t *world = it->world;
+
+#define zox_sys_e()\
+    const ecs_entity_t e = it->entities[i];
+
+#define zox_sys_begin()\
+    byte fi = 0;
+
+#define zox_sys_in(name)\
+    const name *name##s = ecs_field(it, name, ++fi);
+
+#define zox_sys_out(name)\
+    name *name##s = ecs_field(it, name, ++fi);
+
+#define zox_sys_i(name, variable_name)\
+    const name *variable_name = &name##s[i];
+
+#define zox_sys_o(name, variable_name)\
+    name *variable_name = &name##s[i];

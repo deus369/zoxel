@@ -156,7 +156,7 @@ void GenerateVoxSystem(ecs_iter_t *it) {
             vox_outlines(chunkOctree, node_depth, size, black_voxel);
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(world, chunkOctree, node_depth, 0);
+        close_same_nodes(world, chunkOctree);
 #endif
         generateVox->value = 0;
         if (zox_has(e, ChunkMeshDirty)) {

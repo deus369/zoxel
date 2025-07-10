@@ -16,7 +16,6 @@ ecs_entity_t spawn_block_flower(ecs_world_t *world, const byte index) {
         zox_log_error("[flower] vox not found")
         return 0;
     }
-    spawn_data;
     /*if (disable_block_voxes) {
         spawn_data.bake_vox = 1;
         spawn_data.vox = spawn_vox_generated_invisible(world, prefab_vox_generated, (color) { 25, 5, 5, 255 });

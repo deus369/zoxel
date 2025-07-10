@@ -4,17 +4,6 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 // todo: traverse chunk ChunkOctree
 // todo: using neighbor voxels, perform a function at target depth
 // todo: pass data in function
-
-typedef struct {
-    ecs_world_t *world;
-    const float scale;
-    const ChunkOctree *chunk;
-    byte3 position;
-    byte depth;
-    const byte target_depth;
-    const float3 chunk_position;
-} TraverseChunk;
-
 void traverse_chunk(TraverseChunk *data) {
     const color_rgb debug_color = { 155, 255, 125 };
     if (!data->chunk) {
@@ -72,24 +61,27 @@ void ChunkDebugSystem(ecs_iter_t *it) {
     if (!is_render_chunk_edges) {
         return;
     }
-    zox_field_world()
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_in(ChunkOctree, chunkOctrees, 2)
-    zox_field_in(RenderLod, renderLods, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(ChunkOctree)
+    zox_sys_in(NodeDepth)
+    zox_sys_in(RenderLod)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderLod, renderLods, renderLod)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(NodeDepth, nodeDepth)
+        zox_sys_i(RenderLod, renderLod)
         if (renderLod->value != 0) {
             continue;
         }
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(ChunkOctree, chunkOctrees, chunkOctree)
         TraverseChunk data = (TraverseChunk) {
             .world = world,
-            .scale = get_terrain_voxel_scale(chunkOctree->linked),
+            .scale = get_terrain_voxel_scale(nodeDepth->value),
             .chunk = chunkOctree,
             .position = byte3_zero,
             .depth = 0,
-            .target_depth = chunkOctree->linked,
+            .target_depth = nodeDepth->value,
             .chunk_position = position3D->value
         };
         traverse_chunk(&data);

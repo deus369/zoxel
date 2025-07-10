@@ -8,12 +8,32 @@
 #include "camera_transform_matrix_system.c"
 
 void zox_define_systems_transforms3D(ecs_world_t *world) {
-    zox_system(EulerLimitXSystem, EcsOnUpdate, [in] EulerLimitX, [out] Euler)
-    zox_system(EulerLimitZSystem, EcsOnUpdate, [in] EulerLimitZ, [out] Euler)
-    zox_system(EulerOverrideSystem, EcsOnUpdate, [none] EulerOverride, [in] Euler, [out] Rotation3D)
-    zox_system(ParentRotationSystem, zox_transforms_stage, [in] hierarchys.ParentLink, [in] LocalRotation3D, [out] Rotation3D)
-    zox_system(ParentPositionSystem, zox_transforms_stage, [in] hierarchys.ParentLink, [in] LocalPosition3D, [out] Position3D)
-    zox_system(TransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] !transforms.Scale1D) // , [none] !CameraTransform)
-    zox_system(TransformMatrixScaleSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [in] transforms.Scale1D, [out] TransformMatrix) // , [none] !CameraTransform)
-    // zox_system(CameraTransformMatrixSystem, zox_transforms_stage, [in] Position3D, [in] Rotation3D, [out] TransformMatrix, [none] CameraTransform)
+    zox_system(EulerLimitXSystem, EcsOnUpdate,
+        [in] EulerLimitX,
+        [out] Euler)
+    zox_system(EulerLimitZSystem, EcsOnUpdate,
+        [in] EulerLimitZ,
+        [out] Euler)
+    zox_system(EulerOverrideSystem, EcsOnUpdate,
+        [none] EulerOverride,
+        [in] Euler,
+        [out] Rotation3D)
+    zox_system(ParentRotationSystem, zox_transforms_stage,
+        [in] hierarchys.ParentLink,
+        [in] LocalRotation3D,
+        [out] Rotation3D)
+    zox_system(ParentPositionSystem, zox_transforms_stage,
+        [in] hierarchys.ParentLink,
+        [in] LocalPosition3D,
+        [out] Position3D)
+    zox_system(TransformMatrixSystem, zox_transforms_stage,
+        [in] Position3D,
+        [in] Rotation3D,
+        [out] TransformMatrix,
+        [none] !transforms.Scale1D)
+    zox_system(TransformMatrixScaleSystem, zox_transforms_stage,
+        [in] Position3D,
+        [in] Rotation3D,
+        [in] transforms.Scale1D,
+        [out] TransformMatrix)
 }
