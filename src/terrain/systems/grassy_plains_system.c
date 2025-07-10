@@ -73,7 +73,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
                     noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
                     terrain_frequency, seed, terrain_octaves);
-                const int global_position_y = int_floor(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
+                const int global_position_y = int_floorf(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
                 const int local_height_raw = global_position_y - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
                 if (local_height >= 0) {

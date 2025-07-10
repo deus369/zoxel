@@ -13,7 +13,7 @@ float simplex_fun_int_1D(float3 point, int ix) {
 
 float simplex_fun_1D(float3 point, float frequency) {
     point = float3_multiply_float(point, frequency);
-    int ix = int_floor(point.x);
+    int ix = int_floorf(point.x);
     float sample = simplex_fun_int_1D(point, ix);
     sample += simplex_fun_int_1D(point, ix + 1);
     return sample * 2.0f - 1.0f;
@@ -35,8 +35,8 @@ float simplex_fun_2D(float2 point, float frequency) {
     float skew = (point.x + point.y) * trianglesToSquares;
     float sx = point.x + skew;
     float sy = point.y + skew;
-    int ix = int_floor(sx);
-    int iy = int_floor(sy);
+    int ix = int_floorf(sx);
+    int iy = int_floorf(sy);
     float sample = simplex_fun_int_2D(point, ix, iy);
     sample += simplex_fun_int_2D(point, ix + 1, iy + 1);
     if (sx - ix >= sy - iy) {

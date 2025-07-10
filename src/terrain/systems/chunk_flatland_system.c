@@ -26,7 +26,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
         fill_new_octree(voxelNode, 0, target_depth);
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
-                const int global_height = int_floor(terrain_amplifier * flat_height_level);
+                const int global_height = int_floorf(terrain_amplifier * flat_height_level);
                 const int local_height_raw = global_height - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
                 if (local_height >= 0) {

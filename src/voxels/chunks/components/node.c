@@ -4,9 +4,8 @@ typedef struct {
 } NodeEntityLink;
 
 #define node_type_closed 0
-#define node_type_children 1    // we should use this later
+#define node_type_children 1
 #define node_type_instance 255
-// todo: rename ptr to ptr -> and type to void*
 
 #define zox_component_node(name, base, default_value)\
 \

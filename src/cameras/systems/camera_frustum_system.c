@@ -1,7 +1,9 @@
 extern void draw_frustum(ecs_world_t *world, float3 *frustum, const color_rgb debug_color);
 
 void CameraFrustumSystem(ecs_iter_t *it) {
-    if (zox_cameras_disable_streaming) return;
+    if (zox_cameras_disable_streaming) {
+        return;
+    }
     zox_field_in(ViewMatrix, viewMatrixs, 1)
     zox_field_out(FrustumCorners, frustumCornerss, 2)
     zox_field_out(Position3DBounds, position3DBoundss, 3)

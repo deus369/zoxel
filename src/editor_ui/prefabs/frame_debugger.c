@@ -1,5 +1,12 @@
-
-ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t prefab, const char *header_label, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const byte layer) {
+ecs_entity_t spawn_frame_debugger_ui(
+    ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const char *header_label,
+    const int2 pixel_position,
+    const int2 pixel_size,
+    const float2 anchor,
+    const ecs_entity_t canvas,
+    const byte layer) {
     const byte header_layer = layer + 1;
     const byte lines_layer = layer + 2;
 
@@ -53,8 +60,9 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
                 .anchor = (float2) { 0, 1.0f },
             },
             .zext = {
+                .font_resolution = 64,
                 .text = "min 5.4\nmax 24.3",
-                .font_size = 12,
+                .font_size = 14,
                 .font_thickness = 1,
                 .alignment = zox_mesh_alignment_top_left,
                 .padding = (byte2) { 16, 4 },
@@ -70,7 +78,17 @@ ecs_entity_t spawn_frame_debugger_ui(ecs_world_t *world, const ecs_entity_t pref
         const int position_x = line_margins + i * line_spacing;
         const int2 start_position = (int2) { position_x, lines_min_height };
         const int2 end_position = (int2) { position_x, lines_max_height };
-        const ecs_entity_t e2 = spawn_ui_line2D_v2(world, canvas, e, start_position, end_position, line_color, lines_thickness, 0, position2D, pixel_position, lines_layer);
+        const ecs_entity_t e2 = spawn_ui_line2D_v2(world,
+            canvas,
+            e,
+            start_position,
+            end_position,
+            line_color,
+            lines_thickness,
+            0,
+            position2D,
+            pixel_position,
+            lines_layer);
         zox_set(e2, ChildIndex, { i })
         zox_set(e2, ParentLink, { e })
         zox_add_tag(e2, PlotLine)
@@ -87,5 +105,12 @@ ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t canvas)
     const int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     const float2 test_window_anchor = { 1.0f, 0.0f };
     // zox_log(" > showing frame_debugger_window\n")
-    return spawn_frame_debugger_ui(world, prefab_frame_debugger_ui, "debugger", test_window_position, test_window_size, test_window_anchor, canvas, layer);
+    return spawn_frame_debugger_ui(world,
+        prefab_frame_debugger_ui,
+        "debugger",
+        test_window_position,
+        test_window_size,
+        test_window_anchor,
+        canvas,
+        layer);
 }

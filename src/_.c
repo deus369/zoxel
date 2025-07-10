@@ -42,8 +42,8 @@
 
 #include "ui/ui.c"
 #include "lines/lines2D/lines2D.c"
-
 #include "plots/plots.c"
+
 #include "genetics/genetics.c"
 #include "neurals/neurals.c"
 #include "cubes/cubes.c"
@@ -82,10 +82,10 @@
 #include "combat/combat.c"
 #include "maps/maps.c"
 #include "ai/ai.c"
+#include "editor_ui/editor_ui.c"
 // on top
 #include "controllers/controllers.c"
 #include "space/space.c"
-#include "editor_ui/editor_ui.c"
 #include "debug/debug.c"
 
 #include "zox/data/settings.c"
@@ -124,8 +124,8 @@ zox_begin_module(Zox)
     zox_import_module(Bones)
     zox_import_module(Elements)
     zox_import_module(Lines2D)
-
     zox_import_module(Plots)
+
     zox_import_module(Genetics)
     zox_import_module(Neurals)
     zox_import_module(Tiles)
@@ -163,14 +163,14 @@ zox_begin_module(Zox)
     zox_import_module(Turrets)
     zox_import_module(Maps)
     zox_import_module(AI)
+    zox_import_module(EditorUI)
     // space
-    #if defined(zox_mod_players)
+#if defined(zox_mod_players)
     if (!headless) {
         zox_import_module(Controllers)
         zox_import_module(Space)
     }
-    #endif
-    zox_import_module(EditorUI)
+#endif
     #if defined(zox_mod_debug)
         zox_import_module(Debug)
     #endif

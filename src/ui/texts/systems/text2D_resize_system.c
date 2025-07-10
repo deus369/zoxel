@@ -5,7 +5,7 @@ void spawn_text2D_zigels(ecs_world_t *world, SpawnZigel *data, Children *childre
     const int old_children_length = children->length;
     const int new_children_length = calculate_total_zigels(textData->value, textData->length);
     const int has_old_children = old_children_length > 0;
-    const int reuse_count = integer_min(old_children_length, new_children_length);
+    const int reuse_count = int_min(old_children_length, new_children_length);
 #ifdef zoxel_debug_zext_updates
     zox_log("spawn_zext_zigels :: [%i] -> [%i]; reuse [%i];", children->length, textData->length, reuse_count)
     if (children->length == textData->length) {

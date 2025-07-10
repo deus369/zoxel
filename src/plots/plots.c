@@ -22,8 +22,16 @@ zox_begin_module(Plots)
     zox_define_tag(PlotLine)
     zox_define_tag(PlotLabel)
     zox_define_memory_component(PlotDataDouble)
-    zox_system(PlotLineSystem, EcsOnUpdate, [in] hierarchys.ParentLink, [in] hierarchys.ChildIndex, [out] lines2.d.LineLocalPosition2D, [none] PlotLine)
-    zox_system(PlotLabelSystem, EcsOnUpdate, [in] hierarchys.ParentLink, [out] texts.ZextDirty, [out] texts.TextData, [none] PlotLabel)
+    zox_system(PlotLineSystem, EcsOnUpdate,
+        [in] hierarchys.ParentLink,
+        [in] hierarchys.ChildIndex,
+        [out] lines2.d.LineLocalPosition2D,
+        [none] PlotLine)
+    zox_system(PlotLabelSystem, EcsOnUpdate,
+        [in] hierarchys.ParentLink,
+        [out] texts.ZextDirty,
+        [out] texts.TextData,
+        [none] PlotLabel)
     spawn_prefabs_plots(world);
 zox_end_module(Plots)
 

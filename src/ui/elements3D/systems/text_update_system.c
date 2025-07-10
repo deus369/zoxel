@@ -1,7 +1,7 @@
 void update_text3D(ecs_world_t *world, const Children *children, const TextData *textData) {
     // calculate checks for spaces new lines etc and removes those
     const int new_children_length = calculate_total_zigels(textData->value, textData->length);
-    const int update_count = integer_min(children->length, new_children_length);
+    const int update_count = int_min(children->length, new_children_length);
     for (int i = 0; i < update_count; i++) {
         const ecs_entity_t e = children->value[i];
         if (!zox_valid(e)) {

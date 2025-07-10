@@ -10,11 +10,11 @@ float4x4 float4x4_zero() {
     return float4x4_zero_;
 }*/
 
-float4x4 float4x4_identity() {
+static inline float4x4 float4x4_identity() {
     return float4x4_identity_;
 }
 
-float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
+static inline float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
     float4x4 c = float4x4_zero;
     float* a2 = (float*) &a;
     float* b2 = (float*) &b;
@@ -26,26 +26,9 @@ float4x4 float4x4_multiply(const float4x4 a, const float4x4 b) {
             + a2[j4 + 2] * b2[i + 8] + a2[j4 + 3] * b2[i + 12];
     }
     return c;
-    /*float4x4 result = float4x4_zero; // Initialize the result matrix with zeros
-    // Convert matrices a, b, and result to arrays of floats for easier manipulation
-    float* a_ptr = (float*)&a;
-    float* b_ptr = (float*)&b;
-    float* result_ptr = (float*)&result;
-    for (unsigned int i = 0; i < 4; i++) {
-        for (unsigned int j = 0; j < 4; j++) {
-            // Calculate the value at row i, column j of the result matrix
-            float sum = 0.0f;
-            for (unsigned int k = 0; k < 4; k++) {
-                sum += a_ptr[i * 4 + k] * b_ptr[k * 4 + j];
-            }
-            result_ptr[i * 4 + j] = sum; // Store the result in the result matrix
-        }
-    }
-
-    return result; // Return the multiplied matrix*/
 }
 
-float3 float4x4_forward(const float4x4 matrix) {
+static inline float3 float4x4_forward(const float4x4 matrix) {
     return (float3) { matrix.z.x, matrix.z.y, matrix.z.z };
 }
 

@@ -29,9 +29,22 @@ zox_begin_module(Lines3D)
     zox_define_component(DebugCubeLines)
     zox_define_component(LineData3D)
     zox_define_component(CubeLinesThickness)
-    zox_render3D_plus_system(Line3DRenderSystem, [in] LineData3D, [in] lines.LineThickness, [in] colorz.ColorRGB, [none] Line3D)
+    zox_render3D_plus_system(Line3DRenderSystem,
+        [in] LineData3D,
+        [in] lines.LineThickness,
+        [in] colorz.ColorRGB,
+        [none] Line3D)
     // todo: make overlay layer in render stack
-    zox_render3D_plus_system(CubeLineRenderSystem, [none] CubeLines, [in] DebugCubeLines, [in] CubeLinesThickness, [in] colorz.ColorRGB, [in] transforms3.d.Position3D, [in] transforms3.d.Rotation3D, [in] generic.Bounds3D, [in] rendering.RenderLod, [in] rendering.RenderDisabled)
+    zox_render3D_plus_system(CubeLineRenderSystem,
+        [none] CubeLines,
+        [in] DebugCubeLines,
+        [in] CubeLinesThickness,
+        [in] colorz.ColorRGB,
+        [in] transforms3.d.Position3D,
+        [in] transforms3.d.Rotation3D,
+        [in] generic.Bounds3D,
+        [in] rendering.RenderLod,
+        [in] rendering.RenderDisabled)
     spawn_prefabs_lines3D(world);
 zox_end_module(Lines3D)
 

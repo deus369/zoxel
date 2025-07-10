@@ -23,12 +23,11 @@ void EditorInputSystem(ecs_iter_t *it) {
                     toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
                 } else if (keyboard->v.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
-                }
-#ifdef zox_editor_ui
-                else if (keyboard->b.pressed_this_frame) {
+                } else if (keyboard->b.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
                 }
-#endif
+// #ifdef zox_editor_ui
+// #endif
                 // test game uis
                 /*else if (keyboard->u.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, e)

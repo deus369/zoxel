@@ -1,4 +1,4 @@
-float3x3 quaternion_to_float3x3(float4 q) {
+static inline float3x3 quaternion_to_float3x3(float4 q) {
     return (float3x3) {
         (float3) { 1 - 2*q.y*q.y - 2*q.z*q.z, 2*q.x*q.y - 2*q.z*q.w, 2*q.x*q.z + 2*q.y*q.w },
         (float3) { 2*q.x*q.y + 2*q.z*q.w, 1 - 2*q.x*q.x - 2*q.z*q.z, 2*q.y*q.z - 2*q.x*q.w },
@@ -6,7 +6,7 @@ float3x3 quaternion_to_float3x3(float4 q) {
     };
 }
 
-float4 float3x3_to_float4(float3x3 mat) {
+static inline float4 float3x3_to_float4(float3x3 mat) {
     float4 quat;
     float tr = mat.x.x + mat.y.y + mat.z.z;
     if (tr > 0) {

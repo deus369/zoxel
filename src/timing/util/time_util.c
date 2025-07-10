@@ -1,7 +1,7 @@
-#define init_delta_time() const double delta_time = zox_delta_time;
-#ifdef zox_mod_plots
-    extern void add_plot_data_time(ecs_world_t *world, const double value);
-#endif
+#define init_delta_time()\
+    const double delta_time = zox_delta_time;
+
+extern void add_plot_data_time(ecs_world_t *world, const double value);
 
 double current_time_in_seconds() {
     struct timespec current_time;
@@ -35,9 +35,7 @@ void iterate_time(ecs_world_t *world) {
     }
     zox_delta_time = zox_current_time - last_time;
     zox_current_time_check += zox_delta_time;
-#ifdef zox_mod_plots
     add_plot_data_time(world, zox_delta_time);
-#endif
     // todo: use a seperate physics time float? fixed_time?
 #ifdef limit_time_delta
     if (zox_delta_time > max_zox_delta_time) {

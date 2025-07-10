@@ -7,7 +7,7 @@ void resize_text3D(ecs_world_t *world, Children *children, const TextData *textD
     const int old_children_length = children->length;
     const int has_old_children = old_children_length > 0;
     const int new_children_length = calculate_total_zigels(textData->value, textData->length);
-    const int reuse_count = integer_min(old_children_length, new_children_length);
+    const int reuse_count = int_min(old_children_length, new_children_length);
     ecs_entity_t *new_children = NULL;
     if (new_children_length > 0) {
         new_children = malloc(new_children_length * sizeof(ecs_entity_t));

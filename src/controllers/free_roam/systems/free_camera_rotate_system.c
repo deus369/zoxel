@@ -25,7 +25,9 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
                 if (zox_has(device, Mouse)) {
                     if (!zox_has(zevice, ZevicePointerDelta)) continue;
                     const float2 delta = int2_to_float2(zox_gett_value(zevice, ZevicePointerDelta));
-                    if (int_abs(delta.x) + int_abs(delta.y) >= max_mouse_delta || (delta.x == 0 &&delta.y == 0)) continue;
+                    if (int_absf(delta.x) + int_absf(delta.y) >= max_mouse_delta || (delta.x == 0 &&delta.y == 0)) {
+                        continue;
+                    }
                     zox_get_muter(cameraLink->value, Euler, euler)
                     float3 eulerAddition = { delta.y * rotate_power, -delta.x * rotate_power, 0 };
                     euler->value = float3_add(euler->value, eulerAddition);
