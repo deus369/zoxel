@@ -11,7 +11,7 @@ zox_begin_module(Characters3DTerrain)
     // todo: this kinda just spawns to be visible, perhaps keep low res characters onboard? in lower Lods SimuChunks!
     zox_system_1(Characters3DSpawnSystem, zox_pip_mainthread,
         [in] chunks.ChunkLodDirty,
-        [in] chunks.ChunkOctree,
+        [in] chunks.VoxelNode,
         [in] chunks.NodeDepth,
         [in] chunks.ChunkPosition,
         [in] rendering.RenderDistance,

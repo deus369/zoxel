@@ -2,14 +2,17 @@
 // todo: use voxel scale passed in
 // keeps track of the node, position, depth as we dig
 
-void delete_block_entities(ecs_world_t *world, ChunkOctree *node,  byte depth, const byte max_depth) {
-    if (destroy_node_entity_ChunkOctree(world, node)) {
+void delete_block_entities(ecs_world_t *world, VoxelNode *node) {
+    if (is_closed_VoxelNode(node)) {
         return;
-    }
-    if (depth != max_depth && node->nodes) {
-        depth++;
-        for (byte i = 0; i < octree_length; i++) {
-            delete_block_entities(world, &node->nodes[i], depth, max_depth);
+    } else if (is_linked_VoxelNode(node)) {
+        if (!destroy_node_entity_VoxelNode(world, node)) {
+            zox_log_error("failed to destroy voxel instance.")
+        }
+    } else if (has_children_VoxelNode(node)) {
+        VoxelNode* kids = get_children_VoxelNode(node);
+        for (int i = 0; i < octree_length; i++) {
+            delete_block_entities(world, &kids[i]);
         }
     }
 }
@@ -17,15 +20,15 @@ void delete_block_entities(ecs_world_t *world, ChunkOctree *node,  byte depth, c
 // first check if exists, if it does check if voxel type differs, for removing/adding
 // goes through nodes, if not in hashmap, it  will spawn anew
 void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, NodeDelveData *delve_data) {
+    VoxelNode *node = delve_data->chunk;
+    if (!node) {
+        return; // air returns!
+    }
     const float scale = data->scale; // terrain scale
     if (delve_data->depth == delve_data->max_depth) {
         // if null or air, remove
-        ChunkOctree *node = delve_data->chunk;
-        if (!node) {
-            return; // air returns!
-        }
         if (!node->value) {
-            destroy_node_entity_ChunkOctree(world, node);
+            destroy_node_entity_VoxelNode(world, node);
             return; // air returns!
         }
         // cheeck if out of bounds
@@ -38,16 +41,15 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
         // zox_has(block_meta, BlockPrefabLink);
         // cheeck if vox model - if meta data is block vox type, spawn, otherwise, remove
         if (!block_prefab) {
-            destroy_node_entity_ChunkOctree(world, node);
+            destroy_node_entity_VoxelNode(world, node);
             return;
         }
         // + spawn block vox
         data->spawn_data->position_local = int3_to_byte3(delve_data->octree_position);
         // if exists already, shouldn't we check if is the same block vox type?
         // if exists, and is same type, return!
-        if (is_linked_ChunkOctree(node)) {
-            const ecs_entity_t e3 = get_node_entity_ChunkOctree(node);
-            // ((NodeEntityLink*) node->nodes)->value;
+        if (is_linked_VoxelNode(node)) {
+            const ecs_entity_t e3 = get_node_entity_VoxelNode(node);
             if (zox_valid(e3)) {
                 // this means e3 has spawned
                 // we should check its the same one
@@ -98,14 +100,15 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
             // zox_set(e2, Position3D, { position_real })
         }
         // finally we link our node to our new block entity
-        link_node_ChunkOctree(node, e2);
+        link_node_VoxelNode(node, e2);
     } else {
         int3 octree_position = delve_data->octree_position;
         int3_multiply_int_p(&octree_position, 2);
-        if (delve_data->chunk && delve_data->chunk->nodes && !is_linked_ChunkOctree(delve_data->chunk)) {
+        if (has_children_VoxelNode(node)) {
+            VoxelNode* kids = get_children_VoxelNode(node);
             for (byte i = 0; i < octree_length; i++) {
                 NodeDelveData delve_data_child = {
-                    .chunk = &delve_data->chunk->nodes[i],
+                    .chunk = &kids[i],
                     .octree_position = int3_add(octree_position, octree_positions[i]),
                     .depth = delve_data->depth + 1,
                     .max_depth = delve_data->max_depth
@@ -117,7 +120,7 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
 }
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
-void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, ChunkOctree *chunk, const byte max_depth) {
+void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, VoxelNode *chunk, const byte max_depth) {
     const float vox_scale = get_terrain_voxel_scale(max_depth);
     const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];

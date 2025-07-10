@@ -1,4 +1,4 @@
-/*void generate_terrain(ecs_world_t *world, ChunkOctree* chunk_octree, byte depth, float3 position, float scale) {
+/*void generate_terrain(ecs_world_t *world, VoxelNode* chunk_octree, byte depth, float3 position, float scale) {
     const byte max_depth = chunk_octree->linked;
     const uint32_t seed = global_seed;
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, seed, terrain_octaves);
@@ -14,7 +14,7 @@
     if (depth < max_depth && chunk_octree->value) {
         depth++;
         scale = scale * 0.5f;
-        open_ChunkOctree(chunk_octree);
+        open_VoxelNode(chunk_octree);
         for (byte i = 0; i < octree_length; i++) {
             float3 node_position = float3_add(position, float3_multiply_float(float3_from_int3(octree_positions[i]), scale));
             generate_terrain(world, &chunk_octree->nodes[i], depth, node_position, scale);
@@ -29,18 +29,18 @@
             }
         }
         if (is_all_solid) {
-            close_ChunkOctree(world, chunk_octree, chunk_octree->linked);
+            close_VoxelNode(world, chunk_octree, chunk_octree->linked);
         }
 #endif
     }
 }*/
 
-void set_terrain_block(ecs_world_t *world, ChunkOctree *chunkOctree, const byte3 voxel_position, const int chunk_position_y, const byte chunk_voxel_length, const byte2 set_voxel, const int global_place_y) {
+void set_terrain_block(ecs_world_t *world, VoxelNode *voxelNode, const byte3 voxel_position, const int chunk_position_y, const byte chunk_voxel_length, const byte2 set_voxel, const int global_place_y) {
     const int local_place_y = global_place_y - chunk_position_y;
     const byte place_in_bounds = local_place_y >= 0 && local_place_y < chunk_voxel_length;
     if (place_in_bounds) {
         byte3 node_position = voxel_position;
         node_position.y = local_place_y;
-        set_octree_voxel(chunkOctree, &node_position, &set_voxel, 0); // testing
+        set_octree_voxel(voxelNode, &node_position, &set_voxel, 0); // testing
     }
 }

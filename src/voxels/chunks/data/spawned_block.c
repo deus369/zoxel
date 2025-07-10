@@ -6,7 +6,7 @@ typedef struct {
     const float3 position_real;
     const float scale;
     const ecs_entity_t chunk;
-    ChunkOctree *node;
+    VoxelNode *node;
 } spawned_block_data;
 
 zox_hook(spawned_block, (ecs_world_t* world, spawned_block_data *data), (world, data))

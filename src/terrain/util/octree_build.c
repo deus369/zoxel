@@ -11,10 +11,10 @@ typedef struct {
     const byte *voxel_solidity;
     const int *voxel_uv_indexes;
     // neighbor data
-    const ChunkOctree **neighbors;
+    const VoxelNode **neighbors;
     const byte *neighbor_depths;
     // chunk data
-    const ChunkOctree *root;
+    const VoxelNode *root;
     const byte is_max_depth_chunk;  // is chunk highest lod
     const byte render_depth;
     const byte max_depth;
@@ -24,8 +24,8 @@ typedef struct {
 // changing data
 typedef struct {
     // node data
-    const ChunkOctree *parent;
-    const ChunkOctree *node;
+    const VoxelNode *parent;
+    const VoxelNode *node;
     byte depth;
     int3 position;
     float scale;
@@ -154,7 +154,7 @@ void build_voxel_mesh_final(const terrain_build_data data, octree_dig_data dig, 
 // remember: vertex offset is just node position / voxel position
 
 void zox_terrain_building_dig(const terrain_build_data data, octree_dig_data dig) {
-    if (dig.depth >= data.render_depth || dig.node->nodes == NULL) {
+    if (dig.depth >= data.render_depth || is_closed_VoxelNode(dig.node)) {
         if (dig.node->value != 0 && data.voxel_solidity[dig.node->value - 1]) {
             dig.voxel = dig.node->value;
             dig.offset = float3_from_int3(dig.position);
@@ -180,14 +180,15 @@ void zox_terrain_building_dig(const terrain_build_data data, octree_dig_data dig
         int3 position = dig.position;
         int3_multiply_int_p(&position, 2);
         // only dig for solid child nodes
+        VoxelNode* kids = get_children_VoxelNode(dig.node);
         for (byte i = 0; i < 8; i++) {
-            if (dig.node->nodes[i].value) {
+            if (kids[i].value) {
                 octree_dig_data child = {
                     .parent = dig.node,
                     .depth = dig.depth + 1,
                     .scale = dig.scale * 0.5f,
                     // unique
-                    .node = &dig.node->nodes[i],
+                    .node = &kids[i],
                     .index = i,
                     .position = int3_add(position, octree_positions[i])
                 };

@@ -26,7 +26,7 @@ void define_systems_streaming(ecs_world_t *world) {
         [in] chunks.ChunkSize,
         [in] blocks.VoxScale,
         [in] generic.EntityLinks,
-        [in] chunks.ChunkOctree,
+        [in] chunks.VoxelNode,
         [in] chunks.NodeDepth,
         [out] rendering.RenderDisabled,
         [none] StreamedChunk)

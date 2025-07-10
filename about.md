@@ -25,7 +25,7 @@
 # Allocations
 
 - MemoryComponent (Arrays)
-- NodeComponent (Node Trees) (ChunkOctree, needs rename)
+- NodeComponent (Node Trees) (VoxelNode, needs rename)
 - HashmapComponent
 
 ---

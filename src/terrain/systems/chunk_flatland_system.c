@@ -6,11 +6,11 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_out(GenerateChunk, generateChunks, 3)
-    zox_field_out(ChunkOctree, chunkOctrees, 4)
+    zox_field_out(VoxelNode, voxelNodes, 4)
     zox_field_out(NodeDepth, nodeDepths, 5)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_o(VoxelNode, voxelNodes, voxelNode)
         zox_field_o(NodeDepth, nodeDepths, nodeDepth)
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
         if (generateChunk->value != chunk_generate_state_update) {
@@ -20,10 +20,10 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         const SetVoxelTargetData datam_dirt = { .depth = target_depth, .voxel = zox_block_dirt, .effect_nodes = 1 };
         const SetVoxelTargetData datam_grass = { .depth = target_depth, .voxel = zox_block_grass, .effect_nodes = 1 };
-        SetVoxelData data = { .node = chunkOctree };
+        SetVoxelData data = { .node = voxelNode };
         byte3 voxel_position;
         nodeDepth->value = target_depth;
-        fill_new_octree(chunkOctree, 0, target_depth);
+        fill_new_octree(voxelNode, 0, target_depth);
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
                 const int global_height = int_floor(terrain_amplifier * flat_height_level);
@@ -42,7 +42,7 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(world, chunkOctree);
+        close_same_nodes(world, voxelNode);
 #endif
         update_count++;
     }

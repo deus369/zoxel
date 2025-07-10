@@ -14,7 +14,7 @@ void define_systems_terrain(ecs_world_t *world) {
         [none] TerrainChunk,
         [in] chunks.ChunkPosition,
         [out] chunks.GenerateChunk,
-        [out] chunks.ChunkOctree,
+        [out] chunks.VoxelNode,
         [out] chunks.NodeDepth,
         [none] FlatlandChunk)
     zox_system(GrassyPlainsSystem, EcsOnUpdate, // generateTerrainChunkQuery,
@@ -22,7 +22,7 @@ void define_systems_terrain(ecs_world_t *world) {
         [in] chunks.ChunkPosition,
         [in] rendering.RenderLod,
         [out] chunks.GenerateChunk,
-        [out] chunks.ChunkOctree,
+        [out] chunks.VoxelNode,
         [out] chunks.NodeDepth,
         [none] !FlatlandChunk)
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
@@ -34,7 +34,7 @@ void define_systems_terrain(ecs_world_t *world) {
         [in] rendering.RenderDistance,
         [in] rendering.RenderDisabled,
         [in] rendering.RenderLod,
-        [out] chunks.ChunkOctree,
+        [out] chunks.VoxelNode,
         [out] chunks.BlocksSpawned,
         [none] TerrainChunk)
 #ifdef zox_debug_chunk_bounds
@@ -49,7 +49,7 @@ void define_systems_terrain(ecs_world_t *world) {
     if (!headless) {
         zox_system(ChunkTerrainBuildSystem, EcsOnUpdate,
             [in] voxels.VoxLink,
-            [in] chunks.ChunkOctree,
+            [in] chunks.VoxelNode,
             [in] chunks.NodeDepth,
             [in] rendering.RenderLod,
             [in] chunks.ChunkNeighbors,

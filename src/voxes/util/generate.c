@@ -1,4 +1,4 @@
-void vox_outlines(ChunkOctree *chunk, const byte target_depth, byte3 size, const byte black_voxel) {
+void vox_outlines(VoxelNode *chunk, const byte target_depth, byte3 size, const byte black_voxel) {
     byte3 voxel_position;
     for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
         for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
@@ -17,7 +17,7 @@ void vox_outlines(ChunkOctree *chunk, const byte target_depth, byte3 size, const
     }
 }
 
-void noise_vox(ChunkOctree *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const byte black_voxel) {
+void noise_vox(VoxelNode *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const byte black_voxel) {
     byte3 voxel_position;
     for (voxel_position.x = 0; voxel_position.x < size.x; voxel_position.x++) {
         for (voxel_position.y = 0; voxel_position.y < size.y; voxel_position.y++) {
@@ -35,7 +35,7 @@ void noise_vox(ChunkOctree *chunk, const byte target_depth, const byte3 size, co
     }
 }
 
-void vox_rubble(ChunkOctree *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const int rubble_count, const byte rubble_height) {
+void vox_rubble(VoxelNode *chunk, const byte target_depth, const byte3 size, const byte2 voxel_range, const int rubble_count, const byte rubble_height) {
     byte3 voxel_position;
     for (int j = 0; j < rubble_count; j++) {
         voxel_position.x = rand() % size.x;

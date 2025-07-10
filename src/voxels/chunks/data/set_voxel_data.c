@@ -1,5 +1,5 @@
 typedef struct {
-    ChunkOctree *node;
+    VoxelNode *node;
     byte3 position;
     byte depth;
 } SetVoxelData;

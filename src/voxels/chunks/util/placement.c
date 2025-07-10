@@ -1,24 +1,24 @@
 // this is for spawninng voxel
 //      should take in event for future voxels
 // note: it only supports placing and removing, not swapping
-void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node, const byte3 position_local, int3 position_global, const byte voxel, const float3 position_real) {
+void place_block(ecs_world_t *world, const ecs_entity_t chunk, VoxelNode *node, const byte3 position_local, int3 position_global, const byte voxel, const float3 position_real) {
     if (!node || !zox_valid(chunk)) {
         return;
     }
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
-    zox_get_muter(chunk, ChunkOctree, base_node)
+    zox_get_muter(chunk, VoxelNode, base_node)
     float scale = get_terrain_voxel_scale(node_depth);
     // assume we checked if get_voxel == place_voxel
     // need to delete before node updated
     //if (!voxel) {
-    if (is_linked_ChunkOctree(node)) {
-        destroy_node_entity_ChunkOctree(world, node);
+    if (is_linked_VoxelNode(node)) {
+        destroy_node_entity_VoxelNode(world, node);
     }
     //}
     // set node voxel data
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
-    // zox_get_muter(chunk, ChunkOctree, base_node)
+    // zox_get_muter(chunk, VoxelNode, base_node)
     const SetVoxelTargetData datam = {
         .depth = node_depth,
         .voxel = voxel,
@@ -30,7 +30,7 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
     };
     node = set_voxel(&datam, data2);
     // set after node was updated
-    if (voxel && !is_linked_ChunkOctree(node)) {
+    if (voxel && !is_linked_VoxelNode(node)) {
         // spawn node entity here!
         zox_geter(chunk, VoxLink, voxLink)
         zox_geter(voxLink->value, RealmLink, realmLink)
@@ -55,7 +55,7 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, ChunkOctree *node
     }
 
     // if not linked block
-    if (!is_linked_ChunkOctree(node)) {
+    if (!is_linked_VoxelNode(node)) {
         close_same_nodes(world, base_node);
     }
 
@@ -77,7 +77,7 @@ void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const byte
     int3 position_global;
     float3 position_real;
     ecs_entity_t chunk;
-    ChunkOctree* node;
+    VoxelNode* node;
     if (hit_type == 2) {
         // zox_log("placing air!\n")
         position_local = data->position;

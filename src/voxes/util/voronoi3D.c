@@ -25,7 +25,7 @@ int get_closest_index3(const byte3 point, byte3 *points, int points_length, byte
     return smallestIndex;
 }
 
-void voronoi3D(ChunkOctree *node, const byte target_depth, const byte3 size, const byte2 voxel_range, byte black_voxel) {
+void voronoi3D(VoxelNode *node, const byte target_depth, const byte3 size, const byte2 voxel_range, byte black_voxel) {
     const byte unique_regions = 64;
     const int points_length = (int) (size.x * 1.6f);
     const int voxels_length = size.x * size.y * size.z;

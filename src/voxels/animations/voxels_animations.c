@@ -20,11 +20,11 @@ zox_begin_module(VoxelsAnimations)
     zox_system(AnimateChunkSystem, EcsOnUpdate,
         [out] AnimateChunk,
         [out] chunks.GenerateChunk)
-    zox_system_ctx(NoiseChunkOctreeSystem, EcsPreUpdate, noise_chunks,
+    zox_system_ctx(NoiseVoxelNodeSystem, EcsPreUpdate, noise_chunks,
         [in] rendering.RenderLod,
         [in] chunks.NodeDepth,
         [out] chunks.ChunkDirty,
-        [out] chunks.ChunkOctree,
+        [out] chunks.VoxelNode,
         [out] chunks.GenerateChunk,
         [none] chunks.NoiseChunk)
     spawn_prefabs_voxel_animations(world);

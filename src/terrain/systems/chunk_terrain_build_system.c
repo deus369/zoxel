@@ -1,7 +1,7 @@
 // todo: keep this in hashmap for processed Voxes - atm its gonna check 10k chunks * voxels length which is bad
 // todo: support for multiple terrains using hashmap
 
-void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs *tilemap_uvs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const byte is_max_depth_chunk, const byte render_depth, const ChunkOctree *neighbors[], const byte neighbor_depths[], const float vert_scale, const byte *voxel_solidity, const int *voxel_uv_indexes, const byte max_depth) {
+void build_chunk_terrain_mesh(const VoxelNode *chunk_octree, const TilemapUVs *tilemap_uvs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const byte is_max_depth_chunk, const byte render_depth, const VoxelNode *neighbors[], const byte neighbor_depths[], const float vert_scale, const byte *voxel_solidity, const int *voxel_uv_indexes, const byte max_depth) {
     const mesh_uvs_build_data mesh_data = {
         .indicies = create_int_array_d(initial_dynamic_array_size),
         .vertices = create_float3_array_d(initial_dynamic_array_size),
@@ -56,10 +56,10 @@ void build_chunk_terrain_mesh(const ChunkOctree *chunk_octree, const TilemapUVs 
 {\
     const byte index = direction##_##dir;\
     const ecs_entity_t neighbor = chunkNeighbors->value[index];\
-    if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, ChunkOctree)) {\
+    if (zox_valid(neighbor) && zox_has(neighbor, RenderLod) && zox_has(neighbor, VoxelNode)) {\
         zox_geter_value(neighbor, RenderLod, byte, neighbor_lod)\
         neighbor_depths[index] = get_chunk_terrain_depth_from_lod(neighbor_lod, node_depth);\
-        neighbors[index] = zox_get(neighbor, ChunkOctree);\
+        neighbors[index] = zox_get(neighbor, VoxelNode);\
     } else {\
         neighbor_depths[index] = 0;\
         neighbors[index] = 0;\
@@ -142,7 +142,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             }
         }
     }
-    zox_sys_in(ChunkOctree)
+    zox_sys_in(VoxelNode)
     zox_sys_in(NodeDepth)
     zox_sys_in(RenderLod)
     zox_sys_in(ChunkNeighbors)
@@ -158,7 +158,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
         zox_sys_i(ChunkNeighbors, chunkNeighbors)
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(VoxScale, voxScale)
-        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(VoxelNode, voxelNode)
         zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_o(MeshIndicies, meshIndicies)
         zox_sys_o(MeshVertices, meshVertices)
@@ -175,7 +175,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
         byte node_depth = nodeDepth->value;
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
         if (renderLod->value != render_lod_invisible) {
-            const ChunkOctree *neighbors[6];
+            const VoxelNode *neighbors[6];
             byte neighbor_depths[6];
             set_neightbor_chunk_data(left)
             set_neightbor_chunk_data(right)
@@ -185,7 +185,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             set_neightbor_chunk_data(front)
             const byte is_max_depth_chunk = renderLod->value == 0;
             const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, node_depth);
-            build_chunk_terrain_mesh(chunkOctree, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, node_depth);
+            build_chunk_terrain_mesh(voxelNode, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, node_depth);
         }
         meshDirty->value = mesh_state_trigger;
         updated_count++;

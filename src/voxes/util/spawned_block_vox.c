@@ -37,7 +37,7 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
         // zox_set(e2, Scale1D, { data->spawn_data->scale })
         // zox_set(e2, Position3D, { position_real })
     }
-    link_node_ChunkOctree(data->node, e2);
+    link_node_VoxelNode(data->node, e2);
     /*zox_log("+ Placing Block [%s]: linked: [%i]", zox_get_name(data->block), data->node->linked)
     zox_log("   - local [%ix%ix%i] ", spawn_data.position_local.x, spawn_data.position_local.y, spawn_data.position_local.z)
     zox_log("   - global [%ix%ix%i] ", spawn_data.position_global.x, spawn_data.position_global.y, spawn_data.position_global.z)

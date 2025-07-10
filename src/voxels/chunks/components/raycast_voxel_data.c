@@ -6,7 +6,7 @@ typedef struct {
     float3 position_real;
     float voxel_scale;
     ecs_entity_t chunk;
-    ChunkOctree *node;
+    VoxelNode *node;
     float3 hit;
     int3 normal;
     float distance;
@@ -14,6 +14,6 @@ typedef struct {
     int3 position_global_last;
     float3 position_real_last;
     ecs_entity_t chunk_last;
-    ChunkOctree *node_last;
+    VoxelNode *node_last;
 } RaycastVoxelData;
 zox_custom_component(RaycastVoxelData)

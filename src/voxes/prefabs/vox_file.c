@@ -15,9 +15,9 @@ void set_as_debug_vox(ecs_world_t *world, const ecs_entity_t e) {
     colorRGBs->value[0] = (color_rgb) { 223, 239, 2 };
     zox_modified(e, ColorRGBs)
     zox_set(e, ChunkSize, { { 1, 1, 1 } })
-    ChunkOctree *chunkOctree = zox_get_mut(e, ChunkOctree)
-    fill_new_octree(chunkOctree, 1, 1);
-    zox_modified(e, ChunkOctree)
+    VoxelNode *voxelNode = zox_get_mut(e, VoxelNode)
+    fill_new_octree(voxelNode, 1, 1);
+    zox_modified(e, VoxelNode)
 }
 
 byte is_vox_valid(const vox_file *vox) {
@@ -39,7 +39,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     if (vox_size.x > max_length) vox_size.x = max_length;
     if (vox_size.y > max_length) vox_size.y = max_length;
     if (vox_size.z > max_length) vox_size.z = max_length;
-    zox_muter(e, ChunkOctree, node)
+    zox_muter(e, VoxelNode, node)
     fill_new_octree(node, 0, node_depth);
     byte2 set_octree_data = (byte2) { 1, node_depth };
     byte3 position;
@@ -56,7 +56,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     }
     optimize_solid_nodes(node);
     close_same_nodes(world, node);
-    zox_modified(e, ChunkOctree)
+    zox_modified(e, VoxelNode)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors
 }
@@ -67,7 +67,7 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
     zox_prefab_name("prefab_vox_file")
     zox_add_tag(e, Vox)
     zox_prefab_add(e, ChunkSize)
-    zox_prefab_add(e, ChunkOctree)
+    zox_prefab_add(e, VoxelNode)
     zox_prefab_add(e, ColorRGBs)
     zox_prefab_add(e, UboGPULink)
     // extra for rendering

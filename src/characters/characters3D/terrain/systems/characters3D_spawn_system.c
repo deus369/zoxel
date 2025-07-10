@@ -8,7 +8,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkLodDirty)
-    zox_sys_in(ChunkOctree)
+    zox_sys_in(VoxelNode)
     zox_sys_in(NodeDepth)
     zox_sys_in(ChunkPosition)
     zox_sys_in(RenderDistance)
@@ -18,7 +18,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_e()
         zox_sys_i(ChunkLodDirty, chunkLodDirty)
-        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(VoxelNode, voxelNode)
         zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_i(RenderDistance, renderDistance)
         zox_sys_i(RenderDisabled, renderDisabled)
@@ -27,7 +27,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
         zox_sys_o(EntityLinks, entityLinks)
         // if already spawned, skip spawning, only update LODs
         // if basically all air or solid, no need to spawn
-        if (chunkLodDirty->value != chunk_lod_state_characters_spawn || chunkOctree->nodes == NULL || entityLinks->length || renderDistance->value > character_render_distance) {
+        if (chunkLodDirty->value != chunk_lod_state_characters_spawn || !has_children_VoxelNode(voxelNode) || entityLinks->length || renderDistance->value > character_render_distance) {
             continue;
         }
         const byte depth = nodeDepth->value;
@@ -41,7 +41,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
             // many spawn checks
             byte3 local_position;
             for (byte k = 0; k < chunk_length; k++) {
-                local_position = find_position_on_ground(chunkOctree, depth, NULL, 0);
+                local_position = find_position_on_ground(voxelNode, depth, NULL, 0);
                 if (!byte3_equals(byte3_full, local_position)) {
                     break;
                 }

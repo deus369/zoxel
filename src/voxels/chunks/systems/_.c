@@ -32,7 +32,7 @@ void define_systems_chunks(ecs_world_t *world) {
     // main thread
     zox_system_1(ChunkDebugSystem, zox_pip_mainthread,
         [in] transforms3.d.Position3D,
-        [in] chunks.ChunkOctree,
+        [in] chunks.VoxelNode,
         [in] chunks.NodeDepth,
         [in] rendering.RenderLod,
         [none] ChunkDebugger)

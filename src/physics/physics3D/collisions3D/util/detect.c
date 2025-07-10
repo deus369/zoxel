@@ -59,7 +59,7 @@ void collide_with_chunk_d3(ecs_world_t *world, const ChunkLinks *chunk_links, co
     if (!zox_valid(chunk))  {
         return;
     }
-    zox_geter(chunk, ChunkOctree, node)
+    zox_geter(chunk, VoxelNode, node)
     if (!node)  {
         return;
     }
@@ -115,7 +115,7 @@ void collide_with_chunk_d2(ecs_world_t *world, const ChunkLinks *chunk_links, co
     if (!zox_valid(chunk)) {
         return;
     }
-    zox_geter(chunk, ChunkOctree, chunk_octree)
+    zox_geter(chunk, VoxelNode, chunk_octree)
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
     if (!chunk_octree) {
         return;
@@ -163,7 +163,7 @@ void collide_with_chunk(ecs_world_t *world, const ChunkLinks *chunk_links, const
     if (!zox_valid(chunk)) {
         return;
     }
-    zox_geter(chunk, ChunkOctree, chunk_octree)
+    zox_geter(chunk, VoxelNode, chunk_octree)
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
     if (!chunk_octree) {
         return;

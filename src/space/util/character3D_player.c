@@ -39,7 +39,7 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
     ecs_entity_t chunk = 0;
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;
-    const ChunkOctree *chunk_above = NULL;
+    const VoxelNode *chunk_above = NULL;
     byte node_depth = 0;
     byte found_position = 0;
     for (int i = render_distance_y; i >= -render_distance_y; i--) {
@@ -48,7 +48,7 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
         if (!chunk) {
             continue;
         }
-        zox_geter(chunk, ChunkOctree, chunkd)
+        zox_geter(chunk, VoxelNode, chunkd)
         node_depth = zox_get_value(chunk, NodeDepth)
         local_position = find_position_on_ground(chunkd, node_depth, chunk_above, spawns_in_air);
         if (!byte3_equals(byte3_full, local_position)) {

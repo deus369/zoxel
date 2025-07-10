@@ -24,11 +24,11 @@ void VoxelUnstuckSystem(ecs_iter_t *it) {
         if (!zox_valid(chunk)) {
             continue;
         }
-        if (!zox_has(chunk, ChunkOctree)) {
-            zox_log_error("chunk [%s:%lu] doesn't have a ChunkOctree!", zox_get_name(chunk), chunk)
+        if (!zox_has(chunk, VoxelNode)) {
+            zox_log_error("chunk [%s:%lu] doesn't have a VoxelNode!", zox_get_name(chunk), chunk)
             continue;
         }
-        zox_geter(chunk, ChunkOctree, node)
+        zox_geter(chunk, VoxelNode, node)
         zox_geter_value(chunk, NodeDepth, byte, node_depth)
         const byte3 chunk_dimensions_b3 = int3_to_byte3(chunk_dimensions);
         // positions

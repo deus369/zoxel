@@ -3,44 +3,59 @@ typedef struct {
     ecs_entity_t value;
 } NodeEntityLink;
 
-#define node_type_voxel 0
+#define node_type_closed 0
+#define node_type_children 1    // we should use this later
 #define node_type_instance 255
+// todo: rename ptr to ptr -> and type to void*
 
-// todo: Seperate: voxel octree shoudl be seperate to entity component
-
-#define zox_component_node(name, type, default_value)\
+#define zox_component_node(name, base, default_value)\
 \
 typedef struct name name;\
-\
 struct name {\
-    type value;\
-    name *nodes;\
+    base value;\
     byte type;\
+    void* ptr;\
 };\
 zox_custom_component(name)\
 \
-byte has_children_##name(const name *node) {\
-    return node && node->nodes && node->type == node_type_voxel;\
+static inline byte is_opened_##name(const name *node) {\
+    return node->ptr != NULL;\
 }\
 \
-byte is_linked_##name(const name *node) {\
-    return node && node->type == node_type_instance;\
+static inline byte is_closed_##name(const name *node) {\
+    return node->ptr == NULL;\
+}\
+\
+static inline name* get_children_##name(const name *node) {\
+    return (name*) node->ptr;\
+}\
+\
+static inline ecs_entity_t get_entity_##name(const name *node) {\
+    return ((NodeEntityLink*) node->ptr)->value;\
+}\
+\
+static inline byte has_children_##name(const name *node) {\
+    return node->ptr && node->type == node_type_children;\
+}\
+\
+static inline byte is_linked_##name(const name *node) {\
+    return node->type == node_type_instance;\
 }\
 \
 void link_node_##name(name *node, const ecs_entity_t e) {\
-    if (!node || node->nodes || node->type == node_type_instance) {\
+    if (node->type != node_type_closed) {\
         return;\
     }\
     node->type = node_type_instance;\
-    node->nodes = malloc(sizeof(NodeEntityLink));\
-    *(NodeEntityLink*) node->nodes = (NodeEntityLink) { e };\
+    node->ptr = malloc(sizeof(NodeEntityLink));\
+    *(NodeEntityLink*) node->ptr = (NodeEntityLink) { e };\
 }\
 \
 const ecs_entity_t get_node_entity_##name(const name *node) {\
     if (!is_linked_##name(node)) {\
         return 0;\
     } else {\
-        NodeEntityLink *link = (NodeEntityLink*) node->nodes;\
+        NodeEntityLink *link = (NodeEntityLink*) node->ptr;\
         return link->value;\
     }\
 }\
@@ -55,103 +70,117 @@ byte destroy_node_entity_##name(ecs_world_t *world, name *node) {\
     } else {\
         zox_log_error("invalid node entity [%lu]", e)\
     }\
-    free(node->nodes);\
-    node->nodes = NULL;\
-    node->type = 0;\
+    free(node->ptr);\
+    node->ptr = NULL;\
+    node->type = node_type_closed;\
     return 1;\
 }\
 \
 void dispose_##name(ecs_world_t *world, name* node) {\
-    if (!node->nodes) {\
+    if (is_closed_##name(node)) {\
         return;\
-    } else if (destroy_node_entity_##name(world, node)) {\
-        return;\
+    } else if (is_linked_##name(node)) {\
+        destroy_node_entity_##name(world, node);\
     } else {\
-        /* > todo: check if entity link here, using depth check */\
+        name* kids = get_children_##name(node);\
         for (byte i = 0; i < octree_length; i++) {\
-            dispose_##name(world, &node->nodes[i]);\
+            dispose_##name(world, &kids[i]);\
         }\
-        free(node->nodes);\
-        node->nodes = NULL;\
-        node_memory -= 1;\
+        free(node->ptr);\
+        node->type = node_type_closed;\
+        node->ptr = NULL;\
     }\
-    /*zox_log(" > freeing node [%i]\n", (sizeof(name) * octree_length))*/\
 }\
 \
 void open_new_##name(name* node) {\
-    /*zox_log(" > opening node [%i + 1 = %i :: %i]\n", sizeof(name*), sizeof(name), (sizeof(name) * octree_length))*/\
-    node->nodes = malloc(sizeof(name) * octree_length);\
+    node->ptr = malloc(sizeof(name) * octree_length);\
+    node->type = node_type_children;\
+    name* kids = get_children_##name(node);\
     for (byte i = 0; i < octree_length; i++) {\
-        node->nodes[i] = (name) {\
-            .nodes = NULL,\
-            .type = node_type_voxel,\
+        kids[i] = (name) {\
+            .value = default_value,\
+            .type = node_type_closed,\
+            .ptr = NULL,\
         };\
     }\
-    node_memory += 1;\
 }\
 \
 void clone_##name(name* dst, const name* src) {\
     dst->value = src->value;\
     dst->type = src->type;\
-    if (src->type) {\
-        dst->nodes = src->nodes;\
-    } else if (src->nodes) {\
+    if (src->type == node_type_instance) {\
+        dst->ptr = src->ptr;\
+    } else if (src->ptr) {\
         open_new_##name(dst);\
+        name* kids_dst = get_children_##name(dst);\
+        name* kids_src = get_children_##name(src);\
         for (byte i = 0; i < octree_length; i++) {\
-            clone_##name(&dst->nodes[i], &src->nodes[i]);\
+            clone_##name(&kids_dst[i], &kids_src[i]);\
         }\
     } else {\
-        dst->nodes = NULL;\
+        dst->ptr = NULL;\
     }\
 }\
 \
-void clone_depth_##name(name* dst, const name* src, const byte max_depth, byte depth) {\
+void clone_depth_##name(\
+    name* dst,\
+    const name* src,\
+    const byte max_depth,\
+    byte depth) {\
     dst->value = src->value;\
     dst->type = src->type;\
     depth++;\
-    if (src->nodes && depth <= max_depth) {\
+    if (src->ptr && depth <= max_depth) {\
         open_new_##name(dst);\
+        name* kids_dst = get_children_##name(dst);\
+        name* kids_src = get_children_##name(src);\
         for (byte i = 0; i < octree_length; i++) {\
-            clone_depth_##name(&dst->nodes[i], &src->nodes[i], max_depth, depth);\
+            clone_depth_##name(&kids_dst[i], &kids_src[i], max_depth, depth);\
         }\
     } else {\
-        dst->nodes = src->nodes;\
-        /*dst->nodes = NULL;*/\
+        dst->ptr = src->ptr;\
+        /*dst->ptr = NULL;*/\
     }\
 }\
 \
-void clone_at_depth_##name(name* dst, const name* src, const byte target_depth, byte depth) {\
+void clone_at_depth_##name(\
+    name* dst,\
+    const name* src,\
+    const byte target_depth,\
+    byte depth) {\
     if (target_depth > 0 && depth == target_depth - 1) {\
-        if (src->nodes) {\
+        if (src->ptr) {\
             open_new_##name(dst);\
         }\
     }\
     if (depth == target_depth) {\
         dst->value = src->value;\
-        dst->nodes = src->nodes;\
+        dst->ptr = src->ptr;\
         dst->type = src->type;\
     } else {\
-        if (src->nodes && dst->nodes) {\
+        if (src->ptr && dst->ptr) {\
             depth++;\
+            name* kids_dst = get_children_##name(dst);\
+            name* kids_src = get_children_##name(src);\
             for (byte i = 0; i < octree_length; i++) {\
-                clone_at_depth_##name(&dst->nodes[i], &src->nodes[i], target_depth, depth);\
+                clone_at_depth_##name(&kids_dst[i], &kids_src[i], target_depth, depth);\
             }\
         }\
     }\
 }\
 \
 void open_##name(name* node) {\
-    if (node->nodes == NULL) {\
+    if (node->ptr == NULL) {\
         open_new_##name(node);\
     }\
 }\
 \
-const type find_node_value_##name(const name* node, int3 position, byte depth) {\
+const base find_node_value_##name(\
+    const name* node,\
+    int3 position,\
+    byte depth) {\
     /* if depth finish or if closed node, return node early */ \
-    if (!node) {\
-        return 0;\
-    }\
-    if (depth == 0 || node->nodes == NULL) {\
+    if (depth == 0 || node->ptr == NULL) {\
         return node->value;\
     }\
     depth--;\
@@ -166,15 +195,15 @@ const type find_node_value_##name(const name* node, int3 position, byte depth) {
         position.y % dividor,\
         position.z % dividor\
     };\
-    return find_node_value_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
+    name* kids = get_children_##name(node);\
+    return find_node_value_##name(&kids[int3_to_node_index(local_position)], child_octree_position, depth);\
 }\
 \
-const name* find_node_##name(const name* node, int3 position, byte depth) {\
-    /* if depth finish or if closed node, return node early */ \
-    if (node == NULL) {\
-        return NULL;\
-    }\
-    if (depth == 0 || node->nodes == NULL) {\
+const name* find_node_##name(\
+    const name* node,\
+    int3 position,\
+    byte depth) {\
+    if (depth == 0 || node->ptr == NULL) {\
         return node;\
     }\
     depth--;\
@@ -189,11 +218,18 @@ const name* find_node_##name(const name* node, int3 position, byte depth) {\
         position.y % dividor,\
         position.z % dividor\
     };\
-    return find_node_##name(&node->nodes[int3_to_node_index(local_position)], child_octree_position, depth);\
+    name* kids = get_children_##name(node);\
+    return find_node_##name(&kids[int3_to_node_index(local_position)], child_octree_position, depth);\
 }\
 \
 /* maybe make below function use this if it isn't in the non root node */\
-const name* find_root_adjacent_##name(const name* root, int3 position, byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
+const name* find_root_adjacent_##name(\
+    const name* root,\
+    int3 position,\
+    byte depth,\
+    byte direction,\
+    const name *neighbors[],\
+    byte *chunk_index) {\
     if (root == NULL) {\
         return NULL;\
     }\
@@ -214,7 +250,7 @@ const name* find_root_adjacent_##name(const name* root, int3 position, byte dept
     if (position.x >= 0 && position.x < position_bounds && position.y >= 0 && position.y < position_bounds && position.z >= 0 && position.z < position_bounds) {\
         return find_node_##name(root, position, depth);\
     } else {\
-        /* special case for adjacent nodes, flips position and crosses to neighbor chunk */\
+        /* special case for adjacent ptr, flips position and crosses to neighbor chunk */\
         *chunk_index = direction + 1;\
         if (direction == direction_left) {\
             if (neighbors[direction] != NULL) {\
@@ -251,32 +287,41 @@ const name* find_root_adjacent_##name(const name* root, int3 position, byte dept
     }\
 }\
 \
-const name* find_adjacent_##name(const name* root, const name* node, int3 position, byte node_index, byte3 node_position,\
-    byte depth, byte direction, const name *neighbors[], byte *chunk_index) {\
+const name* find_adjacent_##name(\
+    const name* root,\
+    const name* node,\
+    int3 position,\
+    byte node_index,\
+    byte3 node_position,\
+    byte depth,\
+    byte direction,\
+    const name *neighbors[],\
+    byte *chunk_index) {\
     if (node != NULL) {\
+        name* kids = get_children_##name(node);\
         if (direction == direction_left) {\
             if (node_position.x != 0) {\
-                return &node->nodes[node_index_with_left[node_index]];\
+                return &kids[node_index_with_left[node_index]];\
             }\
         } else if (direction == direction_right) {\
             if (node_position.x != 1) {\
-                return &node->nodes[node_index_with_right[node_index]];\
+                return &kids[node_index_with_right[node_index]];\
             }\
         } else if (direction == direction_down) {\
             if (node_position.y != 0) {\
-                return &node->nodes[node_index_with_down[node_index]];\
+                return &kids[node_index_with_down[node_index]];\
             }\
         } else if (direction == direction_up) {\
             if (node_position.y != 1) {\
-                return &node->nodes[node_index_with_up[node_index]];\
+                return &kids[node_index_with_up[node_index]];\
             }\
         } else if (direction == direction_back) {\
             if (node_position.z != 0) {\
-                return &node->nodes[node_index_with_back[node_index]];\
+                return &kids[node_index_with_back[node_index]];\
             }\
         } else if (direction == direction_front) {\
             if (node_position.z != 1) {\
-                return &node->nodes[node_index_with_front[node_index]];\
+                return &kids[node_index_with_front[node_index]];\
             }\
         }\
     }\
@@ -287,7 +332,7 @@ const name* find_adjacent_##name(const name* root, const name* node, int3 positi
 }\
 \
 ECS_CTOR(name, ptr, {\
-    ptr->nodes = NULL;\
+    ptr->ptr = NULL;\
     ptr->value = default_value;\
     ptr->type = 0;\
 })\
@@ -297,8 +342,8 @@ ECS_COPY(name, dst, src, {\
 })\
 \
 ECS_MOVE(name, dst, src, {\
-    dst->nodes = src->nodes;\
-    src->nodes = NULL;\
+    dst->ptr = src->ptr;\
+    src->ptr = NULL;\
     dst->value = src->value;\
     src->value = default_value;\
     dst->type = src->type;\

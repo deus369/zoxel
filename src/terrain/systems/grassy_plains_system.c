@@ -10,19 +10,16 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     zox_field_in(ChunkPosition, chunkPositions, 2)
     zox_field_in(RenderLod, renderLods, 3)
     zox_field_out(GenerateChunk, generateChunks, 4)
-    zox_field_out(ChunkOctree, chunkOctrees, 5)
+    zox_field_out(VoxelNode, voxelNodes, 5)
     zox_field_out(NodeDepth, nodeDepths, 6)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RenderLod, renderLods, renderLod)
         zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         zox_field_o(GenerateChunk, generateChunks, generateChunk)
         zox_field_o(NodeDepth, nodeDepths, nodeDepth)
-        zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
-        if (generateChunk->value != chunk_generate_state_update) {
+        zox_field_o(VoxelNode, voxelNodes, voxelNode)
+        if (generateChunk->value != chunk_generate_state_update || is_opened_VoxelNode(voxelNode)) {
             continue;
-        }
-        if (chunkOctree->nodes != NULL) {
-            continue; // already generated
         }
         byte node_depth = optimize_generation_lods ?  get_chunk_terrain_depth_from_lod(renderLod->value, target_depth) : target_depth;
         // zox_log("> [optimize_generation_lods:%i] - render_depth: %i", optimize_generation_lods,  render_depth)
@@ -30,7 +27,6 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             continue;
         }
         nodeDepth->value = node_depth;
-
         const byte chunk_voxel_length = powers_of_two_byte[node_depth];
         const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
         const SetVoxelTargetData datam_dirt = {
@@ -63,12 +59,12 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             .voxel = zox_block_dirt_rubble,
             .effect_nodes = 1
         };
-        fill_new_octree(chunkOctree, 0, node_depth);
+        fill_new_octree(voxelNode, 0, node_depth);
 
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         SetVoxelData data = {
-            .node = chunkOctree
+            .node = voxelNode
         };
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
@@ -116,7 +112,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             }
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(world, chunkOctree);
+        close_same_nodes(world, voxelNode);
 #endif
         update_count++;
     }

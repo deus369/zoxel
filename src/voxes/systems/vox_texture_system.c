@@ -27,7 +27,7 @@ void generate_vox_debug_texture(color *data, const int2 size, byte side) {
     }
 }
 
-void generate_vox_texture(color *data, const int2 size, const ChunkOctree *chunk, const color_rgb *colors, byte side, const byte max_depth) {
+void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, const color_rgb *colors, byte side, const byte max_depth) {
     if (chunk == NULL) {
         return;
     }
@@ -170,7 +170,7 @@ void VoxTextureSystem(ecs_iter_t *it) {
             continue;
         }
         const ColorRGBs *colorRGBs = zox_get(voxLink->value, ColorRGBs)
-        zox_geter(voxLink->value, ChunkOctree, node)
+        zox_geter(voxLink->value, VoxelNode, node)
         zox_geter_value(voxLink->value, NodeDepth, byte, node_depth)
         zox_field_i(TextureSize, textureSizes, textureSize)
         zox_field_i(VoxBakeSide, voxBakeSides, voxBakeSide)

@@ -16,5 +16,5 @@ void spawn_world_dungeon_core(ecs_world_t *world, spawned_block_data *data) {
     zox_set(e, VoxelPosition, { byte3_to_int3(data->position_local) })
     // zox_set(e2, Scale1D, { data->spawn_data->scale })
     // zox_set(e2, Position3D, { position_real })
-    link_node_ChunkOctree(data->node, e);
+    link_node_VoxelNode(data->node, e);
 }

@@ -7,27 +7,18 @@ extern int zox_statistics_characters_total;*/
 // Note: uses zox_set here for children setting
 
 // block spawn delve function
-void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const ChunkOctree *node, const byte max_depth, byte depth, const byte state) {
-    if (!node->nodes) {
+void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const VoxelNode *node, const byte state) {
+    if (is_closed_VoxelNode(node)) {
         return;
-    }
-    if (depth == max_depth) {
-        if (!is_linked_ChunkOctree(node)) {
-            return;
+    } else if (is_linked_VoxelNode(node)) {
+        const ecs_entity_t e = get_entity_VoxelNode(node);
+        if (zox_valid(e)) {
+            zox_set(e, RenderDisabled, { state })
         }
-        NodeEntityLink *node_entity_link = (NodeEntityLink*) node->nodes;
-        if (!node_entity_link) {
-            return;
-        }
-        // get block_vox from nodes
-        const ecs_entity_t block_vox = node_entity_link->value;
-        if (zox_valid(block_vox)) {
-            zox_set(block_vox, RenderDisabled, { state })
-        }
-    } else {
-        depth++;
-        for (int i = 0; i < 8; i++) {
-            set_chunk_block_spawns_render_disabled(world, &node->nodes[i], max_depth, depth, state);
+    } else if (has_children_VoxelNode(node)) {
+        VoxelNode* kids = get_children_VoxelNode(node);
+        for (int i = 0; i < octree_length; i++) {
+            set_chunk_block_spawns_render_disabled(world, &kids[i], state);
         }
     }
 }
@@ -41,7 +32,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_sys_in(ChunkSize)
     zox_sys_in(VoxScale)
     zox_sys_in(EntityLinks)
-    zox_sys_in(ChunkOctree)
+    zox_sys_in(VoxelNode)
     zox_sys_in(NodeDepth)
     zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
@@ -49,7 +40,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_sys_i(ChunkSize, chunkSize)
         zox_sys_i(VoxScale, voxScale)
         zox_sys_i(EntityLinks, entityLinks)
-        zox_sys_i(ChunkOctree, chunkOctree)
+        zox_sys_i(VoxelNode, voxelNode)
         zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_o(RenderDisabled, renderDisabled)
         bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
@@ -99,7 +90,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
 // -=- Block Spawns -=-
             if (zox_gett_value(it->entities[i], BlocksSpawned)) {
-                set_chunk_block_spawns_render_disabled(world, chunkOctree, nodeDepth->value, 0, renderDisabled->value);
+                set_chunk_block_spawns_render_disabled(world, voxelNode,  renderDisabled->value);
             }
 // -=- -=- -=- -=- -=- -=-
         }

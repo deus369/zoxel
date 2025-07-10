@@ -1,5 +1,5 @@
 // spawning block vox entities during LOD generation step!
-
+// todo: move this to a render distance dirty step!
 void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_sys_begin()
@@ -10,7 +10,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
     zox_sys_in(RenderDistance)
     zox_sys_in(RenderDisabled)
     zox_sys_in(RenderLod)
-    zox_sys_out(ChunkOctree)
+    zox_sys_out(VoxelNode)
     zox_sys_out(BlocksSpawned)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
@@ -21,7 +21,7 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         zox_sys_i(RenderDisabled, renderDisabled)
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(NodeDepth, nodeDepth)
-        zox_sys_o(ChunkOctree, chunkOctree)
+        zox_sys_o(VoxelNode, voxelNode)
         zox_sys_o(BlocksSpawned, blocksSpawned)
         if (chunkLodDirty->value != chunk_lod_state_vox_blocks_spawn) {
             continue;
@@ -31,12 +31,12 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
             const byte vox_lod = get_block_voxes_lod_from_camera_distance(renderDistance->value);
             if (!blocksSpawned->value) {
                 blocksSpawned->value = 1;
-                update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, chunkOctree, nodeDepth->value);
+                update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, voxelNode, nodeDepth->value);
             }
         } else if (!can_have_block_voxes) {
             if (blocksSpawned->value) {
                 blocksSpawned->value = 0;
-                delete_block_entities(world, chunkOctree, 0, nodeDepth->value);
+                delete_block_entities(world, voxelNode); //, 0, nodeDepth->value);
             }
         }
     }

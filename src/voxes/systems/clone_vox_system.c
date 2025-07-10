@@ -5,7 +5,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(CloneVoxLink, cloneVoxLinks, 1)
     zox_field_out(CloneVox, cloneVoxes, 2)
-    zox_field_out(ChunkOctree, chunkOctrees, 3)
+    zox_field_out(VoxelNode, voxelNodes, 3)
     zox_field_out(NodeDepth, nodeDepths, 4)
     zox_field_out(ChunkSize, chunkSizes, 5)
     zox_field_out(ColorRGBs, colorRGBss, 6)
@@ -14,7 +14,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_o(CloneVox, cloneVoxes, cloneVox)
         zox_field_i(CloneVoxLink, cloneVoxLinks, cloneVoxLink)
-        zox_field_o(ChunkOctree, chunkOctrees, chunkOctree)
+        zox_field_o(VoxelNode, voxelNodes, voxelNode)
         zox_field_o(NodeDepth, nodeDepths, nodeDepth)
         zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
         zox_field_o(ChunkSize, chunkSizes, chunkSize)
@@ -25,7 +25,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
         }
         const ecs_entity_t source = cloneVoxLink->value;
         // clone one depth at a time
-        zox_geter(source, ChunkOctree, chunk_octree_source)
+        zox_geter(source, VoxelNode, chunk_octree_source)
         zox_geter(source, NodeDepth, source_node_depth)
         if (chunkLod->value == 255) {
             chunkLod->value = 0;
@@ -33,7 +33,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
             chunkLod->value++;
         }
         nodeDepth->value = source_node_depth->value;
-        clone_at_depth_ChunkOctree(chunkOctree, chunk_octree_source, chunkLod->value, 0);
+        clone_at_depth_VoxelNode(voxelNode, chunk_octree_source, chunkLod->value, 0);
         const byte target_depth = nodeDepth->value - min_block_vox_lod;
         if (chunkLod->value == target_depth) {
             zox_geter(source, ChunkSize, source_chunk_size)

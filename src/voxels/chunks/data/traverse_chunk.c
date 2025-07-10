@@ -1,7 +1,7 @@
 typedef struct {
     ecs_world_t *world;
     const float scale;
-    const ChunkOctree *chunk;
+    const VoxelNode *chunk;
     byte3 position;
     byte depth;
     const byte target_depth;

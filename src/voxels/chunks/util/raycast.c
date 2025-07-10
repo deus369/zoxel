@@ -31,10 +31,10 @@ byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const floa
 
 byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
     // setup voxel data
-    const ChunkOctree *node;
+    const VoxelNode *node;
     byte chunk_depth;
     if (chunk) {
-        node = zox_get(chunk, ChunkOctree)
+        node = zox_get(chunk, VoxelNode)
         chunk_depth = zox_get_value(chunk, NodeDepth)
     }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
@@ -45,7 +45,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
     int3 position_global_last;
     float3 position_real_last;
     ecs_entity_t chunk_last = chunk;
-    ChunkOctree *node_last = NULL;
+    VoxelNode *node_last = NULL;
     // zero for terrain raycasting
     float3 local_ray_origin = float3_sub(ray_origin, chunk_position_real);
     position_global = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
@@ -85,7 +85,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                 if (!zox_valid(chunk)) {
                     return 0;
                 }
-                node = zox_get(chunk, ChunkOctree)
+                node = zox_get(chunk, VoxelNode)
                 if (!node) {
                     return 0;
                 }
@@ -118,7 +118,7 @@ byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelL
                     is_minivox = zox_has(block, BlockVox);
                 }
                 if (is_minivox) {
-                    ecs_entity_t block_spawn = get_node_entity_ChunkOctree(node);
+                    ecs_entity_t block_spawn = get_node_entity_VoxelNode(node);
                     if (block_spawn && zox_has(block_spawn,  Position3D)) {
                         float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
                         float3 block_position = zox_get_value(block_spawn, Position3D)

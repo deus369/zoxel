@@ -103,7 +103,7 @@ float3 voxel_position_to_real_position(const int3 voxel_position, const byte3 ch
 
 // uses chunk above for air check
 // chunk_above used purely for top of chunk checks
-byte3 find_position_on_ground(const ChunkOctree *chunk, const byte target_depth, const ChunkOctree *chunk_above, const byte spawns_in_air) {
+byte3 find_position_on_ground(const VoxelNode *chunk, const byte target_depth, const VoxelNode *chunk_above, const byte spawns_in_air) {
     if (chunk == NULL) {
         return byte3_full;
     }
