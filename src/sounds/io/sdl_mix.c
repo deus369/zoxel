@@ -16,7 +16,16 @@ byte initialize_sdl_mixer() {
 
 void close_audio_sdl() {
 #ifdef zox_lib_sdl_mixer
-    // dispose_static_sounds();
+    zox_log_sounds("> Mix_Quit")
     Mix_Quit();
 #endif
+}
+
+void initialize_sounds(ecs_world_t *world) {
+    if (initialize_sdl_mixer() == EXIT_SUCCESS) {
+        audio_enabled = 1;
+        zox_log_sounds("> initialize_sdl_mixer success")
+    } else {
+        zox_log_error("[initialize_sdl_mixer] failed")
+    }
 }

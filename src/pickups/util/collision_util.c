@@ -1,6 +1,9 @@
 const byte max_stack_quantity = 255;
 
-void on_overlap_pickup(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t user) {
+void on_overlap_pickup(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t user) {
     if (!zox_gett_value(e, PickedUp) && zox_has(user, PickUpperer)) {
         // zox_log(" > e [%lu] picked up by user [%lu]\n", e, user)
         if (zox_has(e, ItemLink)) {

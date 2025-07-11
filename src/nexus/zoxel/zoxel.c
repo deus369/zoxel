@@ -9,9 +9,11 @@
 
 byte boot_zoxel_game(ecs_world_t *world) {
     intialize_game_store();
+    // test_steam_cloud(); // idk
 #ifdef zox_mod_networking
     initialize_networking();
 #endif
+    load_files_sounds(world);
 #ifdef zox_mod_voxels
     initialize_voxes(world);
 #endif
@@ -26,24 +28,26 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif
-#ifdef zox_mod_musics
-    spawn_realm_playlist(world, realm);
-#endif
 #ifdef zox_mod_ui
     spawn_players_cameras_canvases(world, game);
     spawn_players_start_ui(world);
 #endif
-    test_steam_cloud(); // idk
+#ifdef zox_mod_musics
+    spawn_realm_playlist(world, realm);
+#endif
     return EXIT_SUCCESS;
 }
 
-void ZoxGameImport(ecs_world_t *world) {
-    zox_module(ZoxGame)
+zox_begin_module(ZoxGame)
+//void ZoxGameImport(ecs_world_t *world) {
+//    zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_debug_id(Block)
     zox_debug_print_modules(world, 1);
     zox_debug_print_systems(world, 1);
     zox_debug_print_components(world, 1);
+    // is_log_io = 1;
+    // is_log_sounds = 1;
 
     zox_game_type = zox_game_mode_3D;
     menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
@@ -60,9 +64,9 @@ void ZoxGameImport(ecs_world_t *world) {
     vox_model_scale = 1 / 32.0f;
 
     // physics
-    friction3D = 800; // 560;
-    air_friction3D = 120; // 40;
-    zox_jump_power = 116; // 124.0f
+    friction3D = 1800; // 560;
+    air_friction3D = 320; // 40;
+    zox_jump_power = 146; // 124.0f
     // zox_default_gravity.y = -8;
     bounce_lost_force = 0.3f;
 
@@ -111,6 +115,6 @@ void ZoxGameImport(ecs_world_t *world) {
     // fades
     is_start_game_delays = 1;
     is_end_game_delays = 1;
-}
+zox_end_module(ZoxGame)
 
 #endif

@@ -7,18 +7,14 @@ void SoundProcessSystem(ecs_iter_t *it) {
     zox_field_out(TriggerSound, triggerSounds, 4)
     zox_field_out(SoundDirty, soundDirtys, 5)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ProcessSound, processSounds, processSound)
-        if (!processSound->value) {
-            continue;
-        }
         zox_field_i(SoundData, soundDatas, soundData)
-        if (!soundData->value) {
-            zox_log("sound data issue\n")
-            continue;
-        }
+        zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
+        zox_field_o(ProcessSound, processSounds, processSound)
         zox_field_o(TriggerSound, triggerSounds, triggerSound)
         zox_field_o(SoundDirty, soundDirtys, soundDirty)
-        zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
+        if (!processSound->value || !soundData->value) {
+            continue;
+        }
         const float frequency = soundFrequency->value;
         const float frequency_scale = frequency / default_frequency;
         float new_data[soundData->length];
@@ -39,6 +35,6 @@ void SoundProcessSystem(ecs_iter_t *it) {
         processSound->value = 0;
         soundDirty->value = 1;
         triggerSound->value = 1; // can soundDirty trigger it?
-        // zox_log(" + updated sound frequency to [%f]\n", frequency_scale)
+        // zox_log("  -> updated sound frequency to [%f]\n", frequency_scale)
     }
 } zox_declare_system(SoundProcessSystem)

@@ -6,7 +6,6 @@ void spawn_tilemap_ui(ecs_world_t *world, int32_t keycode) {
             zox_log("- removing tilemap ui")
             zox_delete(tilemap_ui)
             tilemap_ui = 0;
-            return;
         } else {
             zox_log("+ spawning tilemap ui")
             const int2 size = (int2) { 320, 320 };
@@ -18,7 +17,7 @@ void spawn_tilemap_ui(ecs_world_t *world, int32_t keycode) {
             const ecs_entity_t tilemap = zox_get_value(realm, TilemapLink)
             const int2 position = (int2) { 8, 8 };
             tilemap_ui = spawn_element_texture(world, canvasLink->value, tilemap, position, size);
-            spawn_sound_from_file(world, prefab_sound, 0);
         }
+        spawn_sound_from_file_index(world, prefab_sound, 0);
     }
 }

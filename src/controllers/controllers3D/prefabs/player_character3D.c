@@ -1,4 +1,5 @@
 ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world, const ecs_entity_t prefab) {
+    const float pickup_radius = 0.3f; // 0.16f
     if (!prefab) {
         return 0;
     }
@@ -16,7 +17,9 @@ ecs_entity_t spawn_prefab_player_character3D(ecs_world_t *world, const ecs_entit
     // Pickups
 #ifdef zox_mod_pickups
     zox_add_tag(e, PickUpperer)
-    prefab_add_sphere_collider(world, e, 0.16f);
+    zox_add_tag(e, SphereCollider)
+    zox_prefab_set(e, SphereRadius, { pickup_radius })
+    zox_prefab_set(e, CollisionDisabled, { 0 })
 #endif
     return e;
 }

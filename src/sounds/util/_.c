@@ -6,7 +6,3 @@
 #include "fm_synthesis_waves.c"
 #include "noise_waves.c"
 #include "envelop.c"
-#include "static_sound_util.c"
-#include "sdl_mix_util.c"
-#include "sdl_sound_util.c"
-#include "sound_files.c"

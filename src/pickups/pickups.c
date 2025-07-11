@@ -17,7 +17,9 @@ zox_begin_module(Pickups)
     zox_define_tag(PickUpperer)
     zox_define_component_byte(PickedUp)
     zox_define_increment_system(PickedUp, EcsOnLoad, [none] Pickup)
-    zox_system_1(PickupSoundSystem, zox_pip_mainthread, [in] PickedUp, [none] Pickup)
+    zox_system_1(PickupSoundSystem, zox_pip_mainthread,
+        [in] PickedUp,
+        [none] Pickup)
     spawn_prefabs_pickups(world);
 zox_end_module(Pickups)
 

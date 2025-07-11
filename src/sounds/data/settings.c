@@ -1,3 +1,4 @@
+byte audio_enabled = 0;
 // important
 #define scale_volumes 1 // debug 0.1 / 1
 // max soudn length
@@ -19,7 +20,7 @@ const float debug_sound_thickness = 0.01f;  // 0.1f
 const float default_sound_volume = 1.0f; // 0.5f
 const float sound_generation_splitter = 8;
 // volumes
-const float default_sound_volume_loaded = 0.3f *scale_volumes;
+const float default_sound_volume_loaded = 1.3f * scale_volumes;
 int global_master_volume = 16 * scale_volumes;
 const int global_master_volume_max = 128 * scale_volumes;
 const int global_master_volume_increment = 8 * scale_volumes;

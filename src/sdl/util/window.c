@@ -29,24 +29,13 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size,
     #endif
     SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (window == NULL) {
-        zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
+        zox_log_error("!!! SDL_CreateWindow failed: %s", SDL_GetError())
         return window;
     }
     if (*SDL_GetError()) {
-        zox_log(" ! !SDL_CreateWindow: %s\n", SDL_GetError())
+        zox_log_error("#!!! [create_sdl_window...] SDL_GetError: %s", SDL_GetError())
         return 0;
     }
-    /*if (screen_index == 1) {
-        SDL_Rect displayBounds;
-        SDL_GetDisplayBounds(1, &displayBounds);
-        int xPos, yPos;
-        SDL_GetWindowPosition(window, &xPos, &yPos);
-        int borderWidth, borderHeight;
-        SDL_GetWindowBordersSize(window, &borderWidth, NULL, &borderHeight, NULL);
-        xPos += borderWidth;
-        yPos += borderHeight;
-        SDL_SetWindowPosition(window, displayBounds.x + xPos, displayBounds.y + yPos);
-    }*/
     return window;
 }
 
@@ -60,10 +49,10 @@ SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size,
         zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
         return window;
     }
-    if (*SDL_GetError()) {
+    /*if (*SDL_GetError()) {
         zox_log(" ! !SDL_CreateWindow: %s\n", SDL_GetError())
         return 0;
-    }
+    }*/
     return window;
 }
 
@@ -87,8 +76,20 @@ SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte f
     SDL_SetWindowResizable(window, is_resizeable);
     SDL_GL_SwapWindow(window);
     SDL_GL_SetSwapInterval(vsync);
-    #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
+#if !defined(zoxel_on_web) && !defined(zoxel_on_android)
     sdl_set_fullscreen(window, fullscreen);
-    #endif
+#endif
     return window;
 }
+
+    /*if (screen_index == 1) {
+        SDL_Rect displayBounds;
+        SDL_GetDisplayBounds(1, &displayBounds);
+        int xPos, yPos;
+        SDL_GetWindowPosition(window, &xPos, &yPos);
+        int borderWidth, borderHeight;
+        SDL_GetWindowBordersSize(window, &borderWidth, NULL, &borderHeight, NULL);
+        xPos += borderWidth;
+        yPos += borderHeight;
+        SDL_SetWindowPosition(window, displayBounds.x + xPos, displayBounds.y + yPos);
+    }*/

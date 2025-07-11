@@ -26,8 +26,6 @@ void EditorInputSystem(ecs_iter_t *it) {
                 } else if (keyboard->b.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
                 }
-// #ifdef zox_editor_ui
-// #endif
                 // test game uis
                 /*else if (keyboard->u.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_quests_player, MenuQuests, e)
@@ -38,11 +36,6 @@ void EditorInputSystem(ecs_iter_t *it) {
                 } else if (keyboard->p.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, e)
                 }*/
-
-                // test
-                // else if (keyboard->t.pressed_this_frame) trigger_canvas_fade_transition(world, canvas);
-
-
 #ifdef zox_test_hierarchy
                 /*else if (keyboard->f.pressed_this_frame) {
                     toggle_ui(world, canvas, &inspector, &spawn_inspector);

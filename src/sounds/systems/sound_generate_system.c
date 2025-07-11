@@ -1,6 +1,7 @@
 // todo: alter frequency over time during sound
 void SoundGenerateSystem(ecs_iter_t *it) {
     const float sound_bounds = 1.0f;
+    zox_sys_world()
     zox_field_in(InstrumentType, instrumentTypes, 1)
     zox_field_in(SoundLength, soundLengths, 2)
     zox_field_in(SoundFrequency, soundFrequencys, 3)
@@ -9,15 +10,16 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     zox_field_out(SoundData, soundDatas, 6)
     zox_field_out(SoundDirty, soundDirtys, 7)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(GenerateSound, generateSounds, generateSound)
-        if (!generateSound->value) continue;
-        zox_field_o(SoundDirty, soundDirtys, soundDirty)
-        if (soundDirty->value) continue;
-        zox_field_o(SoundData, soundDatas, soundData)
         zox_field_i(SoundLength, soundLengths, soundLength)
         zox_field_i(SoundFrequency, soundFrequencys, soundFrequency)
         zox_field_i(InstrumentType, instrumentTypes, instrumentType)
         zox_field_i(SoundVolume, soundVolumes, soundVolume)
+        zox_field_o(GenerateSound, generateSounds, generateSound)
+        zox_field_o(SoundDirty, soundDirtys, soundDirty)
+        zox_field_o(SoundData, soundDatas, soundData)
+        if (!generateSound->value || soundDirty->value) {
+            continue;
+        }
         const float volume = soundVolume->value;
         const double sound_time_length = soundLength->value;
         const float frequency = soundFrequency->value;
@@ -58,9 +60,8 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         if (generateSound->value > sound_generation_splitter) {
             generateSound->value = 0;
             soundDirty->value = 1;
-#ifdef zoxel_log_sound_generation
-            zox_log(" > sound generated: instrument [%i] frequency [%f] length [%f]\n", instrumentType->value, soundFrequency->value, soundLength->value)
-#endif
+            zox_field_e()
+            zox_log_sounds(" > [%f] sound [%s] generated: instrument [%i] frequency [%f] length [%f]", zox_current_time, zox_get_name(e), instrumentType->value, soundFrequency->value, soundLength->value)
         }
     }
 } zox_declare_system(SoundGenerateSystem)
