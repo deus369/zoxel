@@ -1,7 +1,3 @@
-// settings
-#include "settings.c"
-#include "color_settings.c"
-#include "scale.c"
 // data consts
 #include "octree.c"
 #include "mesh.c"

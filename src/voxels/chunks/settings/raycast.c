@@ -1,0 +1,1 @@
+const float terrain_ray_length = 4; // 8;

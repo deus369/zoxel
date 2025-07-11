@@ -1,6 +1,8 @@
 #ifndef zox_mod_ui_core
 #define zox_mod_ui_core
 
+#include "settings/_.c"
+#include "components/_.c"
 #include "data/_.c"
 #include "util/_.c"
 #include "prefabs/_.c"

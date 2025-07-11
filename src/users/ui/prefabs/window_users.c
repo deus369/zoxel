@@ -198,8 +198,8 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
             .text = "Users",
             .font_size = header_font_size,
             .font_thickness = 4,
-            .font_fill_color = header_font_fill_color,
-            .font_outline_color = header_font_outline_color
+            .font_fill_color = font_fill_color_header,
+            .font_outline_color = font_outline_color_header
         },
         .frame = {
             .prefab = prefab_frame_,

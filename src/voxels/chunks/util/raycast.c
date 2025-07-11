@@ -29,7 +29,21 @@ byte raycast_character(ecs_world_t *world, const ecs_entity_t caster, const floa
     return hit_character;
 }
 
-byte raycast_general(ecs_world_t *world, const ecs_entity_t caster, const VoxelLinks *voxels, const ChunkLinks *chunk_links, int3 chunk_position, const float3 chunk_position_real, const int3 chunk_size, ecs_entity_t chunk, const float3 ray_origin, const float3 ray_normal, const float voxel_scale, const float ray_length, RaycastVoxelData *data) {
+byte raycast_general(
+    ecs_world_t *world,
+    const ecs_entity_t caster,
+    const VoxelLinks *voxels,
+    const ChunkLinks *chunk_links,
+    int3 chunk_position,
+    const float3 chunk_position_real,
+    const int3 chunk_size,
+    ecs_entity_t chunk,
+    const float3 ray_origin,
+    const float3 ray_normal,
+    const float voxel_scale,
+    const float ray_length,
+    RaycastVoxelData *data)
+{
     // setup voxel data
     const VoxelNode *node;
     byte chunk_depth;

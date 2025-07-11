@@ -1,6 +1,9 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
+// todo: remove boot function
+// todo: spawn prefabs after settings are set here
+
 // log types
 // #define zox_enable_log_ios
 // #define zox_enable_log_input
@@ -51,6 +54,20 @@ zox_begin_module(ZoxGame)
     // terrain_mode = terrain_mode_flatlands;
     headless = 0;
     // wait this breaks terrain mesh at 4 depth
+
+    // colors
+    default_fill_color_window = (color) { 22, 22, 22, 255 };
+    default_outline_color_window = (color) { 88, 88, 88, 255 };
+    // set them again for now
+    zox_set(prefab_ui_list, Color, { default_fill_color_window })
+    zox_set(prefab_ui_list, OutlineColor, { default_outline_color_window })
+    // headers
+    fill_color_header = (color) { 3, 3, 3, 255 };
+    outline_color_header = (color) { 66, 66, 66, 255 };
+    font_fill_color_header = (color) { 166, 166, 166, 255 };
+    font_outline_color_header = (color) { 15, 15, 15, 255 };
+    zox_set(prefab_header, Color, { fill_color_header })
+    zox_set(prefab_header, OutlineColor, { outline_color_header })
 
     // scaling
     real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32

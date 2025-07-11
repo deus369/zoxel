@@ -1,5 +1,5 @@
-#include "bone.vert.c"
-#include "bone.frag.c"
+ecs_entity_t shader_bone;
+ecs_entity_t material_bone;
 
 typedef struct {
     GLint vertex_position;
@@ -38,9 +38,6 @@ ecs_entity_t spawn_shader_bone(ecs_world_t *world) {
     zox_name("shader_bone")
     return e;
 }
-
-ecs_entity_t shader_bone;
-ecs_entity_t material_bone;
 
 ecs_entity_t spawn_material_bone(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_bone(world);

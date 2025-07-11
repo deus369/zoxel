@@ -1,7 +1,4 @@
 ecs_entity_t prefab_menu_start;
-ecs_entity_t prefab_menu_paused;
-ecs_entity_t prefab_main_menu;
-ecs_entity_t prefab_menu_options;
 ecs_entity_t fps_display_prefab;
 ecs_entity_t fps_display;
 ecs_entity_t prefab_game_debug_label;
@@ -34,9 +31,6 @@ ecs_entity_t zoxel_main_menu;
 
 void spawn_prefabs_game_ui(ecs_world_t *world) {
     prefab_menu_start = spawn_prefab_main_start(world, prefab_ui_list);
-    prefab_main_menu = spawn_prefab_main_menu(world);
-    prefab_menu_paused = spawn_prefab_pause_ui(world);
-    prefab_menu_options = spawn_prefab_options_ui(world);
     spawn_prefab_fps_display(world);
     spawn_prefab_quad_count_label(world);
     spawn_prefab_game_debug_label(world, prefab_label_background);

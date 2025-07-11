@@ -1,5 +1,3 @@
-char *label_start = "start";
-
 void menu_start_triggered(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas) {
     find_child_with_tag(canvas, MenuStart, menu)
     if (!menu) {

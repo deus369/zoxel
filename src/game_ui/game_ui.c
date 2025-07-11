@@ -3,6 +3,7 @@
 #define zox_mod_game_ui
 
 // todo: use a byte index instead for menu type
+#include "settings/_.c"
 #include "data/_.c"
 #include "components/_.c"
 #include "util/_.c"

@@ -1,11 +1,15 @@
 // todo: GenerateRealm -> regenerate realm data with new seed
 // todo: game start delayed while realm is dirty
 
-void destroy_main_menu(ecs_world_t *world, const ecs_entity_t player) {
+void destroy_player_main_menu(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)
-    if (!menu) return;
-    zox_delete(menu)
+    if (!menu) {
+        zox_log_error("main menu not found")
+        return;
+    } else {
+        zox_delete(menu)
+    }
 }
 
 void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
@@ -14,7 +18,7 @@ void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
 }
 
 void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
-    destroy_main_menu(world, event->clicker);
+    destroy_player_main_menu(world, event->clicker);
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     realm_save.seed = get_unique_time_seed();
@@ -30,7 +34,7 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
 }
 
 void button_event_continue_game(ecs_world_t *world, const ClickEventData *event) {
-    destroy_main_menu(world, event->clicker);
+    destroy_player_main_menu(world, event->clicker);
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     // todo: spawn realm data like voxels/stats/skills when starting new game

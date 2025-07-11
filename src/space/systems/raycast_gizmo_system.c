@@ -1,5 +1,11 @@
 // using DDA for raycasting
-void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const ecs_entity_t camera, const ecs_entity_t terrain, RaycastVoxelData *data) {
+void raycast_terrain_gizmo(
+    ecs_world_t *world,
+    const ecs_entity_t caster,
+    const ecs_entity_t camera,
+    const ecs_entity_t terrain,
+    RaycastVoxelData *data)
+{
     if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) {
         return;
     }
@@ -12,7 +18,19 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const 
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     int3 chunk_position = (int3) { 255255, 255255, 255255 };
-    byte ray_hit = raycast_general(world, caster, voxels, chunk_links, chunk_position, float3_zero, chunk_dimensions, 0, ray_origin, ray_normal, get_terrain_voxel_scale(depth), terrain_ray_length, data);
+    byte ray_hit = raycast_general(world,
+        caster,
+        voxels,
+        chunk_links,
+        chunk_position,
+        float3_zero,
+        chunk_dimensions,
+        0,
+        ray_origin,
+        ray_normal,
+        get_terrain_voxel_scale(depth),
+        terrain_ray_length,
+        data);
     if (ray_hit == ray_hit_type_terrain) {
         float3 voxel_position_real = data->position_real;
         float3 center_quad = float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(data->normal), data->voxel_scale * (0.501f)));
@@ -72,7 +90,6 @@ void raycast_terrain_gizmo(ecs_world_t *world, const ecs_entity_t caster, const 
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(float3_up, 0.3f)), hit_point_line_color);
     }
 }
-
 
 void RaycastGizmoSystem(ecs_iter_t *it) {
     zox_field_world()

@@ -1,19 +1,3 @@
-ecs_entity_t spawn_prefab_window_invisible(ecs_world_t *world) {
-    zox_prefab()
-    zox_prefab_name("window_invisible")
-    add_ui_plus_components_invisible(world, e);
-    zox_add_tag(e, Window)
-    add_selectable(world, e);
-    zox_prefab_set(e, DraggableLimits, { int4_zero })
-    zox_add_tag(e, BoundToCanvas)
-    zox_prefab_set(e, WindowLayer, { 0 })
-    zox_prefab_set(e, SetWindowLayer, { 0 })
-    zox_prefab_set(e, HeaderHeight, { 0 })
-    // zox_prefab_set(e, ElementFontSize, { 14 })
-    zox_prefab_add(e, Children)
-    return e;
-}
-
 ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("prefab_window")
@@ -21,8 +5,13 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_add_tag(e, Window)
     zox_add_tag(e, WindowRaycastTarget)
     add_selectable(world, e);
-    add_frame_texture_type(world, e, default_fill_color_window, default_outline_color_window, default_window_corner, default_button_frame_thickness);
-    // zox_prefab_set(e, Color, { window_color })
+    // texture
+    zox_add_tag(e, FrameTexture)
+    zox_prefab_set(e, FrameCorner, { default_window_corner })
+    zox_prefab_set(e, OutlineThickness, { default_button_frame_thickness })
+    zox_prefab_set(e, Color, { default_fill_color_window })
+    zox_prefab_set(e, OutlineColor, { default_outline_color_window })
+    // ui
     zox_prefab_set(e, ElementFontSize, { 14 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_add_tag(e, BoundToCanvas)
@@ -33,7 +22,15 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pixel_position, const int2 pixel_size, const float2 anchor, const ecs_entity_t canvas, const byte layer) {
+ecs_entity_t spawn_window(
+    ecs_world_t *world,
+    const char *header_label,
+    int2 pixel_position,
+    const int2 pixel_size,
+    const float2 anchor,
+    const ecs_entity_t canvas,
+    const byte layer)
+{
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     const byte header_layer = layer + 1;
     const int font_size = 28;
@@ -48,10 +45,11 @@ ecs_entity_t spawn_window(ecs_world_t *world, const char *header_label, int2 pix
     zox_name("window")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
-    // zox_set(e, HeaderHeight, { header_size.y })
-    Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 1)
-    children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);
-    zox_modified(e, Children)
+    Children *children = &((Children) { 0, NULL });
+
+    const ecs_entity_t header = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, pixel_position_global, pixel_size, 1, canvas_size);
+    add_to_Children(children, header);
+
+    zox_set(e, Children, { children->length, children->value })
     return e;
 }
