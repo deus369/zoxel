@@ -24,6 +24,7 @@ zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 #include "opengl/_.c"
 #include "vulkan/_.c"
 #include "core/_.c"
+#include "shaders/_.c"
 #include "basics2D/_.c"
 #ifndef zox_disable_rendering3D
     #include "basics3D/_.c"
@@ -34,15 +35,20 @@ byte initialize_rendering(ecs_world_t *world) {
     rendering_initialized = 1;
     if (headless) {
         return EXIT_SUCCESS;
-    } else if (!is_using_vulkan) {
+    } else if (render_backend == zox_render_backend_opengl) {
         return initialize_opengl(world);
-    } else {
+    } else if (render_backend == zox_render_backend_vulkan) {
         return initialize_vulkan(world); // SDL_WINDOW_VULKAN
+    } else {
+        zox_log_error("! unknown render_backend")
+        return EXIT_FAILURE;
     }
 }
 
 void dispose_rendering(ecs_world_t *world, void *ctx) {
-    if (headless) return;
+    if (headless) {
+        return;
+    }
     dispose_vulkan(world);
 }
 
@@ -60,18 +66,19 @@ zox_begin_module(Rendering)
     zox_define_component_float(Alpha)
     zox_define_component_entity(MaterialLink)
     zox_define_increment_system(MeshDirty, EcsOnLoad)
-    if (headless) {
+    if (render_backend == zox_render_backend_headless) {
         return;
-    } else if (is_using_vulkan && check_vulkan_suppport()) {
+    } else if (render_backend == zox_render_backend_vulkan && check_vulkan_suppport()) {
         zox_import_module(Vulkan)
-    } else {
+    } else if (render_backend == zox_render_backend_opengl) {
         zox_import_module(OpenGL)
     }
     zox_import_module(RenderingCore)
+    zox_import_module(Shaders)
     zox_import_module(RenderingBasics2D)
-    #ifdef zox_mod_rendering_basics3D
-        zox_import_module(RenderingBasics3D)
-    #endif
+#ifdef zox_mod_rendering_basics3D
+    zox_import_module(RenderingBasics3D)
+#endif
     zox_import_module(RenderingCameras)
 zox_end_module(Rendering)
 

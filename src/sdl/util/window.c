@@ -63,16 +63,10 @@ SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte f
     is_resizeable = 0;
     #endif
     SDL_Window* window = create_sdl_window_basic_opengl(position, size, name);
-    /* if (window == NULL && is_using_vulkan) {
-        zox_log(" ! vulkan is not supported on this device, defaulting to [SDL_WINDOW_OPENGL]\n")
-        is_using_vulkan = 0;
-        window = create_sdl_window_basic(is_using_vulkan, position, size);
-    }*/
     if (window == NULL) {
         zox_log(" ! failed to create sdl window [%s]\n", SDL_GetError())
         return window;
     }
-    // if (is_using_vulkan) return window;
     SDL_SetWindowResizable(window, is_resizeable);
     SDL_GL_SwapWindow(window);
     SDL_GL_SetSwapInterval(vsync);

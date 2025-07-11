@@ -13,10 +13,6 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_networking
     initialize_networking();
 #endif
-    load_files_sounds(world);
-#ifdef zox_mod_voxels
-    initialize_voxes(world);
-#endif
 #ifdef zox_mod_realms
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
 #endif
@@ -63,6 +59,10 @@ zox_begin_module(ZoxGame)
     character_depth = 5;
     vox_model_scale = 1 / 32.0f;
 
+    // world gen
+    block_spawn_chance_grass = 3000; // 1024;
+    terrain_amplifier = 32;
+
     // physics
     friction3D = 1800; // 560;
     air_friction3D = 320; // 40;
@@ -76,7 +76,6 @@ zox_begin_module(ZoxGame)
     render_distance = 10; // 2 | 4 | 8 | 16 | 32
     render_distance_y = 2; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
-    block_spawn_chance_grass = 1024;
     fog_density = 0.034f;
     character_render_distance = 2;  // 1 | 2
     characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64

@@ -10,7 +10,7 @@ void load_vox_file(const char* filename, vox_file *vox) {
 
 void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
     char* load_directory = concat_file_path(resources_path, directory_voxes);
-    FileList files = get_files(load_directory);
+    FileList files = get_files(load_directory, 0);
     files_voxes_count = files.count;
     files_voxes = malloc(sizeof(ecs_entity_t) * files_voxes_count);
     files_hashmap_voxes = create_string_hashmap(files_voxes_count);

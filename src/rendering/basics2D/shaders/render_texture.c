@@ -19,7 +19,7 @@ MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const GLu
         .texture = glGetUniformLocation(material, "texture") };
 }
 
-const GLchar* shader_source_vert_render_texture = "\
+/*const GLchar* shader_source_vert_render_texture = "\
 #version 320 es\n\
 uniform highp mat4 camera_matrix;\
 uniform highp mat4 transform_matrix;\
@@ -48,7 +48,7 @@ void main() {\
     lowp float vignette = smoothstep(0.8, 0.2, distance(uv, vec2(0.5)));\
     color.rgb *= vignette;\
     color = mix(color, vec4(noise, noise, noise, 1.0), 0.1);\
-}";
+}";*/
 
 // color = vec4(1, 0, 0, 1);
 // highp float depth = texture(tex, uv).r;

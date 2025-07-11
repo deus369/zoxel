@@ -1,5 +1,4 @@
 byte render_backend = zox_render_backend_opengl;
-byte is_using_vulkan = 0;
 byte is_render_fog = 1;
 float3 fog_color = (float3) { 0.5f, 0.55f, 0.58f };
 float fog_density = 0.03f; // 0326f;

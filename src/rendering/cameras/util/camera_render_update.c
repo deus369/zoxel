@@ -1,6 +1,8 @@
 void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
-    byte do_renders = !headless && rendering; // && !is_using_vulkan;
-    if (!do_renders) return;
+    byte do_renders = !headless && rendering;
+    if (!do_renders) {
+        return;
+    }
     opengl_set_defaults(!is_camera2D);
     zox_field_world()
     zox_field_in(ViewMatrix, viewMatrixs, 1)
@@ -22,25 +24,28 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         if (!is_camera2D) {
             if (zox_has(e, FrameBufferLink)) fbo = zox_get_value(e, FrameBufferLink)
         }
-        if (!is_using_vulkan) {
-            if (fbo) glViewport(0, 0, screenDimensions->value.x, screenDimensions->value.y);
-            else glViewport(screenPosition->value.x, screenPosition->value.y, screenDimensions->value.x, screenDimensions->value.y);
+        if (render_backend == zox_render_backend_opengl) {
+            if (fbo) {
+                glViewport(0, 0, screenDimensions->value.x, screenDimensions->value.y);
+            } else {
+                glViewport(screenPosition->value.x, screenPosition->value.y, screenDimensions->value.x, screenDimensions->value.y);
+            }
         }
         // todo: this required but breaks it for both render cameras
         if (fbo) {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-            #ifdef zoxel_catch_opengl_errors
+#ifdef zoxel_catch_opengl_errors
             if (!check_opengl_frame_buffer_status()) {
                 zox_log(" !! camera render - error on fbo [%u]\n", fbo)
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
                 continue;
             }
-            #endif
+#endif
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
-        #ifdef zox_include_vulkan
+#ifdef zox_include_vulkan
         // else { set vulkan viewport; }
-        #endif
+#endif
         if (!is_camera2D) {
             for (int j = 0; j < render3D_systems->size; j++) {
                 ecs_run(world, render3D_systems->data[j], 0, NULL);

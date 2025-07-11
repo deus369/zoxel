@@ -5,7 +5,9 @@ ecs_entity_t prefab_particle3D_emitter;
 
 
 void spawn_shaders_particles3D(ecs_world_t *world) {
-    if (!is_using_vulkan) initialize_shader_particle3D();
+    if (render_backend == zox_render_backend_opengl) {
+        initialize_shader_particle3D(world);
+    }
 }
 
 void spawn_prefabs_particles3D(ecs_world_t *world) {

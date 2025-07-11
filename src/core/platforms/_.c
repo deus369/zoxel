@@ -6,7 +6,7 @@
 #ifndef zox_platforms
 #define zox_platforms
 
-#include "util/util.c"
+#include "util/_.c"
 #include "data/settings.c"
 
 #endif

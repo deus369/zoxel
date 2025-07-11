@@ -25,13 +25,15 @@ void free_files(FileList *fileList) {
 
 
 // without extension
-char* get_filename(const char* filepath) {
+char* get_filename(const char* filepath, const byte keep_extension) {
     // Find the last occurrence of the directory separator
-    const char *last_slash = strrchr(filepath, char_slash); // '/');
-    // if (!last_slash) {
-    //    last_slash = strrchr(filepath, '\\');  // For Windows paths
-    //}
+    const char *last_slash = strrchr(filepath, char_slash);
     const char *filename = (last_slash) ? last_slash + 1 : filepath;
+
+    // If keeping extension, just return a strdup of filename
+    if (keep_extension) {
+        return strdup(filename);  // assumes POSIX; use custom clone if not
+    }
 
     // Find the last occurrence of the dot
     const char *last_dot = strrchr(filename, '.');
@@ -50,7 +52,7 @@ char* get_filename(const char* filepath) {
     return result;
 }
 
-void add_file(FileList *fileList, const char *filepath) {
+void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
     // zox_log(" + adding filepath: %s\n", filepath)
     // static int capacity = 10;
     if (fileList->count == 0) {
@@ -91,7 +93,7 @@ void add_file(FileList *fileList, const char *filepath) {
         perror("strdup failed");
         return;
     }
-    fileList->filenames[fileList->count] = get_filename(fileList->files[fileList->count]);
+    fileList->filenames[fileList->count] = get_filename(fileList->files[fileList->count], keep_extension);
     if (fileList->filenames[fileList->count] == NULL) {
         perror("get_filename failed");
         return;
@@ -99,7 +101,7 @@ void add_file(FileList *fileList, const char *filepath) {
     fileList->count++;
 }
 
-void traverse_directory(FileList *fileList, const char *directory) {
+void traverse_directory(FileList *fileList, const char *directory, byte keep_extension) {
     if (directory == NULL) {
         zox_log(" ! directory is null in [traverse_directory]\n")
         return;
@@ -116,7 +118,9 @@ void traverse_directory(FileList *fileList, const char *directory) {
     }
     // zox_log(" > traversing directory [%s]\n", directory)
     while ((entry = readdir(dp)) != NULL) {
-        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) continue;
+        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
+            continue;
+        }
         char *name = entry->d_name;
         char path[1024];
         snprintf(path, sizeof(path), "%s/%s", directory, name);
@@ -125,30 +129,30 @@ void traverse_directory(FileList *fileList, const char *directory) {
             continue;
         }
         if (S_ISDIR(statbuf.st_mode)) {
-            traverse_directory(fileList, path);
+            traverse_directory(fileList, path, keep_extension);
         } else {
-            add_file(fileList, path);
+            add_file(fileList, path, keep_extension);
         }
     }
     closedir(dp);
 }
 
-FileList get_files(char *directory) {
+FileList get_files(char *directory, byte keep_extension) {
     FileList fileList;
     fileList.count = 0;
     fileList.files = NULL;
     fileList.filenames = NULL;
     // size_t len = strlen(directory);
 #ifndef zox_windows
-    traverse_directory(&fileList, directory);
+    traverse_directory(&fileList, directory, keep_extension);
 #else
     if (len > 1 && directory[len - 1] != '/') {
-        traverse_directory(&fileList, directory);
+        traverse_directory(&fileList, directory, keep_extension);
     } else {
         char directory_non_slash[len - 1];
         strncpy(directory_non_slash, directory, len - 2);  // Ensuring no buffer overflow
         directory_non_slash[len - 2] = '\0';  // Null-terminate just in case
-        traverse_directory(&fileList, directory_non_slash);
+        traverse_directory(&fileList, directory_non_slash, keep_extension);
     }
 #endif
     free(directory);

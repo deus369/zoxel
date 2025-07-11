@@ -2,7 +2,7 @@
 #define zox_mod_rendering_basics2D
 
 #include "data/settings.c"
-#include "shaders/instanced2D.c"
+#include "shaders/basic.c"
 #include "shaders/textured2D.c"
 #include "shaders/render_texture.c"
 #include "components/material_textured2D.c"
@@ -29,10 +29,10 @@ void spawn_shaders_basics2D(ecs_world_t *world) {
 }
 
 zox_begin_module(RenderingBasics2D)
-    add_hook_load_shader(&spawn_shaders_basics2D);
     zox_define_component(MaterialTextured2D)
     zox_define_component(MaterialAttributesRenderTexture)
     define_systems_basics2D(world);
+    add_hook_load_shader(&spawn_shaders_basics2D);
 zox_end_module(RenderingBasics2D)
 
 #endif

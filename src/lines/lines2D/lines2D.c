@@ -16,13 +16,12 @@ zox_component(LineAnchor, float4)
 #include "util/grid2D.c"
 
 void spawn_shaders_lines2D(ecs_world_t *world) {
-    if (!is_using_vulkan) {
-        initialize_shader_line2D();
+    if (render_backend == zox_render_backend_opengl) {
+        initialize_shader_line2D(world);
     }
 }
 
 zox_begin_module(Lines2D)
-    add_hook_load_shader(&spawn_shaders_lines2D);
     zox_define_tag(Line2D)
     zox_define_tag(ElementLine2D)
     zox_define_component(LineData2D)
@@ -48,6 +47,7 @@ zox_begin_module(Lines2D)
         [in] elements.core.Layer2D,
         [none] Line2D,
         [none] ElementLine2D)
+    add_hook_load_shader(&spawn_shaders_lines2D);
     spawn_prefabs_lines2D(world);
 zox_end_module(Lines2D)
 

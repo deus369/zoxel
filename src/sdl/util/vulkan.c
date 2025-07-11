@@ -12,7 +12,7 @@ extern VkInstance* vk_instance;
 extern VkSurfaceKHR* vk_surface;
 
 byte load_vulkan_library() {
-    if (is_using_vulkan) {
+    if (render_backend == zox_render_backend_vulkan) {
         if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
             zox_log(" ! failed to load vulkan library [%s]\n", SDL_GetError())
             return EXIT_FAILURE;

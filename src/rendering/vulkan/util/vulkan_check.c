@@ -16,7 +16,7 @@ byte is_vulkan_supported() {
     createInfo.pApplicationInfo = &appInfo;
     if (vkCreateInstance(&createInfo, NULL, &instance) != VK_SUCCESS) {
         // printf("Vulkan is not supported on this system.\n");
-        if (is_using_vulkan) is_using_vulkan = 0;
+        render_backend = zox_render_backend_opengl;
         return 0;
     } else {
         // printf("Vulkan is supported on this system.\n");

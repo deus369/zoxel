@@ -48,7 +48,7 @@ ecs_entity_t spawn_skybox(ecs_world_t *world, const ecs_entity_t shader) {
     skybox = e;
     zox_name("skybox")
     zox_set(e, Scale1D, { skybox_scale })
-    if (!headless && !is_using_vulkan && shader) {
+    if (render_backend == zox_render_backend_opengl && shader) {
         zox_add_tag(e, MeshBasic3D)
         spawn_gpu_mesh(world, e);
         GLuint2 shader_skybox_value = get_shader_value(world, shader);

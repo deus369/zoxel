@@ -6,5 +6,3 @@
 #include "geometry.c"
 #include "compute.c"
 #include "frame_buffer.c"
-// loads-disposes all shaders, move to higher level
-#include "opengl_main.c"

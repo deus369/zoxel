@@ -3,8 +3,10 @@ ecs_entity_t material_textured2D = 0;
 
 ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
     const byte shader_index = get_new_shader_source_index();
-    shader_verts[shader_index] = shader2D_textured_vert_buffer;
-    shader_frags[shader_index] = shader2D_textured_frag_buffer;
+    char* vert = get_shader_source(world, "textured2D.vert");
+    char* frag = get_shader_source(world, "textured2D.frag");
+    shader_verts[shader_index] = vert;
+    shader_frags[shader_index] = frag;
     const ecs_entity_t e = spawn_shader(world, shader_index);
     zox_name("shader_textured2D")
     return e;

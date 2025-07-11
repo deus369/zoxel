@@ -13,7 +13,9 @@ zox_component(CubeLinesThickness, float)
 #include "util/_.c"
 
 void spawn_shaders_lines3D(ecs_world_t *world) {
-    if (!is_using_vulkan) initialize_shader_line3D();
+    if (render_backend == zox_render_backend_opengl) {
+        initialize_shader_line3D(world);
+    }
 }
 
 void spawn_prefabs_lines3D(ecs_world_t *world) {

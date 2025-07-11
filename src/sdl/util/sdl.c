@@ -36,10 +36,7 @@ int initialize_sdl_video(ecs_world_t *world) {
     if (!load_vulkan_library()) {
         return EXIT_FAILURE;
     }
-//#else
-//    is_using_vulkan = 0;
 #endif
-    // if (!is_using_vulkan)
     set_sdl_attributes();
     return EXIT_SUCCESS;
 }

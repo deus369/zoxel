@@ -1,6 +1,6 @@
 void load_files_sounds(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
-    FileList files = get_files(load_directory);
+    FileList files = get_files(load_directory, 0);
     sound_files_count = files.count;
     files_sounds = malloc(sizeof(ecs_entity_t) * files.count);
     files_hashmap_sounds = create_string_hashmap(files.count);

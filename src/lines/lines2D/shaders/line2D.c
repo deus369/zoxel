@@ -1,23 +1,3 @@
-const char* line2D_source_vert = "\
-#version 320 es\n\
-in highp vec2 position;\
-uniform lowp float depth;\
-uniform highp mat4 camera_matrix;\
-\
-void main() {\
-    gl_Position = camera_matrix * vec4(position, 0, 1);\
-    gl_Position.z = depth;\
-}";
-
-const GLchar* line2D_source_frag = "\
-#version 320 es\n\
-uniform lowp vec4 color;\
-out lowp vec4 color_output;\
-\
-void main() {\
-    color_output = color;\
-}";
-
 GLuint2 line2D_shader;
 GLuint line2D_shader_frag;
 GLuint line2D_material;
@@ -26,8 +6,10 @@ GLuint line2D_color_location;
 GLuint line2D_depth_location;
 GLuint line2D_camera_matrix_location;
 
-int initialize_shader_line2D() {
-    line2D_shader = spawn_gpu_shader_inline(line2D_source_vert, line2D_source_frag);
+int initialize_shader_line2D(ecs_world_t *world) {
+    char* vert = get_shader_source(world, "line2D.vert");
+    char* frag = get_shader_source(world, "line2D.frag");
+    line2D_shader = spawn_gpu_shader_inline(vert, frag);
     line2D_material = spawn_gpu_material_program((const GLuint2) { line2D_shader.x, line2D_shader.y });
     line2D_position_location = glGetAttribLocation(line2D_material, "position");
     line2D_color_location = glGetUniformLocation(line2D_material, "color");

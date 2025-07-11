@@ -48,7 +48,7 @@ int compile_shader(GLenum shaderType, GLuint* shader2, const GLchar* buffer) {
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
-        zoxel_log(" !!! failed to compile shader [%s]\n", info_log);
+        zox_log_error("-> failed to compile shader [%s]", info_log);
         free(info_log);
         return -1;
     }
@@ -76,23 +76,11 @@ int load_shader(const char* filepath, GLenum shaderType, GLuint* shader2) {
     return 0;
 }
 
-GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath) {
-    GLuint2 shader = { 0, 0 };
-    if (is_using_vulkan) return shader;
-    if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0) {
-        zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
-        return shader;
-    }
-    if (load_shader(fragFilepath, GL_FRAGMENT_SHADER, &shader.y) != 0) {
-        zoxel_log("Error loading shader frag [%s]\n", fragFilepath);
-        return shader;
-    }
-    return shader;
-}
-
 GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_buffer) {
     GLuint2 shader = { 0, 0 };
-    if (is_using_vulkan) return shader;
+    if (render_backend != zox_render_backend_opengl) {
+        return shader;
+    }
     if (compile_shader(GL_VERTEX_SHADER, &shader.x, vert_buffer) != 0) {
         zoxel_log("Error loading shader vert [%s]\n", vert_buffer);
         return shader;
@@ -104,8 +92,24 @@ GLuint2 spawn_gpu_shader_inline(const GLchar* vert_buffer, const GLchar* frag_bu
     return shader;
 }
 
+/*GLuint2 spawn_gpu_shader(const char* vertFilepath, const char* fragFilepath) {
+    GLuint2 shader = { 0, 0 };
+    if (render_backend != zox_render_backend_opengl) {
+        return shader;
+    }
+    if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader.x) != 0) {
+        zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
+        return shader;
+    }
+    if (load_shader(fragFilepath, GL_FRAGMENT_SHADER, &shader.y) != 0) {
+        zoxel_log("Error loading shader frag [%s]\n", fragFilepath);
+        return shader;
+    }
+    return shader;
+}*/
+
 //! For when you only need one material, otherwise will need to return shaders too. Returns material reference.
-GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath) {
+/*GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fragFilepath) {
     if (load_shader(vertFilepath, GL_VERTEX_SHADER, &shader->x) != 0) {
         zoxel_log("Error loading shader vert [%s]\n", vertFilepath);
         return 0;
@@ -116,3 +120,4 @@ GLuint load_gpu_shader(GLuint2* shader, const char* vertFilepath, const char* fr
     }
     return spawn_gpu_material_program((const GLuint2) { shader->x, shader->y });
 }
+*/
