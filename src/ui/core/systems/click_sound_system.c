@@ -6,7 +6,7 @@ void ClickSoundSystem(ecs_iter_t *it) {
         if (clickState->value != zox_click_state_clicked_this_frame) {
             continue;
         }
-        const double volume = 0.53 + 0.32 * (rand() % 101) / 100.0;
+        const double volume = (0.53 + 0.32 * (rand() % 101) / 100.0) * global_volume_sfx;
         const double length = 0.33 + 0.22 * (rand() % 101) / 100.0;
         if (rand() % 100 >= 94) {
             spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[42], length, volume);

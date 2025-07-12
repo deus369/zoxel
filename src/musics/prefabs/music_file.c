@@ -6,7 +6,10 @@ ecs_entity_t spawn_prefab_music_file(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-ecs_entity_t load_music_file(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t prefab_note) {
+ecs_entity_t load_music_file(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t prefab_note)
+{
     char* music_filepath = concat_file_path(resources_path, music_file_path);
     // zox_log(" > music file: %s\n", music_filepath)
     MidiNote loaded_notes[MAX_NOTES];
@@ -30,7 +33,12 @@ ecs_entity_t load_music_file(ecs_world_t *world, const ecs_entity_t prefab, cons
         MidiNote note = loaded_notes[i];
         int note_index = find_note_index(note.frequency);
         // double test_frequency = note_frequencies[note_index];
-        noteLinks->value[i] = spawn_note(world, prefab_note, note_index, instrument, note.length, 1);
+        noteLinks->value[i] = spawn_note(world,
+            prefab_note,
+            note_index,
+            instrument,
+            note.length,
+            music_load_volume);
         music_length += note.length;
         // zox_log("   - %i - Frequency: %.2f : %.2f Hz, Start time: %.2f, Length: %.2f\n", i + 1, note.frequency, test_frequency, note.time, note.length)
     }

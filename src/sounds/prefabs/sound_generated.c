@@ -12,10 +12,10 @@ ecs_entity_t spawn_sound_generated(ecs_world_t *world,
     const byte instrument_type,
     const float frequency,
     const float sound_length,
-    const float sound_volume)
+    const float volume)
 {
     if (!prefab) {
-        zox_log("! prefab is null.\n")
+        zox_log_error("spawn_sound_generated prefab is null")
         return 0;
     }
     zox_instance(prefab_sound_generated)
@@ -23,6 +23,6 @@ ecs_entity_t spawn_sound_generated(ecs_world_t *world,
     zox_set(e, SoundLength, { sound_length })
     zox_set(e, SoundFrequency, { frequency })
     zox_set(e, InstrumentType, { instrument_type })
-    zox_set(e, SoundVolume, { sound_volume })
+    zox_set(e, SoundVolume, { volume })
     return e;
 }

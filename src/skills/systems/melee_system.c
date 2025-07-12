@@ -2,6 +2,7 @@
 extern ecs_entity_t spawn_pickup(ecs_world_t *world, const float3 position, const ecs_entity_t voxel);
 
 void MeleeSystem(ecs_iter_t *it) {
+    const double volume = global_volume_sfx;
     zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_out(SkillActive, skillActives, 2)
@@ -72,7 +73,7 @@ void MeleeSystem(ecs_iter_t *it) {
                         }
                         zox_set(hit_character, LastDamager, { attacking_character })
                     }
-                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, 2.4f);
+                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, volume);
                     // damage popup
 
                     const float3 hit_character_position = zox_get_value(hit_character, Position3D)
@@ -94,9 +95,11 @@ void MeleeSystem(ecs_iter_t *it) {
                             // now get item and set to pickup
                             if (zox_has(voxel, ItemLink)) {
                                 const ecs_entity_t item = zox_get_value(voxel, ItemLink)
-                                if (item) zox_set(pickup, ItemLink, { item })
+                                if (item) {
+                                    zox_set(pickup, ItemLink, { item })
+                                }
                             }
-                            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[34], 0.6, 2.4f);
+                            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[34], 0.6, volume);
                         } else {
                             zox_log_error("terrain is invalid")
                         }
@@ -105,12 +108,12 @@ void MeleeSystem(ecs_iter_t *it) {
                     }
                 } else {
                     // cannot hit air
-                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, 2.4f);
+                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, volume);
                 }
             }
         } else {
             // ray too far
-            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, 2.4f);
+            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, volume);
         }
     }
 } zox_declare_system(MeleeSystem)

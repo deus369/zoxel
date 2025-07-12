@@ -8,6 +8,7 @@
         #include <SDL2/SDL_mixer.h>
     #endif
 #endif
+#include "settings/_.c"
 #include "data/_.c"
 #include "components/_.c"
 #include "prefabs/_.c"

@@ -14,9 +14,10 @@ void define_systems_sounds(ecs_world_t *world) {
     zox_define_increment_system(ProcessSound, EcsOnLoad, [none] Sound)
     zox_define_increment_system(GenerateSound, EcsOnLoad, [none] Sound)
     zox_system(SoundProcessSystem, EcsOnUpdate,
-        [in] SoundFrequency,
-        [in] SoundData,
         [in] ProcessSound,
+        [in] SoundData,
+        [in] SoundVolume,
+        [in] SoundFrequency,
         [out] TriggerSound,
         [None] Sound)
     zox_system(SoundGenerateSystem, EcsOnUpdate,
