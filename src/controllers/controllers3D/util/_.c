@@ -1,2 +1,3 @@
-#include "attach3D.c"
+#include "detatch.c"
+#include "attach.c"
 #include "labels.c"

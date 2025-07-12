@@ -5,8 +5,8 @@ static inline void print_float4(const float4 input) {
     zox_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }
 
-static inline float4 float4_from_float3(const float3 v, const float v2) {
-    return (float4) { v.x, v.y, v.z, v2 };
+static inline float4 float4_from_float3(const float3 v, const float w) {
+    return (float4) { v.x, v.y, v.z, w };
 }
 
 static inline float4 float4_multiply_float(const float4 input, const float mul) {

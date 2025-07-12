@@ -22,6 +22,9 @@
 #define zox_geter_value(e, component_type, type, name)\
     const type name = zox_get_value(e, component_type)
 
+#define zox_geter_value2(e, component_type, type, name)\
+    type name = zox_get_value(e, component_type)
+
 #define zox_geter_value_safe(e, component_type, type, name)\
     const type name = zox_has(e, component_type) ? zox_gett_value(e, component_type) : 0;
 

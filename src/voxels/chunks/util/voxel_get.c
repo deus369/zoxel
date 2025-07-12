@@ -19,18 +19,23 @@ const byte get_octree_voxel(const VoxelNode *node, byte3 *position, const byte d
 }
 
 // returns node, also sets voxel
-VoxelNode* get_voxel_node_at_depth(byte *value, const VoxelNode *node, byte3 *position, const byte depth) {
-    *value = node->value;
+VoxelNode* get_voxel_node_at_depth(byte *value, const VoxelNode *node, byte3 *position, byte depth) {
     // if child nodes closed or depth final, return current node
     if (depth == 0 || !has_children_VoxelNode(node)) {
+        *value = node->value;
         return (VoxelNode*) node;
     }
-    const byte dividor = powers_of_two_byte[depth - 1];
-    const byte3 node_position = (byte3) { position->x / dividor, position->y / dividor, position->z / dividor };
+    depth--;
+    const byte dividor = powers_of_two_byte[depth];
+    const byte3 node_position = (byte3) {
+        position->x / dividor,
+        position->y / dividor,
+        position->z / dividor
+    };
     byte3_modulus_byte(position, dividor);
     const byte child_index = byte3_octree_array_index(node_position);
     VoxelNode* kids = get_children_VoxelNode(node);
-    return get_voxel_node_at_depth(value, &kids[child_index], position, depth - 1);
+    return get_voxel_node_at_depth(value, &kids[child_index], position, depth);
 }
 
 byte get_adjacent_voxel(byte direction, const VoxelNode *root_node, const VoxelNode *neighbors[], int3 position, byte depth, const byte edge_voxel) {

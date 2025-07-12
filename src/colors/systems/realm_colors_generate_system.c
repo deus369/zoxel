@@ -61,7 +61,7 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     generate_colors(seed->value, colors);
     zox_set(realm, Colors, { .value = colors->value, .length = colors->length })
     // rendering: set global game colors
-    fog_color = color_to_float3(colors->value[0]);
+    fog_color = color_to_color_rgb(colors->value[0]);
     viewport_clear_color = fog_color;
     game_sky_color = fog_color;
     game_sky_bottom_color = fog_color;

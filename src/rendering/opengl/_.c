@@ -1,3 +1,4 @@
+// OpenGL Wrapper for Zoxel
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
@@ -11,7 +12,6 @@
         #include <SDL2/SDL_opengl.h>
     #endif
 #endif
-
 #include "data/GLuint2.c"
 #include "util/_.c"
 
@@ -37,9 +37,5 @@ byte initialize_opengl(ecs_world_t *world) {
     // check_geometry();
     return EXIT_SUCCESS;
 }
-
-zox_begin_module(OpenGL)
-    add_to_update_loop(opengl_clear_viewport_all);
-zox_end_module(OpenGL)
 
 #endif

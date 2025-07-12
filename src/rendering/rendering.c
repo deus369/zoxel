@@ -31,6 +31,10 @@ zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 #endif
 #include "cameras/_.c"
 
+void viewport_clear(ecs_world_t *world) {
+    opengl_clear(color_rgb_to_float3(viewport_clear_color));
+}
+
 byte initialize_rendering(ecs_world_t *world) {
     rendering_initialized = 1;
     if (headless) {
@@ -70,8 +74,6 @@ zox_begin_module(Rendering)
         return;
     } else if (render_backend == zox_render_backend_vulkan && check_vulkan_suppport()) {
         zox_import_module(Vulkan)
-    } else if (render_backend == zox_render_backend_opengl) {
-        zox_import_module(OpenGL)
     }
     zox_import_module(RenderingCore)
     zox_import_module(Shaders)
@@ -80,6 +82,7 @@ zox_begin_module(Rendering)
     zox_import_module(RenderingBasics3D)
 #endif
     zox_import_module(RenderingCameras)
+    add_to_update_loop(viewport_clear);
 zox_end_module(Rendering)
 
 #endif

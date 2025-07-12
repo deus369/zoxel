@@ -14,7 +14,6 @@ ecs_entity_t spawn_font(ecs_world_t *world, const ecs_entity_t prefab, const byt
     zox_instance(prefab)
     zox_name("font")
     FontData *data = &((FontData) { 0, NULL });
-    // zox_get_muter(e, FontData, fontData)
     resize_memory_component(FontData, data, byte2, length)
     memcpy(data->value, points, length * sizeof(byte2));
     zox_set(e, FontData, { data->length, data->value })

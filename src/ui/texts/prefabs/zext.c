@@ -39,7 +39,9 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     zox_set(e, MeshAlignment, { data->zext.alignment })
     zox_set(e, FontFillColor, { data->zext.font_fill_color })
     zox_set(e, FontOutlineColor, { data->zext.font_outline_color })
-    zox_set(e, FontThickness, { data->zext.font_thickness })
+    if (data->zext.font_thickness) {
+        zox_set(e, FontThickness, { data->zext.font_thickness })
+    }
     if (data->zext.font_outline_thickness) {
         zox_set(e, FontOutlineThickness, { data->zext.font_outline_thickness })
     }

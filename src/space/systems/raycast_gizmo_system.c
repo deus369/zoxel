@@ -1,6 +1,5 @@
 // using DDA for raycasting
-void raycast_terrain_gizmo(
-    ecs_world_t *world,
+void raycast_terrain_gizmo(ecs_world_t *world,
     const ecs_entity_t caster,
     const ecs_entity_t camera,
     const ecs_entity_t terrain,
@@ -101,6 +100,21 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
         zox_field_i(CameraLink, cameraLinks, cameraLink)
         zox_field_i(VoxLink, voxLinks, voxLink)
         zox_field_o(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
-        raycast_terrain_gizmo(world, e, cameraLink->value, voxLink->value, raycastVoxelData);
+        if (!zox_valid(cameraLink->value) || !zox_valid(voxLink->value)) {
+            continue;
+        }
+        if (!zox_has(cameraLink->value, CharacterLink)) {
+            zox_log_error("camera attached has no character link")
+            continue;
+        }
+        // caster only valid if camera is attached
+        // zox_geter_value(cameraLink->value, CanRoam, const byte, is_camera_free)
+        zox_geter_value(cameraLink->value, CharacterLink, const ecs_entity_t, e2)
+        ecs_entity_t caster = e2 == e ? e : 0;
+        raycast_terrain_gizmo(world,
+            caster,
+            cameraLink->value,
+            voxLink->value,
+            raycastVoxelData);
     }
 } zox_declare_system(RaycastGizmoSystem)

@@ -8,8 +8,9 @@ int engine_spawn_window(ecs_world_t *world) {
         return EXIT_FAILURE;
     }
     initialize_rendering(world);
+    // Files
     load_files_shaders(world);
-    load_shaders(world);
+    load_files_fonts(world);
 #ifdef zox_mod_textures
     load_files_textures(world);
 #endif
@@ -19,6 +20,8 @@ int engine_spawn_window(ecs_world_t *world) {
 #ifdef zox_mod_voxels
     initialize_voxes(world);
 #endif
+    // Shaders
+    load_shaders(world);
     char* icon_path = get_asset_path("textures", "game_icon.png")
     #ifdef zox_mod_textures
     load_app_icon(zox_gett_value(window, SDLWindow), icon_path);

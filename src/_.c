@@ -1,6 +1,9 @@
 #ifndef zox_mod_engine
 #define zox_mod_engine
 
+//todo: move our library wrappers to top of stack here:
+//  flecs, sdl, opengl, etc
+
 // pre engine defines
 #include "zox/data/build_settings.c"
 #include "zox/data/build_disables.c"
@@ -24,16 +27,22 @@
 #include "inputs/inputs.c"
 #include "apps/apps.c"          // test removing sdl for engine stability
 #include "sdl/sdl.c"
+
+// basic b locks
 #include "assets/assets.c"        // uses sdl path function atm
-#include "cameras/cameras.c"
-#include "rendering/rendering.c"
 #include "nodes/nodes.c"
 #include "realms/realms.c"
 #include "games/games.c"
-#include "raycasts/raycasts.c"
 #include "colors/colors.c"
-#include "lines/lines.c"
+
+// beef
+#include "cameras/cameras.c"
+#include "rendering/rendering.c"
 #include "sounds/sounds.c"
+
+#include "raycasts/raycasts.c"
+#include "lines/lines.c"
+
 // inner core
 #include "textures/textures.c"
 #include "musics/musics.c"
@@ -108,15 +117,17 @@ zox_begin_module(Zox)
         zox_import_module(Sdl)
     }
     zox_import_module(Assets)
-    zox_import_module(Cameras)
-    zox_import_module(Rendering)
-    zox_import_module(Nodes)
     zox_import_module(Realms)
     zox_import_module(Games)
-    zox_import_module(Raycasts)
+    zox_import_module(Nodes)
     zox_import_module(Colorz)
-    zox_import_module(Lines)
+
+    zox_import_module(Cameras)
+    zox_import_module(Rendering)
     zox_import_module(Sounds)
+
+    zox_import_module(Raycasts)
+    zox_import_module(Lines)
 
     zox_import_module(Textures)
     zox_import_module(Musics)

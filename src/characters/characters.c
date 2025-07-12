@@ -20,6 +20,7 @@ zox_begin_module(Characters)
     zox_import_module(Characters2D)
     zox_import_module(Characters3D)
     prefabs_add_characters_to_player(world, prefab_player);
+    zox_prefab_set(prefab_camera_game, CharacterLink, { 0 })
 zox_end_module(Characters)
 
 #endif

@@ -124,7 +124,7 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
     return font_style;
 }
 
-void load_styles(ecs_world_t *world) {
+void load_files_fonts(ecs_world_t *world) {
     zox_font_style_default = spawn_font_style(world, prefab_font_style);
     // for now save
     // zox_font_style_monocraft is set in ttf initialization

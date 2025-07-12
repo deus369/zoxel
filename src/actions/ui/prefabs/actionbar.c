@@ -34,8 +34,8 @@ ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, cons
             .size = actionbar_size,
         },
         .texture = {
-            .fill_color = default_fill_color_window,
-            .outline_color = default_outline_color_window,
+            .fill_color = window_fill,
+            .outline_color = window_outline,
         }
     };
 

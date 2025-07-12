@@ -2,7 +2,7 @@
 byte values[noise_values_length];
 uint32_t global_seed;
 
-int noise_fast_floor(float x) {
+static inline int noise_fast_floor(float x) {
     return (x > 0) ? ((int)x) : (((int)x) - 1);
 }
 
@@ -13,7 +13,7 @@ float noise_gradient(int hash, float x, float y) {
     return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
 }
 
-int noise_mod(int x, int m) {
+static inline int noise_mod(int x, int m) {
     int a = x % m;
     return a < 0 ? a + m : a;
 }

@@ -1,6 +1,9 @@
 #ifndef zox_mod_colors
 #define zox_mod_colors
 
+// globals for now...
+color_rgb fog_color = (color_rgb) { 125, 125, 125 };
+color_rgb viewport_clear_color = color_rgb_black;
 zox_component_color(Color)
 zox_component_color(SecondaryColor)
 zox_component_color_rgb(ColorRGB)

@@ -1,7 +1,8 @@
 // for only the button
 typedef struct {
     ecs_entity_t prefab;
-    color color;
+    color fill;
+    color outline;
 } SpawnWindowData;
 
 typedef struct {

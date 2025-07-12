@@ -7,13 +7,15 @@ const int3 int3_chaos = (int3) { -666, -666, -666 };
 #define int3_up (int3) { 0, 1, 0 }
 #define int3_backward (int3) { 0, 0, -1 }
 #define int3_forward (int3) { 0, 0, 1 }
+
 const int3 int3_directions[] = {
     int3_left,
     int3_right,
     int3_down,
     int3_up,
     int3_backward,
-    int3_forward };
+    int3_forward
+};
 
 static inline byte int3_equals(const int3 a, const int3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;

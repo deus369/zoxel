@@ -13,7 +13,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     zox_statistics_particles3D += it->count;
     opengl_enable_blend();
     glUseProgram(particle3D_material);
-    opengl_set_float4(particle3D_fog_data_location, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+    opengl_set_float4(particle3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(particle3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
     float fov_fixer = 90.0f / ((float) render_camera_fov);
     opengl_set_float(particle3D_location_thickness, fov_fixer * default_point_thickness);

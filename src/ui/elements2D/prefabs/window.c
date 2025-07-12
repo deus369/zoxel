@@ -9,8 +9,8 @@ ecs_entity_t spawn_prefab_window(ecs_world_t *world) {
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { default_window_corner })
     zox_prefab_set(e, OutlineThickness, { default_button_frame_thickness })
-    zox_prefab_set(e, Color, { default_fill_color_window })
-    zox_prefab_set(e, OutlineColor, { default_outline_color_window })
+    zox_prefab_set(e, Color, { window_fill })
+    zox_prefab_set(e, OutlineColor, { window_outline })
     // ui
     zox_prefab_set(e, ElementFontSize, { 14 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })

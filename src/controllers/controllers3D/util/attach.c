@@ -1,15 +1,7 @@
-void set_camera_free(ecs_world_t *world, const ecs_entity_t camera, const byte is_free) {
-    zox_remove(camera, FirstPersonCamera)
-    const float4 camera_rotation3D = zox_get_value(camera, Rotation3D)
-    const float3 euler = quaternion_to_euler(camera_rotation3D);
-    zox_add_tag(camera, EulerOverride)
-    zox_set(camera, Euler, { euler })
-    if (camera_follow_mode == zox_camera_follow_mode_attach) zox_set(camera, ParentLink, { 0 })
-    else if (camera_follow_mode == zox_camera_follow_mode_follow_xz) zox_set(camera, CameraFollowLink, { 0 })
-    if (is_free) zox_set(camera, CanRoam, { 1 })
-}
-
-void set_camera_locked(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t target) {
+void set_camera_locked(ecs_world_t *world,
+    const ecs_entity_t camera,
+    const ecs_entity_t target)
+{
     zox_add_tag(camera, FirstPersonCamera)
     zox_set(camera, CanRoam, { 0 })
     if (camera_follow_mode == zox_camera_follow_mode_attach) {
@@ -22,22 +14,11 @@ void set_camera_locked(ecs_world_t *world, const ecs_entity_t camera, const ecs_
     set_camera_transform(world, camera, target, camera_mode, vox_model_scale);
 }
 
-void detatch_camera_from_character(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t camera, const ecs_entity_t character, const byte is_free) {
-    // player
-    // zox_set(player, CharacterLink, { 0 })
-    // should get mouse from player devices
-    if (mouse_entity) zox_set(mouse_entity, MouseLock, { 0 })
-    // character
-    if (character) {
-        // zox_set(character, CameraLink, { 0 })
-        zox_set(character, DisableMovement, { 1 })
-    }
-    // camera
-    // zox_set(camera, CharacterLink, { 0 })
-    set_camera_free(world, camera, is_free);
-}
-
-void attach_camera_to_character(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t camera, const ecs_entity_t character) {
+void attach_camera_to_character(ecs_world_t *world,
+    const ecs_entity_t player,
+    const ecs_entity_t camera,
+    const ecs_entity_t character)
+{
     if (!character) {
         zox_log(" > character null in attach_camera_to_character\n")
         detatch_camera_from_character(world, player, camera, character, 1);
@@ -51,18 +32,22 @@ void attach_camera_to_character(ecs_world_t *world, const ecs_entity_t player, c
     zox_set(character, DisableMovement, { 0 })
     // camera
     set_camera_locked(world, camera, character);
+    // linking
+    zox_set(camera, CharacterLink, { character })
 }
 
 void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {
-    const ecs_entity_t game = zox_get_value(e, GameLink)
-    const byte game_state = zox_get_value(game, GameState)
+    zox_geter_value(e, GameLink, const ecs_entity_t, game)
+    zox_geter_value(game, GameState, const byte, game_state)
     if (game_state == zox_game_playing) {
         const ecs_entity_t camera = zox_get_value(e, CameraLink)
         const ecs_entity_t character = zox_get_value(e, CharacterLink)
-        // const ecs_entity_t character_camera = zox_get_value(character, CameraLink)
-        const byte is_camera_free = zox_get_value(camera, CanRoam)
-        if (is_camera_free) attach_camera_to_character(world, e, camera, character);
-        else detatch_camera_from_character(world, e, camera, character, 1);
+        zox_geter_value(camera, CanRoam, const byte, is_camera_free)
+        if (is_camera_free) {
+            attach_camera_to_character(world, e, camera, character);
+        } else {
+            detatch_camera_from_character(world, e, camera, character, 1);
+        }
     }
 }
 

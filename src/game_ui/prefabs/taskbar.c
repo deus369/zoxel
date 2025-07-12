@@ -49,8 +49,8 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
             .size = actionbar_size
         },
         .texture = {
-            .fill_color = default_fill_color_window,
-            .outline_color = default_outline_color_window,
+            .fill_color = window_fill,
+            .outline_color = window_outline,
         }
     };
     const ecs_entity_t e = spawn_element(world, &spawn_actionbar);

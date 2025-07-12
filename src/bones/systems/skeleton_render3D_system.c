@@ -44,7 +44,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
 #endif
             opengl_set_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-            opengl_set_float4(material_attributes->fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+            opengl_set_float4(material_attributes->fog_data, get_fog_value());
             opengl_set_float(material_attributes->brightness, 1);
         }
         // get local bone matrix, local to transform

@@ -68,8 +68,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     const byte2 button_padding = (byte2) { (int) (scaled_font_size * 0.46f), (int) (scaled_font_size * 0.3f) };
     const int button_inner_margins = (int) (scaled_font_size * 0.5f);
     const int window_width = get_max_width(header_label, scaled_header_font_size, header_padding_x, labels, elements_count, scaled_font_size, button_padding.x + list_margins.x);
-    // (scaled_font_size) * max_characters + button_padding.x * 2 + list_margins.x * 2
+
     int2 pixel_size = { window_width, (scaled_font_size + button_padding.y * 2) * max_elements + button_inner_margins * (max_elements - 1) + list_margins.y * 2 };
+
     if (is_scrollbar) {
         pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
     anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
@@ -143,26 +144,34 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             .layer = button_layer,
             .anchor = float2_half
         },
-        .zext = {
-            .text = "X",
-            .font_size = scaled_font_size,
-            .font_thickness = 1,
-            .padding = button_padding,
-            .font_fill_color = default_font_fill_color,
-            .font_outline_color = default_font_outline_color
-        },
         .button = {
-            .color = button_color,
-            .prefab_zext = prefab_zext
-        }
+            .prefab_zext = prefab_zext,
+            .fill = button_fill,
+            .outline = button_outline,
+        },
+        .zext = {
+            // .text = "X",
+            .font_size = scaled_font_size,
+            .padding = button_padding,
+            .font_resolution = button_font_resolution,
+            .font_fill_color = button_font_fill,
+            .font_outline_color = button_font_outline,
+            .font_thickness = button_font_thickness_fill,
+            .font_outline_thickness = button_font_thickness_outline,
+
+        },
     };
     for (int i = 0; i < elements_count; i++) {
         int2 label_position = (int2) { 0, (int) (pixel_size.y / 2) - (i + 0.5f) * (scaled_font_size + button_padding.y * 2) - list_margins.y - i * button_inner_margins };
-        if (is_scrollbar) label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
+        if (is_scrollbar) {
+            label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
+        }
         spawnButton.zext.text = labels[i].text;
         spawnButton.element.position = label_position;
         const ecs_entity_t button = spawn_button(world, &spawnButton);
-        if (events && events[i].value) zox_set(button, ClickEvent, { events[i].value })
+        if (events && events[i].value) {
+            zox_set(button, ClickEvent, { events[i].value })
+        }
         children->value[list_start + i] = button;
         zox_add_tag(button, ZextLabel)
     }
@@ -171,7 +180,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
 #ifdef zoxel_include_players
     if (!headless && elements_count > 0 && player) {
         const byte device_mode = zox_get_value(player, DeviceMode)
-        if (device_mode == zox_device_mode_gamepad) raycaster_select_element(world, player, children->value[list_start]);
+        if (device_mode == zox_device_mode_gamepad) {
+            raycaster_select_element(world, player, children->value[list_start]);
+        }
     }
 #endif
     return e;

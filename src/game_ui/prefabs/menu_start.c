@@ -19,7 +19,15 @@ ecs_entity_t spawn_prefab_main_start(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-ecs_entity_t spawn_main_start(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t player, const ecs_entity_t canvas, const char *header_label, const int2 position, const float2 anchor) {
+ecs_entity_t spawn_main_start(
+    ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t player,
+    const ecs_entity_t canvas,
+    const char *header_label,
+    const int2 position,
+    const float2 anchor)
+{
     const byte header_font_size = 0;
     const byte font_size = 80;
     const byte is_close_button = 0;
@@ -31,8 +39,3 @@ ecs_entity_t spawn_main_start(ecs_world_t *world, const ecs_entity_t prefab, con
     zox_name("main_start")
     return e;
 }
-
-/*labels_count = 2;
- * const text_group labels[] = { { label_new }, { label_options } };
- * const ClickEvent events[] = { { &button_event_new_game }, { &button_event_menu_options } };
- * e = spawn_ui_list(world, prefab_main_menu, canvas, header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, 42, layer, 0, player);*/

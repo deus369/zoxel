@@ -47,27 +47,43 @@ zox_begin_module(ZoxGame)
     zox_debug_print_components(world, 1);
     // is_log_io = 1;
     // is_log_sounds = 1;
-
-    zox_game_type = zox_game_mode_3D;
-    menu_sky_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32  / 255.0f };
-    menu_sky_bottom_color = (float3) { 5 / 255.0f, 32 / 255.0f, 32 / 255.0f };
     // terrain_mode = terrain_mode_flatlands;
     headless = 0;
-    // wait this breaks terrain mesh at 4 depth
+    is_raycast_minivoxes = 1;
 
-    // colors
-    default_fill_color_window = (color) { 22, 22, 22, 255 };
-    default_outline_color_window = (color) { 88, 88, 88, 255 };
+    zox_game_type = zox_game_mode_3D;
+    menu_sky_color = (color_rgb) { 0, 5, 0 };
+    menu_sky_bottom_color = (color_rgb) { 0, 0, 0 };
+    set_skybox_colors(world, menu_sky_color, menu_sky_bottom_color);
+
+    // main menu
+    // header
+    header_fill = color_grayscale(4);
+    header_outline = color_grayscale(44);
+    // header text
+    header_font_resolution = 64;
+    header_font_thickness_fill = 4;
+    header_font_thickness_outline = 4;
+    header_font_fill = color_grayscale(32);
+    header_font_outline = color_grayscale(122);
+    // window
+    window_fill = color_grayscale(10);
+    window_outline = color_grayscale(44);
+    // buttons
+    button_fill = color_grayscale(10);
+    button_outline = color_grayscale(44);
+    // button text
+    button_font_resolution = 16;
+    button_font_thickness_fill = 1;
+    button_font_thickness_outline = 2;
+    button_font_fill = color_grayscale(44);
+    button_font_outline = color_grayscale(122);
     // set them again for now
-    zox_set(prefab_ui_list, Color, { default_fill_color_window })
-    zox_set(prefab_ui_list, OutlineColor, { default_outline_color_window })
-    // headers
-    fill_color_header = (color) { 3, 3, 3, 255 };
-    outline_color_header = (color) { 66, 66, 66, 255 };
-    font_fill_color_header = (color) { 166, 166, 166, 255 };
-    font_outline_color_header = (color) { 15, 15, 15, 255 };
-    zox_set(prefab_header, Color, { fill_color_header })
-    zox_set(prefab_header, OutlineColor, { outline_color_header })
+    zox_set(prefab_ui_list, Color, { window_fill })
+    zox_set(prefab_ui_list, OutlineColor, { window_outline })
+    zox_set(prefab_header, Color, { header_fill })
+    zox_set(prefab_header, OutlineColor, { header_outline })
+    // nothing_font_color = debug_color; // debug font texture
 
     // scaling
     real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32

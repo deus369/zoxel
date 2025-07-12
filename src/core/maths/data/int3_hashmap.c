@@ -1,4 +1,4 @@
-uint32_t get_int3_hash(int3 input) {
+static inline uint32_t get_int3_hash(int3 input) {
     uint32_t hash = hash_constant;
     hash = hash * 163 + ((uint32_t) input.x);
     hash = hash * 109 + ((uint32_t) input.y);

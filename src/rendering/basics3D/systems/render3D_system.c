@@ -16,7 +16,7 @@ void Render3DSystem(ecs_iter_t *it) {
         MaterialBasic3D attributes = create_MaterialBasic3D(materialGPULink->value);
         opengl_set_material(materialGPULink->value);
         opengl_set_matrix(attributes.camera_matrix, render_camera_matrix);
-        opengl_set_float4(attributes.fog_data, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+        opengl_set_float4(attributes.fog_data, get_fog_value());
         opengl_set_float(attributes.brightness, brightness->value);
         opengl_set_matrix(attributes.transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);

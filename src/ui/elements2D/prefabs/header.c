@@ -1,12 +1,12 @@
 ecs_entity_t spawn_prefab_header(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_header")
-    add_selectable_components(world, e);
-    add_draggable_components(world, e);
-    add_frame_texture_type(world, e, fill_color_header, outline_color_header, default_button_corner, default_button_frame_thickness);
     zox_add_tag(e, Header)
     zox_add_tag(e, WindowRaycastTarget)
-    zox_add_tag(e, TextureAddNoise)
+    // zox_add_tag(e, TextureAddNoise)
+    add_selectable_components(world, e);
+    add_draggable_components(world, e);
+    add_frame_texture_type(world, e, header_fill, header_outline, default_button_corner, default_button_frame_thickness);
     zox_prefab_add(e, Children)
     return e;
 }
@@ -28,13 +28,19 @@ ecs_entity_t spawn_header(
     const int2 canvas_size)
 {
     const int string_length = strlen(text);
-    int2 zext_position = (int2) { ((font_size * string_length) / 2) + header_margins / 2, 0 };
+    int2 zext_position = (int2) {
+        ((font_size * string_length) / 2) + header_margins / 2,
+        0
+    };
     float2 zext_anchor = (float2) { 0, 0.5f };
     if (!is_close_button) {
         zext_anchor.x = 0.5f;
         zext_position.x = 0;
     }
-    const byte2 padding = (byte2) { (int) (font_size * 0.3f), (int) (font_size * 0.3f) };
+    const byte2 padding = (byte2) {
+        (int) (font_size * 0.3f),
+        (int) (font_size * 0.3f)
+    };
     const int2 global_position = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(global_position, canvas_size);
     const byte zext_layer = layer + 1;
@@ -42,8 +48,17 @@ ecs_entity_t spawn_header(
     zox_instance(prefab_header)
     zox_name("header")
     zox_set(e, DraggedLink, { parent })
-    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, global_position);
-    SpawnZext zextSpawnData = {
+    initialize_element(world, e,
+        parent,
+        canvas,
+        pixel_position,
+        pixel_size,
+        pixel_size,
+        anchor,
+        layer,
+        position2D,
+        global_position);
+    SpawnZext zext_spawn_data = {
         .canvas = {
             .e = canvas,
             .size = canvas_size },
@@ -59,15 +74,17 @@ ecs_entity_t spawn_header(
         .zext = {
             .text = text,
             .font_size = font_size,
-            .font_thickness = 4,
+            .font_resolution = header_font_resolution,
+            .font_thickness = header_font_thickness_fill,
+            .font_outline_thickness = header_font_thickness_outline,
+            .font_fill_color = header_font_fill,
+            .font_outline_color = header_font_outline,
             .padding = padding,
-            .font_fill_color = font_fill_color_header,
-            .font_outline_color = font_outline_color_header
         }
     };
     Children *children = &((Children) { 0, NULL });
     // zox_get_mutt(e, Children, children)
-    const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
+    const ecs_entity_t header_zext = spawn_zext(world, &zext_spawn_data);
     add_to_Children(children, header_zext);
     if (is_close_button) {
         int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };

@@ -24,7 +24,7 @@ void render_cube_line3D(float3 position_a, float3 position_b) {
 void CubeLineRenderSystem(ecs_iter_t *it) {
     glUseProgram(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
-    opengl_set_float4(line3D_fog_data_location, (float4) { fog_color.x, fog_color.y, fog_color.z, get_fog_density() });
+    opengl_set_float4(line3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
     zox_field_in(DebugCubeLines, debugCubeLiness, 2)
     zox_field_in(CubeLinesThickness, cubeLinesThicknesss, 3)

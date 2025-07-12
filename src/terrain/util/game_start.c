@@ -1,5 +1,5 @@
 void game_start_terrain2D(ecs_world_t *world, const ecs_entity_t game) {
-    set_sky_color(world, game_sky_color, game_sky_bottom_color);
+    set_skybox_colors(world, game_sky_color, game_sky_bottom_color);
     spawn_grid2D(world);
 }
 
@@ -12,7 +12,7 @@ void spawn_terrain_on_realm(ecs_world_t *world, const ecs_entity_t realm) {
 }
 
 void game_start_terrain3D(ecs_world_t *world, const ecs_entity_t game) {
-    set_sky_color(world, game_sky_color, game_sky_bottom_color);
+    set_skybox_colors(world, game_sky_color, game_sky_bottom_color);
     zox_geter(game, RealmLink, realmLink)
     spawn_terrain_on_realm(world, realmLink->value);
 }

@@ -1,5 +1,6 @@
 void FontTextureSystem(ecs_iter_t *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
+    const float2 point_padding = font_point_padding;
     // const byte default_font_outline = 1; // 4
     zox_change_check()
     zox_field_world()
@@ -14,34 +15,29 @@ void FontTextureSystem(ecs_iter_t *it) {
         return;
     }
     const byte is_use_shapes = zox_has(zox_font_style, TTFFontStyle);
-    zox_field_in(ZigelIndex, zigelIndexs, 1)
-    zox_field_in(Color, colors, 2)
-    zox_field_in(SecondaryColor, secondaryColors, 3)
-    zox_field_in(TextureSize, textureSizes, 4)
-    zox_field_in(FontThickness, fontThicknesss, 5)
-    zox_field_in(FontOutlineThickness, fontOutlineThicknesss, 6)
-    zox_field_out(TextureData, textureDatas, 7)
-    zox_field_out(TextureDirty, textureDirtys, 8)
-    zox_field_out(GenerateTexture, generateTextures, 9)
+    zox_sys_begin()
+    zox_sys_in(ZigelIndex)
+    zox_sys_in(Color)
+    zox_sys_in(SecondaryColor)
+    zox_sys_in(TextureSize)
+    zox_sys_in(FontThickness)
+    zox_sys_in(FontOutlineThickness)
+    zox_sys_out(TextureData)
+    zox_sys_out(TextureDirty)
+    zox_sys_out(GenerateTexture)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(GenerateTexture, generateTextures, generateTexture)
-        zox_field_o(TextureDirty, textureDirtys, textureDirty)
-        zox_field_i(ZigelIndex, zigelIndexs, zigelIndex)
-        if (generateTexture->value != zox_generate_texture_generate) {
+        zox_sys_i(ZigelIndex, zigelIndex)
+        zox_sys_i(TextureSize, textureSize)
+        zox_sys_i(Color, color_variable)
+        zox_sys_i(SecondaryColor, secondaryColor)
+        zox_sys_i(FontThickness, fontThickness)
+        zox_sys_i(FontOutlineThickness, fontOutlineThickness)
+        zox_sys_o(GenerateTexture, generateTexture)
+        zox_sys_o(TextureDirty, textureDirty)
+        zox_sys_o(TextureData, textureData)
+        if (generateTexture->value != zox_generate_texture_generate || textureDirty->value != 0 || zigelIndex->value >= font_styles_length) {
             continue;
         }
-        if (textureDirty->value != 0) {
-            continue;
-        }
-        if (zigelIndex->value >= font_styles_length) {
-            continue;
-        }
-        zox_field_i(TextureSize, textureSizes, textureSize)
-        zox_field_i(Color, colors, color_variable)
-        zox_field_i(SecondaryColor, secondaryColors, secondaryColor)
-        zox_field_i(FontThickness, fontThicknesss, fontThickness)
-        zox_field_i(FontOutlineThickness, fontOutlineThicknesss, fontOutlineThickness)
-        zox_field_o(TextureData, textureDatas, textureData)
         // get font based on zigel index
         const ecs_entity_t font = font_style_children->value[zigelIndex->value];
         int length = textureSize->value.x * textureSize->value.y;
@@ -58,7 +54,7 @@ void FontTextureSystem(ecs_iter_t *it) {
         }
         zox_geter(font, FontData, fontData)
         resize_memory_component(TextureData, textureData, color, length)
-        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, fontOutlineThickness->value);
+        generate_font_texture(textureData->value, textureSize->value, fontData, secondaryColor->value, color_variable->value, is_use_shapes, fontThickness->value, fontOutlineThickness->value, point_padding);
         generateTexture->value = 0;
         textureDirty->value = 1;
 #ifdef zoxel_debug_zigel_updates

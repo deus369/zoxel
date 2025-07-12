@@ -49,12 +49,12 @@ float simplex_fun_2D(float2 point, float frequency) {
 }
 
 // Returns the largest integer value less than or equal to a given value
-double double_floor(double x) {
+static inline double double_floor(double x) {
     return (int)x;
 }
 
 // Returns a smooth interpolation value between 0 and 1
-double smoothstep(double t) {
+static inline double smoothstep(double t) {
     return t * t * (3 - 2 * t);
 }
 
@@ -74,7 +74,7 @@ double dot_product(uint32_t h, double x, double y) {
 }
 
 // Returns an interpolated value between a and b using the weight t
-double lerp(double a, double b, double t) {
+static inline double lerp(double a, double b, double t) {
     return (1 - t) * a + t * b;
 }
 

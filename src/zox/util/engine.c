@@ -6,12 +6,14 @@ void engine_end() {
 }
 
 void handle_segfault(int sig) {
-    zox_log(" ! segfault detected [%i], exiting zox engine\n", sig)
+    zox_log_error("segfault detected [%i], exiting..", sig)
     exit(0);
 }
 
 void handle_terminal_close(int sig) {
-    zox_log(" > terminal close detected [control + c]\n")
+    zox_log("...")
+    zox_log("# SOOooo you wanna deffffyyy my orders? heh..")
+    zox_log("*ominous noises*")
     engine_end();
 }
 

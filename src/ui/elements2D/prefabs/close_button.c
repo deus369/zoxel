@@ -35,8 +35,9 @@ ecs_entity_t spawn_close_button(ecs_world_t *world, const ecs_entity_t parent, c
             .font_outline_color = default_font_outline_color
         },
         .button = {
-            .color = button_color,
-            .prefab_zext = prefab_zext
+            .prefab_zext = prefab_zext,
+            .fill = close_button_fill,
+            .outline = close_button_outline,
         }};
     return spawn_button(world, &spawnButton);
 }

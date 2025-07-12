@@ -1,1 +1,1 @@
-const float skybox_scale = 700; //  1024;
+float skybox_size = 1024;

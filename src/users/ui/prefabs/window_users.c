@@ -94,8 +94,8 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             .size = body_size
         },
         .texture = {
-            .fill_color = default_fill_color_window,
-            .outline_color = default_outline_color_window
+            .fill_color = window_fill,
+            .outline_color = window_outline
         }
     };
     const ecs_entity_t body = spawn_body(world, &spawn_body_data);
@@ -198,8 +198,8 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world, const e
             .text = "Users",
             .font_size = header_font_size,
             .font_thickness = 4,
-            .font_fill_color = font_fill_color_header,
-            .font_outline_color = font_outline_color_header
+            .font_fill_color = header_font_fill,
+            .font_outline_color = header_font_outline
         },
         .frame = {
             .prefab = prefab_frame_,

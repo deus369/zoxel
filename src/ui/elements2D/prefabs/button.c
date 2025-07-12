@@ -11,32 +11,52 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world, const ecs_entity_t prefab) 
 }
 
 ecs_entity_t spawn_button(ecs_world_t *world, SpawnButton *data) {
-    const int2 zext_size = (int2) { data->zext.font_size * strlen(data->zext.text), data->zext.font_size };
-    const int2 pixel_size = (int2) { zext_size.x + data->zext.padding.x * 2, zext_size.y + data->zext.padding.y * 2 };
+    const int2 zext_size = (int2) {
+        data->zext.font_size * strlen(data->zext.text),
+        data->zext.font_size
+    };
+    const int2 pixel_size = (int2) {
+        zext_size.x + data->zext.padding.x * 2,
+        zext_size.y + data->zext.padding.y * 2
+    };
     const int2 global_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 position2D = get_element_position(global_position, data->canvas.size);
     zox_instance(data->element.prefab)
     zox_name("button")
-    zox_set(e, Color, { data->button.color })
-    initialize_element(world, e, data->parent.e, data->canvas.e, data->element.position, pixel_size, pixel_size, data->element.anchor, data->element.layer, position2D, global_position);
-    if (data->element.render_disabled) zox_set(e, RenderDisabled, { data->element.render_disabled })
+    zox_set(e, Color, { data->button.fill })
+    zox_set(e, OutlineColor, { data->button.outline })
+    // more settings
+    initialize_element(world, e,
+        data->parent.e,
+        data->canvas.e,
+        data->element.position,
+        pixel_size,
+        pixel_size,
+        data->element.anchor,
+        data->element.layer,
+        position2D,
+        global_position);
+    if (data->element.render_disabled) {
+        zox_set(e, RenderDisabled, { data->element.render_disabled })
+    }
     SpawnZext spawnZext = {
         .canvas = data->canvas,
         .parent = {
             .e = e,
             .position = global_position,
-            .size = pixel_size },
+            .size = pixel_size
+        },
         .element = {
             .prefab = data->button.prefab_zext,
             .layer = data->element.layer + 1,
             .anchor = float2_half,
             .size = zext_size,
-            .render_disabled = data->element.render_disabled, },
-        .zext = data->zext
+            .render_disabled = data->element.render_disabled,
+        },
+        .zext = data->zext,
     };
     const ecs_entity_t zext = spawn_zext(world, &spawnZext);
     Children *children = &((Children) { 0, NULL });
-    // zox_get_muter(e, Children, children)
     add_to_Children(children, zext);
     zox_set(e, Children, { children->length, children->value })
     return e;
@@ -71,7 +91,8 @@ ecs_entity_t spawn_button_on_canvas(ecs_world_t *world, const ecs_entity_t canva
         },
         .button = {
             .prefab_zext = prefab_zext,
-            .color = default_fill_color
+            .fill = default_fill_color,
+            .outline = default_outline_color,
         }
         /*.texture = {
             .fill_color = default_fill_color,
@@ -92,7 +113,8 @@ ecs_entity_t spawn_button_old(ecs_world_t *world, const ecs_entity_t parent, con
     zox_instance(prefab_button)
     zox_name("button")
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, global_position);
-    zox_set(e, Color, { button_color })
+    zox_set(e, Color, { button_fill })
+    zox_set(e, OutlineColor, { button_outline })
     zox_set(e, RenderDisabled, { render_disabled })
     SpawnZext spawnZext = {
         .canvas = {

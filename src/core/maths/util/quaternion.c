@@ -19,27 +19,27 @@ void quaternion_normalize(float4 *quaternion) {
     }
 }
 
-float quaternion_magnitude(float4 quaternion) {
+static inline float quaternion_magnitude(float4 quaternion) {
     return sqrt(quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
 }
 
-float4 quaternion_normalized(float4 quaternion, float magnitude) {
+static inline float4 quaternion_normalized(float4 quaternion, float magnitude) {
     return (float4) { quaternion.x / magnitude, quaternion.y / magnitude, quaternion.z / magnitude, 0.0f };
 }
 
-float quaternion_to_euler_y(float4 q) {
+static inline float quaternion_to_euler_y(float4 q) {
     double sinp = 2 * (q.w * q.y - q.z * q.x);
     if (double_abs(sinp) >= 1) return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
     else return asin(sinp);
 }
 
-float quaternion_to_euler_x(float4 q) {
+static inline float quaternion_to_euler_x(float4 q) {
     float sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
     float cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
     return atan2(sinr_cosp, cosr_cosp);
 }
 
-float quaternion_to_euler_z(float4 q) {
+static inline float quaternion_to_euler_z(float4 q) {
     float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
     float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
     if (fabs(cosy_cosp) < 1e-6) return 0.0f;
@@ -225,110 +225,3 @@ float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time)
     return quaternion_from_euler(euler);
     // return (float4) { magnitude * quaternion.x, magnitude * quaternion.y, magnitude * quaternion.z, magnitude * quaternion.w };
 }
-
-/*float yaw = euler.x;
-float pitch = euler.y;
-float roll = euler.z;
-float4 output;
-output.x = sin(roll/2) * cos(pitch/2) * cos(yaw/2) - cos(roll/2) * sin(pitch/2) * sin(yaw/2);
-output.y = cos(roll/2) * sin(pitch/2) * cos(yaw/2) + sin(roll/2) * cos(pitch/2) * sin(yaw/2);
-output.z = cos(roll/2) * cos(pitch/2) * sin(yaw/2) - sin(roll/2) * sin(pitch/2) * cos(yaw/2);
-output.w = cos(roll/2) * cos(pitch/2) * cos(yaw/2) + sin(roll/2) * sin(pitch/2) * sin(yaw/2);
-return output;*/
-    // byte quadrant = get_quadrant((float3) { input->x, input->y, input->z });
-    /*if (quadrant == 2) {
-        input->x += M_PI;
-        input->y = - input->y - M_PI;
-        input->z += M_PI;
-    } else if (quadrant == 3) {
-        input->x -= M_PI;
-        input->y = - input->y + M_PI;
-        input->z -= M_PI;
-    }*/
-    // quadrant corrections
-    /*if (euler->x >= M_PI && euler->z >= M_PI) {
-        // printf("    in 3rd quadrant! [%fx%fx%f]\n", euler.x, euler.y, euler.z);
-        euler->x -= M_PI;
-        euler->y = - euler->y + M_PI;
-        euler->z -= M_PI;
-    } else if (euler->x <= -M_PI && euler->z <= -M_PI) {
-        // printf("    in 4th quadrant! - M_PI - M_PI\n");
-        euler->x += M_PI;
-        euler->y = euler->y - M_PI;
-        euler->z += M_PI;
-    }*/
-    /*double sinp = 2 * (q.w * q.y - q.z * q.x);
-    double sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
-    double cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
-    float euler_x = - atan2(sinr_cosp, cosr_cosp);
-    float euler_y;
-    if (double_abs(sinp) >= 1) {
-        euler_y = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-    } else {
-        euler_y = asin(sinp);
-    }
-    if (euler_x == 0.0f) {
-        if (euler_y >= 0 && euler_y <= M_PI / 2.0f) {
-            zox_log(" + quadrant 1\n");
-        } else if (euler_y >= -M_PI / 2.0f && euler_y <= 0) {
-            zox_log(" + quadrant 2\n");
-        }
-    } else {
-        if (euler_y >= 0 && euler_y <= M_PI / 2.0f) {
-            zox_log(" + quadrant 4\n");   // - pi x z
-        } else if (euler_y >= -M_PI / 2.0f && euler_y <= 0) {
-            zox_log(" + quadrant 3\n");   // + pi x z
-        }
-    }*/
-    /* else if (euler_y >= - M_PI / 4.0f) {
-        zox_log(" + quadrant 3\n");
-    } else if (euler_y >= - M_PI / 2.0f) {
-        zox_log(" + quadrant 4\n");
-    } else {
-        zox_log(" + quadrant ? [%f]\n", euler_y);
-    }*//*byte quaternion_to_quadrant(float4 q) {
-    float x = q.x;
-    float z = q.z;
-    float angle = atan2(z, x);
-    float degree = angle * 180 / M_PI;
-    if (degree < 0) {
-        degree += 360;
-    }
-    int quadrant = (int) degree / 90;
-    return quadrant;
-}*/
-
-/*byte get_quadrant(float3 input) {
-    if (input.x == 0.0f) {
-        if (input.y >= 0 && input.y <= M_PI / 2.0f) {
-            return 0;
-        } else if (input.y >= -M_PI / 2.0f && input.y <= 0) {
-            return 1;
-        }
-    } else {
-        if (input.y >= 0 && input.y <= M_PI / 2.0f) {
-            return 3;
-        } else if (input.y >= -M_PI / 2.0f && input.y <= 0) {
-            return 2;
-        }
-    }
-    return 4;
-}*/
-
-
-/*void correct_euler_for_quadrants(float4 q, float3* euler) {
-    byte quadrant = quaternion_to_quadrant(q);
-    correct_euler_quadrant(euler);
-}
-
-float3 quaternion_to_euler(float4 q) {
-    float3 euler = { };
-    // roll (x-axis rotation)
-    euler.x = quaternion_to_euler_x(q);
-    // pitch (y-axis rotation)
-    euler.y = quaternion_to_euler_y(q);
-    // yaw (z-axis rotation)
-    euler.z = quaternion_to_euler_z(q);
-    correct_euler_for_quadrants(q, &euler);
-    return euler;
-}*/

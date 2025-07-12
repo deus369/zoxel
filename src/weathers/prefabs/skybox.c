@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
     zox_prefab_add(e, ColorRGB)
     zox_prefab_add(e, SecondaryColorRGB)
-    zox_prefab_add(e, Brightness)
+    zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, MeshDirty, { mesh_state_trigger })
     if (!headless) {
         zox_prefab_add(e, MeshIndicies)
@@ -21,40 +21,32 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
         //prefab_set_mesh_indicies(world, e, cube2_indicies, cube2_indicies_length);
         //prefab_set_mesh_vertices_float3(world, e, cube2_vertices, cube2_vertices_length);
     }
-    zox_set(e, Position3D, { float3_zero })
-    zox_set(e, Brightness, { 1 })
     prefab_skybox = e;
     return e;
 }
 
-void set_sky_color_2(ecs_world_t *world, const GLuint material, const float3 top_color, const float3 bottom_color) {
-    if (headless || !skybox) return;
-    zox_set(skybox, ColorRGB, { color_rgb_from_float3(top_color) })
-    zox_set(skybox, SecondaryColorRGB, { color_rgb_from_float3(bottom_color) })
-    opengl_set_material(material);
-    opengl_set_float3(glGetUniformLocation(material, "sky_top_color"), top_color);
-    opengl_set_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_color);
-    opengl_set_material(0);
-}
-
-void set_sky_color(ecs_world_t *world, const float3 top_color, const float3 bottom_color) {
-    if (headless || !skybox) return;
-    GLuint material = zox_get_value(skybox, MaterialGPULink)
-    set_sky_color_2(world, material, top_color, bottom_color);
+void set_skybox_colors(ecs_world_t *world, const color_rgb top_color, const color_rgb bottom_color) {
+    if (headless || !skybox) {
+        return;
+    }
+    zox_set(skybox, ColorRGB, { top_color })
+    zox_set(skybox, SecondaryColorRGB, { bottom_color })
+    zox_geter_value(skybox, MaterialGPULink, GLuint, material)
+    set_skybox_material_color(world, material, top_color, bottom_color);
 }
 
 ecs_entity_t spawn_skybox(ecs_world_t *world, const ecs_entity_t shader) {
     zox_instance(prefab_skybox)
     skybox = e;
     zox_name("skybox")
-    zox_set(e, Scale1D, { skybox_scale })
+    zox_set(e, Scale1D, { skybox_size })
     if (render_backend == zox_render_backend_opengl && shader) {
         zox_add_tag(e, MeshBasic3D)
         spawn_gpu_mesh(world, e);
+        zox_set(e, ShaderLink, { shader })
         GLuint2 shader_skybox_value = get_shader_value(world, shader);
         GLuint material = spawn_gpu_material(world, e, shader_skybox_value);
-        set_sky_color_2(world, material, menu_sky_color, menu_sky_bottom_color);
-        zox_set(e, ShaderLink, { shader })
+        set_skybox_material_color(world, material, menu_sky_color, menu_sky_bottom_color);
     }
     return e;
 }

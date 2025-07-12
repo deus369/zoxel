@@ -40,8 +40,9 @@ ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, co
             .font_outline_color = default_font_outline_color
         },
         .button = {
-            .color = button_color,
-            .prefab_zext = prefab_zext
+            .prefab_zext = prefab_zext,
+            .fill = button_fill,
+            .outline = button_outline,
         }};
     const ecs_entity_t e = spawn_button(world, &data);
     zox_set(e, ClickEvent, { event.value })
