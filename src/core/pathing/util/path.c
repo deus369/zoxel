@@ -104,12 +104,60 @@ char* get_terminal_path_with_raw() {
     return result;
 }
 
+char* join_paths(const char* base, const char* folder) {
+    size_t len = strlen(base) + strlen(folder) + 2; // +1 for '/' +1 for '\0'
+    char* path = malloc(len);
+    if (!path) {
+        return NULL;
+    }
+    strcpy(path, base);
+    // Add trailing slash if needed
+    if (path[strlen(path)-1] != '/') {
+        strcat(path, "/");
+    }
+    strcat(path, folder);
+    return path;
+}
+
+int path_exists(const char* path) {
+    struct stat st;
+    return stat(path, &st) == 0;
+}
+
+char* find_resources_path(char* base_path, const char* resources) {
+    char* path = NULL;
+    char* slash_pos;
+    while (1) {
+        path = join_paths(base_path, resources);
+        if (!path) return NULL;
+
+        if (path_exists(path)) {
+            return path; // found it
+        }
+        free(path);
+
+        // If we’re at root or empty path, stop searching
+        if (strcmp(base_path, "/") == 0 || strlen(base_path) == 0) {
+            return NULL; // Not found
+        }
+
+        // Strip last directory from base_path (in place)
+        slash_pos = strrchr(base_path, '/');
+        if (!slash_pos) {
+            // No slash found, cannot go up further
+            return NULL;
+        }
+        if (slash_pos == base_path) {
+            // Root dir
+            base_path[1] = '\0'; // keep "/"
+        } else {
+            *slash_pos = '\0'; // cut off last directory
+        }
+    }
+}
+
 // sets base_path, data_path
 byte initialize_pathing() {
-    #ifdef zox_disable_io
-        zox_log(" ! io is disabled\n")
-        return EXIT_SUCCESS;
-    #endif
     raw_path = get_terminal_path_with_raw();
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
@@ -120,19 +168,17 @@ byte initialize_pathing() {
     zox_log_io("> io base_path [%s]", base_path)
     DIR* dir = opendir(base_path);
     if (dir) {
-#ifndef zoxel_on_android
-        resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
-        strcpy(resources_path, base_path);
-        strcat(resources_path, resources_folder_name);
-#else
-        resources_path = malloc(strlen(base_path) + strlen("/resources/") + 1);
-        strcpy(resources_path, base_path);
-        strcat(resources_path, "/resources/");
-#endif
+        // resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
+        // strcpy(resources_path, base_path);
+        // strcat(resources_path, resources_folder_name);
+        // if doesn't exist check parents:
+        resources_path = find_resources_path(base_path, resources_folder_name);
+        if (resources_path) {
+            zox_log("Resources found at: %s", resources_path)
+        } else {
+            zox_log_error("Resources folder not found in any parent directories.")
+        }
         zox_log_io("> resources_path [%s]", resources_path)
-#ifdef zoxel_on_android
-        decompress_android_resources();
-#endif
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
             closedir(dir2);
@@ -147,3 +193,41 @@ byte initialize_pathing() {
     }
     return EXIT_SUCCESS;
 }
+
+// todo: pass in base path
+#ifdef zoxel_on_android
+
+byte initialize_pathing_android() {
+    raw_path = get_terminal_path_with_raw();
+    char* base_path = initialize_base_path();
+    if (base_path == NULL) {
+        zox_log("! failed to get base_path\n")
+        return EXIT_FAILURE;
+    }
+    data_path = base_path;
+    zox_log_io("> io base_path [%s]", base_path)
+    DIR* dir = opendir(base_path);
+    if (dir) {
+        resources_path = malloc(strlen(base_path) + strlen("/"resources_dir_name"/") + 1);
+        strcpy(resources_path, base_path);
+        strcat(resources_path, "/"resources_dir_name"/");
+        zox_log_io("> resources_path [%s]", resources_path)
+
+        decompress_android_resources();
+
+        DIR* dir2 = opendir(resources_path);
+        if (dir2) {
+            closedir(dir2);
+        } else {
+            zox_log("! resources_path does not exist [%s]\n", resources_path)
+        }
+        closedir(dir);
+    } else if (ENOENT == errno) {
+        zox_log("SDL data_path (DOES NOT EXIST): %s\n", data_path)
+    } else {
+        zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path)
+    }
+    return EXIT_SUCCESS;
+}
+
+#endif

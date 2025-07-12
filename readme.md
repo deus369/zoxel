@@ -16,10 +16,13 @@
 ```bash
 git clone --depth=1 https://codeberg.org/deus/zoxel
 cd zoxel
-mkdir build
-cp -R resources build/resources
-make
 make run
+```
+
+- Package it!
+
+```bash
+make package
 ```
 
 ---
