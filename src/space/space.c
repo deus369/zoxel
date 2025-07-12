@@ -5,7 +5,7 @@
  *      - alot of functions to spawn the game things
  * */
 
-#include "data/settings.c"
+#include "settings/_.c"
 zox_component_entity(PlayerPauseEvent)
 #include "states/player_state.c"
 #include "prefabs/_.c"

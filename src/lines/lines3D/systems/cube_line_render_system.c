@@ -26,29 +26,29 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     glEnableVertexAttribArray(line3D_position_location);
     opengl_set_float4(line3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
-    zox_field_in(DebugCubeLines, debugCubeLiness, 2)
-    zox_field_in(CubeLinesThickness, cubeLinesThicknesss, 3)
-    zox_field_in(ColorRGB, colorRGBs, 4)
-    zox_field_in(Position3D, position3Ds, 5)
-    zox_field_in(Rotation3D, rotation3Ds, 6)
-    zox_field_in(Bounds3D, bounds3Ds, 7)
-    zox_field_in(RenderLod, renderLods, 8)
-    // zox_field_in(MeshIndicies, meshIndiciess, 9)
-    zox_field_in(RenderDisabled, renderDisableds, 9)
+    zox_sys_begin()
+    zox_sys_in(DebugCubeLines)
+    zox_sys_in(CubeLinesThickness)
+    zox_sys_in(Color)
+    zox_sys_in(Position3D)
+    zox_sys_in(Rotation3D)
+    zox_sys_in(Bounds3D)
+    zox_sys_in(RenderLod)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DebugCubeLines, debugCubeLiness, debugCubeLines)
-        if (debugCubeLines->value == 0) continue;
-        zox_field_i(RenderLod, renderLods, renderLod)
-        if (renderLod->value == 255) continue;
-        zox_field_i(CubeLinesThickness, cubeLinesThicknesss, cubeLinesThickness)
-        zox_field_i(ColorRGB, colorRGBs, colorRGB)
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(Rotation3D, rotation3Ds, rotation3D)
-        zox_field_i(Bounds3D, bounds3Ds, bounds3D)
-        //zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_sys_i(DebugCubeLines, debugCubeLines)
+        zox_sys_i(RenderLod, renderLod)
+        zox_sys_i(CubeLinesThickness, cubeLinesThickness)
+        zox_sys_i(Color, colorr)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(Rotation3D, rotation3D)
+        zox_sys_i(Bounds3D, bounds3D)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        if (debugCubeLines->value == 0 || renderLod->value == 255) {
+            continue;
+        }
         set_line3D_thickness(cubeLinesThickness->value);
-        color_rgb lines_color = colorRGB->value;
+        color_rgb lines_color = color_to_color_rgb(colorr->value);
         if (cubeline_debug_mode == zox_cubeline_debug_mesh) {
             // if (meshIndicies->length == 0) lines_color = (color_rgb) { 255, 0, 0 };
             // else lines_color = (color_rgb) { 0, 255, 0 };

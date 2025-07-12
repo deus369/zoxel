@@ -21,7 +21,6 @@ const int fill_octree_random_rate2 = 40;
 const int fill_octree_random_rate3 = 30;
 const uint safety_checks_raycasting = 512;
 const float raycast_thickness = 10;
-const color_rgb raycast_quad_color  = (color_rgb) { 194, 194, 194 };
 byte is_render_chunk_edges = 0;
 
 // Camera

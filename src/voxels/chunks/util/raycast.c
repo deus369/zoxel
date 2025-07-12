@@ -128,9 +128,9 @@ byte raycast_general(
             } else {
                 position_local = (byte3) { 255, 255, 255 }; // failure!
                 // return here ?
-                if (was_hitting) {
+                /*if (was_hitting) {
                     return ray_hit_type_none;
-                }
+                }*/
             }
         }
         byte hit_voxel = 0;
@@ -198,7 +198,7 @@ byte raycast_general(
                     chunk_size.x * 2,
                     data) == ray_hit_type_block_vox)
                 {
-                    ray_hit = ray_hit_type_terrain; // ray_hit_type_block_vox
+                    ray_hit = ray_hit_type_block_vox;
                     // chunk = block_spawn; // set hit chunk
                     break;
                 }
@@ -248,7 +248,9 @@ byte raycast_general(
         checks++; // safety first
     }
     data->distance = ray_distance;
-    if (ray_hit == ray_hit_type_terrain) {
+    if (ray_hit == ray_hit_type_block_vox && !raycasting_terrain) {
+        data->normal = hit_normal;
+    } else if (ray_hit == ray_hit_type_terrain || (ray_hit == ray_hit_type_block_vox && raycasting_terrain)) {
         data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(position_global), voxel_scale);
         float3_add_float3_p(&voxel_position_real, (float3) { voxel_scale / 2.0f, voxel_scale / 2.0f, voxel_scale / 2.0f }); // add half voxel
@@ -258,7 +260,9 @@ byte raycast_general(
         data->position_real = voxel_to_real_position(position_local, chunk_position, chunk_size_b3, voxel_scale);
         data->voxel_scale = voxel_scale;
         data->chunk = chunk;
-        data->normal = hit_normal;
+        if (ray_hit == ray_hit_type_terrain) {
+            data->normal = hit_normal;
+        }
         data->position_last = voxel_position_local_last;
         data->position_global_last = position_global_last;
         data->position_real_last = position_real_last;
@@ -289,6 +293,5 @@ byte raycast_general(
         data->chunk_last = 0;
         data->node_last = NULL;
     }
-    // ray_hit_type_block_vox is ignored here
     return ray_hit;
 }
