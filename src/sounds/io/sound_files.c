@@ -11,14 +11,15 @@ void load_files_sounds(ecs_world_t *world) {
         char* filename = files.filenames[i];
         zox_log_io("   - [%i] [sound] [%s]", i, filepath)
 #ifdef zox_lib_sdl_mixer
-        Mix_Chunk *sound_data = Mix_LoadWAV(filepath);
-        if (!sound_data) {
+        Mix_Chunk *mix_chunk = Mix_LoadWAV(filepath);
+        if (!mix_chunk) {
             zox_log_error("sound file failed to load [%s] due to [%s]", filepath, Mix_GetError())
             files_sounds[i] = 0;
             continue;
         }
-        const float sound_length = get_mix_chunk_sound_length(sound_data);
-        const ecs_entity_t e = spawn_sound_filepath(world, prefab_sound_filepath, sound_data, sound_length);
+        const float sound_length = get_mix_chunk_sound_length(mix_chunk);
+        SoundData soundData = process_mix_chunk(mix_chunk);
+        const ecs_entity_t e = spawn_sound_filepath(world, prefab_sound_filepath, soundData, sound_length);
         zox_log_sounds("   - [%i] [sound] [%s] - length [%f]", i, filepath, sound_length)
         files_sounds[i] = e;
         string_hashmap_add(files_hashmap_sounds, new_string_data_clone(filename), e);

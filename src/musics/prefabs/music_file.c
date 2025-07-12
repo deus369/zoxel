@@ -25,7 +25,7 @@ ecs_entity_t load_music_file(ecs_world_t *world, const ecs_entity_t prefab, cons
     resize_memory_component(NoteLinks, noteLinks, ecs_entity_t, loaded_note_count)
     float music_length = 0;
     // zox_log("   - music speed: %f\n", music_speed)
-    const byte instrument = music_load_instrument; // instrument_piano_file
+    const byte instrument = music_load_instrument;
     for (int i = 0; i < loaded_note_count; i++) {
         MidiNote note = loaded_notes[i];
         int note_index = find_note_index(note.frequency);

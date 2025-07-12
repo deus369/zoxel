@@ -43,8 +43,17 @@ zox_begin_module(Musics)
     zox_define_entities_component(MusicLinks)
     zox_define_entities_component(PlaylistLinks)
     zox_define_component_entity(PlaylistLink)
-    zox_system_1(MusicGenerateSystem, zox_pip_mainthread, [out] GenerateMusic, [out] NoteLinks, [none] Music)
-    zox_system_1(MusicPlaySystem, zox_pip_mainthread, [in] MusicPlaying, [in] NoteLinks, [in] MusicSpeed, [out] MusicNote, [out] MusicTime, [none] Music)
+    zox_system_1(MusicGenerateSystem, zox_pip_mainthread,
+        [out] GenerateMusic,
+        [out] NoteLinks,
+        [none] Music)
+    zox_system_1(MusicPlaySystem, zox_pip_mainthread,
+        [in] MusicPlaying,
+        [in] NoteLinks,
+        [in] MusicSpeed,
+        [out] MusicNote,
+        [out] MusicTime,
+        [none] Music)
     spawn_prefabs_musics(world);
 zox_end_module(Musics)
 

@@ -1,15 +1,17 @@
 void DestroyInTimeSystem(ecs_iter_t *it) {
-    zox_field_world()
     init_delta_time()
-    zox_field_out(DestroyInTime, destroyInTimes, 1)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_out(DestroyInTime)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(DestroyInTime, destroyInTimes, destroyInTime)
+        zox_sys_e()
+        zox_sys_o(DestroyInTime, destroyInTime)
         if (!destroyInTime->value) {
             continue;
         }
         destroyInTime->value -= delta_time;
         if (destroyInTime->value <= 0) {
-            zox_field_e()
+            // zox_log("+ [%s] deleting [%lu]", zox_get_name(e), e)
             zox_delete(e)
         }
     }

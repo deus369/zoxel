@@ -1,11 +1,6 @@
 #ifndef zox_mod_sounds
 #define zox_mod_sounds
 
-byte is_log_sounds = 0;
-
-#define zox_log_sounds(msg, ...)\
-    if (is_log_sounds) { zox_log(msg, ##__VA_ARGS__) }
-
 #ifdef zox_lib_sdl_mixer
     #if defined(zox_lib_sdl_direct)
         #include <SDL_mixer.h>
@@ -13,8 +8,7 @@ byte is_log_sounds = 0;
         #include <SDL2/SDL_mixer.h>
     #endif
 #endif
-#include "data/instrument_types.c"
-#include "data/settings.c"
+#include "data/_.c"
 #include "components/_.c"
 #include "prefabs/_.c"
 #include "util/_.c"

@@ -6,3 +6,5 @@
 #include "fm_synthesis_waves.c"
 #include "noise_waves.c"
 #include "envelop.c"
+#include "sdl.c"
+#include "spawn.c"

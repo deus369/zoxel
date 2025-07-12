@@ -4,8 +4,8 @@ ecs_entity_t spawn_prefab_note(ecs_world_t *world) {
     zox_add_tag(e, Note)
     zox_prefab_set(e, InstrumentType, { instrument_piano })
     zox_prefab_set(e, SoundFrequencyIndex, { 32 })
-    zox_prefab_set(e, SoundVolume, { default_music_volume })
-    zox_prefab_set(e, SoundLength, { 1.0 })
+    zox_prefab_set(e, SoundVolume, { 1 })
+    zox_prefab_set(e, SoundLength, { 0 })
     return e;
 }
 

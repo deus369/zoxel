@@ -103,7 +103,7 @@ byte raycast_voxel_node(
     float closest_t;
     byte hit_character = 0;
     uint checks = 0;
-    byte was_hitting = 0;
+    // byte was_hitting = 0;
     while (ray_distance <= ray_length && checks < safety_checks_raycasting) {
         if (raycasting_terrain) {
             const int3 new_chunk_position = voxel_position_to_chunk_position(position_global, chunk_size);
@@ -124,7 +124,7 @@ byte raycast_voxel_node(
         } else {
             if (int3_in_bounds(position_global, chunk_size)) {
                 position_local = int3_to_byte3(position_global);
-                was_hitting = 1;
+                //was_hitting = 1;
             } else {
                 position_local = (byte3) { 255, 255, 255 }; // failure!
                 // return here ?

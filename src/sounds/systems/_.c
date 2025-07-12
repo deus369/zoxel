@@ -5,37 +5,37 @@
     #include "sound_play_system.c"
     #include "sound_update_system.c"
 #endif
+zox_increment_system_with_reset(TriggerSound, zox_sound_play_end)
+zox_increment_system_with_reset(ProcessSound, zox_sound_process_end)
+zox_increment_system_with_reset(GenerateSound, zox_sound_generate_end)
 
 void define_systems_sounds(ecs_world_t *world) {
+    zox_define_increment_system(TriggerSound, EcsOnLoad, [none] Sound)
+    zox_define_increment_system(ProcessSound, EcsOnLoad, [none] Sound)
+    zox_define_increment_system(GenerateSound, EcsOnLoad, [none] Sound)
     zox_system(SoundProcessSystem, EcsOnUpdate,
         [in] SoundFrequency,
         [in] SoundData,
-        [out] ProcessSound,
+        [in] ProcessSound,
         [out] TriggerSound,
-        [out] SoundDirty,
         [None] Sound)
     zox_system(SoundGenerateSystem, EcsOnUpdate,
         [in] InstrumentType,
         [in] SoundLength,
         [in] SoundFrequency,
         [in] SoundVolume,
-        [out] GenerateSound,
-        [out] SoundData,
-        [out] SoundDirty,
-        [none] Sound)
-#ifdef zox_lib_sdl_mixer
-    zox_system(SoundUpdateSystem, EcsPostUpdate,
-        [none] Sound,
-        [in] SoundData,
-        [out] SoundDirty,
-        [out] SDLSound)
-    zox_system(SoundPlaySystem, EcsPostUpdate,
-        [in] SoundLength,
-        [out] SDLSound,
+        [in] GenerateSound,
         [out] TriggerSound,
-        [out] timing.DestroyInTime,
+        [out] SoundData,
         [none] Sound)
-#endif
+    zox_system(SoundPlaySystem, EcsOnUpdate,
+        [in] TriggerSound,
+        [in] SoundData,
+        [none] Sound)
+    zox_system(SoundPlayRefSystem, EcsOnUpdate,
+        [in] TriggerSound,
+        [in] SoundDataRef,
+        [none] Sound)
     zox_system_1(SoundDebugSystem, zox_pip_mainthread,
         [none] Sound,
         [in] SoundData,

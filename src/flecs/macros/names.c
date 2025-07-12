@@ -12,3 +12,6 @@
 
 #define zox_get_namespace(e)\
     ecs_get_fullpath(world, e)
+
+#define zox_sys_e_name\
+    ecs_get_name(it->world, it->entities[i])

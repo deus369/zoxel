@@ -12,7 +12,9 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     // InstrumentType *instrumentTypes = ecs_field(it, InstrumentType, 4);
     for (int i = 0; i < it->count; i++) {
         zox_field_o(GenerateMusic, generateMusics, generateMusic)
-        if (!generateMusic->value) continue;
+        if (!generateMusic->value) {
+            continue;
+        }
         zox_field_o(NoteLinks, noteLinkss, noteLinks)
         // InstrumentType *instrumentType = &instrumentTypes[i];
         // instrumentType->value = rand() % instrument_end;
@@ -67,7 +69,13 @@ void MusicGenerateSystem(ecs_iter_t *it) {
                 if (rand() % 100 >= 50) music_instrument = instrument_organ;
                 const float note_length = 0.8f + 0.6f * (rand() % 100 * 0.01f);
                 const float note_volume = 0.6f + 0.4f * (rand() % 100 * 0.01f);
-                noteLinks->value[sound_index] = spawn_note(world, prefab_note, music_note, music_instrument, note_length, note_volume);
+                const ecs_entity_t note = spawn_note(world,
+                    prefab_note,
+                    music_note,
+                    music_instrument,
+                    note_length,
+                    note_volume * global_music_volume);
+                noteLinks->value[sound_index] =note;
 #ifdef zoxel_debug_music
                 zox_log(" > [%i] is [%i]\n", sound_index, musicData->value[sound_index]);
 #endif

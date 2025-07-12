@@ -1,8 +1,14 @@
 byte audio_enabled = 0;
+byte is_log_sounds = 0;
+#define zox_log_sounds(msg, ...)\
+    if (is_log_sounds) {\
+        zox_log(msg, ##__VA_ARGS__)\
+    }
+
 // important
 #define scale_volumes 1 // debug 0.1 / 1
 // max soudn length
-#define sound_play_death_delay 4 // keep big incase lag, we dont want to destroy while playing
+#define sound_play_death_delay 16 // keep big incase lag, we dont want to destroy while playing
 #define channel_sample_rate 44100
 #define sound_sample_rate 44100 // / 8
 // #define sound_sample_rate 4410 // 2205
