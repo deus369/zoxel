@@ -16,7 +16,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     int3 chunk_position = (int3) { 255255, 255255, 255255 };
-    byte ray_hit = raycast_general(world,
+    byte ray_hit = raycast_voxel_node(world,
         caster,
         voxels,
         chunk_links,

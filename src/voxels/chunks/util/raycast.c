@@ -39,7 +39,7 @@ byte raycast_character(ecs_world_t *world,
     return hit_character;
 }
 
-byte raycast_general(
+byte raycast_voxel_node(
     ecs_world_t *world,
     const ecs_entity_t caster,
     const VoxelLinks *voxels,
@@ -139,7 +139,7 @@ byte raycast_general(
             node_voxel = get_voxel_node_at_depth(&hit_voxel, node_chunk, &temp, chunk_depth);
         }
         if (hit_voxel) {
-            data->voxel = hit_voxel;
+            // data->voxel = hit_voxel;
             if (raycasting_terrain) {
                 data->voxel_entity = voxels->value[hit_voxel - 1];
             }
@@ -187,7 +187,7 @@ byte raycast_general(
                 const int3 chunk_size = zox_get_value(vox, ChunkSize)
                 float new_voxel_scale = voxel_scale * (1.0f / (float) chunk_size.x);
                 // zox_log("> raycasting minivox: hit_voxel [%i], chunk_length: %i - %f  - %fx%fx%f", hit_voxel, chunk_size.x, new_voxel_scale, block_position.x, block_position.y, block_position.z)
-                if (raycast_general(world,
+                if (raycast_voxel_node(world,
                     0, NULL, NULL, int3_zero,
                     block_position,
                     chunk_size,
@@ -268,6 +268,7 @@ byte raycast_general(
         data->position_real_last = position_real_last;
         data->chunk_last = chunk_last;
         data->node = node_voxel;
+        data->voxel = node_voxel->value;
         data->node_last = node_last;
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
