@@ -168,7 +168,12 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
         }
         spawnButton.zext.text = labels[i].text;
         spawnButton.element.position = label_position;
-        const ecs_entity_t button = spawn_button(world, &spawnButton);
+        const ecs_entity_t button = spawn_button(world,
+            spawnButton.canvas,
+            spawnButton.parent,
+            spawnButton.element,
+            spawnButton.zext,
+            spawnButton.button);
         if (events && events[i].value) {
             zox_set(button, ClickEvent, { events[i].value })
         }

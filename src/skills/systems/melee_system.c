@@ -99,7 +99,8 @@ void MeleeSystem(ecs_iter_t *it) {
                                     zox_set(pickup, ItemLink, { item })
                                 }
                             }
-                            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[34], 0.6, volume);
+                            // destroy voxel sound
+                            spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
                         } else {
                             zox_log_error("terrain is invalid")
                         }

@@ -5,6 +5,7 @@ typedef struct {
     color outline;
 } SpawnButtonData;
 
+// just use for holding atm
 typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;

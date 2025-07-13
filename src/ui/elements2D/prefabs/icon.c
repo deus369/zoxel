@@ -17,20 +17,23 @@ ecs_entity_t spawn_prefab_icon(ecs_world_t *world, const ecs_entity_t prefab) {
     return e;
 }
 
-ecs_entity_t spawn_icon(ecs_world_t *world, SpawnIcon *data) {
+ecs_entity_t spawn_icon(ecs_world_t *world,
+    SpawnIcon *data)
+{
     zox_instance(data->element.prefab)
     zox_name("icon")
-    const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
-    const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
-    // anchor our position
-    int2 position = data->element.position;
-    anchor_element_position2D(&position, data->element.anchor, data->element.size);
-    initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->texture_size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
+    set_element_spawn_data(world, e, data->canvas, data->parent, &data->element);
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
     zox_set(e, IconIndex, { data->index })
-
+    // icons have overlays now
+    Children *children = &((Children) { 0, NULL });
     // icon overlay
+    ParentSpawnData icon_data = {
+        .e = e,
+        .position = data->element.position_in_canvas,
+        .size = data->element.size
+    };
     const ElementSpawnData icon_overlay_data = {
         .prefab = prefab_icon_overlay,
         .layer = data->element.layer + 1,
@@ -38,16 +41,12 @@ ecs_entity_t spawn_icon(ecs_world_t *world, SpawnIcon *data) {
         .anchor = float2_half,
         .render_disabled = 1,
     };
-    ParentSpawnData parent_data = {
-        .e = e,
-        .position = position_in_canvas,
-        .size = data->element.size
-    };
-    ecs_entity_t icon_overlay = spawn_icon_overlay(world, data->canvas, parent_data, icon_overlay_data);
-
-    Children *children = &((Children) { 0, NULL });
-    add_to_Children(children, icon_overlay);
+    const ecs_entity_t overlay = spawn_icon_overlay(world,
+        data->canvas,
+        icon_data,
+        icon_overlay_data);
+    add_to_Children(children, overlay);
+    // set and return
     zox_set(e, Children, { children->length, children->value })
-
     return e;
 }

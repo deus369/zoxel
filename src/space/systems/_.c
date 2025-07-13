@@ -19,10 +19,6 @@ void define_systems_players2(ecs_world_t *world) {
         [in] games.GameLink,
         [none] players.Player)
     // zox_pipelines_pre_render
-    zox_system_1(PlayerTestSystem, EcsPreStore,
-        [in] inputs.DeviceLinks,
-        [in] elements.core.CanvasLink,
-        [none] players.Player)
     zox_system_1(PlayerPauseSystem, EcsPreStore,
         [in] inputs.DeviceLinks,
         [none] players.Player)
@@ -52,6 +48,10 @@ void define_systems_players2(ecs_world_t *world) {
         [out] actions.ActionLinks,
         [out] characters.TriggerActionB)
 #endif
+    zox_system_1(PlayerTestSystem, EcsPreStore,
+        [in] inputs.DeviceLinks,
+        [in] elements.core.CanvasLink,
+        [none] players.Player)
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
         [in] cameras.CameraLink,
         [in] voxels.VoxLink,

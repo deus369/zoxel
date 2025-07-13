@@ -39,5 +39,10 @@ ecs_entity_t spawn_close_button(ecs_world_t *world, const ecs_entity_t parent, c
             .fill = close_button_fill,
             .outline = close_button_outline,
         }};
-    return spawn_button(world, &spawnButton);
+    return spawn_button(world,
+        spawnButton.canvas,
+        spawnButton.parent,
+        spawnButton.element,
+        spawnButton.zext,
+        spawnButton.button);
 }

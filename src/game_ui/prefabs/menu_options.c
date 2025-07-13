@@ -18,6 +18,9 @@ ecs_entity_t spawn_menu_options(
         { &button_event_volume_decrease },
         { &button_event_menu_main } };
     const byte layer = 1;
+
+    // todo: pass in proper structs into spawn_ui_list
+    //      - pass out  position_in_canvas and pixel_size
     const ecs_entity_t e = spawn_ui_list(world,
         prefab_ui_list,
         canvas,
@@ -36,5 +39,26 @@ ecs_entity_t spawn_menu_options(
         player);
     zox_add_tag(e, MenuOptions)
     zox_name("menu_options")
+
+    CanvasSpawnData canvas_data = {
+        .e = canvas,
+        .size = zox_gett_value(canvas, PixelSize),
+    };
+    ParentSpawnData menu_options_data = {
+        .e = e,
+        .size = canvas_data.size,
+        // .position = parent_position,
+        // .size = parent_size
+    };
+    ElementSpawnData slider_data = {
+        .prefab = prefab_slider,
+        .layer = layer + 1,
+        .anchor = anchor,
+        .position = (int2) { 256, 64 },
+        .size = (int2) { 256, 64 },
+    };
+    ecs_entity_t slider = spawn_slider(world, canvas_data, menu_options_data, slider_data);
+    // add to ui list here
+
     return e;
 }

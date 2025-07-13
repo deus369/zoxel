@@ -15,6 +15,7 @@ ecs_entity_t prefab_elementbar2D;
 ecs_entity_t prefab_elementbar2D_front;
 ecs_entity_t prefab_icon_mouse_follow;
 ecs_entity_t prefab_icon_overlay;
+ecs_entity_t prefab_slider;
 
 #include "label.c"
 #include "label_background.c"
@@ -33,9 +34,13 @@ ecs_entity_t prefab_icon_overlay;
 #include "elementbar2D_front.c"
 #include "elementbar2D.c"
 #include "mouse_follow_icon.c"
+#include "handle.c"
+#include "slider.c"
+
+// todo: make a more advanced 'element' prefab, alott of these still use prefab_element
 
 void spawn_prefabs_elements(ecs_world_t *world) {
-    prefab_label = spawn_prefab_label(world);
+    prefab_label = spawn_prefab_label(world, prefab_zext);
     prefab_label_background = spawn_prefab_label_background(world, prefab_zext);
     prefab_button = spawn_prefab_button(world, prefab_element);
     prefab_window_invisible = spawn_prefab_window_invisible(world);
@@ -52,4 +57,5 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_frame  = spawn_prefab_frame(world, prefab_element);
     prefab_icon_mouse_follow = spawn_prefab_icon_mouse_follow(world, prefab_element);
     prefab_icon_overlay = spawn_prefab_icon_overlay(world, prefab_element);
+    prefab_slider = spawn_prefab_slider(world, prefab_element);
 }

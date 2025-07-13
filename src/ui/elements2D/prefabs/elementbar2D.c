@@ -13,7 +13,23 @@ ecs_entity_t spawn_prefab_elementbar2D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_2 spawn_elementbar2D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t canvas, const ecs_entity_t parent, int2 pixel_position, const int2 pixel_size, const byte2 zext_padding, const float2 anchor, const byte layer, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size, const byte render_disabled, const color back_color, const color front_color) {
+ecs_entity_2 spawn_elementbar2D(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t ui_holder,
+    const ecs_entity_t canvas,
+    const ecs_entity_t parent,
+    int2 pixel_position,
+    const int2 pixel_size,
+    const byte2 zext_padding,
+    const float2 anchor,
+    const byte layer,
+    const int2 parent_pixel_position_global,
+    const int2 parent_pixel_size,
+    const int2 canvas_size,
+    const byte render_disabled,
+    const color back_color,
+    const color front_color)
+{
     const color label_font_outline_color = (color) { 33, 33, 33, 255 };
     const color label_font_fill_color = (color) { 155, 155, 155, 255 };
     const byte front_bar_layer = layer + 1;

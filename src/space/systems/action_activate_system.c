@@ -3,18 +3,19 @@
 // todo: use a state and implement results inside respective systems
 // todo: move item activate to a seperate item system
 void ActionActivateSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(RaycastVoxelData, raycastVoxelDatas, 1)
-    zox_field_out(ActionLinks, actionLinkss, 2)
-    zox_field_out(TriggerActionB, triggerActionBs, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(RaycastVoxelData)
+    zox_sys_out(ActionLinks)
+    zox_sys_out(TriggerActionB)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(TriggerActionB, triggerActionBs, triggerActionB)
+        zox_sys_e()
+        zox_sys_i(RaycastVoxelData, raycastVoxelData)
+        zox_sys_o(ActionLinks, actionLinks)
+        zox_sys_o(TriggerActionB, triggerActionB)
         if (!triggerActionB->value) {
             continue;
         }
-        zox_field_e()
-        zox_field_i(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
-        zox_field_o(ActionLinks, actionLinkss, actionLinks)
         const ecs_entity_t player = zox_get_value(e, PlayerLink)
         if (!player) {
             continue;
@@ -40,12 +41,14 @@ void ActionActivateSystem(ecs_iter_t *it) {
             if (zox_has(action, Aura)) {
                 // Toggle Skill
                 zox_set(action, SkillActive, { !zox_gett_value(action, SkillActive) })
+                spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, get_volume_sfx());
             } else if (zox_has(action, Melee)) {
                 zox_set(action, SkillActive, { !zox_gett_value(action, SkillActive) })
             } else {
                 zox_log("! uknown skill type [%s]\n", zox_get_name(action))
             }
         } else if (zox_has(action, Item)) {
+            // if item can place?!?!
             // if item quantity > 0
             byte quantity = zox_get_value(action, Quantity)
             if (quantity == 0) {
@@ -90,6 +93,8 @@ void ActionActivateSystem(ecs_iter_t *it) {
                             // zox_log(" > menu_actions found [%lu] user_item [%lu]\n", icon_action, meta_item_block) // base data off meta_item_block as item is still new
                         }
                     }
+                    // place block sound
+                    spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[30 + rand() % 6], 0.6, 1.8f * get_volume_sfx());
                 }
             }
         } else {

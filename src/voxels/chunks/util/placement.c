@@ -1,7 +1,14 @@
 // this is for spawninng voxel
 //      should take in event for future voxels
 // note: it only supports placing and removing, not swapping
-void place_block(ecs_world_t *world, const ecs_entity_t chunk, VoxelNode *node, const byte3 position_local, int3 position_global, const byte voxel, const float3 position_real) {
+void place_block(ecs_world_t *world,
+    const ecs_entity_t chunk,
+    VoxelNode *node,
+    const byte3 position_local,
+    int3 position_global,
+    const byte voxel,
+    const float3 position_real)
+{
     if (!node || !zox_valid(chunk)) {
         return;
     }
@@ -72,7 +79,11 @@ void place_block(ecs_world_t *world, const ecs_entity_t chunk, VoxelNode *node, 
     }
 }
 
-void raycast_action(ecs_world_t *world, const RaycastVoxelData *data, const byte voxel, byte hit_type) {
+void raycast_action(ecs_world_t *world,
+    const RaycastVoxelData *data,
+    const byte voxel,
+    byte hit_type)
+{
     byte3 position_local;
     int3 position_global;
     float3 position_real;

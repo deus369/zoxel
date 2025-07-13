@@ -17,7 +17,7 @@ ecs_entity_t spawn_prefab_menu_game_touch(ecs_world_t *world, const ecs_entity_t
 }
 
 ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 canvas_size, const int2 position, const float2 anchor, const byte size, const ClickEvent event) {
-    SpawnButton data = {
+    SpawnButton spawnButton = {
         .canvas = {
             .e = canvas,
             .size = canvas_size
@@ -44,7 +44,12 @@ ecs_entity_t spawn_button_game(ecs_world_t *world, const ecs_entity_t canvas, co
             .fill = button_fill,
             .outline = button_outline,
         }};
-    const ecs_entity_t e = spawn_button(world, &data);
+    const ecs_entity_t e = spawn_button(world,
+        spawnButton.canvas,
+        spawnButton.parent,
+        spawnButton.element,
+        spawnButton.zext,
+        spawnButton.button);
     zox_set(e, ClickEvent, { event.value })
     return e;
 }

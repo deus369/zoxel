@@ -6,12 +6,8 @@ zox_declare_tag(EditorElement)
 zox_declare_tag(HierarchyUI)
 zox_declare_tag(InspectorLabel)
 zox_component_byte(HierarchyUIDirty)
-#include "prefabs/hierarchy.c"
-#include "prefabs/inspector.c"
-#include "prefabs/frame_debugger.c"
-#include "util/shared.c"
-#include "util/inspector_util.c"
-#include "util/hierarchy_util.c"
+#include "prefabs/_.c"
+#include "util/_.c"
 #include "systems/hierarchy_refresh_system.c"
 #include "systems/inspector_element_system.c"
 

@@ -13,18 +13,13 @@ ecs_entity_t spawn_prefab_frame(ecs_world_t *world, const ecs_entity_t prefab) {
 ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame *data) {
     zox_instance(data->element.prefab)
     zox_name("frame")
+    set_element_spawn_data(world, e, data->canvas, data->parent, &data->element);
     zox_set(e, Color, { data->texture.fill_color })
     zox_set(e, OutlineColor, { data->texture.outline_color })
-    const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
-    const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
-    // anchor our position
-    int2 position = data->element.position;
-    anchor_element_position2D(&position, data->element.anchor, data->element.size);
-    initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);
     CanvasSpawnData canvas_data = data->canvas;
     ParentSpawnData parent_data = {
         .e = e,
-        .position = position_in_canvas,
+        .position = data->element.position_in_canvas,
         .size = data->element.size
     };
     SpawnIcon spawnIcon = {
@@ -72,3 +67,10 @@ ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame *data) {
     zox_set(e, Children, { children->length, children->value })
     return (ecs_entity_3) { e, icon, zext };
 }
+
+/*const int2 position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
+const float2 real_position = get_element_position(position_in_canvas, data->canvas.size);
+// anchor our position
+int2 position = data->element.position;
+anchor_element_position2D(&position, data->element.anchor, data->element.size);
+initialize_element(world, e, data->parent.e, data->canvas.e, position, data->element.size, data->element.size, data->element.anchor, data->element.layer, real_position, position_in_canvas);*/
