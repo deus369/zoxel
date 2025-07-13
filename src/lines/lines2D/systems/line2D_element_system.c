@@ -19,7 +19,9 @@ void Line2DElementSystem(ecs_iter_t *it) {
     zox_field_out(LineData2D, lineData2Ds, 3)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CanvasLink, canvasLinks, canvasLink)
-        if (!zox_valid(canvasLink->value)) continue;
+        if (!zox_valid(canvasLink->value)) {
+            continue;
+        }
         zox_field_i(LinePosition2D, linePosition2Ds, linePosition2D)
         zox_field_o(LineData2D, lineData2Ds, lineData2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)

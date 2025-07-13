@@ -1,46 +1,28 @@
-void play_music(ecs_world_t *world, const ecs_entity_t playlist, const byte new_index) {
-    if (!playlist || !zox_has(playlist, PlaylistIndex)) {
-        zox_log_error(" ! cannot play music on null playlist")
-        return;
-    }
-    const byte current_index = zox_get_value(playlist, PlaylistIndex)
-    if (new_index == current_index) {
-        // zox_log(" > music is already at [%i]\n", current_index)
-        return;
-    }
-    // set previous music off and new one on
-    zox_geter(playlist, MusicLinks, musicLinks)
-    zox_set(musicLinks->value[current_index], MusicPlaying, { 0 })
-    zox_set(musicLinks->value[new_index], MusicPlaying, { 1 })
-    zox_set(playlist, PlaylistIndex, { new_index })
-    zox_log(" + music enabled [%i]", new_index)
-    zox_log(" + music disabled [%i]", current_index)
-}
-
-void add_music(ecs_world_t *world, ecs_entity_t playlist, ecs_entity_t music) {
-    if (!playlist) {
-        zox_log(" ! cannot add music to null playlist\n")
-        return;
-    }
-    // zox_log(" + added music to playlist [%lu]\n", music)
-    zox_get_muter(playlist, MusicLinks, musicLinks)
-    add_to_MusicLinks(musicLinks, music);
-}
-
-void play_playlist(ecs_world_t *world, const ecs_entity_t realm, const byte index) {
-    if (!realm || !zox_has(realm, PlaylistLinks)) {
-        zox_log_error("invalid realm")
+void play_playlist(ecs_world_t *world,
+    const ecs_entity_t realm,
+    const byte new_index)
+{
+    if (!zox_valid(realm) || !zox_has(realm, PlaylistLinks)) {
+        zox_log_error("invalid realm [%lu]", realm)
         return;
     }
     zox_geter(realm, PlaylistLinks, playlistLinks)
-    if (!playlistLinks->value) {
-        zox_log_error(" ! invalid playlist links value.")
+    if (!zox_valid(playlistLinks->length)) {
+        zox_log_error("playlist has no music")
         return;
     }
-    if (index >= playlistLinks->length) {
-        zox_log_error("invalid index playlist [%i]", index)
+    if (new_index >= playlistLinks->length) {
+        zox_log_error("invalid index playlist [%i]", new_index)
         return;
     }
-    const ecs_entity_t playlist = playlistLinks->value[index];
-    play_music(world, playlist, 0);
+    zox_geter_value(realm, PlaylistPlaying, byte, old_index)
+    if (new_index == old_index) {
+        zox_log_error("playlist already playing track [%i]", old_index)
+        return;
+    }
+    const ecs_entity_t old_playlist = playlistLinks->value[old_index];
+    const ecs_entity_t new_playlist = playlistLinks->value[new_index];
+    stop_music(world, old_playlist);
+    play_music(world, new_playlist, 0);
+    zox_set(realm, PlaylistPlaying, { new_index })
 }

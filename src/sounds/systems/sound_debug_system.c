@@ -1,16 +1,21 @@
-// extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
+extern ecs_entity_t spawn_line2D(ecs_world_t *world, float2 pointA, float2 pointB, float thickness, double life_time);
 
 void SoundDebugSystem(ecs_iter_t *it) {
-#ifdef zox_mod_lines2D
-    if (!zox_visualize_sounds) return;
-    zox_field_world()
+    if (!zox_visualize_sounds) {
+        return;
+    }
+//#ifdef zox_mod_lines2D
+    zox_sys_world()
     byte has_begun = 0;
-    zox_field_in(SoundData, soundDatas, 2)
-    zox_field_in(SoundDirty, soundDirtys, 3)
+    zox_sys_begin()
+    zox_sys_in(SoundData)
+    zox_sys_in(TriggerSound)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(SoundDirty, soundDirtys, soundDirty)
-        if (soundDirty->value != 1) continue;
-        zox_field_i(SoundData, soundDatas, soundData)
+        zox_sys_i(TriggerSound, triggerSound)
+        zox_sys_i(SoundData, soundData)
+        if (triggerSound->value != zox_sound_play_run) {
+            continue;
+        }
         const double decay_time = soundData->length / sample_rate_f; // 6.0 + rand() % 6;
         if (!has_begun) {   // draw axis
             has_begun = 1;
@@ -29,5 +34,5 @@ void SoundDebugSystem(ecs_iter_t *it) {
             spawn_line2D(world, (float2) { x_position, 0 }, (float2) { x_position, soundData->value[i] }, debug_sound_thickness, decay_time);
         }
     }
-#endif
+//#endif
 } zox_declare_system(SoundDebugSystem)

@@ -49,7 +49,7 @@ zox_begin_module(ZoxGame)
     // is_log_sounds = 1;
     // terrain_mode = terrain_mode_flatlands;
     headless = 0;
-    is_raycast_minivoxes = 1;
+    zox_visualize_sounds = 0;
 
     zox_game_type = zox_game_mode_3D;
     menu_sky_color = (color_rgb) { 0, 5, 0 };

@@ -10,10 +10,6 @@
 #include "prefabs/_.c"
 #include "systems/_.c"
 
-void dispose_gameui(ecs_world_t *world, void *ctx) {
-    dispose_hook_taskbar();
-}
-
 zox_begin_module(GameUI)
     zox_module_dispose(dispose_gameui)
     initialize_hook_taskbar();

@@ -23,7 +23,10 @@ void spawn_realm_playlist(ecs_world_t *world, const ecs_entity_t realm) {
     add_music(world, playlist_game, generated_music);
     // zox_set(realm, PlaylistLink, { playlist })
     // play_playlist(world, realm, 0);
+    zox_set(music_file, MusicEnabled, { 1 })
+    zox_set(realm, PlaylistLinks, {
+        .length = playlistLinks->length,
+        .value = playlistLinks->value
+    });
     local_music = music_file;
-    zox_set(local_music, MusicPlaying, { 1 })
-    zox_set(realm, PlaylistLinks, { playlistLinks->length, playlistLinks->value });
 }

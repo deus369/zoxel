@@ -13,7 +13,12 @@ ecs_entity_t spawn_prefab_line2D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_line2D(ecs_world_t *world, const float2 pointA, const float2 pointB, const float thickness, const double life_time) {
+ecs_entity_t spawn_line2D(ecs_world_t *world,
+    const float2 pointA,
+    const float2 pointB,
+    const float thickness,
+    const double life_time)
+{
     ecs_entity_t e;
     if (life_time == 0.0) {
         e = zox_instancee(prefab_line2D)

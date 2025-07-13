@@ -19,6 +19,7 @@ void spawn_prefabs_musics(ecs_world_t *world) {
     prefab_playlist = spawn_prefab_playlist(world);
     if (prefab_realm) {
         zox_prefab_set(prefab_realm, PlaylistLink, { 0 })
+        zox_prefab_set(prefab_realm, PlaylistPlaying, { 0 })
         zox_prefab_add(prefab_realm, PlaylistLinks)
     }
 }

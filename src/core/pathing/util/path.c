@@ -168,17 +168,13 @@ byte initialize_pathing() {
     zox_log_io("> io base_path [%s]", base_path)
     DIR* dir = opendir(base_path);
     if (dir) {
-        // resources_path = malloc(strlen(base_path) + strlen(resources_folder_name) + 1);
-        // strcpy(resources_path, base_path);
-        // strcat(resources_path, resources_folder_name);
-        // if doesn't exist check parents:
         resources_path = find_resources_path(base_path, resources_folder_name);
         if (resources_path) {
-            zox_log("Resources found at: %s", resources_path)
+            zox_log("🔥 resources_path [%s]", resources_path)
         } else {
             zox_log_error("Resources folder not found in any parent directories.")
         }
-        zox_log_io("> resources_path [%s]", resources_path)
+        zox_log_io("🔥 resources_path [%s]", resources_path)
         DIR* dir2 = opendir(resources_path);
         if (dir2) {
             closedir(dir2);

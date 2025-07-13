@@ -1,12 +1,17 @@
 void ElementRaycastSystem(ecs_iter_t *it) {
     zox_sys_query()
-    zox_field_world()
-    zox_field_in(Raycaster, raycasters, 1)
-    zox_field_in(DeviceLink, deviceLinks, 2)
-    zox_field_out(RaycasterTarget, raycasterTargets, 3)
-    zox_field_out(WindowRaycasted, windowRaycasteds, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Raycaster)
+    zox_sys_in(DeviceLink)
+    zox_sys_out(RaycasterTarget)
+    zox_sys_out(WindowRaycasted)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DeviceLink, deviceLinks, deviceLink)
+        zox_sys_e()
+        zox_sys_i(DeviceLink, deviceLink)
+        zox_sys_i(Raycaster, raycaster)
+        zox_sys_o(RaycasterTarget, raycasterTarget)
+        zox_sys_o(WindowRaycasted, windowRaycasted)
         if (!deviceLink->value) {
             continue;
         }
@@ -20,10 +25,6 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         }
         const ecs_entity_t player_canvas = zox_get_value(player, CanvasLink)
         const ecs_entity_t player_camera_ui = zox_get_value(player_canvas, CameraLink)
-        zox_field_e()
-        zox_field_i(Raycaster, raycasters, raycaster)
-        zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_o(WindowRaycasted, windowRaycasteds, windowRaycasted)
         const int2 position = raycaster->value;
         int ui_layer = -1;
         ecs_entity_t ui_selected = 0;

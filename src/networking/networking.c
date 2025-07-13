@@ -58,8 +58,14 @@ zox_begin_module(Networking)
     zox_define_component_int(TargetNetPort)
     zox_define_memory_component(PacketData)
     zox_define_component_w_dest(SocketLink)
-    zox_system(PacketRecieveSystem, EcsOnUpdate, [none] PacketReciever, [in] SocketLink)
-    zox_system(PacketSendSystem, EcsOnUpdate, [none] PacketSender, [in] SocketLink, [in] TargetNetAddress, [in] TargetNetPort)
+    zox_system(PacketRecieveSystem, EcsOnUpdate,
+        [none] PacketReciever,
+        [in] SocketLink)
+    zox_system(PacketSendSystem, EcsOnUpdate,
+        [none] PacketSender,
+        [in] SocketLink,
+        [in] TargetNetAddress,
+        [in] TargetNetPort)
     spawn_prefabs_networking(world);
 zox_end_module(Networking)
 

@@ -25,13 +25,13 @@ run: $(TARGET)
 
 dev: $(TARGET_DEV)
 
-run-dev: dev
+rund: dev
 	./$(TARGET_DEV)
 
 gdb: dev
 	gdb ./$(TARGET_DEV)
 
-valgrind: dev
+val: dev
 	valgrind ./$(TARGET_DEV)
 
 clean:
@@ -41,7 +41,7 @@ clean:
 flecs:
 	cd ../flecsing && make clean && make download && make refresh
 
-.PHONY: all run dev run-dev run-gdb run-val clean
+.PHONY: all run dev rund gdb val clean
 
 # catching memory errors >
 # 	CFLAGS_DEV += -fsanitize=address,undefined

@@ -29,7 +29,7 @@ void set_player_action(ecs_world_t *world, const ecs_entity_t player, const byte
         }
     }
     zox_set(children->value[index], ActiveState, { 1 })
-    spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, global_volume_sfx);
+    spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, get_volume_sfx());
 }
 
 void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const int direction) {
@@ -72,7 +72,7 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
         selected = 0;
     }
     zox_set(children->value[selected], ActiveState, { 1 })
-    spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, global_volume_sfx);
+    spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, get_volume_sfx());
 }
 
 byte get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {

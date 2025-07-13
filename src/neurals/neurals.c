@@ -41,17 +41,30 @@ zox_begin_module(Neurals)
     zox_define_memory_component(BrainOutputs)
     zox_define_memory_component(BrainLinks)
     // zox_system(NeuronInputSystem, EcsOnUpdate, [none] InputNeuron) //  [out] Transfer,
-    zox_system(LinkFeedForwardSystem, EcsPostUpdate, [in] ConnectionData, [out] Weight, [out] Signal, [out] Transfer, [none] Connection)
-    zox_system(NeuronFeedForwardSystem, EcsOnUpdate, [out] Signal, [none] Neuron, [none] !OutputNeuron)
+    zox_system(LinkFeedForwardSystem, EcsPostUpdate,
+        [in] ConnectionData,
+        [out] Weight,
+        [out] Signal,
+        [out] Transfer,
+        [none] Connection)
+    zox_system(NeuronFeedForwardSystem, EcsOnUpdate,
+        [out] Signal,
+        [none] Neuron,
+        [none] !OutputNeuron)
 
-    #ifdef zox_render_brain
-    zox_system_1(NeuronRenderSystem, zox_pip_mainthread, [in] transforms2.d.Position2D, [none] Neuron)
-    zox_system_1(ConnectionRenderSystem, zox_pip_mainthread, [in] ConnectionData, [in] Weight, [in] Signal, [in] Transfer, [none] Connection)
-    #endif
+#ifdef zox_render_brain
+    zox_system_1(NeuronRenderSystem, zox_pip_mainthread,
+        [in] transforms2.d.Position2D,
+        [none] Neuron)
+    zox_system_1(ConnectionRenderSystem, zox_pip_mainthread,
+        [in] ConnectionData,
+        [in] Weight,
+        [in] Signal,
+        [in] Transfer,
+        [none] Connection)
+#endif
     spawn_prefabs_neurals(world);
-    #ifdef zox_test_brain
-    spawn_test_brain(world);
-    #endif
+    // spawn_test_brain(world);
 zox_end_module(Neurals)
 
 #endif

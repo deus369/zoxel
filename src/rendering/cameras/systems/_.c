@@ -10,7 +10,7 @@ void define_systems_rendering_cameras(ecs_world_t *world) {
         [out] RenderBufferLink)
     zox_gpu_restore_system(RenderTextureRestoreSystem,
         [in] rendering.core.TextureGPULink,
-        [in] transforms2.d.PixelSize,
+        [in] layouts2.d.PixelSize,
         [in] cameras.CameraLink,
         [none] cameras.RenderTexture)
     // rendering

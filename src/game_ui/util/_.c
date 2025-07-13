@@ -22,3 +22,7 @@ void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
 void button_event_pause_game(ecs_world_t *world, const ClickEventData *event) {
     toggle_pause_ui(world, event->clicker);
 }
+
+void dispose_gameui(ecs_world_t *world, void *ctx) {
+    dispose_hook_taskbar();
+}

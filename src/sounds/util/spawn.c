@@ -3,7 +3,7 @@ ecs_entity_t spawn_sound_from_file_index(ecs_world_t *world,
     const int index)
 {
     if (index < sound_files_count && files_sounds[index]) {
-        return spawn_sound_from_file(world, prefab, files_sounds[index], 0, global_volume_sfx);
+        return spawn_sound_from_file(world, prefab, files_sounds[index], 0, get_volume_sfx());
     } else {
         zox_log_error("sound is null at [%i]", index)
     }

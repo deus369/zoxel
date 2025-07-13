@@ -1,7 +1,7 @@
+// cache camera?? todo: refactor!
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
 void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
-    zox_field_world()
     glUseProgram(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     if (is_element_line) {
@@ -9,16 +9,23 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
         glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &identity);
         glUniform1f(line2D_depth_location, ((int) renderer_layer) * shader_depth_multiplier);
     } else {
-        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
+        // glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
+        const float4x4 identity = float4x4_identity();
+        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &identity);
         glUniform1f(line2D_depth_location, ((int) 0) * shader_depth_multiplier);
     }
-    zox_field_in(LineData2D, lineData2Ds, 1)
-    zox_field_in(LineThickness, lineThicknesss, 2)
-    zox_field_in(Color, colors, 3)
-    zox_field_in(Layer2D, layer2Ds, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(LineData2D)
+    zox_sys_in(LineThickness)
+    zox_sys_in(Color)
+    zox_sys_in(Layer2D)
     for (int i = 0; i < it->count; i++) {
+        zox_sys_i(Layer2D, layer2D)
+        zox_sys_i(LineData2D, lineData2D)
+        zox_sys_i(LineThickness, lineThickness)
+        zox_sys_i(Color, line_color)
         if (is_element_line) {
-            zox_field_i(Layer2D, layer2Ds, layer2D)
             if (layer2D->value != renderer_layer) {
                 continue; // render per layer
             }
@@ -27,9 +34,6 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
                 continue;
             }
         }
-        zox_field_i(LineData2D, lineData2Ds, lineData2D)
-        zox_field_i(LineThickness, lineThicknesss, lineThickness)
-        zox_field_i(Color, colors, line_color)
         const float4 color_float4 = color_to_float4(line_color->value);
         glLineWidth(lineThickness->value);
         glVertexAttribPointer(line2D_position_location, 2, GL_FLOAT, GL_FALSE, 0, (GLfloat*) &lineData2D->value);

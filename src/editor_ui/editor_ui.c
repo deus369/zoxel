@@ -39,8 +39,8 @@ zox_begin_module(EditorUI)
         [in] elements.core.ElementFontSize,
         [in] elements.core.CanvasLink,
         [out] HierarchyUIDirty,
-        [out] transforms2.d.PixelPosition,
-        [out] transforms2.d.PixelSize,
+        [out] layouts2.d.PixelPosition,
+        [out] layouts2.d.PixelSize,
         [out] textures.core.TextureSize,
         [out] hierarchys.Children)
     spawn_prefabs_editor(world);

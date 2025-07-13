@@ -1,10 +1,8 @@
 #include "sound_process_system.c"
 #include "sound_generate_system.c"
+#include "sound_play_system.c"
+#include "sound_play_ref_system.c"
 #include "sound_debug_system.c"
-#ifdef zox_lib_sdl_mixer
-    #include "sound_play_system.c"
-    #include "sound_update_system.c"
-#endif
 zox_increment_system_with_reset(TriggerSound, zox_sound_play_end)
 zox_increment_system_with_reset(ProcessSound, zox_sound_process_end)
 zox_increment_system_with_reset(GenerateSound, zox_sound_generate_end)
@@ -38,7 +36,7 @@ void define_systems_sounds(ecs_world_t *world) {
         [in] SoundDataRef,
         [none] Sound)
     zox_system_1(SoundDebugSystem, zox_pip_mainthread,
-        [none] Sound,
         [in] SoundData,
-        [in] SoundDirty)
+        [in] TriggerSound,
+        [none] Sound)
 }

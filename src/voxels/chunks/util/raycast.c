@@ -1,4 +1,4 @@
-byte is_raycast_minivoxes = 0;  // its broken atm
+byte is_raycast_minivoxes = 1;  // its broken atm
 
 byte raycast_character(ecs_world_t *world,
     const ecs_entity_t caster,

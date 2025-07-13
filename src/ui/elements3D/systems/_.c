@@ -11,7 +11,7 @@ void define_systems_elements3D(ecs_world_t *world) {
     zox_system(TextUpdateSystem, EcsOnUpdate, [in] texts.ZextDirty, [in] texts.TextData, [in] hierarchys.Children, [none] texts.Zext) // , [none] Text3D)
     zox_system_1(Text3DResizeSystem, EcsOnUpdate, [in] texts.TextData, [in] zigels.FontOutlineColor, [in] zigels.FontFillColor, [in] zigels.FontThickness, [in] texts.ZextDirty, [in] rendering.RenderDisabled, [in] Text3DScale, [in] texts.TextSize, [out] hierarchys.Children, [none] texts.Zext, [none] Text3D)
     if (!headless) {
-        zox_system_1(Element3DMeshSystem, zox_pip_mainthread, [none] Element3D, [in] transforms2.d.PixelSize, [in] elements.core.CanvasLink, [out] elements.core.InitializeElement, [out] rendering.MeshDirty, [out] textures.core.GenerateTexture,  [out] rendering.core.MeshGPULink, [out] rendering.core.UvsGPULink, [out] rendering.core.ColorsGPULink, [out] rendering.core.TextureGPULink)
+        zox_system_1(Element3DMeshSystem, zox_pip_mainthread, [none] Element3D, [in] layouts2.d.PixelSize, [in] elements.core.CanvasLink, [out] elements.core.InitializeElement, [out] rendering.MeshDirty, [out] textures.core.GenerateTexture,  [out] rendering.core.MeshGPULink, [out] rendering.core.UvsGPULink, [out] rendering.core.ColorsGPULink, [out] rendering.core.TextureGPULink)
         zox_render3D_plus_system(Element3DRenderSystem, [in] transforms3.d.TransformMatrix, [in] rendering.core.MeshGPULink, [in] rendering.core.UvsGPULink, [in] rendering.core.ColorsGPULink, [in] rendering.core.MeshIndicies, [in] rendering.core.TextureGPULink, [in] rendering.RenderDisabled, [none] rendering.core.SingleMaterial)
     }
 }

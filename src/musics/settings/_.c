@@ -4,8 +4,8 @@ byte is_log_notes = 0;
         zox_log(msg, ##__VA_ARGS__)\
     }
 
-#define zox_test_music_files
-const int music_note_skip = 89;
 // instrument_piano_file | instrument_piano
 const byte music_load_instrument = instrument_piano_file;
-float global_music_speed = 0.5f;
+float global_music_speed = 1;
+const int music_note_skip = 89;
+const int music_play_double_chance = 89;

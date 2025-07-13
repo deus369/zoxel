@@ -8,7 +8,7 @@ void PickupSoundSystem(ecs_iter_t *it) {
         if (pickedUp->value != pickup_state_pickup) {
             continue;
         }
-        spawn_sound_from_file_name(world, prefab_sound, "pickup2", 0, global_volume_sfx);
+        spawn_sound_from_file_name(world, prefab_sound, "pickup2", 0, get_volume_sfx());
         // todo: move to character, delete after!
         zox_delete(e)
     }

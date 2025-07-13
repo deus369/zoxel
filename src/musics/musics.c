@@ -1,46 +1,67 @@
 #ifndef zox_mod_musics
 #define zox_mod_musics
 
+// todo: make sub modules:
+//      - notes
+//      - songs
+//      - playlists
+//      - io
+
 #include "settings/_.c"
 zox_declare_tag(Note)
 zox_declare_tag(Music)
 zox_declare_tag(Looping)
-zox_declare_tag(Playlist)
 zox_component_byte(MusicNote)
 zox_component_byte(GenerateMusic)
-zox_component_byte(MusicPlaying)
+zox_component_byte(MusicEnabled)
 zox_component_double(MusicLength)
 zox_component_double(MusicTime)
 zox_component_double(MusicSpeed)
 zox_entities_component(NoteLinks)
-zox_component_byte(PlaylistIndex)
-zox_component_entity(PlaylistLink)
+// playlist
+zox_declare_tag(Playlist)
+zox_component_byte(PlaylistEnabled)
+zox_component_byte(MusicPlaying)
 zox_entities_component(MusicLinks)
+// realm
+zox_component_byte(PlaylistPlaying)
 zox_entities_component(PlaylistLinks)
+zox_component_entity(PlaylistLink)
+// playlist mode
+#define playlist_mode_loop 0    // stick on same track
+#define playlist_mode_cycle 1   // play through list sequentially
+#define playlist_mode shuffle 2 // random non repeating track each time
+zox_component_byte(PlaylistMode)
 
 // zox_memory_component(MusicData, int)
-#include "util/music_palette.c"
+#include "data/music_palette.c"
 #include "convert/midi_load.c"
-#include "prefabs/prefabs.c"
-#include "util/playlist.c"
-#include "util/game_music.c"
+#include "prefabs/_.c"
+#include "util/_.c"
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
 
 zox_begin_module(Musics)
+    // Notes
     zox_define_tag(Note)
     zox_define_tag(Music)
     zox_define_tag(Looping)
+    // Music
     zox_define_component_byte(MusicNote)
     zox_define_component_byte(GenerateMusic)
-    zox_define_component_byte(MusicPlaying)
+    zox_define_component_byte(MusicEnabled)
     zox_define_component_double(MusicTime)
     zox_define_component_double(MusicSpeed)
     zox_define_component_double(MusicLength)
     zox_define_entities_component(NoteLinks)
+    // playlist
     zox_define_tag(Playlist)
-    zox_define_component_byte(PlaylistIndex)
+    zox_define_component_byte(PlaylistEnabled)
+    zox_define_component_byte(MusicPlaying)
     zox_define_entities_component(MusicLinks)
+    // realm
+    zox_define_component_byte(PlaylistPlaying)
+    zox_define_component_byte(PlaylistMode)
     zox_define_entities_component(PlaylistLinks)
     zox_define_component_entity(PlaylistLink)
     zox_system_1(MusicGenerateSystem, zox_pip_mainthread,
@@ -48,7 +69,7 @@ zox_begin_module(Musics)
         [out] NoteLinks,
         [none] Music)
     zox_system_1(MusicPlaySystem, zox_pip_mainthread,
-        [in] MusicPlaying,
+        [in] MusicEnabled,
         [in] NoteLinks,
         [in] MusicSpeed,
         [out] MusicNote,

@@ -2,7 +2,7 @@
 extern ecs_entity_t spawn_pickup(ecs_world_t *world, const float3 position, const ecs_entity_t voxel);
 
 void MeleeSystem(ecs_iter_t *it) {
-    const double volume = global_volume_sfx;
+    const double volume = get_volume_sfx();
     zox_field_world()
     zox_field_in(UserLink, userLinks, 1)
     zox_field_out(SkillActive, skillActives, 2)

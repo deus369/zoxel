@@ -65,7 +65,6 @@ void CanvasStackSystem(ecs_iter_t *it) {
         int_hashmap *windows = create_int_hashmap(windows_count);
         int_hashmap_add(windows, windows_count, windowToTop->value);
 
-
 #ifdef zox_debug_canvas_stack
         zox_log(" >  canvas stack system refreshing [%i] out of [%i]\n", windows_count, children->length)
         zox_log("   - [%i] event WindowLayer [%lu]\n", windows_count, windowToTop->value)
