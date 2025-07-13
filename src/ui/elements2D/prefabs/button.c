@@ -2,11 +2,14 @@ ecs_entity_t spawn_prefab_button(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_prefab_child(prefab)
     zox_prefab_name("prefab_button")
     zox_add_tag(e, Button)
+    // transform
+    zox_prefab_add(e, Children)
+    // texture
+    set_frame_texture_type(world, e, default_fill_color, default_outline_color, default_button_corner, default_button_frame_thickness);
+    //  interactable
     zox_add_tag(e, ClickMakeSound)
     add_selectable_components(world, e);
     add_clickable_components(world, e);
-    zox_prefab_add(e, Children)
-    set_frame_texture_type(world, e, default_fill_color, default_outline_color, default_button_corner, default_button_frame_thickness);
     return e;
 }
 

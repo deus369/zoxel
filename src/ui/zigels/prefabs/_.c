@@ -20,5 +20,5 @@ int get_zigels_count(ecs_world_t *world) {
 void spawn_prefabs_zigels(ecs_world_t *world) {
     prefab_font = spawn_font_prefab(world);
     prefab_font_style = spawn_prefab_font_style(world, prefab_font);
-    prefab_zigel = spawn_zigel_prefab(world);
+    prefab_zigel = spawn_zigel_prefab(world, prefab_element_basic);
 }

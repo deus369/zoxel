@@ -9,25 +9,28 @@ void add_ui_components(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, CanvasLink, { 0 })
 }
 
-void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) {
-        return;
-    }
-    add_gpu_mesh(world, e);
-    add_gpu_texture(world, e);
-    add_gpu_uvs(world, e);
-    zox_prefab_set(e, MeshDirty, { mesh_state_trigger2 })
-    zox_prefab_set(e, MeshAlignment, { zox_mesh_alignment_centred })
-    zox_prefab_add(e, MeshIndicies)
-    zox_prefab_set(e, MeshVertices2D, { 0, NULL })
-    zox_prefab_add(e, MeshUVs)
+void prefab_set_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     prefab_set_mesh_indicies(world, e, square_indicies, 6);
     // prefab_set_mesh2D_vertices(world, e, square_vertices, 4);
     prefab_set_mesh2D_vertices(world, e, NULL, 0);
     prefab_set_mesh_uvs_float2(world, e, square_uvs, 4);
+}
+
+void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     // this is more mesh stuff
     zox_add_tag(e, ElementRender)
     zox_prefab_set(e, RenderDisabled, { 0 })
+    if (!headless) {
+        zox_prefab_set(e, MeshDirty, { mesh_state_trigger2 })
+        zox_prefab_set(e, MeshAlignment, { zox_mesh_alignment_centred })
+        zox_prefab_add(e, MeshIndicies)
+        zox_prefab_set(e, MeshVertices2D, { 0, NULL })
+        zox_prefab_add(e, MeshUVs)
+        zox_prefab_set(e, MeshGPULink, { { 0, 0 } })
+        zox_prefab_set(e, TextureGPULink, { 0 })
+        zox_prefab_set(e, UvsGPULink, { 0 })
+        prefab_set_ui_mesh(world, e);
+    }
 }
 
 void add_ui_mesh_components(ecs_world_t *world, const ecs_entity_t e) {
@@ -36,24 +39,11 @@ void add_ui_mesh_components(ecs_world_t *world, const ecs_entity_t e) {
     add_ui_mesh(world, e);
 }
 
-void add_components_ui_basic(ecs_world_t *world, const ecs_entity_t e) {
-    add_transform2Ds(world, e);
-    add_ui_components(world, e);
-    add_ui_mesh_components(world, e);
-    prefab_add_texture(world, e, int2_zero);
-}
-
 void add_ui_plus_components(ecs_world_t *world, const ecs_entity_t e) {
     add_transform2Ds(world, e);
     add_ui_components(world, e);
     add_ui_mesh_components(world, e);
     prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_trigger);
-}
-
-void add_ui_plus_components_invisible(ecs_world_t *world, const ecs_entity_t e) {
-    add_seed(world, e, 666);
-    add_transform2Ds(world, e);
-    add_ui_components(world, e);
 }
 
 void add_clickable_components(ecs_world_t *world, const ecs_entity_t e) {
@@ -68,7 +58,7 @@ void add_selectable(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 void add_selectable_components(ecs_world_t *world, const ecs_entity_t e) {
-    add_selectable(world, e);
+    zox_add_tag(e, Selectable)
     zox_prefab_set(e, SelectState, { zox_select_state_none })
 }
 

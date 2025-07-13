@@ -1,25 +1,22 @@
-/*void set_element_position_for_mouse(ecs_world_t *world, const ecs_entity_t e, const int2 position) {
-    if (!zox_valid(e)) return;
-    PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
-    pixel_position->value += position;
-    if (zox_has(e, DraggableLimits)) {
-        const int4 drag_bounds = zox_get_value(e, DraggableLimits)
-        limited_element(pixel_position, drag_bounds);
-    }
-    zox_modified(e, PixelPosition)
-}*/
+byte is_log_dragging = 0;
 
 void drag_element(ecs_world_t *world, const ecs_entity_t e, const int2 drag_value) {
-    if (!zox_valid(e)) return;
-    PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
+    if (!zox_valid(e)) {
+        return;
+    }
+    zox_get_muter(e, PixelPosition, pixel_position)
     pixel_position->value.x += drag_value.x;
     pixel_position->value.y += drag_value.y;
-    if (zox_has(e, DraggableLimits)) {
-        const int4 drag_bounds = zox_get_value(e, DraggableLimits)
-        limited_element(pixel_position, drag_bounds);
+    //#ifdef zox_log_ui_dragging
+    if (is_log_dragging) {
+        zox_log("> dragging [%s] by %ix%i", zox_get_name(e), drag_value.x, drag_value.y)
     }
-    zox_modified(e, PixelPosition)
-#ifdef zox_log_ui_dragging
-    zox_log(" > dragging window [%lu] by %ix%i\n", e, drag_value.x, drag_value.y)
-#endif
+    //#endif
+    if (zox_has(e, DraggableLimits)) {
+        zox_geter_value(e, DraggableLimits, int4, drag_bounds)
+        limited_element(pixel_position, drag_bounds);
+        if (is_log_dragging) {
+            zox_log("   - bounded by [%s] by x[%i-%i] y[%i-%i]", zox_get_name(e), drag_bounds.x, drag_value.y, drag_bounds.z, drag_bounds.w)
+        }
+    }
 }

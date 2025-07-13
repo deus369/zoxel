@@ -1,15 +1,19 @@
-ecs_entity_t spawn_zigel_prefab(ecs_world_t *world) {
-    zox_prefab()
+ecs_entity_t spawn_zigel_prefab(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_zigel")
+    // zigel
     zox_add_tag(e, Zigel)
-    zox_add_tag(e, FontTexture)
-    add_ui_plus_components(world, e);
     zox_prefab_set(e, ZigelIndex, { 0 })
+    // font texture
+    zox_add_tag(e, FontTexture)
+    zox_prefab_set(e, Seed, { 666 })
+    zox_prefab_set(e, GenerateTexture, { zox_generate_texture_trigger })
     zox_prefab_set(e, Color, { color_white })
     zox_prefab_set(e, SecondaryColor, { color_white })
     zox_prefab_set(e, FontThickness, { 1 })
     zox_prefab_set(e, FontOutlineThickness, { 2 })
-    zox_prefab_set(e, TextureSize, { int2_single(4) })
+    // zox_prefab_set(e, TextureSize, { int2_single(4) })
+    // add_ui_plus_components(world, e);
     return e;
 }
 

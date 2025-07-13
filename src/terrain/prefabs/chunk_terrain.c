@@ -5,7 +5,7 @@ ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world, const ecs_entity_t p
     zox_add_tag(e, StreamedChunk)
     zox_add_tag(e, TerrainChunk)
     zox_add_tag(e, ChunkTextured)
-    add_seed(world, e, 666);
+    zox_prefab_set(e, Seed, { 666 })
     zox_prefab_set(e, ChunkLodDirty, { 0 })
     zox_prefab_set(e, GenerateChunk, { 0 }) // fails on samsung phone?
     // links to sub chunk things - remember: these have to be set to NULL as not set in initialization

@@ -44,8 +44,6 @@ float2 get_ui_real_position2D_parent(const int2 local_pixel_position, const floa
     return position2D;
 }
 
-
-
 int2 get_element_pixel_position_global(const int2 parent_pixel_position_global, const int2 parent_size, const int2 pixel_position, const float2 anchor) {
     int2 pixel_position_global = parent_pixel_position_global;
     // position is actually the centre point, so get the bottom left corner here
@@ -90,18 +88,27 @@ void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const
 }
 
 void limited_element(PixelPosition *pixel_position, const int4 drag_bounds) {
-    if (pixel_position->value.x < drag_bounds.x) pixel_position->value.x = drag_bounds.x;
-    if (pixel_position->value.x > drag_bounds.y) pixel_position->value.x = drag_bounds.y;
-    if (pixel_position->value.y < drag_bounds.z) pixel_position->value.y = drag_bounds.z;
-    if (pixel_position->value.y > drag_bounds.w) pixel_position->value.y = drag_bounds.w;
+    if (pixel_position->value.x < drag_bounds.x) {
+        pixel_position->value.x = drag_bounds.x;
+    }
+    if (pixel_position->value.x > drag_bounds.y) {
+        pixel_position->value.x = drag_bounds.y;
+    }
+    if (pixel_position->value.y < drag_bounds.z) {
+        pixel_position->value.y = drag_bounds.z;
+    }
+    if (pixel_position->value.y > drag_bounds.w) {
+        pixel_position->value.y = drag_bounds.w;
+    }
 }
 
 void limit_element(ecs_world_t *world, const ecs_entity_t e) {
-    if (!zox_valid(e) || !zox_has(e, PixelPosition) || !zox_has(e, DraggableLimits)) return;
-    PixelPosition *pixel_position = zox_get_mut(e, PixelPosition)
-    const int4 drag_bounds = zox_get_value(e, DraggableLimits)
+    if (!zox_valid(e) || !zox_has(e, PixelPosition) || !zox_has(e, DraggableLimits)) {
+        return;
+    }
+    zox_get_muter(e, PixelPosition, pixel_position)
+    zox_geter_value(e, DraggableLimits, int4, drag_bounds)
     limited_element(pixel_position, drag_bounds);
-    zox_modified(e, PixelPosition)
 }
 
 extern void anchor_element_position2D(int2 *position, const float2 position_anchor, const int2 window_size);
@@ -197,15 +204,15 @@ void set_element_spawn_data(ecs_world_t *world,
     anchor_element_position2D(&position, element_data->anchor, element_data->size);
 
     initialize_element(world, e,
-                       parent_data.e,
-                       canvas_data.e,
-                       position,
-                       element_data->size,
-                       element_data->size,
-                       element_data->anchor,
-                       element_data->layer,
-                       real_position,
-                       element_data->position_in_canvas);
+        parent_data.e,
+        canvas_data.e,
+        position,
+        element_data->size,
+        element_data->size,
+        element_data->anchor,
+        element_data->layer,
+        real_position,
+        element_data->position_in_canvas);
 
     /*zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })

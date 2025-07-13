@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_name("character3D")
     zox_add_tag(e, Character3D)
     // generation
-    add_seed(world, e, 999);
+    zox_prefab_set(prefab, Seed, { 999 })
     // name
     zox_prefab_add(e, ZoxName)
     // physics

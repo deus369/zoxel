@@ -2,21 +2,26 @@
 // if it updates, also update any childrens positions too
 // has to also move children and their children
 void ElementDragSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DraggableState, dragableStates, 1)
-    zox_field_in(DraggingDelta, draggingDeltas, 2)
-    zox_field_in(DraggedLink, draggedLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DraggableState)
+    zox_sys_in(DraggingDelta)
+    zox_sys_in(DraggedLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DraggableState, dragableStates, dragableState)
-        if (dragableState->value) {
-            zox_field_i(DraggingDelta, draggingDeltas, draggingDelta)
-            if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
-                zox_field_e()
-                zox_field_i(DraggedLink, draggedLinks, draggedLink)
-                ecs_entity_t dragged_entity = draggedLink->value;
-                if (!dragged_entity) dragged_entity = e;
-                drag_element(world, dragged_entity, draggingDelta->value);
+        zox_sys_e()
+        zox_sys_i(DraggableState, dragableState)
+        zox_sys_i(DraggingDelta, draggingDelta)
+        zox_sys_i(DraggedLink, draggedLink)
+        if (!zox_valid(dragableState->value)) {
+            continue;
+        }
+        if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
+            ecs_entity_t dragged_entity = draggedLink->value;
+            if (!dragged_entity) {
+                dragged_entity = e;
             }
+            // zox_log("> dragging [%s] [%ix%i]", zox_get_name(dragged_entity), draggingDelta->value.x, draggingDelta->value.y)
+            drag_element(world, dragged_entity, draggingDelta->value);
         }
     }
 } zox_declare_system(ElementDragSystem)

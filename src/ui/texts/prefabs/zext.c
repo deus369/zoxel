@@ -1,20 +1,22 @@
-ecs_entity_t spawn_prefab_zext(ecs_world_t *world) {
-    zox_prefab()
+ecs_entity_t spawn_prefab_zext(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_zext")
+    // hierarchy
+    zox_prefab_set(e, ParentLink, { 0 })
+    // text
     zox_add_tag(e, Zext)
     zox_add_tag(e, Text2D)
-    add_ui_plus_components_invisible(world, e);
+    zox_prefab_set(e, ZextDirty, { 0 })
+    zox_prefab_add(e, TextData)
+    zox_prefab_set(e, Children, { 0, NULL })
+    zox_prefab_set(e, TextPadding, { byte2_zero })
+    // used for font
     zox_prefab_set(e, TextSize, { 0 })
     zox_prefab_set(e, TextResolution, { 0 })
-    zox_prefab_set(e, TextPadding, { byte2_zero })
-    zox_prefab_set(e, ZextDirty, { 0 })
-    zox_prefab_set(e, ParentLink, { 0 })
     zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }})
     zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
     zox_prefab_set(e, FontThickness, { 1 })
     zox_prefab_set(e, FontOutlineThickness, { 0 })
-    zox_prefab_add(e, TextData)
-    zox_prefab_set(e, Children, { 0, NULL })
     return e;
 }
 

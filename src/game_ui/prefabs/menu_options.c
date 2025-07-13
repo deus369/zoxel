@@ -40,22 +40,25 @@ ecs_entity_t spawn_menu_options(
     zox_add_tag(e, MenuOptions)
     zox_name("menu_options")
 
+
+    // todo:
+    //      - parent it to list
+    //      - make element_clickable, element_dragable prefabs
     CanvasSpawnData canvas_data = {
         .e = canvas,
         .size = zox_gett_value(canvas, PixelSize),
     };
     ParentSpawnData menu_options_data = {
-        .e = e,
+        .e = canvas, // e,
         .size = canvas_data.size,
-        // .position = parent_position,
-        // .size = parent_size
+        .position = int2_half(canvas_data.size),
     };
     ElementSpawnData slider_data = {
         .prefab = prefab_slider,
+        .position = (int2) { 0, 128 },
+        .size = (int2) { 256, 48 },
+        .anchor = float2_half,
         .layer = layer + 1,
-        .anchor = anchor,
-        .position = (int2) { 256, 64 },
-        .size = (int2) { 256, 64 },
     };
     ecs_entity_t slider = spawn_slider(world, canvas_data, menu_options_data, slider_data);
     // add to ui list here

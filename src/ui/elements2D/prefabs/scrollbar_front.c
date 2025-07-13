@@ -1,5 +1,5 @@
-ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world) {
-    zox_prefab_child(prefab_element)
+ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world, const ecs_entity_t prefab) {
+    zox_prefab_child(prefab)
     zox_prefab_name("prefab_scrollbar_front")
     zox_add_tag(e, Scrollbar)
     add_selectable_components(world, e);
