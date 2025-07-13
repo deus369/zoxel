@@ -41,8 +41,6 @@ clean:
 flecs:
 	cd ../flecsing && make clean && make download && make refresh
 
-.PHONY: all run dev rund gdb val clean
-
 # catching memory errors >
 # 	CFLAGS_DEV += -fsanitize=address,undefined
 # catching leaks >
@@ -59,7 +57,7 @@ ICON_DIR     := $(PACKAGE_DIR)/usr/share/icons/hicolor/64x64/apps
 ICON_SRC     := res/textures/game_icon.png
 ICON_DEST    := $(ICON_DIR)/$(GAME).png
 
-package: $(TARGET)
+package-deb: $(TARGET)
 	# Create required dirs
 	mkdir -p $(CONTROL_DIR)
 	mkdir -p $(BIN_DIR)
@@ -97,3 +95,47 @@ package: $(TARGET)
 
 	# Build the .deb
 	dpkg-deb --build $(PACKAGE_DIR)
+
+
+# Pacman package
+PKGBUILD := $(PACKAGE_DIR)/PKGBUILD
+
+package-pac: $(TARGET)
+	@# 1. Prepare directory layout
+	mkdir -p $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin \
+	         $(PACKAGE_DIR)/usr/share/games/$(GAME)/res
+
+	@# 2. Copy executable and resources
+	cp $(TARGET) $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin/$(GAME)
+	chmod +x $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin/$(GAME)
+	cp -r res/* $(PACKAGE_DIR)/usr/share/games/$(GAME)/res/ || true
+
+	@# 3. Emit PKGBUILD line by line (no heredoc)
+	@echo "pkgname=$(GAME)"                                                       >  $(PKGBUILD)
+	@echo "pkgver=$(VERSION)"                                                     >> $(PKGBUILD)
+	@echo "pkgrel=1"                                                              >> $(PKGBUILD)
+	@echo "pkgdesc=\"A procedurally-generated voxel RPG\""                       >> $(PKGBUILD)
+	@echo "arch=('x86_64')"                                                       >> $(PKGBUILD)
+	@echo "depends=('sdl2' 'sdl2_image' 'sdl2_mixer' 'flecs')"                    >> $(PKGBUILD)
+	@echo "source=(\"\$${srcdir}/$(TARGET)\" \"res/*\")"                         >> $(PKGBUILD)
+	@echo "build() { return 0; }"                                                 >> $(PKGBUILD)
+	@echo "package() {"                                                           >> $(PKGBUILD)
+	@echo "  install -Dm755 \"\$${srcdir}/$(TARGET)\" \"\$${pkgdir}/usr/share/games/$(GAME)/bin/$(GAME)\"" \
+	                                                                               >> $(PKGBUILD)
+	@echo "  cp -r \"\$${srcdir}/res\" \"\$${pkgdir}/usr/share/games/$(GAME)/res/\"" >> $(PKGBUILD)
+	@echo "}"                                                                     >> $(PKGBUILD)
+
+	@# 4. Build the Arch package
+	@(cd $(PACKAGE_DIR) && makepkg --force --noconfirm --packagetype pkg)
+
+# Wrapper to auto‑select package format
+package:
+	@if command -v pacman >/dev/null; then \
+		$(MAKE) package-pac; \
+	elif command -v dpkg-deb >/dev/null; then \
+		$(MAKE) package-deb; \
+	else \
+		echo "Unsupported packaging system."; exit 1; \
+	fi
+
+.PHONY: all run dev rund gdb val clean package-deb package-pac package
