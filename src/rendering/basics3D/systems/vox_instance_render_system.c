@@ -15,7 +15,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         return;
     }
     if (!can_render_instanes) {
-        can_render_instanes = 0;
+        return;
     }
     InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
     // zox_log("instances: %i\n", it->count)

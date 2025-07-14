@@ -13,21 +13,23 @@ void opengl_upload_mesh_colors(GLuint2 mesh_buffer, GLuint color_buffer, const i
 }
 
 void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
-    // if (!ecs_query_changed(NULL, it)) return;
-    zox_field_in(MeshIndicies, meshIndiciess, 1)
-    zox_field_in(MeshVertices, meshVerticess, 2)
-    zox_field_in(MeshColorRGBs, meshColorRGBss, 3)
-    zox_field_in(MeshDirty, meshDirtys, 4)
-    zox_field_out(MeshGPULink, meshGPULinks, 5)
-    zox_field_out(ColorsGPULink, colorsGPULinks, 6)
+    zox_sys_begin()
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(MeshVertices)
+    zox_sys_in(MeshColorRGBs)
+    zox_sys_in(MeshDirty)
+    zox_sys_out(MeshGPULink)
+    zox_sys_out(ColorsGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_upload) continue;
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i(MeshVertices, meshVerticess, meshVertices)
-        zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
-        zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_sys_i(MeshDirty, meshDirty)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshVertices, meshVertices)
+        zox_sys_i(MeshColorRGBs, meshColorRGBs)
+        zox_sys_o(MeshGPULink, meshGPULink)
+        zox_sys_o(ColorsGPULink, colorsGPULink)
+        if (meshDirty->value != mesh_state_upload) {
+            continue;
+        }
         if (meshIndicies->length == 0) {
             // clear mesh and colors buffer if zero again
             if (meshGPULink->value.x != 0 && meshGPULink->value.y != 0 && colorsGPULink->value != 0) {
@@ -41,7 +43,9 @@ void MeshUpdateCharacters3DSystem(ecs_iter_t *it) {
             meshGPULink->value.x = spawn_gpu_generic_buffer();
             meshGPULink->value.y = spawn_gpu_generic_buffer();
         }
-        if (colorsGPULink->value == 0) colorsGPULink->value = spawn_gpu_generic_buffer();
+        if (colorsGPULink->value == 0) {
+            colorsGPULink->value = spawn_gpu_generic_buffer();
+        }
         // zox_log(" + Uploading mesh [%i : %i]\n", meshVertices->length, meshColorRGBs->length)
         opengl_upload_mesh_colors(meshGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshColorRGBs->value, meshVertices->length);
 #ifdef zox_errorcheck_render_characters_3D

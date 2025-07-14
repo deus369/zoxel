@@ -13,26 +13,27 @@ void update_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer,
 }
 
 void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
-    zox_field_in(MeshIndicies, meshIndiciess, 1)
-    zox_field_in(MeshVertices, meshVerticess, 2)
-    zox_field_in(MeshUVs, meshUVss, 3)
-    zox_field_in(MeshColorRGBs, meshColorRGBss, 4)
-    zox_field_in(MeshGPULink, meshGPULinks, 5)
-    zox_field_in(UvsGPULink, uvsGPULinks, 6)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 7)
-    zox_field_in(MeshDirty, meshDirtys, 8)
+    zox_sys_begin()
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(MeshVertices)
+    zox_sys_in(MeshUVs)
+    zox_sys_in(MeshColorRGBs)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(ColorsGPULink)
+    zox_sys_in(MeshDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        zox_sys_i(MeshDirty, meshDirty)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(ColorsGPULink, colorsGPULink)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshVertices, meshVertices)
+        zox_sys_i(MeshUVs, meshUVs)
+        zox_sys_i(MeshColorRGBs, meshColorRGBs)
         if (meshDirty->value != mesh_state_upload) {
             continue;
         }
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
-        zox_field_i(MeshVertices, meshVerticess, meshVertices)
-        zox_field_i(MeshUVs, meshUVss, meshUVs)
-        zox_field_i(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
         if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !colorsGPULink->value || !meshIndicies->length || !meshVertices->length || !meshUVs->length) {
             continue;
         }
