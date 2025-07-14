@@ -202,7 +202,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             ElementSpawnData spawn_slider_data = spawnButton.element;
             spawn_slider_data.prefab = prefab_slider;
             spawn_slider_data.size = (int2) { 256, 42 };
-
             const ecs_entity_2 e2 = spawn_slider(world,
                 spawnButton.canvas,
                 spawnButton.parent,
