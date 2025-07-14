@@ -34,11 +34,25 @@
     #include <vulkan/vulkan_wayland.h>
 #endif
 
+#define zox_opengl_compatibility 0
+#define zox_opengl_core 1
+#define zox_opengl_es 2
+byte opengl_mode = zox_opengl_compatibility;
 #include "components/_.c"
 #include "prefabs/app_sdl.c"
 #include "data/settings.c"
 #include "inputs/_.c"
 #include "util/_.c"
+
+void process_arguments_sdl(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "--opengles") == 0) {
+            opengl_mode = zox_opengl_es;
+        } else if (strcmp(args[i], "--openglcore") == 0) {
+            opengl_mode = zox_opengl_core;
+        }
+    }
+}
 
 zox_begin_module(Sdl)
     zox_module_dispose(dispose_apps_sdl)
@@ -51,6 +65,7 @@ zox_begin_module(Sdl)
     add_to_post_update_loop(app_update_gpu);
     set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
     zox_import_module(SdlInputs)
+    add_hook_terminal_command(process_arguments_sdl);
 zox_end_module(Sdl)
 
 #endif

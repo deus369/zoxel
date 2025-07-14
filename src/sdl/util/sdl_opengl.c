@@ -26,31 +26,26 @@ void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    /*if (override_opengl_es) {
-        if (opengl_es_supported()) {
-            #ifdef zoxel_debug_opengl
-            zox_log(" + GL_ES detected\n")
-            #endif
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-        } else {
-            #ifdef zoxel_debug_opengl
-            zox_log(" - GL_ES unavilable\n")
-            #endif
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        }
-    }*/
+    if (opengl_mode == zox_opengl_es) {
+        zox_log("> running with opengl es!")
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    } else if (opengl_mode == zox_opengl_core) {
+        zox_log("> running with opengl core!")
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    } else {
+        zox_log("> running with opengl compatibility")
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+    }
 }
 
 SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     if (!window) {
-        zox_log(" - SDL_Window is null [%s]\n", SDL_GetError())
+        zox_log_error("SDL_Window is null [%s]", SDL_GetError())
         return NULL;
     }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (!context) {
-        zox_log(" ! failed again to create opengl context [%s]\n", SDL_GetError())
+        zox_log_error("failed again to create opengl context [%s]", SDL_GetError())
         return NULL;
     }
     /*if (*SDL_GetError()) {
