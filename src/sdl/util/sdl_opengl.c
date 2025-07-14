@@ -45,20 +45,9 @@ SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     }
     SDL_GLContext* context = SDL_GL_CreateContext(window);
     if (!context) {
-        zox_log_error("failed again to create opengl context [%s]", SDL_GetError())
+        zox_log_error("[create_sdl_opengl_context:SDL_GL_CreateContext] [%s]", SDL_GetError())
         return NULL;
     }
-    /*if (*SDL_GetError()) {
-        zox_log(" ! SDL_GL_CreateContext errored: %s\n", SDL_GetError())
-        SDL_GL_DeleteContext(context);
-        return NULL;
-    }*/
-    /*if (!context) {
-        zox_log(" ! failed to create opengl context [%s]\n", SDL_GetError())
-        zox_log(" > falling back to opengl core profile\n");
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        context = SDL_GL_CreateContext(window);
-    }*/
     if (SDL_GL_MakeCurrent(window, context) != 0) {
         zox_log(" ! failed to make OpenGL context current: %s\n", SDL_GetError())
         SDL_GL_DeleteContext(context);

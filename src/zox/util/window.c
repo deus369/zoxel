@@ -1,4 +1,5 @@
 int engine_spawn_window(ecs_world_t *world) {
+    initialize_rendering(world);
 #ifdef zox_mod_games
     const ecs_entity_t window = spawn_window_opengl(world, default_window_position, default_window_size, fullscreen, game_name);
 #else
@@ -7,7 +8,6 @@ int engine_spawn_window(ecs_world_t *world) {
     if (window == 0) {
         return EXIT_FAILURE;
     }
-    initialize_rendering(world);
     // Files
     load_files_shaders(world);
     load_files_fonts(world);

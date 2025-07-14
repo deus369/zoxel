@@ -38,6 +38,7 @@
 #define zox_opengl_core 1
 #define zox_opengl_es 2
 byte opengl_mode = zox_opengl_compatibility;
+byte is_log_sdl = 0;
 #include "components/_.c"
 #include "prefabs/app_sdl.c"
 #include "data/settings.c"
@@ -48,8 +49,13 @@ void process_arguments_sdl(ecs_world_t *world, char* args[], int count) {
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "--opengles") == 0) {
             opengl_mode = zox_opengl_es;
+            zox_log("opengl_mode set to [opengl_es]")
         } else if (strcmp(args[i], "--openglcore") == 0) {
             opengl_mode = zox_opengl_core;
+            zox_log("opengl_mode set to [opengl_core]")
+        } else if (strcmp(args[i], "--logsdl") == 0) {
+            is_log_sdl = 1;
+            zox_log("setting enabled [logsdl]")
         }
     }
 }

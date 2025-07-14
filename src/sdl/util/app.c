@@ -5,7 +5,12 @@ extern void engine_end(); // engine
 extern byte create_window_opengl_context(ecs_world_t *world, const ecs_entity_t e);
 
 // todo: get position2 to work
-ecs_entity_t spawn_window_opengl(ecs_world_t *world, int2 position2, const int2 size, const byte fullscreen, const char *name) {
+ecs_entity_t spawn_window_opengl(ecs_world_t *world,
+    int2 position2,
+    const int2 size,
+    const byte fullscreen,
+    const char *name)
+{
     int2 window_size = size;
     if (fullscreen) {
         window_size = screen_dimensions;
