@@ -63,7 +63,6 @@ void process_arguments_sdl(ecs_world_t *world, char* args[], int count) {
 zox_begin_module(Sdl)
     zox_module_dispose(dispose_apps_sdl)
     define_components_sdl(world);
-    initialize_apps_sdl(world);
     // spawn just one prefab
     spawn_prefab_app_sdl(world);
     // attach to loops

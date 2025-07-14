@@ -13,7 +13,6 @@ zox_component_int2(WindowSizeRestore)
 #include "prefabs/prefabs.c"
 
 zox_begin_module(Apps)
-    add_hook_terminal_command(process_arguments_apps);
     zox_define_tag(App)
     zox_define_component_byte(WindowFullscreen)
     zox_define_component_int2(WindowSize)
@@ -23,6 +22,7 @@ zox_begin_module(Apps)
     zox_define_component(VulkanSurface)
     #endif
     spawn_prefabs_apps(world);
+    add_hook_terminal_command(process_arguments_apps);
 zox_end_module(Apps)
 
 #endif
