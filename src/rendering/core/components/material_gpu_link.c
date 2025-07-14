@@ -10,17 +10,26 @@ void add_gpu_material(ecs_world_t *world, const ecs_entity_t e) {
     }
 }
 
-GLuint spawn_gpu_material(ecs_world_t *world, const ecs_entity_t e, const GLuint2 shader) {
+GLuint spawn_gpu_material(ecs_world_t *world,
+    const ecs_entity_t e,
+    const GLuint2 shader)
+{
     GLuint gpu_material = 0;
     if (!headless) {
         gpu_material = spawn_gpu_material_program(shader);
-        zox_set(e, MaterialGPULink, { gpu_material })
+        if (!gpu_material) {
+            zox_log_error("spawn_gpu_material failed to initialize")
+        } else {
+            zox_set(e, MaterialGPULink, { gpu_material })
+        }
     }
     return gpu_material;
 }
 
 ECS_DTOR(MaterialGPULink, ptr, {
-    if (ptr->value != 0) glDeleteProgram(ptr->value);
+    if (ptr->value != 0) {
+        glDeleteProgram(ptr->value);
+    }
 })
 
 /*GLuint get_material_value(ecs_world_t *world, ecs_entity_t material) /{

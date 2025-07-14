@@ -64,6 +64,10 @@ int initialize_shader_particle3D(ecs_world_t *world) {
     char* frag = get_shader_source(world, "particle3D.frag");
     particle3D_shader = spawn_gpu_shader_inline(vert, frag);
     particle3D_material = spawn_gpu_material_program((const GLuint2) { particle3D_shader.x, particle3D_shader.y });
+    if (!particle3D_material) {
+        zox_log_error("shader particle3D failed to initialize")
+        return EXIT_FAILURE;
+    }
     particle3D_position_location = glGetAttribLocation(particle3D_material, "position");
     particle3D_color_location = glGetAttribLocation(particle3D_material, "color");
     particle3D_camera_matrix_location = glGetUniformLocation(particle3D_material, "camera_matrix");
@@ -71,7 +75,7 @@ int initialize_shader_particle3D(ecs_world_t *world) {
     particle3D_location_thickness = glGetUniformLocation(particle3D_material, "thickness");
     initialize_particle_gpu_instancing(particle3D_position_location, particle3D_color_location, zox_max_particles3D);
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void dispose_shader_particle3D() {

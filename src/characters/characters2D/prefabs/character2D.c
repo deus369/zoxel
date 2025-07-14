@@ -20,7 +20,10 @@ ecs_entity_t spawn_character2D(ecs_world_t *world, const ecs_entity_t prefab, co
     zox_set(e, Brightness, { 0.8f + ((rand() % 101) / 100.0f) * 0.6f })
     // zox_set(e, AnimateTexture, { (((rand() % 100) / 100.0f) * noise_animation_speed) })
     const GLuint2 shader = zox_get_value(shader_textured2D, ShaderGPULink)
-    spawn_gpu_material(world, e, shader);
+    const GLuint material = spawn_gpu_material(world, e, shader);
+    if (!material) {
+        zox_log_error("character2D material failed to initialize")
+    }
     spawn_gpu_texture(world, e);
     clone_texture_to_entity(world, e, "taskbar_body");
     return e;

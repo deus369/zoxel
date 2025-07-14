@@ -20,14 +20,6 @@ MaterialBasic3D create_MaterialBasic3D(const GLuint material) {
     };
 }
 
-/*int load_shader3D_basic(ecs_world_t *world) {
-    char* vert = get_shader_source(world, "basic3D.vert");
-    char* frag = get_shader_source(world, "basic3D.frag");
-    shader_basic3D = spawn_gpu_shader_inline(vert, frag);
-    materialInstance3D = spawn_gpu_material_program((const GLuint2) { shader_basic3D.x, shader_basic3D.y });
-    return 0;
-}*/
-
 ecs_entity_t spawn_shader_basic3D(ecs_world_t *world) {
     const byte shader_index = get_new_shader_source_index();
     char* vert = get_shader_source(world, "basic3D.vert");
