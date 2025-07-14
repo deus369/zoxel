@@ -1,4 +1,3 @@
-#version 320 es
 uniform lowp float brightness;
 out lowp vec4 color;
 

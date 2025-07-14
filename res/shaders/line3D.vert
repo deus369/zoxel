@@ -1,4 +1,3 @@
-#version 320 es
 in highp vec3 position;
 uniform highp mat4 camera_matrix;
 out highp float fog_level;

@@ -1,4 +1,3 @@
-#version 320 es
 out lowp vec3 color;
 
 void main() {

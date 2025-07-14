@@ -1,4 +1,3 @@
-#version 320 es
 uniform lowp vec4 fog_data;
 in highp float fog_level;
 in lowp vec4 frag_color;

@@ -1,4 +1,3 @@
-#version 320 es
 in lowp vec3 vertex_color_frag;
 in lowp vec2 uv;
 in highp float fog_level;
@@ -7,7 +6,7 @@ uniform lowp vec4 fog_data;
 uniform lowp float brightness;
 out lowp vec4 frag_color;
 
-void main() {\
+void main() {
     lowp vec4 texture_color = texture(tex, uv);
     if (texture_color.a <= 0.0) {
         discard;

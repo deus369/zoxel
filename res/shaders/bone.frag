@@ -1,4 +1,3 @@
-#version 320 es
 in lowp vec3 vertex_color_frag;
 in lowp float fog_blend;
 uniform lowp vec4 fog_data;

@@ -1,4 +1,3 @@
-#version 320 es
 in highp vec2 position;
 uniform lowp float depth;
 uniform highp mat4 camera_matrix;

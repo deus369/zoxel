@@ -1,7 +1,12 @@
 byte has_gl_extension(const GLubyte *extensions, const char *target) {
-    const char *token = strtok((char *)extensions, " ");
+    if (extensions == NULL || target == NULL) {
+        return 0;
+    }
+    const char *token = strtok((char *) extensions, " ");
     while (token != NULL) {
-        if (strcmp(token, target) == 0) return 1; // Extension found
+        if (strcmp(token, target) == 0) {
+            return 1; // Extension found
+        }
         token = strtok(NULL, " ");
     }
     return 0; // Extension not found
@@ -14,14 +19,10 @@ byte has_opengl_extensions() {
     else fprintf(stderr, "Error retrieving extensions\n");*/
 #if !defined(zoxel_on_web) && !defined(zoxel_on_android)
     if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
-        zox_log(" ! has_opengl_extensions: no ext [GL_ARB_shader_objects]\n")
+        zox_log_error("Extension not found [GL_ARB_shader_objects]")
         has_extension = 0;
     }
 #endif
-    // if (!has_extension) {
-    //    zox_log(" > extension not found, exiting\n")
-    //    exit(0);
-    // }
     return has_extension;
 }
 
@@ -42,19 +43,17 @@ void print_opengl_functions() {
 }
 
 void print_opengl() {
-#ifdef zox_print_opengl
     zox_log(" > opengl\n")
-    zox_log("     + version   [%s]\n", glGetString(GL_VERSION))
-    zox_log("     + glsl      [%s]\n", glGetString(GL_SHADING_LANGUAGE_VERSION))
-    zox_log("     + vendor    [%s]\n", glGetString(GL_VENDOR))
-    zox_log("     + renderer  [%s]\n", glGetString(GL_RENDERER))
+    zox_log("     + version   [%s]", glGetString(GL_VERSION))
+    zox_log("     + glsl      [%s]", glGetString(GL_SHADING_LANGUAGE_VERSION))
+    zox_log("     + vendor    [%s]", glGetString(GL_VENDOR))
+    zox_log("     + renderer  [%s]", glGetString(GL_RENDERER))
     /*GLint memory_used, memory_total;
     glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &memory_used);
     glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &memory_total);
     zoxel_log("     + GPU Memory Usage [%d MB / %d MB]\n", memory_used / 1024, memory_total / 1024);
     check_opengl_error("[print_opengl Error]");*/
     print_opengl_functions();
-#endif
 }
 
 void opengl_bind_texture(GLuint texture_buffer) {

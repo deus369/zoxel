@@ -1,4 +1,3 @@
-#version 320 es
 uniform sampler2D tex;
 in lowp vec2 uv;
 out lowp vec4 color;

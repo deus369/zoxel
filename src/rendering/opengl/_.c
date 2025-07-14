@@ -2,6 +2,8 @@
 #ifndef zoxel_opengl
 #define zoxel_opengl
 
+unsigned short shader_opengl_version = 300;
+byte shader_include_es = 1;
 #define GL_GLEXT_PROTOTYPES
     #ifdef zox_lib_sdl_direct
         #include <SDL_opengl.h>
@@ -23,15 +25,18 @@ byte initialize_opengl(ecs_world_t *world) {
 #ifdef zoxel_on_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {
-        fprintf(stderr, "GLEW initialization failed: %s\n", glewGetErrorString(err));
-        return 1;
+        zox_log_error(stderr, "[glewInit] failed - [%s]", glewGetErrorString(err));
+        return EXIT_FAILURE;
     }
 #endif
-#ifdef zoxel_debug_opengl
-    zox_log(" > initializing opengl\n")
-#endif
-    // if (!has_opengl_extensions()) return EXIT_FAILURE;
-    print_opengl();
+    if (is_log_sdl) {
+        zox_log("zoxel opengl version [%u] is es [%i]", shader_opengl_version, shader_include_es)
+        print_opengl();
+    }
+    /*if (!has_opengl_extensions()) {
+        zox_log_error("opengl does not have required extensions")
+        // return EXIT_FAILURE;
+    }*/
     check_frame_buffer();
     // check_compute();
     // check_geometry();

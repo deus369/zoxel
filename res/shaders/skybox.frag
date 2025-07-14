@@ -1,4 +1,3 @@
-#version 320 es
 uniform lowp float brightness;
 uniform lowp vec3 sky_top_color;
 uniform lowp vec3 sky_bottom_color;

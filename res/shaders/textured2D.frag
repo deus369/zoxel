@@ -1,4 +1,3 @@
-#version 320 es
 in lowp vec2 uv;
 uniform sampler2D tex;
 uniform lowp float brightness;

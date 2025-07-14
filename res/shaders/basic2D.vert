@@ -1,4 +1,3 @@
-#version 320 es
 in lowp vec2 vertex_position;
 uniform lowp mat4 camera_matrix;
 uniform lowp vec3 position;
