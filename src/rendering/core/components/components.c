@@ -1,8 +1,0 @@
-#include "material_gpu_link.c"
-#include "texture_gpu_link.c"
-#include "ubo_gpu_link.c"
-#include "mesh_gpu_link.c"
-#include "uvs_gpu_link.c"
-#include "colors_gpu_link.c"
-#include "shader_gpu_link.c"
-#include "compute_shader.c"

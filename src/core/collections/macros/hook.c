@@ -15,16 +15,20 @@ hook_##name##_array_d* functions_##name;\
 \
 void initialize_hook_##name() { \
     functions_##name = create_hook_##name##_array_d(initial_dynamic_array_size); \
-} \
+}\
 \
 void dispose_hook_##name() { \
     dispose_hook_##name##_array_d(functions_##name); \
 } \
 \
-void add_hook_##name(void (*event) args_decl) { \
-    hook_##name fun_event = (hook_##name) { event }; \
-    add_to_hook_##name##_array_d(functions_##name, fun_event); \
-} \
+void add_hook_##name(void (*event) args_decl) {\
+    if (!functions_##name) {\
+        zox_log_error("hook [%s] not initialized yet", #name)\
+    } else {\
+        hook_##name fun_event = (hook_##name) { event }; \
+        add_to_hook_##name##_array_d(functions_##name, fun_event); \
+    }\
+}\
 \
 void run_hook_##name args_decl { \
     for (int i = 0; i < functions_##name->size; i++) { \

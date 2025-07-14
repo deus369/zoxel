@@ -1,28 +1,29 @@
 void TexturedRenderSystem(ecs_iter_t *it) {
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(MeshGPULink, meshGPULinks, 2)
-    zox_field_in(UvsGPULink, uvsGPULinks, 3)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 4)
-    zox_field_in(MeshIndicies, meshIndiciess, 5)
-    zox_field_in(RenderDisabled, renderDisableds, 6)
-    zox_field_in(MaterialGPULink, materialGPULinks, 7)
-    zox_field_in(TextureGPULink, textureGPULinks, 8)
-    zox_field_in(MaterialTextured3D, materialTextured3Ds, 9)
+    zox_sys_begin()
+    zox_sys_in(TransformMatrix)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(ColorsGPULink)
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(RenderDisabled)
+    zox_sys_in(MaterialGPULink)
+    zox_sys_in(TextureGPULink)
+    zox_sys_in(MaterialTextured3D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(MaterialGPULink, materialGPULink)
+        zox_sys_i(TextureGPULink, textureGPULink)
+        zox_sys_i(TransformMatrix, transformMatrix)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(ColorsGPULink, colorsGPULink)
+        zox_sys_i(MaterialTextured3D, material_attributes)
         if (renderDisabled->value) continue;
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) continue;
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x) continue;
-        zox_field_i(MaterialGPULink, materialGPULinks, materialGPULink)
         if (!materialGPULink->value) continue;
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         if (!textureGPULink->value) continue;
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i(MaterialTextured3D, materialTextured3Ds, material_attributes)
         opengl_set_material(materialGPULink->value);
         opengl_bind_texture(textureGPULink->value);
         opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);

@@ -4,28 +4,31 @@
 int zox_statistics_characters_rendered;
 // extern int zox_statistics_characters_rendered;
 void RenderCharacters3DSystem(ecs_iter_t *it) {
-    if (!material_colored3D) {
+    zox_sys_world()
+    if (!zox_valid(material_colored3D)) {
         return;
     }
-    zox_field_world()
-    const GLuint material_link = zox_get_value(material_colored3D, MaterialGPULink)
-    const MaterialColored3D *material_attributes = zox_get(material_colored3D, MaterialColored3D)
-    zox_field_in(MeshIndicies, meshIndiciess, 1)
-    zox_field_in(MeshGPULink, meshGPULinks, 2)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 3)
-    zox_field_in(TransformMatrix, transformMatrixs, 4)
-    zox_field_in(RenderDisabled, renderDisableds, 5)
+    zox_geter_value(material_colored3D, MaterialGPULink, GLuint, material_link)
+    if (!material_link) {
+        return;
+    }
+    zox_geter(material_colored3D, MaterialColored3D, material_attributes)
     byte has_set_material = 0;
+    zox_sys_begin()
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(ColorsGPULink)
+    zox_sys_in(TransformMatrix)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
-        if (meshIndicies->length == 0) continue;
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) continue;
-        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        if (colorsGPULink->value == 0) continue;
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(ColorsGPULink, colorsGPULink)
+        zox_sys_i(TransformMatrix, transformMatrix)
+        if (renderDisabled->value || !meshIndicies->length || !meshGPULink->value.x || !meshGPULink->value.y || !colorsGPULink->value) {
+            continue;
+        }
         if (!has_set_material) {
             has_set_material = 1;
 #ifdef zox_transparent_voxes

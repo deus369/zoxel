@@ -1,5 +1,8 @@
 // todo: alter frequency over time during sound
 void SoundProcessSystem(ecs_iter_t *it) {
+    if (nosounds) {
+        return;
+    }
     const float default_frequency = 220; // 440;
     zox_sys_begin()
     zox_sys_in(ProcessSound)

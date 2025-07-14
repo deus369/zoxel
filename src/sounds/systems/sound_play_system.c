@@ -1,6 +1,6 @@
 void SoundPlaySystem(ecs_iter_t *it) {
     int channels = get_channels_count();
-    if (!audio_enabled || channels < 0) {
+    if (!audio_enabled || channels < 0 || nosounds) {
         return;
     }
     zox_sys_begin()

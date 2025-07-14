@@ -1,5 +1,8 @@
 // todo: alter frequency over time during sound
 void SoundGenerateSystem(ecs_iter_t *it) {
+    if (nosounds) {
+        return;
+    }
     const float sound_bounds = 1.0f;
     zox_sys_begin()
     zox_sys_in(InstrumentType)

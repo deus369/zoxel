@@ -9,6 +9,7 @@ int engine_spawn_window(ecs_world_t *world) {
         return EXIT_FAILURE;
     }
     initialize_rendering(world);
+    initialize_sounds(world);
     // Files
     load_files_shaders(world);
     load_files_fonts(world);

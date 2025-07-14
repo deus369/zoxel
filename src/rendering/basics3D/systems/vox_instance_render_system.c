@@ -7,7 +7,7 @@
 //      - material
 //      - ubo link
 //      - transform list
-extern string_hashmap *files_hashmap_voxes;
+// extern string_hashmap *files_hashmap_voxes;
 
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
     if (material_vox_instance == 0 || it->count == 0) {
@@ -17,14 +17,23 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     if (!can_render_instanes) {
         return;
     }
-    InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
-    // zox_log("instances: %i\n", it->count)
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(TransformMatrix)
-    // this should be instance link per lod level?
     zox_sys_in(InstanceLink)
     zox_sys_in(RenderDisabled)
+    // get material
+    zox_geter_value(material_vox_instance, MaterialGPULink, GLuint, material_link)
+    if (!material_link) {
+        return;
+    }
+    zox_geter(material_vox_instance, UboGPULink, uboGPULink)
+    if (!uboGPULink->value) {
+        // zox_log(" ! error with material_vox_instance uboGPULink.\n")
+        return;
+    }
+    zox_geter(material_vox_instance, MaterialVoxInstance, material_attributes)
+    InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDisabled, renderDisabled)
         zox_sys_i(InstanceLink, instanceLink)
@@ -51,21 +60,11 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
             // zox_log(" [%i] created new command %lu - %i\n", i, instanceLink->value, commands->size)
         }
     }
-
-    // get material
-    const GLuint material_link = zox_get_value(material_vox_instance, MaterialGPULink)
-    zox_geter(material_vox_instance, MaterialVoxInstance, material_attributes)
-    zox_geter(material_vox_instance, UboGPULink, uboGPULink)
-    if (uboGPULink->value == 0) {
-        zox_log(" ! error with material_vox_instance uboGPULink.\n")
-        return;
-    }
     // set material attributes
     opengl_set_material(material_link);
     opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
     opengl_set_float4(material_attributes->fog_data, get_fog_value());
     opengl_set_float(material_attributes->brightness, 1);
-
     // Instance Rendering!
     for (int i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
@@ -114,11 +113,5 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     }
     dispose_InstanceRenderCommand_array_d(commands);
     opengl_disable_opengl_program();
-    catch_basic3D_errors("! VoxInstanceRenderSystem");
+    catch_basic3D_errors("VoxInstanceRenderSystem");
 } zox_declare_system(VoxInstanceRenderSystem)
-
-
-// wouldn't quads be less data??
-// if (check_opengl_error_unlogged() != 0) {
-//     zox_log(" > vox instance glDrawArraysInstanced\n");
-// }

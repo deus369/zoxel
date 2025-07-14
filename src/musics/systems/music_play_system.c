@@ -1,4 +1,7 @@
 void MusicPlaySystem(ecs_iter_t *it) {
+    if (nomusic) {
+        return;
+    }
     const float volume_music = get_volume_music();
     init_delta_time()
     zox_sys_world()

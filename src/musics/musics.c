@@ -8,6 +8,10 @@
 //      - io
 
 #include "settings/_.c"
+byte nomusic = 0;
+#define playlist_mode_loop 0    // stick on same track
+#define playlist_mode_cycle 1   // play through list sequentially
+#define playlist_mode shuffle 2 // random non repeating track each time
 zox_declare_tag(Note)
 zox_declare_tag(Music)
 zox_declare_tag(Looping)
@@ -28,9 +32,6 @@ zox_component_byte(PlaylistPlaying)
 zox_entities_component(PlaylistLinks)
 zox_component_entity(PlaylistLink)
 // playlist mode
-#define playlist_mode_loop 0    // stick on same track
-#define playlist_mode_cycle 1   // play through list sequentially
-#define playlist_mode shuffle 2 // random non repeating track each time
 zox_component_byte(PlaylistMode)
 
 // zox_memory_component(MusicData, int)
@@ -40,6 +41,15 @@ zox_component_byte(PlaylistMode)
 #include "util/_.c"
 #include "systems/music_play_system.c"
 #include "systems/music_generate_system.c"
+
+void process_arguments_musics(ecs_world_t *world, char* args[], int count) {
+    for (int i = 1; i < count; i++) {
+        if (strcmp(args[i], "--nomusic") == 0) {
+            nomusic = 1;
+            zox_log("+ setting enabled [nomusic]")
+        }
+    }
+}
 
 zox_begin_module(Musics)
     // Notes
@@ -76,6 +86,7 @@ zox_begin_module(Musics)
         [out] MusicTime,
         [none] Music)
     spawn_prefabs_musics(world);
+    add_hook_terminal_command(process_arguments_musics);
 zox_end_module(Musics)
 
 #endif

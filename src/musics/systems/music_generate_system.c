@@ -3,6 +3,9 @@ int get_random_pallete_note(const byte *pallete, int array_length) {
 }
 
 void MusicGenerateSystem(ecs_iter_t *it) {
+    if (nomusic) {
+        return;
+    }
     const byte lowest_note = 12;
     const byte highest_note = 36;
     const byte note_verse_difference = 6;
