@@ -11,12 +11,13 @@ byte initialize_material(GLuint material, GLuint vert_shader, GLuint frag_shader
     glLinkProgram(material);
     GLint success;
     glGetProgramiv(material, GL_LINK_STATUS, &success);
+    // if errors
     if (success != GL_TRUE) {
         GLint info_log_length;
         glGetProgramiv(material, GL_INFO_LOG_LENGTH, &info_log_length);
         GLchar* info_log = malloc(info_log_length);
         glGetProgramInfoLog(material, info_log_length, NULL, info_log);
-        zoxel_log(" ! failed to initialize material [%i] - shader [%ix%i] - [%s]\n", (int) material, vert_shader, frag_shader, info_log);
+        zox_log_error("Material Initializaiton Failed: material [%i] Shader [%ix%i]\n [%s]", (int) material, vert_shader, frag_shader, info_log);
         free(info_log);
         glDetachShader(material, vert_shader);
         glDetachShader(material, frag_shader);

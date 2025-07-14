@@ -1,5 +1,6 @@
 // todo: Different meshes, linking, and then use a stack
 //  also LODing support
+byte can_render_instanes = 1;
 #define zox_max_vox_instances 10000
 ecs_entity_t shader_vox_instance;
 ecs_entity_t material_vox_instance;
@@ -37,10 +38,13 @@ GLuint generate_ubo(GLint binding_point) {
 }
 
 GLuint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
-    const MaterialVoxInstance *materialVoxInstance = zox_get(material, MaterialVoxInstance)
+    zox_geter(material, MaterialVoxInstance, materialVoxInstance)
     const GLint binding_point = materialVoxInstance->matrices;
-    if (binding_point == GL_INVALID_INDEX) zox_log("InstanceMatrices block index not found in shader.\n")
-        return generate_ubo(binding_point);
+    if (binding_point == GL_INVALID_INDEX) {
+        zox_log_error("InstanceMatrices block index not found in shader")
+        can_render_instanes = 0;
+    }
+    return generate_ubo(binding_point);
 }
 
 ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
@@ -50,7 +54,10 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
     const ecs_entity_t shader = spawn_shader(world, shader_index);
-    if (!shader) return 0;
+    if (!shader) {
+        can_render_instanes = 0;
+        return 0;
+    }
     GLuint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })

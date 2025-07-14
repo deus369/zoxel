@@ -4,6 +4,7 @@
 // #define is_catch_basic3D_errors
 zox_declare_tag(MeshBasic3D)
 zox_declare_tag(TexturedMesh3D)
+#include "data/_.c"
 #include "materials/_.c"
 #include "util/_.c"
 #include "systems/_.c"

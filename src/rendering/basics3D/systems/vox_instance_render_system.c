@@ -7,44 +7,31 @@
 //      - material
 //      - ubo link
 //      - transform list
-//
 extern string_hashmap *files_hashmap_voxes;
-
-typedef struct
-{
-    ecs_entity_t mesh;
-    float4x4_array_d* transforms;
-} InstanceRenderCommand;
-zoxel_dynamic_array(InstanceRenderCommand)
-
-byte has_mesh(InstanceRenderCommand_array_d* commands, ecs_entity_t mesh, int *index) {
-    for (int i = 0; i < commands->size; i++) {
-        if (commands->data[i].mesh == mesh) {
-            *index = i;
-            return 1;
-        }
-    }
-    return 0;
-}
 
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
     if (material_vox_instance == 0 || it->count == 0) {
         zox_log(" ! error with vox instance material_vox_instance.")
         return;
     }
-    // zox_log("instances: %i\n", it->count)
-    zox_field_world()
-    // create dynamic array of transforms
+    if (!can_render_instanes) {
+        can_render_instanes = 0;
+    }
     InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(InstanceLink, instanceLinks, 2) // this should be instance link per lod level?
-    zox_field_in(RenderDisabled, renderDisableds, 3)
+    // zox_log("instances: %i\n", it->count)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(TransformMatrix)
+    // this should be instance link per lod level?
+    zox_sys_in(InstanceLink)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
-        zox_field_i(InstanceLink, instanceLinks, instanceLink)
-        if (!instanceLink->value) continue;
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(InstanceLink, instanceLink)
+        zox_sys_i(TransformMatrix, transformMatrix)
+        if (renderDisabled->value || !instanceLink->value) {
+            continue;
+        }
         int index = 0;
         if (has_mesh(commands, instanceLink->value, &index)) {
             InstanceRenderCommand command = commands->data[index];
@@ -79,18 +66,13 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     opengl_set_float4(material_attributes->fog_data, get_fog_value());
     opengl_set_float(material_attributes->brightness, 1);
 
-    // render now
+    // Instance Rendering!
     for (int i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
         if (!command.transforms) {
             continue;
         }
         const ecs_entity_t mesh = command.mesh;
-        /*zox_geter(mesh, UboGPULink, uboGPULink)
-        if (uboGPULink->value == 0) {
-            zox_log(" ! error with vox instance uboGPULink.\n")
-            continue;
-        }*/
         zox_geter(mesh, MeshGPULink, meshGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) {
             zox_log(" ! [VoxInstanceRenderSystem] Error: MeshGPULink is 0 [%s]\n", zox_get_name(mesh))
@@ -106,10 +88,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
             zox_log(" ! [VoxInstanceRenderSystem] Error: meshIndicies is 0 [%s]\n", zox_get_name(mesh))
             continue;
         }
-
         // zox_log(" [%i] rendering %lu - %i - UBO %i\n", i, mesh, command.transforms->size, uboGPULink->value)
-
-        // command.transforms->data = realloc(command.transforms->data, command.transforms->size * sizeof(float4x4));
         // set mesh verts
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
@@ -128,6 +107,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
     }
+    // cleanup
     for (int i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
         dispose_float4x4_array_d(command.transforms);
