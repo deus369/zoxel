@@ -30,6 +30,17 @@ int get_max_width(
     }
 }
 
+// list keeps the children stored on it
+ecs_entity_t spawn_element_list(ecs_world_t *world,
+    const CanvasSpawnData canvas_data,
+    const ParentSpawnData parent_data,
+    ElementSpawnData element_data,
+    SpawnUIListData *list)
+{
+
+    return 0;
+}
+
 // todo: use struct inputs SpawnUIList
 ecs_entity_t spawn_ui_list(ecs_world_t *world,
     const ecs_entity_t prefab,
@@ -38,7 +49,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     const int elements_count,
     const int max_elements,
     const text_group labels[],
-    const ClickEvent events[],
+    const ClickEvent click_events[],
+    const SlideEvent slide_events[],
+    const byte types[],
     int2 pixel_position,
     const float2 anchor,
     const byte is_close_button,
@@ -69,7 +82,10 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     const int button_inner_margins = (int) (scaled_font_size * 0.5f);
     const int window_width = get_max_width(header_label, scaled_header_font_size, header_padding_x, labels, elements_count, scaled_font_size, button_padding.x + list_margins.x);
 
-    int2 pixel_size = { window_width, (scaled_font_size + button_padding.y * 2) * max_elements + button_inner_margins * (max_elements - 1) + list_margins.y * 2 };
+    int2 pixel_size = {
+        window_width,
+        (scaled_font_size + button_padding.y * 2) * max_elements + button_inner_margins * (max_elements - 1) + list_margins.y * 2
+    };
 
     if (is_scrollbar) {
         pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
@@ -150,7 +166,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             .outline = button_outline,
         },
         .zext = {
-            // .text = "X",
             .font_size = scaled_font_size,
             .padding = button_padding,
             .font_resolution = button_font_resolution,
@@ -158,7 +173,6 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             .font_outline_color = button_font_outline,
             .font_thickness = button_font_thickness_fill,
             .font_outline_thickness = button_font_thickness_outline,
-
         },
     };
     for (int i = 0; i < elements_count; i++) {
@@ -166,19 +180,38 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
         if (is_scrollbar) {
             label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
         }
-        spawnButton.zext.text = labels[i].text;
-        spawnButton.element.position = label_position;
-        const ecs_entity_t button = spawn_button(world,
-            spawnButton.canvas,
-            spawnButton.parent,
-            spawnButton.element,
-            spawnButton.zext,
-            spawnButton.button);
-        if (events && events[i].value) {
-            zox_set(button, ClickEvent, { events[i].value })
+        byte spawn_type = 0;
+        if (types) {
+            spawn_type = types[i];
         }
-        children->value[list_start + i] = button;
-        zox_add_tag(button, ZextLabel)
+        spawnButton.element.position = label_position;
+        if (spawn_type == 0) {
+            spawnButton.zext.text = labels[i].text;
+            const ecs_entity_t e2 = spawn_button(world,
+                spawnButton.canvas,
+                spawnButton.parent,
+                spawnButton.element,
+                spawnButton.zext,
+                spawnButton.button);
+            if (click_events && click_events[i].value) {
+                zox_set(e2, ClickEvent, { click_events[i].value })
+            }
+            children->value[list_start + i] = e2;
+            zox_add_tag(e2, ZextLabel)
+        } else {
+            ElementSpawnData spawn_slider_data = spawnButton.element;
+            spawn_slider_data.prefab = prefab_slider;
+            spawn_slider_data.size = (int2) { 256, 42 };
+
+            const ecs_entity_2 e2 = spawn_slider(world,
+                spawnButton.canvas,
+                spawnButton.parent,
+                spawn_slider_data);
+            if (slide_events && slide_events[i].value) {
+                zox_set(e2.y, SlideEvent, { slide_events[i].value })
+            }
+            children->value[list_start + i] = e2.x;
+        }
     }
     zox_set(e, Children, { children->length, children->value })
     // zox_modified(e, Children)

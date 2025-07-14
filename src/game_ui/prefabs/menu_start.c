@@ -38,7 +38,24 @@ ecs_entity_t spawn_main_start(
     const int labels_count = 1;
     const text_group labels[] = { { label_start } };
     const ClickEvent events[] = { { &button_event_menu_start } };
-    const ecs_entity_t e = spawn_ui_list(world, prefab, canvas, header_label, labels_count, labels_count, labels, events, position, anchor, is_close_button, header_font_size, font_size, layer, 0, player);
+    const ecs_entity_t e = spawn_ui_list(world,
+        prefab,
+        canvas,
+        header_label,
+        labels_count,
+        labels_count,
+        labels,
+        events,
+        NULL,
+        NULL,
+        position,
+        anchor,
+        is_close_button,
+        header_font_size,
+        font_size,
+        layer,
+        0,
+        player);
     zox_name("main_start")
     return e;
 }

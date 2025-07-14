@@ -31,12 +31,12 @@ ecs_entity_t prefab_slider;
 #include "window_invisible.c"
 #include "scrollbar_front.c"
 #include "scrollbar.c"
+#include "handle.c"
+#include "slider.c"
 #include "ui_list.c"
 #include "elementbar2D_front.c"
 #include "elementbar2D.c"
 #include "mouse_follow_icon.c"
-#include "handle.c"
-#include "slider.c"
 
 // todo: make a more advanced 'element' prefab, alott of these still use prefab_element
 

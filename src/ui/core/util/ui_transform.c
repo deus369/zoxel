@@ -203,28 +203,17 @@ void set_element_spawn_data(ecs_world_t *world,
     int2 position = element_data->position;
     anchor_element_position2D(&position, element_data->anchor, element_data->size);
 
-    initialize_element(world, e,
-        parent_data.e,
-        canvas_data.e,
-        position,
-        element_data->size,
-        element_data->size,
-        element_data->anchor,
-        element_data->layer,
-        real_position,
-        element_data->position_in_canvas);
-
-    /*zox_set(e, Anchor, { anchor })
-    zox_set(e, Layer2D, { layer })
-    zox_set(e, PixelSize, { pixel_size })
-    zox_set(e, PixelPosition, { pixel_position })
-    zox_set(e, Position2D, { position2D }) // set this inside pixel position system
-    zox_set(e, CanvasPosition, { pixel_position_global }) // set this inside system too
-    zox_set(e, CanvasLink, { canvas })
-    zox_set(e, ParentLink, { parent })
-    if (canvas == parent) {
-        on_child_added(world, canvas, e);
-        zox_set(canvas, WindowToTop, { e })
+    zox_set(e, Position2D, { real_position })
+    zox_set(e, ParentLink, { parent_data.e })
+    zox_set(e, PixelPosition, { position })
+    zox_set(e, PixelSize, { element_data->size })
+    zox_set(e, Anchor, { element_data->anchor })
+    zox_set(e, Layer2D, { element_data->layer })
+    zox_set(e, CanvasLink, { canvas_data.e })
+    zox_set(e, CanvasPosition, { element_data->position_in_canvas })
+    zox_set(e, TextureSize, { element_data->size })
+    if (canvas_data.e == parent_data.e) {
+        on_child_added(world, canvas_data.e, e);
+        zox_set(canvas_data.e, WindowToTop, { e })
     }
-    zox_set(e, TextureSize, { texture_size })*/
 }

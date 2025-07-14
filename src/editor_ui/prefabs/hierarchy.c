@@ -22,7 +22,24 @@ ecs_entity_t spawn_editor_hierarchy(ecs_world_t *world, const ecs_entity_t canva
     const int max_elements = 8;
     const float2 anchor = (float2) { 0, 0.5f };
     const int2 position = int2_zero;
-    const ecs_entity_t e = spawn_ui_list(world, prefab_hierarchy, canvas, header_label, labels_count, max_elements, NULL, NULL, position, anchor, is_close_button, font_size, font_size, ui_layer, 1, player);
+    const ecs_entity_t e = spawn_ui_list(world,
+        prefab_hierarchy,
+        canvas,
+        header_label,
+        labels_count,
+        max_elements,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        position,
+        anchor,
+        is_close_button,
+        font_size,
+        font_size,
+        ui_layer,
+        1,
+        player);
     zox_name("hierarchy")
     hierarchy = e;
     return e;

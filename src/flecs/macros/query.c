@@ -10,5 +10,7 @@
 #define zox_sys_query_loop()\
     ecs_query_next(&it2)
 
+// #define zox_sys_query_end() ;
+
 #define zox_sys_query_end()\
     ecs_iter_fini(&it2);

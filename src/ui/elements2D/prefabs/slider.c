@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_slider(ecs_world_t *world, const ecs_entity_t prefab) 
     return e;
 }
 
-ecs_entity_t spawn_slider(ecs_world_t *world,
+ecs_entity_2 spawn_slider(ecs_world_t *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data)
@@ -36,10 +36,9 @@ ecs_entity_t spawn_slider(ecs_world_t *world,
         .anchor = float2_half,
     };
     ecs_entity_t handle = spawn_handle(world, canvas_data, slider_data, handle_data);
-    // add it!
+    // link child!
     Children *children = &((Children) { 0, NULL });
     add_to_Children(children, handle);
     zox_set(e, Children, { children->length, children->value })
-
-    return e;
+    return (ecs_entity_2) { e, handle };
 }

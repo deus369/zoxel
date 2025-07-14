@@ -83,6 +83,10 @@ zox_begin_module(ZoxGame)
     zox_set(prefab_ui_list, OutlineColor, { window_outline })
     zox_set(prefab_header, Color, { header_fill })
     zox_set(prefab_header, OutlineColor, { header_outline })
+    zox_set(prefab_slider, Color, { header_fill })
+    zox_set(prefab_slider, OutlineColor, { header_outline })
+    zox_set(prefab_handle, Color, { button_font_fill })
+    zox_set(prefab_handle, OutlineColor, { button_font_outline })
     // nothing_font_color = debug_color; // debug font texture
 
     // scaling

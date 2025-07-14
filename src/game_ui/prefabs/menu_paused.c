@@ -35,6 +35,8 @@ ecs_entity_t spawn_menu_paused(
         labels_count,
         labels,
         events,
+        NULL,
+        NULL,
         position,
         anchor,
         is_close_button,

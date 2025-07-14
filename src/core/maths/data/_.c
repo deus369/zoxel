@@ -23,3 +23,5 @@
 #include "bounds.c"
 #include "plane.c"
 #include "octree.c"
+
+typedef void (*event_pointer)(void*);

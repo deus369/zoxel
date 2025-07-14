@@ -12,7 +12,7 @@ void ElementDragSystem(ecs_iter_t *it) {
         zox_sys_i(DraggableState, dragableState)
         zox_sys_i(DraggingDelta, draggingDelta)
         zox_sys_i(DraggedLink, draggedLink)
-        if (!zox_valid(dragableState->value)) {
+        if (!dragableState->value) {
             continue;
         }
         if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {

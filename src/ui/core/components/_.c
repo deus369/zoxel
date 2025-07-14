@@ -47,12 +47,13 @@ zox_component_entity(ClickingEntity)
 zox_component_entity(DraggerLink)
 zox_component_entity(DraggedLink)
 zox_component_entity(ElementLink)
-#include "click_event.c"
-#include "tooltip_event.c"
 zox_component_zext(TooltipText)
 zox_component_entity(UIHolderLink)
 zox_entities_component(ElementLinks)
 zox_declare_component_entities_child(ElementHolder, ElementLinks)
+#include "click_event.c"
+#include "tooltip_event.c"
+#include "slide_event.c"
 
 void define_components_elements_core(ecs_world_t *world) {
     zox_define_tag(Element)
@@ -78,7 +79,6 @@ void define_components_elements_core(ecs_world_t *world) {
     zox_define_component_float2(ElementBarSize)
     zox_define_component(NavigatorTimer)
     zox_define_component_entity(CanvasLink)
-    zox_define_component(ClickEvent)
     zox_define_component_byte(HeaderHeight)
     zox_define_component_entity(WindowRaycasted)
     zox_define_component_entity(WindowTarget)
@@ -104,9 +104,11 @@ void define_components_elements_core(ecs_world_t *world) {
     zox_define_component_int4(DraggableLimits)
     zox_define_component_entity(DraggerLink)       // the what that drags
     zox_define_component_entity(DraggedLink)       // the who gets dragged
-    zox_define_component(TooltipEvent)
     zox_define_component_zext(TooltipText)
     zox_define_component(UIHolderLink)
     zox_define_entities_component(ElementLinks)
     zox_define_component_entities_child(ElementHolder)
+    zox_define_component(ClickEvent)
+    zox_define_component(TooltipEvent)
+    zox_define_component(SlideEvent)
 }
