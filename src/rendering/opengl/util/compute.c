@@ -1,5 +1,3 @@
-// removed compute test for now, broke on android version
-
 // uses opengl version to check iif compute is supported
 int check_compute_shader_support_from_version() {
     const char* version_str = (const char*) glGetString(GL_VERSION);
@@ -9,22 +7,22 @@ int check_compute_shader_support_from_version() {
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     if (is_opengl_es) {
         if (major >= 3 && minor >= 1) {
-#ifdef zox_print_shader_support
-            zox_log(" + compute supported: OpenGL ES %d.%d [%s]\n", major, minor, version_str)
-#endif
+            if (is_log_sdl) {
+                zox_log("+ compute supported: OpenGL ES %d.%d [%s]", major, minor, version_str)
+            }
             return EXIT_SUCCESS;
         }
     } else {
         if (major >= 4 && minor >= 3) {
-#ifdef zox_print_shader_support
-            zox_log(" + compute supported: OpenGL %d.%d [%s]\n", major, minor, version_str)
-#endif
+            if (is_log_sdl) {
+                zox_log("+ compute supported: OpenGL %d.%d [%s]", major, minor, version_str)
+            }
             return EXIT_SUCCESS;
         }
     }
-#ifdef zox_print_shader_support
-    zox_log(" ! compute not supported: OpenGL %d.%d [%s]\n", major, minor, version_str)
-#endif
+    if (is_log_sdl) {
+        zox_log_error("compute not supported: OpenGL %d.%d [%s]", major, minor, version_str)
+    }
     return EXIT_FAILURE;
 }
 
@@ -90,6 +88,15 @@ int check_compute_shader_support() {
         return EXIT_FAILURE;
     }*/
     return EXIT_SUCCESS;
+}
+
+// removed compute test for now, broke on android version
+void check_compute() {
+    if (check_compute_shader_support() == EXIT_FAILURE) {
+        zox_log_error("opengl compute is not supported")
+    } else if (is_log_sdl) {
+        zox_log("+ opengl compute supported")
+    }
 }
 
 int test_compute_shader() {

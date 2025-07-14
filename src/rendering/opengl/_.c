@@ -14,32 +14,28 @@ byte shader_include_es = 1;
         #include <SDL2/SDL_opengl.h>
     #endif
 #endif
-#include "data/GLuint2.c"
+#include "data/_.c"
 #include "util/_.c"
-
-void check_compute() {
-    if (check_compute_shader_support() == EXIT_FAILURE) zox_log(" ! opengl compute is not supported\n");
-}
 
 byte initialize_opengl(ecs_world_t *world) {
 #ifdef zoxel_on_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {
-        zox_log_error(stderr, "[glewInit] failed - [%s]", glewGetErrorString(err));
+        printf(stderr, "[glewInit] failed - [%s]\n", glewGetErrorString(err));
         return EXIT_FAILURE;
     }
 #endif
-    if (is_log_sdl) {
-        zox_log("zoxel opengl version [%u] is es [%i]", shader_opengl_version, shader_include_es)
-        print_opengl();
-    }
     /*if (!has_opengl_extensions()) {
         zox_log_error("opengl does not have required extensions")
         // return EXIT_FAILURE;
     }*/
     check_frame_buffer();
-    // check_compute();
+    check_compute();
     // check_geometry();
+    if (is_log_sdl) {
+        zox_log("zoxel opengl version [%u] is es [%i]", shader_opengl_version, shader_include_es)
+        print_opengl();
+    }
     return EXIT_SUCCESS;
 }
 

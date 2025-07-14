@@ -36,12 +36,13 @@ void viewport_clear(ecs_world_t *world) {
 }
 
 byte initialize_rendering(ecs_world_t *world) {
-    rendering_initialized = 1;
     if (headless) {
         return EXIT_SUCCESS;
     } else if (render_backend == zox_render_backend_opengl) {
+        rendering_initialized = 1;
         return initialize_opengl(world);
     } else if (render_backend == zox_render_backend_vulkan) {
+        rendering_initialized = 1;
         return initialize_vulkan(world); // SDL_WINDOW_VULKAN
     } else {
         zox_log_error("! unknown render_backend")

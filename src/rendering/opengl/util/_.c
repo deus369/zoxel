@@ -1,7 +1,6 @@
 #include "error.c"
-#include "primitive_square.c"
-#include "primitive_mesh.c"
 #include "shaders.c"
+#include "extensions.c"
 #include "opengl.c"
 #include "geometry.c"
 #include "compute.c"

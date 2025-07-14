@@ -26,6 +26,9 @@ void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
+    if (is_log_sdl) {
+        zox_log("+++ SDL OpenGL Version [%i.%i] +++", sdl_gl_major, sdl_gl_minor)
+    }
     if (opengl_mode == zox_opengl_es) {
         zox_log("> running with opengl es!")
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);

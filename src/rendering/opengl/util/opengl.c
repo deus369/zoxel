@@ -1,49 +1,21 @@
-byte has_gl_extension(const GLubyte *extensions, const char *target) {
-    if (extensions == NULL || target == NULL) {
-        return 0;
-    }
-    const char *token = strtok((char *) extensions, " ");
-    while (token != NULL) {
-        if (strcmp(token, target) == 0) {
-            return 1; // Extension found
-        }
-        token = strtok(NULL, " ");
-    }
-    return 0; // Extension not found
-}
-
-byte has_opengl_extensions() {
-    byte has_extension = 1;
-    const GLubyte *extensions = glGetString(GL_EXTENSIONS);
-    /*if (extensions != NULL) printf("        > gl extensions: %s\n", extensions);
-    else fprintf(stderr, "Error retrieving extensions\n");*/
-#if !defined(zoxel_on_web) && !defined(zoxel_on_android)
-    if (!has_gl_extension(extensions, "GL_ARB_shader_objects")) {
-        zox_log_error("Extension not found [GL_ARB_shader_objects]")
-        has_extension = 0;
-    }
-#endif
-    return has_extension;
-}
-
+// Print All Supported Extensions
 void print_opengl_functions() {
-    // Print All Supported Extensions
     GLint numExtensions;
     glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
-    printf("    > number of Extensions: %d\n", numExtensions);
-    /*for (int i = 0; i < numExtensions; ++i) {
-        zox_log("%s\n", glGetStringi(GL_EXTENSIONS, i))
-    }*/
+    zox_log("+ OpenGL Extensions: %d", numExtensions);
     const GLubyte *extensions = glGetString(GL_EXTENSIONS);
-    if (extensions != NULL) {
-        zox_log("        > gl extensions: %s\n", extensions);
+    if (!extensions) {
+        zox_log_error("Could not retrieve extensions [%s]", SDL_GetError())
     } else {
-        fprintf(stderr, "Error retrieving extensions\n");
+        // zox_log(" - gl extensions: %s", extensions);
+        /*for (int i = 0; i < numExtensions; ++i) {
+            zox_log("%s\n", glGetStringi(GL_EXTENSIONS, i))
+        }*/
     }
 }
 
 void print_opengl() {
-    zox_log(" > opengl\n")
+    zox_log(" > OpenGL")
     zox_log("     + version   [%s]", glGetString(GL_VERSION))
     zox_log("     + glsl      [%s]", glGetString(GL_SHADING_LANGUAGE_VERSION))
     zox_log("     + vendor    [%s]", glGetString(GL_VENDOR))
@@ -69,8 +41,10 @@ void opengl_disable_blend() {
     glDisable(GL_BLEND);
 }
 
-void opengl_disable_texture(byte isBlend) {
-    if (isBlend) glDisable(GL_BLEND);
+void opengl_disable_texture(byte blend) {
+    if (blend) {
+        glDisable(GL_BLEND);
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -215,16 +189,10 @@ void opengl_set_float(GLuint shader_index, const float value) {
 
 void opengl_set_material(GLuint material) {
     glUseProgram(material);
-/*#ifdef zoxel_catch_opengl_errors
-    check_opengl_error("opengl_set_material");
-#endif*/
 }
 
 void opengl_render(GLint indicies_length) {
     glDrawElements(GL_TRIANGLES, indicies_length, GL_UNSIGNED_INT, NULL);
-/*#ifdef zoxel_catch_opengl_errors
-    check_opengl_error("opengl_render");
-#endif*/
 }
 
 /*
