@@ -18,11 +18,11 @@ void process_arguments_terrain(ecs_world_t *world, char* args[], int count) {
             render_distance_y = 3;
             zox_log("+ [tiny terrain] [%ix%i]", render_distance, render_distance_y)
         } else if (strcmp(args[i], "--medium") == 0) {
-            render_distance = 4;
-            render_distance_y = 2;
+            render_distance = 6;
+            render_distance_y = 3;
             zox_log("+ [medium terrain] [%ix%i]", render_distance, render_distance_y)
         } else if (strcmp(args[i], "--large") == 0) {
-            render_distance = 8;
+            render_distance = 12;
             render_distance_y = 4;
             zox_log("+ [large terrain] [%ix%i]", render_distance, render_distance_y)
         }

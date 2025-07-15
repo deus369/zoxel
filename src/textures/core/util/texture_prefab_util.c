@@ -1,15 +1,3 @@
-void prefab_add_texture(ecs_world_t *world, const ecs_entity_t e, const int2 size) {
-    zox_add_tag(e, Texture)
-    zox_prefab_set(e, TextureData, { 0, NULL })
-    zox_prefab_set(e, TextureSize, { size })
-    zox_prefab_set(e, TextureDirty, { 0 })
-}
-
-void prefab_add_texture_generated(ecs_world_t *world, const ecs_entity_t e, const int2 size, const byte generate_state) {
-    prefab_add_texture(world, e, size);
-    zox_prefab_set(e, Seed, { 666 })
-    zox_prefab_set(e, GenerateTexture, { generate_state })
-}
 
 void clear_texture_data(ecs_world_t *world, const ecs_entity_t e) {
     if (!e || !zox_has(e, TextureData)) return;

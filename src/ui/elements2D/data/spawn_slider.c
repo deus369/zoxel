@@ -1,0 +1,7 @@
+#define zox_slider_type_float 0
+#define zox_slider_type_int 1
+
+typedef struct {
+    byte type;
+    ecs_entity_t prefab_handle;
+} SpawnSliderData;

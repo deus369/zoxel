@@ -1,7 +1,7 @@
 // a block that is for a block vox
 ecs_entity_t spawn_prefab_block_vox_meta(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t prefab_block_vox) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_block_vox_meta")
+    zox_prefab_name("block_vox_meta")
     zox_prefab_add(e, ModelLink)
     // zox_prefab_set(e, BlockModel, { zox_block_vox })
     return e;

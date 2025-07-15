@@ -18,7 +18,7 @@ byte tooltip_event_item(ecs_world_t *world, const TooltipEventData *data) {
 
 ecs_entity_t spawn_prefab_icon_item(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_icon_item")
+    zox_prefab_name("icon_item")
     zox_set(e, TooltipEvent, { &tooltip_event_item })
     zox_set(e, IconType, { zox_icon_type_item })
     return e;

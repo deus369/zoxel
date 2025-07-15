@@ -26,10 +26,12 @@ zox_begin_module(Space)
     // add_hook_key_down(key_down_toggle_streaming);
     add_hook_key_down(toggle_life_terrain);
     add_hook_key_down(toggle_player_death);
-    add_hook_key_down(toggle_test_particle_system);
     add_hook_key_down(test_game_end);
     add_hook_key_down(test_fall_through_terrain);
     add_hook_key_down(spawn_tilemap_ui);
+    add_hook_key_down(toggle_editor);
+    add_hook_key_down(toggle_character_particles);
+
 zox_end_module(Space)
 
 #endif

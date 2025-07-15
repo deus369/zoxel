@@ -31,13 +31,6 @@ zox_memory_component(AnimationTargets, float) // a sequence of animation target 
 #include "systems/animate_alpha_system.c"
 #include "systems/oscillate_system.c"
 
-void prefab_add_animation(ecs_world_t *world, const ecs_entity_t e) {
-    zox_prefab_set(e, AnimationIndex, { 0 })
-    zox_prefab_add(e, AnimationSequence)
-    zox_prefab_add(e, AnimationTimes)
-    zox_prefab_add(e, AnimationTargets)
-}
-
 zox_begin_module(Animations)
     zox_define_tag(OscillatePosition3D)
     zox_define_component_float3(OscillateStartPosition3D)
@@ -60,14 +53,49 @@ zox_begin_module(Animations)
     zox_define_component_float(FadeOutEvent)
     // seperating animations
     zox_define_memory_component(AnimationLinks)
-    zox_system(EternalRotationSystem, EcsOnUpdate, [in] EternalRotation, [out] transforms3.d.Rotation3D)
-    zox_system(ShrinkSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] transforms.Scale1D)
-    zox_system(IdleSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [out] transforms.Scale1D)
-    zox_system(FadeinSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [out] rendering.Alpha)
-    zox_system(AnimationSequenceSystem, EcsPostUpdate, [in] AnimationSequence, [in] AnimationTimes, [in] AnimationTargets, [in] AnimationDelay,  [out] AnimationIndex, [out] AnimationLength, [out] AnimationStart, [out] AnimationState)
-    zox_system(AnimateAlphaSystem, EcsOnUpdate, [in] AnimationState, [in] AnimationStart, [in] AnimationLength, [in] AnimationDelay, [in] AnimateSourceFloat, [in] AnimateTargetFloat, [out] rendering.Alpha)
-    zox_system(FadeoutSystem, EcsOnUpdate, [in] FadeOutEvent, [in] AnimationStart, [out] rendering.Alpha)
-    zox_system(OscillateSystem, EcsOnUpdate, [in] OscillateStartPosition3D, [in] OscillateDeltaPosition3D, [out] transforms3.d.LocalPosition3D, [none] OscillatePosition3D)
+    zox_system(EternalRotationSystem, EcsOnUpdate,
+        [in] EternalRotation,
+        [out] transforms3.d.Rotation3D)
+    zox_system(ShrinkSystem, EcsOnUpdate,
+        [in] AnimationState,
+        [in] AnimationStart,
+        [out] transforms.Scale1D)
+    zox_system(IdleSystem, EcsOnUpdate,
+        [in] AnimationState,
+        [in] AnimationStart,
+        [out] transforms.Scale1D)
+    zox_system(FadeinSystem, EcsOnUpdate,
+        [in] AnimationState,
+        [in] AnimationStart,
+        [in] AnimationLength,
+        [in] AnimationDelay,
+        [out] rendering.Alpha)
+    zox_system(AnimationSequenceSystem, EcsPostUpdate,
+        [in] AnimationSequence,
+        [in] AnimationTimes,
+        [in] AnimationTargets,
+        [in] AnimationDelay,
+        [out] AnimationIndex,
+        [out] AnimationLength,
+        [out] AnimationStart,
+        [out] AnimationState)
+    zox_system(AnimateAlphaSystem, EcsOnUpdate,
+        [in] AnimationState,
+        [in] AnimationStart,
+        [in] AnimationLength,
+        [in] AnimationDelay,
+        [in] AnimateSourceFloat,
+        [in] AnimateTargetFloat,
+        [out] rendering.Alpha)
+    zox_system(FadeoutSystem, EcsOnUpdate,
+        [in] FadeOutEvent,
+        [in] AnimationStart,
+        [out] rendering.Alpha)
+    zox_system(OscillateSystem, EcsOnUpdate,
+        [in] OscillateStartPosition3D,
+        [in] OscillateDeltaPosition3D,
+        [out] transforms3.d.LocalPosition3D,
+        [none] OscillatePosition3D)
 zox_end_module(Animations)
 
 #endif

@@ -1,6 +1,3 @@
-// adds texture generated
-extern void prefab_add_texture_generated(ecs_world_t *world, ecs_entity_t e, int2 textureSize, byte generate);
-
 ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t prefab) {
     const int2 texture_size = int2_zero; // { 16, 16 };
     // zox_prefab_child(prefab)
@@ -9,7 +6,12 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t p
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Color, { color_red })
-    prefab_add_texture_generated(world, e, texture_size, zox_generate_texture_trigger);
+    zox_add_tag(e, Texture)
+    zox_prefab_set(e, TextureData, { 0, NULL })
+    zox_prefab_set(e, TextureSize, { texture_size })
+    zox_prefab_set(e, TextureDirty, { 0 })
+    zox_prefab_set(e, Seed, { 666 })
+    zox_prefab_set(e, GenerateTexture, { zox_generate_texture_trigger })
     add_noise_texture(world, e);
     if (headless) {
         return e;

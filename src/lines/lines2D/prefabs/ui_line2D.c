@@ -4,7 +4,7 @@ extern void set_ui_line_position(LineData2D *lineData2D, int4 linePosition2D, fl
 
 ecs_entity_t spawn_prefab_ui_line2D(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_ui_line2D")
+    zox_prefab_name("ui_line2D")
     zox_add_tag(e, Line2D)
     zox_add_tag(e, ElementLine2D)
     zox_prefab_set(e, LineData2D, { float4_zero })

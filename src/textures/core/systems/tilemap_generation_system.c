@@ -42,22 +42,17 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         for (int j = 0; j < textureData->length; j++) {
             textureData->value[j] = color_white;
         }
-        for (texture_position.y = 0; texture_position.y < tilemapSize->value.y; texture_position.y++) {
-            for (texture_position.x = 0; texture_position.x < tilemapSize->value.x; texture_position.x++) {
-                if (texture_index >= textureLinks->length) {
-                    zox_log_error("[tilemap generation system] texture_index OOB  index [%i]", texture_index)
-                    break;
-                    break;
-                }
+        for (texture_position.y = 0; texture_position.y < tilemapSize->value.y && texture_index < textureLinks->length; texture_position.y++) {
+            for (texture_position.x = 0; texture_position.x < tilemapSize->value.x && texture_index < textureLinks->length; texture_position.x++) {
                 const ecs_entity_t texture_entity = textureLinks->value[texture_index];
                 if (!zox_valid(texture_entity) || !zox_has(texture_entity, TextureData)) {
-                    zox_log_error("[tilemap generation] texture null [%lu] - index [%i]", texture_entity, texture_index)
+                    zox_log_error("invalid texture [%lu] index [%i]", texture_entity, texture_index)
                     texture_index++;
                     continue;
                 }
                 zox_geter(texture_entity, TextureData, voxel_texture_data)
                 if (!voxel_texture_data->value) {
-                    zox_log_error("voxel [?] texture [%lu] data is null", texture_entity)
+                    zox_log_error("invalid texture data [%lu] index [%i]", texture_entity, texture_index)
                     texture_index++;
                     continue;
                 }

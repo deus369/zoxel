@@ -36,8 +36,8 @@ void convert_zext_to_text_non_malloc(const byte *zext, int length, char* text, i
 }
 
 char* convert_zext_to_text(const byte *zext, byte length) {
-    if (!zext || length == 0) {
-        return "";
+    if (!zext || !length) {
+        return NULL; // "";
     }
     byte text_length = length + 1;
     char *text = malloc(text_length);

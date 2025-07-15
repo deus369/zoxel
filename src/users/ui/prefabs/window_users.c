@@ -5,7 +5,7 @@
 
 ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_window_users")
+    zox_prefab_name("window_users")
     zox_prefab_set(e, FramePrefabLink, { prefab_frame })
     return e;
 }
@@ -98,7 +98,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
             .outline_color = window_outline
         }
     };
-    const ecs_entity_t body = spawn_body(world, &spawn_body_data);
+    const ecs_entity_t body = spawn_element(world, &spawn_body_data);
     children->value[is_header] = body;
     // zox_get_muter(body, Children, body_children)
     Children *body_children = &((Children) { 0, NULL });

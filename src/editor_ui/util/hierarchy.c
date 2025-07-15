@@ -16,22 +16,38 @@ extern ecs_entity_t prefab_realm;
 extern ecs_entity_t prefab_block;
 extern ecs_entity_t prefab_texture;
 
-void add_entity_to_labels(ecs_world_t *world, const ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int tree_level) {
-    if (!e) return;
+void add_entity_to_labels(ecs_world_t *world,
+    const ecs_entity_t e,
+    text_group_dynamic_array_d* labels,
+    ecs_entity_t_array_d* entities,
+    const int tree_level)
+{
+    if (!zox_valid(e)) {
+        return;
+    }
     char *text = malloc(hierarchy_max_line_characters);
     if (!zox_has(e, ZoxName)) {
-        snprintf(text, hierarchy_max_line_characters, "e [%lu] -%i", (long int) e, tree_level);
+        snprintf(text, hierarchy_max_line_characters, "[%s]", zox_get_name(e));
     } else {
-        const ZoxName *zoxName = zox_get(e, ZoxName)
-        char *text2 = convert_zext_to_text(zoxName->value, zoxName->length);
-        snprintf(text, hierarchy_max_line_characters, "%s", text2);
-        free(text2);
-        for (int i = 0; i < tree_level; i++) {
-            char *temp = strdup(text);
-            snprintf(text, hierarchy_max_line_characters, "-%s", temp);
-            free(temp);
+        zox_geter(e, ZoxName, zox_name)
+        char *text2 = convert_zext_to_text(zox_name->value, zox_name->length);
+        if (text2) {
+            snprintf(text, hierarchy_max_line_characters, "%s", text2);
+            free(text2);
+        } else {
+            snprintf(text, hierarchy_max_line_characters, "[%s]", zox_get_name(e));
         }
     }
+    for (int i = 0; i < tree_level; i++) {
+        char *temp = strdup(text);
+        if (temp) {
+            snprintf(text, hierarchy_max_line_characters, "-%s", temp);
+            free(temp);
+        } else {
+            zox_log_error("no temp was created")
+        }
+    }
+    // zox_log("%s made label [%s]", zox_get_name(e), text)
     add_to_text_group_dynamic_array_d(labels, (text_group_dynamic) { text = text });
     add_to_ecs_entity_t_array_d(entities, e);
 }
@@ -43,21 +59,32 @@ int get_max_characters_d(const char *header_label, text_group_dynamic_array_d* l
         if (txt_size > max_characters) max_characters = txt_size;
     }
     int header_txt_size = strlen(header_label);
-    if (header_txt_size > max_characters) max_characters = header_txt_size;
+    if (header_txt_size > max_characters) {
+        max_characters = header_txt_size;
+    }
     return max_characters;
 }
 
-void add_entity_children_to_labels(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
-    if (!e) return;
+void add_entity_children_to_labels(ecs_world_t *world,
+    ecs_entity_t e,
+    text_group_dynamic_array_d* labels,
+    ecs_entity_t_array_d* entities,
+    int tree_level)
+{
+    if (!zox_valid(e)) {
+        return;
+    }
     add_entity_to_labels(world, e, labels, entities, tree_level);
     if (zox_has(e, Children)) {
         tree_level++;
-        const Children *children = zox_get(e, Children)
-        for (int i = 0; i < children->length; i++) add_entity_children_to_labels(world, children->value[i], labels, entities, tree_level);
+        zox_geter(e, Children, children)
+        for (int i = 0; i < children->length; i++) {
+            add_entity_children_to_labels(world, children->value[i], labels, entities, tree_level);
+        }
     }
 }
 
-void print_entity(ecs_world_t *world, ecs_entity_t e) {
+void zox_print_entity(ecs_world_t *world, ecs_entity_t e) {
     const ecs_type_t *type = ecs_get_type(world, e);
     const ecs_id_t *type_ids = type->array;
     int32_t i, count = type->count;
@@ -110,25 +137,53 @@ void print_entity(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void editor_select_entity(ecs_world_t *world, const ecs_entity_t e) {
-    if (editor_selected == e) return;
+    if (editor_selected == e) {
+        return;
+    }
     editor_selected = e;
     set_inspector_element(world, inspector, e);
 }
 
 void button_event_clicked_hierarchy(ecs_world_t *world, const ClickEventData *event) {
-    if (!zox_has(event->clicked, Children)) return;
+    if (!zox_has(event->clicked, Children)) {
+        return;
+    }
     const ecs_entity_t target = zox_get_value(event->clicked, EntityTarget)
     editor_select_entity(world, target);
 }
 
 // like text, sets the list of text onto the ui element list
-void set_ui_list_hierarchy(ecs_world_t *world, Children *children, ecs_entity_t window_entity, const ecs_entity_t canvas, const int elements_visible, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int labels_count, const ClickEvent click_event, const byte button_layer, const byte2 button_padding, const int button_inner_margins, const byte font_size, const byte list_start, const int2 list_margins, const byte is_scrollbar, const int scrollbar_width, const int scrollbar_margins, const float2 window_position, const int2 window_pixel_position_global, const int2 window_size, const int2 canvas_size) {
+void set_ui_list_hierarchy(ecs_world_t *world,
+    Children *children,
+    ecs_entity_t window_entity,
+    const ecs_entity_t canvas,
+    const int elements_visible,
+    text_group_dynamic_array_d* labels,
+    ecs_entity_t_array_d* entities,
+    int labels_count,
+    const ClickEvent click_event,
+    const byte button_layer,
+    const byte2 button_padding,
+    const int button_inner_margins,
+    const byte font_size,
+    const byte list_start,
+    const int2 list_margins,
+    const byte is_scrollbar,
+    const int scrollbar_width,
+    const int scrollbar_margins,
+    const float2 window_position,
+    const int2 window_pixel_position_global,
+    const int2 window_size,
+    const int2 canvas_size)
+{
     // resize scrollbar
     resize_window_scrollbar(world, children, window_size, canvas_size, elements_visible, labels_count);
     // refresh elements
     const int childrens_length = list_start + labels_count;
     // destroy previous ones
-    for (int j = list_start; j < children->length; j++) zox_delete(children->value[j])
+    for (int j = list_start; j < children->length; j++) {
+        zox_delete(children->value[j])
+    }
     // set new elements size
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
     for (int j = 0; j < labels_count; j++) {

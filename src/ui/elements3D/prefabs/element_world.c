@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_element3D")
+    zox_prefab_name("element3D")
     zox_add_tag(e, Element3D)
     zox_add_tag(e, ElementBillboard)
     zox_prefab_set(e, CameraLink, { 0 })

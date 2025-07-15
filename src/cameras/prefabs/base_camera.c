@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_camera")
+    zox_prefab_name("camera")
     zox_add_tag(e, Camera)
     // zox_add_tag(e, CameraTransform)
     zox_prefab_set(e, Position3D, { float3_zero })

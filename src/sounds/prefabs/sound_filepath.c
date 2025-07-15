@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_sound_filepath(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_sound_filepath")
+    zox_prefab_name("sound_filepath")
     zox_prefab_set(e, SoundVolume, { default_sound_volume })
     zox_prefab_add(e, SoundData)
     // zox_prefab_add(e, SoundDataRef)

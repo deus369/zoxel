@@ -3,7 +3,7 @@ ecs_entity_t prefab_temporary_line3D;
 
 ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_line3D")
+    zox_prefab_name("line3D")
     zox_add_tag(e, Line3D)
     zox_prefab_set(e, LineData3D, { { 0, 0, 0, 0, 0, 0 } })
     zox_prefab_set(e, LineThickness, { 1 })

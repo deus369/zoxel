@@ -2,8 +2,10 @@
 #define zox_elements2D
 
 #include "settings/_.c"
+#include "components/_.c"
 #include "data/_.c"
 #include "prefabs/_.c"
+#include "spawn/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 

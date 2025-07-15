@@ -2,7 +2,7 @@
 
 ecs_entity_t spawn_prefab_music_file(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_music_file")
+    zox_prefab_name("music_file")
     return e;
 }
 

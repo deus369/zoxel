@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_sound_file_instance(ecs_world_t *world,
     const ecs_entity_t prefab)
 {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_sound_file_instance")
+    zox_prefab_name("sound_file_instance")
     zox_prefab_set(e, ProcessSound, { zox_sound_process_trigger })
     return e;
 }

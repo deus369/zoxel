@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_elementbar3D_front(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_elementbar3D_front")
+    zox_prefab_name("elementbar3D_front")
     zox_add_tag(e, FillTexture)
     zox_prefab_set(e, Color, { front_bar3D_color })
     zox_prefab_set(e, PixelSize, { int2_one })

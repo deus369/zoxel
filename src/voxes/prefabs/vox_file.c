@@ -64,7 +64,7 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
 // todo: base this off prefab_chunk
 ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_vox_file")
+    zox_prefab_name("vox_file")
     zox_add_tag(e, Vox)
     zox_prefab_add(e, ChunkSize)
     zox_prefab_add(e, VoxelNode)

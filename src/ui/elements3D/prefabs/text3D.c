@@ -9,7 +9,7 @@ typedef struct {
 
 ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_text3D")
+    zox_prefab_name("text3D")
     zox_add_tag(e, Zext)
     zox_add_tag(e, Text3D)
     zox_prefab_set(e, MeshAlignment, { 0 })

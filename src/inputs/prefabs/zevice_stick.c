@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_zevice_stick")
+    zox_prefab_name("zevice_stick")
     zox_add_tag(e, Zevice)
     zox_prefab_set(e, ZeviceDisabled, { 0 })
     zox_prefab_set(e, ZeviceStick, { float2_zero })

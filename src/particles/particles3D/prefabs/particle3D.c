@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_particle3D(ecs_world_t *world) {
     zox_prefab()
-    // zox_prefab_name("prefab_particle3D")
+    // zox_prefab_name("particle3D")
     zox_add_tag(e, Particle3D)
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { quaternion_identity })

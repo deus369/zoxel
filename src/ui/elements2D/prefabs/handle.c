@@ -3,7 +3,7 @@
 // the bar can be clicked to reposition the handle as well
 ecs_entity_t spawn_prefab_handle(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_handle")
+    zox_prefab_name("handle")
     // transforms
     zox_prefab_set(e, ParentLink, { 0 })
     // set t texture data
@@ -26,17 +26,5 @@ ecs_entity_t spawn_prefab_handle(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_prefab_set(e, DraggedLink, { 0 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_prefab_set(e, SlideEvent, { 0 })
-    return e;
-}
-
-ecs_entity_t spawn_handle(ecs_world_t *world,
-    const CanvasSpawnData canvas_data,
-    const ParentSpawnData parent_data,
-    ElementSpawnData element_data)
-{
-    zox_instance(element_data.prefab)
-    zox_name("handle")
-    set_element_spawn_data(world, e, canvas_data, parent_data, &element_data);
-    zox_set(e, DraggableLimits, { (int4) { -parent_data.size.x / 2, parent_data.size.x / 2, 0, 0 } })
     return e;
 }

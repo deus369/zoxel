@@ -4,4 +4,4 @@
 #include "spawn_icon.c"
 #include "spawn_frame.c"
 #include "spawn_ui_list.c"
-#include "components.c"
+#include "spawn_slider.c"

@@ -1,6 +1,6 @@
 ecs_entity_t spawn_zigel_prefab(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_zigel")
+    zox_prefab_name("zigel")
     // zigel
     zox_add_tag(e, Zigel)
     zox_prefab_set(e, ZigelIndex, { 0 })

@@ -6,3 +6,4 @@
 #include "terrain.c"
 #include "ui.c"
 #include "tilemap.c"
+#include "editor.c"

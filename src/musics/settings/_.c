@@ -4,6 +4,8 @@ byte is_log_notes = 0;
         zox_log(msg, ##__VA_ARGS__)\
     }
 
+byte nomusic = 0;
+byte is_log_playlists = 0;
 // instrument_piano_file | instrument_piano
 const byte music_load_instrument = instrument_piano_file;
 float global_music_speed = 1;

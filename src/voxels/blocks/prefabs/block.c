@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_block(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_block")
+    zox_prefab_name("block")
     zox_add_tag(e, Voxel)
     zox_add_tag(e, Block)
     zox_prefab_set(e, BlockIndex, { 0 })

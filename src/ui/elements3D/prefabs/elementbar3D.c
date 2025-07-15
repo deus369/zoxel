@@ -8,7 +8,7 @@ typedef struct {
 
 ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_elementbar3D")
+    zox_prefab_name("elementbar3D")
     zox_add_tag(e, FillTexture)
     zox_prefab_set(e, ElementBar, { 1 })
     zox_prefab_set(e, ElementBarSize, { float2_zero })

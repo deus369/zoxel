@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_label3D(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_label3D")
+    zox_prefab_name("label3D")
     zox_add_tag(e, FillTexture)
     zox_set(e, UITrail, {{ 0, 0.43f, 0 }})
     zox_prefab_set(e, PixelSize, { int2_one })

@@ -1,10 +1,15 @@
 ecs_entity_t spawn_prefab_tilemap(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_tilemap")
+    zox_prefab_name("tilemap")
     zox_add_tag(e, Tilemap)
     zox_prefab_set(e, RealmLink, { 0 })
     zox_prefab_set(e, TilemapSize, { { 1, 1 } })
-    prefab_add_texture_generated(world, e, int2_zero, zox_generate_texture_none);
+    zox_add_tag(e, Texture)
+    zox_prefab_set(e, TextureData, { 0, NULL })
+    zox_prefab_set(e, TextureSize, { int2_zero })
+    zox_prefab_set(e, TextureDirty, { 0 })
+    zox_prefab_set(e, Seed, { 666 })
+    zox_prefab_set(e, GenerateTexture, { zox_generate_texture_none })
     if (!headless) {
         add_gpu_texture(world, e);
         add_gpu_material(world, e);

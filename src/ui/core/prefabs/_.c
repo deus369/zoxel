@@ -1,17 +1,15 @@
-ecs_entity_t prefab_canvas;
-ecs_entity_t prefab_layout2D;
-ecs_entity_t prefab_element_basic;
-ecs_entity_t prefab_element_textured;
-ecs_entity_t prefab_render_texture;
-ecs_entity_t prefab_canvas_overlay;
-
 #include "canvas.c"
 #include "layout2D.c"
 #include "element_basic.c"
 #include "element_textured.c"
 #include "canvas_overlay.c"
-#include "element_texture.c"
 #include "render_texture.c"
+ecs_entity_t prefab_canvas;
+ecs_entity_t prefab_layout2D;           // a non textured element
+ecs_entity_t prefab_element_basic;      // rename element - assume texture
+ecs_entity_t prefab_element_textured;   // rename to textured_frame
+ecs_entity_t prefab_render_texture;     // a child of prefab_element_basic
+ecs_entity_t prefab_canvas_overlay;
 
 void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
     // Player -> Devices
@@ -45,7 +43,7 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_element_textured = spawn_prefab_element_textured(world, prefab_element_basic);
     // more stuffs
     prefab_render_texture = spawn_prefab_render_texture(world, prefab_element_basic);
-    prefab_canvas_overlay = spawn_prefab_canvas_overlay(world);
+    prefab_canvas_overlay = spawn_prefab_canvas_overlay(world, prefab_element_textured);
     // linking
     if (prefab_player) {
         prefabs_add_ui_to_raycaster(world, prefab_player);

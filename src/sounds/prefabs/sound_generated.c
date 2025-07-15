@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_generated_sound(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_generated_sound")
+    zox_prefab_name("generated_sound")
     zox_prefab_set(e, SoundFrequency, { 0 })
     zox_prefab_set(e, InstrumentType, { 0 })
     zox_prefab_set(e, GenerateSound, { zox_sound_generate_trigger })

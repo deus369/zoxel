@@ -9,7 +9,7 @@ void prefab_add_cube_lines(ecs_world_t *world, const ecs_entity_t e, const color
 
 ecs_entity_t spawn_prefab_cube_lines(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_cube_lines")
+    zox_prefab_name("cube_lines")
     prefab_add_cube_lines(world, e, color_rgb_white, 1);
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { quaternion_identity })

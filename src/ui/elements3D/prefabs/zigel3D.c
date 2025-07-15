@@ -15,7 +15,7 @@ typedef struct {
 
 ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_zigel3D")
+    zox_prefab_name("zigel3D")
     zox_add_tag(e, Zigel)
     zox_add_tag(e, FontTexture)
     zox_prefab_set(e, ZigelIndex, { 0 })

@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_renderer_instance(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_renderer_instance")
+    zox_prefab_name("renderer_instance")
     zox_add_tag(e, RendererInstance)
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { float4_identity })

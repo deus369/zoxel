@@ -2,7 +2,7 @@ ecs_entity_t prefab_app_sdl;
 
 ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     zox_prefab_child(prefab_app)
-    zox_prefab_name("prefab_app_sdl")
+    zox_prefab_name("app_sdl")
     zox_prefab_set(e, SDLWindow, { NULL })
     zox_prefab_set(e, Context, { NULL })
     zox_prefab_set(e, WindowFullscreen, { 0 })

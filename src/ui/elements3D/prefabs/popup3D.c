@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_popup3D(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    zox_prefab_name("prefab_popup3D")
+    zox_prefab_name("popup3D")
     zox_add_tag(e, FillTexture)
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })

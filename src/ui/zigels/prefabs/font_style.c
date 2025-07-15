@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_font_style(ecs_world_t *world, const ecs_entity_t prefab_font) {
     zox_prefab()
-    zox_prefab_name("prefab_font_style")
+    zox_prefab_name("font_style")
     zox_add_tag(e, FontStyle)
     zox_prefab_add(e, Children)
     zox_prefab_set(e, FontLink, { prefab_font })

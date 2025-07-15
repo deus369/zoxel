@@ -2,7 +2,7 @@ ecs_entity_t prefab_shader;
 
 ecs_entity_t spawn_prefab_shader(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_shader")
+    zox_prefab_name("shader")
     zox_add_tag(e, Shader)
     zox_prefab_set(e, ShaderSourceIndex, { 0 })
     add_gpu_shader(world, e); // adds ShaderGPULink

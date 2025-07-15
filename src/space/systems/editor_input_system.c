@@ -36,15 +36,6 @@ void EditorInputSystem(ecs_iter_t *it) {
                 } else if (keyboard->p.pressed_this_frame) {
                     toggle_ui_with_tag_e(spawn_menu_skills_player, MenuSkills, e)
                 }*/
-#ifdef zox_test_hierarchy
-                /*else if (keyboard->f.pressed_this_frame) {
-                    toggle_ui(world, canvas, &inspector, &spawn_inspector);
-                    toggle_ui(world, canvas, &hierarchy, &spawn_editor_hierarchy);
-                }*/
-
-                // else if (keyboard->h.pressed_this_frame) toggle_ui(world, canvas, &hierarchy, &spawn_editor_hierarchy);
-                // else if (keyboard->g.pressed_this_frame) toggle_ui(world, canvas, &inspector, &spawn_inspector);
-#endif
             }
         }
     }
@@ -52,13 +43,4 @@ void EditorInputSystem(ecs_iter_t *it) {
 
 // particle test
 /*else if (keyboard->v.pressed_this_frame) {
-    zox_log(" + adding particles to character\n")
-    const ecs_entity_t character = zox_get_value(e, CharacterLink)
-    // spawn particle system
-    zox_get_muter(character, Children, children)
-    const float3 bounds = zox_get_value(character, Bounds3D)
-    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, character, 4, float3_multiply_float(bounds, 2), (color) { 255, 0, 0, 255 });
-    add_to_Children(children, particle3D_emitter);
-    // not linked to skill
-    // zox_set(particle3D_emitter, SkillLink, { character })
 }*/

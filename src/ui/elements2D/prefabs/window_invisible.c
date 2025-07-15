@@ -2,7 +2,8 @@ ecs_entity_t spawn_prefab_window_invisible(ecs_world_t *world, const ecs_entity_
     zox_prefab_child(prefab)
     zox_prefab_name("window_invisible")
     zox_add_tag(e, Window)
-    add_selectable(world, e);
+    zox_add_tag(e, Selectable)
+    zox_prefab_set(e, SelectState, { zox_select_state_none })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_add_tag(e, BoundToCanvas)
     zox_prefab_set(e, WindowLayer, { 0 })

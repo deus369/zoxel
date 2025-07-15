@@ -25,14 +25,14 @@ void define_systems_textures(ecs_world_t *world) {
     zox_texture_generation_system2(FillTexture, FillTextureSystem,
         [in] colorz.Color)
     zox_system_ctx(FrameTextureSystem, zox_pip_texture_generation, generate_textures2,
-        [none] FrameTexture,
-        [out] textures.core.GenerateTexture,
         [in] textures.core.TextureSize,
         [in] colorz.Color,
         [in] OutlineThickness,
         [in] FrameCorner,
+        [out] textures.core.GenerateTexture,
         [out] textures.core.TextureData,
-        [out] rendering.TextureDirty)
+        [out] rendering.TextureDirty,
+        [none] FrameTexture)
     zox_system(TilemapGenerationSystem, zox_pip_texture_generation,
         [in] textures.core.TilemapSize,
         [in] textures.core.TextureLinks,

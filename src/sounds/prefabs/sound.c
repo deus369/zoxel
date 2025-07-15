@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_prefab()
-    zox_prefab_name("prefab_sound")
+    zox_prefab_name("sound")
     zox_add_tag(e, Sound)
     zox_prefab_add(e, SoundData)
     zox_prefab_set(e, SoundLength, { 0 })

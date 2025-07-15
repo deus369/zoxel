@@ -2,7 +2,7 @@
 \
 ecs_entity_t spawn_prefab_menu_##name(ecs_world_t *world, const ecs_entity_t prefab) {\
     zox_prefab_child(prefab)\
-    zox_prefab_name("prefab_menu_"#name)\
+    zox_prefab_name("menu_"#name)\
     zox_add_tag(e, Menu##Name)\
     return e;\
 }
