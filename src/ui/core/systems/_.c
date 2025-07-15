@@ -29,7 +29,7 @@ void define_systems_elements_core(ecs_world_t *world) {
     zox_filter(raycast_query,
         [none] Element,
         [in] elements.core.CanvasPosition,
-        [in] layouts2.d.PixelSize,
+        [in] layouts2.PixelSize,
         [in] elements.core.Layer2D,
         [in] rendering.RenderDisabled,
         [none] Selectable)
@@ -63,12 +63,12 @@ void define_systems_elements_core(ecs_world_t *world) {
         [out] NavigatorTimer,
         [out] raycasts.RaycasterTarget)
     zox_system(ElementPositionSystem, EcsOnLoad,
-        [in] layouts2.d.PixelPosition,
-        [in] layouts2.d.PixelSize,
+        [in] layouts2.PixelPosition,
+        [in] layouts2.PixelSize,
         [in] hierarchys.ParentLink,
         [in] elements.core.Anchor,
         [in] elements.core.CanvasLink,
-        [out] transforms2.d.Position2D,
+        [out] transforms2.Position2D,
         [out] elements.core.CanvasPosition,
         [none] Element)
     zox_system(CanvasStackSystem, EcsOnLoad,
@@ -97,7 +97,7 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] inputs.ZeviceLink,
         [in] elements.core.Anchor,
         [in] elements.core.CanvasLink,
-        [out] layouts2.d.PixelPosition,
+        [out] layouts2.PixelPosition,
         [none] MouseElement)
     zox_system(DraggerEndSystem, EcsPostLoad,
         [out] elements.core.DraggableState,
@@ -107,11 +107,11 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] cameras.CameraLink,
         [in] hierarchys.Children,
         [in] cameras.ScreenToCanvas,
-        [out] layouts2.d.PixelSize,
+        [out] layouts2.PixelSize,
         [none] Canvas)
     // all ui
     zox_render2D_system(RenderTextureRenderSystem,
-        [in] transforms3.d.TransformMatrix,
+        [in] transforms3.TransformMatrix,
         [in] elements.core.Layer2D,
         [in] rendering.RenderDisabled,
         [in] rendering.core.MeshGPULink,
@@ -119,8 +119,8 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] rendering.core.TextureGPULink,
         [none] cameras.RenderTexture)
     zox_render2D_system(ElementRenderSystem,
-        [in] transforms2.d.Position2D,
-        [in] transforms2.d.Rotation2D,
+        [in] transforms2.Position2D,
+        [in] transforms2.Rotation2D,
         [in] transforms.Scale1D,
         [in] elements.core.Layer2D,
         [in] rendering.RenderDisabled,
@@ -144,7 +144,7 @@ void define_systems_elements_core(ecs_world_t *world) {
         // EcsOnLoad - zox_pip_mainthread
         zox_system_1(Element2DMeshSystem, EcsOnLoad,
             [none] Element,
-            [in] layouts2.d.PixelSize,
+            [in] layouts2.PixelSize,
             [in] rendering.MeshAlignment,
             [in] elements.core.CanvasLink,
             [out] elements.core.InitializeElement,

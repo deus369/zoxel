@@ -9,13 +9,13 @@ typedef struct {
     GLint vertex_position;
     GLint vertex_color;
     GLint matrices;
-    GLuint camera_matrix;
-    GLuint brightness;
-    GLuint fog_data;
+    uint camera_matrix;
+    uint brightness;
+    uint fog_data;
 } MaterialVoxInstance;
 zox_custom_component(MaterialVoxInstance)
 
-MaterialVoxInstance create_MaterialVoxInstance(const GLuint material) {
+MaterialVoxInstance create_MaterialVoxInstance(const uint material) {
     return (MaterialVoxInstance) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
@@ -26,8 +26,8 @@ MaterialVoxInstance create_MaterialVoxInstance(const GLuint material) {
     };
 }
 
-GLuint generate_ubo(GLint binding_point) {
-    GLuint ubo;
+uint generate_ubo(GLint binding_point) {
+    uint ubo;
     glGenBuffers(1, &ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
     glBufferData(GL_UNIFORM_BUFFER, sizeof(float4x4) * zox_max_vox_instances, NULL, GL_DYNAMIC_DRAW);
@@ -37,7 +37,7 @@ GLuint generate_ubo(GLint binding_point) {
     return ubo;
 }
 
-GLuint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
+uint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
     zox_geter(material, MaterialVoxInstance, materialVoxInstance)
     const GLint binding_point = materialVoxInstance->matrices;
     if (binding_point == GL_INVALID_INDEX) {
@@ -58,7 +58,7 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
         can_render_instanes = 0;
         return 0;
     }
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     if (!material) {
@@ -70,7 +70,7 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     zox_set_data(e, MaterialVoxInstance, materialVoxInstance)
     material_vox_instance = e;
     shader_vox_instance = shader;
-    GLuint ubo = generate_ubo(materialVoxInstance.matrices);
+    uint ubo = generate_ubo(materialVoxInstance.matrices);
     zox_set(e, UboGPULink, { ubo })
     return e;
 }

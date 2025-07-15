@@ -1,5 +1,8 @@
 // a block that is for a block vox
-ecs_entity_t spawn_prefab_block_vox_meta(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t prefab_block_vox) {
+ecs_entity_t spawn_prefab_block_vox_meta(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t prefab_block_vox)
+{
     zox_prefab_child(prefab)
     zox_prefab_name("block_vox_meta")
     zox_prefab_add(e, ModelLink)
@@ -7,6 +10,7 @@ ecs_entity_t spawn_prefab_block_vox_meta(ecs_world_t *world, const ecs_entity_t 
     return e;
 }
 
+// our main realm block spawn function
 ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
     zox_name(data->name) // "block_vox_meta")
@@ -35,6 +39,7 @@ ecs_entity_t spawn_block_vox_meta(ecs_world_t *world, const SpawnBlock *data) {
         resize_memory_component(Textures, textures, ecs_entity_t, 6)
         for (byte i = 0; i < 6; i++) {
             const ecs_entity_t e2 = spawn_texture(world, data->prefab_texture, voxel_texture_size);
+            zox_set_name_e(e2, "texture_block")
             zox_set(e2, VoxLink, { data->vox })
             zox_set(e2, VoxBakeSide, { i })
             textures->value[i] = e2;

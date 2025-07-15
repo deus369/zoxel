@@ -29,7 +29,7 @@ zox_begin_module(RenderingCore)
     initialize_hook_load_shader();
     initialize_gpu_systems();
     // ecs defines
-    define_components_rendering(world);
+    define_components_rendering_core(world);
     define_systems_rendering(world);
     // hooks
     add_hook_terminal_command(process_arguments_rendering);

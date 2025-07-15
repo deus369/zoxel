@@ -49,18 +49,18 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         }
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_set_material(materialGPULink->value);
+            zox_enable_material(materialGPULink->value);
             opengl_bind_texture(textureGPULink->value);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-            opengl_set_float4(material_attributes->fog_data, get_fog_value());
-            opengl_set_float(material_attributes->brightness, 1);
+            zox_gpu_float4(material_attributes->fog_data, get_fog_value());
+            zox_gpu_float(material_attributes->brightness, 1);
         }
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_uv_buffer(material_attributes->vertex_uv, uvsGPULink->value);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
-        opengl_render(meshIndicies->length);
+        zox_gpu_render(meshIndicies->length);
 #ifdef zoxel_catch_opengl_errors
         catch_opengl_error("terrain")
 #endif
@@ -71,6 +71,6 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(0);
-        opengl_disable_opengl_program();
+        zox_disable_material();
     }
 } zox_declare_system(TerrainChunksRenderSystem)

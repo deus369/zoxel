@@ -18,7 +18,10 @@ void game_start_terrain3D(ecs_world_t *world, const ecs_entity_t game) {
 }
 
 // Start Game
-void game_start_terrain(ecs_world_t *world, const ecs_entity_t game, byte is_delays) {
+void game_start_terrain(ecs_world_t *world,
+    const ecs_entity_t game,
+    byte is_delays)
+{
     if (zox_game_type == zox_game_mode_3D) {
         if (is_delays) {
             delay_event(world, &game_start_terrain3D, game, start_game_delay_terrain);

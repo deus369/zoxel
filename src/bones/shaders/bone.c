@@ -5,16 +5,16 @@ typedef struct {
     GLint vertex_position;
     GLint vertex_color;
     GLint bone_index;
-    GLuint transform_matrix;
-    GLuint camera_matrix;
-    GLuint bone_matrix;
-    GLuint bone_positions;
-    GLuint brightness;
-    GLuint fog_data;
+    uint transform_matrix;
+    uint camera_matrix;
+    uint bone_matrix;
+    uint bone_positions;
+    uint brightness;
+    uint fog_data;
 } MaterialBone;
 zox_custom_component(MaterialBone)
 
-MaterialBone create_MaterialBone(const GLuint material) {
+MaterialBone create_MaterialBone(const uint material) {
     return (MaterialBone) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
@@ -46,7 +46,7 @@ ecs_entity_t spawn_material_bone(ecs_world_t *world) {
         return 0;
     }
     shader_bone = shader;
-    GLuint material; // link to gpu
+    uint material; // link to gpu
     const ecs_entity_t e = spawn_material(world, shader, &material);
     if (!e) {
         zox_log(" ! failed spawning bone material")

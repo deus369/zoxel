@@ -24,24 +24,24 @@ void TexturedRenderSystem(ecs_iter_t *it) {
         if (!meshGPULink->value.x) continue;
         if (!materialGPULink->value) continue;
         if (!textureGPULink->value) continue;
-        opengl_set_material(materialGPULink->value);
+        zox_enable_material(materialGPULink->value);
         opengl_bind_texture(textureGPULink->value);
         opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-        opengl_set_float4(material_attributes->fog_data, get_fog_value());
-        opengl_set_float(material_attributes->brightness, 1);
+        zox_gpu_float4(material_attributes->fog_data, get_fog_value());
+        zox_gpu_float(material_attributes->brightness, 1);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_uv_buffer(material_attributes->vertex_uv, uvsGPULink->value);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
-        opengl_render(meshIndicies->length);
+        zox_gpu_render(meshIndicies->length);
         // disabling
         opengl_disable_buffer(material_attributes->vertex_color);
         opengl_disable_buffer(material_attributes->vertex_uv);
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(0);
-        opengl_disable_opengl_program();
+        zox_disable_material();
         // zox_log(" + rendering cube [%s]\n", zox_get_name(it->entities[i]))
         // zox_log("texture rendering [%i]\n", i)
         catch_basic3D_errors("! TexturedRenderSystem");

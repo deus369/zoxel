@@ -19,7 +19,7 @@ int engine_spawn_window(ecs_world_t *world) {
 #ifdef zox_mod_sounds
     load_files_sounds(world);
 #endif
-#ifdef zox_mod_voxels
+#ifdef zox_mod_voxes
     initialize_voxes(world);
 #endif
     // Shaders

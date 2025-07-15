@@ -54,7 +54,7 @@ zox_begin_module(Neurals)
 
 #ifdef zox_render_brain
     zox_system_1(NeuronRenderSystem, zox_pip_mainthread,
-        [in] transforms2.d.Position2D,
+        [in] transforms2.Position2D,
         [none] Neuron)
     zox_system_1(ConnectionRenderSystem, zox_pip_mainthread,
         [in] ConnectionData,

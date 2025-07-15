@@ -55,7 +55,7 @@ zox_begin_module(Animations)
     zox_define_memory_component(AnimationLinks)
     zox_system(EternalRotationSystem, EcsOnUpdate,
         [in] EternalRotation,
-        [out] transforms3.d.Rotation3D)
+        [out] transforms3.Rotation3D)
     zox_system(ShrinkSystem, EcsOnUpdate,
         [in] AnimationState,
         [in] AnimationStart,
@@ -94,7 +94,7 @@ zox_begin_module(Animations)
     zox_system(OscillateSystem, EcsOnUpdate,
         [in] OscillateStartPosition3D,
         [in] OscillateDeltaPosition3D,
-        [out] transforms3.d.LocalPosition3D,
+        [out] transforms3.LocalPosition3D,
         [none] OscillatePosition3D)
 zox_end_module(Animations)
 

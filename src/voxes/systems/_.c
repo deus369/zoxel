@@ -7,7 +7,7 @@
 void define_systems_voxes(ecs_world_t *world) {
     zox_system(VoxTextureSystem, EcsPreUpdate,
         [in] textures.core.TextureSize,
-        [in] voxels.VoxLink,
+        [in] chunks3.VoxLink,
         [in] blocks.VoxBakeSide,
         [out] textures.core.GenerateTexture,
         [out] textures.core.TextureData,
@@ -16,39 +16,39 @@ void define_systems_voxes(ecs_world_t *world) {
     // remember: timing specific, fucks up if changes position
     zox_system(Bounds3DGrowSystem, EcsOnUpdate,
         [in] rendering.MeshDirty,
-        [in] chunks.ChunkSize,
+        [in] chunks3.ChunkSize,
         [in] blocks.VoxScale,
         [out] generic.Bounds3D)
     zox_system(GenerateVoxSystem, EcsOnUpdate,
         [in] colorz.Color,
         [out] GenerateVox,
-        [out] chunks.VoxelNode,
-        [out] chunks.NodeDepth,
+        [out] chunks3.VoxelNode,
+        [out] chunks3.NodeDepth,
         [out] colorz.ColorRGBs,
-        [out] chunks.ChunkMeshDirty)
+        [out] chunks3.ChunkMeshDirty)
     zox_system(CloneVoxSystem, EcsOnUpdate,
         [in] CloneVoxLink,
         [out] CloneVox,
-        [out] chunks.VoxelNode,
-        [out] chunks.NodeDepth,
-        [out] chunks.ChunkSize,
+        [out] chunks3.VoxelNode,
+        [out] chunks3.NodeDepth,
+        [out] chunks3.ChunkSize,
         [out] colorz.ColorRGBs,
-        [out] chunks.ChunkMeshDirty,
+        [out] chunks3.ChunkMeshDirty,
         [out] ChunkLod)
     if (!headless) {
         zox_system(ChunkColorsBuildSystem, EcsOnUpdate,
-            [in] chunks.ChunkMeshDirty,
-            [in] chunks.VoxelNode,
-            [in] chunks.NodeDepth,
+            [in] chunks3.ChunkMeshDirty,
+            [in] chunks3.VoxelNode,
+            [in] chunks3.NodeDepth,
             [in] rendering.RenderLod,
-            [in] chunks.ChunkNeighbors,
+            [in] chunks3.ChunkNeighbors,
             [in] colorz.ColorRGBs,
-            [in] chunks.ChunkSize,
+            [in] chunks3.ChunkSize,
             [in] blocks.VoxScale,
             [out] rendering.core.MeshIndicies,
             [out] rendering.core.MeshVertices,
             [out] rendering.core.MeshColorRGBs,
             [out] rendering.MeshDirty,
-            [none] chunks.ColorChunk)
+            [none] chunks3.ColorChunk)
     }
 }

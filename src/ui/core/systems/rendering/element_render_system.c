@@ -3,7 +3,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
     if (!material_textured2D) {
         return;
     }
-    const GLuint material_link = zox_get_value(material_textured2D, MaterialGPULink)
+    const uint material_link = zox_get_value(material_textured2D, MaterialGPULink)
     const MaterialTextured2D *material_attributes = zox_get(material_textured2D, MaterialTextured2D)
     byte has_set_material = 0;
     const float position_z = ((int) renderer_layer) * shader_depth_multiplier;
@@ -39,7 +39,7 @@ void ElementRenderSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_enable_blend();
-            opengl_set_material(material_link);
+            zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
@@ -50,16 +50,16 @@ void ElementRenderSystem(ecs_iter_t *it) {
         glEnableVertexAttribArray(material_attributes->vertex_uv);
         glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
         opengl_bind_texture(textureGPULink->value);
-        opengl_set_float3(material_attributes->position, (float3) { position2D->value.x, position2D->value.y, position_z });
-        opengl_set_float(material_attributes->angle, rotation2D->value);
-        opengl_set_float(material_attributes->scale, scale1D->value);
+        zox_gpu_float3(material_attributes->position, (float3) { position2D->value.x, position2D->value.y, position_z });
+        zox_gpu_float(material_attributes->angle, rotation2D->value);
+        zox_gpu_float(material_attributes->scale, scale1D->value);
         // here set float2
         // float2 final_scale = (float2) { scale2D->value.x * canvasSize->value.x, scale2D->value.y * canvasSize->value.y };
         // opengl_set_flaot2(material_attributes->scale, final_scale);
-        opengl_set_float(material_attributes->brightness, brightness->value);
-        opengl_set_float(material_attributes->alpha, alpha->value);
+        zox_gpu_float(material_attributes->brightness, brightness->value);
+        zox_gpu_float(material_attributes->alpha, alpha->value);
 #ifndef zox_disable_render_ui
-        opengl_render(6);
+        zox_gpu_render(6);
 #endif
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
@@ -74,6 +74,6 @@ void ElementRenderSystem(ecs_iter_t *it) {
         opengl_disable_blend();
         opengl_unset_mesh();
         opengl_disable_texture(1);
-        opengl_disable_opengl_program();
+        zox_disable_material();
     }
 } zox_declare_system(ElementRenderSystem)

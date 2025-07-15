@@ -45,8 +45,8 @@ ecs_entity_t spawn_cube_textured(ecs_world_t *world, const ecs_entity_t prefab, 
     spawn_gpu_uvs(world, e);
     spawn_gpu_colors(world, e);
     spawn_gpu_texture(world, e);
-    const GLuint2 shader = zox_get_value(shader_textured3D, ShaderGPULink)
-    const GLuint material = spawn_gpu_material(world, e, shader);
+    const uint2 shader = zox_get_value(shader_textured3D, ShaderGPULink)
+    const uint material = spawn_gpu_material(world, e, shader);
     const MaterialTextured3D attributes = create_MaterialTextured3D(material);
     zox_set_data(e, MaterialTextured3D, attributes)
     zox_set(e, ShaderLink, { shader_textured3D })

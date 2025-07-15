@@ -7,7 +7,7 @@ zox_declare_system_state_event(RealmSkills, GenerateRealm, zox_generate_realm_sk
 void define_systems_skills(ecs_world_t *world) {
     zox_filter(characters,
         [in] combat.Dead,
-        [in] transforms3.d.Position3D,
+        [in] transforms3.Position3D,
         [out] hierarchys.Children,
         [out] stats.DotLinks)
     zox_system_ctx_1(DamageAuraSystem, zox_pip_mainthread, characters,
@@ -18,7 +18,7 @@ void define_systems_skills(ecs_world_t *world) {
         [in] colorz.Color,
         [none] Aura)
     zox_system(DamageAuraRemoveSystem, EcsOnUpdate,
-        [in] transforms3.d.Position3D,
+        [in] transforms3.Position3D,
         [out] stats.DotLinks,
         [out] hierarchys.Children)
     zox_system(DotsSystem, EcsOnUpdate,

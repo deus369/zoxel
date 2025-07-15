@@ -1,4 +1,4 @@
-zox_component(UboGPULink, GLuint)
+zox_component(UboGPULink, uint)
 
 void add_gpu_ubo(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) {

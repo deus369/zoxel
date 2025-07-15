@@ -18,13 +18,13 @@ void render_cube_line3D(float3 position_a, float3 position_b) {
     // glLineWidth(cubeLinesThickness->value);
     glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0,
         (float[]) { position_a.x, position_a.y, position_a.z, position_b.x, position_b.y, position_b.z });
-    glDrawArrays(GL_LINES, 0, 3);
+    zox_gpu_render_lines(3);
 }
 
 void CubeLineRenderSystem(ecs_iter_t *it) {
-    glUseProgram(line3D_material);
+    zox_enable_material(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
-    opengl_set_float4(line3D_fog_data_location, get_fog_value());
+    zox_gpu_float4(line3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
     zox_sys_begin()
     zox_sys_in(DebugCubeLines)
@@ -137,5 +137,5 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
 #endif
     }
     glDisableVertexAttribArray(line3D_position_location);
-    glUseProgram(0);
+    zox_disable_material();
 } zox_declare_system(CubeLineRenderSystem)

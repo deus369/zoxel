@@ -6,13 +6,13 @@ ecs_entity_t material_render_texture;
 typedef struct {
     GLint vertex_position;
     GLint vertex_uv;
-    GLuint camera_matrix;
-    GLuint transform_matrix;
-    GLuint texture;
+    uint camera_matrix;
+    uint transform_matrix;
+    uint texture;
 } MaterialAttributesRenderTexture;
 zox_custom_component(MaterialAttributesRenderTexture)
 
-MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const GLuint material) {
+MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const uint material) {
     return (MaterialAttributesRenderTexture) {
         .vertex_position = glGetAttribLocation(material, "vertex_position"),
         .vertex_uv = glGetAttribLocation(material, "vertex_uv"),
@@ -35,7 +35,7 @@ ecs_entity_t spawn_shader_render_texture(ecs_world_t *world) {
 ecs_entity_t spawn_material_render_texture(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_render_texture(world);
     if (!shader) return 0;
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialAttributesRenderTexture attributes = create_MaterialAttributesRenderTexture(material);

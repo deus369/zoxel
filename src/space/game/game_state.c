@@ -1,6 +1,9 @@
-void player_end_game(ecs_world_t *world, const ecs_entity_t player, const byte is_delays) {
+void player_end_game(ecs_world_t *world,
+    const ecs_entity_t player,
+    const byte is_delays)
+{
     disable_inputs_until_release(world, player, zox_device_mode_none, 1);
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    zox_geter_value(player, CanvasLink, ecs_entity_t, canvas)
     find_child_with_tag(canvas, MenuPaused, menu_paused)
     find_child_with_tag(canvas, Taskbar, taskbar)
     if (is_delays) {
@@ -30,7 +33,11 @@ void player_end_game(ecs_world_t *world, const ecs_entity_t player, const byte i
 }
 
 // game state implementation for players module
-void players_game_state(ecs_world_t *world, const ecs_entity_t game, const byte previous_game_state, const byte new_game_state) {
+void players_game_state(ecs_world_t *world,
+    const ecs_entity_t game,
+    const byte previous_game_state,
+    const byte new_game_state)
+{
     zox_geter(game, PlayerLinks, players)
     for (int i = 0; i < players->length; i++) {
         const ecs_entity_t player = players->value[i];

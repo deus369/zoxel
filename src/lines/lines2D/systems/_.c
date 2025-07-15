@@ -7,7 +7,7 @@ void define_systems_line2D(ecs_world_t *world) {
         [in] elements.core.CanvasLink,
         [out] LineData2D,
         [none] Line2D)
-    zox_render3D_system(Line2DRenderSystem,
+    zox_render3D_plus_system(Line2DRenderSystem,
         [in] LineData2D,
         [in] lines.LineThickness,
         [in] colorz.Color,

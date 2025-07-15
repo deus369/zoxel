@@ -4,14 +4,14 @@ ecs_entity_t material_colored3D;
 typedef struct {
     GLint vertex_position;
     GLint vertex_color;
-    GLuint transform_matrix;
-    GLuint camera_matrix;
-    GLuint brightness;
-    GLuint fog_data;
+    uint transform_matrix;
+    uint camera_matrix;
+    uint brightness;
+    uint fog_data;
 } MaterialColored3D;
 zox_custom_component(MaterialColored3D)
 
-MaterialColored3D create_MaterialColored3D(const GLuint material) {
+MaterialColored3D create_MaterialColored3D(const uint material) {
     return (MaterialColored3D) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_color"),
@@ -36,7 +36,7 @@ ecs_entity_t spawn_shader_colored3D(ecs_world_t *world) {
 ecs_entity_t spawn_material_colored3D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_colored3D(world);
     if (!shader) return 0;
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialColored3D attributes = create_MaterialColored3D(material);

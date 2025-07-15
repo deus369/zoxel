@@ -9,7 +9,7 @@ void RenderTextureRestoreSystem(ecs_iter_t *it) {
         zox_field_i(CameraLink, cameraLinks, cameraLink)
         set_render_texture_gpu(textureGPULink->value, screenDimensions->value);
         if (zox_has(cameraLink->value, FrameBufferLink)) {
-            const GLuint fbo = zox_get_value(cameraLink->value, FrameBufferLink)
+            const uint fbo = zox_get_value(cameraLink->value, FrameBufferLink)
             connect_render_texture_to_fbo(fbo, textureGPULink->value);
             // zox_log("> reconnected texture link [%i] to fbo [%i]\n", textureGPULink->value, fbo)
         } else {

@@ -41,10 +41,10 @@ void define_systems_players2(ecs_world_t *world) {
         [in] inputs.DeviceLinks,
         [none] players.Player)
     zox_system(VoxelActionASystem, EcsOnLoad,
-        [in] chunks.RaycastVoxelData,
+        [in] chunks3.RaycastVoxelData,
         [out] characters.TriggerActionA)
     zox_system_1(ActionActivateSystem, EcsOnLoad,
-        [in] chunks.RaycastVoxelData,
+        [in] chunks3.RaycastVoxelData,
         [out] actions.ActionLinks,
         [out] characters.TriggerActionB)
 #endif
@@ -54,6 +54,6 @@ void define_systems_players2(ecs_world_t *world) {
         [none] players.Player)
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
         [in] cameras.CameraLink,
-        [in] voxels.VoxLink,
-        [out] chunks.RaycastVoxelData)
+        [in] chunks3.VoxLink,
+        [out] chunks3.RaycastVoxelData)
 }

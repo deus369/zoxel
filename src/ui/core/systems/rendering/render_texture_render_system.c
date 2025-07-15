@@ -6,7 +6,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
     if (!material_render_texture) {
         return;
     }
-    const GLuint material_link = zox_get_value(material_render_texture, MaterialGPULink)
+    const uint material_link = zox_get_value(material_render_texture, MaterialGPULink)
     const MaterialAttributesRenderTexture *material_attributes = zox_get(material_render_texture, MaterialAttributesRenderTexture)
     byte has_set_material = 0;
     zox_field_in(TransformMatrix, transformMatrixs, 1)
@@ -39,7 +39,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         // zox_log("+ rendering - render texture\n")
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_set_material(material_link);
+            zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
             opengl_disable_blend();
         }
@@ -53,7 +53,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         opengl_bind_texture(textureGPULink->value);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
 #ifndef zox_disable_render_ui
-        opengl_render(6);
+        zox_gpu_render(6);
 #endif
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
@@ -67,6 +67,6 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(1);
-        opengl_disable_opengl_program();
+        zox_disable_material();
     }
 } zox_declare_system(RenderTextureRenderSystem)

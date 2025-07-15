@@ -1,0 +1,2 @@
+#define render_lod_uninitialized 255
+#define render_lod_invisible 254

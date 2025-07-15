@@ -38,8 +38,6 @@ byte boot_zoxel_game(ecs_world_t *world) {
 }
 
 zox_begin_module(ZoxGame)
-//void ZoxGameImport(ecs_world_t *world) {
-//    zox_module(ZoxGame)
     boot_event = boot_zoxel_game;
     zox_debug_id(Block)
     zox_debug_print_modules(world, 1);

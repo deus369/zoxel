@@ -5,15 +5,15 @@ typedef struct {
     GLint vertex_position;
     GLint vertex_uv;
     GLint vertex_color;
-    GLuint transform_matrix;
-    GLuint camera_matrix;
-    GLuint texture;
-    GLuint fog_data;
-    GLuint brightness;
+    uint transform_matrix;
+    uint camera_matrix;
+    uint texture;
+    uint fog_data;
+    uint brightness;
 } MaterialTextured3D;
 zox_custom_component(MaterialTextured3D)
 
-MaterialTextured3D create_MaterialTextured3D(const GLuint material) {
+MaterialTextured3D create_MaterialTextured3D(const uint material) {
     return (MaterialTextured3D) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_uv"),
@@ -41,7 +41,7 @@ ecs_entity_t spawn_material_textured3D(ecs_world_t *world) {
     if (!shader) {
         return 0;
     }
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialTextured3D attributes = create_MaterialTextured3D(material);

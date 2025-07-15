@@ -182,8 +182,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
     return EXIT_FAILURE; // close game
 }
 
-void ZoxGameImport(ecs_world_t *world) {
-    zox_module(ZoxGame)
+zox_begin_module(ZoxGame)
     zox_game_type = zox_game_mode_3D;
     boot_event = test_terrain_spawn;
     headless = 0; // 0 | 1
@@ -213,4 +212,5 @@ void ZoxGameImport(ecs_world_t *world) {
     // terrain options
     optimize_generation_lods = 1;
 }
+
 #endif

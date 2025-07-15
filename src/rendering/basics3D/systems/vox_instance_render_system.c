@@ -22,7 +22,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     zox_sys_in(InstanceLink)
     zox_sys_in(RenderDisabled)
     // get material
-    zox_geter_value(material_vox_instance, MaterialGPULink, GLuint, material_link)
+    zox_geter_value(material_vox_instance, MaterialGPULink, uint, material_link)
     if (!material_link) {
         return;
     }
@@ -60,10 +60,10 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         }
     }
     // set material attributes
-    opengl_set_material(material_link);
+    zox_enable_material(material_link);
     opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-    opengl_set_float4(material_attributes->fog_data, get_fog_value());
-    opengl_set_float(material_attributes->brightness, 1);
+    zox_gpu_float4(material_attributes->fog_data, get_fog_value());
+    zox_gpu_float(material_attributes->brightness, 1);
     // Instance Rendering!
     for (int i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
@@ -111,6 +111,6 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         dispose_float4x4_array_d(command.transforms);
     }
     dispose_InstanceRenderCommand_array_d(commands);
-    opengl_disable_opengl_program();
+    zox_disable_material();
     catch_basic3D_errors("VoxInstanceRenderSystem");
 } zox_declare_system(VoxInstanceRenderSystem)

@@ -10,6 +10,6 @@ void rendering_dispose_basic_shaders2D() {
 void spawn_shaders_basics2D(ecs_world_t *world) {
     spawn_material_textured2D(world);
     spawn_material_render_texture(world);
-    // initialize_square_mesh_textured();
+    initialize_square_mesh_textured();
     load_instance2D_material(world);
 }

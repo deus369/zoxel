@@ -42,7 +42,7 @@ void Element2DMeshSystem(ecs_iter_t *it) {
                 set_render_texture_gpu(textureGPULink->value, canvas_size);
                 const ecs_entity_t camera = zox_get_value(e, CameraLink)
                 if (zox_has(camera, FrameBufferLink)) {
-                    const GLuint fbo = zox_get_value(camera, FrameBufferLink)
+                    const uint fbo = zox_get_value(camera, FrameBufferLink)
                     connect_render_texture_to_fbo(fbo, textureGPULink->value);
                 } else {
                     zox_log(" ! render_texture connected to invalid render camera [%s]\n", zox_get_name(camera))

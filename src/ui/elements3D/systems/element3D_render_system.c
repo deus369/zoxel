@@ -7,7 +7,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
     }
     zox_field_world()
     byte has_set_material = 0;
-    const GLuint material_link = zox_get_value(material_textured3D, MaterialGPULink)
+    const uint material_link = zox_get_value(material_textured3D, MaterialGPULink)
     const MaterialTextured3D *material_attributes = zox_get(material_textured3D, MaterialTextured3D)
     zox_field_in(TransformMatrix, transformMatrixs, 1)
     zox_field_in(MeshGPULink, meshGPULinks, 2)
@@ -40,10 +40,10 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             opengl_enable_blend();
-            opengl_set_material(material_link);
+            zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-            opengl_set_float4(material_attributes->fog_data, get_fog_value());
-            opengl_set_float(material_attributes->brightness, 1);
+            zox_gpu_float4(material_attributes->fog_data, get_fog_value());
+            zox_gpu_float(material_attributes->brightness, 1);
         }
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
@@ -51,7 +51,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_enable_uv_buffer(material_attributes->vertex_uv, uvsGPULink->value);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         opengl_bind_texture(textureGPULink->value);
-        opengl_render(meshIndicies->length);
+        zox_gpu_render(meshIndicies->length);
         zox_log_elements3D("+ rendered element3D [%lu]", it->entities[i])
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged()) {
@@ -67,6 +67,6 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_disable_texture(0);
         opengl_unset_mesh();
-        opengl_disable_opengl_program();
+        zox_disable_material();
     }
 } zox_declare_system(Element3DRenderSystem)

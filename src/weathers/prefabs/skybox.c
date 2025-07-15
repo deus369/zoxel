@@ -31,7 +31,7 @@ void set_skybox_colors(ecs_world_t *world, const color_rgb top_color, const colo
     }
     zox_set(skybox, ColorRGB, { top_color })
     zox_set(skybox, SecondaryColorRGB, { bottom_color })
-    zox_geter_value(skybox, MaterialGPULink, GLuint, material)
+    zox_geter_value(skybox, MaterialGPULink, uint, material)
     set_skybox_material_color(world, material, top_color, bottom_color);
 }
 
@@ -44,8 +44,8 @@ ecs_entity_t spawn_skybox(ecs_world_t *world, const ecs_entity_t shader) {
         zox_add_tag(e, MeshBasic3D)
         spawn_gpu_mesh(world, e);
         zox_set(e, ShaderLink, { shader })
-        GLuint2 shader_skybox_value = get_shader_value(world, shader);
-        GLuint material = spawn_gpu_material(world, e, shader_skybox_value);
+        uint2 shader_skybox_value = get_shader_value(world, shader);
+        uint material = spawn_gpu_material(world, e, shader_skybox_value);
         set_skybox_material_color(world, material, menu_sky_color, menu_sky_bottom_color);
     }
     return e;

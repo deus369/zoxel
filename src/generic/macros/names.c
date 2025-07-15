@@ -54,3 +54,6 @@ void zox_debug_spawn(ecs_world_t *world, const ecs_entity_t e, const char* name,
 
 #define zox_set_unique_name(e, name)\
     zox_set_entity_name(world, e, name);
+
+#define zox_set_name_e(e, name)\
+    zox_set_entity_name(world, e, name);

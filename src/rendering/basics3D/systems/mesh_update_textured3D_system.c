@@ -1,4 +1,4 @@
-void update_shader3D_textured(const GLuint2 mesh_buffer, const GLuint uv_buffer, const GLuint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
+void update_shader3D_textured(const uint2 mesh_buffer, const uint uv_buffer, const uint color_buffer, const int *indicies, int indicies_length, const float3 *verts, const int verts_length, const float2 *uvs, const color_rgb *color_rgbs) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_buffer.x);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_length * sizeof(int), indicies, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, mesh_buffer.y);

@@ -10,7 +10,7 @@ zox_declare_tag(Wanderer)
 zox_begin_module(AI)
     zox_define_component_byte(Behaviour)
     zox_define_tag(Wanderer)
-    zox_system(WanderSystem, EcsOnUpdate, [none] Wanderer, [in] transforms3.d.Rotation3D,  [in] core.physics3.d.Velocity3D, [out] core.physics3.d.Acceleration3D, [in] core.physics3.d.Omega3D, [out] core.physics3.d.Alpha3D, [in] physics.DisableMovement)
+    zox_system(WanderSystem, EcsOnUpdate, [none] Wanderer, [in] transforms3.Rotation3D,  [in] physics3.Velocity3D, [out] physics3.Acceleration3D, [in] physics3.Omega3D, [out] physics3.Alpha3D, [in] physics.DisableMovement)
     spawn_prefabs_ai(world);
 zox_end_module(AI)
 

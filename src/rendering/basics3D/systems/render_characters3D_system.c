@@ -8,7 +8,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
     if (!zox_valid(material_colored3D)) {
         return;
     }
-    zox_geter_value(material_colored3D, MaterialGPULink, GLuint, material_link)
+    zox_geter_value(material_colored3D, MaterialGPULink, uint, material_link)
     if (!material_link) {
         return;
     }
@@ -35,16 +35,16 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             opengl_enable_blend();
             glDisable(GL_CULL_FACE);
 #endif
-            opengl_set_material(material_link);
+            zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-            opengl_set_float4(material_attributes->fog_data, get_fog_value());
-            opengl_set_float(material_attributes->brightness, 1);
+            zox_gpu_float4(material_attributes->fog_data, get_fog_value());
+            zox_gpu_float(material_attributes->brightness, 1);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
-        opengl_render(meshIndicies->length);
+        zox_gpu_render(meshIndicies->length);
         catch_basic3D_errors("! RenderCharacters3DSystem");
         zox_statistics_characters_rendered++;
     }
@@ -52,7 +52,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_disable_buffer(material_attributes->vertex_color);
         opengl_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
-        opengl_disable_opengl_program();
+        zox_disable_material();
 #ifdef zox_transparent_voxes
         opengl_disable_blend();
         glEnable(GL_CULL_FACE);

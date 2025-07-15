@@ -9,16 +9,15 @@
 #include "zox/data/build_disables.c"
 #include "zox/data/define_groups.c"
 #include "zox/util/defines.c"
-#include zox_nexus_defines
 
 // engine modules
-#include "core/logs/_.c"
-#include "core/collections/_.c"
-#include "core/maths/_.c"
+#include "_/logs/_.c"
+#include "_/collections/_.c"
+#include "_/maths/_.c"
 #include "flecs/_.c"
 
 // todo: include all these automatically
-#include "core/_.c"
+#include "_/_.c"
 #include "generic/generic.c"
 #include "timing/timing.c"
 #include "transforms/transforms.c"
@@ -27,6 +26,8 @@
 #include "inputs/inputs.c"
 #include "apps/apps.c"          // test removing sdl for engine stability
 #include "sdl/sdl.c"
+#include "opengl/_.c"
+#include "vulkan/_.c"
 
 // basic b locks
 #include "assets/assets.c"        // uses sdl path function atm
@@ -36,8 +37,8 @@
 #include "colors/colors.c"
 
 // beef
-#include "cameras/cameras.c"
-#include "rendering/rendering.c"
+#include "cameras/_.c"
+#include "rendering/_.c"
 #include "sounds/sounds.c"
 
 #include "raycasts/raycasts.c"
@@ -56,15 +57,16 @@
 #include "genetics/genetics.c"
 #include "neurals/neurals.c"
 #include "cubes/cubes.c"
-#include "tiles/tiles.c"
-#include "voxels/voxels.c"
+#include "blocks/_.c"
+#include "chunks2/_.c"
+#include "chunks3/_.c"
 #include "voxes/voxes.c"
 #include "weathers/weathers.c"
-#include "terrain/terrain.c"
-#include "physics/physics.c"
+#include "terrain/_.c"
+#include "physics/_.c"
 #include "particles/particles.c"
 #include "blueprints/blueprints.c"
-#include "characters/characters.c"
+#include "characters/_.c"
 #include "dungeons/dungeons.c"
 #include "game_ui/game_ui.c"
 // user data
@@ -93,7 +95,7 @@
 #include "ai/ai.c"
 #include "editor_ui/editor_ui.c"
 // on top
-#include "controllers/controllers.c"
+#include "controllers/_.c"
 #include "space/space.c"
 #include "debug/debug.c"
 
@@ -139,10 +141,13 @@ zox_begin_module(Zox)
 
     zox_import_module(Genetics)
     zox_import_module(Neurals)
-    zox_import_module(Tiles)
     zox_import_module(Cubes)
-    zox_import_module(Voxels)
+
+    zox_import_module(Blocks)
+    zox_import_module(Tiles)
+    zox_import_module(Chunks3)
     zox_import_module(Voxes)
+
     zox_import_module(Weathers)
     zox_import_module(Terrain)
     zox_import_module(Physics)

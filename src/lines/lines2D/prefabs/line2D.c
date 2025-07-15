@@ -19,12 +19,13 @@ ecs_entity_t spawn_line2D(ecs_world_t *world,
     const float thickness,
     const double life_time)
 {
-    ecs_entity_t e;
-    if (life_time == 0.0) {
-        e = zox_instancee(prefab_line2D)
+    ecs_entity_t prefab;
+    if (!life_time) {
+        prefab = prefab_line2D;
     } else {
-        e = zox_instancee(prefab_temporary_line2D)
+        prefab = prefab_temporary_line2D;
     }
+    zox_instance(prefab)
     // zox_name("line2D") // disabled as crashes if spawning t too many
     zox_set(e, LineData2D, { { pointA.x, pointA.y, pointB.x, pointB.y } })
     zox_set(e, LineThickness, { thickness })

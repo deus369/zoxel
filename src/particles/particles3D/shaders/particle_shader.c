@@ -12,17 +12,17 @@
     gl_PointSize = point_size * (1.0 / distance_to_camera);\
 */
 
-GLuint2 particle3D_shader;
-GLuint particle3D_material;
-GLuint particle3D_position_location;
-GLuint particle3D_color_location;
-GLuint particle3D_camera_matrix_location;
-GLuint particle3D_fog_data_location;
-GLuint particle3D_location_thickness;
-GLuint particle3D_instanced_position_buffer;
-GLuint particle3D_instanced_color_buffer;
+uint2 particle3D_shader;
+uint particle3D_material;
+uint particle3D_position_location;
+uint particle3D_color_location;
+uint particle3D_camera_matrix_location;
+uint particle3D_fog_data_location;
+uint particle3D_location_thickness;
+uint particle3D_instanced_position_buffer;
+uint particle3D_instanced_color_buffer;
 
-void initialize_particle_gpu_instancing(GLuint particle3D_position_location, GLuint particle3D_color_location, int max_particles) {
+void initialize_particle_gpu_instancing(uint particle3D_position_location, uint particle3D_color_location, int max_particles) {
 #ifdef zox_disable_particles_gpu_instancing
     return;
 #endif
@@ -63,7 +63,7 @@ int initialize_shader_particle3D(ecs_world_t *world) {
     char* vert = get_shader_source(world, "particle3D.vert");
     char* frag = get_shader_source(world, "particle3D.frag");
     particle3D_shader = spawn_gpu_shader_inline(vert, frag);
-    particle3D_material = spawn_gpu_material_program((const GLuint2) { particle3D_shader.x, particle3D_shader.y });
+    particle3D_material = spawn_gpu_material_program((const uint2) { particle3D_shader.x, particle3D_shader.y });
     if (!particle3D_material) {
         zox_log_error("shader particle3D failed to initialize")
         return EXIT_FAILURE;

@@ -35,9 +35,9 @@ byte test_realm_spawn(ecs_world_t *world) {
     return EXIT_FAILURE; // close game
 }
 
-void ZoxGameImport(ecs_world_t *world) {
-    zox_module(ZoxGame)
+zox_begin_module(ZoxGame)
     zox_game_type = zox_game_mode_3D;
     boot_event = test_realm_spawn;
 }
+
 #endif

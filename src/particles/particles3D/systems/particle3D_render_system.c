@@ -12,11 +12,11 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     // zox_log("particles [%i]\n", it->count)
     zox_statistics_particles3D += it->count;
     opengl_enable_blend();
-    glUseProgram(particle3D_material);
-    opengl_set_float4(particle3D_fog_data_location, get_fog_value());
+    zox_enable_material(particle3D_material);
+    zox_gpu_float4(particle3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(particle3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
     float fov_fixer = 90.0f / ((float) render_camera_fov);
-    opengl_set_float(particle3D_location_thickness, fov_fixer * default_point_thickness);
+    zox_gpu_float(particle3D_location_thickness, fov_fixer * default_point_thickness);
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(Color, colors, 2)
 #ifndef zox_disable_particles_gpu_instancing
@@ -55,7 +55,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
         glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, data);
         float4 color_f = color_to_float4(color->value);
         glUniform4f(particle3D_color_location, color_f.x, color_f.y, color_f.z, color_f.w);
-        glDrawArrays(GL_POINTS, 0, 1);
+        zox_gpu_render_points(1);
 #ifdef zox_debug_particle3Ds
         spawn_line3D(world, position3D->value, float3_add(position3D->value, debug_particle_line_addition), 0.5f, 0.03);
 #endif
@@ -68,14 +68,14 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     }
     glDisableVertexAttribArray(particle3D_position_location);
 #endif
-    glUseProgram(0);
+    zox_disable_material();
     opengl_disable_blend();
 } zox_declare_system(Particle3DRenderSystem)
 
 // const Rotation3D *rotation3D = &rotation3Ds[i];
 // const Scale1D *scale1D = &scale1Ds[i];
 // glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, position3D->value);
-// opengl_set_float3(particle3D_position_location, position3D->value);
+// zox_gpu_float3(particle3D_position_location, position3D->value);
 // this keeps a consistent thickness
 // float distance_to_camera = float3_distance(camera_position, position3D->value);
 // float point_thickness = default_point_thickness - distance_to_camera / default_point_thickness;

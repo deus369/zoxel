@@ -1,7 +1,7 @@
-GLuint2 shader2D_basic;
-GLuint square2DMaterial;
+uint2 shader2D_basic;
+uint square2DMaterial;
 Material2D material2D;
-GLuint2 squareMesh;
+uint2 squareMesh;
 
 void dispose_shader2D_instance_material() {
     glDeleteShader(shader2D_basic.x);
@@ -11,7 +11,7 @@ void dispose_shader2D_instance_material() {
     glDeleteProgram(square2DMaterial);
 }
 
-void initialize_mesh(GLuint material) {
+void initialize_mesh(uint material) {
     glGenBuffers(1, &squareMesh.x);
     glGenBuffers(1, &squareMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
@@ -31,7 +31,7 @@ int load_instance2D_material(ecs_world_t *world) {
     char* vert = get_shader_source(world, "basic2D.vert");
     char* frag = get_shader_source(world, "basic2D.frag");
     shader2D_basic = spawn_gpu_shader_inline(vert, frag);
-    square2DMaterial = spawn_gpu_material_program((const GLuint2) { shader2D_basic.x, shader2D_basic.y });
+    square2DMaterial = spawn_gpu_material_program((const uint2) { shader2D_basic.x, shader2D_basic.y });
     if (!square2DMaterial) {
         zox_log_error("square2DMaterial failed to initialize")
         return EXIT_FAILURE;
@@ -42,9 +42,11 @@ int load_instance2D_material(ecs_world_t *world) {
 }
 
 void shader2D_instance_begin(const float4x4 viewMatrix) {
-    if (square2DMaterial == 0) return;
+    if (square2DMaterial == 0) {
+        return;
+    }
     //! This sets the materials actually, would be best to group entities per material here?
-    glUseProgram(square2DMaterial);
+    zox_enable_material(square2DMaterial);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);            // for vertex coordinates
     glEnableVertexAttribArray(material2D.vertex_position);
@@ -59,11 +61,11 @@ void render_instance2D(float2 position, float angle, float scale, float brightne
     glUniform1f(material2D.scale, scale);
     glUniform1f(material2D.angle, angle);
     glUniform1f(material2D.brightness, brightness);
-    opengl_render(6);
+    zox_gpu_render(6);
 }
 
 void shader2D_instance_end() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    opengl_disable_opengl_program();
+    zox_disable_material();
 }

@@ -2,17 +2,16 @@
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
 void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
-    glUseProgram(line2D_material);
+    zox_enable_material(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
     if (is_element_line) {
-        const float4x4 identity = float4x4_identity();
-        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &identity);
         glUniform1f(line2D_depth_location, ((int) renderer_layer) * shader_depth_multiplier);
-    } else {
-        // glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
         const float4x4 identity = float4x4_identity();
         glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &identity);
-        glUniform1f(line2D_depth_location, ((int) 0) * shader_depth_multiplier);
+    } else {
+        // zox_log("> rendering [%i] lines2D [%i]", is_element_line, it->count)
+        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
+        glUniform1f(line2D_depth_location, 0);
     }
     zox_sys_world()
     zox_sys_begin()
@@ -37,8 +36,10 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
         const float4 color_float4 = color_to_float4(line_color->value);
         glLineWidth(lineThickness->value);
         glVertexAttribPointer(line2D_position_location, 2, GL_FLOAT, GL_FALSE, 0, (GLfloat*) &lineData2D->value);
-        glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
-        glDrawArrays(GL_LINES, 0, 2);
+        // glUniform4f(line2D_color_location, color_float4.x, color_float4.y, color_float4.z, color_float4.w);
+        zox_gpu_float4(line2D_color_location, color_float4);
+        // zox_log("   - [%fx%f] -> [%fx%f]", lineData2D->value.x, lineData2D->value.y, lineData2D->value.z, lineData2D->value.w)
+        zox_gpu_render_lines(2);
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
             zox_log(" > failed to render line2D_render_iteration [%lu]: [%i]\n", it->entities[i], 2)
@@ -47,7 +48,7 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
 #endif
     }
     glDisableVertexAttribArray(line2D_position_location);
-    glUseProgram(0);
+    zox_disable_material();
 }
 
 void Line2DRenderSystem(ecs_iter_t *it) {

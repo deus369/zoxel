@@ -1,16 +1,25 @@
 # ==== Zoxel ====
 
-GAME    	:= zoxel
+GAME    	:= zoxel # todo: remember last picked game
 SRC_DIR 	:= src
 SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
-TARGET  	:= bin/$(GAME)
-TARGET_DEV 	:= bin/$(GAME)-debug
 CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
 CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 # -Wshadow -Wpedantic -fno-omit-frame-pointer
 LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
 LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
+# Choose your game module
+ifdef game
+    LDFLAGS +=-Dzox_game=$(game)
+    GAME := $(game)
+endif
+TARGET  	:= bin/$(GAME)
+TARGET_DEV 	:= bin/$(GAME)-debug
+
+.PHONY: all run dev rund gdb val clean package-deb package-pac package pick
+
+# Our makes
 
 $(TARGET): $(SRCS)
 	mkdir -p bin
@@ -20,10 +29,12 @@ $(TARGET_DEV): $(SRCS)
 	mkdir -p bin
 	$(CC) $(CFLAGS_DEV) $(INCLUDES) $(SRC) -o $@ $(LDFLAGS)
 
-run: $(TARGET)
-	./$(TARGET)
+build: $TARGET
 
 dev: $(TARGET_DEV)
+
+run: $(TARGET)
+	./$(TARGET)
 
 rund: dev
 	./$(TARGET_DEV)
@@ -41,10 +52,31 @@ clean:
 flecs:
 	cd ../flecsing && make clean && make download && make refresh
 
-# catching memory errors >
-# 	CFLAGS_DEV += -fsanitize=address,undefined
-# catching leaks >
-# 	CFLAGS_DEV += -fsanitize=address,leak -fno-omit-frame-pointer
+ACTION ?= build
+
+pick:
+	@echo "Scanning the nexus...";\
+	i=1; \
+	for d in src/nexus/*/; do \
+		gamename=$$(echo $$d | sed 's|src/nexus/||; s|/$$||'); \
+		echo "$$i) $$gamename"; \
+		eval "game_$$i=$$gamename"; \
+		i=$$((i + 1)); \
+	done; \
+	read -p "Pick a game by number: " choice; \
+	selected_game=$$(eval echo \$$$$(echo game_$$choice)); \
+	if [ -n "$$selected_game" ]; then \
+		echo "You selected: $$selected_game"; \
+		$(MAKE) game=$$selected_game $$ACTION; \
+	else \
+		echo "Invalid selection."; \
+		exit 1; \
+	fi
+
+runp:
+	$(MAKE) pick ACTION=run
+
+# our packaging, move this to Zoxelder
 
 VERSION      := 0.0.1
 PACKAGE_DIR  := dist/$(GAME)_$(VERSION)
@@ -56,6 +88,7 @@ CONTROL_DIR  := $(PACKAGE_DIR)/DEBIAN
 ICON_DIR     := $(PACKAGE_DIR)/usr/share/icons/hicolor/64x64/apps
 ICON_SRC     := res/textures/game_icon.png
 ICON_DEST    := $(ICON_DIR)/$(GAME).png
+PKGBUILD := $(PACKAGE_DIR)/PKGBUILD
 
 package-deb: $(TARGET)
 	# Create required dirs
@@ -98,7 +131,6 @@ package-deb: $(TARGET)
 
 
 # Pacman package
-PKGBUILD := $(PACKAGE_DIR)/PKGBUILD
 
 package-pac: $(TARGET)
 	@# 1. Prepare directory layout
@@ -138,4 +170,23 @@ package:
 		echo "Unsupported packaging system."; exit 1; \
 	fi
 
-.PHONY: all run dev rund gdb val clean package-deb package-pac package
+help:
+	@printf "\n\033[1;30m⟡ Zoxel Build System ⟡\033[0m\n\n"
+	@printf "  \033[38;5;208m▶ build\033[0m    Build release for $(GAME)\n"
+	@printf "  \033[38;5;208m▶ dev\033[0m      Build debug\n"
+	@printf "  \033[38;5;208m▶ run\033[0m      Run release\n"
+	@printf "  \033[38;5;208m▶ rund\033[0m     Run debug\n"
+	@printf "  \033[38;5;208m▶ gdb\033[0m      Debug in gdb\n"
+	@printf "  \033[38;5;208m▶ val\033[0m      Debug in valgrind\n\n"
+	@printf "  \033[38;5;208m▶ pick\033[0m     Pick & build game\n"
+	@printf "  \033[38;5;208m▶ runp\033[0m     Pick & run game\n\n"
+	@printf "  \033[38;5;208m▶ package\033[0m  Package game (auto)\n"
+	@printf "  \033[38;5;208m▶ clean\033[0m    Clean build & dist\n"
+	@printf "  \033[38;5;208m▶ flecs\033[0m    Rebuild Flecs ECS\n\n"
+
+.DEFAULT_GOAL := help
+
+# catching memory errors >
+# 	CFLAGS_DEV += -fsanitize=address,undefined
+# catching leaks >
+# 	CFLAGS_DEV += -fsanitize=address,leak -fno-omit-frame-pointer

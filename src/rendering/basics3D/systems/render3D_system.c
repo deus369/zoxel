@@ -15,16 +15,16 @@ void Render3DSystem(ecs_iter_t *it) {
             continue;
         }
         MaterialBasic3D attributes = create_MaterialBasic3D(materialGPULink->value);
-        opengl_set_material(materialGPULink->value);
+        zox_enable_material(materialGPULink->value);
         opengl_set_matrix(attributes.camera_matrix, render_camera_matrix);
-        opengl_set_float4(attributes.fog_data, get_fog_value());
-        opengl_set_float(attributes.brightness, brightness->value);
+        zox_gpu_float4(attributes.fog_data, get_fog_value());
+        zox_gpu_float(attributes.brightness, brightness->value);
         opengl_set_matrix(attributes.transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(attributes.vertex_position, meshGPULink->value.y);
-        opengl_render(meshIndicies->length);
+        zox_gpu_render(meshIndicies->length);
         opengl_disable_buffer(attributes.vertex_position);
         opengl_unset_mesh();
-        opengl_disable_opengl_program();
+        zox_disable_material();
     }
 } zox_declare_system(Render3DSystem)

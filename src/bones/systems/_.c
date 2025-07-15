@@ -11,7 +11,7 @@ void define_systems_bones(ecs_world_t *world) {
             [in] rendering.core.MeshGPULink,
             [in] rendering.core.ColorsGPULink,
             [in] BoneIndexGPULink,
-            [in] transforms3.d.TransformMatrix,
+            [in] transforms3.TransformMatrix,
             [in] rendering.RenderDisabled,
             [in] BoneLinks,
             [none] Skeleton,

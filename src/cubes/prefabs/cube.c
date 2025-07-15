@@ -41,13 +41,13 @@ ecs_entity_t spawn_cube(ecs_world_t *world, const ecs_entity_t prefab, const flo
 
     spawn_gpu_mesh(world, e);
 
-    const GLuint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
-    const GLuint material = spawn_gpu_material(world, e, shader);
+    const uint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
+    const uint material = spawn_gpu_material(world, e, shader);
     const MaterialBasic3D attributes = create_MaterialBasic3D(material);
     zox_set_data(e, MaterialBasic3D, attributes)
     zox_set(e, ShaderLink, { shader_basic3D })
 
-    // const GLuint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
+    // const uint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
     // zox_set(e, ShaderLink, { shader_basic3D })
     // spawn_gpu_material(world, e, shader);
 

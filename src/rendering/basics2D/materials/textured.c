@@ -4,17 +4,17 @@ ecs_entity_t material_textured2D = 0;
 typedef struct {
     GLint vertex_position;
     GLint vertex_uv;
-    GLuint position;
-    GLuint angle;
-    GLuint scale;
-    GLuint camera_matrix;
-    GLuint texture;
-    GLuint brightness;
-    GLuint alpha;
+    uint position;
+    uint angle;
+    uint scale;
+    uint camera_matrix;
+    uint texture;
+    uint brightness;
+    uint alpha;
 } MaterialTextured2D;
 zox_custom_component(MaterialTextured2D)
 
-MaterialTextured2D create_MaterialTextured2D(const GLuint material) {
+MaterialTextured2D create_MaterialTextured2D(const uint material) {
     return (MaterialTextured2D) {
         glGetAttribLocation(material, "vertex_position"),
         glGetAttribLocation(material, "vertex_uv"),
@@ -41,7 +41,7 @@ ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
 ecs_entity_t spawn_material_textured2D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_textured2D(world);
     if (!shader) return 0;
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialTextured2D attributes = create_MaterialTextured2D(material);
@@ -52,8 +52,8 @@ ecs_entity_t spawn_material_textured2D(ecs_world_t *world) {
 }
 
 // todo: refactor this into entity, and just link other ones to it for mesh, MeshLink?
-GLuint2 squareTexturedMesh;
-GLuint squareTexturedModelUVs;
+uint2 squareTexturedMesh;
+uint squareTexturedModelUVs;
 
 void dispose_square_mesh() {
     glDeleteBuffers(1, &squareTexturedMesh.x);

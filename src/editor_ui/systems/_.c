@@ -7,7 +7,7 @@ void zox_define_systems_editor(ecs_world_t *world) {
         [in] generic.ComponentTarget,
         [none] InspectorLabel)
     zox_system_1(HierarchyRefreshSystem, main_thread_pipeline,
-        [in] transforms2.d.Position2D,
+        [in] transforms2.Position2D,
         [in] elements.core.CanvasPosition,
         [in] elements.core.Layer2D,
         [in] elements.core.Anchor,
@@ -15,8 +15,8 @@ void zox_define_systems_editor(ecs_world_t *world) {
         [in] elements.core.ElementFontSize,
         [in] elements.core.CanvasLink,
         [out] HierarchyUIDirty,
-        [out] layouts2.d.PixelPosition,
-        [out] layouts2.d.PixelSize,
+        [out] layouts2.PixelPosition,
+        [out] layouts2.PixelSize,
         [out] textures.core.TextureSize,
         [out] hierarchys.Children,
         [none] HierarchyUI)

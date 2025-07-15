@@ -3,14 +3,14 @@ ecs_entity_t material_basic3D;
 
 typedef struct {
     GLint vertex_position;
-    GLuint transform_matrix;
-    GLuint camera_matrix;
-    GLuint fog_data;
-    GLuint brightness;
+    uint transform_matrix;
+    uint camera_matrix;
+    uint fog_data;
+    uint brightness;
 } MaterialBasic3D;
 zox_custom_component(MaterialBasic3D)
 
-MaterialBasic3D create_MaterialBasic3D(const GLuint material) {
+MaterialBasic3D create_MaterialBasic3D(const uint material) {
     return (MaterialBasic3D) {
         glGetAttribLocation(material, "vertex_position"),
         glGetUniformLocation(material, "transform_matrix"),
@@ -39,7 +39,7 @@ ecs_entity_t spawn_material_basic3D(ecs_world_t *world) {
     if (!shader) {
         return 0;
     }
-    GLuint material;
+    uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_name("material_basic3D")
     zox_set(e, ShaderLink, { shader })

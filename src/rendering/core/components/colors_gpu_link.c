@@ -1,4 +1,4 @@
-zox_component(ColorsGPULink, GLuint)
+zox_component(ColorsGPULink, uint)
 
 void add_gpu_colors(ecs_world_t *world, ecs_entity_t e) {
     if (!headless) zox_prefab_set(e, ColorsGPULink, { 0 })

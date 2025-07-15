@@ -9,14 +9,14 @@ ecs_entity_t spawn_shader_skybox(ecs_world_t *world) {
     return e;
 }
 
-void set_skybox_material_color(ecs_world_t *world, const GLuint material, const color_rgb top_color, const color_rgb bottom_color) {
+void set_skybox_material_color(ecs_world_t *world, const uint material, const color_rgb top_color, const color_rgb bottom_color) {
     if (headless || !skybox) {
         return;
     }
     const float3 top_colorf = color_rgb_to_float3(top_color);
     const float3 bottom_colorf = color_rgb_to_float3(bottom_color);
-    opengl_set_material(material);
-    opengl_set_float3(glGetUniformLocation(material, "sky_top_color"), top_colorf);
-    opengl_set_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_colorf);
-    opengl_set_material(0);
+    zox_enable_material(material);
+    zox_gpu_float3(glGetUniformLocation(material, "sky_top_color"), top_colorf);
+    zox_gpu_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_colorf);
+    zox_enable_material(0);
 }

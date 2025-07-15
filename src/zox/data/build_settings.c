@@ -146,7 +146,7 @@
 // #define zoxel_test_chickens
 // #define zoxel_test_brain         // testing a brain
 // #define zoxel_test_character2Ds
-// #define zoxel_test_cubes             // Failing atm, gl error at opengl_render
+// #define zoxel_test_cubes             // Failing atm, gl error at zox_gpu_render
 // #define zoxel_test_cubes_textured    // wip
 // #define zoxel_test_uis
 // -- zoxel game --

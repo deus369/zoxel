@@ -21,14 +21,14 @@ zox_begin_module(Particles3D)
     zox_define_tag(Particle3D)
     zox_define_tag(Particle3DEmitter)
     zox_system_1(Particle3DEmitSystem, EcsPreStore,
-        [in] transforms3.d.Position3D,
+        [in] transforms3.Position3D,
         [in] particles.ParticleEmitRate,
         [in] generic.Bounds3D,
         [in] colorz.Color,
         [none] Particle3DEmitter)
-    // if making rotation ones, just create new systems, add [none] transforms3.d.Rotation3D - for this one
+    // if making rotation ones, just create new systems, add [none] transforms3.Rotation3D - for this one
     zox_render3D_plus_system(Particle3DRenderSystem,
-        [in] transforms3.d.Position3D,
+        [in] transforms3.Position3D,
         [in] colorz.Color,
         [none] Particle3D)
     spawn_prefabs_particles3D(world);

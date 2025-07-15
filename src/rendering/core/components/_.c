@@ -21,7 +21,7 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "shader_gpu_link.c"
 #include "compute_shader.c"
 
-void define_components_rendering(ecs_world_t *world) {
+void define_components_rendering_core(ecs_world_t *world) {
     zox_define_tag(Shader)
     zox_define_tag(Material)
     zox_define_tag(SingleMaterial)

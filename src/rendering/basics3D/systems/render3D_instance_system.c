@@ -4,7 +4,7 @@ void render_entity_3D(float3 position, float4 rotation, float scale1D, float bri
     glUniform1f(material3D.scale, scale1D);
     glUniform1f(material3D.brightness, brightness);
     // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-    opengl_render(6);*/
+    zox_gpu_render(6);*/
 }
 
 void InstanceRender3DSystem(ecs_iter_t *it) {

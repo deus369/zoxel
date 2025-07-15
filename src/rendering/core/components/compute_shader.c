@@ -1,5 +1,5 @@
 // Define the ComputeShaderLink component
-zox_component(ComputeShaderLink, GLuint)
+zox_component(ComputeShaderLink, uint)
 
 // Destructor for ComputeShaderLink component
 ECS_DTOR(ComputeShaderLink, ptr, {
@@ -7,8 +7,8 @@ ECS_DTOR(ComputeShaderLink, ptr, {
 })
 
 // Function to generate a compute shader on gpu
-GLuint gpu_spawn_compute_shader() {
-    GLuint buffer = glCreateShader(GL_COMPUTE_SHADER);
+uint gpu_spawn_compute_shader() {
+    uint buffer = glCreateShader(GL_COMPUTE_SHADER);
     return buffer;
 }
 

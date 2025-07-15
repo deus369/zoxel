@@ -21,6 +21,7 @@ int run_main(int argc, char* argv[]) {
     // todo: pre boot event hook here for loading I/O
     if (!headless && engine_spawn_window(world) == EXIT_SUCCESS) {
         if (boot_event(world) == EXIT_SUCCESS) {
+            zox_log("+ booted [%s]", game_name)
             engine_loop(world);
         } else {
             zox_log("! [boot_event] failed")

@@ -1,7 +1,7 @@
-extern GLuint spawn_gpu_material_program(const GLuint2 shader);
+extern uint spawn_gpu_material_program(const uint2 shader);
 
-zox_component(MaterialGPULink, GLuint)
-zox_component(MaterialInstancedGPULink, GLuint)
+zox_component(MaterialGPULink, uint)
+zox_component(MaterialInstancedGPULink, uint)
 
 void add_gpu_material(ecs_world_t *world, const ecs_entity_t e) {
     if (!headless) {
@@ -10,11 +10,11 @@ void add_gpu_material(ecs_world_t *world, const ecs_entity_t e) {
     }
 }
 
-GLuint spawn_gpu_material(ecs_world_t *world,
+uint spawn_gpu_material(ecs_world_t *world,
     const ecs_entity_t e,
-    const GLuint2 shader)
+    const uint2 shader)
 {
-    GLuint gpu_material = 0;
+    uint gpu_material = 0;
     if (!headless) {
         gpu_material = spawn_gpu_material_program(shader);
         if (!gpu_material) {
@@ -32,7 +32,7 @@ ECS_DTOR(MaterialGPULink, ptr, {
     }
 })
 
-/*GLuint get_material_value(ecs_world_t *world, ecs_entity_t material) /{
+/*uint get_material_value(ecs_world_t *world, ecs_entity_t material) /{
     return zox_get_value(material, MaterialGPULink)
 }*/
 

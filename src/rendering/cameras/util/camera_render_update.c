@@ -20,7 +20,7 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         render_camera_fov = fieldOfView->value;
         render_camera_matrix = viewMatrix->value;
         // set render objects
-        GLuint fbo = 0;
+        uint fbo = 0;
         if (!is_camera2D) {
             if (zox_has(e, FrameBufferLink)) fbo = zox_get_value(e, FrameBufferLink)
         }

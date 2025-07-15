@@ -1,10 +1,10 @@
 // uses custom fadeout with fog!
-GLuint2 line3D_shader;
-GLuint line3D_material;
-GLuint line3D_position_location;
-GLuint line3D_color_location;
-GLuint line3D_camera_matrix_location;
-GLuint line3D_fog_data_location;
+uint2 line3D_shader;
+uint line3D_material;
+uint line3D_position_location;
+uint line3D_color_location;
+uint line3D_camera_matrix_location;
+uint line3D_fog_data_location;
 
 void dispose_shader_line3D() {
     glDeleteShader(line3D_shader.x);
@@ -16,7 +16,7 @@ int initialize_shader_line3D(ecs_world_t *world) {
     char* vert = get_shader_source(world, "line3D.vert");
     char* frag = get_shader_source(world, "line3D.frag");
     line3D_shader = spawn_gpu_shader_inline(vert, frag);
-    line3D_material = spawn_gpu_material_program((const GLuint2) { line3D_shader.x, line3D_shader.y });
+    line3D_material = spawn_gpu_material_program((const uint2) { line3D_shader.x, line3D_shader.y });
     if (!line3D_material) {
         zox_log_error("line3D_material failed to initialize")
         return EXIT_FAILURE;

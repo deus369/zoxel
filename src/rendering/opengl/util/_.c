@@ -1,7 +1,0 @@
-#include "error.c"
-#include "shaders.c"
-#include "extensions.c"
-#include "opengl.c"
-#include "geometry.c"
-#include "compute.c"
-#include "frame_buffer.c"

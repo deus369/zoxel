@@ -11,7 +11,7 @@ void MaterialRestoreSystem(ecs_iter_t *it) {
                 continue;
         }
         zox_field_o(MaterialGPULink, materialGPULinks, materialGPULink)
-        const GLuint2 shader = zox_get_value(shaderLink->value, ShaderGPULink)
+        const uint2 shader = zox_get_value(shaderLink->value, ShaderGPULink)
 #ifdef zox_log_gpu_management
         zox_log(" > restoring [%s] - shader [%ix%i]\n", zox_get_name(it->entities[i]), shader.x, shader.y)
 #endif

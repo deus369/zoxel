@@ -11,7 +11,7 @@ zox_begin_module(Dungeons)
     zox_define_tag(Dungeon)
     zox_define_tag(DungeonCore)
     // main thread as it spawns currently
-    zox_system_1(DungeonBlockSystem, EcsOnUpdate, [in] timing.TimerState, [in] chunks.ChunkLink, [none] blocks.BlockDungeon)
+    zox_system_1(DungeonBlockSystem, EcsOnUpdate, [in] timing.TimerState, [in] chunks3.ChunkLink, [none] blocks.BlockDungeon)
     add_hook_spawn_blocks(&spawn_block_dungeon_blocks);
     add_hook_spawned_block(&spawn_world_dungeon_core);
 zox_end_module(Dungeons)
