@@ -4,10 +4,9 @@ ecs_entity_t spawn_realm_block_noisey(ecs_world_t *world, const byte index, char
     zox_set_unique_name(vox, "dirt_pile")
     zox_add_tag(vox, VoxNoisey)
     // block
-    SpawnBlock spawn_data = {
+    SpawnBlock data = {
         .prefab = prefab_block_vox_meta,
         .prefab_block_vox = prefab_block_vox,
-        // .prefab_texture = prefab_vox_texture,
         .vox = vox,
         .tag = zox_id(BlockVox),
         .model = zox_block_vox,
@@ -16,7 +15,8 @@ ecs_entity_t spawn_realm_block_noisey(ecs_world_t *world, const byte index, char
         .name = name,
         .color = block_color,
     };
-    return spawn_block_vox_meta(world, &spawn_data);
+    process_disabled_block_vox(world, &data, 1);
+    return spawn_block_vox_meta(world, &data);
 }
 
 // spawn_data.name = generate_name();

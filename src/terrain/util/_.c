@@ -9,3 +9,4 @@
 #include "game_end.c"
 #include "game_state.c"
 #include "terminal.c"
+#include "realm.c"

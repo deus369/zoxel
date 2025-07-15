@@ -5,7 +5,7 @@ ecs_entity_t spawn_block_soil(ecs_world_t *world, const byte index, char* name, 
     zox_add_tag(vox, VoxSoil)
     // use instanced mesh prefab
     SpawnBlock data = {
-        .index = (byte) (index),
+        .index = index,
         .seed = generate_voxel_seed(index),
         .prefab = prefab_block_vox_meta,
         .prefab_texture = prefab_vox_texture,

@@ -1,10 +1,11 @@
 ecs_entity_t prefab_character3D_terrain_spawning;
 
 void Characters3DSpawnSystem(ecs_iter_t *it) {
-    const float3 bounds = (float3) { 0.25f, 0.5f, 0.25f };  // used for positioning, we need to uhh spawn first and then place... one day
     if (disable_npcs) {
         return;
     }
+    // todo: dynamically check bounds
+    const float3 bounds = (float3) { 0.25f, 0.5f, 0.25f };
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkLodDirty)

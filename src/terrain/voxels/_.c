@@ -1,9 +1,5 @@
 // voxels
+#include "disabled.c"
 #include "voxel_texture.c"
 #include "soil.c"
 #include "soil_grass.c"
-#include "rubble.c"
-#include "grass.c"
-#include "flower.c"
-#include "noisey.c"
-#include "realm.c"

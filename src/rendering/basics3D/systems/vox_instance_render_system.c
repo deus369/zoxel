@@ -10,8 +10,7 @@
 // extern string_hashmap *files_hashmap_voxes;
 
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
-    if (material_vox_instance == 0 || it->count == 0) {
-        zox_log(" ! error with vox instance material_vox_instance.")
+    if (!material_vox_instance) {
         return;
     }
     if (!can_render_instanes) {

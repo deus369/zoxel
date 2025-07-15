@@ -1,11 +1,5 @@
 #define quaternion_identity (float4) { 0, 0, 0, 1 }
-// #define quaternion_flipped_y (float4) { 6.123234e-17, 0.000000e+00, -1.000000e+00, 0.000 }
-// #define quaternion_flipped_y (float4) { 0, 1, 0, 0 }
 #define quaternion_flipped_y (float4) { 0, 0, 0, 1 }
-
-// #define debug_quadrant_correctnion
-// this is used to get exact quadrants by removing significant bit errors
-// wow i've come along way
 const float significant_digits_check = 100000.0f;
 #define quaternion_pi_2 1.5707f
 
@@ -46,7 +40,7 @@ static inline float quaternion_to_euler_z(float4 q) {
     else return atan2(siny_cosp, cosy_cosp);
 }
 
-void correct_euler_quadrant(float3* euler) {
+static inline void correct_euler_quadrant(float3* euler) {
     // quadrant corrections
     float euler_x = (int) ceil(euler->x * significant_digits_check) / significant_digits_check;
     float euler_z = (int) ceil(euler->z * significant_digits_check) / significant_digits_check;
@@ -90,7 +84,7 @@ void correct_euler_quadrant(float3* euler) {
     else if (euler->y > M_PI) euler->y -= 2 * M_PI;
 }
 
-float3 quaternion_to_euler(float4 q) {
+static inline float3 quaternion_to_euler(float4 q) {
     float3 euler = { };
     euler.x = quaternion_to_euler_x(q); // roll (x-axis rotation)
     euler.y = quaternion_to_euler_y(q); // pitch (y-axis rotation)
@@ -99,11 +93,11 @@ float3 quaternion_to_euler(float4 q) {
     return euler;
 }
 
-float3 quaternion_to_euler_360(float4 q) {
+static inline float3 quaternion_to_euler_360(float4 q) {
     return float3_multiply_float(quaternion_to_euler(q), (180.0f / M_PI));
 }
 
-byte quaternion_to_quadrant(float4 q) {
+static inline byte quaternion_to_quadrant(float4 q) {
     float degree = quaternion_to_euler(q).y * (180.0f / M_PI);
     // float degree = quaternion_to_euler_y(q) * (180.0f / M_PI);
     if (degree < 0) degree += 360;
@@ -111,7 +105,7 @@ byte quaternion_to_quadrant(float4 q) {
     return (byte)((degree + 0.1f) / 90) % 4;  // 0.1 = 45 before
 }
 
-float4 quaternion_from_euler(float3 euler) {
+static inline float4 quaternion_from_euler(float3 euler) {
     float roll = euler.x;
     float pitch = euler.y;
     float yaw = euler.z;
@@ -129,7 +123,7 @@ float4 quaternion_from_euler(float3 euler) {
     return q;
 }
 
-float4 quaternion_from_between_vectors(float3 u, float3 v) {
+static inline float4 quaternion_from_between_vectors(float3 u, float3 v) {
     float4 output = float4_zero;
     float3 cross = float3_cross(u, v);
     output.x = cross.x;
@@ -141,7 +135,7 @@ float4 quaternion_from_between_vectors(float3 u, float3 v) {
 }
 
 // this seems to be okay?
-float4 quaternion_from_normal(float3 normal) {
+static inline float4 quaternion_from_normal(float3 normal) {
     float3 axis;
     float4 quaternion;
     // Step 1: Normalize the normal vector
@@ -184,7 +178,7 @@ void float4_print_euler(float4 input) {
     zox_log("-> Euler [x:%f y:%f z:%f]\n", euler.x, euler.y, euler.z);
 }
 
-byte quaternion_equal(float4 a, float4 b) {
+static inline byte quaternion_equal(float4 a, float4 b) {
     return ((a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w) ||
         (a.x == -b.x && a.y == -b.y && a.z == -b.z && a.w == -b.w));
 }
@@ -206,7 +200,7 @@ byte test_quaternion_math(float4 input) {
     }
 }
 
-float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
+static inline float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
     float4 q;
     float s = sin(angle / 2.0f);
     q.x = x * s;
@@ -217,7 +211,7 @@ float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
 }
 
 // is there a way to do this with just quaternions without messing up the magnitude??
-float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
+static inline float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
     //float4 normalized = quaternion_normalized(quaternion, magnitude);
     //return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);
     float3 euler = quaternion_to_euler(quaternion);

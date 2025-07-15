@@ -15,8 +15,9 @@
 #include "components/_.c"
 #include "data/_.c"
 #include "prefabs/_.c"
-#include "util/_.c"
 #include "voxels/_.c"
+#include "block_voxes/_.c"
+#include "util/_.c"
 #include "systems/_.c"
 
 void module_dispose_terrain(ecs_world_t *world, void *ctx) {
@@ -24,12 +25,12 @@ void module_dispose_terrain(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Terrain)
-    zox_module_dispose(module_dispose_terrain);
     initialize_hook_spawn_blocks();
     set_terrain_render_distance();
     define_components_terrain(world);
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);
+    zox_module_dispose(module_dispose_terrain);
     add_hook_terminal_command(process_arguments_terrain);
     add_to_event_game_state((zox_game_event) { &game_state_terrain });
     // add_hook_key_down(test_spawn_chunk_terrain);

@@ -1,5 +1,3 @@
-
-
 void print_terrain_settings() {
     zox_log(" > terrain settings set\n")
     // zox_log("     + terrain seed is [%i]\n", (int) terrain_seed)
@@ -16,12 +14,17 @@ void print_terrain_settings() {
 void process_arguments_terrain(ecs_world_t *world, char* args[], int count) {
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "--tiny") == 0) {
-            terrain_size = terrain_mode_tiny;
-            zox_log(" + tiny mode enabled\n")
+            render_distance = 3;
+            render_distance_y = 3;
+            zox_log("+ [tiny terrain] [%ix%i]", render_distance, render_distance_y)
         } else if (strcmp(args[i], "--medium") == 0) {
-            terrain_size = terrain_mode_medium;
+            render_distance = 4;
+            render_distance_y = 2;
+            zox_log("+ [medium terrain] [%ix%i]", render_distance, render_distance_y)
         } else if (strcmp(args[i], "--large") == 0) {
-            terrain_size = terrain_mode_large;
+            render_distance = 8;
+            render_distance_y = 4;
+            zox_log("+ [large terrain] [%ix%i]", render_distance, render_distance_y)
         }
     }
 }

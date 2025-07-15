@@ -7,14 +7,10 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     zox_set(vox, RenderLod, { 0 })
     zox_set(vox, RubbleHeight, { 24 })
     zox_set(vox, RubbleCount, { 8000 })
-    if (!vox) {
-        zox_log(" ! grass_vox model not found.\n")
-    }
     // use instanced mesh prefab
     SpawnBlock data = {
         .name = "grass",
         .prefab = prefab_block_vox_meta,
-        .prefab_texture = prefab_vox_texture,
         .vox = vox,
         .tag = zox_id(BlockVox),
         .index = index,
@@ -28,12 +24,6 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     data.prefab_block_vox = prefab_block_vox2;
     zox_set(prefab_block_vox2, InstanceLink, { vox })
     // thats all fokes
+    process_disabled_block_vox(world, &data, 1);
     return spawn_block_vox_meta(world, &data);
 }
-
-/*if (disable_block_voxes) {
-    data.bake_vox = 1;
-    data.vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
-    data.model = 0;
-    data.tag = 0;
-}*/
