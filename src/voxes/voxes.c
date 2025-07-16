@@ -16,10 +16,6 @@ void dispose_voxes(ecs_world_t *world, void *ctx) {
     dispose_files_voxes(world);
 }
 
-void initialize_voxes(ecs_world_t *world) {
-    load_files_voxes(world, prefab_vox_file);
-}
-
 zox_begin_module(Voxes)
     zox_module_dispose(dispose_voxes)
     define_components_voxes(world);

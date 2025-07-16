@@ -9,7 +9,7 @@ byte test_realm_spawn(ecs_world_t *world) {
     zox_log("> started [%s]", game_name)
     headless = 1;
     initialize_networking();
-    initialize_voxes(world);
+    // initialize_voxes(world);
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     zox_log("> seed [%i]", test_seed)
     set_noise_seed(test_seed);

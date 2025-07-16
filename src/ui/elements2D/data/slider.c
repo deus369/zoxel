@@ -7,4 +7,5 @@ typedef struct {
     ecs_entity_t prefab_handle;
     float value;
     float2 bounds;
+    byte handle_width;
 } SpawnSliderData;

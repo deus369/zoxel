@@ -26,27 +26,27 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
     zox_field_in(RenderDistance, renderDistances, 3)
     zox_field_out(ChunkNeighbors, chunkNeighborss, 4)
     for (int i = 0; i < it->count; i++) {
+        zox_field_e()
         zox_field_i(VoxLink, voxLinks, voxLink)
+        zox_field_i(RenderDistance, renderDistances, renderDistance)
+        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
+        zox_field_o(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
         if (!zox_valid(voxLink->value)) {
             continue;
         }
         // Pass if loading chunk
-        zox_field_i(RenderDistance, renderDistances, renderDistance)
         if (renderDistance->value == 255) {
             continue;
         }
         // Pass if lod changing
-        zox_field_e()
         zox_geter_value(e, ChunkLodDirty, byte, chunkLodDirty)
         if (chunkLodDirty != 0) {
             continue;
         }
-        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
         // const int3 stream_point2 = find_closest_point(stream_points, stream_points_length, chunkPosition->value);
         // const byte camera_distance = get_camera_chunk_distance_xz(stream_point2, chunkPosition->value);
         const byte stream_zone = renderDistance->value < render_distance;
         if (stream_zone) {
-            zox_field_o(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
             for (byte j = 0; j < 6; j++) {
                 ecs_entity_t neighbor = chunkNeighbors->value[j];
                 // no need to spawn if neighbor exists
@@ -66,7 +66,12 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
                     // only spawn new chunk if within stream distance
                     const byte camera_distance = get_camera_chunk_distance_xz(stream_point, neighbor_position);
                     if (camera_distance <= render_distance) {
-                        neighbor = spawn_chunk_terrain(world, prefab_chunk_streaming, voxLink->value, stream_point, neighbor_position, real_chunk_scale);
+                        neighbor = spawn_chunk_terrain(world,
+                            prefab_chunk_streaming,
+                            voxLink->value,
+                            stream_point,
+                            neighbor_position,
+                            real_chunk_scale);
                         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
                         // zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
                         int3_hashmap_add(chunkLinks->value, neighbor_position, neighbor);

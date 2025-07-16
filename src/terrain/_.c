@@ -26,7 +26,7 @@ void module_dispose_terrain(ecs_world_t *world, void *ctx) {
 
 zox_begin_module(Terrain)
     initialize_hook_spawn_blocks();
-    set_terrain_render_distance();
+    set_terrain_render_distance();  // update this
     define_components_terrain(world);
     define_systems_terrain(world);
     spawn_prefabs_terrain(world);

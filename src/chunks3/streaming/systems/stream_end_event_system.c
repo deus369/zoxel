@@ -21,7 +21,17 @@ void StreamEndEventSystem(ecs_iter_t *it) {
             while (pair != NULL && checks < max_safety_checks_hashmap) {
                 const ecs_entity_t chunk = pair->value;
                 if (!zox_valid(chunk) || !zox_has(chunk, GenerateChunk) || !zox_has(chunk, ChunkMeshDirty) || !zox_has(chunk, ChunkLodDirty)) {
-                    zox_log_error("chunk invalid in stream end system [%lu]", chunk)
+                    if (!zox_valid(chunk)) {
+                        zox_log_error("chunk invalid in stream end system [%lu]", chunk)
+                    } else if (!zox_has(chunk, GenerateChunk)) {
+                        zox_log_error("chunk has no GenerateChunk [%lu]", chunk)
+                    } else if (!zox_has(chunk, ChunkMeshDirty)) {
+                        zox_log_error("chunk has no ChunkMeshDirty [%lu]", chunk)
+                    }  else if (!zox_has(chunk, ChunkLodDirty)) {
+                        zox_log_error("chunk has no ChunkLodDirty [%lu]", chunk)
+                    } else {
+                        zox_log_error("chunk invalid not sure why[%lu]", chunk)
+                    }
                     is_skip = 1;
                 } else if (zox_gett_value(chunk, RenderLod) == render_lod_uninitialized) {
                     is_skip = 1;
@@ -44,7 +54,9 @@ void StreamEndEventSystem(ecs_iter_t *it) {
             }
         }
         if (!is_skip) {
-            // zox_log("+ terrain spawning ended spawning at [%f]", zox_current_time)
+            if (is_log_streaming) {
+                zox_log("+ terrain spawning ended spawning at [%f]", zox_current_time)
+            }
             // we should check if all chunks have finished here
             zox_field_world()
             zox_field_i(EventInput, eventInputs, eventInput)

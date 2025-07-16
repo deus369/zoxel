@@ -16,10 +16,8 @@
 #define max_settings 256
 uint settings_count = 0;
 setting settings[max_settings];
-#include "util/_.c"
 
 // # New Settings #
-
 void zox_sset(const char* name, byte type, on_set_event on_set) {
     if (settings_count >= max_settings) {
         zox_log_error("settings count already at its limit of [%i]", max_settings)
@@ -110,3 +108,5 @@ byte zox_sset_string(ecs_world_t *world, const char *name, const char* value) {
     zox_log_error("missing [string] setting [%s]", name)
     return 0;
 }
+
+#include "util/_.c"

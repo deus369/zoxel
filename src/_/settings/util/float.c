@@ -3,27 +3,6 @@ static inline float zox_sget_float(const setting s) {
     return s.value_float;
 }
 
-// set
-byte zox_sset_float(ecs_world_t *world, const char *name, float value) {
-    for (int i = 0; i < settings_count; i++) {
-        setting s = settings[i];
-        if (strcmp(name, s.name) == 0) {
-            // zox_log("+ setting float [%s] at [%i]", name, i)
-            if (s.type == zox_data_type_float) {
-                float new_value = float_clamp(value, s.min_float, s.max_float);
-                if (new_value != s.value_float) {
-                    s.value_float = new_value;
-                    s.on_set(world, &new_value);
-                    settings[i] = s;
-                }
-                return 1;
-            }
-        }
-    }
-    zox_log_error("missing [float] setting [%s]", name)
-    return 0;
-}
-
 // limit
 byte zox_slim_float(ecs_world_t* world, const char *name, float min, float max) {
     for (int i = 0; i < settings_count; i++) {
@@ -46,6 +25,28 @@ byte zox_slim_float(ecs_world_t* world, const char *name, float min, float max) 
         }
     }
     zox_log_error("? [float] setting [%s]", name)
+    return 0;
+}
+
+// set
+byte zox_sset_float(ecs_world_t *world, const char *name, float value) {
+    for (int i = 0; i < settings_count; i++) {
+        setting s = settings[i];
+        if (strcmp(name, s.name) == 0) {
+            // zox_log("+ setting float [%s] at [%i]", name, i)
+            if (s.type == zox_data_type_float) {
+                float new_value = float_clamp(value, s.min_float, s.max_float);
+                if (new_value != s.value_float) {
+                    s.value_float = new_value;
+                    s.on_set(world, &new_value);
+                    settings[i] = s;
+                    save_settings();
+                }
+                return 1;
+            }
+        }
+    }
+    zox_log_error("missing [float] setting [%s]", name)
     return 0;
 }
 

@@ -8,7 +8,8 @@ void load_vox_file(const char* filename, vox_file *vox) {
     read_vox(filename, vox);
 }
 
-void load_files_voxes(ecs_world_t *world, const ecs_entity_t prefab) {
+void load_files_voxes(ecs_world_t *world) {
+    const ecs_entity_t prefab = prefab_vox_file;
     char* load_directory = concat_file_path(resources_path, directory_voxes);
     FileList files = get_files(load_directory, 0);
     files_voxes_count = files.count;

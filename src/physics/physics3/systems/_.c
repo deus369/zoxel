@@ -22,8 +22,8 @@ void define_systems_physics3(ecs_world_t *world) {
         [out] transforms3.Position3D,
         [out] physics3.Velocity3D)
     zox_system(Gravity3DSystem, zox_pip_physics,
-        [in] Gravity3D,
-        [in] physics3.Grounded,
+        [in] physics3.Gravity3D,
+        [in] physics.DisableGravity,
         [out] physics3.Acceleration3D)
     zox_system(RandomJump3DSystem, zox_pip_physics,
         [in] physics3.Grounded,

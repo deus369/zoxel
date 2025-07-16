@@ -48,7 +48,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
     zox_log("  - headless [%i]", headless)
     zox_log("### ### ### ### ###")
     initialize_networking();
-    initialize_voxes(world);
+    // initialize_voxes(world);
     double test_start = current_time_in_seconds();
     const ecs_entity_t realm = test_spawn_realm(world, test_seed);
     // const ecs_entity_t game = spawn_game(world, realm);

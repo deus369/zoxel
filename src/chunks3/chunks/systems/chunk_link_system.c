@@ -1,7 +1,11 @@
 // #define zox_debug_chunk_link_system
 extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
 
-byte set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunkLink, const ecs_entity_t chunk) {
+byte set_entity_chunk(ecs_world_t *world,
+    const ecs_entity_t e,
+    ChunkLink *chunkLink,
+    const ecs_entity_t chunk)
+{
     if (!zox_valid(chunk)) {
         return 0;
     }
@@ -49,7 +53,13 @@ byte set_entity_chunk(ecs_world_t *world, const ecs_entity_t e, ChunkLink *chunk
     return 1;
 }
 
-void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e, const VoxLink *voxLink, ChunkLink *chunkLink, ChunkPosition *chunkPosition, int3 chunk_position) {
+void set_entity_terrain_chunk_position(ecs_world_t *world,
+    const ecs_entity_t e,
+    const VoxLink *voxLink,
+    ChunkLink *chunkLink,
+    ChunkPosition *chunkPosition,
+    int3 chunk_position)
+{
     zox_geter(voxLink->value, ChunkLinks, chunkLinks)
     const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
     if (set_entity_chunk(world, e, chunkLink, chunk)) {
@@ -60,20 +70,21 @@ void set_entity_terrain_chunk_position(ecs_world_t *world, const ecs_entity_t e,
 void ChunkLinkSystem(ecs_iter_t *it) {
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    zox_field_world()
-    zox_field_in(VoxLink, voxLinks, 1)
-    zox_field_out(Position3D, position3Ds, 2)
-    zox_field_out(ChunkPosition, chunkPositions, 3)
-    zox_field_out(ChunkLink, chunkLinks, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(VoxLink)
+    zox_sys_out(Position3D)
+    zox_sys_out(ChunkPosition)
+    zox_sys_out(ChunkLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value || !zox_alive(voxLink->value)) {
+        zox_sys_e()
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_o(ChunkPosition, chunkPosition)
+        zox_sys_o(ChunkLink, chunkLink)
+        if (!zox_valid(voxLink->value)) {
             continue; // these shouldn't be here
         }
-        zox_field_e()
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_o(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_o(ChunkLink, chunkLinks, chunkLink)
         const float3 real_position = position3D->value;
         const int3 new_chunk_position = real_position_to_chunk_position(real_position, chunk_dimensions, depth);
         if (!chunkLink->value) {

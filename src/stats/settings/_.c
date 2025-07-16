@@ -1,0 +1,1 @@
+const float regen_rate = 0.5f; //  0.125f;

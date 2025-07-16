@@ -5,7 +5,12 @@ void game_start_terrain2D(ecs_world_t *world, const ecs_entity_t game) {
 
 void spawn_terrain_on_realm(ecs_world_t *world, const ecs_entity_t realm) {
     const int3 render_size = (int3) { terrain_spawn_distance, terrain_vertical, terrain_spawn_distance };
-    const ecs_entity_t terrain = spawn_terrain_streaming(world, realm, int3_zero, render_size, prefab_terrain, prefab_chunk_height);
+    const ecs_entity_t terrain = spawn_terrain_streaming(world,
+        realm,
+        int3_zero,
+        render_size,
+        prefab_terrain,
+        prefab_chunk_height);
     zox_set(terrain, RealmLink, { realm })
     zox_set(realm, TerrainLink, { terrain }) // link terrain to realm too
     local_terrain = terrain;

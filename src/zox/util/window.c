@@ -8,6 +8,7 @@ int engine_spawn_window(ecs_world_t *world) {
     if (window == 0) {
         return EXIT_FAILURE;
     }
+    load_settings(world, game_name);
     initialize_rendering(world);
     initialize_sounds(world);
     // Files
@@ -20,7 +21,7 @@ int engine_spawn_window(ecs_world_t *world) {
     load_files_sounds(world);
 #endif
 #ifdef zox_mod_voxes
-    initialize_voxes(world);
+    load_files_voxes(world);
 #endif
     // Shaders
     load_shaders(world);

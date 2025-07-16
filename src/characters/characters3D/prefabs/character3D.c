@@ -73,6 +73,7 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     if (data.terrain_chunk) {
         // zox_log("[spawn_character3D] setting character [%lu] chunk: %lu", e, data.terrain_chunk)
         zox_set(e, ChunkLink, { data.terrain_chunk })
+        zox_set(e, ChunkPosition, { data.chunk_position })
     }
     if (data.scale) {
         zox_set(e, VoxScale, { data.scale })

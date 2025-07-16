@@ -1,11 +1,8 @@
 // event called when terrain spawned
 void on_spawned_terrain(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
-    if (game_rule_attach_to_character) {
-        spawn_character3D_player_in_terrain(world, player);
-    } else {
-        attach_camera_to_character(world, player, camera, 0);
-    }
+    zox_geter_value(player, CharacterLink, ecs_entity_t, character)
+    zox_set(character, DisableGravity, { 0 })
+    zox_set(character, DisableMovement, { 0 })
     const ecs_entity_t game = zox_get_value(player, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)
     play_playlist(world, realm, 1);
@@ -30,12 +27,23 @@ void link_camera_to_terrain(ecs_world_t *world, const ecs_entity_t player) {
     if (!terrain) {
         return;
     }
+
+    if (game_rule_attach_to_character) {
+        ecs_entity_t character = spawn_character3D_player_in_terrain(world, player);
+        zox_set(character, DisableGravity, { 1 })
+        zox_set(character, DisableMovement, { 1 })
+    } else {
+        attach_camera_to_character(world, player, camera, 0);
+    }
+
     zox_set(camera, StreamPoint, { terrain_position })
     zox_set(camera, VoxLink, { terrain })
     zox_set(camera, StreamDirty, { zox_general_state_trigger })
     zox_set(terrain, EventInput, { player })
     zox_set(terrain, StreamEndEvent, { on_spawned_terrain })
-    // zox_log("+ terrain spawning started at [%f]", zox_current_time)
+    if (is_log_streaming) {
+        zox_log("+ terrain spawning started at [%f]", zox_current_time)
+    }
 }
 
 // spawn character and set camera to streaming terrain

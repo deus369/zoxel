@@ -1,10 +1,11 @@
 #if !defined(zox_mod_stats) && defined(zox_mod_users)
 #define zox_mod_stats
 
+#include "settings/_.c"
 #include "data/_.c"
 #include "components/_.c"
 #include "prefabs/_.c"
-#include "ui/ui.c"
+#include "ui/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 

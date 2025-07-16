@@ -62,6 +62,7 @@ void Characters3DSpawnSystem(ecs_iter_t *it) {
                     .vox = vox,
                     .terrain = voxLink->value,
                     .terrain_chunk = e,
+                    .chunk_position = chunkPosition->value,
                     .position = position,
                     .rotation = rotation,
                     .lod = vox_lod,

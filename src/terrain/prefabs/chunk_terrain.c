@@ -1,4 +1,7 @@
-ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const int3 size) {
+ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const int3 size)
+{
     zox_prefab_child(prefab)
     add_components_mesh_textured(world, e);
     // Terrain / Generation
@@ -22,15 +25,17 @@ ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world, const ecs_entity_t p
     return e;
 }
 
-ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale) {
+ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t terrain,
+    const int3 camera_position,
+    const int3 chunk_position,
+    const float real_chunk_scale)
+{
     zox_instance(prefab)
     zox_name("chunk_terrain")
     if (terrain_mode == terrain_mode_flatlands) {
         zox_add_tag(e, FlatlandChunk)
-    } else {
-        #ifdef zox_is_flatlands
-            zox_add_tag(e, FlatlandChunk)
-        #endif
     }
     const float3 position3D = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
     zox_set(e, Position3D, { position3D })
@@ -42,15 +47,6 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, 
         spawn_gpu_uvs(world, e);
         spawn_gpu_colors(world, e);
     }
-    // neighbors
-    /*ChunkNeighbors *chunkNeighbors = &((ChunkNeighbors) { 0, NULL });
-    // zox_get_muter(e, ChunkNeighbors, chunkNeighbors)
-    resize_memory_component(ChunkNeighbors, chunkNeighbors, ecs_entity_t, 6)
-    for (byte i = 0; i < 6; i++) {
-        chunkNeighbors->value[i] = 0;
-    }
-    zox_set(e, ChunkNeighbors, { chunkNeighbors->length, chunkNeighbors->value })*/
-
     // lod update here
     // todo: just start this as invisible and update with streaming systems
     const byte camera_distance = get_camera_chunk_distance_xz(camera_position, chunk_position);

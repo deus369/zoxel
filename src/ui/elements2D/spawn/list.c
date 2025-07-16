@@ -79,13 +79,17 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             child_element_data.position.y = position_y;
             // SLIDERS
             child_element_data.prefab = prefab_slider;
-            child_element_data.size = (int2) { element_data.size.x - slider_padding, slider_height };
+            child_element_data.size = (int2) {
+                element_data.size.x - slider_padding,
+                slider_height
+            };
             SpawnSliderData slider_data = (SpawnSliderData) {
                 .name = child_data.text,
                 .prefab_handle = prefab_handle,
                 .type = zox_slider_type_float,
-                .value = child_data.value, // 0.5f,
-                .bounds = child_data.value_bounds, // (float2) { 0, 1 },
+                .value = child_data.value,
+                .bounds = child_data.value_bounds,
+                .handle_width = 32,
             };
             const ecs_entity_2 e2 = spawn_slider(world,
                 canvas_data,
