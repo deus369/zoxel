@@ -183,5 +183,3 @@ help:
 	@printf "  \033[38;5;208m▶ package\033[0m  Package game (auto)\n"
 	@printf "  \033[38;5;208m▶ clean\033[0m    Clean build & dist\n"
 	@printf "  \033[38;5;208m▶ flecs\033[0m    Rebuild Flecs ECS\n\n"
-
-.DEFAULT_GOAL := help
