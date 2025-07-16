@@ -12,7 +12,7 @@ zox_component_float(Text3DScale)
 #include "util/popup.c"
 #include "systems/_.c"
 
-zox_begin_module(Elements3D)
+zox_begin_module(Elements3)
     zox_define_tag(Element3D)
     zox_define_tag(Text3D)
     zox_define_component(UITrail)
@@ -20,6 +20,6 @@ zox_begin_module(Elements3D)
     define_systems_elements3D(world);
     spawn_prefabs_elements3D(world);
     // add_hook_key_down(key_down_update_text3D);
-zox_end_module(Elements3D)
+zox_end_module(Elements3)
 
 #endif

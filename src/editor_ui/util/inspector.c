@@ -153,7 +153,8 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window, const 
                 .prefab = prefab_button,
                 .position = label_position,
                 .layer = button_layer,
-                .anchor = float2_half
+                .anchor = float2_half,
+                .render_disabled = render_disabled
             },
             .button = {
                 .prefab_zext = prefab_zext,

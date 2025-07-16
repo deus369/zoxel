@@ -17,7 +17,7 @@ zox_begin_module(UsersUI)
     zox_define_tag(UserIconWindow)
     zox_define_tag(MenuStatus)
     zox_system(UserIconTooltipSystem, EcsOnUpdate, [in] elements.core.SelectState, [in] users.UserDataLink, [in] elements.core.CanvasLink, [in] elements.core.TooltipEvent, [none] UserIcon)
-    zox_system(UserIconClickSystem, EcsPreUpdate, [in] elements.core.ClickState, [in] elements2.d.IconType, [in] elements2.d.IconIndex, [out] users.UserDataLink, [none] UserIcon)
+    zox_system(UserIconClickSystem, EcsPreUpdate, [in] elements.core.ClickState, [in] elements2.IconType, [in] elements2.IconIndex, [out] users.UserDataLink, [none] UserIcon)
     spawn_prefabs_users_ui(world);
 zox_end_module(Users)
 

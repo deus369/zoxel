@@ -18,6 +18,7 @@ zox_begin_module(Streaming)
     zox_define_component_byte(StreamDirty)
     zox_define_component(StreamEndEvent)
     define_systems_streaming(world);
+    initialize_settings_streaming(world);
 zox_end_module(Streaming)
 
 #endif

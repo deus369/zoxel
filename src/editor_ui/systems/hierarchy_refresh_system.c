@@ -44,7 +44,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
     const byte is_scrollbar = 1;
     const byte list_start = is_header + is_scrollbar;
     const ClickEvent click_event = (ClickEvent) { &button_event_clicked_hierarchy };
-    const ecs_entity_t realm = local_realm;
+    // const ecs_entity_t realm = local_realm;
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(Position2D)

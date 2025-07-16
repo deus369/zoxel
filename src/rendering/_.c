@@ -5,7 +5,6 @@
 #include "data/_.c"
 #include "settings/_.c"
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
-// #include "opengl/_.c"
 #include "core/_.c"
 #include "shaders/_.c"
 #include "basics2D/_.c"
@@ -52,6 +51,7 @@ zox_begin_module(Rendering)
     zox_import_module(RenderingCameras)
     zox_module_dispose(dispose_rendering)
     add_to_update_loop(viewport_clear);
+    initialize_settings_rendering(world);
 zox_end_module(Rendering)
 
 #endif

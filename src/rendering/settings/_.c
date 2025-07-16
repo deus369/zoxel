@@ -10,3 +10,5 @@ static inline float get_fog_density() {
 static inline float4 get_fog_value() {
     return float4_from_float3(color_rgb_to_float3(fog_color), get_fog_density());
 }
+
+#include "hooks.c"

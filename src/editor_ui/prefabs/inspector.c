@@ -16,7 +16,7 @@ ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
     const byte is_scrollbar = 1;
     const byte is_close_button = 1;
     const int labels_count = 1; // 34;
-    const text_group labels[] = { { "-------------------------------" } };
+    // const text_group labels[] = { { "-------------------------------" } };
     const ecs_entity_t e = spawn_ui_list(world,
         prefab_inspector,
         canvas,

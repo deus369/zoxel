@@ -1,12 +1,12 @@
 # ==== Zoxel ====
-
-GAME    	:= zoxel # todo: remember last picked game
+# 	-todo: remember last picked game
+GAME    	:= zoxel
 SRC_DIR 	:= src
 SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
 CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
-CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 # -Wshadow -Wpedantic -fno-omit-frame-pointer
+CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3
 LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
 LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
 # Choose your game module
@@ -40,7 +40,7 @@ rund: dev
 	./$(TARGET_DEV)
 
 gdb: dev
-	gdb ./$(TARGET_DEV)
+	gdb -ex "set debuginfod enabled off" -ex run --args ./$(TARGET_DEV)
 
 val: dev
 	valgrind ./$(TARGET_DEV)
@@ -185,8 +185,3 @@ help:
 	@printf "  \033[38;5;208m▶ flecs\033[0m    Rebuild Flecs ECS\n\n"
 
 .DEFAULT_GOAL := help
-
-# catching memory errors >
-# 	CFLAGS_DEV += -fsanitize=address,undefined
-# catching leaks >
-# 	CFLAGS_DEV += -fsanitize=address,leak -fno-omit-frame-pointer

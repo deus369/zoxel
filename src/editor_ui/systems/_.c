@@ -11,7 +11,7 @@ void zox_define_systems_editor(ecs_world_t *world) {
         [in] elements.core.CanvasPosition,
         [in] elements.core.Layer2D,
         [in] elements.core.Anchor,
-        [in] elements2.d.ListUIMax,
+        [in] elements2.ListUIMax,
         [in] elements.core.ElementFontSize,
         [in] elements.core.CanvasLink,
         [out] HierarchyUIDirty,

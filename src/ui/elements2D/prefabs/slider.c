@@ -3,6 +3,8 @@
 ecs_entity_t spawn_prefab_slider(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("slider")
+    // slider
+    zox_prefab_add(e, SliderLabel)
     // transforms
     zox_prefab_set(e, ParentLink, { 0 })
     // set t texture data

@@ -212,6 +212,9 @@ void set_element_spawn_data(ecs_world_t *world,
     zox_set(e, CanvasLink, { canvas_data.e })
     zox_set(e, CanvasPosition, { element_data->position_in_canvas })
     zox_set(e, TextureSize, { element_data->size })
+    if (element_data->render_disabled) {
+        zox_set(e, RenderDisabled, { element_data->render_disabled })
+    }
     if (canvas_data.e == parent_data.e) {
         on_child_added(world, canvas_data.e, e);
         zox_set(canvas_data.e, WindowToTop, { e })

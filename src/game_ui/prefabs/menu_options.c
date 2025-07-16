@@ -1,6 +1,7 @@
-void set_master_volume(ecs_world_t* world, const SlideEventData* data) {
-    // zox_log("volume set to %f", data->value)
-    master_volume = data->value;
+void on_settings_slider_slid(ecs_world_t* world, const SlideEventData* data) {
+    zox_geter_value(data->dragged, ParentLink, ecs_entity_t, slider)
+    zox_geter_value(slider, SliderLabel, const char*, slider_name)
+    zox_sset_float(world, slider_name, data->value);
 }
 
 ecs_entity_t spawn_menu_options(
@@ -10,49 +11,49 @@ ecs_entity_t spawn_menu_options(
     const int2 position,
     const float2 anchor)
 {
+    const int max_labels = max_settings;
+    const byte max_elements = 8;
+    const byte is_scrollbar = 1;
+
     const byte layer = 1;
     const byte header_font_size = 80;
-    const byte font_size = 42;
+    const byte font_size = 32;
     const byte is_close_button = 0;
-    const int labels_count = 3;
-    const text_group labels[] = {
-        { "Volume" },
-        { "" },
-        { "return" },
-    };
-    const ClickEvent click_events[] = {
-        { NULL },
-        { NULL },
-        { &button_event_menu_main }
-    };
-    const SlideEvent slide_events[] = {
-        { NULL },
-        { &set_master_volume },
-        { NULL },
-    };
-    const byte types[] = {
-        0,
-        1,
-        0,
-    };
-    // { "volume +" },
-    // { "volume -" },
-    // { &button_event_volume_increase },
-    // { &button_event_volume_decrease },
 
-    // todo: for options ui:
-    //      - spawn window ui
-    //      - spawn panel
-    //      - use this function to spawn list elements only with different inputs
+    byte types[max_labels];
+    text_group labels[max_labels];
+    ClickEvent click_events[max_labels];
+    SlideEvent slide_events[max_labels];
+    int labels_count = 0;
+    for (int i = 0; i < settings_count; i++, labels_count += 2) {
+        setting s = settings[i];
+        int j = labels_count;
+        int k = labels_count + 1;
+        // set slider label
+        types[j] = 0;
+        labels[j] = (text_group) { s.name };
+        click_events[j] = (ClickEvent) { NULL };
+        slide_events[j] = (SlideEvent) { NULL };
+        // set slider
+        types[k] = 1;
+        labels[k] = (text_group) { "" };
+        click_events[k] = (ClickEvent) { NULL };
+        slide_events[k] = (SlideEvent) { &on_settings_slider_slid };
+    }
 
-    // todo: pass in proper structs into spawn_ui_list
-    //      - pass out  position_in_canvas and pixel_size
+    // add return button
+    types[labels_count] = 0;
+    labels[labels_count] = (text_group) { "return" };
+    click_events[labels_count] = (ClickEvent) { &button_event_menu_main };
+    slide_events[labels_count] = (SlideEvent) { NULL };
+    labels_count++;
+
     const ecs_entity_t e = spawn_ui_list(world,
         prefab_ui_list,
         canvas,
         menu_options_header_label,
         labels_count,
-        labels_count,
+        max_elements,
         labels,
         click_events,
         slide_events,
@@ -63,10 +64,21 @@ ecs_entity_t spawn_menu_options(
         header_font_size,
         font_size,
         layer,
-        0,
+        is_scrollbar,
         player);
     zox_add_tag(e, MenuOptions)
     zox_name("menu_options")
+
+    return e;
+}
+
+// todo: pass in proper structs into spawn_ui_list
+//      - pass out  position_in_canvas and pixel_size
+
+// todo: for options ui:
+//      - spawn window ui
+//      - spawn panel
+//      - use this function to spawn list elements only with different inputs
 
     // todo:
     //      - parent it to list
@@ -98,5 +110,7 @@ ecs_entity_t spawn_menu_options(
     //zox_set(e, Children, { children->length, children->value })
 
 
-    return e;
-}
+// { "volume +" },
+// { "volume -" },
+// { &button_event_volume_increase },
+// { &button_event_volume_decrease },

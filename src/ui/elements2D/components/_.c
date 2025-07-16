@@ -14,6 +14,8 @@ zox_component_byte(IconType)
 zox_component_byte(ListUIMax)
 zox_component_byte(IconIndex)
 zox_component_entity(FramePrefabLink)
+zox_component_float2(SlideBounds)
+zox_component(SliderLabel, const char*)
 
 void define_components_elements2D(ecs_world_t *world) {
     zox_define_tag(Label)
@@ -32,4 +34,6 @@ void define_components_elements2D(ecs_world_t *world) {
     zox_define_component_byte(ListUIMax)
     zox_define_component_byte(IconIndex)
     zox_define_component_entity(FramePrefabLink)
+    zox_define_component_float2(SlideBounds)
+    zox_define_component(SliderLabel)
 }

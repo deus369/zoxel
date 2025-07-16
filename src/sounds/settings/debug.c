@@ -1,4 +1,6 @@
 byte audio_enabled = 0;
+byte nosounds = 0;
+
 byte is_log_sounds = 0;
 #define zox_log_sounds(msg, ...)\
     if (is_log_sounds) {\

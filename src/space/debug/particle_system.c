@@ -23,7 +23,6 @@ void toggle_character_particles(ecs_world_t *world, int32_t keycode) {
         const color test_color = (color) { 0, 255, 255, 200 };
         const float test_scale = 4; // 2
         const float test_rate = 32; // 4
-
         // conjure the canvas
         const ecs_entity_t realm = local_realm;
         zox_geter(realm, GameLink, gameLink)
@@ -39,7 +38,7 @@ void toggle_character_particles(ecs_world_t *world, int32_t keycode) {
             zox_delete(previous_particles)
         } else {
             zox_log(" + adding particles to character")
-            zox_geter_value(characterLink->value, Bounds3D, float3, bounds)
+            // zox_geter_value(characterLink->value, Bounds3D, float3, bounds)
             const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world,
                 characterLink->value,
                 test_rate,

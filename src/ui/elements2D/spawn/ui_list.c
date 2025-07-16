@@ -8,7 +8,7 @@ int get_max_width(
     int element_padding) {
     int max_characters = 0; // get max text length out of all of the words
     for (int i = 0; i < elements_count; i++) {
-        int txt_size = labels ? strlen(labels[i].text) : 0;
+        int txt_size = labels && labels[i].text ? strlen(labels[i].text) : 0;
         if (txt_size > max_characters) {
             max_characters = txt_size;
         }
@@ -82,14 +82,14 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
 
     if (is_scrollbar) {
         pixel_size.x += (scrollbar_width / 2) + scrollbar_margins;
-    anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
+        anchor_element_position2D_with_header(&pixel_position, anchor, pixel_size, header_height);
     }
     const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab)
     zox_name("ui_list")
     zox_set(e, ListUIMax, { max_elements })
-    zox_set(e, ElementFontSize, { scaled_font_size })
+    zox_set(e, ElementFontSize, { font_size }) // scaled_font_size
     initialize_element(world,
         e,
         parent,
@@ -128,14 +128,15 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             world,
             e,
             canvas,
-            (int2) { -(scrollbar_width / 2) - scrollbar_margins, 0 }, header_layer,
+            (int2) { -(scrollbar_width / 2) - scrollbar_margins, 0 },
+            header_layer,
             pixel_position_global,
             pixel_size,
             scrollbar_width,
             scrollbar_margins,
             canvas_size,
-            elements_count,
-            max_elements);
+            max_elements,
+            elements_count);
         children->value[is_header] = scrollbar;
     }
     SpawnButton spawnButton = {
@@ -169,16 +170,28 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
         },
     };
     for (int i = 0; i < elements_count; i++) {
-        int2 label_position = (int2) { 0, (int) (pixel_size.y / 2) - (i + 0.5f) * (scaled_font_size + button_padding.y * 2) - list_margins.y - i * button_inner_margins };
+
+        spawnButton.element.render_disabled = !(i >= 0 && i < max_elements);
+
+        int2 position = (int2) {
+            0,
+            (int) (pixel_size.y / 2) - (i + 0.5f) * (scaled_font_size + button_padding.y * 2) - list_margins.y - i * button_inner_margins
+        };
+
         if (is_scrollbar) {
-            label_position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
+            position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
         }
+
         byte spawn_type = 0;
         if (types) {
             spawn_type = types[i];
         }
-        spawnButton.element.position = label_position;
+
+        spawnButton.element.position = position;
         if (spawn_type == 0) {
+
+            // BUTTONS
+
             if (labels) {
                 spawnButton.zext.text = labels[i].text;
             }
@@ -193,13 +206,20 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             }
             children->value[list_start + i] = e2;
             zox_add_tag(e2, ZextLabel)
+
         } else {
+
+            // SLIDERS
+
             ElementSpawnData spawn_slider_data = spawnButton.element;
             spawn_slider_data.prefab = prefab_slider;
             spawn_slider_data.size = (int2) { 256, 42 };
             SpawnSliderData slider_data = (SpawnSliderData) {
                 .prefab_handle = prefab_handle,
                 .type = zox_slider_type_float,
+                .name = labels[i - 1].text,
+                .value = 0.5f,
+                .bounds = (float2) { 0, 1 },    // todo: pass this in from setting
             };
             const ecs_entity_2 e2 = spawn_slider(world,
                 spawnButton.canvas,
@@ -210,6 +230,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
                 zox_set(e2.y, SlideEvent, { slide_events[i].value })
             }
             children->value[list_start + i] = e2.x;
+
         }
     }
     zox_set(e, Children, { children->length, children->value })

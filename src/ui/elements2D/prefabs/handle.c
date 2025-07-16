@@ -26,5 +26,6 @@ ecs_entity_t spawn_prefab_handle(ecs_world_t *world, const ecs_entity_t prefab) 
     zox_prefab_set(e, DraggedLink, { 0 })
     zox_prefab_set(e, DraggableLimits, { int4_zero })
     zox_prefab_set(e, SlideEvent, { 0 })
+    zox_prefab_set(e, SlideBounds, { (float2) { 0, 1 }})
     return e;
 }

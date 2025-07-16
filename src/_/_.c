@@ -18,6 +18,7 @@
 #include "terminals/_.c"
 #include "pathing/_.c"
 #include "states/_.c"
+#include "settings/_.c"
 
 void module_dispose_core(ecs_world_t *world, void *ctx) {
     dispose_hook_terminal_command();
@@ -25,12 +26,12 @@ void module_dispose_core(ecs_world_t *world, void *ctx) {
 
 void process_arguments_core(ecs_world_t *world, char* args[], int count) {
     for (int i = 1; i < count; i++) {
-        if (strcmp(args[i], "--fps") == 0) {
+        if (!strcmp(args[i], "--fps")) {
             target_fps = (byte) (atoi(args[i + 1]));
             i++;
-        } else if (strcmp(args[i], "--singlethread") == 0) {
+        } else if (!strcmp(args[i], "--singlethread")) {
             is_multithreading = 0;
-        } else if (strcmp(args[i], "-p") == 0 || strcmp(args[i], "--profiler") == 0) {
+        } else if (!strcmp(args[i], "-p") || !strcmp(args[i], "--profiler")) {
             profiler = 1;
         }
     }
@@ -48,9 +49,9 @@ zox_begin_module(Core)
         return;
     } else {
         set_noise_seed(get_unique_time_seed());
-        #if zoxel_on_web
+#if zoxel_on_web
         add_to_update_loop(update_web_canvas);
-        #endif
+#endif
     }
 zox_end_module(Core)
 
