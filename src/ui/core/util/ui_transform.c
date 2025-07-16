@@ -83,7 +83,12 @@ void on_element_parent_updated(ecs_world_t *world, const ecs_entity_t e, const i
 void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const int2 canvas_size, const int2 window_size, const float2 anchor) {
     // note: can't actually use components in frame we spawn them
     const float2 anchor_reverse = (float2) { 1 - anchor.x, 1 - anchor.y };
-    int4 drag_limits = (int4) { - canvas_size.x * anchor.x + window_size.x / 2, canvas_size.x * anchor_reverse.x - window_size.x / 2, - canvas_size.y * anchor.y + window_size.y / 2, canvas_size.y * anchor_reverse.y - window_size.y / 2 };
+    int4 drag_limits = (int4) {
+        - canvas_size.x * anchor.x + window_size.x / 2,
+        canvas_size.x * anchor_reverse.x - window_size.x / 2,
+        - canvas_size.y * anchor.y + window_size.y / 2,
+        canvas_size.y * anchor_reverse.y - window_size.y / 2
+    };
     zox_set(e, DraggableLimits, { drag_limits });
 }
 
@@ -115,8 +120,16 @@ extern void anchor_element_position2D(int2 *position, const float2 position_anch
 extern void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_size);
 
 // called by CanvasResizeSystem
-void set_ui_transform(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t e, const int2 canvas_size, const int2 parent_position, const int2 parent_size) {
-    if (!zox_valid(e)) return;
+void set_ui_transform(ecs_world_t *world,
+    const ecs_entity_t parent,
+    const ecs_entity_t e,
+    const int2 canvas_size,
+    const int2 parent_position,
+    const int2 parent_size)
+{
+    if (!zox_valid(e)) {
+        return;
+    }
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     int2 pixel_size = int2_zero;
     if (zox_has(e, AnchorSize)) {

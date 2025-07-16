@@ -26,6 +26,7 @@ ecs_entity_t prefab_frame;
 ecs_entity_t prefab_label_background;
 ecs_entity_t prefab_scrollbar_front;
 ecs_entity_t prefab_scrollbar;
+ecs_entity_t prefab_list;
 ecs_entity_t prefab_ui_list;
 ecs_entity_t prefab_header;
 ecs_entity_t prefab_body;
@@ -71,4 +72,5 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_window = spawn_prefab_window(world, prefab_element_textured);
     // lists
     prefab_ui_list = spawn_prefab_ui_list(world, prefab_window);
+    prefab_list = spawn_prefab_ui_list(world, prefab_element_textured);
 }

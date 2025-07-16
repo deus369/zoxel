@@ -1,10 +1,16 @@
 // for only the button
 typedef struct {
-    ecs_entity_t prefab;
-    byte is_scrollbar;
-} SpawnUIListData;
+    SpawnListElement* elements;
+    int count;
+    int visible_count;
+    byte font_size;
+    color fill;
+    color outline;
+    // from window
+    Children *children;
+} SpawnList;
 
-typedef struct {
+/*typedef struct {
     CanvasSpawnData canvas;
     ParentSpawnData parent;
     ElementSpawnData element;
@@ -14,3 +20,4 @@ typedef struct {
     SpawnWindowData window;
     SpawnUIListData data;
 } SpawnUIList;
+*/

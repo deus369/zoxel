@@ -7,6 +7,7 @@ typedef struct {
     byte max_byte;
     byte value_byte;
 
+    float2 bounds_float;    // todo*
     float min_float;
     float max_float;
     float value_float;

@@ -14,4 +14,6 @@
 #include "header.c"
 #include "ui_list.c"
 #include "window.c"
-#include "ui_list2.c"
+#include "header2.c"
+#include "window2.c"
+#include "list.c"

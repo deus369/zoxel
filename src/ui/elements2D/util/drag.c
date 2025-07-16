@@ -12,7 +12,11 @@ void drag_element(ecs_world_t *world, const ecs_entity_t e, const int2 drag_valu
     }
     if (zox_has(e, DraggableLimits)) {
         zox_geter_value(e, DraggableLimits, int4, drag_bounds)
-        limited_element(pixel_position, drag_bounds);
+        if (int4_equals(drag_bounds, int4_zero)) {
+            zox_log_error("invalid drag bounds [%s] [int4_zero]", zox_get_name(e))
+        } else {
+            limited_element(pixel_position, drag_bounds);
+        }
         if (is_log_dragging) {
             zox_log("   - bounded by [%s] by x[%i-%i] y[%i-%i]", zox_get_name(e), drag_bounds.x, drag_value.y, drag_bounds.z, drag_bounds.w)
         }

@@ -51,6 +51,6 @@ byte zox_slim_float(ecs_world_t* world, const char *name, float min, float max) 
 
 #define zox_setting_float(name, function, value, min, max) {\
     zox_sset(name, zox_data_type_float, function);\
-    zox_sset_float(world, name, value);\
     zox_slim_float(world, name, min, max);\
+    zox_sset_float(world, name, value);\
 }

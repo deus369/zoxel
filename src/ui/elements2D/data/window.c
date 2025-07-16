@@ -14,3 +14,20 @@ typedef struct {
     SpawnHeaderData header;
     SpawnWindowData window;
 } SpawnWindow;
+
+
+typedef struct {
+    // header
+    const char *header_text;
+    const byte header_font_size;
+    const byte header_padding;
+    // list area
+    byte is_scrollbar;
+
+    // todo
+    color fill;
+    color outline;
+
+    // output
+    Children* children;
+} SpawnWindow2;

@@ -23,17 +23,6 @@ int get_max_width(
     }
 }
 
-// list keeps the children stored on it
-ecs_entity_t spawn_element_list(ecs_world_t *world,
-    const CanvasSpawnData canvas_data,
-    const ParentSpawnData parent_data,
-    ElementSpawnData element_data,
-    SpawnUIListData *list)
-{
-
-    return 0;
-}
-
 // todo: use struct inputs SpawnUIList
 ecs_entity_t spawn_ui_list(ecs_world_t *world,
     const ecs_entity_t prefab,

@@ -20,6 +20,7 @@ void ElementDragSystem(ecs_iter_t *it) {
             if (!dragged_entity) {
                 dragged_entity = e;
             }
+            // zox_log("[%s] is now dragging [%s] by ", zox_get_name(e), zox_get_name(dragged_entity))
             // zox_log("> dragging [%s] [%ix%i]", zox_get_name(dragged_entity), draggingDelta->value.x, draggingDelta->value.y)
             drag_element(world, dragged_entity, draggingDelta->value);
         }
