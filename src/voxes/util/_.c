@@ -1,6 +1,6 @@
 #include "vox_read.c"
 #include "vox.c"
-#include "generate.c"
+#include "outlines.c"
 #include "vox_files.c"
 #include "io.c"
 #include "voronoi3D.c"

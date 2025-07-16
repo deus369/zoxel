@@ -8,8 +8,10 @@
  * */
 
 #include "data/_.c"
+#include "components/_.c"
 #include "prefabs/_.c"
 #include "util/_.c"
+#include "generation/_.c"
 #include "systems/_.c"
 
 void dispose_voxes(ecs_world_t *world, void *ctx) {

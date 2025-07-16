@@ -2,7 +2,7 @@ ecs_entity_t spawn_block_soil(ecs_world_t *world, const byte index, char* name, 
     // vox
     const ecs_entity_t vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
     zox_set_unique_name(vox, "block_soil")
-    zox_add_tag(vox, VoxSoil)
+    zox_set(vox, VoxType, { vox_type_soil })
     // use instanced mesh prefab
     SpawnBlock data = {
         .index = index,

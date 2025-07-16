@@ -118,8 +118,8 @@ byte3 find_position_on_ground(const VoxelNode *chunk, const byte target_depth, c
         if (chunk_above) {
             byte3 temp1 = local_position;
             byte3 temp2 = (byte3) { local_position.x, chunk_length - 1, local_position.z };
-            const byte voxel_up = get_octree_voxel(chunk_above, &temp1, target_depth);
-            const byte voxel_down = get_octree_voxel(chunk, &temp2, target_depth);
+            const byte voxel_up = get_sub_node_voxel(chunk_above, &temp1, target_depth);
+            const byte voxel_down = get_sub_node_voxel(chunk, &temp2, target_depth);
             if (!voxel_up && voxel_down) { // can stand on voxel
                 local_position.y = chunk_length;
                 zox_log("placing on chunk top\n")
@@ -130,8 +130,8 @@ byte3 find_position_on_ground(const VoxelNode *chunk, const byte target_depth, c
         {
             byte3 temp3 = local_position;
             byte3 temp4 = (byte3) { local_position.x, local_position.y - 1, local_position.z };
-            const byte voxel_up = get_octree_voxel(chunk, &temp3, target_depth);
-            const byte voxel_down = get_octree_voxel(chunk, &temp4, target_depth);
+            const byte voxel_up = get_sub_node_voxel(chunk, &temp3, target_depth);
+            const byte voxel_down = get_sub_node_voxel(chunk, &temp4, target_depth);
             if (!voxel_up && voxel_down) { // can stand on voxel
                 // zox_log("placing on chunk at %i\n", local_position.y)
                 return local_position;

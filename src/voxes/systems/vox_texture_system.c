@@ -40,14 +40,14 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { x, i, j };
-                byte voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                byte voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                 byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_left) {
                         for (int k = 0; k < size.y; k++) {
                             node_position = (byte3) { k, i, j };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) {
                                 break;
                             }
@@ -55,7 +55,7 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
                     } else {
                         for (int k = size.y - 1; k >= 0; k--) {
                             node_position = (byte3) { k, i, j };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) {
                                 break;
                             }
@@ -80,14 +80,14 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, x, j };
-                byte voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                byte voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                 byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_down) {
                         for (int k = 0; k < size.y; k++) {
                             node_position = (byte3) { i, k, j };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) {
                                 break;
                             }
@@ -95,7 +95,7 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
                     } else {
                         for (int k = size.y - 1; k >= 0; k--) {
                             node_position = (byte3) { i, k, j };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) {
                                 break;
                             }
@@ -120,20 +120,20 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 byte3 node_position = (byte3) { i, j, x };
-                byte voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                byte voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                 byte is_darken = 0;
                 if (voxel == 0) {
                     is_darken = 1;
                     if (side == block_side_back) {
                         for (int k = 0; k < size.y; k++) {
                             node_position = (byte3) { i, j, k };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) break;
                         }
                     } else {
                         for (int k = size.y - 1; k >= 0; k--) {
                             node_position = (byte3) { i, j, k };
-                            voxel = get_octree_voxel(chunk, &node_position, max_depth);
+                            voxel = get_sub_node_voxel(chunk, &node_position, max_depth);
                             if (voxel) {
                                 break;
                             }

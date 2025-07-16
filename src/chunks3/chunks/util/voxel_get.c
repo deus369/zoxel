@@ -1,7 +1,7 @@
 
 // used by physics and raycasting
 // i think const was the issue
-const byte get_octree_voxel(const VoxelNode *node, byte3 *position, const byte depth) {
+const byte get_sub_node_voxel(const VoxelNode *node, byte3 *position, const byte depth) {
     if (depth == 0 || !has_children_VoxelNode(node)) {
         return node->value;
     }
@@ -15,7 +15,7 @@ const byte get_octree_voxel(const VoxelNode *node, byte3 *position, const byte d
     byte3_modulus_byte(position, dividor);
     const byte child_index = byte3_octree_array_index(node_position);
     VoxelNode* kids = get_children_VoxelNode(node);
-    return get_octree_voxel(&kids[child_index], position, new_depth);
+    return get_sub_node_voxel(&kids[child_index], position, new_depth);
 }
 
 // returns node, also sets voxel
@@ -145,7 +145,7 @@ byte get_voxel(VoxelNode *node, const byte node_depth, const byte3 position, con
     byte voxel = 0;
     if (byte3_in_bounds(position, size)) {
         byte3 temp_position = position;
-        voxel = get_octree_voxel(node, &temp_position, node_depth);
+        voxel = get_sub_node_voxel(node, &temp_position, node_depth);
     }
     return voxel;
 }

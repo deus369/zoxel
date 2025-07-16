@@ -13,7 +13,7 @@ void process_disabled_block_vox(ecs_world_t *world, SpawnBlock *data, byte is_un
     }
     ecs_entity_t vox = spawn_vox_generated_invisible(world, prefab_vox_generated, color_gray);
     zox_set_unique_name(vox, "unknown")
-    zox_add_tag(vox, VoxSoil)
+    zox_set(vox, VoxType, { vox_type_soil })
     // settings!
     data->vox = vox;
     data->prefab_texture = prefab_vox_texture;

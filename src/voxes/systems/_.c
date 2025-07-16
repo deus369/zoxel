@@ -1,6 +1,6 @@
 #include "chunk_colors_build_system.c"
 #include "bounds3D_grow_system.c"
-#include "generate_vox_system.c"
+#include "vox_generation_system.c"
 #include "vox_texture_system.c"
 #include "clone_vox_system.c"
 
@@ -19,8 +19,9 @@ void define_systems_voxes(ecs_world_t *world) {
         [in] chunks3.ChunkSize,
         [in] blocks.VoxScale,
         [out] generic.Bounds3D)
-    zox_system(GenerateVoxSystem, EcsOnUpdate,
+    zox_system(VoxGenerationSystem, EcsOnUpdate,
         [in] colorz.Color,
+        [in] VoxType,
         [out] GenerateVox,
         [out] chunks3.VoxelNode,
         [out] chunks3.NodeDepth,

@@ -2,7 +2,7 @@ ecs_entity_t spawn_realm_block_rubble(ecs_world_t *world, const byte index, char
     // vox
     const ecs_entity_t vox = spawn_vox_basic(world, prefab_vox);
     zox_set_unique_name(vox, "block_rubble")
-    zox_add_tag(vox, VoxRubble)
+    zox_set(vox, VoxType, { vox_type_rubble })
     zox_set(vox, Color, { block_color })
     zox_set(vox, GenerateVox, { 1 })
     zox_set(vox, RenderLod, { 0 })
@@ -26,6 +26,3 @@ ecs_entity_t spawn_realm_block_rubble(ecs_world_t *world, const byte index, char
     process_disabled_block_vox(world, &data, 1);
     return spawn_block_vox_meta(world, &data);
 }
-
-//const ecs_entity_t vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
-//zox_add_tag(vox, VoxRubble)
