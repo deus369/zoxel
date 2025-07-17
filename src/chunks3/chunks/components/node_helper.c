@@ -172,13 +172,13 @@ void clone_at_depth_##name(\
     }\
     if (depth == target_depth) {\
         dst->value = src->value;\
-        dst->ptr = src->ptr;\
-        dst->type = src->type;\
+        /*dst->ptr = src->ptr;*/\
+        /*dst->type = src->type;*/\
     } else {\
         if (src->ptr && dst->ptr) {\
             depth++;\
-            name* kids_dst = get_children_##name(dst);\
             name* kids_src = get_children_##name(src);\
+            name* kids_dst = get_children_##name(dst);\
             for (byte i = 0; i < octree_length; i++) {\
                 clone_at_depth_##name(&kids_dst[i], &kids_src[i], target_depth, depth);\
             }\
@@ -205,4 +205,12 @@ void clone_depth_##name(\
         dst->ptr = src->ptr;\
         /*dst->ptr = NULL;*/\
     }\
+}\
+\
+void open_##name(name* node) {\
+    if (node->ptr == NULL) {\
+        open_new_##name(node);\
+    }\
 }
+
+

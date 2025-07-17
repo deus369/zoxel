@@ -25,7 +25,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
         }
         const ecs_entity_t source = cloneVoxLink->value;
         // clone one depth at a time
-        zox_geter(source, VoxelNode, chunk_octree_source)
+        zox_geter(source, VoxelNode, source_node)
         zox_geter(source, NodeDepth, source_node_depth)
         if (chunkLod->value == 255) {
             chunkLod->value = 0;
@@ -33,7 +33,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
             chunkLod->value++;
         }
         nodeDepth->value = source_node_depth->value;
-        clone_at_depth_VoxelNode(voxelNode, chunk_octree_source, chunkLod->value, 0);
+        clone_at_depth_VoxelNode(voxelNode, source_node, chunkLod->value, 0);
         const byte target_depth = nodeDepth->value;
         if (chunkLod->value == target_depth) {
             zox_geter(source, ChunkSize, source_chunk_size)

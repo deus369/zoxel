@@ -51,7 +51,7 @@ zox_begin_module(ZoxGame)
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
-    // target_fps = 16;
+    // target_fps = 30;
 
     zox_game_type = zox_game_mode_3D;
     menu_sky_color = (color_rgb) { 0, 5, 0 };
@@ -92,6 +92,7 @@ zox_begin_module(ZoxGame)
     // nothing_font_color = debug_color; // debug font texture
 
     // scaling
+    terrain_lod_near = 3;
     real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
     terrain_depth = 4;
     block_vox_depth = 5;
