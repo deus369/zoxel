@@ -11,12 +11,12 @@ void SkyboxRestoreSystem(ecs_iter_t *it) {
             zox_log(" ! [%i] skybox material invalid.\n", i)
             continue;
         }
-        zox_enable_material(material);
+        zox_gpu_material(material);
         const uint color_location = glGetUniformLocation(material, "sky_top_color");
         const uint secondary_color_location = glGetUniformLocation(material, "sky_bottom_color");
         zox_gpu_float3(color_location, color_rgb_to_float3(color->value));
         zox_gpu_float3(secondary_color_location, color_rgb_to_float3(secondaryColor->value));
-        zox_enable_material(0);
+        zox_gpu_material(0);
 #ifdef zox_log_gpu_management
         zox_log("restoring skybox [%s]\n", zox_get_name(it->entities[i]))
 #endif

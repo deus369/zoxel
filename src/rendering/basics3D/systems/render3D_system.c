@@ -15,11 +15,11 @@ void Render3DSystem(ecs_iter_t *it) {
             continue;
         }
         MaterialBasic3D attributes = create_MaterialBasic3D(materialGPULink->value);
-        zox_enable_material(materialGPULink->value);
-        opengl_set_matrix(attributes.camera_matrix, render_camera_matrix);
+        zox_gpu_material(materialGPULink->value);
+        zox_gpu_float4x4(attributes.camera_matrix, render_camera_matrix);
         zox_gpu_float4(attributes.fog_data, get_fog_value());
         zox_gpu_float(attributes.brightness, brightness->value);
-        opengl_set_matrix(attributes.transform_matrix, transformMatrix->value);
+        zox_gpu_float4x4(attributes.transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(attributes.vertex_position, meshGPULink->value.y);
         zox_gpu_render(meshIndicies->length);

@@ -7,32 +7,21 @@
 #define zox_cubeline_debug_transforms 5
 #define zox_cubeline_debug_instanced 6
 
-byte debug_colliders = 0;
-byte cubeline_debug_mode = zox_cubeline_debug_none;
-
-static byte cycle_cubeline_debug() {
-    byte previous_mode = cubeline_debug_mode;
-    cubeline_debug_mode++;
-    if (cubeline_debug_mode == zox_cubeline_debug_end) {
-        cubeline_debug_mode = 0;
+static inline void cycle_cubeline_debug(byte* mode) {
+    (*mode)++;
+    if (*mode == zox_cubeline_debug_end) {
+        (*mode) = 0;
     }
-    if (cubeline_debug_mode == zox_cubeline_debug_render_lod) {
+    if ((*mode) == zox_cubeline_debug_render_lod) {
         zox_log("-> debugging render_lods")
-    } else if (cubeline_debug_mode == zox_cubeline_debug_render_disabled) {
+    } else if (*mode == zox_cubeline_debug_render_disabled) {
         zox_log("-> debugging render_disabled")
-    } else if (cubeline_debug_mode == zox_cubeline_debug_verts) {
+    } else if (*mode == zox_cubeline_debug_verts) {
         zox_log("-> debugging verts")
-    }  else if (cubeline_debug_mode == zox_cubeline_debug_none) {
+    }  else if (*mode == zox_cubeline_debug_none) {
         zox_log("-> debugging cubes disabled")
     } else {
-        zox_log("-> cubeline_debug_mode is set to [%i]", cubeline_debug_mode)
-    }
-    if (!previous_mode && cubeline_debug_mode) {
-        return 1; // add colliders
-    } else if (previous_mode && !cubeline_debug_mode) {
-        return 2; // remove them
-    } else {
-        return 0; // no change
+        zox_log("-> cubeline_debug_mode is set to [%i]", *mode)
     }
 }
 
@@ -57,10 +46,10 @@ static inline void render_cube_line3D(const float3 position_a, const float3 posi
 
 void CubeLineRenderSystem(ecs_iter_t *it) {
     byte is_render_invisible = 1;
-    zox_enable_material(line3D_material);
+    zox_gpu_material(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     zox_gpu_float4(line3D_fog_data_location, get_fog_value());
-    glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
+    zox_gpu_float4x4(line3D_camera_matrix_location, render_camera_matrix);
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DebugCubeLines)
@@ -81,18 +70,19 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         zox_sys_i(Rotation3D, rotation3D)
         zox_sys_i(Bounds3D, bounds3D)
         zox_sys_i(RenderDisabled, renderDisabled)
-        if (!debugCubeLines->value || (!is_render_invisible && renderLod->value == 255)) {
+        const byte mode = debugCubeLines->value;
+        if (!mode || (!is_render_invisible && renderLod->value == 255)) {
             continue;
         }
         set_line3D_thickness(cubeLinesThickness->value);
         color_rgb lines_color = color_to_color_rgb(colorr->value);
-        if (cubeline_debug_mode == zox_cubeline_debug_render_disabled) {
+        if (mode == zox_cubeline_debug_render_disabled) {
             if (renderDisabled->value) {
                 lines_color = (color_rgb) { 255, 0, 0 };
             } else {
                 lines_color = (color_rgb) { 0, 155, 0 };
             }
-        } else if (cubeline_debug_mode == zox_cubeline_debug_verts) {
+        } else if (mode == zox_cubeline_debug_verts) {
             if (zox_has(e, MeshIndicies)) {
                 zox_geter(e, MeshIndicies, meshIndicies)
                 if (meshIndicies->length == 0) {
@@ -103,7 +93,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
             } else {
                 lines_color = (color_rgb) { 125, 125, 125 };
             }
-        } else if (cubeline_debug_mode == zox_cubeline_debug_render_lod) {
+        } else if (mode == zox_cubeline_debug_render_lod) {
             if (renderLod->value == render_lod_uninitialized) {
                 lines_color = (color_rgb) { 0, 0, 0 };
             } else if (renderLod->value == render_lod_invisible) {
@@ -124,7 +114,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
                 lines_color = (color_rgb) { 255, 255, 255 };
             }
         }
-        if (cubeline_debug_mode == zox_cubeline_debug_transforms) {
+        if (mode == zox_cubeline_debug_transforms) {
             // up axis
             // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
             set_line3D_color(lines_color);

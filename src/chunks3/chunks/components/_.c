@@ -1,4 +1,3 @@
-#include "node.c"
 zox_declare_tag(Chunk)
 zox_declare_tag(NoiseChunk)
 zox_declare_tag(ChunkDebugger)
@@ -15,7 +14,10 @@ zox_component_int3(ChunkSize)
 zox_component_byte(BlocksSpawned)
 zox_component_link(ChunkLink, ecs_entity_t, EntityLinks)
 zox_component_byte(NodeDepth)
+#include "node.c"
+#include "node_helper.c"
 zox_component_node(VoxelNode, byte, 0)    // todo: Rename to VoxelNode
+zox_component_node_helper(VoxelNode, byte)
 #include "neighbors.c"
 #include "chunk_links.c"
 #include "raycast_voxel_data.c"

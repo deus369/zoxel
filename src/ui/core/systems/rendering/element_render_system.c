@@ -39,8 +39,8 @@ void ElementRenderSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
             zox_gpu_blend_enable();
-            zox_enable_material(material_link);
-            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
+            zox_gpu_material(material_link);
+            zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         glBindBuffer(GL_ARRAY_BUFFER, meshGPULink->value.y);

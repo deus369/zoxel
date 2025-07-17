@@ -29,7 +29,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         }
 
         const MaterialTextured2D attributes = create_MaterialTextured2D(material);
-        zox_enable_material(material);
+        zox_gpu_material(material);
         zox_gpu_blend_enable();
         glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
@@ -38,7 +38,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         glEnableVertexAttribArray(attributes.vertex_uv);
         glVertexAttribPointer(attributes.vertex_position, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(0 * sizeof(float)));
         glVertexAttribPointer(attributes.vertex_uv, 2, GL_FLOAT, GL_FALSE, 16, (GLvoid*)(2 * sizeof(float)));
-        glUniformMatrix4fv(attributes.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &render_camera_matrix));
+        zox_gpu_float4x4(attributes.camera_matrix, render_camera_matrix);
         zox_gpu_float3(attributes.position, (float3) { position2D->value.x, position2D->value.y, 0 });
         zox_gpu_float(attributes.angle, rotation2D->value);
         zox_gpu_float(attributes.scale, scale1D->value);

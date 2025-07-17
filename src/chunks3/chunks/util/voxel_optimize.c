@@ -31,7 +31,7 @@ void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
         }
     }
     if (all_solid || all_air) {
-        dispose_VoxelNode(world, node);
+        destroy_VoxelNode(world, node);
     }
 }
 
@@ -61,7 +61,7 @@ void close_same_nodes(ecs_world_t *world, VoxelNode *node) {
     }
     if (all_same) {
         node->value = all_same_voxel;
-        dispose_VoxelNode(world, node);
+        destroy_VoxelNode(world, node);
     }
 }
 

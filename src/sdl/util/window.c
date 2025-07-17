@@ -1,6 +1,4 @@
-extern const char *game_name;
-
-void sdl_toggle_fullscreen(ecs_world_t *world, const ecs_entity_t e) { // SDL_Window* window) {
+void sdl_toggle_fullscreen(ecs_world_t *world, const ecs_entity_t e) {
     const byte is_fullscreen = !zox_get_value(e, WindowFullscreen)
     zox_set(e, WindowFullscreen, { is_fullscreen })
     sdl_set_fullscreen(zox_gett_value(e, SDLWindow), is_fullscreen);
@@ -19,7 +17,11 @@ int get_sdl_window_header_size(SDL_Window* window) {
     return 0;
 }
 
-SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size, const char *name) {
+SDL_Window* create_sdl_window_basic_opengl(
+    const int2 position,
+    const int2 size,
+    const char *name)
+{
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     #ifdef zoxel_on_android
@@ -39,7 +41,11 @@ SDL_Window* create_sdl_window_basic_opengl(const int2 position, const int2 size,
     return window;
 }
 
-SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size, const char *name) {
+SDL_Window* create_sdl_window_basic_vulkan(
+    const int2 position,
+    const int2 size,
+    const char *name)
+{
     int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
     #ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
@@ -49,10 +55,6 @@ SDL_Window* create_sdl_window_basic_vulkan(const int2 position, const int2 size,
         zox_log("!!! SDL_CreateWindow failed: %s\n", SDL_GetError())
         return window;
     }
-    /*if (*SDL_GetError()) {
-        zox_log(" ! !SDL_CreateWindow: %s\n", SDL_GetError())
-        return 0;
-    }*/
     return window;
 }
 
@@ -76,14 +78,14 @@ SDL_Window* create_sdl_window(const int2 position, const int2 size, const byte f
     return window;
 }
 
-    /*if (screen_index == 1) {
-        SDL_Rect displayBounds;
-        SDL_GetDisplayBounds(1, &displayBounds);
-        int xPos, yPos;
-        SDL_GetWindowPosition(window, &xPos, &yPos);
-        int borderWidth, borderHeight;
-        SDL_GetWindowBordersSize(window, &borderWidth, NULL, &borderHeight, NULL);
-        xPos += borderWidth;
-        yPos += borderHeight;
-        SDL_SetWindowPosition(window, displayBounds.x + xPos, displayBounds.y + yPos);
-    }*/
+/*if (screen_index == 1) {
+    SDL_Rect displayBounds;
+    SDL_GetDisplayBounds(1, &displayBounds);
+    int xPos, yPos;
+    SDL_GetWindowPosition(window, &xPos, &yPos);
+    int borderWidth, borderHeight;
+    SDL_GetWindowBordersSize(window, &borderWidth, NULL, &borderHeight, NULL);
+    xPos += borderWidth;
+    yPos += borderHeight;
+    SDL_SetWindowPosition(window, displayBounds.x + xPos, displayBounds.y + yPos);
+}*/

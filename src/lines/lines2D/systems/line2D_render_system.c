@@ -2,17 +2,18 @@
 extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
 
 void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
-    zox_enable_material(line2D_material);
+    zox_gpu_material(line2D_material);
     glEnableVertexAttribArray(line2D_position_location);
+    float4x4 render_matrix;
     if (is_element_line) {
         glUniform1f(line2D_depth_location, ((int) renderer_layer) * shader_depth_multiplier);
         const float4x4 identity = float4x4_identity();
-        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &identity);
+        render_matrix = identity;
     } else {
-        // zox_log("> rendering [%i] lines2D [%i]", is_element_line, it->count)
-        glUniformMatrix4fv(line2D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
+        render_matrix = render_camera_matrix;
         glUniform1f(line2D_depth_location, 0);
     }
+    zox_gpu_float4x4(line2D_camera_matrix_location, render_matrix);
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(LineData2D)

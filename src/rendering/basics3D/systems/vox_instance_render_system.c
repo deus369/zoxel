@@ -60,8 +60,8 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         }
     }
     // set material attributes
-    zox_enable_material(material_link);
-    opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
+    zox_gpu_material(material_link);
+    zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
     zox_gpu_float4(material_attributes->fog_data, get_fog_value());
     zox_gpu_float(material_attributes->brightness, 1);
     // Instance Rendering!

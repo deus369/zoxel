@@ -12,9 +12,9 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     // zox_log("particles [%i]\n", it->count)
     zox_statistics_particles3D += it->count;
     zox_gpu_blend_enable();
-    zox_enable_material(particle3D_material);
+    zox_gpu_material(particle3D_material);
     zox_gpu_float4(particle3D_fog_data_location, get_fog_value());
-    glUniformMatrix4fv(particle3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
+    zox_gpu_float4x4(particle3D_camera_matrix_location, render_camera_matrix);
     float fov_fixer = 90.0f / ((float) render_camera_fov);
     zox_gpu_float(particle3D_location_thickness, fov_fixer * default_point_thickness);
     zox_field_in(Position3D, position3Ds, 1)

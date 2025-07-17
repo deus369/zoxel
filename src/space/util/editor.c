@@ -1,27 +1,29 @@
-byte debug_block_vox_bounds = 0;
-
-void toggle_debug_bounds_delve(ecs_world_t *world, const VoxelNode *node) {
+void toggle_debug_bounds_delve(ecs_world_t *world,
+    const VoxelNode *node,
+    byte mode)
+{
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
         const ecs_entity_t e = get_entity_VoxelNode(node);
         if (zox_valid(e)) {
-            zox_set(e, DebugCubeLines, { debug_block_vox_bounds })
+            zox_set(e, DebugCubeLines, { mode })
         }
     } else if (has_children_VoxelNode(node)) {
         VoxelNode* kids = get_children_VoxelNode(node);
         for (int i = 0; i < octree_length; i++) {
-            toggle_debug_bounds_delve(world, &kids[i]);
+            toggle_debug_bounds_delve(world, &kids[i], mode);
         }
     }
 }
 
 void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
-    if (!zox_valid(local_terrain)) {
+    if (!zox_valid(local_terrain) || !zox_valid(prefab_block_vox) || !zox_has(prefab_block_vox, DebugCubeLines)) {
         return;
     }
-    debug_block_vox_bounds = !debug_block_vox_bounds;
-    zox_set(prefab_block_vox, DebugCubeLines, { debug_block_vox_bounds })
+    byte mode = zox_get_value(prefab_block_vox, DebugCubeLines)
+    cycle_cubeline_debug(&mode);
+    zox_set(prefab_block_vox, DebugCubeLines, { mode })
     zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];
@@ -32,11 +34,17 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
                 zox_geter_value(chunk, BlocksSpawned, byte, blocks_spawned)
                 if (blocks_spawned) {
                     zox_geter(chunk, VoxelNode, node)
-                    toggle_debug_bounds_delve(world, node);
+                    toggle_debug_bounds_delve(world, node, mode);
                 }
             }
             pair = pair->next;
             checks++;
         }
+    }
+}
+
+void key_down_toggle_debug_voxes_bounds(ecs_world_t *world, int32_t keycode) {
+    if (keycode == SDLK_x) {
+        toggle_debug_block_voxes_bounds(world);
     }
 }

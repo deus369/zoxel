@@ -14,11 +14,11 @@ static inline void zox_gpu_float4(uint index, const float4 value) {
     glUniform4f(index, value.x, value.y, value.z, value.w);
 }
 
-static inline void opengl_set_matrix(uint index, const float4x4 value) {
+static inline void zox_gpu_float4x4(uint index, const float4x4 value) {
     glUniformMatrix4fv(index, 1, GL_FALSE, (float*) &value);
 }
 
-static inline void opengl_set_matrix_array(uint index, const float4x4* values, int count) {
+static inline void zox_gpu_float4x4_array(uint index, const float4x4* values, int count) {
     glUniformMatrix4fv(index, count, GL_FALSE, (float*) values);
 }
 

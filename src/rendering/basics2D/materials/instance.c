@@ -46,12 +46,12 @@ void shader2D_instance_begin(const float4x4 viewMatrix) {
         return;
     }
     //! This sets the materials actually, would be best to group entities per material here?
-    zox_enable_material(square2DMaterial);
+    zox_gpu_material(square2DMaterial);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, squareMesh.y);            // for vertex coordinates
     glEnableVertexAttribArray(material2D.vertex_position);
     glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);  // 2 * 4
-    glUniformMatrix4fv(material2D.camera_matrix, 1, GL_FALSE, (const GLfloat*) ((float*) &viewMatrix));
+    zox_gpu_float4x4(material2D.camera_matrix, viewMatrix);
 }
 
 // does this per material!

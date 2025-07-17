@@ -1,9 +1,9 @@
 void Line3DRenderSystem(ecs_iter_t *it) {
     zox_gpu_blend_enable();
-    zox_enable_material(line3D_material);
-    glEnableVertexAttribArray(line3D_position_location);
+    zox_gpu_material(line3D_material);
     zox_gpu_float4(line3D_fog_data_location, get_fog_value());
-    glUniformMatrix4fv(line3D_camera_matrix_location, 1, GL_FALSE, (GLfloat*) &render_camera_matrix);
+    zox_gpu_float4x4(line3D_camera_matrix_location, render_camera_matrix);
+    glEnableVertexAttribArray(line3D_position_location);
     zox_sys_begin()
     zox_sys_in(LineData3D)
     zox_sys_in(LineThickness)

@@ -15,11 +15,8 @@ void EditorInputSystem(ecs_iter_t *it) {
             }
             if (zox_has( device, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device, Keyboard)
-                if (keyboard->x.pressed_this_frame) {
-                    toggle_debug_block_voxes_bounds(world);
-                }
                 // toggle uis
-                else if (keyboard->m.pressed_this_frame) {
+                if (keyboard->m.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_fps_display, FPSDisplay)
                 } else if (keyboard->v.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

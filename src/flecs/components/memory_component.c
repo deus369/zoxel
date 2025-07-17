@@ -93,7 +93,12 @@ void name##_dtor(void *ptr, int32_t count, const ecs_type_info_t *info) {\
     }\
 }\
 \
-void name##_move(void *dst_ptr, void *src_ptr, int32_t count, const ecs_type_info_t *info) {\
+void name##_move(\
+    void *dst_ptr,\
+    void *src_ptr,\
+    int32_t count,\
+    const ecs_type_info_t *info)\
+{\
     name *dst = dst_ptr;\
     name *src = src_ptr;\
     for (int i = 0; i < count; i++) {\
@@ -104,7 +109,11 @@ void name##_move(void *dst_ptr, void *src_ptr, int32_t count, const ecs_type_inf
     }\
 }\
 \
-void name##_ctor(void *ptr, int32_t count, const ecs_type_info_t *info) {\
+void name##_ctor(\
+    void *ptr,\
+    int32_t count,\
+    const ecs_type_info_t *info)\
+{\
     name *data = ptr;\
     for (int i = 0; i < count; i++) {\
         data[i] = (name) {\
@@ -115,7 +124,12 @@ void name##_ctor(void *ptr, int32_t count, const ecs_type_info_t *info) {\
     }\
 }\
 \
-void name##_copy(void *dst_ptr, const void *src_ptr, int32_t count, const ecs_type_info_t *info) {\
+void name##_copy(\
+    void *dst_ptr,\
+    const void *src_ptr,\
+    int32_t count,\
+    const ecs_type_info_t *info)\
+{\
     name *dst = dst_ptr;\
     const name *src = src_ptr;\
     for (int i = 0; i < count; i++) {\

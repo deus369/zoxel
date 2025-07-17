@@ -35,15 +35,15 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
             zox_gpu_blend_enable();
             glDisable(GL_CULL_FACE);
 #endif
-            zox_enable_material(material_link);
-            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
+            zox_gpu_material(material_link);
+            zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
             zox_gpu_float4(material_attributes->fog_data, get_fog_value());
             zox_gpu_float(material_attributes->brightness, 1);
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
-        opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
+        zox_gpu_float4x4(material_attributes->transform_matrix, transformMatrix->value);
         zox_gpu_render(meshIndicies->length);
         catch_basic3D_errors("! RenderCharacters3DSystem");
         zox_statistics_characters_rendered++;

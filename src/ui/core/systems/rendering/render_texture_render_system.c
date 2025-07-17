@@ -39,8 +39,8 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         // zox_log("+ rendering - render texture\n")
         if (!has_set_material) {
             has_set_material = 1;
-            zox_enable_material(material_link);
-            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
+            zox_gpu_material(material_link);
+            zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
             zox_gpu_blend_disable();
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
@@ -51,7 +51,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
         glEnableVertexAttribArray(material_attributes->vertex_uv);
         glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
         opengl_bind_texture(textureGPULink->value);
-        opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
+        zox_gpu_float4x4(material_attributes->transform_matrix, transformMatrix->value);
 #ifndef zox_disable_render_ui
         zox_gpu_render(6);
 #endif

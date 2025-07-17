@@ -1,6 +1,6 @@
 // render distances
 byte vox_lod_near = 1;
-byte terrain_lod_near = 3;      // also character far
+byte terrain_lod_near = 4;      // also character far
 byte terrain_lod_far = 8;       // 1 | 2 | 4 | 8 | 16
 byte render_distance_y = 2;     // vertical
 // Sub Divisions
@@ -8,7 +8,7 @@ byte terrain_depth = 4;         // 4 | 5
 byte block_vox_depth = 5;       // 4 | 5
 byte character_depth = 5;
 // options
-byte terrain_lod_far_max = 24;  // options
+byte terrain_lod_far_max = 32;  // options
 
 extern int get_characters_count(ecs_world_t *world);
 extern int count_entities_npc(ecs_world_t *world);

@@ -2,17 +2,9 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
     if (!zox_valid(local_terrain)) {
         return;
     }
-    byte action = cycle_cubeline_debug();
-    if (!action) {
-        return;
-    }
-    if (action == 1) {
-        zox_set(prefab_character3D, DebugCubeLines, { 1 })
-        zox_set(prefab_character3D_npc, DebugCubeLines, { 1 })
-    } else if (action == 2) {
-        zox_set(prefab_character3D, DebugCubeLines, { 0 })
-        zox_set(prefab_character3D_npc, DebugCubeLines, { 0 })
-    }
+    byte mode = zox_get_value(prefab_character3D_npc, DebugCubeLines)
+    cycle_cubeline_debug(&mode);
+    zox_set(prefab_character3D_npc, DebugCubeLines, { mode })
     zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];
@@ -22,12 +14,7 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
             zox_geter(chunk, EntityLinks, entityLinks)
             for (int j = 0; j < entityLinks->length; j++) {
                 ecs_entity_t e2 = entityLinks->value[j];
-                if (action == 1) {
-                    // zox_log(" - adding debug collider to [%s]", zox_get_name(e2))
-                    zox_set(e2, DebugCubeLines, { 1 })
-                } else if (action == 2) {
-                    zox_set(e2, DebugCubeLines, { 0 })
-                }
+                zox_set(e2, DebugCubeLines, { mode })
             }
             pair = pair->next;
             checks++;

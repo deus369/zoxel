@@ -49,13 +49,13 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         }
         if (!has_set_material) {
             has_set_material = 1;
-            zox_enable_material(materialGPULink->value);
+            zox_gpu_material(materialGPULink->value);
             opengl_bind_texture(textureGPULink->value);
-            opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
+            zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
             zox_gpu_float4(material_attributes->fog_data, get_fog_value());
             zox_gpu_float(material_attributes->brightness, 1);
         }
-        opengl_set_matrix(material_attributes->transform_matrix, transformMatrix->value);
+        zox_gpu_float4x4(material_attributes->transform_matrix, transformMatrix->value);
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(material_attributes->vertex_position, meshGPULink->value.y);
         opengl_enable_uv_buffer(material_attributes->vertex_uv, uvsGPULink->value);

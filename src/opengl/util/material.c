@@ -123,7 +123,7 @@ static inline void zox_gpu_disable_buffer(uint shader_index) {
     glDisableVertexAttribArray(shader_index);
 }
 
-static inline void zox_enable_material(uint material) {
+static inline void zox_gpu_material(uint material) {
     glUseProgram(material);
 }
 
@@ -142,6 +142,14 @@ static inline void zox_gpu_render_lines(uint length) {
 static inline void zox_gpu_render_points(uint length) {
     glDrawArrays(GL_POINTS, 0, length);
 }
+
+void zox_gpu_buffer_byte(uint shader_index, uint buffer) {
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glEnableVertexAttribArray(shader_index);
+    glVertexAttribPointer(shader_index, 1, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 
 /*
 Multiple textures:

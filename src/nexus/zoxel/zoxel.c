@@ -48,6 +48,10 @@ zox_begin_module(ZoxGame)
     // terrain_mode = terrain_mode_flatlands;
     headless = 0;
     zox_visualize_sounds = 0;
+    // vsync = 0;
+    // is_split_screen = 1;
+    // fullscreen = 0;
+    // target_fps = 16;
 
     zox_game_type = zox_game_mode_3D;
     menu_sky_color = (color_rgb) { 0, 5, 0 };
@@ -160,6 +164,7 @@ zox_begin_module(ZoxGame)
     // add_hook_key_down(key_down_test_aura);
     add_hook_key_down(key_down_toggle_debug_chunks);
     add_hook_key_down(key_down_toggle_debug_character_bounds);
+    add_hook_key_down(key_down_toggle_debug_voxes_bounds);
     // add_hook_key_down(test_spawn_chunk_terrain);
     add_hook_spawned_character3D(&spawn_character_skills);
     // add_hook_key_down(test_key_element_front2D);

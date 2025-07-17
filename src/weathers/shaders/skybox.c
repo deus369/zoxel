@@ -15,8 +15,8 @@ void set_skybox_material_color(ecs_world_t *world, const uint material, const co
     }
     const float3 top_colorf = color_rgb_to_float3(top_color);
     const float3 bottom_colorf = color_rgb_to_float3(bottom_color);
-    zox_enable_material(material);
+    zox_gpu_material(material);
     zox_gpu_float3(glGetUniformLocation(material, "sky_top_color"), top_colorf);
     zox_gpu_float3(glGetUniformLocation(material, "sky_bottom_color"), bottom_colorf);
-    zox_enable_material(0);
+    zox_gpu_material(0);
 }
