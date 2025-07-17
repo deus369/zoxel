@@ -1,6 +1,6 @@
 /*void generate_terrain(ecs_world_t *world, VoxelNode* chunk_octree, byte depth, float3 position, float scale) {
     const byte max_depth = chunk_octree->linked;
-    const uint32_t seed = global_seed;
+    const uint seed = global_seed;
     double octree_noise = perlin_terrain(position.x + noise_positiver2, position.z + noise_positiver2, terrain_frequency, seed, terrain_octaves);
     if (octree_noise < octree_min_height) {
         octree_noise = octree_min_height;

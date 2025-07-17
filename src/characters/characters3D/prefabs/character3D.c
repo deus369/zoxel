@@ -9,8 +9,11 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_set(prefab, Seed, { 999 })
     // name
     zox_prefab_add(e, ZoxName)
-    // physics
-    add_physics3D(world, e, (float3) { 0.25f, 0.25f, 0.25f });
+    // rendering
+    zox_set(e, RenderDisabled, { 0 })
+    // physics -- too big atm to refactor
+    add_physics3D(world, e, (float3) { 0.25f, 0.5f, 0.25f });   // starting bounds will be 2 blocks tall
+    prefab_add_cube_lines(world, e, color_white, 0);
     // constraints
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     // voxels
@@ -32,7 +35,9 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     return e;
 }
 
-ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data data) {
+ecs_entity_t spawn_character3(ecs_world_t *world,
+    const spawn_character3D_data data)
+{
     zox_instance(data.prefab)
     zox_name("character3D")
     // make a create_bounds function tthat returns float6
@@ -42,7 +47,13 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
     const float max_z_global = max_x_global;
     const float min_y_global = - real_chunk_scale * terrain_vertical;
     const float max_y_global = - min_y_global + real_chunk_scale;
-    float6 character_bounds = (float6) { min_x_global, max_x_global, min_y_global, max_y_global, min_z_global, max_z_global };
+    float6 character_bounds = (float6) {
+        min_x_global,
+        max_x_global,
+        min_y_global,
+        max_y_global,
+        min_z_global,
+        max_z_global };
     if (!data.player) {
         const int bounds_radius = 16;
         const int bounds_radius_y = 12;
@@ -62,16 +73,23 @@ ecs_entity_t spawn_character3D(ecs_world_t *world, const spawn_character3D_data 
         zox_set(e, Position3DBounds, { character_bounds })
     }
     // disabled bounds for now
-    zox_set(e, RenderDisabled, { data.render_disabled })
     zox_set(e, Position3D, { data.position })
     zox_set(e, LastPosition3D, { data.position })
-    zox_set(e, Rotation3D, { data.rotation })
+    if (!float4_equals(data.rotation, quaternion_identity)) {
+        zox_set(e, Rotation3D, { data.rotation })
+    }
+    if (!float3_equals(data.euler, float3_zero)) {
+        zox_set(e, Euler, { data.euler })
+    }
+    // rendering
+    if (!data.render_disabled) {
+        zox_set(e, RenderDisabled, { data.render_disabled })
+    }
     // voxels
     if (data.terrain) {
         zox_set(e, VoxLink, { data.terrain })
     }
     if (data.terrain_chunk) {
-        // zox_log("[spawn_character3D] setting character [%lu] chunk: %lu", e, data.terrain_chunk)
         zox_set(e, ChunkLink, { data.terrain_chunk })
         zox_set(e, ChunkPosition, { data.chunk_position })
     }

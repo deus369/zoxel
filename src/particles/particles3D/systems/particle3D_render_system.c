@@ -11,7 +11,7 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 void Particle3DRenderSystem(ecs_iter_t *it) {
     // zox_log("particles [%i]\n", it->count)
     zox_statistics_particles3D += it->count;
-    opengl_enable_blend();
+    zox_gpu_blend_enable();
     zox_enable_material(particle3D_material);
     zox_gpu_float4(particle3D_fog_data_location, get_fog_value());
     glUniformMatrix4fv(particle3D_camera_matrix_location, 1, GL_FALSE, (float*) &render_camera_matrix);
@@ -69,7 +69,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     glDisableVertexAttribArray(particle3D_position_location);
 #endif
     zox_disable_material();
-    opengl_disable_blend();
+    zox_gpu_blend_disable();
 } zox_declare_system(Particle3DRenderSystem)
 
 // const Rotation3D *rotation3D = &rotation3Ds[i];

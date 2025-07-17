@@ -15,4 +15,9 @@ void player_end_game3D(ecs_world_t *world, const ecs_entity_t player) {
     play_playlist(world, realm, 0);
     // spawn main menu here
     spawn_main_menu(world, player, canvas, game_name, int2_zero, float2_half);
+    zox_geter_value(player, CharacterLink, ecs_entity_t, character)
+    if (zox_valid(character)) {
+        zox_log_error("Character still alive at end of game.")
+        zox_delete(character)
+    }
 }

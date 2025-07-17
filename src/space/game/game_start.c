@@ -33,7 +33,7 @@ void link_camera_to_terrain(ecs_world_t *world, const ecs_entity_t player) {
         zox_set(character, DisableGravity, { 1 })
         zox_set(character, DisableMovement, { 1 })
     } else {
-        attach_camera_to_character(world, player, camera, 0);
+        set_camera_free(world, camera, 1);
     }
 
     zox_set(camera, StreamPoint, { terrain_position })
@@ -50,19 +50,24 @@ void link_camera_to_terrain(ecs_world_t *world, const ecs_entity_t player) {
 void player_start_game3D(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     float3 spawn_position = (float3) { 8, 8.5f, 8 };
+    float3 spawn_euler = float3_zero;
     float4 spawn_rotation = quaternion_identity;
 #ifndef zox_disable_save_games
     const byte is_new_game = !has_save_game_file(game_name, "player.dat");
     if (!is_new_game) {
-        load_character_p(&spawn_position, &spawn_rotation);
+        load_character_p(&spawn_position, &spawn_euler, &spawn_rotation);
     }
 #endif
     zox_set(camera, Position3D, { spawn_position })
+    zox_set(camera, Euler, { spawn_euler })
     zox_set(camera, Rotation3D, { spawn_rotation })
     delay_event(world, &link_camera_to_terrain, player, 0.01f);
 }
 
-void player_start_game(ecs_world_t *world, const ecs_entity_t player, const byte is_delays) {
+void player_start_game(ecs_world_t *world,
+    const ecs_entity_t player,
+    const byte is_delays)
+{
     disable_inputs_until_release(world, player, zox_device_mode_none, 1);
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuMain, main_menu)

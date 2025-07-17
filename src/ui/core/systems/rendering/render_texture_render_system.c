@@ -41,7 +41,7 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
             has_set_material = 1;
             zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
-            opengl_disable_blend();
+            zox_gpu_blend_disable();
         }
         opengl_set_mesh_indicies(meshGPULink->value.x);
         glBindBuffer(GL_ARRAY_BUFFER, meshGPULink->value.y);
@@ -63,8 +63,8 @@ void RenderTextureRenderSystem(ecs_iter_t *it) {
 #endif
     }
     if (has_set_material) {
-        opengl_disable_buffer(material_attributes->vertex_uv);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_disable_buffer(material_attributes->vertex_uv);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(1);
         zox_disable_material();

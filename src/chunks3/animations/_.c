@@ -21,7 +21,6 @@ zox_begin_module(VoxelsAnimations)
         [out] AnimateChunk,
         [out] chunks3.GenerateChunk)
     zox_system_ctx(NoiseVoxelNodeSystem, EcsPreUpdate, noise_chunks,
-        // [in] rendering.RenderLod,
         [in] chunks3.NodeDepth,
         [out] chunks3.ChunkDirty,
         [out] chunks3.VoxelNode,

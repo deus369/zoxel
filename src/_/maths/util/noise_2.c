@@ -1,6 +1,6 @@
 #define noise_values_length 512
 byte values[noise_values_length];
-uint32_t global_seed;
+uint global_seed;
 
 static inline int noise_fast_floor(float x) {
     return (x > 0) ? ((int)x) : (((int)x) - 1);
@@ -87,7 +87,7 @@ float generate_noise_2D(float2 point, float frequency) {
 }
 
 
-void set_noise_seed(uint32_t seed) {
+void set_noise_seed(uint seed) {
     if (global_seed == seed) {
         return;
     }

@@ -1,8 +1,8 @@
 // called from game state changes
 void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player) {
-    #ifdef zox_disable_player_ui
+#ifdef zox_disable_player_ui
     return;
-    #endif
+#endif
     if (!zox_has(player, DeviceMode) || !zox_has(player, CanvasLink)) {
         zox_log("! invalid player in [spawn_in_game_ui]\n")
         return;
@@ -20,15 +20,15 @@ void spawn_in_game_ui(ecs_world_t *world, const ecs_entity_t player) {
     }
 }
 
-void post_player_start_game(ecs_world_t *world, const ecs_entity_t player) {
+void spawn_player_game_ui(ecs_world_t *world, const ecs_entity_t player) {
     spawn_in_game_ui(world, player);
-    #ifdef zox_mod_actions_ui
+#ifdef zox_mod_actions_ui
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuActions, menu_actions)
     if (!menu_actions) {
         spawn_player_menu_actions(world, player);
     }
-    #endif
+#endif
 }
 
 TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t terrain) {
@@ -71,8 +71,8 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
 
     return (TerrainPlace) {
         .chunk = chunk,
-        .spawn_position = spawn_position,
-        .spawn_rotation = quaternion_identity,
+        .position = spawn_position,
+        .rotation = quaternion_identity,
     };
 }
 
@@ -111,13 +111,16 @@ ecs_entity_t spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_e
     } else {
         // get character position/rotation
         spawn_place.chunk = 0;
-        load_character_p(&spawn_place.spawn_position, &spawn_place.spawn_rotation);
+        load_character_p(
+            &spawn_place.position,
+            &spawn_place.euler,
+            &spawn_place.rotation);
     }
 
     // if character not in chunk, spawn one here
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    const int3 chunk_position = real_position_to_chunk_position(spawn_place.spawn_position, chunk_dimensions, depth);
+    const int3 chunk_position = real_position_to_chunk_position(spawn_place.position, chunk_dimensions, depth);
     zox_mut_begin(terrain, ChunkLinks, chunkLinks)
     spawn_place.chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
     // check if exists first
@@ -129,9 +132,11 @@ ecs_entity_t spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_e
             chunk_position,
             real_chunk_scale);
         if (zox_valid(spawn_place.chunk)) {
-            int3_hashmap_add(chunkLinks->value, chunk_position, spawn_place.chunk);
+            int3_hashmap_add(chunkLinks->value,
+                chunk_position,
+                spawn_place.chunk);
             zox_mut_end(terrain, ChunkLinks)
-            zox_log("+ spawning chunk for player character loading [%ix%ix%i]:%lu", chunk_position.x, chunk_position.y, chunk_position.z, spawn_place.chunk)
+            // zox_log("+ spawning chunk for player character loading [%ix%ix%i]:%lu", chunk_position.x, chunk_position.y, chunk_position.z, spawn_place.chunk)
         } else {
             zox_log_error("failed to spawn chunk [%ix%ix%i]:%lu", chunk_position.x, chunk_position.y, chunk_position.z, spawn_place.chunk)
         }
@@ -143,11 +148,12 @@ ecs_entity_t spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_e
         .terrain = terrain,
         .terrain_chunk = spawn_place.chunk,
         .chunk_position = chunk_position,
-        .position = spawn_place.spawn_position,
-        .rotation = spawn_place.spawn_rotation,
+        .position = spawn_place.position,
+        .rotation = spawn_place.rotation,
+        .euler = spawn_place.euler,
         .player = player,
     };
-    zox_set(camera, Position3D, { spawn_place.spawn_position }) // reposition camera too
+    zox_set(camera, Position3D, { spawn_place.position }) // reposition camera too
     const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
     if (zox_valid(spawn_place.chunk)) {
         zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
@@ -161,11 +167,9 @@ ecs_entity_t spawn_character3D_player_in_terrain(ecs_world_t *world, const ecs_e
     attach_camera_to_character(world, player, camera, e);
 #ifndef zox_disable_save_games
     if (!is_new_game) {
-        delay_event(world, &load_player_e, player, 0.01f);
-    } else {
-        delay_event(world, &save_player_e, player, 2);
+        delay_event(world, &load_player_e, player, 0.5f);
     }
 #endif
-    delay_event(world, &post_player_start_game, player, 0.01);
+    delay_event(world, &spawn_player_game_ui, player, 0.01);
     return e;
 }

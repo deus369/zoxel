@@ -44,7 +44,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
     zox_log("  - max frame time [%f]", max_frame_time)
     zox_log("  - seed [%i]", test_seed)
     zox_log("  - terrain_depth [%i]", terrain_depth)
-    zox_log("  - render_distance [%i]", render_distance)
+    zox_log("  - terrain_lod_far [%i]", terrain_lod_far)
     zox_log("  - headless [%i]", headless)
     zox_log("### ### ### ### ###")
     initialize_networking();
@@ -194,10 +194,9 @@ zox_begin_module(ZoxGame)
     terrain_depth = 4;
 
     // render distance
-    render_distance = 16; // 2 | 4 | 8 | 16 | 32
+    terrain_lod_far = 16; // 2 | 4 | 8 | 16 | 32
     render_distance_y = 3; // 1 | 2 | 8 | 16
     initial_terrain_lod = 2; // 3 | 2
-    terrain_lod_dividor = 3; // 2 | 3
 
     // block voes
     block_vox_depth = 5;

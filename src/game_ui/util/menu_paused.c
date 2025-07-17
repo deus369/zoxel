@@ -15,9 +15,3 @@ void button_event_end_game(ecs_world_t *world, const ClickEventData *event) {
 void button_event_return_to_game(ecs_world_t *world, const ClickEventData *event) {
     pause_resume(world, event->clicker);
 }
-
-extern void save_player_e(ecs_world_t *world, const ecs_entity_t player);
-
-void button_event_save_game(ecs_world_t *world, const ClickEventData *event) {
-    save_player_e(world, event->clicker);
-}

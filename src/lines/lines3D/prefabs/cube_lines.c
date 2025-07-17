@@ -1,16 +1,20 @@
 ecs_entity_t prefab_cube_lines;
 
-void prefab_add_cube_lines(ecs_world_t *world, const ecs_entity_t e, const color_rgb lines_color, const byte is_active) {
+void prefab_add_cube_lines(ecs_world_t *world,
+    const ecs_entity_t e,
+    const color lines_color,
+    const byte is_active)
+{
     zox_add_tag(e, CubeLines)
     zox_prefab_set(e, DebugCubeLines, { is_active })
     zox_prefab_set(e, CubeLinesThickness, { 1 })
-    zox_prefab_set(e, ColorRGB, { lines_color })
+    zox_prefab_set(e, Color, { lines_color })
 }
 
 ecs_entity_t spawn_prefab_cube_lines(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("cube_lines")
-    prefab_add_cube_lines(world, e, color_rgb_white, 1);
+    prefab_add_cube_lines(world, e, color_white, 1);
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { quaternion_identity })
     zox_prefab_set(e, RenderLod, { 0 })

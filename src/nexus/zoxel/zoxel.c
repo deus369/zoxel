@@ -92,27 +92,26 @@ zox_begin_module(ZoxGame)
     terrain_depth = 4;
     block_vox_depth = 5;
     character_depth = 5;
-    vox_model_scale = 1 / 32.0f;
+    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
 
     // world gen
-    block_spawn_chance_grass = 3000; // 1024;
-    terrain_amplifier = 32;
+    block_spawn_chance_grass = 1424; //  512 | 1024 | 2048 | 3000
+    terrain_amplifier = 64;
 
     // physics
     friction3D = 1800; // 560;
     air_friction3D = 320; // 40;
-    zox_jump_power = 146; // 124.0f
+    zox_jump_power = 166;
     // zox_default_gravity.y = -8;
-    bounce_lost_force = 0.3f;
+    bounce_lost_force = 0.2f;
 
     // render distance settings
-    initial_terrain_lod = 2; // 2 |3
-    terrain_lod_dividor = 2; // 2 | 3 | 4
-    render_distance = 10; // 2 | 4 | 8 | 16 | 32
-    render_distance_y = 2; // 1 | 2 | 4
+    // initial_terrain_lod = 2; // 2 |3
+    // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
+    // render_distance_y = 2; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
     fog_density = 0.034f;
-    character_render_distance = 2;  // 1 | 2
+    // character_render_distance = 2;  // 1 | 2
     characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64
 
     // fix prefabs
@@ -144,7 +143,27 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_skills);
     // set_prefab_debug_label(world, &get_label_player_actions);
     // set_prefab_debug_label(world, &get_label_player_quests);
-    set_prefab_debug_label(world, &get_label_player_chunk_link);
+    // set_prefab_debug_label(world, &get_label_player_chunk_link);
+    set_prefab_debug_label(world, &debug_label_lods);
+
+    // add_hook_key_down(key_down_test_aura);
+    // add_hook_key_down(key_down_toggle_streaming);
+    add_hook_key_down(toggle_life_terrain);
+    add_hook_key_down(toggle_player_death);
+    add_hook_key_down(test_game_end);
+    add_hook_key_down(test_fall_through_terrain);
+    add_hook_key_down(spawn_tilemap_ui);
+    add_hook_key_down(toggle_editor);
+    add_hook_key_down(toggle_character_particles);
+    // test function for npc spawning
+    // add_hook_key_down(test_spawn_character_npc);
+    // add_hook_key_down(key_down_test_aura);
+    add_hook_key_down(key_down_toggle_debug_chunks);
+    add_hook_key_down(key_down_toggle_debug_character_bounds);
+    // add_hook_key_down(test_spawn_chunk_terrain);
+    add_hook_spawned_character3D(&spawn_character_skills);
+    // add_hook_key_down(test_key_element_front2D);
+    // add_hook_key_down(key_down_update_text3D);
 
     // fades
     is_start_game_delays = 1;

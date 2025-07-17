@@ -1,6 +1,7 @@
 #include "chunk_lod.c"
 #include "prefabs.c"
 #include "lods.c"
+#include "distance.c"
 #include "bounds.c"
 #include "voxel_get.c"
 #include "voxel_set.c"

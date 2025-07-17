@@ -1,6 +1,6 @@
 // builds the character vox meshes
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkMeshDirty)
     zox_sys_in(VoxelNode)

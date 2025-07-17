@@ -19,7 +19,10 @@ void delete_block_entities(ecs_world_t *world, VoxelNode *node) {
 
 // first check if exists, if it does check if voxel type differs, for removing/adding
 // goes through nodes, if not in hashmap, it  will spawn anew
-void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, NodeDelveData *delve_data) {
+void update_block_vox_lods(ecs_world_t *world,
+    const UpdateBlockEntities *data,
+    NodeDelveData *delve_data)
+{
     VoxelNode *node = delve_data->chunk;
     if (!node) {
         return; // air returns!
@@ -113,14 +116,22 @@ void update_block_entities(ecs_world_t *world, const UpdateBlockEntities *data, 
                     .depth = delve_data->depth + 1,
                     .max_depth = delve_data->max_depth
                 };
-                update_block_entities(world, data, &delve_data_child);
+                update_block_vox_lods(world, data, &delve_data_child);
             }
         }
     }
 }
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
-void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t terrain, const ChunkPosition *chunkPosition, const byte vox_lod, const RenderDisabled *renderDisabled, VoxelNode *chunk, const byte max_depth) {
+void update_block_voxes(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t terrain,
+    const ChunkPosition *chunkPosition,
+    const byte vox_lod,
+    const RenderDisabled *renderDisabled,
+    VoxelNode *chunk,
+    const byte max_depth)
+{
     const float vox_scale = get_terrain_voxel_scale(max_depth);
     const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
@@ -177,5 +188,5 @@ void update_block_voxes(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
         .depth = 0,
         .max_depth = max_depth
     };
-    update_block_entities(world, &data, &delve_data);
+    update_block_vox_lods(world, &data, &delve_data);
 }

@@ -17,22 +17,3 @@ ecs_entity_t spawn_prefab_animating_chunk(ecs_world_t *world, const ecs_entity_t
     zox_modified(e, ColorRGBs)
     return e;
 }
-
-/*ecs_entity_t spawn_animating_chunk(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const float scale, const byte division) {
-    ecs_entity_t e = spawn_chunk_octree(world, prefab, position, scale);
-    zox_set(e, AnimateChunk, { (((rand() % 100) / 100.0f) * animating_chunk_speed) })
-    zox_set(e, RenderLod, { division })
-    spawn_gpu_colors(world, e);
-    return e;
-}
-
-void test_animating_chunks(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
-    const float spawn_scale = 1.0f;
-    // const float spawnRange = 0.5f;
-    spawn_animating_chunk(world, prefab, (float3) { position.x - 3, position.y, position.z + 1 }, spawn_scale, 0);
-    spawn_animating_chunk(world, prefab, (float3) { position.x - 1.5f, position.y, position.z + 1 }, spawn_scale, 1);
-    spawn_animating_chunk(world, prefab, (float3) { position.x, position.y, position.z + 1 }, spawn_scale, 2);
-    spawn_animating_chunk(world, prefab, (float3) { position.x + 1.5f, position.y, position.z + 1 }, spawn_scale, 3);
-    spawn_animating_chunk(world, prefab, (float3) { position.x + 3, position.y, position.z + 1 }, spawn_scale, 4);
-}
-*/

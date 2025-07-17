@@ -4,7 +4,6 @@ zox_increment_system_with_reset(GenerateChunk, chunk_generate_state_end)
 zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end)
 #include "chunk_link_system.c"
 #include "chunk_entities_lod_system.c"
-#include "chunk_entities_trigger_system.c"
 #include "chunk_debug_system.c"
 #include "chunk_find_neighbor_system.c"
 
@@ -34,6 +33,6 @@ void define_systems_chunks(ecs_world_t *world) {
         [in] transforms3.Position3D,
         [in] chunks3.VoxelNode,
         [in] chunks3.NodeDepth,
-        [in] rendering.RenderLod,
+        [in] rendering.RenderDistance,
         [none] ChunkDebugger)
 }

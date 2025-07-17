@@ -32,7 +32,7 @@ double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
 const double real_terrain_frequency = 0.007216; //  0.013216; //  0.008216; // 0.004216; // 0.026216
 double terrain_frequency = 0; // 0.038216;
-// uint32_t terrain_seed = 32666;
+// uint terrain_seed = 32666;
 #define terrain_mode_tiny 1
 #define terrain_mode_medium 2
 #define terrain_mode_large 3

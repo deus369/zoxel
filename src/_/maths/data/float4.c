@@ -1,6 +1,10 @@
 #define float4_zero (float4) { 0, 0, 0, 0 }
 #define float4_identity (float4) { 0, 0, 0, 1 }
 
+static inline byte float4_equals(const float4 a, const float4 b) {
+    return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+}
+
 static inline void print_float4(const float4 input) {
     zox_log("    Float4 [%f %f %f %f]\n", input.x, input.y, input.z, input.w);
 }

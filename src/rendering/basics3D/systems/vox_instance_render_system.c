@@ -101,8 +101,8 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
 
         // reset the things
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
-        opengl_disable_buffer(material_attributes->vertex_color);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_disable_buffer(material_attributes->vertex_color);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
     }
     // cleanup

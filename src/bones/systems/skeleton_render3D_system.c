@@ -39,7 +39,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         if (!has_set_material) {
             has_set_material = 1;
 #ifdef zox_transparent_skeletons
-            opengl_enable_blend();
+            zox_gpu_blend_enable();
             glDisable(GL_CULL_FACE);
 #endif
             zox_enable_material(material_link);
@@ -76,12 +76,12 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         zox_statistics_characters_rendered++;
     }
     if (has_set_material) {
-        opengl_disable_buffer(material_attributes->vertex_color);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_disable_buffer(material_attributes->vertex_color);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         zox_disable_material();
 #ifdef zox_transparent_skeletons
-        opengl_disable_blend();
+        zox_gpu_blend_disable();
         glEnable(GL_CULL_FACE);
 #endif
     }

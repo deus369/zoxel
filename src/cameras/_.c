@@ -10,6 +10,7 @@
 #include "tests/planes_tests.c"
 #include "cameras2/_.c"
 #include "cameras3/_.c"
+#include "util/player.c"
 
 zox_begin_module(Cameras)
     define_components_cameras(world);

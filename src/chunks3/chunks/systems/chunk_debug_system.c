@@ -5,6 +5,7 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 // todo: using neighbor voxels, perform a function at target depth
 // todo: pass data in function
 void traverse_chunk(TraverseChunk *data) {
+    const byte node_size = powers_of_two_byte[data->depth];
     const color_rgb debug_color = { 155, 255, 125 };
     if (!data->chunk) {
         return;
@@ -13,8 +14,7 @@ void traverse_chunk(TraverseChunk *data) {
         if (is_closed_VoxelNode(data->chunk)) {
             byte3 position_parent = data->position;
             byte3_multiply_byte(&position_parent, 2);
-            byte node_size = powers_of_two_byte[data->depth];
-            if (!byte3_on_edge_xz(position_parent, (byte3) { node_size, node_size, node_size })) {
+            if (!byte3_on_edge_xz(position_parent, byte3_single(node_size))) {
                 return;
             }
             // zox_log(" > depth [%i] line at position: %ix%ix%i\n", data->depth, data->position.x, data->position.y, data->position.z)
@@ -39,7 +39,9 @@ void traverse_chunk(TraverseChunk *data) {
         }
     } else {
         // only for edge voxels
-        if (!byte3_on_edge_xz(data->position, (byte3) { 32, 32, 32 })) return;
+        if (!byte3_on_edge_xz(data->position, byte3_single(node_size))) {
+            return;
+        }
         const color_rgb debug_color = { 255, 0, 0 };
         // zox_log(" > depth [%i] line at position: %ix%ix%i\n", data->depth, data->position.x, data->position.y, data->position.z)
         float3 voxel_position = float3_add(data->chunk_position, (float3) { data->position.x * data->scale, data->position.y * data->scale, data->position.z * data->scale });
@@ -67,13 +69,13 @@ void ChunkDebugSystem(ecs_iter_t *it) {
     zox_sys_in(Position3D)
     zox_sys_in(VoxelNode)
     zox_sys_in(NodeDepth)
-    zox_sys_in(RenderLod)
+    zox_sys_in(RenderDistance)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(Position3D, position3D)
         zox_sys_i(VoxelNode, voxelNode)
         zox_sys_i(NodeDepth, nodeDepth)
-        zox_sys_i(RenderLod, renderLod)
-        if (renderLod->value != 0) {
+        zox_sys_i(RenderDistance, renderDistance)
+        if (renderDistance->value >= 1) {
             continue;
         }
         TraverseChunk data = (TraverseChunk) {

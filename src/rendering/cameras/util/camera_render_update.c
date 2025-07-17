@@ -4,20 +4,21 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         return;
     }
     opengl_set_defaults(!is_camera2D);
-    zox_field_world()
-    zox_field_in(ViewMatrix, viewMatrixs, 1)
-    zox_field_in(FieldOfView, fieldOfViews, 2)
-    zox_field_in(ScreenPosition, screenPositions, 3)
-    zox_field_in(ScreenDimensions, screenDimensionss, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ViewMatrix)
+    zox_sys_in(FieldOfView)
+    zox_sys_in(ScreenPosition)
+    zox_sys_in(ScreenDimensions)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(ScreenPosition, screenPositions, screenPosition)
-        zox_field_i(ScreenDimensions, screenDimensionss, screenDimensions)
-        zox_field_i(ViewMatrix, viewMatrixs, viewMatrix)
-        zox_field_i(FieldOfView, fieldOfViews, fieldOfView)
+        zox_sys_e()
+        zox_sys_i(ScreenPosition, screenPosition)
+        zox_sys_i(ScreenDimensions, screenDimensions)
+        zox_sys_i(ViewMatrix, viewMatrix)
+        zox_sys_i(FieldOfView, sysOfView)
         // pass these data to systems
         renderer_camera = e;
-        render_camera_fov = fieldOfView->value;
+        render_camera_fov = sysOfView->value;
         render_camera_matrix = viewMatrix->value;
         // set render objects
         uint fbo = 0;

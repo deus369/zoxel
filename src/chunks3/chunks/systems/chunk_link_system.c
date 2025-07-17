@@ -1,5 +1,5 @@
 // #define zox_debug_chunk_link_system
-extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
+// extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
 
 byte set_entity_chunk(ecs_world_t *world,
     const ecs_entity_t e,
@@ -45,9 +45,15 @@ byte set_entity_chunk(ecs_world_t *world,
         }
         // now lod
         const byte chunk_render_lod = zox_get_value(chunk, RenderLod)
-        const byte character_render_lod = zox_get_value(e, RenderLod)
-        if (character_render_lod != chunk_render_lod) {
-            zox_set(e, RenderLod, { chunk_render_lod })
+
+        // calculate_lods
+        zox_geter_value(chunk, RenderDistance, byte, chunk_render_distance)
+        zox_geter_value(e, NodeDepth, byte, node_depth)
+        const byte new_lod = distance_to_lod_npc(chunk_render_distance);
+
+        zox_geter_value(e, RenderLod, byte, lod)
+        if (lod != new_lod) {
+            zox_set(e, RenderLod, { new_lod })
         }
     }
     return 1;

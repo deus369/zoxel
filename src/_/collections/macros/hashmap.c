@@ -1,6 +1,6 @@
 const uint max_safety_checks_hashmap = 1024;
 
-// default hash is uint32_t
+// default hash is uint
 #define zox_hashmap(name, type, type_zero, key_type, hash_type, convert_to_hash)\
 \
 typedef struct name##_pair name##_pair;\

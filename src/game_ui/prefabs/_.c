@@ -14,8 +14,8 @@ ecs_entity_t zoxel_main_menu;
 
 #include "menu_start.c"
 #include "menu_main.c"
-#include "menu_options.c"
-#include "menu_paused.c"
+#include "options.c"
+#include "pause.c"
 #include "fps_display.c"
 #include "quad_count_label.c"
 #include "game_debug_label.c"

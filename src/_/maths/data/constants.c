@@ -7,4 +7,4 @@
 #ifndef degreesToRadians
 #define degreesToRadians (M_PI * 2) / 360.0f
 #endif
-uint32_t hash_constant = 0x5bd1e995;
+uint hash_constant = 0x5bd1e995;

@@ -26,7 +26,7 @@ void ChunkDieSystem(ecs_iter_t *it) {
             continue;
         }
         // Pass if lod changing
-        const byte kill = renderDistance->value > render_distance;
+        const byte kill = renderDistance->value > terrain_lod_far;
         if (kill) {
             // remove from hash - can i do this better?
             zox_field_i(ChunkPosition, chunkPositions, chunkPosition)

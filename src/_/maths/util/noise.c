@@ -59,7 +59,7 @@ static inline double smoothstep(double t) {
 }
 
 // Returns the dot product of two 2D vectors
-double dot_product(uint32_t h, double x, double y) {
+double dot_product(uint h, double x, double y) {
     // Convert the random integer value to a unit vector using the gradient lookup table
     static const double gradients[8][2] = {
         {1, 1}, {-1, 1}, {1, -1}, {-1, -1},
@@ -78,8 +78,8 @@ static inline double lerp(double a, double b, double t) {
     return (1 - t) * a + t * b;
 }
 
-uint32_t hash(uint32_t x, uint32_t y, uint32_t seed) {
-    uint32_t hash = seed;
+uint hash(uint x, uint y, uint seed) {
+    uint hash = seed;
     hash ^= hash << 13;
     hash ^= hash >> 7;
     hash ^= hash << 17;
@@ -91,7 +91,7 @@ uint32_t hash(uint32_t x, uint32_t y, uint32_t seed) {
     return hash;
 }
 
-double perlin_noise(double x, double y, double f, uint32_t seed) {
+double perlin_noise(double x, double y, double f, uint seed) {
     // Hash function that maps a 2D vector to a random integer value
 
     // Calculate the lattice coordinates of the grid cell that contains the point (x, y)
@@ -119,7 +119,7 @@ double perlin_noise(double x, double y, double f, uint32_t seed) {
     return noise; //  (noise + 1.0) / 2.0;
 }
 
-double perlin_terrain(double x, double y, double f, uint32_t seed, int octaves) {
+double perlin_terrain(double x, double y, double f, uint seed, int octaves) {
     double terrain = 0.0;
     double amplitude = 1.0;
     // Add multiple scales of Perlin noise

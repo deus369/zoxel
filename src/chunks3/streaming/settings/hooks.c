@@ -1,6 +1,6 @@
 void set_render_distance(ecs_world_t* world, void* value) {
     float percentage = *(float*)value;
-    render_distance = min_render_distance + (int) (percentage * max_render_distance);
+    terrain_lod_far = terrain_lod_near + (int) (percentage * terrain_lod_far_max);
 }
 
 void initialize_settings_streaming(ecs_world_t *world) {

@@ -33,7 +33,6 @@ zox_begin_module(Terrain)
     zox_module_dispose(module_dispose_terrain);
     add_hook_terminal_command(process_arguments_terrain);
     add_to_event_game_state((zox_game_event) { &game_state_terrain });
-    // add_hook_key_down(test_spawn_chunk_terrain);
 zox_end_module(Terrain)
 
 #endif

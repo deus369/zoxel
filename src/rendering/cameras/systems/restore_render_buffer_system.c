@@ -1,12 +1,13 @@
 // restore render buffer for camera
 void RenderBufferRestoreSystem(ecs_iter_t *it) {
-    zox_field_in(ScreenDimensions, screenDimensionss, 1)
-    zox_field_out(FrameBufferLink, frameBufferLinks, 2)
-    zox_field_out(RenderBufferLink, renderBufferLinks, 3)
+    zox_sys_begin()
+    zox_sys_in(ScreenDimensions)
+    zox_sys_out(FrameBufferLink)
+    zox_sys_out(RenderBufferLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(ScreenDimensions, screenDimensionss, screenDimensions)
-        zox_field_o(FrameBufferLink, frameBufferLinks, frameBufferLink)
-        zox_field_o(RenderBufferLink, renderBufferLinks, renderBufferLink)
+        zox_sys_i(ScreenDimensions, screenDimensions)
+        zox_sys_o(FrameBufferLink, frameBufferLink)
+        zox_sys_o(RenderBufferLink, renderBufferLink)
         frameBufferLink->value = gpu_spawn_frame_buffer_object();
         renderBufferLink->value = gpu_spawn_render_buffer(screenDimensions->value);
         if (frameBufferLink->value && renderBufferLink->value) {

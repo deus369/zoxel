@@ -6,7 +6,7 @@ byte amd_initialized = 0;
 
 void initialize_amd() {
     rsmi_status_t result;
-    uint32_t device_count;
+    uint device_count;
     // Initialize the ROCm SMI library
     result = rsmi_init(0);
     if (result == RSMI_STATUS_SUCCESS) {

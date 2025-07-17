@@ -1,12 +1,13 @@
 void RenderTextureRestoreSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(TextureGPULink, textureGPULinks, 1)
-    zox_field_in(PixelSize, screenDimensionss, 2)
-    zox_field_in(CameraLink, cameraLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(TextureGPULink)
+    zox_sys_in(PixelSize)
+    zox_sys_in(CameraLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        zox_field_i(PixelSize, screenDimensionss, screenDimensions)
-        zox_field_i(CameraLink, cameraLinks, cameraLink)
+        zox_sys_i(TextureGPULink, textureGPULink)
+        zox_sys_i(PixelSize, screenDimensions)
+        zox_sys_i(CameraLink, cameraLink)
         set_render_texture_gpu(textureGPULink->value, screenDimensions->value);
         if (zox_has(cameraLink->value, FrameBufferLink)) {
             const uint fbo = zox_get_value(cameraLink->value, FrameBufferLink)

@@ -8,10 +8,11 @@
 #define float3_backward (float3) { 0, 0, -1 }
 #define float3_forward (float3) { 0, 0, 1 }
 
-byte float3_equals(const float3 a, const float3 b) {
+static inline byte float3_equals(const float3 a, const float3 b) {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
-void float3_print(const float3 input) {
+
+static inline void float3_print(const float3 input) {
     zox_log("    Float3 [%f %f %f]\n", input.x, input.y, input.z);
 }
 
@@ -106,10 +107,13 @@ static inline float3 float3_abs(const float3 input) {
     return (float3) { float_abs(input.x), float_abs(input.y), float_abs(input.z) };
 }
 
-float3 float3_normalize(const float3 input) {
+static inline float3 float3_normalize(const float3 input) {
     float length = sqrt(input.x * input.x + input.y * input.y + input.z * input.z);
-    if (float_abs(length) <= 0.00001f) return input;
-    return float3_divide_float(input, length);
+    if (float_abs(length) <= 0.00001f) {
+        return input;
+    } else {
+        return float3_divide_float(input, length);
+    }
 }
 
 //! Fixed from https://www.mathsisfun.com/algebra/vectors-cross-product.html
@@ -137,7 +141,7 @@ static inline float3 float3_lerp(const float3 a, const float3 b, const float t) 
     return (float3) { a.x + t * (b.x - a.x), a.y + t * (b.y - a.y), a.z + t * (b.z - a.z) };
 }
 
-float float3_sign2(const float3 value) {
+static inline float float3_sign2(const float3 value) {
     float abs_x = float_abs(value.x);
     float abs_y = float_abs(value.y);
     float abs_z = float_abs(value.z);

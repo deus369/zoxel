@@ -12,15 +12,15 @@ VkRenderPass vk_render_pass;
 VkFramebuffer* vk_frame_buffers;
 VkImageView *vk_image_views;
 VkSwapchainKHR vk_swap_chain;
-uint32_t queue_family_index;
+uint queue_family_index;
 VkQueue graphics_queue;
 // VkQueue presents_queue;
 VkSemaphore vk_semaphore;
 VkSemaphore vk_semaphore_image;
-uint32_t vk_images_count;
+uint vk_images_count;
 float queuePriority = 1.0f;
 VkFence vk_fence;
-uint32_t vk_image_index;
+uint vk_image_index;
 
 const char* vulkan_result_to_string(VkResult result) {
     switch (result) {
@@ -159,7 +159,7 @@ VkSurfaceKHR create_vulkan_surface( SDL_Window* window, VkInstance instance) {
 
 VkPhysicalDevice pick_physical_device(VkInstance instance) {
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    uint32_t deviceCount = 0;
+    uint deviceCount = 0;
     vkEnumeratePhysicalDevices(instance, &deviceCount, NULL);
     if (deviceCount == 0) {
         fprintf(stderr, "Failed to find GPUs with Vulkan support!\n");
@@ -171,7 +171,7 @@ VkPhysicalDevice pick_physical_device(VkInstance instance) {
         return VK_NULL_HANDLE;
     }
     vkEnumeratePhysicalDevices(instance, &deviceCount, devices);
-    for (uint32_t i = 0; i < deviceCount; i++) {
+    for (uint i = 0; i < deviceCount; i++) {
         VkPhysicalDeviceProperties deviceProperties;
         vkGetPhysicalDeviceProperties(devices[i], &deviceProperties);
         if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
@@ -189,38 +189,38 @@ VkPhysicalDevice pick_physical_device(VkInstance instance) {
 
 
 
-uint32_t find_graphics_queue_family_index(VkPhysicalDevice physicalDevice) {
-    uint32_t queueFamilyCount = 0;
+uint find_graphics_queue_family_index(VkPhysicalDevice physicalDevice) {
+    uint queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, NULL);
     VkQueueFamilyProperties* queueFamilies = malloc(queueFamilyCount * sizeof(VkQueueFamilyProperties));
     if (!queueFamilies) {
         fprintf(stderr, "Failed to allocate memory for queue family properties!\n");
-        return (uint32_t) -1;
+        return (uint) -1;
     }
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies);
-    for (uint32_t i = 0; i < queueFamilyCount; i++) {
+    for (uint i = 0; i < queueFamilyCount; i++) {
         if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
             free(queueFamilies);
             return i; // Return the index of the first queue family that supports graphics
         }
     }
     free(queueFamilies);
-    return (uint32_t) -1; // Return -1 if no suitable queue family was found
+    return (uint) -1; // Return -1 if no suitable queue family was found
 }
 
-uint32_t find_graphics_and_present_queue_family_index(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
-    uint32_t queueFamilyCount = 0;
+uint find_graphics_and_present_queue_family_index(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
+    uint queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, NULL);
     VkQueueFamilyProperties* queueFamilies = malloc(queueFamilyCount * sizeof(VkQueueFamilyProperties));
     if (!queueFamilies) {
         fprintf(stderr, "Failed to allocate memory for queue family properties!\n");
-        return (uint32_t)-1;
+        return (uint)-1;
     }
 
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies);
 
     VkBool32 presentSupport = VK_FALSE;
-    for (uint32_t i = 0; i < queueFamilyCount; i++) {
+    for (uint i = 0; i < queueFamilyCount; i++) {
         vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
         if ((queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) && presentSupport) {
             free(queueFamilies);
@@ -229,12 +229,12 @@ uint32_t find_graphics_and_present_queue_family_index(VkPhysicalDevice physicalD
     }
 
     free(queueFamilies);
-    return (uint32_t)-1; // Return -1 if no suitable queue family was found
+    return (uint)-1; // Return -1 if no suitable queue family was found
 }
 
 byte vulkan_create_device() {
     const char* deviceExtensions[] = { "VK_KHR_swapchain" };
-    uint32_t deviceExtensionCount = 1;
+    uint deviceExtensionCount = 1;
 
     vk_physical_device = pick_physical_device(*vk_instance);
     if (vk_physical_device == VK_NULL_HANDLE) {
@@ -245,7 +245,7 @@ byte vulkan_create_device() {
     // Find the queue family index for the graphics queue
     queue_family_index = find_graphics_and_present_queue_family_index(vk_physical_device, *vk_surface);
     // find_graphics_queue_family_index(vk_physical_device);
-    if (queue_family_index == (uint32_t) -1) {
+    if (queue_family_index == (uint) -1) {
         fprintf(stderr, "Failed to find a suitable queue family!\n");
         return EXIT_FAILURE;
     }
@@ -349,7 +349,7 @@ unsigned create_vulkan_render_pass() {
 }
 
 VkSurfaceFormatKHR choose_surface_format(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
-    uint32_t formatCount;
+    uint formatCount;
     vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, &formatCount, NULL);
     if (formatCount == 0) {
         fprintf(stderr, "Failed to find any surface formats.\n");
@@ -368,7 +368,7 @@ VkSurfaceFormatKHR choose_surface_format(VkPhysicalDevice physicalDevice, VkSurf
     } else {
         // Search for a preferred format, or pick the first one as a fallback
         chosenFormat = formats[0];
-        for (uint32_t i = 0; i < formatCount; i++) {
+        for (uint i = 0; i < formatCount; i++) {
             if (formats[i].format == VK_FORMAT_B8G8R8A8_UNORM && formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
                 chosenFormat = formats[i];
                 break;
@@ -380,7 +380,7 @@ VkSurfaceFormatKHR choose_surface_format(VkPhysicalDevice physicalDevice, VkSurf
 }
 
 VkPresentModeKHR choose_swap_present_mode(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
-    uint32_t presentModeCount;
+    uint presentModeCount;
     vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, NULL);
     if (presentModeCount == 0) {
         fprintf(stderr, "Failed to find any present modes.\n");
@@ -393,7 +393,7 @@ VkPresentModeKHR choose_swap_present_mode(VkPhysicalDevice physicalDevice, VkSur
     }
     vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes);
     VkPresentModeKHR chosenPresentMode = VK_PRESENT_MODE_FIFO_KHR; // Default to FIFO mode
-    for (uint32_t i = 0; i < presentModeCount; i++) {
+    for (uint i = 0; i < presentModeCount; i++) {
         if (presentModes[i] == VK_PRESENT_MODE_MAILBOX_KHR) {
             chosenPresentMode = VK_PRESENT_MODE_MAILBOX_KHR;
             zox_log_vulkan(" + present mode chose [%i]\n", i)
@@ -619,13 +619,13 @@ byte create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfa
 }
 
     // get queues
-    /*uint32_t queueFamilyCount = 0;
+    /*uint queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(vk_physical_device, &queueFamilyCount, NULL);
     VkQueueFamilyProperties queueFamilies[queueFamilyCount];
     vkGetPhysicalDeviceQueueFamilyProperties(vk_physical_device, &queueFamilyCount, queueFamilies);
     VkBool32 presentSupport = VK_FALSE;
     int presentQueueFamilyIndex = -1;
-    for (uint32_t i = 0; i < queueFamilyCount; i++) {
+    for (uint i = 0; i < queueFamilyCount; i++) {
         vkGetPhysicalDeviceSurfaceSupportKHR(vk_physical_device, i, *vk_surface, &presentSupport);
         if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupport) {
             presentQueueFamilyIndex = i;

@@ -1,4 +1,4 @@
-#define load_and_save_data(Name, name)\
+#define create_load_and_save_functions(Name, name)\
 \
 void save_##name(const char *game, const char *filename, Name *data) {\
     char path[256];\

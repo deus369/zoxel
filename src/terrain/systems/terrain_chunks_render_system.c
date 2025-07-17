@@ -66,9 +66,9 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
 #endif
     }
     if (has_set_material) {
-        opengl_disable_buffer(material_attributes->vertex_color);
-        opengl_disable_buffer(material_attributes->vertex_uv);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_disable_buffer(material_attributes->vertex_color);
+        zox_gpu_disable_buffer(material_attributes->vertex_uv);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(0);
         zox_disable_material();

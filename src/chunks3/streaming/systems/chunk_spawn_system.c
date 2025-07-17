@@ -45,7 +45,7 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
         }
         // const int3 stream_point2 = find_closest_point(stream_points, stream_points_length, chunkPosition->value);
         // const byte camera_distance = get_camera_chunk_distance_xz(stream_point2, chunkPosition->value);
-        const byte stream_zone = renderDistance->value < render_distance;
+        const byte stream_zone = renderDistance->value < terrain_lod_far;
         if (stream_zone) {
             for (byte j = 0; j < 6; j++) {
                 ecs_entity_t neighbor = chunkNeighbors->value[j];
@@ -65,7 +65,7 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
                     const int3 stream_point = find_closest_point(stream_points, stream_points_length, neighbor_position);
                     // only spawn new chunk if within stream distance
                     const byte camera_distance = get_camera_chunk_distance_xz(stream_point, neighbor_position);
-                    if (camera_distance <= render_distance) {
+                    if (camera_distance <= terrain_lod_far) {
                         neighbor = spawn_chunk_terrain(world,
                             prefab_chunk_streaming,
                             voxLink->value,

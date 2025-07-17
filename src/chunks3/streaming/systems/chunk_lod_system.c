@@ -7,7 +7,7 @@ void ChunkLodSystem(ecs_iter_t *it) {
         return;
     }
     zox_sys_query()
-    const byte max_camera_distance = render_distance + 1;
+    const byte max_camera_distance = terrain_lod_far + 1;
     const byte max_depth = terrain_depth;
     zox_field_world()
     byte streamers_dirty = 0;
@@ -50,7 +50,7 @@ void ChunkLodSystem(ecs_iter_t *it) {
             if (disable_chunk_loding) {
                 continue;
             }
-            const byte new_lod =  get_terrain_lod_from_camera_distance(renderDistance->value, max_camera_distance, max_depth);
+            const byte new_lod = distance_to_terrain_lod(renderDistance->value);
             zox_field_o(RenderLod, renderLods, renderLod)
             if (renderLod->value != new_lod) {
                 renderLod->value = new_lod;

@@ -1,5 +1,5 @@
 int get_terrain_chunks_count(ecs_world_t *world) {
-    return zox_count_entities(world, ecs_id(TerrainChunk));
+    return zox_count_types(TerrainChunk)
 }
 
 ecs_entity_t test_chunk_terrain = 0;

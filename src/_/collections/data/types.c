@@ -1,4 +1,9 @@
 typedef unsigned char byte;
+typedef unsigned short ushort;
+typedef unsigned int uint;
+typedef unsigned long ulong;
+// typedef uint32_t uint;
+// typedef uint64_t ulong;
 
 typedef struct {
     byte x, y;
@@ -23,8 +28,6 @@ typedef struct {
 typedef struct {
     int x, y, z, w;
 } int4;
-
-typedef unsigned int uint;
 
 typedef struct {
     unsigned int x, y;

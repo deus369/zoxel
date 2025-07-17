@@ -8,12 +8,7 @@ ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world, const ecs_enti
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
     // testing
-    // for debug
-#ifdef zoxel_debug_bounds
-    prefab_add_cube_lines(world, e, color_rgb_white, 1);
-#else
-    prefab_add_cube_lines(world, e, color_rgb_white, 0);
-#endif
+    prefab_add_cube_lines(world, e, color_white, 0);
     return e;
 }
 

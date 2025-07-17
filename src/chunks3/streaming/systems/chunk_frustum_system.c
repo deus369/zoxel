@@ -33,7 +33,6 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_sys_in(VoxScale)
     zox_sys_in(EntityLinks)
     zox_sys_in(VoxelNode)
-    // zox_sys_in(NodeDepth)
     zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(Position3D, position3D)
@@ -41,12 +40,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_sys_i(VoxScale, voxScale)
         zox_sys_i(EntityLinks, entityLinks)
         zox_sys_i(VoxelNode, voxelNode)
-        // zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_o(RenderDisabled, renderDisabled)
-        bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
+        bounds chunk_bounds = calculate_chunk_bounds(
+            position3D->value,
+            chunkSize->value,
+            voxScale->value);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
-        byte is_viewed = 0; // 1;
         zox_sys_query_begin()
+        byte is_viewed = 0;
         while (zox_sys_query_loop()) {
             if (is_viewed) {
                 continue;
@@ -68,37 +69,34 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_sys_query_end()
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
+            // -=- Block Spawns -=-
+            if (zox_gett_value(it->entities[i], BlocksSpawned)) {
+                set_chunk_block_spawns_render_disabled(world, voxelNode,  renderDisabled->value);
+            }
+            // -=- -=- -=- -=- -=- -=-
             for (int j = 0; j < entityLinks->length; j++) {
                 const ecs_entity_t e2 = entityLinks->value[j];
                 zox_set(e2, RenderDisabled, { renderDisabled->value })
-                if (!zox_has(e2, ElementLinks)) {
+                if (!zox_valid(e2) || !zox_has(e2, ElementLinks)) {
                     continue;
                 }
-                const ElementLinks *entity_elements = zox_get(e2, ElementLinks)
+                zox_geter(e2, ElementLinks, entity_elements)
                 for (int k = 0; k < entity_elements->length; k++) {
                     const ecs_entity_t e3 = entity_elements->value[k];
+                    if (!zox_valid(e3)) {
+                        continue;
+                    }
                     zox_set(e3, RenderDisabled, { renderDisabled->value })
                     if (!zox_has(e3, Children)) {
                         continue;
                     }
-                    const Children *element_children = zox_get(e3, Children)
+                    zox_geter(e3, Children, element_children)
                     for (int l = 0; l < element_children->length; l++) {
                         const ecs_entity_t e4 = element_children->value[l];
                         zox_set(e4, RenderDisabled, { renderDisabled->value })
                     }
                 }
             }
-// -=- Block Spawns -=-
-            if (zox_gett_value(it->entities[i], BlocksSpawned)) {
-                set_chunk_block_spawns_render_disabled(world, voxelNode,  renderDisabled->value);
-            }
-// -=- -=- -=- -=- -=- -=-
         }
-        //if (is_viewed) {
-            //zox_statistics_chunks_visible++;
-            //zox_statistics_characters_visible += entityLinks->length;
-        //}
-        //zox_statistics_characters_total += entityLinks->length;
     }
-    //zox_statistics_chunks_total += it->count;
 } zox_declare_system(ChunkFrustumSystem)

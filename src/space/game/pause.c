@@ -13,7 +13,7 @@ void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     if (game_ui_has_taskbar) {
         spawn_taskbar(world, prefab_taskbar, canvas, canvas, pause_ui_overlay_layer + 1);
     }
-    spawn_player_menu_paused(world, player);
+    spawn_menu_paused(world, player);
 }
 
 extern void dispose_menu_game(ecs_world_t *world, const ecs_entity_t player);

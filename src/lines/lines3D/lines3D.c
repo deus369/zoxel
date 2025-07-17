@@ -1,6 +1,8 @@
 #ifndef zox_mod_lines3D
 #define zox_mod_lines3D
 
+// should live for .1 seconds
+const float line_frame_timing = 1 / 30.0f;
 zox_declare_tag(Line3D)
 zox_component(LineData3D, float6)     // The two points in a line3D
 zox_declare_tag(CubeLines)

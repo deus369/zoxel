@@ -3,12 +3,13 @@
 
 #include "data/settings.c"
 zox_declare_tag(Character)
-zox_component_byte(TriggerActionA) // where should these go? Inputs / Triggers - Bindings
-zox_component_byte(TriggerActionB)
 zox_component_entity(CharacterLink)
+// todo: move these to inputs
+zox_component_byte(TriggerActionA)
+zox_component_byte(TriggerActionB)
 #include "util/prefabs.c"
-#include "characters2D/characters2D.c"
-#include "characters3D/characters3D.c"
+#include "characters2D/_.c"
+#include "characters3D/_.c"
 #include "util/buttons.c"
 
 zox_begin_module(Characters)

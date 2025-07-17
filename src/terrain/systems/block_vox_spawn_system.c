@@ -28,10 +28,17 @@ void BlockVoxSpawnSystem(ecs_iter_t *it) {
         }
         const byte can_have_block_voxes = renderLod->value <= block_vox_render_at_lod;
         if (can_have_block_voxes) {
-            const byte vox_lod = get_block_voxes_lod_from_camera_distance(renderDistance->value);
+            const byte vox_lod = distance_to_lod_vox_block(renderDistance->value);
             if (!blocksSpawned->value) {
                 blocksSpawned->value = 1;
-                update_block_voxes(world, e, voxLink->value, chunkPosition, vox_lod, renderDisabled, voxelNode, nodeDepth->value);
+                update_block_voxes(world,
+                    e,
+                    voxLink->value,
+                    chunkPosition,
+                    vox_lod,
+                    renderDisabled,
+                    voxelNode,
+                    nodeDepth->value);
             }
         } else if (!can_have_block_voxes) {
             if (blocksSpawned->value) {

@@ -39,7 +39,7 @@ void Element3DRenderSystem(ecs_iter_t *it) {
         zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         if (!has_set_material) {
             has_set_material = 1;
-            opengl_enable_blend();
+            zox_gpu_blend_enable();
             zox_enable_material(material_link);
             opengl_set_matrix(material_attributes->camera_matrix, render_camera_matrix);
             zox_gpu_float4(material_attributes->fog_data, get_fog_value());
@@ -61,10 +61,10 @@ void Element3DRenderSystem(ecs_iter_t *it) {
 #endif
     }
     if (has_set_material) {
-        opengl_disable_blend();
-        opengl_disable_buffer(material_attributes->vertex_color);
-        opengl_disable_buffer(material_attributes->vertex_uv);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_blend_disable();
+        zox_gpu_disable_buffer(material_attributes->vertex_color);
+        zox_gpu_disable_buffer(material_attributes->vertex_uv);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_disable_texture(0);
         opengl_unset_mesh();
         zox_disable_material();

@@ -1,25 +1,25 @@
 // todo: make use TargetChunkLod -> and load/unload depth based on that
 // todo: set lod here instead of just applying RenderLod only with ChunkMeshDirty -> keeps memory down
-
 void CloneVoxSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(CloneVoxLink, cloneVoxLinks, 1)
-    zox_field_out(CloneVox, cloneVoxes, 2)
-    zox_field_out(VoxelNode, voxelNodes, 3)
-    zox_field_out(NodeDepth, nodeDepths, 4)
-    zox_field_out(ChunkSize, chunkSizes, 5)
-    zox_field_out(ColorRGBs, colorRGBss, 6)
-    zox_field_out(ChunkMeshDirty, chunkMeshDirtys, 7)
-    zox_field_out(ChunkLod, chunkLods, 8)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(CloneVoxLink)
+    zox_sys_out(CloneVox)
+    zox_sys_out(VoxelNode)
+    zox_sys_out(NodeDepth)
+    zox_sys_out(ChunkSize)
+    zox_sys_out(ColorRGBs)
+    zox_sys_out(ChunkMeshDirty)
+    zox_sys_out(ChunkLod)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(CloneVox, cloneVoxes, cloneVox)
-        zox_field_i(CloneVoxLink, cloneVoxLinks, cloneVoxLink)
-        zox_field_o(VoxelNode, voxelNodes, voxelNode)
-        zox_field_o(NodeDepth, nodeDepths, nodeDepth)
-        zox_field_o(ColorRGBs, colorRGBss, colorRGBs)
-        zox_field_o(ChunkSize, chunkSizes, chunkSize)
-        zox_field_o(ChunkMeshDirty, chunkMeshDirtys, chunkMeshDirty)
-        zox_field_o(ChunkLod, chunkLods, chunkLod)
+        zox_sys_o(CloneVox, cloneVox)
+        zox_sys_i(CloneVoxLink, cloneVoxLink)
+        zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_o(NodeDepth, nodeDepth)
+        zox_sys_o(ColorRGBs, colorRGBs)
+        zox_sys_o(ChunkSize, chunkSize)
+        zox_sys_o(ChunkMeshDirty, chunkMeshDirty)
+        zox_sys_o(ChunkLod, chunkLod)
         if (!cloneVox->value || !cloneVoxLink->value) {
             continue;
         }
@@ -34,7 +34,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
         }
         nodeDepth->value = source_node_depth->value;
         clone_at_depth_VoxelNode(voxelNode, chunk_octree_source, chunkLod->value, 0);
-        const byte target_depth = nodeDepth->value - min_block_vox_lod;
+        const byte target_depth = nodeDepth->value;
         if (chunkLod->value == target_depth) {
             zox_geter(source, ChunkSize, source_chunk_size)
             zox_geter(source, ColorRGBs, colors_source)

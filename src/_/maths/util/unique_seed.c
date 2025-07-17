@@ -26,7 +26,7 @@ unsigned long get_unique_time_seed() {
     return mix(clock(), time(NULL), getpid());
 }*/
 
-uint32_t mix(uint32_t a, uint32_t b, uint32_t c) {
+uint mix(uint a, uint b, uint c) {
     a = a - b;  a = a - c;  a = a ^ (c >> 13);
     b = b - c;  b = b - a;  b = b ^ (a << 8);
     c = c - a;  c = c - b;  c = c ^ (b >> 13);
@@ -39,10 +39,10 @@ uint32_t mix(uint32_t a, uint32_t b, uint32_t c) {
     return c;
 }
 
-uint32_t get_unique_time_seed() {
+uint get_unique_time_seed() {
     clock_t clk = clock();
     time_t t = time(NULL);
-    uint32_t pid = (uint32_t)getpid();
+    uint pid = (uint)getpid();
 
-    return mix((uint32_t)clk, (uint32_t)t, pid);
+    return mix((uint)clk, (uint)t, pid);
 }

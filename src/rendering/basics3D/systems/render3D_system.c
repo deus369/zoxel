@@ -23,7 +23,7 @@ void Render3DSystem(ecs_iter_t *it) {
         opengl_set_mesh_indicies(meshGPULink->value.x);
         opengl_enable_vertex_buffer(attributes.vertex_position, meshGPULink->value.y);
         zox_gpu_render(meshIndicies->length);
-        opengl_disable_buffer(attributes.vertex_position);
+        zox_gpu_disable_buffer(attributes.vertex_position);
         opengl_unset_mesh();
         zox_disable_material();
     }

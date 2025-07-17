@@ -6,7 +6,6 @@
  * */
 
 #include "settings/_.c"
-zox_component_entity(PlayerPauseEvent)
 #include "states/player_state.c"
 #include "prefabs/_.c"
 #include "util/_.c"
@@ -15,23 +14,11 @@ zox_component_entity(PlayerPauseEvent)
 #include "debug/_.c"
 
 zox_begin_module(Space)
-    if (headless) {
-        return;
+    if (!headless) {
+        define_systems_players2(world);
+        spawn_prefabs_players2(world);
+        add_to_event_game_state((zox_game_event) { &players_game_state });
     }
-    zox_define_component_entity(PlayerPauseEvent)
-    define_systems_players2(world);
-    spawn_prefabs_players2(world);
-    add_to_event_game_state((zox_game_event) { &players_game_state });
-    // add_hook_key_down(key_down_test_aura);
-    // add_hook_key_down(key_down_toggle_streaming);
-    add_hook_key_down(toggle_life_terrain);
-    add_hook_key_down(toggle_player_death);
-    add_hook_key_down(test_game_end);
-    add_hook_key_down(test_fall_through_terrain);
-    add_hook_key_down(spawn_tilemap_ui);
-    add_hook_key_down(toggle_editor);
-    add_hook_key_down(toggle_character_particles);
-
 zox_end_module(Space)
 
 #endif

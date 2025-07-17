@@ -28,12 +28,12 @@ byte is_vulkan_supported() {
 
 /*byte vulkan_supported() {
     #ifdef zox_include_vulkan
-        uint32_t extensionCount = 0;
+        uint extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, NULL);
         VkExtensionProperties* extensions = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extensionCount);
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, extensions);
         int surfaceExtensionSupported = 0;
-        for (uint32_t i = 0; i < extensionCount; ++i) {
+        for (uint i = 0; i < extensionCount; ++i) {
             if (strcmp(extensions[i].extensionName, VK_KHR_SURFACE_EXTENSION_NAME) == 0) {
                 surfaceExtensionSupported = 1;
                 break;

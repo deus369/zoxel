@@ -1,5 +1,5 @@
 uint get_label_chunk_link(ecs_world_t *world, const ecs_entity_t character, char *buffer, const uint size, uint index) {
-    index += snprintf(buffer + index, size - index, "[%s]\n", zox_get_name(character));
+    index += snprintf(buffer + index, size - index, "char [%s]\n", zox_get_name(character));
 
     // terrain
     zox_geter(character, VoxLink, voxLink)
@@ -10,18 +10,31 @@ uint get_label_chunk_link(ecs_world_t *world, const ecs_entity_t character, char
     }
 
     // positions
-    zox_geter(character, Position3D, position3D)
-    index += snprintf(buffer + index, size - index, " - at [%fx%fx%f]\n", position3D->value.x, position3D->value.y, position3D->value.z);
-    zox_geter(character, ChunkPosition, chunkPosition)
-    index += snprintf(buffer + index, size - index, " - in [%ix%ix%i]\n", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z);
+    zox_geter_value(character, Position3D, float3, position)
+    zox_geter_value(character, Euler, float3, euler)
+    zox_geter_value(character, ChunkPosition, int3, chunk_position)
+    index += snprintf(buffer + index, size - index, " - pos [%fx%fx%f]\n", position.x, position.y, position.z);
+    index += snprintf(buffer + index, size - index, " - eul [%fx%fx%f]\n", euler.x, euler.y, euler.z);
+    index += snprintf(buffer + index, size - index, " - in [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
 
     // chunk
-    zox_geter(character, ChunkLink, chunkLink)
-    if (!zox_valid(chunkLink->value)) {
-        index += snprintf(buffer + index, size - index, " - has no chunk linked\n");
+    zox_geter_value(character, ChunkLink, ecs_entity_t, chunk)
+    if (!zox_valid(chunk)) {
+        index += snprintf(buffer + index, size - index, "linked chunk [none]\n");
     } else {
-        zox_geter(chunkLink->value, ChunkPosition, chunk_chunk_position)
-        index += snprintf(buffer + index, size - index, " - is linked to [%ix%ix%i]\n", chunk_chunk_position->value.x, chunk_chunk_position->value.y, chunk_chunk_position->value.z);
+        index += snprintf(buffer + index, size - index, "linked chunk [%s]\n", zox_get_name(chunk));
+        zox_geter_value(chunk, ChunkPosition, int3, chunk_chunk_position)
+        index += snprintf(buffer + index, size - index, " - at [%ix%ix%i]\n", chunk_chunk_position.x, chunk_chunk_position.y, chunk_chunk_position.z);
     }
+
+    zox_geter_value(character, CameraLink, ecs_entity_t, camera)
+    if (zox_valid(camera)) {
+        index += snprintf(buffer + index, size - index, "cam [%s]\n", zox_get_name(camera));
+        zox_geter_value(camera, Position3D, float3, camera_position)
+        zox_geter_value(camera, Euler, float3, camera_euler)
+        index += snprintf(buffer + index, size - index, " - pos [%fx%fx%f]\n", camera_position.x, camera_position.y, camera_position.z);
+        index += snprintf(buffer + index, size - index, " - eul [%fx%fx%f]\n", camera_euler.x, camera_euler.y, camera_euler.z);
+    }
+
     return index;
 }

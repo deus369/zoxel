@@ -20,8 +20,7 @@ void attach_camera_to_character(ecs_world_t *world,
     const ecs_entity_t character)
 {
     if (!character) {
-        zox_log(" > character null in attach_camera_to_character\n")
-        detatch_camera_from_character(world, player, camera, character, 1);
+        zox_log_error("character invalid in attach_camera_to_character")
         return;
     }
     // player
@@ -30,10 +29,10 @@ void attach_camera_to_character(ecs_world_t *world,
     }
     // character
     zox_set(character, DisableMovement, { 0 })
-    // camera
-    set_camera_locked(world, camera, character);
     // linking
     zox_set(camera, CharacterLink, { character })
+    // camera
+    set_camera_locked(world, camera, character);
 }
 
 void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {

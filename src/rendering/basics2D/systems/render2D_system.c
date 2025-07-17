@@ -30,7 +30,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
 
         const MaterialTextured2D attributes = create_MaterialTextured2D(material);
         zox_enable_material(material);
-        opengl_enable_blend();
+        zox_gpu_blend_enable();
         glBindTexture(GL_TEXTURE_2D, textureGPULink->value);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareTexturedMesh.x);    // for indices
         glBindBuffer(GL_ARRAY_BUFFER, squareTexturedMesh.y);            // for vertex buffer data
@@ -46,7 +46,7 @@ void RenderMaterial2DSystem(ecs_iter_t *it) {
         zox_gpu_float(attributes.alpha, 1);
         zox_gpu_render(6);
         glBindTexture(GL_TEXTURE_2D, 0);
-        opengl_disable_blend();
+        zox_gpu_blend_disable();
         zox_disable_material();
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {

@@ -1,5 +1,5 @@
 void Line3DRenderSystem(ecs_iter_t *it) {
-    opengl_enable_blend();
+    zox_gpu_blend_enable();
     zox_enable_material(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     zox_gpu_float4(line3D_fog_data_location, get_fog_value());
@@ -12,14 +12,10 @@ void Line3DRenderSystem(ecs_iter_t *it) {
         zox_sys_i(LineData3D, lineData3D)
         zox_sys_i(LineThickness, lineThickness)
         zox_sys_i(Color, colorr)
-        // const float3 color_rgb_f3 = color_rgb_to_float3(colorr->value);
         glLineWidth(lineThickness->value);
         const float4 colorf = color_to_float4(colorr->value);
         glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, (GLfloat*) &lineData3D->value);
-        // glUniform3f(line3D_color_location, color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z);
-        glUniform4f(line3D_color_location, colorf.x, colorf.y, colorf.z, colorf.w);
-        // glDrawArrays(GL_LINES, 0, 2);
-        // zox_gpu_render_lines(2);
+        zox_gpu_float4(line3D_color_location, colorf);
         zox_gpu_render_lines(3);
 #ifdef zoxel_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
@@ -30,5 +26,5 @@ void Line3DRenderSystem(ecs_iter_t *it) {
     }
     glDisableVertexAttribArray(line3D_position_location);
     zox_disable_material();
-    opengl_disable_blend();
+    zox_gpu_blend_disable();
 } zox_declare_system(Line3DRenderSystem)

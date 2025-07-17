@@ -6,11 +6,7 @@ void toggle_debug_bounds_delve(ecs_world_t *world, const VoxelNode *node) {
     } else if (is_linked_VoxelNode(node)) {
         const ecs_entity_t e = get_entity_VoxelNode(node);
         if (zox_valid(e)) {
-            if (debug_block_vox_bounds) {
-                add_physics_debug(world, e);
-            } else {
-                remove_physics_debug(world, e);
-            }
+            zox_set(e, DebugCubeLines, { debug_block_vox_bounds })
         }
     } else if (has_children_VoxelNode(node)) {
         VoxelNode* kids = get_children_VoxelNode(node);
@@ -25,11 +21,7 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
         return;
     }
     debug_block_vox_bounds = !debug_block_vox_bounds;
-    if (debug_block_vox_bounds) {
-        add_physics_debug(world, prefab_block_vox);
-    } else {
-        remove_physics_debug(world, prefab_block_vox);
-    }
+    zox_set(prefab_block_vox, DebugCubeLines, { debug_block_vox_bounds })
     zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];

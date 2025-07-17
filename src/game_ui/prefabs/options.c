@@ -23,7 +23,8 @@ ecs_entity_t spawn_menu_options(
         .e = canvas,
         .size = zox_gett_value(canvas, PixelSize),
     };
-    // spawn our window
+
+    // # Window #
     ElementSpawnData window_element_data = {
         .prefab = prefab_window,
         .position = (int2) { 0, 0 },
@@ -50,7 +51,8 @@ ecs_entity_t spawn_menu_options(
     zox_add_tag(e, MenuOptions)
     zox_name("menu_options")
 
-    // spawning our list
+    // # List #
+
     SpawnListElement elements[max_labels];
     int elements_count = 0;
     for (int i = 0; i < settings_count; i++) {

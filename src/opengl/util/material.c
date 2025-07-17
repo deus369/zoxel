@@ -1,24 +1,24 @@
-void opengl_bind_texture(uint texture_buffer) {
+static inline void opengl_bind_texture(uint texture_buffer) {
     glBindTexture(GL_TEXTURE_2D, texture_buffer);
 }
 
-void opengl_enable_blend() {
+static inline void zox_gpu_blend_enable() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void opengl_disable_blend() {
+static inline void zox_gpu_blend_disable() {
     glDisable(GL_BLEND);
 }
 
-void opengl_disable_texture(byte blend) {
+static inline void opengl_disable_texture(byte blend) {
     if (blend) {
         glDisable(GL_BLEND);
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void opengl_set_defaults(byte is_3D) {
+static inline void opengl_set_defaults(byte is_3D) {
     if (is_3D) {
         glEnable(GL_DEPTH_TEST);        // cull for 3D things
         glDepthFunc(GL_LESS);
@@ -33,27 +33,24 @@ void opengl_set_defaults(byte is_3D) {
     // glDisable(GL_BLEND); // Disable blending
 }
 
-void opengl_clear(const float3 clear_color) { // const float3 clear_color) {
-    if (headless) {
-        return;
+static inline void opengl_clear(const float3 clear_color) {
+    if (!headless) {
+        glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
-    // const float3 clear_color = viewport_clear_color;
-    glClearColor(clear_color.x, clear_color.y, clear_color.z, 1.0f);
-    // glClearDepth(0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void opengl_clear_viewport_depth() {
+static inline void opengl_clear_viewport_depth() {
     glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void clear_depth_buffer(uint fbo) {
+static inline void clear_depth_buffer(uint fbo) {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     glClear(GL_DEPTH_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // Bind the default framebuffer
 }
 
-uint spawn_gpu_texture_buffer() {
+static inline uint spawn_gpu_texture_buffer() {
     const int texture_type = GL_NEAREST; // GL_NEAREST | GL_LINEAR
     uint textureID;
     glGenTextures(1, &textureID);
@@ -77,72 +74,72 @@ uint2 spawn_gpu_mesh_buffers() {
     return mesh;
 }
 
-uint spawn_gpu_generic_buffer() {
+static inline uint spawn_gpu_generic_buffer() {
     uint buffer;
     glGenBuffers(1, &buffer);
     return buffer;
 }
 
-void opengl_bind_mesh(uint2 mesh) {
+static inline void opengl_bind_mesh(uint2 mesh) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.x);    // for indices
     glBindBuffer(GL_ARRAY_BUFFER, mesh.y);            // for vertex coordinates
 }
 
-void opengl_set_mesh_indicies(uint indices_buffer) {
+static inline void opengl_set_mesh_indicies(uint indices_buffer) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer);    // for indices
 }
 
-void opengl_set_mesh_uvs(uint uv_buffer) {
+static inline void opengl_set_mesh_uvs(uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);         // for UV coordinates
 }
 
-void opengl_unset_mesh() {
+static inline void opengl_unset_mesh() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_enable_vertex_buffer(uint shader_index, uint vertex_buffer) {
+static inline void opengl_enable_vertex_buffer(uint shader_index, uint vertex_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_enable_uv_buffer(uint shader_index, uint uv_buffer) {
+static inline void opengl_enable_uv_buffer(uint shader_index, uint uv_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, uv_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 2, GL_FLOAT, GL_FALSE,  0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_enable_color_buffer(uint shader_index, uint color_buffer) {
+static inline void opengl_enable_color_buffer(uint shader_index, uint color_buffer) {
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
     glEnableVertexAttribArray(shader_index);
     glVertexAttribPointer(shader_index, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void opengl_disable_buffer(uint shader_index) {
+static inline void zox_gpu_disable_buffer(uint shader_index) {
     glDisableVertexAttribArray(shader_index);
 }
 
-void zox_enable_material(uint material) {
+static inline void zox_enable_material(uint material) {
     glUseProgram(material);
 }
 
-void zox_disable_material() {
+static inline void zox_disable_material() {
     glUseProgram(0);
 }
 
-void zox_gpu_render(uint length) {
+static inline void zox_gpu_render(uint length) {
     glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, NULL);
 }
 
-void zox_gpu_render_lines(uint length) {
+static inline void zox_gpu_render_lines(uint length) {
     glDrawArrays(GL_LINES, 0, length);
 }
 
-void zox_gpu_render_points(uint length) {
+static inline void zox_gpu_render_points(uint length) {
     glDrawArrays(GL_POINTS, 0, length);
 }
 

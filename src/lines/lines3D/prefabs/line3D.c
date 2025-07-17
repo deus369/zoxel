@@ -8,7 +8,7 @@ ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     zox_prefab_set(e, LineData3D, { { 0, 0, 0, 0, 0, 0 } })
     zox_prefab_set(e, LineThickness, { 1 })
     zox_prefab_set(e, DestroyInTime, { 0 })
-    zox_prefab_set(e, Color, { { 22, 122, 44, 125 } })
+    zox_prefab_set(e, Color, { { 0, 0, 0, 255 } })
     prefab_line3D = e;
     return e;
 }
@@ -58,9 +58,6 @@ ecs_entity_t spawn_line3D_colored_alpha(ecs_world_t *world,
     zox_set(e, Color, { line_color })
     return e;
 }
-
-// should live for .1 seconds
-const float line_frame_timing = 1 / 10.0f;
 
 void render_line3D_thickness(ecs_world_t *world,
     const float3 a,

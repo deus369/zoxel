@@ -5,6 +5,7 @@
 
 #include "settings/_.c"
 #include "util/_.c"
+#include "debug/_.c"
 #include "systems/characters3D_spawn_system.c"
 
 zox_begin_module(Characters3DTerrain)
@@ -19,9 +20,6 @@ zox_begin_module(Characters3DTerrain)
         [in] chunks3.VoxLink,
         [out] generic.EntityLinks,
         [none] terrain.TerrainChunk)
-    // test function for npc spawning
-    // add_hook_key_down(test_spawn_character_npc);
-    add_hook_key_down(key_down_toggle_debug_character_bounds);
 zox_end_module(Characters3DTerrain)
 
 #endif

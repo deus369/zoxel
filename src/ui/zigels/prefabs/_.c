@@ -14,7 +14,7 @@ ecs_entity_t get_font_style_using() {
 }
 
 int get_zigels_count(ecs_world_t *world) {
-    return zox_count_entities(world, ecs_id(Zigel));
+    return zox_count_types(Zigel)
 }
 
 void spawn_prefabs_zigels(ecs_world_t *world) {

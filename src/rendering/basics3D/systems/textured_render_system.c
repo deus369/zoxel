@@ -36,9 +36,9 @@ void TexturedRenderSystem(ecs_iter_t *it) {
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         zox_gpu_render(meshIndicies->length);
         // disabling
-        opengl_disable_buffer(material_attributes->vertex_color);
-        opengl_disable_buffer(material_attributes->vertex_uv);
-        opengl_disable_buffer(material_attributes->vertex_position);
+        zox_gpu_disable_buffer(material_attributes->vertex_color);
+        zox_gpu_disable_buffer(material_attributes->vertex_uv);
+        zox_gpu_disable_buffer(material_attributes->vertex_position);
         opengl_unset_mesh();
         opengl_disable_texture(0);
         zox_disable_material();

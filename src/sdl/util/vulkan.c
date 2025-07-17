@@ -122,18 +122,18 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
 // zox_component(VulkanInstance, VkInstance*)
 // ECS_DTOR(VulkanSurface, ptr, { if (ptr->value != 0) vkDestroySurfaceKHR(*vk_instance, *ptr->value, NULL); })
 
-/*uint32_t find_present_queue_family_index(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
-    uint32_t queueFamilyCount = 0;
+/*uint find_present_queue_family_index(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
+    uint queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, NULL);
     VkQueueFamilyProperties* queueFamilies = malloc(queueFamilyCount * sizeof(VkQueueFamilyProperties));
     if (!queueFamilies) {
         fprintf(stderr, "Failed to allocate memory for queue family properties!\n");
-        return (uint32_t)-1;
+        return (uint)-1;
     }
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies);
 
     VkBool32 presentSupport = VK_FALSE;
-    for (uint32_t i = 0; i < queueFamilyCount; i++) {
+    for (uint i = 0; i < queueFamilyCount; i++) {
         vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
         if (presentSupport) {
             free(queueFamilies);
@@ -142,7 +142,7 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
     }
 
     free(queueFamilies);
-    return (uint32_t)-1; // Return -1 if no suitable queue family was found
+    return (uint)-1; // Return -1 if no suitable queue family was found
 }*/
 
 #endif
