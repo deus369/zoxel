@@ -6,9 +6,11 @@ zox_component_byte(MeshAlignment)
 zox_component_byte(RenderLod)
 zox_component_byte(RenderDistance)
 zox_component_byte(RenderDisabled)
+zox_component_byte(RenderDistanceDirty)
 zox_component_float(Brightness)
 zox_component_float(Alpha)
 zox_component_entity(MaterialLink)
+zox_increment_system_with_reset(RenderDistanceDirty, zox_dirty_end)
 
 void define_components_rendering(ecs_world_t *world) {
     zox_define_tag(Mesh)
@@ -18,8 +20,10 @@ void define_components_rendering(ecs_world_t *world) {
     zox_define_component_byte(TextureDirty)
     zox_define_component_byte(RenderLod)
     zox_define_component_byte(RenderDistance)
+    zox_define_component_byte(RenderDistanceDirty)
     zox_define_component_byte(RenderDisabled)
     zox_define_component_float(Brightness)
     zox_define_component_float(Alpha)
     zox_define_component_entity(MaterialLink)
+    zox_define_increment_system(RenderDistanceDirty, EcsOnLoad)
 }

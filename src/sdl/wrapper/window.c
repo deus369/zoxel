@@ -27,32 +27,7 @@ int2 get_window_size_without_header(ecs_world_t* world, ecs_entity_t e, int2 win
 
 // this should... account for taskbar too?
 int2 get_maximized_size(ecs_world_t* world, ecs_entity_t e) {
-    return int2_sub(get_screen_size(),
-        (int2) { 0, get_sdl_window_header_size(world, e) });
-}
-
-SDL_Window* create_sdl_window_basic_opengl(
-    const int2 position,
-    const int2 size,
-    const char *name)
-{
-    SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
-    int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-#ifdef zoxel_on_android
-    flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
-#else
-    flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
-#endif
-    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
-    if (window == NULL) {
-        zox_log_error("!!! SDL_CreateWindow failed: %s", SDL_GetError())
-        return window;
-    }
-    if (*SDL_GetError()) {
-        zox_log_error("#!!! [create_sdl_window...] SDL_GetError: %s", SDL_GetError())
-        return 0;
-    }
-    return window;
+    return int2_sub(get_screen_size(), (int2) { 0, get_sdl_window_header_size(world, e) });
 }
 
 SDL_Window* create_sdl_window_basic_vulkan(
@@ -72,21 +47,26 @@ SDL_Window* create_sdl_window_basic_vulkan(
     return window;
 }
 
-// opengl only now const byte fullscreen,
-SDL_Window* create_sdl_window(const int2 position, const int2 size, const char *name) {
-    byte is_resizeable = 1;
+static inline int get_sdl_window_flags() {
+    int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 #ifdef zoxel_on_android
-    is_resizeable = 0;
+    flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
+#else
+    flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
 #endif
-    SDL_Window* window = create_sdl_window_basic_opengl(position, size, name);
-    if (window == NULL) {
-        zox_log(" ! failed to create sdl window [%s]\n", SDL_GetError())
-        return window;
+    return flags;
+}
+
+SDL_Window* create_sdl_window(const int2 position, const int2 size, const char *name) {
+    SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, get_sdl_window_flags());
+    if (!window) {
+        zox_log_error(" CreateWindowError [%s]\n", SDL_GetError())
+    } else {
+        SDL_SetWindowResizable(window, window_resizeable);
+        SDL_GL_SwapWindow(window);
+        SDL_GL_SetSwapInterval(vsync);
     }
-    SDL_SetWindowResizable(window, is_resizeable);
-    // links window to OpenGL
-    SDL_GL_SwapWindow(window);
-    SDL_GL_SetSwapInterval(vsync);
     return window;
 }
 

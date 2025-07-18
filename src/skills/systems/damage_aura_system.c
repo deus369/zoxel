@@ -5,56 +5,46 @@
 
 void DamageAuraSystem(ecs_iter_t *it) {
     zox_sys_query()
-    zox_field_world()
-    zox_field_in(UserLink, userLinks, 1)
-    zox_field_in(SkillActive, skillActives, 2)
-    zox_field_in(SkillDamage, skillDamages, 3)
-    zox_field_in(SkillRange, skillRanges, 4)
-    zox_field_in(Color, colors, 5)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(UserLink)
+    zox_sys_in(SkillActive)
+    zox_sys_in(SkillDamage)
+    zox_sys_in(SkillRange)
+    zox_sys_in(Color)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(UserLink, userLinks, userLink)
-        if (!zox_alive(userLink->value)) {
+        zox_sys_e()
+        zox_sys_i(UserLink, userLink)
+        zox_sys_i(SkillActive, skillActive)
+        zox_sys_i(SkillDamage, skillDamage)
+        zox_sys_i(SkillRange, skillRange)
+        zox_sys_i(Color, colorr)
+        if (!zox_alive(userLink->value) || !skillActive->value || !skillDamage->value || !skillRange->value) {
             continue;
         }
-        zox_field_i(SkillActive, skillActives, skillActive)
-        if (!skillActive->value) {
-            continue;
-        }
-        zox_field_i(SkillDamage, skillDamages, skillDamage)
-        if (skillDamage->value == 0) {
-            continue;
-        }
-        zox_field_i(SkillRange, skillRanges, skillRange)
-        if (skillRange->value == 0) {
-            continue;
-        }
-        zox_field_e()
-        zox_field_i(Color, colors, colorr)
         // zox_get_prefab(prefab_aura, e)
         const ecs_entity_t user = userLink->value;
-        const Position3D *position3D = zox_get(userLink->value, Position3D)
+        zox_geter_value(userLink->value, Position3D, float3, position3)
         // todo: Get Chunk' Characters instead, this could potentially go through tens of thousands..
         // get nearby characters using distance formula
         // make this spherecast
         zox_sys_query_begin()
         while (zox_sys_query_loop()) {
-            const Dead *deads = ecs_field(&it2, Dead, 1);
-            const Position3D *position3D2s = ecs_field(&it2, Position3D, 2);
-            Children *childrens = ecs_field(&it2, Children, 3);
-            DotLinks *dotLinkss = ecs_field(&it2, DotLinks, 4);
+            zox_sys_begin_2()
+            zox_sys_in_2(Dead)
+            zox_sys_in_2(Position3D)
+            zox_sys_out_2(Children)
+            zox_sys_out_2(DotLinks)
             for (int j = 0; j < it2.count; j++) {
-                const ecs_entity_t e2 = it2.entities[j];
-                if (user == e2) {
+                zox_sys_e_2()
+                zox_sys_i_2(Position3D, position3D2)
+                zox_sys_i_2(Dead, dead)
+                zox_sys_o_2(Children, children)
+                zox_sys_o_2(DotLinks, dotLinks)
+                if (user == e2 || dead->value) {
                     continue;
                 }
-                const Dead *dead = &deads[j];
-                if (dead->value) {
-                    continue;
-                }
-                const Position3D *position3D2 = &position3D2s[j];
-                Children *children = &childrens[j];
-                DotLinks *dotLinks = &dotLinkss[j];
-                const float distance = float3_distance(position3D->value, position3D2->value);
+                const float distance = float3_distance(position3, position3D2->value);
                 ecs_entity_t poisoned_entity = 0;
                 // Checks if dot was already added to player!
                 // get poison, that  was initiated by this aura user
@@ -86,7 +76,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     add_to_Children(children, particle3D_emitter);
                     zox_set(particle3D_emitter, SkillLink, { e })
 #ifdef zox_debug_aoe_damage_system
-                    spawn_line3D(world, position3D->value, position3D2->value, 0.5f, 0.1);
+                    spawn_line3D(world, position3, position3D2->value, 0.5f, 0.1);
 #endif
                 }
             }

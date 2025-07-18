@@ -23,10 +23,8 @@ ecs_entity_t spawn_list(ecs_world_t *world,
         .size = element_data.size
     };
     byte is_scrollbar = list_data.count > list_data.visible_count;
-    zox_log("+ spawning ui list with [%i] elements", list_data.count)
-    zox_log("   - visible_count [%i]", list_data.visible_count)
-    // Children *children = &((Children) { 0, NULL });
-    // initialize_memory_component(Children, children, ecs_entity_t, list_data.count)
+    // zox_log("+ spawning ui list with [%i] elements", list_data.count)
+    // zox_log("   - visible_count [%i]", list_data.visible_count)
     int position_y = (int) (element_data.size.y / 2);
     // offset by half a height
     position_y += (int) (0.5f * element_height);

@@ -18,7 +18,7 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
     if (textures->length > 0) {
         zox_set(e, TextureLink, { textures->value[0] })
     } else {
-        zox_log("! warning: [todo] implement vox item textures [%s]", zox_get_name(block))
+        // zox_log("! warning: [todo] implement vox item textures [%s]", zox_get_name(block))
         const ecs_entity_t blank = string_hashmap_get(files_hashmap_textures, new_string_data("blank"));
         zox_set(e, TextureLink, { blank })
         // zox_log(" ! block [%s] had no textures [%i]\n",  convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)

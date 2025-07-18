@@ -1,13 +1,16 @@
 void sdl_on_window_moved(ecs_world_t *world, const ecs_entity_t e, int2 position) {
     zox_log_sdl("> sdl_on_window_moved [%ix%i]", position.x, position.y)
-    //int window_height = get_sdl_window_header_size(world, e);
-    //zox_geter_value(e, WindowSize, int2, size)
-    //position.x += size.x / 2;
-    //position.y += size.y / 2 + window_height;
     zox_set(e, WindowPosition, { position })
     if (!zox_gett_value(e, WindowFullscreen) && !zox_gett_value(e, WindowMaximized)) {
         zox_set(e, WindowPositionRestore, { position })
         zox_log_sdl("+ setting window restore position to [%ix%i]", position.x, position.y)
+    }
+    zox_geter_value(e, WindowMonitor, byte, old_monitor_index)
+    byte monitor_index = zox_app_get_monitor(world, e);
+    if (old_monitor_index != monitor_index) {
+        zox_set(e, WindowMonitor, { monitor_index })
+        zox_set_monitor_silently(world, e, monitor_index);
+        zox_log_sdl("+ monitor has swapped [%i]", monitor_index)
     }
 }
 

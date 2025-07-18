@@ -47,11 +47,12 @@ void zox_set_app_maximized(ecs_world_t* world, ecs_entity_t e, byte maximized) {
 
 // todo: get position2 to work
 ecs_entity_t spawn_window_opengl(ecs_world_t *world,
+    const char *name,
     int2 position2,
     const int2 size,
     const byte fullscreen,
     const byte maximized,
-    const char *name)
+    const byte monitor)
 {
     int2 window_size = size;
     if (fullscreen) {
@@ -70,7 +71,8 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
         position,
         window_size,
         fullscreen,
-        maximized);
+        maximized,
+        monitor);
     mouse_lock_window = e;
     if (create_window_opengl_context(world, e) == EXIT_FAILURE) {
         zox_log_error(" opengl_context creation failed")

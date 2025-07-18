@@ -6,5 +6,5 @@ void player_end_game2D(ecs_world_t *world, const ecs_entity_t player) {
     zox_delete(character)
     zox_set(player, CharacterLink, { 0 })
     zox_set(camera, CharacterLink, { 0 })
-    spawn_main_menu(world, player, canvas, game_name, int2_zero, float2_half);
+    spawn_main_menu(world, player, canvas, game_name);
 }

@@ -38,6 +38,7 @@ void define_systems_streaming(ecs_world_t *world) {
         [out] rendering.RenderLod,
         [out] chunks3.ChunkLodDirty,
         [out] rendering.RenderDistance,
+        [out] rendering.RenderDistanceDirty,
         [none] StreamedChunk)
     zox_system(ChunkLodDirtySystem, EcsOnUpdate,
         [in] chunks3.ChunkLodDirty,

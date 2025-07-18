@@ -21,13 +21,17 @@ void generate_colors(long int seed, Colors *colors) {
     const float2 stone_value = (float2) { 16, 24 };
     const float2 stone_saturation = (float2) { 6, 12 };
     const float3 stone_hsv = generate_hsv_v_s(stone_hue, stone_value, stone_saturation);
+    float3 obsidian_hsv = (float3) { rand() % 360, 13, 13 };
+    if (obsidian_hsv.x + 180 >= dirt_hsv.x + 180 - 45 && obsidian_hsv.x + 180 <= dirt_hsv.x + 180 + 45) {
+        obsidian_hsv.x += 180; // if close to dirt, move away the hue
+    }
     float3 sky_hsv = (float3) { (float) (((int) grass_hsv.x + 180) % 360), dirt_hsv.y + 32, dirt_hsv.z + 32 };
     const color dirt_color = hsv_to_color(dirt_hsv);
     const color grass_color = hsv_to_color(grass_hsv);
     const color sand_color = hsv_to_color(sand_hsv);
     const color stone_color = hsv_to_color(stone_hsv);
     const color sky_color = hsv_to_color(sky_hsv);
-    const color obsidian_color = hsv_to_color((float3) { rand() % 360, 33, 33 });
+    const color obsidian_color = hsv_to_color(obsidian_hsv);
     byte i = 0;
     colors->value[i++] = sky_color;
     colors->value[i++] = dirt_color;

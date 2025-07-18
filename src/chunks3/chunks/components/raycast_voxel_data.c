@@ -1,6 +1,6 @@
 typedef struct {
     byte voxel;
-    ecs_entity_t voxel_entity;
+    ecs_entity_t hit_block;
     byte3 position;
     int3 position_global;
     float3 position_real;

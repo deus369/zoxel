@@ -9,7 +9,6 @@ zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_vo
 void define_systems_terrain(ecs_world_t *world) {
     zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // generate terrain
-    // zox_filter(generateTerrainChunkQuery, [none] TerrainChunk, [out] chunks3.GenerateChunk)
     zox_system(ChunkFlatlandSystem, EcsOnUpdate,
         [none] TerrainChunk,
         [in] chunks3.ChunkPosition,
@@ -17,14 +16,14 @@ void define_systems_terrain(ecs_world_t *world) {
         [out] chunks3.VoxelNode,
         [out] chunks3.NodeDepth,
         [none] FlatlandChunk)
-    zox_system(GrassyPlainsSystem, EcsOnUpdate, // generateTerrainChunkQuery,
-        [none] TerrainChunk,
+    zox_system(GrassyPlainsSystem, EcsOnUpdate,
         [in] chunks3.ChunkPosition,
         [in] rendering.RenderLod,
         [out] chunks3.GenerateChunk,
         [out] chunks3.VoxelNode,
         [out] chunks3.NodeDepth,
-        [none] !FlatlandChunk)
+        [none] !FlatlandChunk,
+        [none] TerrainChunk)
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
     zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread,
         [in] chunks3.ChunkLodDirty,

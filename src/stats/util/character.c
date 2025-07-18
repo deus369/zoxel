@@ -59,6 +59,7 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
     if (data->p) {
         const ecs_entity_t canvas = zox_get_value(data->p, CanvasLink)
         find_child_with_tag(canvas, MenuGame, game_menu)
+        // sometimes its here, sometimes not!
         if (zox_valid(game_menu)) {
             find_child_with_tag(game_menu, ElementBar, healthbar2D)
             if (zox_valid(healthbar2D)) {
@@ -69,8 +70,6 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
                     zox_set(healtbar2D_text, StatLink, { stat_health })
                 }
             }
-        } else {
-            zox_log_error("game_menu [MenuGame] not found")
         }
     }
 }

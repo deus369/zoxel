@@ -57,6 +57,7 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
 {
     zox_instance(data.prefab)
     zox_name("character3D")
+    zox_stats_characters++;
     // make a create_bounds function tthat returns float6
     const float min_x_global = -(terrain_spawn_distance) * (real_chunk_scale) + 0.1f;
     const float max_x_global = (terrain_spawn_distance + 1) * (real_chunk_scale) - 0.1f;

@@ -78,15 +78,6 @@ void spawn_players_cameras_canvases(ecs_world_t *world, const ecs_entity_t game)
     #endif
 }
 
-void zox_spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const char *game_name, ecs_entity_t canvas) {
-    const float2 main_menu_anchor = float2_half;
-    const int2 main_menu_position = int2_zero;
-    // zoxel_main_menu = spawn_main_menu(world, player, canvas, game_name, main_menu_position, main_menu_anchor);
-    spawn_main_start(world, prefab_menu_start, player, canvas, game_name, main_menu_position, main_menu_anchor);
-    // disable until line2Ds reposition/scale based on canvas
-    spawn_canvas_edge_lines(world, canvas, 4, color_black);
-}
-
 void spawn_players_start_ui(ecs_world_t *world) {
     zox_log_start_game("> spawn_players_start_ui [%i]", players_playing)
     for (int i = 0; i < players_playing; i++) {
@@ -94,6 +85,8 @@ void spawn_players_start_ui(ecs_world_t *world) {
         const ecs_entity_t canvas = zox_canvases[i];
         zox_log_start_game("    - player [%lu - %s]", player, zox_get_name(player))
         zox_log_start_game("    - canvas [%lu - %s]", canvas, zox_get_name(canvas))
-        zox_spawn_main_menu(world, player, game_name, canvas);
+        spawn_main_start(world, prefab_menu_start, player, canvas, game_name);
+        // disable until line2Ds reposition/scale based on canvas
+        // spawn_canvas_edge_lines(world, canvas, 4, color_black);
     }
 }

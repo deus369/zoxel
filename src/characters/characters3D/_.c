@@ -12,6 +12,7 @@ zox_component(CharacterSaveHash, ulong)
 #include "systems/_.c"
 #include "terrain/_.c"
 #include "debug/_.c"
+#include "realm/_.c"
 
 void module_dispose_characters3D(ecs_world_t *world, void *ctx) {
     dispose_hook_spawned_character3D();

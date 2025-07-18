@@ -65,6 +65,13 @@ void close_same_nodes(ecs_world_t *world, VoxelNode *node) {
     }
 }
 
+
+void cleanup_nodes(ecs_world_t *world, VoxelNode *node) {
+#ifndef zox_disable_closing_octree_nodes
+    close_same_nodes(world, node);
+#endif
+}
+
 void optimize_solid_nodes(VoxelNode *node) {
     if (!has_children_VoxelNode(node)) {
         return;

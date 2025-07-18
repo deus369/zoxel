@@ -11,6 +11,7 @@ ecs_entity_t spawn_prefab_chunk_base(ecs_world_t *world) {
     zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } })
     zox_prefab_set(e, RenderLod, { 255 })
     zox_prefab_set(e, RenderDistance, { 255 })
+    zox_prefab_set(e, RenderDistanceDirty, { zox_dirty_none })
     // states
     // zox_prefab_set(e, ChunkDirty, { chunk_dirty_state_none })
     zox_prefab_set(e, ChunkLodDirty, { 0 }) // chunk_lod_state_spawning })

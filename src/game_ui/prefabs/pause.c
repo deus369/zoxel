@@ -4,11 +4,11 @@ ecs_entity_t spawn_menu_paused(ecs_world_t *world,
     // getters
     zox_geter_value(player, CanvasLink, ecs_entity_t, canvas)
     // settings
+    const byte font_size = 48;
+    const byte header_font_size = 60;
     const float2 anchor = (float2) { 0.0f, 1.0f };
     const int2 position = (int2) { 200, -200 };
     const byte layer = pause_ui_overlay_layer + 3;
-    const byte header_font_size = 40;
-    const byte font_size = 32;
     const byte is_close_button = 0;
     const int max_labels = 5;
     text_group labels[max_labels];
@@ -17,13 +17,6 @@ ecs_entity_t spawn_menu_paused(ecs_world_t *world,
     labels[labels_count] = (text_group) { pause_label_confirm };
     events[labels_count] = (ClickEvent) { button_event_return_to_game };
     labels_count++;
-/*#ifndef zox_disable_save_games
-    if (has_save_game_directory(game_name)) {
-        labels[labels_count] = (text_group) { pause_label_save };
-        events[labels_count] = (ClickEvent) { button_event_save_game };
-        labels_count++;
-    }
-#endif*/
     labels[labels_count] = (text_group) { pause_label_exit };
     events[labels_count] = (ClickEvent) { button_event_end_game };
     labels_count++;

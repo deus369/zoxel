@@ -15,7 +15,8 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     const int2 position,
     const int2 size,
     const byte fullscreen,
-    const byte maximized)
+    const byte maximized,
+    const byte monitor)
 {
     zox_instance(prefab_app_sdl)
     zox_name("app_sdl")
@@ -29,10 +30,12 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     if (!fullscreen && maximized) {
         zox_app_set_maximized(window, maximized);
     }
+    zox_app_set_monitor(window, monitor, 1);
     zox_log_sdl("+ spawned window !")
     zox_log_sdl("   - position [%ix%i]", position.x, position.y)
     zox_log_sdl("   - size [%ix%i]", size.x, size.y)
     zox_log_sdl("   - fullscreen [%i]", fullscreen)
     zox_log_sdl("   - maximized [%i]", maximized)
+    zox_log_sdl("   - monitor [%i]", monitor)
     return e;
 }

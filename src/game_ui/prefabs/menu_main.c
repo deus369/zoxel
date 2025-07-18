@@ -1,12 +1,12 @@
 ecs_entity_t spawn_main_menu(ecs_world_t *world,
     const ecs_entity_t player,
     const ecs_entity_t canvas,
-    const char *header_label,
-    const int2 position,
-    const float2 anchor)
+    const char *header_label)
 {
-    const byte font_size = 64;
-    const byte header_font_size = 96;
+    const byte font_size = 48;
+    const byte header_font_size = 60;
+    const float2 anchor = (float2) { 0.0f, 1.0f };
+    const int2 position = (int2) { 300, -300 };
     const byte is_close_button = 0;
     const byte layer = 3;
     const int max_labels = 5;

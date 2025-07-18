@@ -1,5 +1,8 @@
 const char* settings_game_name;
 byte is_log_settings_io = 0;
+byte is_log_save_settings = 0;
+byte is_log_load_settings = 0;
+byte has_loaded = 0;
 
 // Helpers to find ~/.config/<appname>/settings.cfg
 static const char* get_settings_file(const char *app_name) {
@@ -21,6 +24,10 @@ static const char* get_settings_file(const char *app_name) {
 
 // Save all settings to disk as simple "name:type:value\n"
 void save_settings() {
+    if (!has_loaded) {
+        // zox_log_error(" Trying to save before loaded...")
+        return;
+    }
     const char* app_name = settings_game_name;
     const char* fn = get_settings_file(app_name);
     FILE* f = fopen(fn, "w");
@@ -33,12 +40,18 @@ void save_settings() {
         switch (s.type) {
             case zox_data_type_byte:
                 fprintf(f, "%s:byte:%u\n", s.name, s.value_byte);
+                if (is_log_save_settings) {
+                    zox_log("+ saved byte [%s] [%i]", s.name, s.value_byte)
+                }
                 break;
             case zox_data_type_int:
                 fprintf(f, "%s:int:%d\n",  s.name, s.value_int);
                 break;
             case zox_data_type_float:
                 fprintf(f, "%s:float:%f\n",s.name, s.value_float);
+                if (is_log_save_settings) {
+                    zox_log("+ saved float [%s] [%i]", s.name, s.value_float)
+                }
                 break;
             case zox_data_type_string:
                 // escape newlines or colons as needed!
@@ -76,12 +89,18 @@ void load_settings(ecs_world_t* world, const char* app_name) {
         if (strcmp(type, "byte") == 0) {
             byte v = (byte)atoi(val);
             zoxs_set_byte(world, name, v);
+            if (is_log_load_settings) {
+                zox_log("- loaded byte [%s] [%i]", name, v)
+            }
         } else if (strcmp(type, "int") == 0) {
             int v = atoi(val);
             zoxs_set_int(world, name, v);
         } else if (strcmp(type, "float") == 0) {
             float v = strtof(val, NULL);
             zoxs_set_float(world, name, v);
+            if (is_log_load_settings) {
+                zox_log("- loaded float [%s] [%i]", name, v)
+            }
         } else if (strcmp(type, "string") == 0) {
             zoxs_set_string(world, name, val);
         }
@@ -90,4 +109,5 @@ void load_settings(ecs_world_t* world, const char* app_name) {
     if (is_log_settings_io) {
         zox_log("> loaded settings from %s", fn)
     }
+    has_loaded = 1;
 }

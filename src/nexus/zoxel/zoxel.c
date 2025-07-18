@@ -39,10 +39,10 @@ byte boot_zoxel_game(ecs_world_t *world) {
 
 zox_begin_module(ZoxGame)
     boot_event = boot_zoxel_game;
-    zox_debug_id(Block)
-    zox_debug_print_modules(world, 1);
-    zox_debug_print_systems(world, 1);
-    zox_debug_print_components(world, 1);
+    // zox_debug_id(Block)
+    // zox_debug_print_modules(world, 1);
+    // zox_debug_print_systems(world, 1);
+    // zox_debug_print_components(world, 1);
     // is_log_io = 1;
     // is_log_sounds = 1;
     // terrain_mode = terrain_mode_flatlands;
@@ -51,10 +51,11 @@ zox_begin_module(ZoxGame)
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
+    // regen_rate = 10;
 
     // physics
     // target_fps = 15;
-    friction3D = 8.5f; // 560;
+    friction3D = 9.5f; // 560;
     air_friction3D = 0.4f; // 40;
     bounce_lost_force = 0.15f;
     // zox_default_gravity.y = -8;
@@ -154,7 +155,7 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_skills);
     // set_prefab_debug_label(world, &get_label_player_actions);
     // set_prefab_debug_label(world, &get_label_player_quests);
-    set_prefab_debug_label(world, &get_label_player_chunk_link);
+    set_prefab_debug_label(world, &debug_label_chunk_link);
     // set_prefab_debug_label(world, &debug_label_lods);
     // set_prefab_debug_label(world, &debug_label_collisions);
 

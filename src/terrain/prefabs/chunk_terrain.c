@@ -51,6 +51,7 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
     // todo: just start this as invisible and update with streaming systems
     const byte camera_distance = get_camera_chunk_distance_xz(camera_position, chunk_position);
     zox_set(e, RenderDistance, { camera_distance })
+    zox_set(e, RenderDistanceDirty, { zox_dirty_trigger })
     // const byte max_camera_distance = render_distance + 1;
     const byte render_lod = distance_to_terrain_lod(camera_distance);
     zox_set(e, RenderLod, { render_lod })

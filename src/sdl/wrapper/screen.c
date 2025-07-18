@@ -5,6 +5,45 @@ void refresh_viewport(ecs_world_t *world) {
     resize_cameras(world, viewport_dimensions);
 }
 
+byte zox_app_get_monitor(ecs_world_t *world, ecs_entity_t e) {
+    if (!zox_valid(e) || !zox_has(e, SDLWindow)) {
+        return 0;
+    }
+    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    return SDL_GetWindowDisplayIndex(sdl_window);
+}
+
+#include <SDL2/SDL.h>
+#include <stdbool.h>
+
+byte zox_app_set_monitor(SDL_Window *window, byte index, byte center_window) {
+    if (!window) {
+        return 0;
+    }
+    SDL_Rect bounds;
+    if (SDL_GetDisplayBounds(index, &bounds) != 0) {
+        zox_log_error("Failed to get display bounds for display %d: %s", index, SDL_GetError());
+        return 0;
+    }
+    int2 window_size;
+    SDL_GetWindowSize(window, &window_size.x, &window_size.y);
+    int target_x = bounds.x;
+    int target_y = bounds.y;
+    if (center_window) {
+        target_x += (bounds.w - window_size.x) / 2;
+        target_y += (bounds.h - window_size.y) / 2;
+    }
+    SDL_SetWindowPosition(window, target_x, target_y);
+    // zox_log(" + zox_app_set_monitor %i at (%d, %d)", index, target_x, target_y);
+    return 1;
+}
+
+void zox_app_set_monitor_e(ecs_world_t *world, ecs_entity_t e, byte monitor) {
+    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_app_set_monitor(sdl_window, monitor, 1);
+    zox_set(e, WindowMonitor, { monitor })
+}
+
 int2 get_sdl_screen_size() {
     int2 screen_size = int2_zero;
     SDL_DisplayMode displayMode;

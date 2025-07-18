@@ -5,7 +5,7 @@ void menu_start_triggered(ecs_world_t *world, const ecs_entity_t player, const e
         return;
     }
     zox_delete(menu)
-    spawn_main_menu(world, player, canvas, game_name, int2_zero, float2_half);
+    spawn_main_menu(world, player, canvas, game_name);
     const double volume = (0.6 + 0.4 * (rand() % 101) / 100.0) * get_volume_sfx();
     spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[16], 2.8f, volume);
 }
@@ -27,10 +27,10 @@ ecs_entity_t spawn_main_start(
     const ecs_entity_t prefab,
     const ecs_entity_t player,
     const ecs_entity_t canvas,
-    const char *header_label,
-    const int2 position,
-    const float2 anchor)
+    const char *header_label)
 {
+    const float2 anchor = (float2) { 0.5f, 0.0f };
+    const int2 position = (int2) { 0, 150 };
     const byte header_font_size = 0;
     const byte font_size = 80;
     const byte is_close_button = 0;

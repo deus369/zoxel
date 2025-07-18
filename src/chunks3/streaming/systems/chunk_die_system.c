@@ -1,27 +1,29 @@
 void ChunkDieSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(VoxLink, voxLinks, 1)
-    zox_field_in(ChunkPosition, chunkPositions, 2)
-    zox_field_in(RenderDistance, renderDistances, 3)
-    zox_field_in(ChunkLodDirty, chunkLodDirtys, 4)
-    zox_field_in(RenderLod, renderLods, 5)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(VoxLink)
+    zox_sys_in(ChunkPosition)
+    zox_sys_in(RenderDistance)
+    zox_sys_in(ChunkLodDirty)
+    zox_sys_in(RenderLod)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(VoxLink, voxLinks, voxLink)
+        zox_sys_e()
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(RenderLod, renderLod)
+        zox_sys_i(ChunkLodDirty, chunkLodDirty)
+        zox_sys_i(RenderDistance, renderDistance)
+        zox_sys_i(ChunkPosition, chunkPosition)
         if (!zox_valid(voxLink->value)) {
             zox_delete(e)
             continue;
         }
-        zox_field_i(RenderLod, renderLods, renderLod)
         if (renderLod->value == render_lod_uninitialized) {
             continue;
         }
-        zox_field_i(ChunkLodDirty, chunkLodDirtys, chunkLodDirty)
         if (chunkLodDirty->value) {
             continue;
         }
         // Pass if loading chunk
-        zox_field_i(RenderDistance, renderDistances, renderDistance)
         if (renderDistance->value == 255) {
             continue;
         }
@@ -29,7 +31,6 @@ void ChunkDieSystem(ecs_iter_t *it) {
         const byte kill = renderDistance->value > terrain_lod_far;
         if (kill) {
             // remove from hash - can i do this better?
-            zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
             // zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
             zox_geter(voxLink->value, ChunkLinks, chunkLinks)
             int3_hashmap_remove(chunkLinks->value, chunkPosition->value);

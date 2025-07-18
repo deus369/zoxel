@@ -45,8 +45,7 @@ void MeleeSystem(ecs_iter_t *it) {
             continue;
         }
         zox_set(energy, StatValue, { energy_value - skillCost->value })
-
-        const RaycastVoxelData *raycastVoxelData = zox_get(attacking_character, RaycastVoxelData)
+        zox_geter(attacking_character, RaycastVoxelData,  raycastVoxelData)
         // todo: reduce energy stat value using SkillCost, check if has enough energy
         const float skill_damage = skillDamage->value;
         const float skill_range = skillRange->value;
@@ -82,30 +81,35 @@ void MeleeSystem(ecs_iter_t *it) {
                     sprintf(popup_text, "%i", (int) floor(skill_damage));
                     const color popup_color = (color) { 255, 0, 0, 255 };
                     spawn_popup3D_easy(world, popup_text, popup_color, popup_position);
-                } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->voxel_entity) {
-                    raycast_action(world, raycastVoxelData, 0, 2);
-                    if (zox_has(hit_chunk, TerrainChunk)) {
-                        const ecs_entity_t pickup = spawn_pickup(world, raycastVoxelData->position_real, raycastVoxelData->voxel_entity);
-                        const ecs_entity_t terrain = zox_get_value(hit_chunk, VoxLink)
-                        if (terrain && zox_has(terrain, RealmLink)) {
-                            const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
-                            const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-                            const byte voxel_index = raycastVoxelData->voxel - 1;
-                            const ecs_entity_t voxel = voxels->value[voxel_index];
-                            // now get item and set to pickup
-                            if (zox_has(voxel, ItemLink)) {
-                                const ecs_entity_t item = zox_get_value(voxel, ItemLink)
-                                if (item) {
-                                    zox_set(pickup, ItemLink, { item })
+                } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->hit_block) {
+                    if (!zox_has(raycastVoxelData->hit_block, BlockInvinsible)) {
+                        raycast_action(world, raycastVoxelData, 0, 2);
+                        if (zox_has(hit_chunk, TerrainChunk)) {
+                            const ecs_entity_t pickup = spawn_pickup(world, raycastVoxelData->position_real, raycastVoxelData->hit_block);
+                            const ecs_entity_t terrain = zox_get_value(hit_chunk, VoxLink)
+                            if (terrain && zox_has(terrain, RealmLink)) {
+                                const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
+                                const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
+                                const byte voxel_index = raycastVoxelData->voxel - 1;
+                                const ecs_entity_t voxel = voxels->value[voxel_index];
+                                // now get item and set to pickup
+                                if (zox_has(voxel, ItemLink)) {
+                                    const ecs_entity_t item = zox_get_value(voxel, ItemLink)
+                                    if (item) {
+                                        zox_set(pickup, ItemLink, { item })
+                                    }
                                 }
+                                // destroy voxel sound
+                                spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
+                            } else {
+                                zox_log_error("terrain is invalid")
                             }
-                            // destroy voxel sound
-                            spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
                         } else {
-                            zox_log_error("terrain is invalid")
+                            zox_log_error("cannot create pickup on non terrain chunk")
                         }
                     } else {
-                        zox_log_error("cannot create pickup on non terrain chunk")
+                        // cannot destroy voxel sound
+                        spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[42 + rand() % 6], 0.26, 1.4f * get_volume_sfx());
                     }
                 } else {
                     // cannot hit air

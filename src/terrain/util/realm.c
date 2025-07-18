@@ -54,6 +54,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     blocks->value[zox_block_stone - 1] = spawn_block_soil(world, zox_block_stone, "stone", stone_color);
     blocks->value[zox_block_sand - 1] = spawn_block_soil(world, zox_block_sand, "sand", sand_color);
     blocks->value[zox_block_obsidian - 1] = spawn_block_soil(world, zox_block_obsidian, "obsidian", obsidian_color);
+    zox_add_tag(blocks->value[zox_block_obsidian - 1], BlockInvinsible)
 
     // decor
     blocks->value[zox_block_vox_grass - 1] = spawn_realm_block_grass(world, zox_block_vox_grass, grass_color);

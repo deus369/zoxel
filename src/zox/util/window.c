@@ -8,11 +8,12 @@ int engine_spawn_window(ecs_world_t *world) {
 #endif
     load_settings(world, game_name);
     const ecs_entity_t window = spawn_window_opengl(world,
+        window_name,
         default_window_position,
         default_window_size,
         fullscreen,
         maximized,
-        window_name);
+        monitor);
     if (window == 0) {
         return EXIT_FAILURE;
     }

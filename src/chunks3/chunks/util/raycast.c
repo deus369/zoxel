@@ -141,7 +141,7 @@ byte raycast_voxel_node(
         if (hit_voxel) {
             // data->voxel = hit_voxel;
             if (raycasting_terrain) {
-                data->voxel_entity = voxels->value[hit_voxel - 1];
+                data->hit_block = voxels->value[hit_voxel - 1];
             }
             // if disabled
             if (!is_raycast_minivoxes) {

@@ -11,9 +11,9 @@ void VoxelActionASystem(ecs_iter_t *it) {
             continue;
         }
         zox_field_i(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
-        if (raycastVoxelData->voxel_entity) {
+        if (raycastVoxelData->hit_block && !zox_has(raycastVoxelData->hit_block, BlockInvinsible)) {
             raycast_action(world, raycastVoxelData, 0, 2);
-            spawn_pickup(world, raycastVoxelData->hit, raycastVoxelData->voxel_entity);
+            spawn_pickup(world, raycastVoxelData->hit, raycastVoxelData->hit_block);
         }
         triggerActionA->value = 0;
     }

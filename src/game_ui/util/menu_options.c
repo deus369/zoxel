@@ -1,4 +1,4 @@
-ecs_entity_t spawn_main_menu(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas, const char *header_label, const int2 position, const float2 anchor);
+ecs_entity_t spawn_main_menu(ecs_world_t*, const ecs_entity_t, const ecs_entity_t, const char*);
 
 void button_event_menu_main(ecs_world_t *world, const ClickEventData *event) {
     zox_geter_value(event->clicker, CanvasLink, ecs_entity_t, canvas)
@@ -8,7 +8,7 @@ void button_event_menu_main(ecs_world_t *world, const ClickEventData *event) {
         return;
     }
     zox_delete(menu)
-    spawn_main_menu(world, event->clicker, canvas, game_name, int2_zero, float2_half);
+    spawn_main_menu(world, event->clicker, canvas, game_name);
 }
 
 void button_event_volume_increase(ecs_world_t *world, const ClickEventData *event) {

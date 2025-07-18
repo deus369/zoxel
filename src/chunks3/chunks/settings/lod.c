@@ -8,7 +8,10 @@ byte terrain_depth = 4;         // 4 | 5
 byte block_vox_depth = 5;       // 4 | 5
 byte character_depth = 5;
 // options
-byte terrain_lod_far_max = 24;  // options
+byte terrain_lod_far_buffer = 2;    // buffer the near to far - adds a minimum low lods
+byte terrain_lod_near_min = 1;
+byte terrain_lod_near_max = 5;
+byte terrain_lod_far_max = 16;  // options
 
 extern int get_characters_count(ecs_world_t *world);
 extern int count_entities_npc(ecs_world_t *world);
