@@ -1,7 +1,7 @@
 void on_settings_slider_slid(ecs_world_t* world, const SlideEventData* data) {
     zox_geter_value(data->dragged, ParentLink, ecs_entity_t, slider)
     zox_geter_value(slider, SliderLabel, const char*, slider_name)
-    zox_sset_float(world, slider_name, data->value);
+    zoxs_set_float(world, slider_name, data->value);
 }
 
 ecs_entity_t spawn_menu_options(

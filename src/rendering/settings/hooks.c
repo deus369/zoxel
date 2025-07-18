@@ -5,5 +5,5 @@ void set_fog_density(ecs_world_t* world, void* value) {
 }
 
 void initialize_settings_rendering(ecs_world_t *world) {
-    zox_setting_float("fog density", set_fog_density, 0.5f, 0, 1)
+    zoxs_new_float_lim("fog density", set_fog_density, 0.5f, 0, 1)
 }

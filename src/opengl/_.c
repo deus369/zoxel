@@ -33,7 +33,7 @@ byte initialize_opengl(ecs_world_t *world) {
     check_compute();
     // check_geometry();
     if (is_log_sdl) {
-        zox_log("zoxel opengl version [%u] is es [%i]", shader_opengl_version, shader_include_es)
+        zox_log_sdl("zoxel opengl version [%u] is es [%i]", shader_opengl_version, shader_include_es)
         print_opengl();
     }
     return EXIT_SUCCESS;

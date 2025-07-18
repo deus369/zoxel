@@ -1,6 +1,3 @@
-// #define zox_debug_chunk_link_system
-// extern byte get_voxes_lod_from_camera_distance(byte distance_to_camera);
-
 byte set_entity_chunk(ecs_world_t *world,
     const ecs_entity_t e,
     ChunkLink *chunkLink,
@@ -34,8 +31,6 @@ byte set_entity_chunk(ecs_world_t *world,
         zox_log(" > chunk [%s] added e [%s] [%ix%ix%i] at length [%i]\n", zox_get_name(chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
 #endif
     }
-    // zox_log("[set_entity_chunk] setting character [%lu] chunk: %lu", e, chunk)
-    // Set RenderLod and RenderDisabled based on chunk!
     if (chunk) {
         // now render distabled
         const byte chunk_render_disabled = zox_get_value(chunk, RenderDisabled)
@@ -45,12 +40,10 @@ byte set_entity_chunk(ecs_world_t *world,
         }
         // now lod
         const byte chunk_render_lod = zox_get_value(chunk, RenderLod)
-
         // calculate_lods
         zox_geter_value(chunk, RenderDistance, byte, chunk_render_distance)
         zox_geter_value(e, NodeDepth, byte, node_depth)
         const byte new_lod = distance_to_lod_npc(chunk_render_distance);
-
         zox_geter_value(e, RenderLod, byte, lod)
         if (lod != new_lod) {
             zox_set(e, RenderLod, { new_lod })

@@ -7,6 +7,5 @@ static inline float4 float2_to_rotation(float2 value) {
     float4 output = quaternion_identity;
     output.x = value.x;
     output.y = value.y;
-    // quaternion_normalize(&output);
     return output;
 }

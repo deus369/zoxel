@@ -8,27 +8,41 @@
 void MouseExtractSystem(ecs_iter_t *it) {
     zox_field_world()
     // remember: sdl doesn't do multiple mouses
+    int2 screen_size = zox_get_value(mouse_lock_window, WindowSize) // viewport_dimensions);
+    // zox_log("screen_size.y: %i", screen_size.y)
+    if (screen_size.x % 2 != 0) {
+        screen_size.x--;
+    }
+    if (screen_size.y % 2 != 0) {
+        screen_size.y--;
+    }
     int2 mouse_position;
     Uint32 buttons = SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
-    int2_flip_y(&mouse_position, viewport_dimensions);
+    int2_flip_y(&mouse_position, screen_size);
     byte button_pressed_left = 0;
     // byte button_pressed_middle = 0;
     byte button_pressed_right = 0;
-    if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) button_pressed_left = 1;
+    if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+        button_pressed_left = 1;
+    }
     // if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) button_pressed_middle = 1;
-    if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) button_pressed_right = 1;
+    if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+        button_pressed_right = 1;
+    }
     zox_field_in(Children, childrens, 1)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Children, childrens, children)
         // using button_pressed_left
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];
-            if (!zevice) continue;
+            if (!zevice) {
+                continue;
+            }
             if (zox_has(zevice, ZevicePointerPosition)) {
                 if (global_any_fingers_down) {
                     zox_geter(zevice, ZevicePointerPosition, position)
                     int2 position2 = position->value;
-                    int2_flip_y(&position2, viewport_dimensions);
+                    int2_flip_y(&position2, screen_size);
                     SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)
                     SDL_WarpMouseInWindow(sdl_window, position2.x, position2.y);
                 } else {
@@ -39,7 +53,9 @@ void MouseExtractSystem(ecs_iter_t *it) {
                     position->value = mouse_position;
                 }
             }
-            if (global_any_fingers_down) continue;  // does this break it?
+            if (global_any_fingers_down) {
+                continue;  // does this break it?
+            }
             if (zox_has(zevice, ZevicePointer)) {
                 zox_get_muter(zevice, ZevicePointer, clicker)
                 // convert press state, with previous state, to a proper value that holds press and release data

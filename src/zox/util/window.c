@@ -1,14 +1,22 @@
 int engine_spawn_window(ecs_world_t *world) {
     initialize_apps_sdl(world);
+    const char* window_name;
 #ifdef zox_mod_games
-    const ecs_entity_t window = spawn_window_opengl(world, default_window_position, default_window_size, fullscreen, game_name);
+    window_name = game_name;
 #else
-    const ecs_entity_t window = spawn_window_opengl(world, default_window_position, default_window_size, fullscreen, "nogame");
+    window_name = "nogame";
 #endif
+    load_settings(world, game_name);
+    const ecs_entity_t window = spawn_window_opengl(world,
+        default_window_position,
+        default_window_size,
+        fullscreen,
+        maximized,
+        window_name);
     if (window == 0) {
         return EXIT_FAILURE;
     }
-    load_settings(world, game_name);
+    main_app = window;
     initialize_rendering(world);
     initialize_sounds(world);
     // Files

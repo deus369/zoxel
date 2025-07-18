@@ -1,10 +1,9 @@
 #include "vulkan.c"
-#include "sdl_opengl.c"
-#include "screen.c"
-#include "sdl.c"
-#include "window.c"
-#include "app.c"
+#include "opengl.c"
+#include "hooks.c"
+#include "sdl_events.c"
 #include "app_vulkan.c"
+#include "app_entity.c"
 
 void dispose_apps_sdl(ecs_world_t *world, void *ctx) {
     // dispose_sdl_cursor();

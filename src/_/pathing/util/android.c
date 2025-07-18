@@ -37,13 +37,13 @@ byte create_directory(const char* path) {
 }
 
 AAssetManager* get_asset_manager() {
-    #ifdef zoxel_using_sdl
+#ifdef zox_mod_sdl
     JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
     jobject activity = (jobject) SDL_AndroidGetActivity();
-    #else
+#else
     JNIEnv* env = NULL;
     jobject activity = NULL;
-    #endif
+#endif
     jclass activityClass = (*env)->GetObjectClass(env, activity);
     jmethodID methodID = (*env)->GetMethodID(env, activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
     jobject assetManager = (*env)->CallObjectMethod(env, activity, methodID);

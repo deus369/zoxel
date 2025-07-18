@@ -70,18 +70,20 @@ void load_settings(ecs_world_t* world, const char* app_name) {
         char* name = strtok(line, ":");
         char* type = strtok(NULL, ":");
         char* val  = strtok(NULL, "");
-        if (!name || !type || !val) continue;
+        if (!name || !type || !val) {
+            continue;
+        }
         if (strcmp(type, "byte") == 0) {
             byte v = (byte)atoi(val);
-            zox_sset_byte(world, name, v);
+            zoxs_set_byte(world, name, v);
         } else if (strcmp(type, "int") == 0) {
             int v = atoi(val);
-            zox_sset_int(world, name, v);
+            zoxs_set_int(world, name, v);
         } else if (strcmp(type, "float") == 0) {
             float v = strtof(val, NULL);
-            zox_sset_float(world, name, v);
+            zoxs_set_float(world, name, v);
         } else if (strcmp(type, "string") == 0) {
-            zox_sset_string(world, name, val);
+            zoxs_set_string(world, name, val);
         }
     }
     fclose(f);

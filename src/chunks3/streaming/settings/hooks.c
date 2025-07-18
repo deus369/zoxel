@@ -4,5 +4,5 @@ void set_render_distance(ecs_world_t* world, void* value) {
 }
 
 void initialize_settings_streaming(ecs_world_t *world) {
-    zox_setting_float("render distance", set_render_distance, 0.5f, 0, 1)
+    zoxs_new_float_lim("render distance", set_render_distance, 0.5f, 0, 1)
 }

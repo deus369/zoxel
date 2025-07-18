@@ -51,26 +51,12 @@ void game_start_player_new_positioner(ecs_world_t *world, const ecs_entity_t pla
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     TerrainPlace spawn_place = find_position_in_terrain(world, terrain);
-    // if character not in chunk, spawn one here
-    //const byte depth = terrain_depth;
-    //const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    // const int3 chunk_position = real_position_to_chunk_position(spawn_place.position, chunk_dimensions, depth);
-    // spawn_place.chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
-    // check if exists first
     if (!zox_valid(spawn_place.chunk)) {
         zox_log_error("+ placement failure: player character placed into [%ix%ix%i]", spawn_place.chunk_position.x, spawn_place.chunk_position.y, spawn_place.chunk_position.z)
-        return;
+    } else {
+        zox_set(character, Position3D, { spawn_place.position })
+        zox_set(camera, Position3D, { spawn_place.position })
     }
-    zox_set(character, Position3D, { spawn_place.position })
-    zox_set(camera, Position3D, { spawn_place.position })
-    /*zox_set(character, ChunkLink, { spawn_place.chunk })
-    zox_set(character, ChunkPosition, { spawn_place.chunk_position })
-    // add to chunk links
-    zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
-    if (add_to_EntityLinks(entityLinks, character)) {
-        zox_mut_end(spawn_place.chunk, EntityLinks)
-    }*/
-    // we should start streaming here
 }
 
 ecs_entity_t game_start_player_new(ecs_world_t *world,

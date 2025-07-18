@@ -70,20 +70,15 @@ char* get_base_path() {
 
 char* initialize_base_path() {
     char* base_path;
-    #ifdef zoxel_on_android
-        base_path = clone_str(SDL_AndroidGetInternalStoragePath());
-        __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
-    #else
-        base_path = get_base_path();
-        /* ifdef zoxel_using_sdl
-            base_path = SDL_GetBasePath();
-        #else */
-        // can i use a base path here based on platform?
-        // zox_log(" ! SDL is disabled\n")
-    #endif
-    #ifdef zoxel_debug_base_path
-        debug_base_path(base_path);
-    #endif
+#ifdef zoxel_on_android
+    base_path = clone_str(SDL_AndroidGetInternalStoragePath());
+    __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
+#else
+    base_path = get_base_path();
+#endif
+#ifdef zoxel_debug_base_path
+    debug_base_path(base_path);
+#endif
     return base_path;
 }
 

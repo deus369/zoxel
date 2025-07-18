@@ -1,18 +1,20 @@
 // how to link main_window, viewport_dimensions and mouse
 void MouseConstrainSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     // todo: support for multi window contstraints, pass in multiple sdl windows here
-    if (!mouse_lock_window) return;
-    SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)
-    const int2 app_size = zox_get_value(mouse_lock_window, WindowSize)
-    const int2 lock_position = (int2) { app_size.x / 2, app_size.y / 2 };
-    zox_field_in(MouseLock, mouseLocks, 1)
-    zox_field_in(Children, childrens, 2)
+    if (!zox_valid(mouse_lock_window)) {
+        return;
+    }
+    zox_geter_value2(mouse_lock_window, SDLWindow, SDL_Window*, sdl_window)
+    const int2 lock_position = get_mouse_center_point(world, mouse_lock_window);
+    zox_sys_begin()
+    zox_sys_in(MouseLock)
+    zox_sys_in(Children)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MouseLock, mouseLocks, mouseLock)
+        zox_sys_i(MouseLock, mouseLock)
+        zox_sys_i(Children, children)
         SDL_SetRelativeMouseMode(mouseLock->value);
         if (mouseLock->value) {
-            zox_field_i(Children, childrens, children)
             // const int2 new_mouse_position = (int2) { viewport_dimensions.x / 2, viewport_dimensions.y / 2  };
             SDL_WarpMouseInWindow(sdl_window, lock_position.x, lock_position.y);
             for (int j = 0; j < children->length; j++) {

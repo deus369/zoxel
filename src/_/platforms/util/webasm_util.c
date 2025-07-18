@@ -3,7 +3,7 @@
 
 // #define debug_ui_scaling
 extern int2 screen_dimensions;  // from apps/settings
-extern void on_viewport_resized(ecs_world_t *world, int2 new_screen_dimensions);
+extern void set_viewport_size(ecs_world_t*, int2);
 
 // emscripten app functions (void)
 int get_canvas_width() { return 1280; }
@@ -31,7 +31,7 @@ byte update_web_canvas(ecs_world_t *world) {
     int2 canvas_size = get_canvas_size();
     if (!int2_equals(screen_dimensions, canvas_size)) {
         zox_log(" > update_web_canvas: Canvas size has changed [%i x %i]\n", canvas_size.x, canvas_size.y)
-        on_viewport_resized(world, (int2) { canvas_size.x, canvas_size.y });
+        set_viewport_size(world, (int2) { canvas_size.x, canvas_size.y });
         return 1;
     }
     return 0;

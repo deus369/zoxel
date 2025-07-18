@@ -24,13 +24,13 @@
 #include "networking/networking.c"
 #include "players/players.c"
 #include "inputs/inputs.c"
-#include "apps/apps.c"          // test removing sdl for engine stability
+#include "apps/apps.c"
 #include "sdl/sdl.c"
 #include "opengl/_.c"
 #include "vulkan/_.c"
 
 // basic b locks
-#include "assets/assets.c"        // uses sdl path function atm
+#include "assets/assets.c" // uses sdl path function atm
 #include "nodes/nodes.c"
 #include "realms/realms.c"
 #include "games/games.c"
@@ -115,7 +115,7 @@ zox_begin_module(Zox)
     zox_import_module(Players)
     zox_import_module(Inputs)
     if (!headless) {
-        zox_import_module(Apps) // sdl
+        zox_import_module(Apps)
         zox_import_module(Sdl)
     }
     zox_import_module(Assets)

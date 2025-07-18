@@ -1,6 +1,3 @@
-ecs_entity_t prefab_app;
-ecs_entity_t main_app;
-
 ecs_entity_t spawn_prefab_app(ecs_world_t *world, const int2 window_position, const int2 window_size) {
     zox_prefab()
     zox_prefab_name("app")
@@ -8,7 +5,8 @@ ecs_entity_t spawn_prefab_app(ecs_world_t *world, const int2 window_position, co
     zox_prefab_set(e, WindowPosition, {window_position })
     zox_prefab_set(e, WindowSize, { window_size })
     zox_prefab_set(e, WindowFullscreen, { 0 })
+    zox_prefab_set(e, WindowMaximized, { 0 })
     zox_prefab_set(e, WindowSizeRestore, { int2_zero })
-    prefab_app = e;
+    zox_prefab_set(e, WindowPositionRestore, { int2_zero })
     return e;
 }

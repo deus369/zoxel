@@ -54,7 +54,7 @@ zox_begin_module(ZoxGame)
 
     // physics
     // target_fps = 15;
-    friction3D = 5.5f; // 560;
+    friction3D = 8.5f; // 560;
     air_friction3D = 0.4f; // 40;
     bounce_lost_force = 0.15f;
     // zox_default_gravity.y = -8;
@@ -146,6 +146,7 @@ zox_begin_module(ZoxGame)
     test_items_blocks = 1;
     test_all_skills = 1;
 
+    // get_debug_label_app
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);
     // set_prefab_debug_label(world, &get_label_player_stats);

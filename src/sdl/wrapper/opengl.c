@@ -1,26 +1,3 @@
-byte opengl_es_supported() {
-    byte is_supported = 0;
-    int num_render_drivers = SDL_GetNumRenderDrivers();
-    #ifdef zoxel_debug_opengl
-    zox_log(" > found [%i] render drivers\n", num_render_drivers)
-    #endif
-    for (int i = 0; i < num_render_drivers; i++) {
-        SDL_RendererInfo info;
-        SDL_GetRenderDriverInfo(i, &info);
-        if (strstr(info.name, "opengles")) {
-            #ifdef zoxel_debug_opengl
-            zox_log("     + render driver [%s]\n", info.name)
-            #endif
-            is_supported = 1;
-        } else {
-            #ifdef zoxel_debug_opengl
-            zox_log("     - render driver [%s]\n", info.name)
-            #endif
-        }
-    }
-    return is_supported;
-}
-
 void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // 24 | 32
@@ -58,14 +35,4 @@ SDL_GLContext* create_sdl_opengl_context(SDL_Window* window) {
     }
     // SDL_Delay(10000);
     return context;
-}
-
-void print_supported_renderers() {
-    const int num_render_drivers = SDL_GetNumRenderDrivers();
-    zox_log(" > found [%i] render drivers\n", num_render_drivers)
-    for (int i = 0; i < num_render_drivers; i++) {
-        SDL_RendererInfo info;
-        SDL_GetRenderDriverInfo(i, &info);
-        zox_log("     + render driver [%s]\n", info.name)
-    }
 }
