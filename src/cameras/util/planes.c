@@ -79,8 +79,8 @@ void calculate_planes_from_frustum_d3(const double3 *frustum, plane *planes) {
 
 // clockwise or counter clockwise determines normal direction
 float3 generate_plane_normal_f3(const float3 point_a, const float3 point_b, const float3 point_c) {
-    const float3 vector_ab = float3_sub(point_a, point_b);
-    const float3 vector_ac = float3_sub(point_a, point_c);
+    const float3 vector_ab = float3_subtract(point_a, point_b);
+    const float3 vector_ac = float3_subtract(point_a, point_c);
     return float3_normalize(float3_cross(vector_ab, vector_ac));
 }
 

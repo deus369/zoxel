@@ -16,9 +16,9 @@ void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
         float3 forward = float3_cross(planes[i].normal, right);
         float3 corners[4];
         corners[0] = float3_add(float3_add(plane_point, right), forward);
-        corners[1] = float3_add(float3_sub(plane_point, right), forward);
-        corners[2] = float3_sub(float3_sub(plane_point, right), forward);
-        corners[3] = float3_sub(float3_add(plane_point, right), forward);
+        corners[1] = float3_add(float3_subtract(plane_point, right), forward);
+        corners[2] = float3_subtract(float3_subtract(plane_point, right), forward);
+        corners[3] = float3_subtract(float3_add(plane_point, right), forward);
         render_line3D(world, corners[0], corners[1], plane_color);
         render_line3D(world, corners[1], corners[2], plane_color);
         render_line3D(world, corners[2], corners[3], plane_color);

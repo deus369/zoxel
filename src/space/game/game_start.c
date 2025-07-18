@@ -28,10 +28,22 @@ void link_camera_to_terrain(ecs_world_t *world, const ecs_entity_t player) {
         return;
     }
 
+    // if character
     if (game_rule_attach_to_character) {
-        ecs_entity_t character = spawn_character3D_player_in_terrain(world, player);
-        zox_set(character, DisableGravity, { 1 })
-        zox_set(character, DisableMovement, { 1 })
+        byte is_new_game = 1;
+#ifndef zox_disable_save_games
+        is_new_game = !has_save_game_file(game_name, "player.dat");
+#endif
+        ecs_entity_t character;
+        if (!is_new_game) {
+            character = game_start_player_load(world, player);
+            delay_event(world, &load_player_e, player, 0.5f);
+        } else {
+            character = game_start_player_new(world, player);
+        }
+        delay_event(world, &spawn_player_game_ui, player, 0.01);
+        //zox_set(character, DisableGravity, { 1 })
+        //zox_set(character, DisableMovement, { 1 })
     } else {
         set_camera_free(world, camera, 1);
     }

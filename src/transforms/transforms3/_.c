@@ -5,7 +5,6 @@
 zox_declare_tag(EulerOverride)
 zox_declare_tag(CameraTransform)
 zox_component_float3(Position3D)
-zox_component_float3(LastPosition3D)
 zox_component_float4(Rotation3D)     // A quaternion rotation
 zox_component_float3(Scale3D)          // A Non Uniform 3D Scale
 zox_component(Matrix, float4x4)       // A matrix used for rendering
@@ -22,7 +21,6 @@ zox_begin_module(Transforms3)
     zox_define_tag(EulerOverride)
     zox_define_tag(CameraTransform)
     zox_define_component_float3(Position3D)
-    zox_define_component_float3(LastPosition3D)
     zox_define_component_float4(Rotation3D)
     zox_define_component_float3(Scale3D)
     zox_define_component(Matrix)

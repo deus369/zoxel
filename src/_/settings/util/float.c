@@ -13,7 +13,7 @@ byte zox_slim_float(ecs_world_t* world, const char *name, float min, float max) 
                 s.min_float = min;
                 s.max_float = max;
                 // now set again
-                float new_value = float_clamp(s.value_float, s.min_float, s.max_float);
+                float new_value = clampf(s.value_float, s.min_float, s.max_float);
                 if (new_value != s.value_float) {
                     s.value_float = new_value;
                     s.on_set(world, &new_value);
@@ -35,7 +35,7 @@ byte zox_sset_float(ecs_world_t *world, const char *name, float value) {
         if (strcmp(name, s.name) == 0) {
             // zox_log("+ setting float [%s] at [%i]", name, i)
             if (s.type == zox_data_type_float) {
-                float new_value = float_clamp(value, s.min_float, s.max_float);
+                float new_value = clampf(value, s.min_float, s.max_float);
                 if (new_value != s.value_float) {
                     s.value_float = new_value;
                     s.on_set(world, &new_value);

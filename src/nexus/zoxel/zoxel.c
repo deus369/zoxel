@@ -51,7 +51,19 @@ zox_begin_module(ZoxGame)
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
-    // target_fps = 30;
+
+    // physics
+    // target_fps = 15;
+    friction3D = 5.5f; // 560;
+    air_friction3D = 0.4f; // 40;
+    bounce_lost_force = 0.15f;
+    // zox_default_gravity.y = -8;
+    zox_jump_power = 4;
+    run_speed = 1.46;
+    run_accceleration = 2.2;
+    backwards_multiplier = 0.7f;
+    player_movement_power = (float2) { 14, 14 };
+    max_velocity3D = (float2) { 1.3f, 1.3f };
 
     zox_game_type = zox_game_mode_3D;
     menu_sky_color = (color_rgb) { 0, 5, 0 };
@@ -103,13 +115,6 @@ zox_begin_module(ZoxGame)
     block_spawn_chance_grass = 1424; //  512 | 1024 | 2048 | 3000
     terrain_amplifier = 64;
 
-    // physics
-    friction3D = 1800; // 560;
-    air_friction3D = 320; // 40;
-    zox_jump_power = 166;
-    // zox_default_gravity.y = -8;
-    bounce_lost_force = 0.2f;
-
     // render distance settings
     // initial_terrain_lod = 2; // 2 |3
     // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
@@ -150,6 +155,7 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_quests);
     // set_prefab_debug_label(world, &get_label_player_chunk_link);
     set_prefab_debug_label(world, &debug_label_lods);
+    set_prefab_debug_label(world, &debug_label_collisions);
 
     // add_hook_key_down(key_down_test_aura);
     // add_hook_key_down(key_down_toggle_streaming);

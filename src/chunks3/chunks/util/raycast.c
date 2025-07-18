@@ -73,7 +73,7 @@ byte raycast_voxel_node(
     ecs_entity_t chunk_last = chunk;
     VoxelNode *node_last = NULL;
     // zero for terrain raycasting
-    float3 local_ray_origin = float3_sub(ray_origin, chunk_position_real);
+    float3 local_ray_origin = float3_subtract(ray_origin, chunk_position_real);
     position_global = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
     const float3 ray_origin_scaled = float3_multiply_float(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
     // ray

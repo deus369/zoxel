@@ -65,7 +65,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
             }
             value *= envelope(time, sound_time_length, attack, dampen);
             value *= volume;
-            value = float_clamp(value, -sound_bounds, sound_bounds);
+            value = clampf(value, -sound_bounds, sound_bounds);
             soundData->value[j] = value;
         }
         triggerSound->value = zox_sound_play_trigger;

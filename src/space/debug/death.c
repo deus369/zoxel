@@ -18,7 +18,7 @@ void toggle_player_death(ecs_world_t *world, int32_t keycode) {
             zox_delete(characterLink->value)
         } else {
             zox_log("+ spawning player character")
-            spawn_character3D_player_in_terrain(world, player);
+            game_start_player_new(world, player);
         }
     }
 }

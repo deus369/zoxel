@@ -10,7 +10,7 @@
 zox_begin_module(Physics3)
     zox_define_components_physics3(world);
     define_systems_physics3(world);
-    zox_import_module(Collisions3D)
+    zox_import_module(Collisions3)
 zox_end_module(Physics3)
 
 #endif

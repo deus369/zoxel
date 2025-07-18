@@ -44,7 +44,7 @@ static inline float3 float3_add(const float3 inputA, const float3 inputB) {
     return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
 }
 
-static inline float3 float3_sub(const float3 inputA, const float3 inputB) {
+static inline float3 float3_subtract(const float3 inputA, const float3 inputB) {
     return (float3) { inputA.x - inputB.x, inputA.y - inputB.y, inputA.z - inputB.z };
 }
 

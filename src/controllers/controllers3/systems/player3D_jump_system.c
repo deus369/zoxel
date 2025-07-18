@@ -1,25 +1,29 @@
 // #define zox_log_jumping
+
+// todo: it shouldnt use setters
+//      - we should get player data from a Character!
 void Player3DJumpSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_in(CharacterLink, characterLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_in(CharacterLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CharacterLink, characterLinks, characterLink)
+        zox_sys_i(CharacterLink, characterLink)
+        zox_sys_i(DeviceMode, deviceMode)
+        zox_sys_i(DeviceLinks, deviceLinks)
         const ecs_entity_t character = characterLink->value;
         if (!zox_valid(character) || !zox_has(character, Character3D)) {
             continue;
         }
-        const DisableMovement *disableMovement = zox_get(character, DisableMovement)
+        zox_geter(character, DisableMovement, disableMovement)
         if (disableMovement->value) {
             continue;
         }
-        zox_geter(character, Grounded, grounded)
-        if (!grounded->value) {
+        zox_geter_value(character, CanJump, byte, can_jump)
+        if (!can_jump || can_jump == 255) {
             continue;
         }
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         byte is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
@@ -32,11 +36,11 @@ void Player3DJumpSystem(ecs_iter_t *it) {
                     is_jump_triggered = 1;
                 }
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device, Gamepad)) {
-                const Children *zevices = zox_get(device, Children)
+                zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
                     ecs_entity_t zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZeviceButton)) {
-                        const DeviceButtonType *deviceButtonType = zox_get(zevice_entity, DeviceButtonType)
+                        zox_geter(zevice_entity, DeviceButtonType, deviceButtonType)
                         if (deviceButtonType->value == zox_device_button_a) {
                             zox_geter(zevice_entity, ZeviceDisabled, zeviceDisabled)
                             if (zeviceDisabled->value) {
@@ -56,9 +60,10 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             continue;
         }
         if (!zox_gett_value(character, Jump)) {
+            zox_set(character, CanJump, { 255 })
             zox_set(character, Jump, { jump_timing })
 #ifdef zox_log_jumping
-            zox_log(" > in air [%lu] again (%f)\n", character, zox_current_time)
+            zox_log("+ %s jumping (%f)", zox_get_name(character), zox_current_time)
 #endif
         }
     }

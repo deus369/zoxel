@@ -16,7 +16,7 @@ Ray camera_point_to_ray_f3(const float3* frustum_corners, const double2 point) {
     float3 far_point = float3_lerp(far_top, far_bottom, point.y);
     // Create ray
     ray.origin = near_point;
-    ray.normal = float3_normalize(float3_sub(far_point, near_point));
+    ray.normal = float3_normalize(float3_subtract(far_point, near_point));
     return ray;
 }
 

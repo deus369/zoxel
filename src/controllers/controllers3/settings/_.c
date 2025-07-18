@@ -14,8 +14,8 @@ const float max_mouse_delta2 = 200.0f;
 const double max_rotate_speed = 0.2; //  0.23;
 #define disable_player_rotate_alpha_force
 // shit remove this atm, it doubles up for coop
-const double run_speed = 1.8;
-const double run_accceleration = 2.2;
-const float backwards_multiplier = 0.8f;
-const float2 player_movement_power = { 17, 19 };
-const float2 max_velocity3D = { 1.24f, 1.4f }; // 60 * 60, 160 * 60 };
+double run_speed = 1.8;
+double run_accceleration = 2.2;
+float backwards_multiplier = 0.8f;
+float2 player_movement_power = { 17, 19 };
+float2 max_velocity3D = { 1.24f, 1.4f };

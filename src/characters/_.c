@@ -3,6 +3,8 @@
 
 #include "data/settings.c"
 zox_declare_tag(Character)
+zox_component_byte(CanJump)
+zox_component_double(Jump)
 zox_component_entity(CharacterLink)
 // todo: move these to inputs
 zox_component_byte(TriggerActionA)
@@ -12,9 +14,18 @@ zox_component_byte(TriggerActionB)
 #include "characters3D/_.c"
 #include "util/buttons.c"
 
+static inline byte get_character_can_jump(ecs_world_t *world, ecs_entity_t c) {
+    return zox_valid(c) && zox_has(c, CanJump) ? zox_gett_value(c, CanJump) : 0;
+}
+static inline ecs_entity_t get_player_character(ecs_world_t *world, ecs_entity_t p) {
+    return zox_valid(p) && zox_has(p, CharacterLink) ? zox_gett_value(p, CharacterLink) : 0;
+}
+
 zox_begin_module(Characters)
     add_hook_terminal_command(process_arguments_characters);
     zox_define_tag(Character)
+    zox_define_component_byte(CanJump)
+    zox_define_component_byte(Jump)
     zox_define_component_byte(TriggerActionA)
     zox_define_component_byte(TriggerActionB)
     zox_define_component_entity(CharacterLink)

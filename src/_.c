@@ -92,7 +92,7 @@
 #include "turrets/turrets.c"
 #include "combat/combat.c"
 #include "maps/maps.c"
-#include "ai/ai.c"
+#include "ai/_.c"
 #include "editor_ui/editor_ui.c"
 // on top
 #include "controllers/_.c"
@@ -178,7 +178,7 @@ zox_begin_module(Zox)
     zox_import_module(Farming)
     zox_import_module(Turrets)
     zox_import_module(Maps)
-    zox_import_module(AI)
+    zox_import_module(Npcs)
     zox_import_module(EditorUI)
     // space
 #if defined(zox_mod_players)

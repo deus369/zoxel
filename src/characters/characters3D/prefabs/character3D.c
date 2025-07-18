@@ -11,8 +11,6 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     zox_prefab_add(e, ZoxName)
     // rendering
     zox_set(e, RenderDisabled, { 0 })
-    // physics -- too big atm to refactor
-    add_physics3D(world, e, (float3) { 0.25f, 0.5f, 0.25f });   // starting bounds will be 2 blocks tall
     prefab_add_cube_lines(world, e, color_white, 0);
     // constraints
     zox_prefab_set(e, Position3DBounds, { float6_zero })
@@ -32,6 +30,25 @@ ecs_entity_t spawn_prefab_character3D(ecs_world_t *world, const ecs_entity_t pre
     // hierarchy
     zox_prefab_add(e, Children)         // for bones, particles, etc (transforms)
     zox_prefab_add(e, ElementLinks)     // uis
+    // physics3
+    // physics -- too big atm to refactor
+    zox_add_tag(e, Frictioned)
+    zox_prefab_set(e, LastPosition3D, { float3_zero })
+    zox_prefab_set(e, LastUnstuck3, { float3_zero })
+    zox_prefab_set(e, InitializePhysics3D, { 0 })
+    zox_prefab_set(e, Velocity3D, { { 0, 0, 0 } })
+    zox_prefab_set(e, Acceleration3D, { { 0, 0, 0 } })
+    zox_prefab_set(e, Omega3D, { quaternion_identity })
+    zox_prefab_set(e, Alpha3D, { quaternion_identity })
+    zox_prefab_set(e, Gravity3D, { zox_default_gravity })
+    zox_prefab_set(e, DisableGravity, { 0 })
+    zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.5f, 0.25f } })
+    zox_prefab_set(e, DisableMovement, { 0 })
+    zox_prefab_set(e, Grounded, { 0 })
+    zox_prefab_set(e, CanJump, { 0 })
+    zox_prefab_set(e, Jump, { 0 })
+    zox_prefab_set(e, Collision, { 0 })
+    zox_prefab_set(e, CollisionDistance, { float3_zero })
     return e;
 }
 
