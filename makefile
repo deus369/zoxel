@@ -17,7 +17,7 @@ endif
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
 
-.PHONY: all run dev rund gdb val clean package-deb package-pac package pick
+.PHONY: all run dev rund gdb val clean package-deb package-pac package pick runp install install-deb
 
 # Our makes
 
@@ -170,6 +170,17 @@ package:
 		echo "Unsupported packaging system."; exit 1; \
 	fi
 
+install-deb:
+	@echo "Installing $(PACKAGE_DIR).deb"
+	@sudo apt install ./$(PACKAGE_DIR).deb
+
+install:
+	@if command -v dpkg-deb >/dev/null; then \
+		$(MAKE) install-deb; \
+	else \
+		echo "Unsupported packaging system."; exit 1; \
+	fi
+
 help:
 	@printf "\n\033[1;30m⟡ Zoxel Build System ⟡\033[0m\n\n"
 	@printf "  \033[38;5;208m▶ build\033[0m    Build release for $(GAME)\n"
@@ -181,5 +192,6 @@ help:
 	@printf "  \033[38;5;208m▶ pick\033[0m     Pick & build game\n"
 	@printf "  \033[38;5;208m▶ runp\033[0m     Pick & run game\n\n"
 	@printf "  \033[38;5;208m▶ package\033[0m  Package game (auto)\n"
+	@printf "  \033[38;5;208m▶ install\033[0m  Installs game!!!\n"
 	@printf "  \033[38;5;208m▶ clean\033[0m    Clean build & dist\n"
 	@printf "  \033[38;5;208m▶ flecs\033[0m    Rebuild Flecs ECS\n\n"
