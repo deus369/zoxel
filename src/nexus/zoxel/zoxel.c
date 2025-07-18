@@ -153,9 +153,9 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_skills);
     // set_prefab_debug_label(world, &get_label_player_actions);
     // set_prefab_debug_label(world, &get_label_player_quests);
-    // set_prefab_debug_label(world, &get_label_player_chunk_link);
-    set_prefab_debug_label(world, &debug_label_lods);
-    set_prefab_debug_label(world, &debug_label_collisions);
+    set_prefab_debug_label(world, &get_label_player_chunk_link);
+    // set_prefab_debug_label(world, &debug_label_lods);
+    // set_prefab_debug_label(world, &debug_label_collisions);
 
     // add_hook_key_down(key_down_test_aura);
     // add_hook_key_down(key_down_toggle_streaming);

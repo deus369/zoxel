@@ -63,13 +63,13 @@ void game_start_player_new_positioner(ecs_world_t *world, const ecs_entity_t pla
     }
     zox_set(character, Position3D, { spawn_place.position })
     zox_set(camera, Position3D, { spawn_place.position })
-    zox_set(character, ChunkLink, { spawn_place.chunk })
+    /*zox_set(character, ChunkLink, { spawn_place.chunk })
     zox_set(character, ChunkPosition, { spawn_place.chunk_position })
     // add to chunk links
     zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
     if (add_to_EntityLinks(entityLinks, character)) {
         zox_mut_end(spawn_place.chunk, EntityLinks)
-    }
+    }*/
     // we should start streaming here
 }
 
@@ -131,7 +131,7 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
         .terrain = terrain,
         .rotation = quaternion_identity,
         .position = fake_spawn_position,
-        .chunk_position = chunk_position,
+        // .chunk_position = chunk_position,
         // .terrain_chunk = spawn_place.chunk,
     };
     const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
