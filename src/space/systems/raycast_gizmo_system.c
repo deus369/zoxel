@@ -90,15 +90,16 @@ void raycast_terrain_gizmo(ecs_world_t *world,
 }
 
 void RaycastGizmoSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(CameraLink, cameraLinks, 1)
-    zox_field_in(VoxLink, voxLinks, 2)
-    zox_field_out(RaycastVoxelData, raycastVoxelDatas, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(CameraLink)
+    zox_sys_in(VoxLink)
+    zox_sys_out(RaycastVoxelData)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(CameraLink, cameraLinks, cameraLink)
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        zox_field_o(RaycastVoxelData, raycastVoxelDatas, raycastVoxelData)
+        zox_sys_e()
+        zox_sys_i(CameraLink, cameraLink)
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_o(RaycastVoxelData, raycastVoxelData)
         if (!zox_valid(cameraLink->value) || !zox_valid(voxLink->value)) {
             continue;
         }
@@ -106,8 +107,6 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
             zox_log_error("camera attached has no character link")
             continue;
         }
-        // caster only valid if camera is attached
-        // zox_geter_value(cameraLink->value, CanRoam, const byte, is_camera_free)
         zox_geter_value(cameraLink->value, CharacterLink, const ecs_entity_t, e2)
         ecs_entity_t caster = e2 == e ? e : 0;
         raycast_terrain_gizmo(world,

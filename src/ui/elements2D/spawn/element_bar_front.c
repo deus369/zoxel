@@ -19,6 +19,6 @@ ecs_entity_t spawn_elementbar2D_front(ecs_world_t *world,
     zox_set(e, Color, { front_color })
     initialize_element(world, e, parent, canvas, int2_zero, pixel_size, int2_one, anchor, layer, position2D, position_in_canvas);
     zox_set(e, RenderDisabled, { render_disabled })
-    zox_set(e, MeshDirty, { mesh_state_trigger2 })
+    zox_set(e, MeshDirty, { mesh_state_trigger })
     return e;
 }

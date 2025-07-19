@@ -68,6 +68,6 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
                 total_mesh_offset,
                 voxScale->value);
         }
-        meshDirty->value = mesh_state_trigger;
+        meshDirty->value = mesh_state_trigger_slow;
     }
 } zox_declare_system(ChunkColorsBuildSystem)

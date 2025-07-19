@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world, ecs_entity_t prefab) {
     zox_prefab_child(prefab)
-    // add_ui_plus_components(world, e);
+    zox_prefab_name("canvas_overlay")
     zox_add_tag(e, CanvasOverlay)
     // zox_add_tag(e, FillTexture)
     zox_prefab_set(e, AnimationState, { 0 })

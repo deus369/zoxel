@@ -135,10 +135,6 @@ static inline void zox_gpu_render(uint length) {
     glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, NULL);
 }
 
-static inline void zox_gpu_render_lines(uint length) {
-    glDrawArrays(GL_LINES, 0, length);
-}
-
 static inline void zox_gpu_render_points(uint length) {
     glDrawArrays(GL_POINTS, 0, length);
 }

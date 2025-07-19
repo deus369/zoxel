@@ -7,9 +7,10 @@
 #include "layouts2D/canvas_stack_system.c"
 #include "layouts2D/window_layer_system.c"
 
-#include "rendering/element_mesh2D_system.c"
+#include "rendering/element_begin_system.c"
 #include "rendering/render_texture_render_system.c"
 #include "rendering/element_render_system.c"
+#include "rendering/render_texture_begin_system.c"
 
 #include "inputs/button_click_event_system.c"
 #include "inputs/dragger_end_system.c"
@@ -19,10 +20,12 @@
 #include "inputs/zevice_click_system.c"
 #include "click_sound_system.c"
 
+zox_increment_system_with_reset(InitializeElement, zox_dirty_end)
 zox_increment_system_with_reset_extra(ClickState, zox_click_state_trigger_clicked, zox_click_state_clicked_idle, zox_click_state_trigger_released, zox_click_state_idle)
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_idle)
 
 void define_systems_elements_core(ecs_world_t *world) {
+    zox_define_increment_system(InitializeElement, EcsOnStore)
     // zox_define_reset_system_pip(ClickState, EcsOnLoad)
     zox_define_increment_system(ClickState, EcsOnLoad)
     zox_define_increment_system(SelectState, EcsOnLoad)
@@ -136,23 +139,29 @@ void define_systems_elements_core(ecs_world_t *world) {
     zox_system_1(ClickSoundSystem, zox_pip_mainthread,
         [in] elements.core.ClickState,
         [none] ClickMakeSound)
+    zox_system_1(ButtonClickEventSystem, zox_pip_mainthread,
+        [in] ClickEvent,
+        [in] elements.core.ClickState,
+        [out] Clicker,
+        [none] Element)
     if (!headless) {
-        zox_system_1(ButtonClickEventSystem, zox_pip_mainthread,
-            [in] ClickEvent,
-            [in] elements.core.ClickState,
-            [out] Clicker,
-            [none] Element)
         // EcsOnLoad - zox_pip_mainthread
-        zox_system_1(Element2DMeshSystem, EcsOnLoad,
-            [none] Element,
+        zox_system_1(ElementBeginSystem, EcsPostLoad,
+            [in] elements.core.InitializeElement,
             [in] layouts2.PixelSize,
             [in] rendering.MeshAlignment,
             [in] elements.core.CanvasLink,
-            [out] elements.core.InitializeElement,
             [out] rendering.MeshDirty,
             [out] rendering.core.MeshVertices2D,
             [out] rendering.core.MeshGPULink,
             [out] rendering.core.TextureGPULink,
-            [out] rendering.core.UvsGPULink)
+            [out] rendering.core.UvsGPULink,
+            [none] Element)
+        zox_system_1(RenderTextureBeginSystem, EcsPreUpdate,
+            [in] elements.core.InitializeElement,
+            [in] textures.core.TextureSize,
+            [in] cameras.CameraLink,
+            [in] rendering.core.TextureGPULink,
+            [none] cameras.RenderTexture)
     }
 }

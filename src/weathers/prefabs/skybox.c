@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_skybox(ecs_world_t *world) {
     zox_prefab_add(e, ColorRGB)
     zox_prefab_add(e, SecondaryColorRGB)
     zox_prefab_set(e, Brightness, { 1 })
-    zox_prefab_set(e, MeshDirty, { mesh_state_trigger })
+    zox_prefab_set(e, MeshDirty, { mesh_state_trigger_slow })
     if (!headless) {
         zox_prefab_add(e, MeshIndicies)
         zox_prefab_add(e, MeshVertices)

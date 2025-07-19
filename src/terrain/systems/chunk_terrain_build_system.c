@@ -187,7 +187,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
             const byte render_depth = get_chunk_terrain_depth_from_lod(renderLod->value, node_depth);
             build_chunk_terrain_mesh(voxelNode, tilemap_uvs, meshIndicies, meshVertices, meshUVs, meshColorRGBs, is_max_depth_chunk, render_depth, neighbors, neighbor_depths, voxScale->value, build_data.solidity, build_data.uvs, node_depth);
         }
-        meshDirty->value = mesh_state_trigger;
+        meshDirty->value = mesh_state_trigger_slow;
         updated_count++;
     }
     if (updated_count > 0) {

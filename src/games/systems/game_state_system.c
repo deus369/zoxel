@@ -1,37 +1,34 @@
 void GameStateSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(RealmLink, realmLinks, 1)
-    zox_field_in(GameStateTarget, gameStateTargets, 2)
-    zox_field_out(GameState, gameStates, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(RealmLink)
+    zox_sys_in(GameStateTarget)
+    zox_sys_out(GameState)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(RealmLink, realmLinks, realmLink)
-        zox_field_i(GameStateTarget, gameStateTargets, gameStateTarget)
-        zox_field_o(GameState, gameStates, gameState)
-        if (gameStateTarget->value == gameState->value) {
-            continue;
-        }
-        if (!zox_valid(realmLink->value)) {
+        zox_sys_e()
+        zox_sys_i(RealmLink, realmLink)
+        zox_sys_i(GameStateTarget, gameStateTarget)
+        zox_sys_o(GameState, gameState)
+        if (gameStateTarget->value == gameState->value || !zox_valid(realmLink->value)) {
             continue;
         }
         if (gameStateTarget->value == zox_game_load) {
-            // zox_log("loading realm at [%f]", zox_current_time)
-            zox_set(realmLink->value, GenerateRealm, { zox_generate_realm_start })
             gameState->value = gameStateTarget->value;
             zox_set(e, GameStateTarget, { zox_game_loading })
-            continue;
+            zox_set(realmLink->value, GenerateRealm, { zox_generate_realm_start })
+            // zox_log("loading realm at [%f]", zox_current_time)
         } else if (gameStateTarget->value == zox_game_loading) {
             if (!zox_gett_value(realmLink->value, GenerateRealm)) {
-                // zox_log("finished loading realm at [%f]", zox_current_time)
                 gameState->value = gameStateTarget->value;
                 zox_set(e, GameStateTarget, { zox_game_playing })
+                // zox_log("finished loading realm at [%f]", zox_current_time)
             }
-            continue;
+        } else {
+            byte old_state = gameState->value;
+            byte new_state = gameStateTarget->value;
+            gameState->value = new_state;
+            trigger_event_game(world, e, old_state, gameStateTarget->value);
         }
-        byte old_state = gameState->value;
-        byte new_state = gameStateTarget->value;
-        gameState->value = new_state;
-        trigger_event_game(world, e, old_state, gameStateTarget->value);
     }
 } zox_declare_system(GameStateSystem)
 

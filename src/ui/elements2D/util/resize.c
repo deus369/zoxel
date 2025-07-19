@@ -9,7 +9,7 @@ void on_resized_element(ecs_world_t *world,
         zox_get_muter(e, MeshVertices2D, meshVertices2D)
         const float2 size2D = (float2) { pixel_size.x / canvas_size.y, pixel_size.y / canvas_size.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, size2D);
-        zox_set(e, MeshDirty, { mesh_state_trigger2 })
+        zox_set(e, MeshDirty, { mesh_state_trigger })
         // for procedural textures, regenerate upon resize
         // fix for icons
         if (zox_has(e, GenerateTexture)) {

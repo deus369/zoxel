@@ -15,7 +15,7 @@ void Element3DMeshSystem(ecs_iter_t *it) {
             continue;
         }
         initializeElement->value = 0;
-        meshDirty->value = mesh_state_trigger2;
+        meshDirty->value = mesh_state_trigger;
         if (!headless) {
             zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
             zox_field_o(TextureGPULink, textureGPULinks, textureGPULink)

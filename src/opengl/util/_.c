@@ -6,4 +6,5 @@
 #include "frame_buffer.c"
 #include "material.c"
 #include "uniform.c"
+#include "line.c"
 #include "debug.c"

@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_element_basic(ecs_world_t *world, const ecs_entity_t p
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Alpha, { 1 })
     if (!headless) {
-        zox_prefab_set(e, MeshDirty, { mesh_state_trigger2 })
+        zox_prefab_set(e, MeshDirty, { mesh_state_trigger })
         zox_prefab_set(e, MeshAlignment, { zox_mesh_alignment_centred })
         zox_prefab_add(e, MeshIndicies)
         zox_prefab_add(e, MeshVertices2D)

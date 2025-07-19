@@ -2,6 +2,7 @@
 #define zox_mod_colors
 
 // globals for now...
+byte grayscale_mode = 0;
 color_rgb fog_color = (color_rgb) { 125, 125, 125 };
 color_rgb viewport_clear_color = color_rgb_black;
 zox_component_color(Color)

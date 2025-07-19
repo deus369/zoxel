@@ -44,10 +44,23 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
 }
 
 zox_begin_module(ZoxGame)
+    headless = 0;
+
+    // Gameplay
     boot_event = boot_zoxel_game;
-    viewport_scale = 1.0f / 16.0f;
+    // regen_rate = 10;
+    hit_terrain_color = (color) { 2, 185, 145, 155 };
+    hit_character_color = (color) { 155, 45, 45, 65 };
+    hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
+    // mood
+    float sub_resolution = 4;
+    viewport_scale = 1 / sub_resolution;
+    grayscale_mode = 1;
+    is_generate_vox_outlines = 1;
 
+    // debug
+    zox_visualize_sounds = 0;
     // zox_debug_id(Block)
     // zox_debug_print_modules(world, 1);
     // zox_debug_print_systems(world, 1);
@@ -55,12 +68,9 @@ zox_begin_module(ZoxGame)
     // is_log_io = 1;
     // is_log_sounds = 1;
     // terrain_mode = terrain_mode_flatlands;
-    headless = 0;
-    zox_visualize_sounds = 0;
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
-    // regen_rate = 10;
 
     // physics
     // target_fps = 15;
@@ -146,7 +156,6 @@ zox_begin_module(ZoxGame)
     }
 
     // debug
-    is_generate_vox_outlines = 0;
     disable_block_vox_generation = 0;
     // disable_block_voxes = 1;
     game_rule_attach_to_character = 1;

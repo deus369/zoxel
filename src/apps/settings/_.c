@@ -2,7 +2,7 @@ byte running = 1;
 byte headless = 0;
 // app
 int2 default_window_position = { 0, 0 };
-const int2 default_window_size = { 720, 480 };
+const int2 default_window_size = { 1280, 720 };
 byte minimized = 0;
 
 #ifdef zoxel_on_android

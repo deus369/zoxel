@@ -3,7 +3,10 @@
 float viewport_scale = 1;
 
 static inline int2 scale_viewport(int2 v) {
-    return (int2) { (int) (v.x * viewport_scale), (int) (v.y * viewport_scale) };
+    return (int2) {
+        ceil(v.x * viewport_scale),
+        ceil(v.y * viewport_scale)
+    };
 }
 
 // debugs

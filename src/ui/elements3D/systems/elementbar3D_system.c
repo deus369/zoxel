@@ -31,7 +31,7 @@ void Elementbar3DSystem(ecs_iter_t *it) {
             if (meshDirty->value) {
                 continue;
             }
-            meshDirty->value = mesh_state_trigger2;
+            meshDirty->value = mesh_state_trigger;
             zox_modified(front_bar, MeshDirty)
             zox_get_muter(front_bar, MeshVertices, meshVertices2)
             for (byte j = 0; j < 4; j++) {

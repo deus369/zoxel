@@ -4,7 +4,7 @@ typedef struct {
     const char *name;
     const byte render_disabled;
     const ecs_entity_t *stats;
-    byte stats_count;
+    byte stats_length;
     ElementLinks *elementLinks;
 } spawned_character3D_data;
 

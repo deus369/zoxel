@@ -14,11 +14,9 @@
 #include "debug/_.c"
 
 zox_begin_module(Space)
-    if (!headless) {
-        define_systems_players2(world);
-        spawn_prefabs_players2(world);
-        add_to_event_game_state((zox_game_event) { &players_game_state });
-    }
+    define_systems_players2(world);
+    spawn_prefabs_players2(world);
+    add_to_event_game_state((zox_game_event) { &players_game_state });
 zox_end_module(Space)
 
 #endif

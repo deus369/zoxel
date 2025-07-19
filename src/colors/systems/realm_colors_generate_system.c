@@ -60,13 +60,20 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     if (old_data->length) {
         free(old_data->value);
     }
-    Colors *colors = &((Colors) { 0, NULL });
-    resize_memory_component(Colors, colors, color, 6)
-    generate_colors(seed->value, colors);
-    zox_set(realm, Colors, { .value = colors->value, .length = colors->length })
+    color_rgb sky_color;
+    if (!grayscale_mode) {
+        Colors colors = (Colors) { 0, NULL };
+        resize_memory_component(Colors, (&colors), color, 6)
+        generate_colors(seed->value, (&colors));
+        // zox_set(realm, Colors, { .value = colors->value, .length = colors->length })
+        zox_set_ptr(realm, Colors, colors)
+        sky_color = color_to_color_rgb(colors.value[0]);
+    } else {
+        sky_color = color_rgb_grayscale(3);
+    }
     // rendering: set global game colors
-    fog_color = color_to_color_rgb(colors->value[0]);
-    viewport_clear_color = fog_color;
-    game_sky_color = fog_color;
-    game_sky_bottom_color = fog_color;
+    fog_color = sky_color;
+    game_sky_color = sky_color;
+    game_sky_bottom_color = sky_color;
+    viewport_clear_color = sky_color; // color_rgb_red;
 }

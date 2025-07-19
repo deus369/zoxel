@@ -27,10 +27,6 @@ static inline void cycle_cubeline_debug(byte* mode) {
 
 const float cube_lines_length = 1.0f;
 
-static inline void set_line3D_thickness(const float thickness) {
-    glLineWidth(thickness);
-}
-
 static inline void set_line3D_color(const color_rgb color_rgb2) {
     const float3 color_rgb_f3 = color_rgb_to_float3(color_rgb2);
     zox_gpu_float4(line3D_color_location, (float4) { color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z, 1 });
@@ -74,7 +70,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         if (!mode || (!is_render_invisible && renderLod->value == 255)) {
             continue;
         }
-        set_line3D_thickness(cubeLinesThickness->value);
+        zox_gpu_line_thickness(cubeLinesThickness->value);
         color_rgb lines_color = color_to_color_rgb(colorr->value);
         if (mode == zox_cubeline_debug_render_disabled) {
             if (renderDisabled->value) {

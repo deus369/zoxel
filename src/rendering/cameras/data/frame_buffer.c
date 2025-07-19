@@ -19,14 +19,6 @@ uint gpu_spawn_frame_buffer_object() {
 #endif
     return buffer;
 }
-
-// Function to add a frame buffer object to a prefab
-void prefab_add_frame_buffer_object(ecs_world_t *world, const ecs_entity_t e) {
-    if (!headless) {
-        zox_prefab_set(e, FrameBufferLink, { 0 })
-    }
-}
-
 // Function to spawn and attach a frame buffer object to an entity
 uint spawn_frame_buffer_object(ecs_world_t *world, const ecs_entity_t e) {
     if (headless) {

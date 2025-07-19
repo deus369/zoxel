@@ -1,7 +1,7 @@
 void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data *data) {
-    const ecs_entity_t health_stat = data->stats[stat_index_health];
-    if (!zox_valid(health_stat)) {
-        zox_log_error("health stat not found [spawn_character3D_healthbar3D]")
+    const ecs_entity_t stat_health = stat_index_health < data->stats_length ? data->stats[stat_index_health] : 0;
+    if (!zox_valid(stat_health)) {
+        zox_log_error("invalid stat [health] on character [%s]", zox_get_name(data->e))
         return;
     }
     const float ui_position = statbar_float_position;
@@ -30,8 +30,8 @@ void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data 
     };
     const ecs_entity_2 e = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
     add_to_ElementLinks(data->elementLinks, e.x);
-    zox_set(e.x, StatLink, { health_stat })
-    zox_set(e.y, StatLink, { health_stat })
+    zox_set(e.x, StatLink, { stat_health })
+    zox_set(e.y, StatLink, { stat_health })
     zox_set(e.x, ElementHolder, { data->e })
     zox_add_tag(e.y, StatsLabel)
 }

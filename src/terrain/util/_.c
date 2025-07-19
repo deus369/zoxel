@@ -5,8 +5,5 @@
 #include "debug.c"
 #include "terrain.c"
 #include "create_terrain.c"
-#include "game_start.c"
-#include "game_end.c"
-#include "game_state.c"
 #include "terminal.c"
 #include "realm.c"

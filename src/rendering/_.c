@@ -53,6 +53,9 @@ zox_begin_module(Rendering)
     zox_module_dispose(dispose_rendering)
     add_to_update_loop(viewport_clear);
     initialize_settings_rendering(world);
+    if (prefab_camera_game) {
+        zox_prefab_set(prefab_camera_game, FrameBufferLink, { 0 })
+    }
 zox_end_module(Rendering)
 
 #endif

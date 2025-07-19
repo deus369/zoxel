@@ -3,7 +3,7 @@ void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, ElementRender)
     zox_prefab_set(e, RenderDisabled, { 0 })
     if (!headless) {
-        zox_prefab_set(e, MeshDirty, { mesh_state_trigger2 })
+        zox_prefab_set(e, MeshDirty, { mesh_state_trigger })
         zox_prefab_set(e, MeshAlignment, { zox_mesh_alignment_centred })
         zox_prefab_add(e, MeshIndicies)
         zox_prefab_set(e, MeshVertices2D, { 0, NULL })

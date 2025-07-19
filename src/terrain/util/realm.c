@@ -26,13 +26,27 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
 
     // get realms colors
     zox_geter(realm, Colors, realm_colors);
-    byte color_index = 1;   // skip sky
-    // const color sky_color = realm_colors->value[color_index++];
-    const color dirt_color = realm_colors->value[color_index++];
-    const color grass_color = realm_colors->value[color_index++];
-    const color sand_color = realm_colors->value[color_index++];
-    const color stone_color = realm_colors->value[color_index++];
-    const color obsidian_color = realm_colors->value[color_index++];
+    color dirt_color;
+    color grass_color;
+    color sand_color;
+    color stone_color;
+    color obsidian_color;
+    if (realm_colors->length < 5 || grayscale_mode) {
+        zox_log_error("realm colors not found")
+        dirt_color = color_grayscale(88);
+        grass_color = color_grayscale(144);
+        sand_color = color_grayscale(166);
+        stone_color = color_grayscale(45);
+        obsidian_color = color_grayscale(13);
+    } else {
+        byte color_index = 1;   // skip sky
+        // const color sky_color = realm_colors->value[color_index++];
+        dirt_color = realm_colors->value[color_index++];
+        grass_color = realm_colors->value[color_index++];
+        sand_color = realm_colors->value[color_index++];
+        stone_color = realm_colors->value[color_index++];
+        obsidian_color = realm_colors->value[color_index++];
+    }
 
     zox_geter(realm, VoxelLinks, old_data)
     if (old_data) {

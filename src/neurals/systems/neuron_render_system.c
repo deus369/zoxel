@@ -1,6 +1,8 @@
 //! Adds force to the velocity per frame.
 void NeuronRenderSystem(ecs_iter_t *it) {
-    if (zox_current_time < 0.1) return;
+    if (zox_current_time < 0.1) {
+        return;
+    }
     const float line_thickness = 4.0f;
     init_delta_time()
     double animate_time = delta_time * 3;

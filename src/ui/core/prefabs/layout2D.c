@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_layout2D(ecs_world_t *world) {
     zox_prefab_set(e, Scale1D, { 1 })
     // ui components
     zox_add_tag(e, Element)
-    zox_prefab_set(e, InitializeElement, { 1 })
+    zox_prefab_set(e, InitializeElement, { zox_dirty_trigger })
     zox_prefab_set(e, PixelPosition, { int2_zero })
     zox_prefab_set(e, PixelSize, { int2_zero })
     zox_prefab_set(e, Anchor, { float2_zero })

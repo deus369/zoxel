@@ -1,6 +1,3 @@
-// todo: GenerateRealm -> regenerate realm data with new seed
-// todo: game start delayed while realm is dirty
-
 void destroy_player_main_menu(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     find_child_with_tag(canvas, MenuMain, menu)
@@ -10,11 +7,6 @@ void destroy_player_main_menu(ecs_world_t *world, const ecs_entity_t player) {
     } else {
         zox_delete(menu)
     }
-}
-
-void begin_play_game(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    zox_set(game, GameStateTarget, { zox_game_load })
 }
 
 void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
@@ -30,7 +22,7 @@ void button_event_new_game(ecs_world_t *world, const ClickEventData *event) {
     save_realm(game_name, "seed.dat", &realm_save);
 #endif
     zox_set(realm, Seed, { realm_save.seed })
-    begin_play_game(world, event->clicker);
+    zox_set(game, GameStateTarget, { zox_game_load })
 }
 
 void button_event_continue_game(ecs_world_t *world, const ClickEventData *event) {
@@ -41,5 +33,5 @@ void button_event_continue_game(ecs_world_t *world, const ClickEventData *event)
     load_realm(game_name, "seed.dat", &realm_save);
     set_noise_seed(realm_save.seed);
     zox_set(realm, Seed, { realm_save.seed })
-    begin_play_game(world, event->clicker);
+    zox_set(game, GameStateTarget, { zox_game_load })
 }

@@ -10,8 +10,7 @@ zox_component(LineAnchor, float4)
 #include "shaders/line2D.c"
 #include "util/line_util.c"
 #include "prefabs/_.c"
-#include "util/canvas_lines.c"
-#include "util/grid2D.c"
+#include "util/_.c"
 #include "systems/_.c"
 
 void spawn_shaders_lines2D(ecs_world_t *world) {

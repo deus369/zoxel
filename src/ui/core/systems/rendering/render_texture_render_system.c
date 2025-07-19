@@ -2,38 +2,32 @@ extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_
 
 // this is more like a non blend pass!
 void RenderTextureRenderSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     if (!material_render_texture) {
         return;
     }
     const uint material_link = zox_get_value(material_render_texture, MaterialGPULink)
     const MaterialAttributesRenderTexture *material_attributes = zox_get(material_render_texture, MaterialAttributesRenderTexture)
     byte has_set_material = 0;
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(Layer2D, layer2Ds, 2)
-    zox_field_in(RenderDisabled, renderDisableds, 3)
-    zox_field_in(MeshGPULink, meshGPULinks, 4)
-    zox_field_in(UvsGPULink, uvsGPULinks, 5)
-    zox_field_in(TextureGPULink, textureGPULinks, 6)
+    zox_sys_begin()
+    zox_sys_in(TransformMatrix)
+    zox_sys_in(Layer2D)
+    zox_sys_in(RenderDisabled)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(TextureGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Layer2D, layer2Ds, layer2D)
-        if (layer2D->value != renderer_layer) continue;
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
-        zox_field_e()
-        if (get_root_canvas_camera(world, e) != renderer_camera) continue;
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        if (!meshGPULink->value.x || !meshGPULink->value.y) {
+        zox_sys_e()
+        zox_sys_i(TransformMatrix, transformMatrix)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(TextureGPULink, textureGPULink)
+        zox_sys_i(Layer2D, layer2D)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        if (renderDisabled->value || layer2D->value != renderer_layer || !meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) {
             continue;
         }
-        if (!uvsGPULink->value) {
-            continue;
-        }
-        if (!textureGPULink->value) {
-            zox_log("! render texture - gpu texture link broken\n")
+        if (get_root_canvas_camera(world, e) != renderer_camera) {
             continue;
         }
         // zox_log("+ rendering - render texture\n")

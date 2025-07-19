@@ -55,7 +55,7 @@ byte raycast_voxel_node(
     RaycastVoxelData *data)
 {
     // setup voxel data
-    const byte raycasting_terrain = voxels && chunk_links;
+    const byte raycasting_terrain = voxels && voxels->length && chunk_links;
     const VoxelNode *node_chunk;
     VoxelNode *node_voxel;
     byte chunk_depth;

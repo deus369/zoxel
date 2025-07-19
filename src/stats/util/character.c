@@ -3,18 +3,21 @@ const int player_extra_stats = 5;
 #define statbar_float_position 0.32f
 
 void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
+    if (!zox_valid(realm_stat_soul)) {
+        zox_log_error("the realm has invalid stats")
+        return;
+    }
     // generate numbers here
     float2 health = (float2) { 10, 10 };
     health.x = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
 
-    int stats_count = character_stats;
+    data->stats_length = character_stats;
     if (data->p) {
-        stats_count += player_extra_stats;
+        data->stats_length += player_extra_stats;
     }
     StatLinks *stats = &((StatLinks) { 0, NULL });
-    resize_memory_component(StatLinks, stats, ecs_entity_t, stats_count)
+    resize_memory_component(StatLinks, stats, ecs_entity_t, data->stats_length)
     data->stats = stats->value;
-    data->stats_count = stats_count;
 
     // Stat: Soul
     const ecs_entity_t stat_soul = spawn_user_stat(world, realm_stat_soul, data->e);
@@ -54,7 +57,7 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
 
     zox_set(data->e, StatLinks, { stats->length, stats->value })
     data->stats = stats->value;
-    data->stats_count = stats->length;
+    data->stats_length = stats->length;
     // player character ui
     if (data->p) {
         const ecs_entity_t canvas = zox_get_value(data->p, CanvasLink)
