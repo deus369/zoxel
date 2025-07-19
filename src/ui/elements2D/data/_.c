@@ -3,6 +3,6 @@
 #include "spawn_icon.c"
 #include "spawn_frame.c"
 #include "slider.c"
-#include "ui_list_element.c"
-#include "ui_list.c"
+#include "list_element.c"
+#include "list.c"
 #include "window.c"

@@ -128,6 +128,7 @@ void set_ui_transform(ecs_world_t *world,
     const int2 parent_size)
 {
     if (!zox_valid(e)) {
+        zox_log_error("invalid ui in set_ui_transform")
         return;
     }
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
@@ -136,17 +137,25 @@ void set_ui_transform(ecs_world_t *world,
         const float2 anchor_size = zox_get_value(e, AnchorSize)
         anchor_element_size2D(&pixel_size, anchor_size, parent_size);
         zox_set(e, PixelSize, { pixel_size })
+        // zox_log_error("+ anchored [%s]'s size [%ix%i]", zox_get_name(e), pixel_size.x, pixel_size.y)
     } else if (zox_has(e, PixelSize)) {
         pixel_size = zox_get_value(e, PixelSize)
     }
     if (zox_has(e, RenderTexture)) {
-        set_render_texture_gpu(zox_gett_value(e, TextureGPULink), pixel_size);
+        const int2 scaled_size = scale_viewport(pixel_size); // pixel_size
+        zox_set(e, TextureSize, { scaled_size })
+        set_render_texture_gpu(zox_gett_value(e, TextureGPULink), scaled_size);
+        zox_geter_value(e, CameraLink, ecs_entity_t, camera)
+        set_render_buffer_size(zox_gett_value(camera, RenderBufferLink), scaled_size);
     }
     // set scale of mesh again
     if (!headless && zox_has(e, MeshVertices2D)) {
         zox_get_muter(e, MeshVertices2D, meshVertices2D)
         const byte mesh_alignment = zox_get_value(e, MeshAlignment)
-        const float2 size2D = (float2) { pixel_size.x / canvasSizef.y, pixel_size.y / canvasSizef.y };
+        const float2 size2D = (float2) {
+            pixel_size.x / canvasSizef.y,
+            pixel_size.y / canvasSizef.y
+        };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(mesh_alignment), 4, size2D);
         zox_set(e, MeshDirty, { mesh_state_trigger2 })
     }
@@ -170,12 +179,24 @@ void set_ui_transform(ecs_world_t *world,
 #endif
         if (zox_has(e, Children)) {
             const Children *children = zox_get(e, Children)
-            for (int i = 0; i < children->length; i++) set_ui_transform(world, e, children->value[i], canvas_size, position_in_canvas, pixel_size);
+            for (int i = 0; i < children->length; i++) {
+                set_ui_transform(world, e, children->value[i], canvas_size, position_in_canvas, pixel_size);
+            }
         }
     }
 }
 
-void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
+void initialize_element_invisible(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t parent,
+    const ecs_entity_t canvas,
+    const int2 pixel_position,
+    const int2 pixel_size,
+    const float2 anchor,
+    const byte layer,
+    const float2 position2D,
+    const int2 pixel_position_global)
+{
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
@@ -190,10 +211,20 @@ void initialize_element_invisible(ecs_world_t *world, const ecs_entity_t e, cons
     }
 }
 
-void initialize_element(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const int2 texture_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
+void initialize_element(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t parent,
+    const ecs_entity_t canvas,
+    const int2 pixel_position,
+    const int2 pixel_size,
+    const int2 texture_size,
+    const float2 anchor,
+    const byte layer,
+    const float2 position2D,
+    const int2 pixel_position_global)
+{
     initialize_element_invisible(world, e, parent, canvas, pixel_position, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_set(e, TextureSize, { texture_size })
-    // use a function that updates it, but keep seperate from initialize function which merely sets variables
 }
 
 void set_element_spawn_data(ecs_world_t *world,

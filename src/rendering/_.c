@@ -12,6 +12,7 @@ zox_increment_system_with_reset(MeshDirty, mesh_state_end)
     #include "basics3D/_.c"
 #endif
 #include "cameras/_.c"
+#include "debug/_.c"
 
 void viewport_clear(ecs_world_t *world) {
     opengl_clear(color_rgb_to_float3(viewport_clear_color));

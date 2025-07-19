@@ -19,12 +19,12 @@ ecs_entity_t spawn_menu_options(
     const byte header_font_size = 80;
     const byte font_size = 32;
     const byte is_close_button = 0;
+
+    // # Window #
     CanvasSpawnData canvas_data = {
         .e = canvas,
         .size = zox_gett_value(canvas, PixelSize),
     };
-
-    // # Window #
     ElementSpawnData window_element_data = {
         .prefab = prefab_window,
         .position = (int2) { 0, 0 },
@@ -95,6 +95,10 @@ ecs_entity_t spawn_menu_options(
         .font_size = font_size,
         .fill = (color) { 0, 0, 0, 0 },
         .outline = (color) { 0, 255, 255, 55 },
+        .padding = 8,
+        .spacing = 24,
+        .slider_height = 64,
+        .slider_padding = 64,
     };
     const ecs_entity_t list = spawn_list(world,
         canvas_data,

@@ -1,3 +1,11 @@
+
+// Scaling
+float viewport_scale = 1;
+
+static inline int2 scale_viewport(int2 v) {
+    return (int2) { (int) (v.x * viewport_scale), (int) (v.y * viewport_scale) };
+}
+
 // debugs
 // #define zox_draw_frustum
 // #define zox_draw_frustum_planes
@@ -12,16 +20,6 @@ float debug_plane_distance = 128;
 float4x4 debug_camera_transform = float4x4_zero;
 
 #define zox_camera_stage EcsPreStore // EcsPreStore | EcsPostUpdate
-#define zox_camera_mode_free 0
-#define zox_camera_mode_first_person 1
-#define zox_camera_mode_third_person 2
-#define zox_camera_mode_ortho 3
-#define zox_camera_mode_topdown 4
-#define zox_camera_mode_2D 5
-// how to attach to character
-#define zox_camera_follow_mode_attach 0
-#define zox_camera_follow_mode_follow_xz 1
-#define zox_camera_follow_mode_follow_xy 2
 #define max_cameras 16
 // todo: I for raycasting, create a second frustum + second matrix
 //      WAIT the precision issue also effects frustum
@@ -41,43 +39,3 @@ ecs_entity_t ui_cameras[max_cameras];
 #else
     byte zox_cameras_disable_streaming = 0;
 #endif
-
-const CameraSpawnData camera_preset_first_person = {
-    .position = (float3) { 0, 32 * 0.22f, 0.085f * 2 },
-    .euler = (float3) { 0, 180, 0 },
-    .fov = 90,
-    .follow_mode = zox_camera_follow_mode_attach
-};
-
-const CameraSpawnData camera_preset_third_person = {
-    .position = (float3) { 0, 3.6f * 0.25f, -6.6f * 0.25f },
-    .euler = (float3) { -25, 180, 0 },
-    .fov = 75,
-    .follow_mode = zox_camera_follow_mode_attach
-};
-
-const CameraSpawnData camera_preset_top_down = {
-    .position = (float3) { 0, 6, 0 },
-    .euler = (float3) { -90, 180, 0 },
-    .fov = 60,
-    .follow_mode = zox_camera_follow_mode_follow_xz
-};
-
-const CameraSpawnData camera_preset_ortho = {
-    .position = (float3) { -4, 6, -4 },
-    .euler = (float3) { -45, 225, 0 },
-    .fov = 45,
-    .follow_mode = zox_camera_follow_mode_follow_xz
-};
-
-const CameraSpawnData camera_preset_2D = {
-    .position = float3_zero,
-    .euler = float3_zero,
-    .fov = 45,
-    .follow_mode = zox_camera_follow_mode_follow_xy
-};
-
-void toggle_cameras_updates() {
-    zox_cameras_disable_streaming = !zox_cameras_disable_streaming;
-    zox_log(" > cameras_streaming are [%s]", zox_cameras_disable_streaming ? "disabled" : "enabled")
-}

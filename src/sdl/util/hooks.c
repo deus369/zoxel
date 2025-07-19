@@ -19,10 +19,11 @@ void on_window_resized(ecs_world_t *world, const ecs_entity_t e, int2 size) {
         zox_set(e, WindowSizeRestore, { size })
         zox_log_sdl("+ setting window restore size to [%ix%i]", size.x, size.y)
     }
-    zox_set(e, WindowSize, { size })
-    set_viewport_size(world, size);
-    screen_dimensions = size;
-    zox_log_sdl("+ window viewport [%ix%i]", size.x, size.y)
+    if (!int2_equals(size, zox_gett_value(e, WindowSize))) {
+        zox_set(e, WindowSize, { size })
+        zox_set(e, WindowSizeDirty, { zox_dirty_trigger })
+        zox_log_sdl("+ window viewport [%ix%i]", size.x, size.y)
+    }
 
 }
 

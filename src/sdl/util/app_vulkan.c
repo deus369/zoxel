@@ -1,10 +1,14 @@
-ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, int2 position, int2 size, const byte fullscreen, const char *name) {
+ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world,
+    int2 position, int2 size,
+    const byte fullscreen,
+    const char *name)
+{
 #ifdef zox_include_vulkan
     if (fullscreen) {
         size = screen_dimensions;
     }
     position = get_window_position(size, screen_dimensions);
-    viewport_dimensions = screen_dimensions; // size;
+    // viewport_dimensions = screen_dimensions; // size;
     SDL_Window* sdl_window = create_sdl_window(position, size, fullscreen, name);
     if (sdl_window == NULL) {
         zox_log("    ! opengl did not create sdl_window, exiting zoxel\n")

@@ -1,26 +1,36 @@
 // todo: get dimensions off app using AppLink from Canvas, check it's dimensions
 void CanvasResizeSystem(ecs_iter_t *it) {
-    const int2 new_size = viewport_dimensions;
-    zox_field_world()
-    zox_field_in(CameraLink, cameraLinks, 1)
-    zox_field_in(Children, childrens, 2)
-    zox_field_in(ScreenToCanvas, screenToCanvass, 3)
-    zox_field_out(PixelSize, pixelSizes, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(CameraLink)
+    zox_sys_in(Children)
+    zox_sys_in(ScreenToCanvas)
+    zox_sys_in(AppLink)
+    zox_sys_out(PixelSize)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CameraLink, cameraLinks, cameraLink)
-        if (!cameraLink->value) continue;
-        zox_field_i(ScreenToCanvas, screenToCanvass, screenToCanvas)
-        zox_field_o(PixelSize, pixelSizes, pixelSize)
-        const int2 canvas_size = screen_to_canvas_size(new_size, screenToCanvas->value);
-        if (int2_equals(canvas_size, pixelSize->value)) continue;
-        pixelSize->value = canvas_size;
-        zox_field_e()
-        zox_field_i(Children, childrens, children)
+        zox_sys_e()
+        zox_sys_i(CameraLink, cameraLink)
+        zox_sys_i(Children, children)
+        zox_sys_i(ScreenToCanvas, screenToCanvas)
+        zox_sys_i(AppLink, appLink)
+        zox_sys_o(PixelSize, pixelSize)
+        if (!zox_valid(cameraLink->value) || !zox_valid(appLink->value)) {
+            continue;
+        }
+        zox_geter_value(appLink->value, WindowSize, int2, screen_size)
+        const int2 pixel_size = screen_to_canvas_size(screen_size, screenToCanvas->value);
+        if (int2_equals(pixel_size, pixelSize->value)) {
+            continue;
+        }
+        // zox_log("canvas resized [%ix%i]", pixel_size.x, pixel_size.y)
+        pixelSize->value = pixel_size;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t child = children->value[j];
-            if (!zox_valid(child)) continue;
-            // zox_log("  - [%i] canvas child is resizing: %lu\n", j, child)
-            set_ui_transform(world, e, child, canvas_size, int2_half(canvas_size), canvas_size);
+            if (!zox_valid(child)) {
+                continue;
+            }
+            // zox_log("  - child [%s] resized", zox_get_name(child))
+            set_ui_transform(world, e, child, pixel_size, int2_half(pixel_size), pixel_size);
         }
     }
 } zox_declare_system(CanvasResizeSystem)

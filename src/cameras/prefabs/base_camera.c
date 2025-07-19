@@ -32,17 +32,17 @@ ecs_entity_t spawn_camera_base(ecs_world_t *world,
     const float4 rotation,
     const float fov,
     const int2 screen_position,
-    const int2 screen_dimensions,
+    const int2 size,
     const float4 screen_to_canvas)
 {
     zox_instance(prefab)
     zox_name("base_camera")
     zox_set(e, Position3D, { position })
     zox_set(e, Rotation3D, { rotation })
-    zox_set(e, ScreenDimensions, { screen_dimensions })
-    zox_set(e, ScreenPosition, { screen_position })
     zox_set(e, CameraMode, { camera_mode })
     zox_set(e, FieldOfView, { fov })
+    zox_set(e, ScreenPosition, { screen_position })
+    zox_set(e, ScreenDimensions, { size })
     zox_set(e, ScreenToCanvas, { screen_to_canvas })
     return e;
 }

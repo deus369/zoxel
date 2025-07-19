@@ -8,7 +8,7 @@
 void MouseExtractSystem(ecs_iter_t *it) {
     zox_field_world()
     // remember: sdl doesn't do multiple mouses
-    int2 screen_size = zox_get_value(mouse_lock_window, WindowSize) // viewport_dimensions);
+    zox_geter_value2(main_app, WindowSize, int2, screen_size)
     // zox_log("screen_size.y: %i", screen_size.y)
     if (screen_size.x % 2 != 0) {
         screen_size.x--;
@@ -30,8 +30,10 @@ void MouseExtractSystem(ecs_iter_t *it) {
         button_pressed_right = 1;
     }
     zox_field_in(Children, childrens, 1)
+    zox_field_in(AppLink, appLinks, 2)
     for (int i = 0; i < it->count; i++) {
         zox_field_i(Children, childrens, children)
+        zox_field_i(AppLink, appLinks, appLink)
         // using button_pressed_left
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];
@@ -43,7 +45,7 @@ void MouseExtractSystem(ecs_iter_t *it) {
                     zox_geter(zevice, ZevicePointerPosition, position)
                     int2 position2 = position->value;
                     int2_flip_y(&position2, screen_size);
-                    SDL_Window* sdl_window = zox_get_value(mouse_lock_window, SDLWindow)
+                    SDL_Window* sdl_window = zox_get_value(appLink->value, SDLWindow)
                     SDL_WarpMouseInWindow(sdl_window, position2.x, position2.y);
                 } else {
                     zox_get_muter(zevice, ZevicePointerPosition, position)

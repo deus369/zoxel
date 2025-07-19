@@ -1,8 +1,10 @@
 void zox_app_set_size(ecs_world_t *world, ecs_entity_t e, int2 size) {
     zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
     SDL_SetWindowSize(sdl_window, size.x, size.y);
-    zox_set(e, WindowSize, { size })
-    set_viewport_size(world, size);
+    if (!int2_equals(size, zox_gett_value(e, WindowSize))) {
+        zox_set(e, WindowSize, { size })
+        zox_set(e, WindowSizeDirty, { zox_dirty_trigger })
+    }
 }
 
 void zox_app_set_position(ecs_world_t *world, ecs_entity_t e, int2 position) {

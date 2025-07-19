@@ -2,12 +2,16 @@
 #define zox_mod_game
 
 // Realm,  players, skybox
-byte boot_zixel(ecs_world_t *world) {
+byte boot_zixel(ecs_world_t *world, ecs_entity_t app) {
     game_name = "zixel";
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world, realm);
     spawn_weather(world);
-    spawn_players_cameras_canvases(world, game);
+    if (!headless) {
+        spawn_connected_devices(world, app);
+        players_playing = spawn_players(world, game);
+    }
+    spawn_players_cameras_canvases(world, game, app);
     spawn_players_start_ui(world);
     // if (!headless) spawn_music(world, prefab_music);
     // spawn_character2D(world, prefab_character2D, float2_zero);

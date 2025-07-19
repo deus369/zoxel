@@ -4,6 +4,16 @@ ecs_entity_t spawn_list(ecs_world_t *world,
     ElementSpawnData element_data,
     const SpawnList list_data)
 {
+    byte is_scrollbar = list_data.count > list_data.visible_count;
+    // zox_log("+ spawning ui list with [%i] elements", list_data.count)
+    // zox_log("   - visible_count [%i]", list_data.visible_count)
+    // offset by half a height
+    // move down by header size
+    // position_y -= window_data.header_font_size + window_data.header_padding * 2;
+    int element_height = list_data.font_size + list_data.padding * 2;
+    int position_y = (int) (element_data.size.y / 2);
+    position_y += (int) (0.5f * element_height);
+
     zox_instance(element_data.prefab)
     set_element_spawn_data(world, e, canvas_data, parent_data, &element_data);
     zox_name("list")
@@ -11,25 +21,12 @@ ecs_entity_t spawn_list(ecs_world_t *world,
     zox_set(e, OutlineColor, { list_data.outline })
     zox_muter(e, Children, children)
 
-    byte padding = 8;
-    byte spacing = 24;
-    int slider_height = 64; // now we doing labels
-    int slider_padding = 64;
-    int element_height = list_data.font_size + padding * 2;
     // now spawn elements to fit our window
     ParentSpawnData child_parent_data = {
         .e = e,
         .position = element_data.position_in_canvas,
         .size = element_data.size
     };
-    byte is_scrollbar = list_data.count > list_data.visible_count;
-    // zox_log("+ spawning ui list with [%i] elements", list_data.count)
-    // zox_log("   - visible_count [%i]", list_data.visible_count)
-    int position_y = (int) (element_data.size.y / 2);
-    // offset by half a height
-    position_y += (int) (0.5f * element_height);
-    // move down by header size
-    // position_y -= window_data.header_font_size + window_data.header_padding * 2;
     for (int i = 0; i < list_data.count; i++) {
         SpawnListElement child_data = list_data.elements[i];
         ElementSpawnData child_element_data = {
@@ -44,12 +41,12 @@ ecs_entity_t spawn_list(ecs_world_t *world,
         // BUTTONS
         ecs_entity_t child = 0;
         if (child_data.type == 0) {
-            position_y -= element_height + spacing;
+            position_y -= element_height + list_data.spacing;
             child_element_data.position.y = position_y;
             SpawnTextData child_text_data = {
                 .text = child_data.text,
                 .font_size = list_data.font_size,
-                .padding = padding,
+                .padding = list_data.padding,
                 .font_resolution = button_font_resolution,
                 .font_fill_color = button_font_fill,
                 .font_outline_color = button_font_outline,
@@ -73,15 +70,15 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             zox_add_tag(child, ZextLabel)
 
         } else {
-            position_y -= slider_height + spacing;
+            position_y -= list_data.slider_height + list_data.spacing;
             child_element_data.position.y = position_y;
             // SLIDERS
             child_element_data.prefab = prefab_slider;
             child_element_data.size = (int2) {
-                element_data.size.x - slider_padding,
-                slider_height
+                element_data.size.x - list_data.slider_padding,
+                list_data.slider_height
             };
-            SpawnSliderData slider_data = (SpawnSliderData) {
+            SpawnSliderData list_data = (SpawnSliderData) {
                 .name = child_data.text,
                 .prefab_handle = prefab_handle,
                 .type = zox_slider_type_float,
@@ -93,7 +90,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
                 canvas_data,
                 child_parent_data,
                 child_element_data,
-                slider_data);
+                list_data);
             if (child_data.on_slide.value) {
                 zox_set(e2.y, SlideEvent, { child_data.on_slide.value })
             }

@@ -11,7 +11,6 @@ int spawn_players(ecs_world_t *world, const ecs_entity_t game) {
     if (headless) {
         return players;   // no players in headless mode
     }
-    spawn_connected_devices(world);
     if (is_split_screen) {
         players = 2;
         auto_switch_device = 0;

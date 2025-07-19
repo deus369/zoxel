@@ -7,10 +7,9 @@ ecs_entity_t spawn_prefab_touchscreen(ecs_world_t *world, const ecs_entity_t pre
     return e;
 }
 
-ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab, const int2 screen_dimensions) {
+ecs_entity_t spawn_touchscreen(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_instance(prefab)
     zox_name("touchscreen")
-    zox_set(e, ScreenDimensions, { screen_dimensions })
     zox_get_muter(e, Children, children)
     for (byte i = 0; i < fingers_count; i++) {
         const ecs_entity_t finger = spawn_zevice_pointer(world, e, i, i);

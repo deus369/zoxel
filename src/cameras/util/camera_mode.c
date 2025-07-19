@@ -1,31 +1,3 @@
-// rename screen to viewport
-int2 screen_to_canvas_size(const int2 size, const float4 screen_to_canvas) {
-    return (int2) { screen_to_canvas.x * size.x, screen_to_canvas.y * size. y };
-}
-
-// rename screen to viewport
-int2 screen_to_canvas_position(const int2 size, const float4 screen_to_canvas) {
-    return (int2) { screen_to_canvas.z * size.x, screen_to_canvas.w * size. y };
-}
-
-void resize_camera(ecs_world_t *world, const ecs_entity_t e, const int2 viewport_position, const int2 viewport_size) {
-    if (e && zox_alive(e)) zox_set(e, ScreenPosition, { viewport_position })
-    if (e && zox_alive(e)) zox_set(e, ScreenDimensions, { viewport_size })
-}
-
-void resize_cameras(ecs_world_t *world, const int2 screen_size) {
-    for (int i = 0; i < main_cameras_count; i++) {
-        if (!zox_valid(main_cameras[i])) {
-            continue;
-        }
-        const float4 screen_to_canvas = zox_get_value(main_cameras[i], ScreenToCanvas)
-        const int2 viewport_size = screen_to_canvas_size(screen_size, screen_to_canvas);
-        const int2 viewport_position = screen_to_canvas_position(screen_size, screen_to_canvas);
-        resize_camera(world, main_cameras[i], viewport_position, viewport_size);
-        resize_camera(world, ui_cameras[i], viewport_position, viewport_size);
-    }
-}
-
 void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
@@ -50,7 +22,12 @@ CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale)
     return data;
 }
 
-void set_camera_transform(ecs_world_t *world, const ecs_entity_t camera, const ecs_entity_t character, const byte camera_mode, const float vox_model_scale) {
+void set_camera_transform(ecs_world_t *world,
+    const ecs_entity_t camera,
+    const ecs_entity_t character,
+    const byte camera_mode,
+    const float vox_model_scale)
+{
     if (!zox_valid(camera) || !zox_valid(character)) {
         zox_log_error("! cannot [set_camera_transform] camera/character issue.")
         return;
@@ -164,7 +141,11 @@ void set_camera_mode_pre_defined(ecs_world_t *world, const float vox_model_scale
 }
 
 // sets camera to main menu location
-void set_camera_transform_to_main_menu(float3 *camera_position, float4 *camera_rotation, const byte terrain_depth) {
+void set_camera_transform_to_main_menu(
+    float3 *camera_position,
+    float4 *camera_rotation,
+    const byte terrain_depth)
+{
     const float overall_voxel_scale = powers_of_two[terrain_depth]; //  32.0f;
     camera_position->x = 0.25f * overall_voxel_scale;
     camera_position->y = 0.1f * overall_voxel_scale;

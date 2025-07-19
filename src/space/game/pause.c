@@ -5,8 +5,8 @@
 
 void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
-        if (mouse_entity) {
-            zox_set(mouse_entity, MouseLock, { 0 })
+        if (local_mouse) {
+            zox_set(local_mouse, MouseLock, { 0 })
         }
     }
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)

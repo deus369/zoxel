@@ -13,7 +13,10 @@ void zox_set_app_fullscreen(ecs_world_t* world, ecs_entity_t e, byte fullscreen)
         size = zox_get_value(e, WindowSizeRestore)
         zox_log_sdl("+ setting app windowed")
     }
-    set_viewport_size(world, size);
+    if (!int2_equals(size, zox_gett_value(e, WindowSize))) {
+        zox_set(e, WindowSize, { size })
+        zox_set(e, WindowSizeDirty, { zox_dirty_trigger })
+    }
 }
 
 // sdl implementation for maximized state
@@ -54,18 +57,20 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
     const byte maximized,
     const byte monitor)
 {
-    int2 window_size = size;
+    int2 screen_size = get_screen_size();
+    int2 window_size;
     if (fullscreen) {
-        window_size = screen_dimensions;
+        window_size = screen_size;
+    } else {
+        window_size = size;
     }
-    const int2 position = get_window_position(window_size, screen_dimensions);
+    const int2 position = get_window_position(window_size, screen_size);
     SDL_Window* sdl_window = create_sdl_window(position, window_size, name);
     if (!sdl_window) {
         zox_log_error(" opengl did not create sdl_window, exiting zoxel")
         running = 0;
         return 0;
     }
-    viewport_dimensions = screen_dimensions;
     const ecs_entity_t e = spawn_app_sdl(world,
         sdl_window,
         position,
@@ -73,7 +78,6 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
         fullscreen,
         maximized,
         monitor);
-    mouse_lock_window = e;
     if (create_window_opengl_context(world, e) == EXIT_FAILURE) {
         zox_log_error(" opengl_context creation failed")
         return 0;

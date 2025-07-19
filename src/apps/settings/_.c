@@ -11,14 +11,14 @@ byte minimized = 0;
     byte window_resizeable = 1;
 #endif
 // viewport
-int2 viewport_dimensions;
+// int2 viewport_dimensions;
 byte vsync = 1;
 byte rendering = 1;
 byte is_split_screen = 0;
 byte halfscreen = 0;
 byte screen_index = 0;
 byte screens_count = 1; // assume
-int2 screen_dimensions = { 480, 480 };
+// int2 screen_dimensions = { 480, 480 };
 #include "opengl.c"
 #include "fullscreen.c"
 #include "maximized.c"

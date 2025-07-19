@@ -22,7 +22,9 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     zox_name("app_sdl")
     zox_set(e, SDLWindow, { window })
     zox_set(e, WindowPosition, { position })
+    zox_set(e, WindowPositionRestore, { position })
     zox_set(e, WindowSize, { size })
+    zox_set(e, WindowSizeRestore, { size })
     zox_set(e, WindowFullscreen, { fullscreen })
     zox_set(e, WindowMaximized, { maximized })
     // set sdl window properties here

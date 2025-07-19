@@ -24,10 +24,10 @@ void set_sdl_key(ecs_world_t *world, PhysicalButton *key, SDL_Keycode keycode, S
         break;
 
 void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {
-    if (!keyboard_entity || !ecs_is_alive(world, keyboard_entity)) return;
+    if (!local_keyboard || !ecs_is_alive(world, local_keyboard)) return;
     if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
         SDL_Keycode key = event.key.keysym.sym;
-        Keyboard *keyboard = zox_get_mut(keyboard_entity, Keyboard)
+        Keyboard *keyboard = zox_get_mut(local_keyboard, Keyboard)
         switch(key) {
             sdl_key_case(SDLK_SPACE, &keyboard->space)
             sdl_key_case(SDLK_ESCAPE, &keyboard->escape)
@@ -91,7 +91,7 @@ void sdl_extract_keyboard(ecs_world_t *world, SDL_Event event) {
             default:
                 return;
         }
-        zox_modified(keyboard_entity, Keyboard)
+        zox_modified(local_keyboard, Keyboard)
 #if defined(zox_test_game_keys)
         if (keyboard->t.pressed_this_frame) button_event_play_game(world, 0);
         if (keyboard->y.pressed_this_frame) (world, main_player);

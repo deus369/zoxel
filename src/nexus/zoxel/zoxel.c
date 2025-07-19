@@ -10,7 +10,7 @@
 // #define zox_enable_log_ui
 // #define zox_enable_log_shader
 
-byte boot_zoxel_game(ecs_world_t *world) {
+byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
     intialize_game_store();
     // test_steam_cloud(); // idk
 #ifdef zox_mod_networking
@@ -27,8 +27,14 @@ byte boot_zoxel_game(ecs_world_t *world) {
 #ifdef zox_mod_weathers
     spawn_weather(world);
 #endif
+#ifdef zox_mod_space
+    if (!headless) {
+        spawn_connected_devices(world, app);
+        players_playing = spawn_players(world, game);
+    }
+#endif
 #ifdef zox_mod_ui
-    spawn_players_cameras_canvases(world, game);
+    spawn_players_cameras_canvases(world, game, players_playing, app);
     spawn_players_start_ui(world);
 #endif
 #ifdef zox_mod_musics
@@ -39,6 +45,9 @@ byte boot_zoxel_game(ecs_world_t *world) {
 
 zox_begin_module(ZoxGame)
     boot_event = boot_zoxel_game;
+    viewport_scale = 1.0f / 16.0f;
+
+
     // zox_debug_id(Block)
     // zox_debug_print_modules(world, 1);
     // zox_debug_print_systems(world, 1);
@@ -155,12 +164,12 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_skills);
     // set_prefab_debug_label(world, &get_label_player_actions);
     // set_prefab_debug_label(world, &get_label_player_quests);
-    set_prefab_debug_label(world, &debug_label_chunk_link);
     // set_prefab_debug_label(world, &debug_label_lods);
     // set_prefab_debug_label(world, &debug_label_collisions);
+    // set_prefab_debug_label(world, &debug_label_chunk_link);
+    set_prefab_debug_label(world, &debug_label_app);
 
     // add_hook_key_down(key_down_test_aura);
-    // add_hook_key_down(key_down_toggle_streaming);
     add_hook_key_down(toggle_life_terrain);
     add_hook_key_down(toggle_player_death);
     add_hook_key_down(test_game_end);
@@ -178,6 +187,7 @@ zox_begin_module(ZoxGame)
     add_hook_spawned_character3D(&spawn_character_skills);
     // add_hook_key_down(test_key_element_front2D);
     // add_hook_key_down(key_down_update_text3D);
+    add_hook_key_down(key_down_toggle_streaming);
 
     // fades
     is_start_game_delays = 1;

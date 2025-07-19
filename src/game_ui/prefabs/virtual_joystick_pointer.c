@@ -10,9 +10,17 @@ ecs_entity_t spawn_prefab_virtual_joystick_pointer(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t parent, const byte layer, const int2 pixel_position, const float2 anchor, const int2 parent_pixel_position_global, const int2 parent_pixel_size, const int2 canvas_size) {
+ecs_entity_t spawn_virtual_joystick_pointer(ecs_world_t *world,
+    const ecs_entity_t canvas,
+    const ecs_entity_t parent,
+    const byte layer,
+    const int2 pixel_position,
+    const float2 anchor,
+    const int2 parent_pixel_position_global,
+    const int2 parent_pixel_size,
+    const int2 canvas_size)
+{
     int2 pixel_size = virtual_joystick_pointer_size;
-    fix_for_screen_size(&pixel_size, viewport_dimensions); // todo: use viewport_size
     const int2 pixel_position_global = get_element_pixel_position_global(parent_pixel_position_global, parent_pixel_size, pixel_position, anchor);
     const float2 position2D = get_element_position(pixel_position_global, canvas_size);
     zox_instance(prefab_virtual_joystick_pointer)

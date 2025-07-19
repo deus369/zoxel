@@ -15,10 +15,10 @@ ecs_entity_t prefab_keyboard;
 ecs_entity_t prefab_mouse;
 ecs_entity_t prefab_gamepad;
 
-ecs_entity_t touchscreen_entity;
-ecs_entity_t keyboard_entity;
+ecs_entity_t local_touchscreen;
+ecs_entity_t local_keyboard;
 ecs_entity_t gamepad_entity;
-ecs_entity_t mouse_entity;
+ecs_entity_t local_mouse;
 
 #include "zevice_button.c"
 #include "zevice_stick.c"

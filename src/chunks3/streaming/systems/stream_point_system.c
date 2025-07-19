@@ -4,22 +4,20 @@ void StreamPointSystem(ecs_iter_t *it) {
         return;
     }
     const byte depth = terrain_depth;
-    const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_in(VoxLink, voxLinks, 2)
-    zox_field_out(StreamPoint, streamPoints, 3)
-    zox_field_out(StreamDirty, streamDirtys, 4)
+    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(VoxLink)
+    zox_sys_out(StreamPoint)
+    zox_sys_out(StreamDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        if (!voxLink->value) {
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_o(StreamDirty, streamDirty)
+        zox_sys_o(StreamPoint, streamPoint)
+        if (!voxLink->value || streamDirty->value != zox_general_state_none) {
             continue;
         }
-        zox_field_o(StreamDirty, streamDirtys, streamDirty)
-        if (streamDirty->value != zox_general_state_none) {
-            continue;
-        }
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_o(StreamPoint, streamPoints, streamPoint)
         const int3 stream_point = real_position_to_chunk_position(position3D->value, chunk_dimensions, depth);
         if (int3_equals(stream_point, streamPoint->value)) {
             continue; // no change

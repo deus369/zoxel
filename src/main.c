@@ -19,8 +19,14 @@ int run_main(int argc, char* argv[]) {
     initialize_ecs_settings(world);
     run_hook_terminal_command(world, argv, argc);
     // todo: pre boot event hook here for loading I/O
-    if (!headless && engine_spawn_window(world) == EXIT_SUCCESS) {
-        if (boot_event(world) == EXIT_SUCCESS) {
+    ecs_entity_t app;
+    if (!headless) {
+        app = engine_spawn_window(world);
+    } else {
+        app = 0;
+    }
+    if ((!headless && app) || headless) {
+        if (boot_event(world, app) == EXIT_SUCCESS) {
             zox_log("+ booted [%s]", game_name)
             engine_loop(world);
         } else {

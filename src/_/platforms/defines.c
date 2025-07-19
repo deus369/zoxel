@@ -28,6 +28,3 @@
 #ifdef zoxel_on_web
     #define zox_disable_npcs
 #endif
-
-// testing
-// #define zox_disable_post_processing

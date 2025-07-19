@@ -28,12 +28,12 @@ void add_all_prefabs(ecs_world_t *world,
         add_entity_to_labels(world, ui_cameras[k], labels, entities, 0);
     }
     // add_entity_children_to_labels(world, zox_players[0], labels, entities, 0);
-    add_entity_children_to_labels(world, keyboard_entity, labels, entities, 0);
-    if (mouse_entity) {
-        add_entity_children_to_labels(world, mouse_entity, labels, entities, 0);
+    add_entity_children_to_labels(world, local_keyboard, labels, entities, 0);
+    if (local_mouse) {
+        add_entity_children_to_labels(world, local_mouse, labels, entities, 0);
     }
     add_entity_children_to_labels(world, gamepad_entity, labels, entities, 0);
-    add_entity_children_to_labels(world, touchscreen_entity, labels, entities, 0);
+    add_entity_children_to_labels(world, local_touchscreen, labels, entities, 0);
     // add_entity_children_to_labels(world, local_character3D, labels, entities, 0);
     add_entity_to_labels(world, local_terrain, labels, entities, 0);
     add_entity_children_to_labels(world, canvas, labels, entities, 0);

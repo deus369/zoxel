@@ -107,6 +107,7 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] cameras.CameraLink,
         [in] hierarchys.Children,
         [in] cameras.ScreenToCanvas,
+        [in] apps.AppLink,
         [out] layouts2.PixelSize,
         [none] Canvas)
     // all ui

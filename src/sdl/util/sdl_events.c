@@ -10,7 +10,7 @@ void update_sdl(ecs_world_t *world) {
     input_reset_sdl();
     SDL_Event event = { 0 };
     while (SDL_PollEvent(&event)) {
-        input_extract_from_sdl(world, event, viewport_dimensions);
+        input_extract_from_sdl(world, event);
         if (event.type == SDL_QUIT) {
             engine_end();
         } else if (event.type == SDL_WINDOWEVENT) {

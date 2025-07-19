@@ -10,8 +10,8 @@ void player_end_game(ecs_world_t *world,
         trigger_canvas_fade_transition(world, canvas, end_game_delay_fade, 0.8);
     }
     if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
-        if (zox_valid(mouse_entity)) {
-            zox_set(mouse_entity, MouseLock, { 0 })
+        if (zox_valid(local_mouse)) {
+            zox_set(local_mouse, MouseLock, { 0 })
         }
     }
     // remove player uis

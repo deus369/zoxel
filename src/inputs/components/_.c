@@ -24,7 +24,7 @@ zox_component_entity(MouseLink)
 zox_component_entity(ZeviceLink)
 zox_component_entity(VirtualZeviceLink)
 zox_memory_component(DeviceButtonLinks, ecs_entity_t)
-zox_memory_component(DeviceLinks, ecs_entity_t)
+zox_entities_component(DeviceLinks) // , ecs_entity_t)
 #include "keyboard.c"
 
 void define_components_inputs(ecs_world_t *world) {
@@ -54,5 +54,5 @@ void define_components_inputs(ecs_world_t *world) {
     zox_define_component_entity(MouseLink)
     zox_define_component_entity(ZeviceLink)
     zox_define_component_entity(VirtualZeviceLink)
-    zox_define_memory_component(DeviceLinks)
+    zox_define_entities_component(DeviceLinks)
 }

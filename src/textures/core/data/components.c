@@ -28,6 +28,10 @@ zox_memory_component(TextureData, color)
 zox_memory_component(TilemapUVs, float2)
 zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
 
+static inline int2 get_texture_size(ecs_world_t* world, ecs_entity_t e) {
+    return zox_get_value(e, TextureSize)
+}
+
 void define_components_textures(ecs_world_t *world) {
     zox_define_tag(Texture)
     zox_define_tag(NoiseTexture)

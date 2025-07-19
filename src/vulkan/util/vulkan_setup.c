@@ -571,7 +571,8 @@ byte create_vulkan_debugger() {
 byte create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfaceKHR* vk_surface) {
     // int width, height;
     // SDL_Vulkan_GetDrawableSize(window, &width, &height);
-    vk_swap_chain_extent = (VkExtent2D) { screen_dimensions.x, screen_dimensions.y };
+    int2 screen_size = get_screen_size();
+    vk_swap_chain_extent = (VkExtent2D) { screen_size.x, screen_size.y };
 
     //if (create_vulkan_debugger() == EXIT_FAILURE) return EXIT_FAILURE;
     //zox_log_vulkan(" > success creating vulkan debugger\n")

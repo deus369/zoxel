@@ -3,7 +3,7 @@ int initialize_sdl_video(ecs_world_t *world) {
         zox_log(" - failed to initialize sdl [%s]\n", SDL_GetError())
         return EXIT_FAILURE;
     }
-    screen_dimensions = get_screen_size();
+    // screen_dimensions = get_screen_size();
     if (is_log_sdl) {
         print_sdl();
     }

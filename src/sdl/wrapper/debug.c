@@ -36,7 +36,7 @@ void print_sdl() {
     zox_log("     + platform:     %s", SDL_GetPlatform())
     zox_log("     + cpu count:    %d", SDL_GetCPUCount())
     zox_log("     + ram:          %d MB", SDL_GetSystemRAM())
-    zox_log("     + screen:       %ix%i", screen_dimensions.x, screen_dimensions.y)
+    // zox_log("     + screen:       %ix%i", screen_dimensions.x, screen_dimensions.y)
     zox_log("     + sse:          %s", (SDL_HasSSE() ? "true" : "false"));
     zox_log("     + sse2:         %s", (SDL_HasSSE2() ? "true" : "false"));
     zox_log("     + sse3:         %s", (SDL_HasSSE3() ? "true" : "false"));

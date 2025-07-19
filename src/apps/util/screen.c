@@ -2,7 +2,7 @@ void set_app_screen_resize(ecs_world_t *world, const ecs_entity_t e, const int2 
     if (fullscreen) {
         default_window_position = (int2) { (size.x) / 2, (size.y) / 2 };
     } else {
-        zox_log(" > screen_dimensions.x: %i > %i\n", size.x, default_window_size.x)
+        // zox_log(" > screen_dimensions.x: %i > %i\n", size.x, default_window_size.x)
         default_window_position = (int2) { (size.x - default_window_size.x) / 2, (size.y - default_window_size.y) / 2 };
     }
     zox_set(e, WindowPosition, { default_window_position })

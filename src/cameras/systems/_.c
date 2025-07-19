@@ -2,6 +2,7 @@
 #include "view_matrix_system.c"
 #include "camera_frustum_system.c"
 #include "billboard_system.c"
+#include "viewport_resize_system.c"
 // #include "camera_debug_system.c"
 //#include "camera_draw_frustum_system.c"
 //#include "camera_planes_draw_system.c"
@@ -27,6 +28,11 @@ void define_systems_cameras(ecs_world_t *world) {
         [in] transforms3.Position3D,
         [out] transforms3.Rotation3D,
         [none] ElementBillboard)
+    zox_system(ViewportResizeSystem, EcsOnUpdate,
+        [in] apps.WindowSizeDirty,
+        [in] apps.WindowSize,
+        [in] CameraLinks,
+        [none] apps.App)
     #ifdef zox_draw_frustum
     //zox_system_1(CameraPlanesDrawSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera3D)
     //zox_system_1(FrustumDrawSystem, zox_pip_mainthread, [in] FrustumCorners, [none] Camera3D)

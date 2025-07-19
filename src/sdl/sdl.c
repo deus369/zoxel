@@ -46,7 +46,7 @@ zox_begin_module(Sdl)
     add_to_update_loop(update_sdl);
     add_to_post_update_loop(app_update_gpu);
     add_hook_terminal_command(process_terminal_sdl);
-    set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
+    // set_app_screen_resize(world, prefab_app_sdl, screen_dimensions);
     // prefabs
     prefab_app_sdl = spawn_prefab_app_sdl(world);
     // sub module

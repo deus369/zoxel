@@ -24,8 +24,8 @@ void detatch_camera_from_character(ecs_world_t *world,
     const byte is_free)
 {
     // should get mouse from player devices
-    if (mouse_entity) {
-        zox_set(mouse_entity, MouseLock, { 0 })
+    if (local_mouse) {
+        zox_set(local_mouse, MouseLock, { 0 })
     }
     // character
     if (character) {

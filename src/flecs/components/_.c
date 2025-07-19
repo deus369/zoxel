@@ -2,3 +2,4 @@
 #include "memory_component.c"
 #include "hashmap_component.c"
 #include "link.c"
+#include "array.c"

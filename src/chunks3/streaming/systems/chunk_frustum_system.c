@@ -44,7 +44,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         bounds chunk_bounds = calculate_chunk_bounds(
             position3D->value,
             chunkSize->value,
-            voxScale->value);
+            voxScale->value * 0.5f);
         float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
         zox_sys_query_begin()
         byte is_viewed = 0;
@@ -71,7 +71,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             renderDisabled->value = !is_viewed;
             // -=- Block Spawns -=-
             if (zox_gett_value(it->entities[i], BlocksSpawned)) {
-                set_chunk_block_spawns_render_disabled(world, voxelNode,  renderDisabled->value);
+                set_chunk_block_spawns_render_disabled(world, voxelNode, renderDisabled->value);
             }
             // -=- -=- -=- -=- -=- -=-
             for (int j = 0; j < entityLinks->length; j++) {

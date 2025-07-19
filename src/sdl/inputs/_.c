@@ -16,11 +16,8 @@ void initialize_apps_input(ecs_world_t *world) {
 zox_begin_module(SdlInputs)
 #ifdef zox_lib_sdl
     zox_define_component_w_dest(SDLGamepad)
-    zox_system_1(GamepadExtractSystem, zox_extract_pipeline, [in] hierarchys.Children, [in] SDLGamepad, [none] inputs.Gamepad)
 #endif
-    zox_system_1(TouchscreenExtractSystem, zox_extract_pipeline, [in] hierarchys.Children, [out] generic.ScreenDimensions, [none] inputs.Touchscreen)
-    zox_system_1(MouseExtractSystem, zox_extract_pipeline, [in] hierarchys.Children, [none] inputs.Mouse)
-    zox_system_1(MouseConstrainSystem, zox_extract_pipeline, [in] inputs.MouseLock, [in] hierarchys.Children, [none] inputs.Mouse)
+    define_systems_sdl_inputs(world);
     initialize_apps_input(world);
 zox_end_module(SdlInputs)
 

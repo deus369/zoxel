@@ -24,8 +24,8 @@ void attach_camera_to_character(ecs_world_t *world,
         return;
     }
     // player
-    if (mouse_entity) {
-        zox_set(mouse_entity, MouseLock, { 1 }) // lock mouse since attached
+    if (local_mouse) {
+        zox_set(local_mouse, MouseLock, { 1 }) // lock mouse since attached
     }
     // character
     zox_set(character, DisableMovement, { 0 })

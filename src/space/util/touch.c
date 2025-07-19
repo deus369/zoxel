@@ -9,16 +9,22 @@ void handle_touch_drag(ecs_world_t *world, const ecs_entity_t canvas, const ecs_
         if (is_game_state_playing) {
             byte button_type = zox_device_stick_left;
             const ecs_entity_t touchscreen = zox_get_value(finger, DeviceLink)
-            const int2 screen_dimensions = zox_get_value(touchscreen, ScreenDimensions)
-            if (zevicePointerPosition->value.x >= screen_dimensions.x / 2) button_type = zox_device_stick_right;
+            const int2 size = zox_get_value(touchscreen, ScreenDimensions)
+            if (zevicePointerPosition->value.x >= size.x / 2) {
+                button_type = zox_device_stick_right;
+            }
             spawn_virtual_joystick(world, canvas, zevicePointerPosition->value, finger, virtual_joystick, button_type);
             virtual_joysticks_spawn_count++;
         }
     } else {
         // ui wasn't spawned, return
-        if (!zox_has(virtual_joystick, ElementLink)) return;
+        if (!zox_has(virtual_joystick, ElementLink)) {
+            return;
+        }
         const ecs_entity_t joystick_element = zox_get_value(virtual_joystick, ElementLink)
-        if (!joystick_element) return;
+        if (!joystick_element) {
+            return;
+        }
         if (devices_get_released_this_frame(zevicePointer->value)) {
             zox_get_muter(virtual_joystick, ZeviceStick, zeviceStick)
             zeviceStick->value = float2_zero;

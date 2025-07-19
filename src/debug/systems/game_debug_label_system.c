@@ -155,12 +155,12 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         } else */
         if (deviceMode->value == zox_device_mode_keyboardmouse) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[keyboardmouse]\n");
-            buffer_index = debug_label_device(world, mouse_entity, buffer, buffer_size, buffer_index);
+            buffer_index = debug_label_device(world, local_mouse, buffer, buffer_size, buffer_index);
         } else if (deviceMode->value == zox_device_mode_gamepad) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[gamepad]\n");
         } else if (deviceMode->value == zox_device_mode_touchscreen) {
             buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "[touchscreen]\n");
-            buffer_index = debug_label_device(world, touchscreen_entity, buffer, buffer_size, buffer_index);
+            buffer_index = debug_label_device(world, local_touchscreen, buffer, buffer_size, buffer_index);
         }
 #endif
         // test this \n
@@ -197,7 +197,7 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " raycaster target [%lu]", raycaster_target);
 #endif
 #ifdef zox_log_mouse
-        zox_geter(mouse_entity, Children, zevices)
+        zox_geter(local_mouse, Children, zevices)
         const int2 mouse_position = zox_get_value(zevices->value[0], ZevicePointerPosition)
         const int2 mouse_delta = zox_get_value(zevices->value[0], ZevicePointerDelta)
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " mouse_position [%ix%i]", mouse_position.x, mouse_position.y);
