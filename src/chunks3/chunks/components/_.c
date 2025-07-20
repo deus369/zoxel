@@ -18,6 +18,7 @@ zox_component_byte(NodeDepth)
 #include "node_helper.c"
 zox_component_node(VoxelNode, byte, 0)    // todo: Rename to VoxelNode
 zox_component_node_helper(VoxelNode, byte)
+zox_component_byte(VoxelNodeDirty)
 #include "neighbors.c"
 #include "chunk_links.c"
 #include "raycast_voxel_data.c"
@@ -42,5 +43,6 @@ void define_components_chunks(ecs_world_t *world) {
     zox_define_links_component(ChunkLink)
     zox_define_component_byte(NodeDepth)
     zox_define_component_node(VoxelNode)
+    zox_define_component_byte(VoxelNodeDirty)
     zox_define_hashmap_component(ChunkLinks)
 }

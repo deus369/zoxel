@@ -13,12 +13,16 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     zox_sys_out(GenerateChunk)
     zox_sys_out(VoxelNode)
     zox_sys_out(NodeDepth)
+    zox_sys_out(VoxelNodeDirty)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(ChunkPosition, chunkPosition)
         zox_sys_o(GenerateChunk, generateChunk)
         zox_sys_o(NodeDepth, nodeDepth)
         zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_o(VoxelNodeDirty, voxelNodeDirty)
+        // todo: remember if has generated yet, keep a generated LOD state!
+        //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
         if (generateChunk->value != chunk_generate_state_update || is_opened_VoxelNode(voxelNode)) {
             continue;
         }
@@ -129,6 +133,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         }
         cleanup_nodes(world, voxelNode);
         update_count++;
+        voxelNodeDirty->value = zox_dirty_trigger;
     }
     if (update_count > 0 && zox_log_terrain_generation) {
         zox_log(" - [%i] terrain [%i]", ecs_run_count, update_count)

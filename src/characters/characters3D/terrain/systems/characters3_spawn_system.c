@@ -92,6 +92,10 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 .render_disabled = renderDisabled->value,
             };
             const ecs_entity_t character = spawn_character3(world, spawn_data);
+            if (disable_npc_movement) {
+                zox_set(character, DisableMovement, { 1 })
+            }
+
             add_to_EntityLinks(entityLinks, character);
 
             zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (characters_per_chunk_count))

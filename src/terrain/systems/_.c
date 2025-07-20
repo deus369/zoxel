@@ -1,9 +1,12 @@
 #include "chunk_terrain_build_system.c"
 #include "terrain_chunks_render_system.c"
 #include "chunk_bounds_debug_system.c"
-#include "block_vox_spawn_system.c"
 #include "chunk_flatland_system.c"
 #include "grassy_plains_system.c"
+#include "block_vox_spawn_system.c"
+#include "block_vox_despawn_system.c"
+#include "block_vox_lod_system.c"
+#include "block_vox_removed_system.c"
 zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
 void define_systems_terrain(ecs_world_t *world) {
@@ -22,17 +25,38 @@ void define_systems_terrain(ecs_world_t *world) {
         [out] chunks3.GenerateChunk,
         [out] chunks3.VoxelNode,
         [out] chunks3.NodeDepth,
+        [out] chunks3.VoxelNodeDirty,
         [none] !FlatlandChunk,
         [none] TerrainChunk)
+    zox_system(BlockVoxDespawnSystem, EcsOnUpdate,
+        [in] chunks3.VoxelNodeDirty,
+        [in] rendering.RenderDistanceDirty,
+        [in] rendering.RenderLod,
+        [out] chunks3.VoxelNode,
+        [out] chunks3.BlocksSpawned,
+        [none] TerrainChunk)
+    zox_system(BlockVoxLodSystem, EcsOnUpdate,
+        [in] rendering.RenderDistanceDirty,
+        [in] rendering.RenderDistance,
+        [in] chunks3.VoxelNode,
+        [in] chunks3.BlocksSpawned,
+        [none] TerrainChunk)
+    zox_system(BlockVoxRemovedSystem, EcsOnUpdate,
+        [in] chunks3.VoxelNodeDirty,
+        [in] chunks3.BlocksSpawned,
+        [out] chunks3.VoxelNode,
+        [none] TerrainChunk)
+
     // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
     zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread,
-        [in] chunks3.ChunkLodDirty,
+        [in] chunks3.VoxelNodeDirty,
+        [in] rendering.RenderDistanceDirty,
         [in] chunks3.ChunkPosition,
         [in] chunks3.VoxLink,
         [in] chunks3.NodeDepth,
-        [in] rendering.RenderDistance,
         [in] rendering.RenderDisabled,
         [in] rendering.RenderLod,
+        [in] rendering.RenderDistance,
         [out] chunks3.VoxelNode,
         [out] chunks3.BlocksSpawned,
         [none] TerrainChunk)

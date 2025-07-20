@@ -9,19 +9,27 @@ ecs_entity_t spawn_prefab_popup3D(ecs_world_t *world, const ecs_entity_t prefab)
     return e;
 }
 
-ecs_entity_t spawn_popup3D(ecs_world_t *world, const SpawnDataElement3D data, Text3DData text_data, Zigel3DData zigel_data) {
+ecs_entity_t spawn_popup3(ecs_world_t *world,
+    const SpawnDataElement3D data,
+    Text3DData text_data,
+    Zigel3DData zigel_data,
+    const SpawnDataPopup3 popup_data)
+{
     if (!text_data.prefab) {
-        zox_log("invalid text_data prefab in spawn_popup3D\n")
+        zox_log_error("invalid text_data prefab in spawn_popup3D")
         return 0;
     }
     zox_instance(data.prefab)
     zox_name("popup3D")
     zox_set(e, Color, { data.base_color })
+    if (popup_data.lifetime) {
+        zox_set(e, DestroyInTime, { popup_data.lifetime })
+    }
     float3 depth_position = (float3) { 0, 0, element3D_depth_difference };
     text_data.position = depth_position;
     text_data.parent = e;
     zigel_data.position = depth_position;
-    zigel_data.scale = 2;
+    zigel_data.scale = popup_data.scale; // 2;
     const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);
     if (text) {
         Children *children = &((Children) { 0, NULL });

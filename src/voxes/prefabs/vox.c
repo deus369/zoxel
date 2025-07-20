@@ -16,13 +16,15 @@ ecs_entity_t spawn_prefab_vox(ecs_world_t *world, const ecs_entity_t prefab) {
     // vox
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     zox_prefab_set(e, GenerateChunk, { 0 })
+    zox_prefab_set(e, NodeDepth, { block_vox_depth })
     return e;
 }
 
-ecs_entity_t spawn_vox_basic(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_vox_basic(ecs_world_t *world, const ecs_entity_t prefab, byte node_depth) {
     zox_instance(prefab)
     spawn_gpu_mesh(world, e);
     // spawn_gpu_uvs(world, e);
     spawn_gpu_colors(world, e);
+    zox_set(e, NodeDepth, { node_depth })
     return e;
 }

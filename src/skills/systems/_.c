@@ -30,9 +30,9 @@ void define_systems_skills(ecs_world_t *world) {
     // todo: make a state system for SkillActive
     zox_system_1(MeleeSystem, zox_pip_mainthread,
         [in] users.UserLink,
-        [out] SkillActive,
         [in] SkillDamage,
         [in] SkillRange,
         [in] SkillCost,
+        [out] SkillActive,
         [none] Melee)
 }

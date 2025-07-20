@@ -52,15 +52,15 @@ zox_begin_module(ZoxGame)
     hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
     // mood
-    float sub_resolution = 4;
+    float sub_resolution = 8;
     viewport_scale = 1 / sub_resolution;
     grayscale_mode = 0;
-    is_generate_vox_outlines = 1;
-
-    is_log_gpu_restore = 0;
+    is_generate_vox_outlines = 0;
 
     // debug
+    // disable_npc_movement = 1;
     zox_visualize_sounds = 0;
+    is_log_gpu_restore = 0;
     // zox_debug_id(Block)
     // zox_debug_print_modules(world, 1);
     // zox_debug_print_systems(world, 1);
@@ -74,12 +74,12 @@ zox_begin_module(ZoxGame)
 
     // physics
     // target_fps = 15;
-    friction3D = 9.5f; // 560;
-    air_friction3D = 0.4f; // 40;
-    bounce_lost_force = 0.15f;
+    friction3D = 12; // 560;
+    air_friction3D = 1; // 40;
+    bounce_lost_force = 0.12f;
     // zox_default_gravity.y = -8;
     zox_jump_power = 4;
-    run_speed = 1.46;
+    run_speed = 1.36;
     run_accceleration = 2.2;
     backwards_multiplier = 0.7f;
     player_movement_power = (float2) { 14, 14 };
@@ -101,8 +101,8 @@ zox_begin_module(ZoxGame)
     vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
 
     // world gen
-    block_spawn_chance_grass = 1424; //  512 | 1024 | 2048 | 3000
-    terrain_amplifier = 64;
+    block_spawn_chance_grass = 1824; //  512 | 1024 | 2048 | 3000
+    terrain_amplifier = 48; // 64;
 
     // render distance settings
     // initial_terrain_lod = 2; // 2 |3
@@ -177,8 +177,8 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &get_label_player_quests);
     // set_prefab_debug_label(world, &debug_label_lods);
     // set_prefab_debug_label(world, &debug_label_collisions);
-    // set_prefab_debug_label(world, &debug_label_chunk_link);
-    set_prefab_debug_label(world, &debug_label_app);
+    set_prefab_debug_label(world, &debug_label_chunk_link);
+    // set_prefab_debug_label(world, &debug_label_app);
 
     // add_hook_key_down(key_down_test_aura);
     add_hook_key_down(toggle_life_terrain);

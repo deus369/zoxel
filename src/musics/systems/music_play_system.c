@@ -55,14 +55,14 @@ void MusicPlaySystem(ecs_iter_t *it) {
                     frequency,
                     note_time,
                     volume);
-                if (rand() % 100 >= music_play_double_chance) {
+                /*if (rand() % 100 >= music_play_double_chance) {
                     spawn_sound_generated(world,
                         prefab_sound_generated,
                         note_instrument,
                         frequency,
                         note_time,
                         volume);
-                }
+                }*/
                 // zox_log_notes("+ [%s] created [%lu]", zox_get_name(sound), sound)
             }
 

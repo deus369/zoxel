@@ -5,6 +5,6 @@ ecs_entity_t spawn_prefab_character3D_npc(ecs_world_t *world, const ecs_entity_t
     zox_add_tag(e, Npc)
     zox_add_tag(e, RendererColored)
     zox_add_tag(e, Jumper)
-    zox_prefab_set(e, RenderDisabled, { 1 })
+    zox_set(e, RenderDisabled, { 1 })
     return e;
 }

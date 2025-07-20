@@ -28,7 +28,8 @@ void raycast_terrain_gizmo(ecs_world_t *world,
         ray_normal,
         get_terrain_voxel_scale(depth),
         terrain_ray_length,
-        data);
+        data,
+        NULL);
     if (ray_hit == ray_hit_type_terrain) {
         float3 voxel_position_real = data->position_real;
         float3 center_quad = float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(data->normal), data->voxel_scale * (0.501f)));

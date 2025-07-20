@@ -2,6 +2,7 @@ zox_increment_system_with_reset(ChunkDirty, chunk_dirty_state_end)
 zox_increment_system_with_reset(ChunkMeshDirty, chunk_dirty_state_end)
 zox_increment_system_with_reset(GenerateChunk, chunk_generate_state_end)
 zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end)
+zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end)
 #include "chunk_link_system.c"
 #include "chunk_entities_lod_system.c"
 #include "chunk_debug_system.c"
@@ -12,6 +13,7 @@ void define_systems_chunks(ecs_world_t *world) {
     zox_define_increment_system(ChunkMeshDirty, EcsOnLoad)
     zox_define_increment_system(GenerateChunk, EcsOnLoad)
     zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
+    zox_define_increment_system(VoxelNodeDirty, EcsOnLoad)
     zox_system(ChunkLinkSystem, EcsOnUpdate,
         [in] chunks3.VoxLink,
         [in] transforms3.Position3D,

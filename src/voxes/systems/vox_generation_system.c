@@ -1,7 +1,7 @@
 void VoxGenerationSystem(ecs_iter_t *it) {
     const byte unique_colors = 8;
     const int grass_random = 6;
-    const byte node_depth = block_vox_depth;
+    // const byte node_depth = block_vox_depth;
     // const byte chunk_voxel_length = powers_of_two_byte[node_depth];
     zox_sys_world()
     zox_sys_begin()
@@ -22,7 +22,8 @@ void VoxGenerationSystem(ecs_iter_t *it) {
         if (!generateVox->value) {
             continue;
         }
-        nodeDepth->value = node_depth;
+        const byte node_depth = nodeDepth->value;
+        // nodeDepth->value = node_depth;
         const byte colors_count = unique_colors + is_generate_vox_outlines;
         resize_memory_component(ColorRGBs, colors, color_rgb, colors_count)
         const color_rgb color_rgb_2 = color_to_color_rgb(color2->value);

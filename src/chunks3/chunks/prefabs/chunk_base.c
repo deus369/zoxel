@@ -18,6 +18,7 @@ ecs_entity_t spawn_prefab_chunk_base(ecs_world_t *world) {
     zox_prefab_set(e, ChunkMeshDirty, { chunk_dirty_state_none })
     // allocations
     zox_prefab_add(e, VoxelNode)
+    zox_prefab_set(e, VoxelNodeDirty, { zox_dirty_none })
     zox_prefab_set(e, NodeDepth, { 0 })
     return e;
 }

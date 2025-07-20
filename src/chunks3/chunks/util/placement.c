@@ -17,11 +17,9 @@ void place_block(ecs_world_t *world,
     float scale = get_terrain_voxel_scale(node_depth);
     // assume we checked if get_voxel == place_voxel
     // need to delete before node updated
-    //if (!voxel) {
     if (is_linked_VoxelNode(node)) {
         destroy_node_entity_VoxelNode(world, node);
     }
-    //}
     // set node voxel data
     const int3 chunk_size = zox_get_value(chunk, ChunkSize)
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
@@ -67,6 +65,8 @@ void place_block(ecs_world_t *world,
     }
 
     // - Refresh Meshes
+    // zox_log_error("chunk [%s] set VoxelNodeDirty to trigger.", zox_get_name(chunk))
+    zox_set(chunk, VoxelNodeDirty, { zox_dirty_trigger })
     zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
     zox_set(chunk, ChunkMeshDirty, { chunk_dirty_state_trigger })
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position_local, chunk_size_b3)) {

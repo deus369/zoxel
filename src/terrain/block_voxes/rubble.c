@@ -1,6 +1,6 @@
 ecs_entity_t spawn_realm_block_rubble(ecs_world_t *world, const byte index, char* name, const color block_color) {
     // vox
-    const ecs_entity_t vox = spawn_vox_basic(world, prefab_vox);
+    const ecs_entity_t vox = spawn_vox_basic(world, prefab_vox, block_vox_depth);
     zox_set_unique_name(vox, "block_rubble")
     zox_set(vox, VoxType, { vox_type_rubble })
     zox_set(vox, Color, { block_color })
