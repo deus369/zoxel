@@ -56,7 +56,7 @@ zox_begin_module(ZoxGame)
     // mood
     float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
-    grayscale_mode = 1;
+    grayscale_mode = 0;
     is_generate_vox_outlines = 1;
 
     // debug
@@ -90,6 +90,27 @@ zox_begin_module(ZoxGame)
     menu_sky_bottom_color = (color_rgb) { 0, 0, 0 };
     set_skybox_colors(world, menu_sky_color, menu_sky_bottom_color);
 
+    // scaling
+    terrain_lod_near = 3;
+    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
+    terrain_depth = 4;
+    block_vox_depth = 5;
+    character_depth = 5;
+    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
+
+    // world gen
+    block_spawn_chance_grass = 1424; //  512 | 1024 | 2048 | 3000
+    terrain_amplifier = 64;
+
+    // render distance settings
+    // initial_terrain_lod = 2; // 2 |3
+    // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
+    // render_distance_y = 2; // 1 | 2 | 4
+    block_vox_render_at_lod = 0; // now using lod minimum
+    fog_density = 0.034f;
+    // character_render_distance = 2;  // 1 | 2
+    characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64
+
     // main menu
     // header
     header_fill = color_grayscale(4);
@@ -122,27 +143,6 @@ zox_begin_module(ZoxGame)
     zox_set(prefab_handle, Color, { button_font_fill })
     zox_set(prefab_handle, OutlineColor, { button_font_outline })
     // nothing_font_color = debug_color; // debug font texture
-
-    // scaling
-    terrain_lod_near = 3;
-    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
-    terrain_depth = 4;
-    block_vox_depth = 5;
-    character_depth = 5;
-    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
-
-    // world gen
-    block_spawn_chance_grass = 1424; //  512 | 1024 | 2048 | 3000
-    terrain_amplifier = 64;
-
-    // render distance settings
-    // initial_terrain_lod = 2; // 2 |3
-    // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
-    // render_distance_y = 2; // 1 | 2 | 4
-    block_vox_render_at_lod = 0; // now using lod minimum
-    fog_density = 0.034f;
-    // character_render_distance = 2;  // 1 | 2
-    characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64
 
     // fix prefabs
     if (prefab_vox) {

@@ -10,7 +10,9 @@ void sdl_on_window_moved(ecs_world_t *world, const ecs_entity_t e, int2 position
     if (old_monitor_index != monitor_index) {
         zox_set(e, WindowMonitor, { monitor_index })
         zox_set_monitor_silently(world, e, monitor_index);
-        zox_log_sdl("+ monitor has swapped [%i]", monitor_index)
+        if (is_log_monitors) {
+            zox_log("+ window moved to monitor [%i]", monitor_index)
+        }
     }
 }
 

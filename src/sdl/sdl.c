@@ -34,7 +34,7 @@
 #include "components/_.c"
 #include "data/_.c"
 #include "wrapper/_.c"
-#include "settings/terminal.c"
+#include "settings/_.c"
 #include "prefabs/app.c"
 #include "inputs/_.c"
 #include "util/_.c"

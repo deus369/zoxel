@@ -1,6 +1,10 @@
+void zox_sdl_window_size( SDL_Window* sdl_window, int2 size) {
+    SDL_SetWindowSize(sdl_window, size.x, size.y);
+}
+
 void zox_app_set_size(ecs_world_t *world, ecs_entity_t e, int2 size) {
     zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
-    SDL_SetWindowSize(sdl_window, size.x, size.y);
+    zox_sdl_window_size(sdl_window, size);
     if (!int2_equals(size, zox_gett_value(e, WindowSize))) {
         zox_set(e, WindowSize, { size })
         zox_set(e, WindowSizeDirty, { zox_dirty_trigger })
@@ -51,17 +55,17 @@ SDL_Window* create_sdl_window_basic_vulkan(
 
 static inline int get_sdl_window_flags() {
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-#ifdef zoxel_on_android
+/*#ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
 #else
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
-#endif
+#endif*/
     return flags;
 }
 
-SDL_Window* create_sdl_window(const int2 position, const int2 size, const char *name) {
+SDL_Window* create_sdl_window(const int2 position, const int2 size, const char *name, byte flags) {
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
-    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, get_sdl_window_flags());
+    SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (!window) {
         zox_log_error(" CreateWindowError [%s]\n", SDL_GetError())
     } else {

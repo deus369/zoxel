@@ -9,8 +9,6 @@ ecs_entity_t engine_spawn_window(ecs_world_t *world) {
     load_settings(world, game_name);
     const ecs_entity_t app = spawn_window_opengl(world,
         window_name,
-        default_window_position,
-        default_window_size,
         fullscreen,
         maximized,
         monitor);

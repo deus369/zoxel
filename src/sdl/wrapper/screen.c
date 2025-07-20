@@ -1,51 +1,3 @@
-byte zox_app_get_monitor(ecs_world_t *world, ecs_entity_t e) {
-    if (!zox_valid(e) || !zox_has(e, SDLWindow)) {
-        return 0;
-    }
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
-    return SDL_GetWindowDisplayIndex(sdl_window);
-}
-
-byte zox_app_set_monitor(SDL_Window *window, byte index, byte center_window) {
-    if (!window) {
-        return 0;
-    }
-    SDL_Rect bounds;
-    if (SDL_GetDisplayBounds(index, &bounds) != 0) {
-        zox_log_error("Failed to get display bounds for display %d: %s", index, SDL_GetError());
-        return 0;
-    }
-    int2 window_size;
-    SDL_GetWindowSize(window, &window_size.x, &window_size.y);
-    int target_x = bounds.x;
-    int target_y = bounds.y;
-    if (center_window) {
-        target_x += (bounds.w - window_size.x) / 2;
-        target_y += (bounds.h - window_size.y) / 2;
-    }
-    SDL_SetWindowPosition(window, target_x, target_y);
-    // zox_log(" + zox_app_set_monitor %i at (%d, %d)", index, target_x, target_y);
-    return 1;
-}
-
-void zox_app_set_monitor_e(ecs_world_t *world, ecs_entity_t e, byte monitor) {
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
-    zox_app_set_monitor(sdl_window, monitor, 1);
-    zox_set(e, WindowMonitor, { monitor })
-}
-
-int2 get_screen_size_monitor(byte monitor_index) {
-    SDL_DisplayMode displayMode;
-    SDL_GetCurrentDisplayMode(monitor_index, &displayMode);
-    return (int2) { displayMode.w, displayMode.h };
-}
-
-int2 get_sdl_screen_size() {
-    SDL_DisplayMode displayMode;
-    SDL_GetCurrentDisplayMode(0, &displayMode);
-    return (int2) { displayMode.w, displayMode.h };
-}
-
 int2 get_screen_size() {
 #ifdef zoxel_on_web
     return get_webasm_screen_size();
@@ -53,8 +5,17 @@ int2 get_screen_size() {
     return get_screen_size_monitor(monitor);
 #endif
 }
+
+int2 get_sdl_screen_size() {
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(monitor, &displayMode);
+    return (int2) { displayMode.w, displayMode.h };
+}
+
 void zox_app_set_fullscreen(SDL_Window* window, byte fullscreen) {
-    SDL_SetWindowFullscreen(window, fullscreen ? sdl_fullscreen_byte : 0);
+    const byte flag = fullscreen ? sdl_fullscreen_byte : 0;
+    // zox_log("# fullscreen flag [%i]", flag)
+    SDL_SetWindowFullscreen(window, flag);
 }
 
 void zox_app_set_maximized(SDL_Window* window, byte maximized) {

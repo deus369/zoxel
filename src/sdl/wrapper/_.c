@@ -1,3 +1,6 @@
+// todo: move anything with EcS out of wrapper!
+
+#include "monitor.c"
 #include "screen.c"
 #include "window.c"
 #include "opengl.c"

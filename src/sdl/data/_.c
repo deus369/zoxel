@@ -1,4 +1,6 @@
-const byte sdl_fullscreen_byte = (byte) SDL_WINDOW_FULLSCREEN_DESKTOP; // SDL_WINDOW_FULLSCREEN
+// SDL_WINDOW_FULLSCREEN - fullscreen (exclusive)
+// SDL_WINDOW_FULLSCREEN_DESKTOP - borderless windowed
+const byte sdl_fullscreen_byte = (byte) SDL_WINDOW_FULLSCREEN_DESKTOP;
 #include "opengl_states.c"
 
 byte is_log_sdl = 0;

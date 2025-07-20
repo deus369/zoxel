@@ -1,1 +1,1 @@
-float skybox_size = 1024;
+float skybox_size = 800;

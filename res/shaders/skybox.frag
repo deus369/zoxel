@@ -31,7 +31,7 @@ lowp vec3 sky_gradient(lowp vec3 color) {
 
 void main() {
     lowp vec3 sky_top_color2 = sky_top_color;
-    lowp float gradient = clamp((mesh_pos.y + 0.0) * 4.0, 0.0, 1.0);
+    lowp float gradient = clamp((mesh_pos.y + 0.0) * 1.0, 0.0, 1.0);
     frag_color = vec3(mix(sky_bottom_color, sky_top_color2, gradient)) * brightness;
     frag_color = sky_gradient(frag_color);
     frag_color -= vec3(1) * 0.05;

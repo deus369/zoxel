@@ -42,11 +42,6 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
     zox_set(e, VoxLink, { terrain })
     zox_set(e, ChunkPosition, { chunk_position })
     zox_set(e, TransformMatrix, { float4x4_position(position3D) })
-    if (!headless) {
-        spawn_gpu_mesh(world, e);
-        spawn_gpu_uvs(world, e);
-        spawn_gpu_colors(world, e);
-    }
     // lod update here
     // todo: just start this as invisible and update with streaming systems
     const byte camera_distance = get_camera_chunk_distance_xz(camera_position, chunk_position);
@@ -57,6 +52,13 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
     zox_set(e, RenderLod, { render_lod })
     if (render_lod != render_lod_invisible) {
         zox_set(e, ChunkLodDirty, { chunk_lod_state_trigger })
+    }
+    // can move this to init systems
+    //  note: keep spawn functions only for passing through sending outside information
+    if (!headless) {
+        spawn_gpu_mesh(world, e);
+        spawn_gpu_uvs(world, e);
+        spawn_gpu_colors(world, e);
     }
     return e;
 }

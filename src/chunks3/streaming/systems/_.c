@@ -27,7 +27,7 @@ void define_systems_streaming(ecs_world_t *world) {
         [in] blocks.VoxScale,
         [in] generic.EntityLinks,
         [in] chunks3.VoxelNode,
-        // [in] chunks3.NodeDepth,
+        [in] chunks3.NodeDepth,
         [out] rendering.RenderDisabled,
         [none] StreamedChunk)
     zox_filter(streamers2,

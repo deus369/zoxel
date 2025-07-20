@@ -1,7 +1,22 @@
 // todo: keep this in hashmap for processed Voxes - atm its gonna check 10k chunks * voxels length which is bad
 // todo: support for multiple terrains using hashmap
 
-void build_chunk_terrain_mesh(const VoxelNode *chunk_octree, const TilemapUVs *tilemap_uvs, MeshIndicies *meshIndicies, MeshVertices *meshVertices, MeshUVs *meshUVs, MeshColorRGBs *meshColorRGBs, const byte is_max_depth_chunk, const byte render_depth, const VoxelNode *neighbors[], const byte neighbor_depths[], const float vert_scale, const byte *voxel_solidity, const int *voxel_uv_indexes, const byte max_depth) {
+void build_chunk_terrain_mesh(
+    const VoxelNode *chunk_octree,
+    const TilemapUVs *tilemap_uvs,
+    MeshIndicies *meshIndicies,
+    MeshVertices *meshVertices,
+    MeshUVs *meshUVs,
+    MeshColorRGBs *meshColorRGBs,
+    const byte is_max_depth_chunk,
+    const byte render_depth,
+    const VoxelNode *neighbors[],
+    const byte neighbor_depths[],
+    const float vert_scale,
+    const byte *voxel_solidity,
+    const int *voxel_uv_indexes,
+    const byte max_depth)
+{
     const mesh_uvs_build_data mesh_data = {
         .indicies = create_int_array_d(initial_dynamic_array_size),
         .vertices = create_float3_array_d(initial_dynamic_array_size),

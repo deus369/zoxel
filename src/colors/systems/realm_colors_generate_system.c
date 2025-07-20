@@ -25,7 +25,12 @@ void generate_colors(long int seed, Colors *colors) {
     if (obsidian_hsv.x + 180 >= dirt_hsv.x + 180 - 45 && obsidian_hsv.x + 180 <= dirt_hsv.x + 180 + 45) {
         obsidian_hsv.x += 180; // if close to dirt, move away the hue
     }
-    float3 sky_hsv = (float3) { (float) (((int) grass_hsv.x + 180) % 360), dirt_hsv.y + 32, dirt_hsv.z + 32 };
+    const float2 sky_hue = (float2) { 0, 360 }; // ((int) grass_hsv.x + 180) % 360)
+    const float2 sky_value = (float2) { 54, 66 };
+    const float2 sky_saturation = (float2) { 16, 30 };
+    float3 sky_hsv = generate_hsv_v_s(sky_hue, sky_value, sky_saturation);
+    // float3 sky_hsv = (float3) { (float) (((int) grass_hsv.x + 180) % 360), dirt_hsv.y + 32,
+        // dirt_hsv.z + 32 };
     const color dirt_color = hsv_to_color(dirt_hsv);
     const color grass_color = hsv_to_color(grass_hsv);
     const color sand_color = hsv_to_color(sand_hsv);
