@@ -4,6 +4,7 @@
 #include "data/_.c"
 #include "components/_.c"
 #include "prefabs/_.c"
+#include "spawn/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 #include "ui/ui.c"

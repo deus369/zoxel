@@ -9,10 +9,15 @@ ecs_entity_t spawn_prefab_poison(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_poison(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t user, const ecs_entity_t spawner, const ecs_entity_t skill, const float damage) {
+ecs_entity_t spawn_poison(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const ecs_entity_t user,
+    const ecs_entity_t spawner,
+    const ecs_entity_t skill,
+    const float damage)
+{
     zox_instance(prefab)
     zox_name("poison")
-    // zox_log(" + set SpawnerLink to [%lu]\n", spawner)
     zox_set(e, UserLink, { user })          // user that owns poison debuff
     zox_set(e, SpawnerLink, { spawner })    // user that used skill
     zox_set(e, SkillLink, { skill })        // skill that created poison

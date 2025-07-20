@@ -238,6 +238,7 @@ byte raycast_voxel_node(
             ray_distance = closest_t;
             data->distance = ray_distance;
             data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
+            data->normal = ray_normal;
             return ray_hit_type_character;
         }
 
@@ -280,7 +281,7 @@ byte raycast_voxel_node(
     }
     data->distance = ray_distance;
     if (ray_hit == ray_hit_type_block_vox && !raycasting_terrain) {
-        data->normal = hit_normal;
+        data->normal = int3_to_float3(hit_normal);
     } else if (ray_hit == ray_hit_type_terrain || (ray_hit == ray_hit_type_block_vox && raycasting_terrain)) {
         data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
         float3 voxel_position_real = float3_multiply_float(int3_to_float3(position_global), voxel_scale);
@@ -291,9 +292,6 @@ byte raycast_voxel_node(
         data->position_real = voxel_to_real_position(position_local, chunk_position, chunk_size_b3, voxel_scale);
         data->voxel_scale = voxel_scale;
         data->chunk = chunk;
-        if (ray_hit == ray_hit_type_terrain) {
-            data->normal = hit_normal;
-        }
         data->position_last = voxel_position_local_last;
         data->position_global_last = position_global_last;
         data->position_real_last = position_real_last;
@@ -301,6 +299,9 @@ byte raycast_voxel_node(
         data->node = node_voxel;
         data->voxel = node_voxel->value;
         data->node_last = node_last;
+        if (ray_hit == ray_hit_type_terrain) {
+            data->normal = int3_to_float3(hit_normal);
+        }
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
         render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node_depth))), hit_point_line_color);
@@ -309,14 +310,11 @@ byte raycast_voxel_node(
         const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
         render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
 #endif
-    } /*else if (ray_hit == ray_hit_type_character) {
-        data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
-        //return ray_hit;
-    } */else if (ray_hit == ray_hit_type_none) {
+    } else if (ray_hit == ray_hit_type_none) {
         data->chunk = 0;
         data->position = byte3_zero;
         data->position_global = int3_zero;
-        data->normal = int3_zero;
+        data->normal = float3_zero;
         data->hit = float3_zero;
         data->position_real = float3_zero;
         data->position_last = byte3_zero;

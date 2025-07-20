@@ -8,7 +8,7 @@ typedef struct {
     ecs_entity_t chunk;
     VoxelNode *node;
     float3 hit;
-    int3 normal;
+    float3 normal;
     float distance;
     byte3 position_last;
     int3 position_global_last;
