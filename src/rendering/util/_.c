@@ -4,3 +4,5 @@
 #include "mesh_indicies2.c"
 #include "shader_loading.c"
 #include "render_passes.c"
+#include "terminal.c"
+#include "dispose.c"

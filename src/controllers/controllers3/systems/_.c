@@ -5,6 +5,7 @@
 #include "jump3D_system.c"
 #include "random_jump3D_system.c"
 #include "can_jump_system.c"
+#include "player3_respawn_system.c"
 
 void define_systems_controllers3D(ecs_world_t *world) {
     zox_system(Player3DMoveSystem, zox_pip_player_movement,
@@ -12,7 +13,7 @@ void define_systems_controllers3D(ecs_world_t *world) {
         [in] inputs.DeviceMode,
         [in] characters.CharacterLink,
         [none] players.Player)
-    zox_system(Player3DRotateSystem, zox_pip_player_movement,
+    zox_system(Player3RotateSystem, zox_pip_player_movement,
         [in] inputs.DeviceLinks,
         [in] inputs.DeviceMode,
         [in] characters.CharacterLink,
@@ -40,4 +41,8 @@ void define_systems_controllers3D(ecs_world_t *world) {
     zox_system(CanJumpSystem, EcsOnUpdate,
         [in] collisions3.Grounded,
         [in] characters.CanJump)
+    zox_system_1(Player3RespawnSystem, EcsOnUpdate,
+        [out] players.PlayerState,
+        [out] players.PlayerRespawn,
+        [out] characters.CharacterLink);
 }

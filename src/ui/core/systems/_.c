@@ -118,9 +118,9 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] transforms3.TransformMatrix,
         [in] elements.core.Layer2D,
         [in] rendering.RenderDisabled,
-        [in] rendering.core.MeshGPULink,
-        [in] rendering.core.UvsGPULink,
-        [in] rendering.core.TextureGPULink,
+        [in] rendering.MeshGPULink,
+        [in] rendering.UvsGPULink,
+        [in] rendering.TextureGPULink,
         [none] cameras.RenderTexture)
     zox_render2D_system(ElementRenderSystem,
         [in] transforms2.Position2D,
@@ -130,9 +130,9 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] rendering.RenderDisabled,
         [in] rendering.Brightness,
         [in] rendering.Alpha,
-        [in] rendering.core.MeshGPULink,
-        [in] rendering.core.UvsGPULink,
-        [in] rendering.core.TextureGPULink,
+        [in] rendering.MeshGPULink,
+        [in] rendering.UvsGPULink,
+        [in] rendering.TextureGPULink,
         [none] ElementRender,
         [none] !cameras.RenderTexture)
     // healthbars
@@ -152,16 +152,16 @@ void define_systems_elements_core(ecs_world_t *world) {
             [in] rendering.MeshAlignment,
             [in] elements.core.CanvasLink,
             [out] rendering.MeshDirty,
-            [out] rendering.core.MeshVertices2D,
-            [out] rendering.core.MeshGPULink,
-            [out] rendering.core.TextureGPULink,
-            [out] rendering.core.UvsGPULink,
+            [out] rendering.MeshVertices2D,
+            [out] rendering.MeshGPULink,
+            [out] rendering.TextureGPULink,
+            [out] rendering.UvsGPULink,
             [none] Element)
         zox_system_1(RenderTextureBeginSystem, EcsPreUpdate,
             [in] elements.core.InitializeElement,
-            [in] textures.core.TextureSize,
+            [in] rendering.TextureSize,
             [in] cameras.CameraLink,
-            [in] rendering.core.TextureGPULink,
+            [in] rendering.TextureGPULink,
             [none] cameras.RenderTexture)
     }
 }

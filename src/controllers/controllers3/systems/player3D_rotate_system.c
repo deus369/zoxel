@@ -1,16 +1,19 @@
-void Player3DRotateSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_in(CharacterLink, characterLinks, 3)
-    zox_field_in(CameraLink, cameraLinks, 4)
+void Player3RotateSystem(ecs_iter_t *it) {
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_in(CharacterLink)
+    zox_sys_in(CameraLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CharacterLink, characterLinks, characterLink)
+        zox_sys_i(CharacterLink, characterLink)
+        zox_sys_i(CameraLink, cameraLink)
+        zox_sys_i(DeviceLinks, deviceLinks)
+        zox_sys_i(DeviceMode, deviceMode)
         const ecs_entity_t character = characterLink->value;
         if (!zox_valid(character) || !zox_has(character, Character3D)) {
             continue;
         }
-        zox_field_i(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value) {
             zox_geter(cameraLink->value, CameraMode, cameraMode)
             if (cameraMode->value != zox_camera_mode_first_person && cameraMode->value != zox_camera_mode_third_person) {
@@ -23,8 +26,6 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         }
         float2 euler = { 0, 0 };
         float2 right_stick = float2_zero;
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!zox_valid(device)) {
@@ -140,4 +141,4 @@ void Player3DRotateSystem(ecs_iter_t *it) {
         }
 #endif
     }
-} zox_declare_system(Player3DRotateSystem)
+} zox_declare_system(Player3RotateSystem)

@@ -5,7 +5,8 @@ void spawn_prefabs_weather(ecs_world_t *world) {
 }
 
 void spawn_weather(ecs_world_t *world) {
-    #ifndef zox_disable_skybox
+#ifndef zox_disable_skybox
     spawn_skybox(world, shader_skybox);
-    #endif
+    set_skybox_colors(world, menu_sky_color, menu_sky_bottom_color);
+#endif
 }

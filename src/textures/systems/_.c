@@ -16,43 +16,43 @@ void define_systems_textures(ecs_world_t *world) {
         [in] players.PlayerLink)
     zox_filter(generate_textures2,
         [none] FrameTexture,
-        [out] textures.core.GenerateTexture)
+        [out] textures.GenerateTexture)
     zox_system(AnimateNoiseSystem, zox_pip_texture_generation,
         [out] AnimateTexture,
-        [out] textures.core.GenerateTexture)
+        [out] textures.GenerateTexture)
     zox_texture_system(NoiseTextureSystem, NoiseTexture,
         [in] colorz.Color)
     zox_texture_generation_system2(FillTexture, FillTextureSystem,
         [in] colorz.Color)
     zox_system_ctx(FrameTextureSystem, zox_pip_texture_generation, generate_textures2,
-        [in] textures.core.TextureSize,
+        [in] rendering.TextureSize,
         [in] colorz.Color,
         [in] OutlineThickness,
         [in] FrameCorner,
-        [out] textures.core.GenerateTexture,
-        [out] textures.core.TextureData,
+        [out] textures.GenerateTexture,
+        [out] textures.TextureData,
         [out] rendering.TextureDirty,
         [none] FrameTexture)
     zox_system(TilemapGenerationSystem, zox_pip_texture_generation,
-        [in] textures.core.TilemapSize,
-        [in] textures.core.TextureLinks,
-        [out] textures.core.GenerateTexture,
-        [out] textures.core.TextureSize,
-        [out] textures.core.TextureData,
+        [in] textures.TilemapSize,
+        [in] textures.TextureLinks,
+        [out] textures.GenerateTexture,
+        [out] rendering.TextureSize,
+        [out] textures.TextureData,
         [out] rendering.TextureDirty,
         [out] TilemapUVs,
         [none] Tilemap)
     if (!headless) {
         zox_system_1(TextureUpdateSystem, EcsPreStore,
-            [in] textures.core.TextureData,
-            [in] textures.core.TextureSize,
-            [in] rendering.core.TextureGPULink,
+            [in] textures.TextureData,
+            [in] rendering.TextureSize,
+            [in] rendering.TextureGPULink,
             [out] rendering.TextureDirty,
             [none] !TextureRGB)
         zox_system_1(TextureRGBUpdateSystem, EcsPreStore,
-            [in] textures.core.TextureData,
-            [in] textures.core.TextureSize,
-            [in] rendering.core.TextureGPULink,
+            [in] textures.TextureData,
+            [in] rendering.TextureSize,
+            [in] rendering.TextureGPULink,
             [out] rendering.TextureDirty,
             [none] TextureRGB)
     }

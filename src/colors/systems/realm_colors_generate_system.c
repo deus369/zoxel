@@ -80,5 +80,5 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     fog_color = sky_color;
     game_sky_color = sky_color;
     game_sky_bottom_color = sky_color;
-    viewport_clear_color = sky_color; // color_rgb_red;
+    viewport_clear_color = sky_color;
 }

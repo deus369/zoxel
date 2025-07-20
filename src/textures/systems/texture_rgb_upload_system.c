@@ -17,7 +17,7 @@ void TextureRGBUpdateSystem(ecs_iter_t *it) {
             continue;
         }
         if (textureData->length != textureSize->value.x * textureSize->value.y || !textureData->value || !textureGPULink->value) {
-            zox_log_error(" issue with texture_rgb upload [%s]", zox_get_name(e))
+            zox_log_error("issue with texture_rgb upload [%s]", zox_get_name(e))
             continue;
         }
         glBindTexture(GL_TEXTURE_2D, textureGPULink->value);

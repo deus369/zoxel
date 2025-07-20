@@ -23,10 +23,7 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
     game_name = "Zoxel";
     const ecs_entity_t game = spawn_game(world, realm);
 #endif
-    // game spawning
-#ifdef zox_mod_weathers
     spawn_weather(world);
-#endif
 #ifdef zox_mod_space
     if (!headless) {
         spawn_connected_devices(world, app);
@@ -44,6 +41,7 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
 }
 
 zox_begin_module(ZoxGame)
+    // ecs_progress(world, 0);
     headless = 0;
 
     // Gameplay
@@ -58,6 +56,8 @@ zox_begin_module(ZoxGame)
     viewport_scale = 1 / sub_resolution;
     grayscale_mode = 0;
     is_generate_vox_outlines = 1;
+
+    is_log_gpu_restore = 0;
 
     // debug
     zox_visualize_sounds = 0;
@@ -86,9 +86,11 @@ zox_begin_module(ZoxGame)
     max_velocity3D = (float2) { 1.3f, 1.3f };
 
     zox_game_type = zox_game_mode_3D;
-    menu_sky_color = (color_rgb) { 0, 5, 0 };
-    menu_sky_bottom_color = (color_rgb) { 0, 0, 0 };
-    set_skybox_colors(world, menu_sky_color, menu_sky_bottom_color);
+
+    menu_sky_color = color_rgb_grayscale(15);
+    menu_sky_bottom_color = menu_sky_color;
+    fog_color = menu_sky_color;
+    viewport_clear_color = menu_sky_color;
 
     // scaling
     terrain_lod_near = 3;

@@ -17,7 +17,7 @@ void zox_define_systems_editor(ecs_world_t *world) {
         [out] HierarchyUIDirty,
         [out] layouts2.PixelPosition,
         [out] layouts2.PixelSize,
-        [out] textures.core.TextureSize,
+        [out] rendering.TextureSize,
         [out] hierarchys.Children,
         [none] HierarchyUI)
 }

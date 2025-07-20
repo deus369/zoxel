@@ -22,9 +22,13 @@ void RenderTextureBeginSystem(ecs_iter_t *it) {
             zox_log_error("render_texture failed: camera_invalid [%s]", zox_get_name(cameraLink->value))
             continue;
         }
-        const uint fbo = zox_get_value(cameraLink->value, FrameBufferLink)
-        set_render_texture_gpu(textureGPULink->value, textureSize->value);
-        connect_render_texture_to_fbo(fbo, textureGPULink->value);
-        set_render_buffer_size(zox_gett_value(cameraLink->value, RenderBufferLink), textureSize->value);
+        ecs_entity_t camera = cameraLink->value;
+        if (zox_has(camera, FrameBufferLink)) {
+            zox_geter_value(camera, FrameBufferLink, uint, fbo)
+            zox_geter_value(camera, RenderBufferLink, uint, rbo)
+            set_render_texture_gpu(textureGPULink->value, textureSize->value);
+            connect_render_texture_to_fbo(fbo, textureGPULink->value);
+            set_render_buffer_size(rbo, textureSize->value);
+        }
     }
 } zox_declare_system(RenderTextureBeginSystem)

@@ -6,13 +6,13 @@
 
 void define_systems_voxes(ecs_world_t *world) {
     zox_system(VoxTextureSystem, EcsPreUpdate,
-        [in] textures.core.TextureSize,
+        [in] rendering.TextureSize,
         [in] chunks3.VoxLink,
         [in] blocks.VoxBakeSide,
-        [out] textures.core.GenerateTexture,
-        [out] textures.core.TextureData,
+        [out] textures.GenerateTexture,
+        [out] textures.TextureData,
         [out] rendering.TextureDirty,
-        [none] textures.core.VoxTexture)
+        [none] textures.VoxTexture)
     // remember: timing specific, fucks up if changes position
     zox_system(Bounds3DGrowSystem, EcsOnUpdate,
         [in] rendering.MeshDirty,
@@ -46,9 +46,9 @@ void define_systems_voxes(ecs_world_t *world) {
             [in] colorz.ColorRGBs,
             [in] chunks3.ChunkSize,
             [in] blocks.VoxScale,
-            [out] rendering.core.MeshIndicies,
-            [out] rendering.core.MeshVertices,
-            [out] rendering.core.MeshColorRGBs,
+            [out] rendering.MeshIndicies,
+            [out] rendering.MeshVertices,
+            [out] rendering.MeshColorRGBs,
             [out] rendering.MeshDirty,
             [none] chunks3.ColorChunk)
     }

@@ -2,7 +2,7 @@ extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t p
 
 void ChunkSpawnSystem(ecs_iter_t *it) {
     zox_sys_query()
-    zox_field_world()
+    zox_sys_world()
     const byte log_individuals = 0;
     uint spawned_chunks = 0;
     int3 *stream_points = NULL;
@@ -12,8 +12,9 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
     while (zox_sys_query_loop()) {
         if (!iterated) {
             iterated = 1;
-            zox_field_in_iter(&it2, StreamPoint, streamPoints, 1)
-            stream_points = (int3*) streamPoints;
+            zox_sys_begin_2()
+            zox_sys_in_2(StreamPoint)
+            stream_points = (int3*) StreamPoints_2;
             stream_points_length = it2.count;
         }
     }
@@ -21,16 +22,17 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
     if (stream_points_length == 0) {
         return;
     }
-    zox_field_in(ChunkPosition, chunkPositions, 1)
-    zox_field_in(VoxLink, voxLinks, 2)
-    zox_field_in(RenderDistance, renderDistances, 3)
-    zox_field_out(ChunkNeighbors, chunkNeighborss, 4)
+    zox_sys_begin()
+    zox_sys_in(ChunkPosition)
+    zox_sys_in(VoxLink)
+    zox_sys_in(RenderDistance)
+    zox_sys_out(ChunkNeighbors)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(VoxLink, voxLinks, voxLink)
-        zox_field_i(RenderDistance, renderDistances, renderDistance)
-        zox_field_i(ChunkPosition, chunkPositions, chunkPosition)
-        zox_field_o(ChunkNeighbors, chunkNeighborss, chunkNeighbors)
+        zox_sys_e()
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(RenderDistance, renderDistance)
+        zox_sys_i(ChunkPosition, chunkPosition)
+        zox_sys_o(ChunkNeighbors, chunkNeighbors)
         if (!zox_valid(voxLink->value)) {
             continue;
         }

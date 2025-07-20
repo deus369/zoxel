@@ -23,13 +23,12 @@ void update_sdl(ecs_world_t *world) {
             } else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) {
                 on_window_maximized(world, e, (int2) { event.window.data1, event.window.data2 });
             } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
+                opengl_restore_resources(world);
+                enable_time();
                 on_window_restored(world, e, (int2) { event.window.data1, event.window.data2 });
             } else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) {
                 opengl_dispose_resources(world);
                 disable_time();
-            } else if (event.window.event == SDL_WINDOWEVENT_RESTORED) {
-                opengl_restore_resources(world);
-                enable_time();
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 disable_time();
             } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {

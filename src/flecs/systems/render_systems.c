@@ -1,3 +1,4 @@
+byte is_log_gpu_restore = 0;
 
 #define zox_render2D_system(name, ...) {\
     if (!headless) {\

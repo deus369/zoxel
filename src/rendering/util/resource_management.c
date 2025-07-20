@@ -20,32 +20,43 @@ void add_to_gpu_restore_systems(long int id) {
 }
 
 void run_gpu_dispose_systems(ecs_world_t *world) {
-    for (int i = 0; i < gpu_dispose_systems->size; i++) ecs_run(world, gpu_dispose_systems->data[i], 0, NULL);
+    for (int i = 0; i < gpu_dispose_systems->size; i++) {
+        ecs_run(world, gpu_dispose_systems->data[i], 0, NULL);
+    }
 }
 
 void run_gpu_restore_systems(ecs_world_t *world) {
-    for (int i = 0; i < gpu_restore_systems->size; i++) ecs_run(world, gpu_restore_systems->data[i], 0, NULL);
+    for (int i = 0; i < gpu_restore_systems->size; i++) {
+        ecs_run(world, gpu_restore_systems->data[i], 0, NULL);
+    }
 }
 
+byte did_dispose_resources = 0;
 void opengl_dispose_resources(ecs_world_t *world) {
     if (render_backend != zox_render_backend_opengl) {
         return;
     }
-    // zox_log(" > disposing all opengl resources\n");
-    rendering = 0;
-    minimized = 1; // move this to a system and function for app! when implement multi apps
-    updating_time = 0; // timesteps a bit low atm so pause while minimizing
-    run_gpu_dispose_systems(world);
+    if (!did_dispose_resources) {
+        did_dispose_resources = 1;
+        zox_log(" > disposing all opengl resources");
+        rendering = 0;
+        minimized = 1; // move this to a system and function for app! when implement multi apps
+        updating_time = 0; // timesteps a bit low atm so pause while minimizing
+        run_gpu_dispose_systems(world);
+    }
 }
 
 void opengl_restore_resources(ecs_world_t *world) {
     if (render_backend != zox_render_backend_opengl) {
         return;
     }
-    // zox_log(" > restoring all opengl resources\n");
-    run_gpu_restore_systems(world);
-    rendering = 1;
-    minimized = 0;
-    updating_time = 1;
-    skip_time_to_current();
+    if (did_dispose_resources) {
+        did_dispose_resources = 0;
+        zox_log(" > restoring all opengl resources");
+        run_gpu_restore_systems(world);
+        rendering = 1;
+        minimized = 0;
+        updating_time = 1;
+        skip_time_to_current();
+    }
 }

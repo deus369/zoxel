@@ -1,4 +1,5 @@
 ecs_entity_t spawn_element_basic(ecs_world_t *world,
+    const ecs_entity_t prefab,
     const ecs_entity_t canvas,
     const ecs_entity_t parent,
     int2 position,
@@ -13,11 +14,14 @@ ecs_entity_t spawn_element_basic(ecs_world_t *world,
     const int2 position_in_canvas = get_element_pixel_position_global(parent_position, parent_size, position, anchor);
     const float2 position_real = get_element_position(position_in_canvas, canvas_size);
     anchor_element_position2D(&position, anchor, pixel_size);
-    zox_instance(prefab_element_basic)
+    zox_instance(prefab)
     zox_name("element_basic")
     initialize_element(world, e, parent, canvas, position, pixel_size, texture_size, anchor, layer, position_real, position_in_canvas);
     return e;
 }
+
+
+
 
 ecs_entity_t spawn_element_basic_on_canvas(ecs_world_t *world,
     const ecs_entity_t canvas,
@@ -27,7 +31,7 @@ ecs_entity_t spawn_element_basic_on_canvas(ecs_world_t *world,
     const float2 anchor)
 {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    return spawn_element_basic(world, canvas, canvas, position, pixel_size, texture_size, anchor, 0, int2_half(canvas_size), canvas_size);
+    return spawn_element_basic(world, prefab_element_shell, canvas, canvas, position, pixel_size, texture_size, anchor, 0, int2_half(canvas_size), canvas_size);
 }
 
 ecs_entity_t spawn_element_texture(ecs_world_t *world,

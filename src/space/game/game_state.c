@@ -42,12 +42,16 @@ void players_game_state(ecs_world_t *world,
     for (int i = 0; i < players->length; i++) {
         const ecs_entity_t player = players->value[i];
         if (previous_game_state == zox_game_loading && new_game_state == zox_game_playing) {
+            zox_set(player, PlayerState, { zox_player_state_loading })
             player_start_game(world, player, is_start_game_delays);
         } else if (new_game_state == zox_game_start) {
+            zox_set(player, PlayerState, { zox_player_state_main_menu })
             player_end_game(world, player, is_end_game_delays);
         } else if (previous_game_state == zox_game_playing && new_game_state == zox_game_paused) {
+            zox_set(player, PlayerState, { zox_player_state_paused })
             pause_player(world, player);
         } else if (previous_game_state == zox_game_paused && new_game_state == zox_game_playing) {
+            zox_set(player, PlayerState, { zox_game_playing })
             resume_player(world, player);
         }
     }

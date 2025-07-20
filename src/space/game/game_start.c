@@ -38,16 +38,16 @@ void link_camera_to_terrain(ecs_world_t *world, const ecs_entity_t player) {
         if (!is_new_game) {
             character = game_start_player_load(world, player);
             delay_event(world, &load_player_e, player, 0.5f);
+            delay_event(world, &spawn_player_game_ui, player, 0.01);
         } else {
             character = game_start_player_new(world, player);
         }
-        delay_event(world, &spawn_player_game_ui, player, 0.01);
         //zox_set(character, DisableGravity, { 1 })
         //zox_set(character, DisableMovement, { 1 })
+        zox_set(player, PlayerState, { zox_player_state_playing })
     } else {
         set_camera_free(world, camera, 1);
     }
-
     zox_set(camera, StreamPoint, { terrain_position })
     zox_set(camera, VoxLink, { terrain })
     zox_set(camera, StreamDirty, { zox_general_state_trigger })

@@ -4,15 +4,6 @@
 #include "camera_render_ui_system.c"
 
 void define_systems_rendering_cameras(ecs_world_t *world) {
-    zox_gpu_restore_system(RenderBufferRestoreSystem,
-        [in] generic.ScreenDimensions,
-        [out] FrameBufferLink,
-        [out] RenderBufferLink)
-    zox_gpu_restore_system(RenderTextureRestoreSystem,
-        [in] rendering.core.TextureGPULink,
-        [in] layouts2.PixelSize,
-        [in] cameras.CameraLink,
-        [none] cameras.RenderTexture)
     // rendering
     zox_system_1(CameraRender3DSystem, zox_pipelines_rendering,
         [in] cameras.ViewMatrix,
@@ -26,4 +17,14 @@ void define_systems_rendering_cameras(ecs_world_t *world) {
         [in] cameras.ScreenPosition,
         [in] generic.ScreenDimensions,
         [none] cameras.CameraUI)
+    // restore
+    zox_gpu_restore_system(RenderBufferRestoreSystem,
+        [in] generic.ScreenDimensions,
+        [out] FrameBufferLink,
+        [out] RenderBufferLink)
+    zox_gpu_restore_system(RenderTextureRestoreSystem,
+        [in] rendering.TextureGPULink,
+        [in] rendering.TextureSize,
+        [in] cameras.CameraLink,
+        [none] cameras.RenderTexture)
 }

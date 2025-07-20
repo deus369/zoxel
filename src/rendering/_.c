@@ -4,8 +4,11 @@
 #include "components/_.c"
 #include "data/_.c"
 #include "settings/_.c"
-zox_increment_system_with_reset(MeshDirty, mesh_state_end)
-#include "core/_.c"
+
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "systems/_.c"
+
 #include "shaders/_.c"
 #include "basics2D/_.c"
 #ifndef zox_disable_rendering3D
@@ -41,9 +44,20 @@ void dispose_rendering(ecs_world_t *world, void *ctx) {
 }
 
 zox_begin_module(Rendering)
+    // init
+    initialize_render_loop();
+    initialize_hook_load_shader();
+    initialize_gpu_systems();
+    // ecs defines
     define_components_rendering(world);
-    zox_define_increment_system(MeshDirty, EcsOnLoad)
-    zox_import_module(RenderingCore)
+    define_systems_rendering(world);
+    // hooks
+    add_hook_terminal_command(process_arguments_rendering);
+    zox_module_dispose(on_module_dispose_rendering)
+    // prefab spawning
+    spawn_prefabs_rendering_core(world);
+
+
     zox_import_module(Shaders)
     zox_import_module(RenderingBasics2D)
 #ifdef zox_mod_rendering_basics3D
@@ -55,6 +69,7 @@ zox_begin_module(Rendering)
     initialize_settings_rendering(world);
     if (prefab_camera_game) {
         zox_prefab_set(prefab_camera_game, FrameBufferLink, { 0 })
+        zox_prefab_set(prefab_camera_game, RenderBufferLink, { 0 })
     }
 zox_end_module(Rendering)
 

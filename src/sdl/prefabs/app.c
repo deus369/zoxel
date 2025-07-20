@@ -19,10 +19,6 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     int2 screen_size = get_screen_size_monitor(monitor);
     int2 size_restore = int2_half(screen_size);
     int2 size = fullscreen ? screen_size : size_restore;
-    zox_log("+ monitor [%i]", monitor)
-    zox_log("+ maximized [%i]", maximized)
-    zox_log("+ fullscreen [%i]", fullscreen)
-
     // calculate position
     int2 position = calculate_monitor_position(monitor, 1, size_restore);
     byte flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
@@ -62,5 +58,6 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     zox_log_sdl("   - fullscreen [%i]", fullscreen)
     zox_log_sdl("   - maximized [%i]", maximized)
     zox_log_sdl("   - monitor [%i]", monitor)
+
     return e;
 }

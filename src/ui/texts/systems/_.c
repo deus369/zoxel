@@ -47,9 +47,9 @@ void define_systems_texts(ecs_world_t *world) {
             [in] rendering.MeshAlignment,
             [in] elements.core.CanvasLink,
             [out] layouts2.PixelSize,
-            [out] textures.core.TextureSize,
-            [out] textures.core.GenerateTexture,
-            [out] rendering.core.MeshVertices2D,
+            [out] rendering.TextureSize,
+            [out] textures.GenerateTexture,
+            [out] rendering.MeshVertices2D,
             [out] rendering.MeshDirty)
     }
 }

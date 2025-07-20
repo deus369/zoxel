@@ -18,7 +18,6 @@ zox_component_byte(OutlineThickness)
 zox_component_byte(FrameCorner)
 zox_component_float(IconRadius)
 zox_component_double(AnimateTexture)
-zox_component_int2(TextureSize)
 zox_component_int2(TilemapSize)
 zox_component_color(OutlineColor)
 zox_component_entity(TilemapLink)
@@ -27,10 +26,6 @@ zox_entities_component(Textures)                    // this destroys linked enti
 zox_memory_component(TextureData, color)
 zox_memory_component(TilemapUVs, float2)
 zox_memory_component(TextureLinks, ecs_entity_t)    // this links only
-
-static inline int2 get_texture_size(ecs_world_t* world, ecs_entity_t e) {
-    return zox_get_value(e, TextureSize)
-}
 
 void define_components_textures(ecs_world_t *world) {
     zox_define_tag(Texture)
@@ -51,7 +46,6 @@ void define_components_textures(ecs_world_t *world) {
     zox_define_component_byte(OutlineThickness)
     zox_define_component_byte(FrameCorner)
     zox_define_component_float(IconRadius)
-    zox_define_component_int2(TextureSize)
     zox_define_component_int2(TilemapSize)
     zox_define_component_double(AnimateTexture)
     zox_define_component_color(OutlineColor)
