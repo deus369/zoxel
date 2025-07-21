@@ -13,7 +13,7 @@ void set_linked_action(ecs_world_t *world, const ecs_entity_t user, const int in
 
 void spawn_prefabs_actions(ecs_world_t *world) {
     spawn_prefab_action(world);
-    if (zox_valid(prefab_character3D)) {
-        zox_prefab_add(prefab_character3D, ActionLinks)
+    if (zox_valid(prefab_character3)) {
+        zox_prefab_add(prefab_character3, ActionLinks)
     }
 }

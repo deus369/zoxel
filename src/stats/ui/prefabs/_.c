@@ -3,8 +3,8 @@ ecs_entity_t prefab_icon_stat;
 ecs_entity_t prefab_statbar2D;
 ecs_entity_t prefab_statbar3D;
 zox_user_menu_functions_frame_color(Stats, Stat, stats, stat, default_fill_color_frame_stat)
-#include "statbar2D.c"
-#include "statbar3D.c"
+#include "statbar2.c"
+#include "statbar3.c"
 #include "icon_stat.c"
 
 void spawn_prefabs_ui_stats(ecs_world_t *world) {

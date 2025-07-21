@@ -13,4 +13,5 @@
 #define zox_generate_realm_skills 9
 #define zox_generate_realm_quests 10
 #define zox_generate_realm_achievements 11
-#define zox_generate_realm_end 12
+#define zox_generate_realm_characters 12
+#define zox_generate_realm_end 13

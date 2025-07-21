@@ -61,17 +61,18 @@ zox_begin_module(ZoxGame)
 
     // Gameplay
     boot_event = boot_zoxel_game;
+    zox_experience_max_start = 10;
     // regen_rate = 10;
     hit_terrain_color = (color) { 2, 185, 145, 155 };
     hit_character_color = (color) { 155, 45, 45, 65 };
     hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
     // mood
-    const float sub_resolution = 4;
+    const float sub_resolution = 8;
     viewport_scale = 1 / sub_resolution;
     grayscale_mode = 0;
     is_generate_vox_outlines = 0;
-    character_spawn_rate = 8; // 0 | 1 | 4 | 8 | 16 | 64
+    character_spawn_rate = 12; // 0 | 1 | 4 | 8 | 16 | 64
 
     // world gen
     block_spawn_chance_grass = 2400; //  512 | 1024 | 2048 | 3000
@@ -150,11 +151,11 @@ zox_begin_module(ZoxGame)
     if (prefab_vox) {
         zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
     }
-    if (prefab_character3D) {
-        zox_prefab_set(prefab_character3D, VoxScale, { vox_model_scale })
+    if (prefab_character3) {
+        zox_prefab_set(prefab_character3, VoxScale, { vox_model_scale })
     }
-    if (prefab_character3D_npc) {
-        zox_prefab_set(prefab_character3D_npc, VoxScale, { vox_model_scale })
+    if (prefab_character3_npc) {
+        zox_prefab_set(prefab_character3_npc, VoxScale, { vox_model_scale })
     }
 
     // debug

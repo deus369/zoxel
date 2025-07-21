@@ -14,14 +14,27 @@ void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, con
         return;
     }
     zox_geter(character, StatLinks, stats)
-    if (!stats || stats->length <= 1) {
-        zox_log_error("! invalid stats in [spawn_game_ui_stats]")
-        return;
+    int j = 0;
+    byte has_created_soul_ui = 0;
+    for (int i = 0; i < stats->length; i++) {
+        const ecs_entity_t stat = stats->value[i];
+        if (zox_has(stat, StatState)) {
+            zox_geter_value(stat, ColorRGB, color_rgb, c)
+            const ecs_entity_t statbar = spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, stat }, c, j++);
+            add_to_Children(children, statbar);
+        }
+        if (!has_created_soul_ui && zox_has(stat, StatLevel)) {
+            has_created_soul_ui = 1;
+            zox_geter_value(stat, ColorRGB, color_rgb, c)
+            const ecs_entity_t statbar = spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, stat }, c, j++);
+            add_to_Children(children, statbar);
+        }
+
     }
-    const ecs_entity_t health = stats->value[stat_index_health];
+    /*const ecs_entity_t health = stats->value[stat_index_health];
     const ecs_entity_t mana = stats->value[stat_index_mana];
     const ecs_entity_t energy = stats->value[stat_index_energy];
     add_to_Children(children, spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, health }, 0));
     add_to_Children(children, spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, energy }, 1));
-    add_to_Children(children, spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, mana }, 2));
+    add_to_Children(children, spawn_statbar2D(world, canvas, menu_game, player, (ecs_entity_2) { character, mana }, 2));*/
 }

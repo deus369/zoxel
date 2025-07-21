@@ -1,23 +1,25 @@
 void StatbarSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(StatLink, statLinks, 1)
-    zox_field_out(ElementBar, elementBars, 2)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(StatLink)
+    zox_sys_out(ElementBar)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(StatLink, statLinks, statLink)
+        zox_sys_i(StatLink, statLink)
+        zox_sys_o(ElementBar, elementBar)
         const ecs_entity_t stat = statLink->value;
-        if (!zox_valid(stat) || !zox_has(stat, StatValue) || !zox_has(stat, StatValueMax)) {
-            zox_field_e()
-            if (!zox_valid(stat)) {
-                zox_log_error("stat not found for elementbar [%s]", zox_get_name(e))
-            } else {
-                zox_log_error("stat was not a state stat [%s] - [%s]", zox_get_name(e), zox_get_name(stat))
-            }
+        if (!zox_valid(stat)) {
             continue;
         }
-        zox_field_o(ElementBar, elementBars, elementBar)
-        const StatValue *statValue = zox_get(stat, StatValue)
-        const StatValueMax *statValueMax = zox_get(stat, StatValueMax)
-        const float new_value = statValue->value / statValueMax->value;
+        float new_value = elementBar->value;
+        if (zox_has(stat, StatState)) {
+            zox_geter(stat, StatValue, value)
+            zox_geter(stat, StatValueMax, max)
+            new_value = value->value / max->value;
+        } else if (zox_has(stat, StatLevel)) {
+            zox_geter(stat, ExperienceValue, value)
+            zox_geter(stat, ExperienceMax, max)
+            new_value = value->value / max->value;
+        }
         if (elementBar->value != new_value) {
             elementBar->value = new_value;
         }

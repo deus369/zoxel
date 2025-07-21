@@ -1,0 +1,16 @@
+#include "character3_meta.c"
+#include "character3.c"
+ecs_entity_t prefab_character3_meta;
+ecs_entity_t prefab_character3;
+ecs_entity_t prefab_character3_player;
+ecs_entity_t prefab_character3_npc;
+ecs_entity_t local_character3D;
+
+void spawn_prefabs_characters3D(ecs_world_t *world) {
+    prefab_character3_meta = spawn_prefab_character3_meta(world);
+    prefab_character3 = spawn_prefab_character3(world, prefab_vox);
+    if (prefab_realm) {
+        zox_prefab_add(prefab_realm, CharacterLinks)
+        zox_prefab_set(prefab_realm, CharactersChanceMax, { 0 })
+    }
+}

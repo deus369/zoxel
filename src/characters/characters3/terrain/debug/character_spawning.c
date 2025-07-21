@@ -18,13 +18,13 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
         }
 
         // zox_log("+ spawning npc!\n")
-        float4 rotation = quaternion_identity;
+        /*float4 rotation = quaternion_identity;
         byte character_lod = 0;
         byte render_disabled = 0;
         int vox_index = rand() % npc_vox_index_count;
         const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
         spawn_character3D_data spawn_data = {
-            .prefab = prefab_character3D_npc,
+            .prefab = prefab_character3_npc,
             .vox = vox,
             .position = position,
             .rotation = rotation,
@@ -32,6 +32,6 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
             .render_disabled = render_disabled,
         };
         const ecs_entity_t e = spawn_character3(world, spawn_data);
-        zox_set(e, ChunkLink, { chunk })
+        zox_set(e, ChunkLink, { chunk })*/
     }
 }

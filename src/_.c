@@ -72,7 +72,7 @@
 // user data
 #include "users/users.c"
 #include "combat/combat.c"
-#include "stats/stats.c"
+#include "stats/_.c"
 #include "items/items.c"
 #include "skills/skills.c"
 #include "actions/actions.c"

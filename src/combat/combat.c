@@ -9,9 +9,9 @@ zox_increment_system(Dead, zox_dirty_end)
 
 void spawn_prefabs_combat(ecs_world_t *world) {
     // stats / death
-    zox_prefab_set(prefab_character3D, Dead, { 0 })
-    zox_prefab_set(prefab_character3D, DiedTime, { 0 })
-    zox_prefab_set(prefab_character3D, LastDamager, { 0 })
+    zox_prefab_set(prefab_character3, Dead, { 0 })
+    zox_prefab_set(prefab_character3, DiedTime, { 0 })
+    zox_prefab_set(prefab_character3, LastDamager, { 0 })
 }
 
 zox_begin_module(Combat)

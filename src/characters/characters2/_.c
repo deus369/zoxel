@@ -14,13 +14,13 @@ void spawn_prefabs_characters2D(ecs_world_t *world) {
     prefab_character2D = spawn_prefab_character2D(world, character2DTextureSize);
 }
 
-zox_begin_module(Characters2D)
-zox_define_tag(Character2D)
-zox_define_component_entity(Character2DLink)
-spawn_prefabs_characters2D(world);
-#ifdef zoxel_test_character2Ds
-    spawn_many_characters2D();
-#endif
-zox_end_module(Characters2D)
+zox_begin_module(Characters2)
+    zox_define_tag(Character2D)
+    zox_define_component_entity(Character2DLink)
+    spawn_prefabs_characters2D(world);
+    #ifdef zoxel_test_character2Ds
+        spawn_many_characters2D();
+    #endif
+zox_end_module(Characters2)
 
 #endif

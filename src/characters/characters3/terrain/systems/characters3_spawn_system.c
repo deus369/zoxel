@@ -1,4 +1,4 @@
-ecs_entity_t prefab_character3D_terrain_spawning;
+ecs_entity_t prefab_character3_terrain_spawning;
 
 
 extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
@@ -60,7 +60,33 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
 
+        ecs_entity_t terrain = voxLink->value;
+        zox_geter_value(terrain, RealmLink, ecs_entity_t, realm)
+        zox_geter(realm, CharacterLinks, characters)
+        zox_geter_value(realm, CharactersChanceMax, byte, max_chance)
         for (byte j = 0; j < character_spawn_rate; j++) {
+
+            // 1) Find a npc to place
+            // find random from realm characters
+            byte chance_current = 0;
+            byte chance_rolled = rand() % max_chance;
+            ecs_entity_t vox = 0;
+            for (byte k = 0; k < characters->length; k++) {
+                ecs_entity_t meta = characters->value[k];
+                zox_geter_value(meta, SpawnChance, byte, chance)
+                chance_current += chance;
+                if (chance_rolled <= chance_current) {
+                    vox = zox_get_value(meta, ModelLink)
+                    break;
+                }
+            }
+            // string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
+            if (!vox) {
+                zox_log_error("failed to find a spawn character_meta")
+                continue;
+            }
+
+            // 2) find a place for our new npc
             // sometimes cannot find a position
             // many spawn checks
             byte3 local_position;
@@ -76,14 +102,10 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             }
             float3 position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, depth, 1); // voxScale->value);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
-            int vox_index = rand() % npc_vox_index_count;
-            const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
-            if (!vox) {
-                zox_log_error(" vox not found for [%s]", npc_voxes[vox_index])
-                continue;
-            }
+
+            // 3) Finally we spawn and link
             spawn_character3D_data spawn_data = {
-                .prefab = prefab_character3D_terrain_spawning,
+                .prefab = prefab_character3_terrain_spawning,
                 .vox = vox,
                 .terrain = voxLink->value,
                 .terrain_chunk = e,
@@ -95,7 +117,6 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             };
             const ecs_entity_t character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);
-
             add_to_EntityLinks(entityLinks, character);
 
             zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))

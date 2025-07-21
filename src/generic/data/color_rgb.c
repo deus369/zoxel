@@ -8,6 +8,7 @@ zoxel_dynamic_array(color_rgb)
 #define color_rgb_blue (color_rgb) { 0, 0, 255 }
 #define color_rgb_cyan (color_rgb) { 0, 255, 255 }
 #define color_rgb_yellow (color_rgb) { 255, 255, 0 }
+#define color_rgb_purple (color_rgb) { 255, 0, 255 }
 
 static inline byte color_rgb_equal(const color_rgb a, const color_rgb b) {
     return a.r == b.r && a.g == b.g && a.b == b.b;

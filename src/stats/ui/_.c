@@ -5,6 +5,7 @@ zox_declare_tag(Statbar)
 zox_declare_tag(MenuStats)
 zox_declare_tag(StatsLabel)
 #include "prefabs/_.c"
+#include "spawn/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 

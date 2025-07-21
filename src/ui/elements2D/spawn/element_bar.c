@@ -1,6 +1,5 @@
 ecs_entity_2 spawn_elementbar2D(ecs_world_t *world,
     const ecs_entity_t prefab,
-    const ecs_entity_t ui_holder,
     const ecs_entity_t canvas,
     const ecs_entity_t parent,
     int2 pixel_position,
@@ -42,7 +41,15 @@ ecs_entity_2 spawn_elementbar2D(ecs_world_t *world,
     Children *children = &((Children) { 0, NULL });
     resize_memory_component(Children, children, ecs_entity_t, 2)
     // frontbar
-    const ecs_entity_t front_bar = spawn_elementbar2D_front(world, canvas, e, position_in_canvas, pixel_size, canvas_size, front_bar_layer, render_disabled, front_color);
+    const ecs_entity_t front_bar = spawn_elementbar2D_front(world,
+        canvas,
+        e,
+        position_in_canvas,
+        pixel_size,
+        canvas_size,
+        front_bar_layer,
+        render_disabled,
+        front_color);
     zox_set_unique_name(front_bar, "element2D_frontbar")
     children->value[0] = front_bar;
     // text
