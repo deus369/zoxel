@@ -23,8 +23,12 @@ static inline float4 quaternion_normalized(float4 quaternion, float magnitude) {
 
 static inline float quaternion_to_euler_y(float4 q) {
     double sinp = 2 * (q.w * q.y - q.z * q.x);
-    if (double_abs(sinp) >= 1) return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-    else return asin(sinp);
+    if (double_abs(sinp) >= 1) {
+        return copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    }
+    else {
+        return asin(sinp);
+    }
 }
 
 static inline float quaternion_to_euler_x(float4 q) {
@@ -94,7 +98,7 @@ static inline float3 quaternion_to_euler(float4 q) {
 }
 
 static inline float3 quaternion_to_euler_360(float4 q) {
-    return float3_multiply_float(quaternion_to_euler(q), (180.0f / M_PI));
+    return float3_scale(quaternion_to_euler(q), (180.0f / M_PI));
 }
 
 static inline byte quaternion_to_quadrant(float4 q) {
@@ -200,13 +204,13 @@ byte test_quaternion_math(float4 input) {
     }
 }
 
-static inline float4 quaternion_from_axis_angle(float angle, float x, float y, float z) {
+static inline float4 quaternion_from_axis_angle(float3 v, float a) {
     float4 q;
-    float s = sin(angle / 2.0f);
-    q.x = x * s;
-    q.y = y * s;
-    q.z = z * s;
-    q.w = cos(angle / 2.0f);
+    float s = sin(a / 2.0f);
+    q.x = v.x * s;
+    q.y = v.y * s;
+    q.z = v.z * s;
+    q.w = cos(a / 2.0f);
     return q;
 }
 
@@ -215,7 +219,7 @@ static inline float4 get_delta_rotation(float4 quaternion, float magnitude, doub
     //float4 normalized = quaternion_normalized(quaternion, magnitude);
     //return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);
     float3 euler = quaternion_to_euler(quaternion);
-    float3_multiply_float_p(&euler, magnitude);
+    float3_scale_p(&euler, magnitude);
     return quaternion_from_euler(euler);
     // return (float4) { magnitude * quaternion.x, magnitude * quaternion.y, magnitude * quaternion.z, magnitude * quaternion.w };
 }

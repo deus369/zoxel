@@ -10,8 +10,8 @@ void RayDebugSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(RaycastOrigin, raycastOrigins, origin)
         zox_field_i(RaycastNormal, raycastNormals, normal)
-        float3 end_point = float3_multiply_float(normal->value, ray_length);
-        float3 end_point2 = float3_multiply_float(float3_up, 1);
+        float3 end_point = float3_scale(normal->value, ray_length);
+        float3 end_point2 = float3_scale(float3_up, 1);
         render_line3D(world, origin->value, float3_add(origin->value, end_point), debug_color);
         render_line3D(world, origin->value, float3_add(origin->value, end_point2), debug_color2);
     }

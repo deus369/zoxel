@@ -72,7 +72,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     add_to_DotLinks(dotLinks, new_dot);
                     // spawn particle system
                     const float3 bounds = zox_get_value(e2, Bounds3D)
-                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4, float3_multiply_float(bounds, 2), colorr->value);
+                    const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, e2, 4, float3_scale(bounds, 2), colorr->value);
                     add_to_Children(children, particle3D_emitter);
                     zox_set(particle3D_emitter, SkillLink, { e })
 #ifdef zox_debug_aoe_damage_system

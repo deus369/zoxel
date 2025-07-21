@@ -119,7 +119,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
             movement.y *= run_accceleration;
         }
         // float delta_time_adjustment = 1.0f / (60 * delta_time);
-        // float3_multiply_float_p(&movement, delta_time_adjustment);
+        // float3_scale_p(&movement, delta_time_adjustment);
         float4 movement_rotation = float4_identity;
         zox_geter(character, Rotation3D, rotation3D)
         zox_geter(character, Velocity3D, velocity3D)
@@ -130,7 +130,9 @@ void Player3DMoveSystem(ecs_iter_t *it) {
                 if (cameraLink->value) {
                     zox_geter(cameraLink->value, Rotation3D, camera_rotation)
                     const float4 camera_rotation2 = quaternion_from_euler((float3) { 0, -quaternion_to_euler_y(camera_rotation->value), 0 });
-                    if (movement.z == -movement.x) movement.x *= 0.999f; // this hack fixes the rotation
+                    if (movement.z == -movement.x) {
+                        movement.x *= 0.999f; // this hack fixes the rotation
+                    }
                     movement_rotation = camera_rotation2;
                     float4 face_direction = quaternion_from_between_vectors(float3_forward, movement);
                     // test rotation

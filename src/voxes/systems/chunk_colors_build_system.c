@@ -54,7 +54,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, max_depth);
             neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, max_depth);
             neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
-            const float3 total_mesh_offset = float3_multiply_float(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
+            const float3 total_mesh_offset = float3_scale(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
             const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
             build_node_mesh_colors(
                 voxelNode,

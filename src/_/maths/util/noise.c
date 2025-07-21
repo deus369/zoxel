@@ -12,7 +12,7 @@ float simplex_fun_int_1D(float3 point, int ix) {
 }
 
 float simplex_fun_1D(float3 point, float frequency) {
-    point = float3_multiply_float(point, frequency);
+    point = float3_scale(point, frequency);
     int ix = int_floorf(point.x);
     float sample = simplex_fun_int_1D(point, ix);
     sample += simplex_fun_int_1D(point, ix + 1);

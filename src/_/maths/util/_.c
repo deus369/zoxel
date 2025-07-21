@@ -4,5 +4,6 @@
 #include "unique_seed.c"
 #include "conversion.c"
 #include "quaternion.c"
+#include "quaternion2.c"
 #include "conversion2.c"
 #include "closest_point.c"

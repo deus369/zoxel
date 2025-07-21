@@ -91,7 +91,7 @@ void MeleeSystem(ecs_iter_t *it) {
             }
 
             // add knockback
-            float3 hit_impulse = float3_multiply_float(raycastVoxelData->normal, randf_range(1.5f, 3.0f));
+            float3 hit_impulse = float3_scale(raycastVoxelData->normal, randf_range(1.5f, 3.0f));
             zox_muter(hit, Velocity3D, hit_velocity)
             hit_velocity->value = float3_add(hit_velocity->value, hit_impulse);
             // zox_log("+ added impulse [%fx%fx%f]", hit_impulse.x, hit_impulse.y, hit_impulse.z)

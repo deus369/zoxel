@@ -83,7 +83,7 @@ float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_posit
     const int3 chunk_position_voxel = int3_multiply_int3(chunk_position, byte3_to_int3(chunk_size));
     const int3 global_voxel_position = int3_add(chunk_position_voxel, byte3_to_int3(local_position));
     float3 position = int3_to_float3(global_voxel_position);
-    float3_multiply_float_p(&position, voxel_scale);
+    float3_scale_p(&position, voxel_scale);
     // middle of voxel position
     position.x += voxel_scale / 2;
     position.y += voxel_scale / 2;
@@ -93,7 +93,7 @@ float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_posit
 
 float3 voxel_position_to_real_position(const int3 voxel_position, const byte3 chunk_size, const float voxel_scale) {
     float3 position = int3_to_float3(voxel_position);
-    float3_multiply_float_p(&position, voxel_scale);
+    float3_scale_p(&position, voxel_scale);
     // middle of voxel position
     position.x += voxel_scale / 2;
     position.y += voxel_scale / 2;
@@ -151,7 +151,7 @@ float3 local_to_real_position_character(const byte3 in_chunk_position, const int
     const int3 grid_position = int3_add(chunk_grid_position, byte3_to_int3(in_chunk_position));
     float3 position = int3_to_float3(grid_position);
     // zox_log("scale: %f", scale)
-    float3_multiply_float_p(&position, scale);
+    float3_scale_p(&position, scale);
     position.x += scale / 2.0f;
     position.z += scale / 2.0f;
     position.y += bounds.y / 2.0f;

@@ -97,16 +97,16 @@ static inline void float4_multiply_float_p(float4* input, const float mul) {
 */
 static inline float3 float4_rotate_float3(const float4 rotation, const float3 value) {
     float3 rotationXYZ = float4_xyz(rotation);
-    float3 t = float3_multiply_float(float3_cross(rotationXYZ, value), 2.0f);
+    float3 t = float3_scale(float3_cross(rotationXYZ, value), 2.0f);
     float3 crossB = float3_cross(rotationXYZ, t);
-    float3 scaledT = float3_multiply_float(t, rotation.w);
+    float3 scaledT = float3_scale(t, rotation.w);
     return float3_add(value, float3_add(scaledT, crossB));
 }
 
 static inline void float4_rotate_float3_p(const float4 rotation, float3 *value) {
     float3 rotationXYZ = float4_xyz(rotation);
-    float3 t = float3_multiply_float(float3_cross(rotationXYZ, (float3) { value->x, value->y, value->z }), 2.0f);
+    float3 t = float3_scale(float3_cross(rotationXYZ, (float3) { value->x, value->y, value->z }), 2.0f);
     float3 crossB = float3_cross(rotationXYZ, t);
-    float3 scaledT = float3_multiply_float(t, rotation.w);
+    float3 scaledT = float3_scale(t, rotation.w);
     float3_add_float3_p(value, float3_add(scaledT, crossB));
 }

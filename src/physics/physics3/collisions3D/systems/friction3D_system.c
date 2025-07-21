@@ -16,7 +16,7 @@ void Friction3DSystem(ecs_iter_t *it) {
 
         friction_factor = clampf(friction_factor, 0.0f, 1.0f); // Safety clamp
 
-        velocity3D->value = float3_multiply_float(velocity3D->value, friction_factor);
+        velocity3D->value = float3_scale(velocity3D->value, friction_factor);
 
         /*float speed = float3_length(velocity3D->value);
         if (speed < 0.1f) {
@@ -30,4 +30,4 @@ void Friction3DSystem(ecs_iter_t *it) {
 if (!grounded->value) {
     friction_power = air_friction3D;
 }
-float3_add_float3_p(&acceleration3D->value, float3_multiply_float(velocity3D->value, - friction_power * delta_time));*/
+float3_add_float3_p(&acceleration3D->value, float3_scale(velocity3D->value, - friction_power * delta_time));*/

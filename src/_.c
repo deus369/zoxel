@@ -92,7 +92,7 @@
 #include "turrets/turrets.c"
 #include "combat/combat.c"
 #include "maps/maps.c"
-#include "ai/_.c"
+#include "npcs/_.c"
 #include "editor_ui/editor_ui.c"
 // on top
 #include "controllers/_.c"

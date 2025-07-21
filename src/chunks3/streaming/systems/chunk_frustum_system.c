@@ -48,7 +48,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             position3D->value,
             chunkSize->value,
             voxScale->value * 0.5f);
-        float3_multiply_float_p(&chunk_bounds.extents, fudge_frustum_extents);
+        float3_scale_p(&chunk_bounds.extents, fudge_frustum_extents);
         zox_sys_query_begin()
         byte is_viewed = 0;
         while (zox_sys_query_loop()) {

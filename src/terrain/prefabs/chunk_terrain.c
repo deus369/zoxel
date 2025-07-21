@@ -37,7 +37,7 @@ ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
     if (terrain_mode == terrain_mode_flatlands) {
         zox_add_tag(e, FlatlandChunk)
     }
-    const float3 position3D = float3_multiply_float(float3_from_int3(chunk_position), real_chunk_scale);
+    const float3 position3D = float3_scale(float3_from_int3(chunk_position), real_chunk_scale);
     zox_set(e, Position3D, { position3D })
     zox_set(e, VoxLink, { terrain })
     zox_set(e, ChunkPosition, { chunk_position })

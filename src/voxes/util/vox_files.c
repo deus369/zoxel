@@ -22,10 +22,16 @@ void load_files_voxes(ecs_world_t *world) {
         zox_log_io("   - [%i] [vox] [%s]", i, filepath)
         vox_file data;
         load_vox_file(filepath, &data);
-        const ecs_entity_t e = spawn_vox_file(world, prefab, &data);
-        dispose_vox_file(&data);
-        if (e) string_hashmap_add(files_hashmap_voxes, new_string_data_clone(filename), e);
-        files_voxes[i] = e;
+        if (data.chunks) {
+            const ecs_entity_t e = spawn_vox_file(world, prefab, &data);
+            dispose_vox_file(&data);
+            if (e) {
+                string_hashmap_add(files_hashmap_voxes, new_string_data_clone(filename), e);
+            }
+            files_voxes[i] = e;
+        } else {
+            zox_log_error("[%s] failed to load properly", filepath)
+        }
     }
     free_files(&files);
 }

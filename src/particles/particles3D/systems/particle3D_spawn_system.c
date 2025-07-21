@@ -30,7 +30,7 @@
             ((rand() % 101) / 100.0f) * 1.0f - 0.5f
         };
         velocity3Ds[i].value = float3_normalize(velocity3Ds[i].value);
-        velocity3Ds[i].value = float3_multiply_float(velocity3Ds[i].value, (velocityBounds.y - velocityBounds.x));
+        velocity3Ds[i].value = float3_scale(velocity3Ds[i].value, (velocityBounds.y - velocityBounds.x));
         if (velocity3Ds[i].value.x < 0) {
             velocity3Ds[i].value.x -= velocityBounds.x;
         } else {

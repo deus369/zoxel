@@ -32,7 +32,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
         NULL);
     if (ray_hit == ray_hit_type_terrain) {
         float3 voxel_position_real = data->position_real;
-        float3 center_quad = float3_add(voxel_position_real, float3_multiply_float(data->normal, data->voxel_scale * (0.501f)));
+        float3 center_quad = float3_add(voxel_position_real, float3_scale(data->normal, data->voxel_scale * (0.501f)));
         float3 other_axis = float3_zero;
         if (data->normal.y != 0) {
             other_axis.x = 1;
@@ -44,7 +44,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
             other_axis.x = 1;
             other_axis.y = 1;
         }
-        other_axis = float3_multiply_float(other_axis, data->voxel_scale * 0.5f - data->voxel_scale * (0.125f / raycast_thickness));
+        other_axis = float3_scale(other_axis, data->voxel_scale * 0.5f - data->voxel_scale * (0.125f / raycast_thickness));
         if (data->normal.z != 0) {
             render_line3D_thickness_alpha(world,
                 float3_add(center_quad, (float3) { -other_axis.x, -other_axis.y, -other_axis.z }),
@@ -85,10 +85,10 @@ void raycast_terrain_gizmo(ecs_world_t *world,
         // zox_log(" > r [%fx%fx%f]\n", data->position_real.x, data->position_real.y, data->position_real.z)
     } else if (ray_hit == ray_hit_type_character) {
         // draw a cube above its head instead
-        float3 b = float3_add(data->hit, float3_multiply_float(float3_up, 0.06f));
+        float3 b = float3_add(data->hit, float3_scale(float3_up, 0.06f));
         render_line3D_thickness_alpha(world, data->hit, b, hit_character_color, raycast_thickness);
     } else if (ray_hit == ray_hit_type_block_vox) {
-        float3 b = float3_add(data->hit, float3_multiply_float(data->normal, 0.03f));
+        float3 b = float3_add(data->hit, float3_scale(data->normal, 0.03f));
         render_line3D_thickness_alpha(world, data->hit, b, hit_block_vox_color, raycast_thickness);
     }
 }

@@ -16,7 +16,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     zox_gpu_float4(particle3D_fog_data_location, get_fog_value());
     zox_gpu_float4x4(particle3D_camera_matrix_location, render_camera_matrix);
     float fov_fixer = 90.0f / ((float) render_camera_fov);
-    zox_gpu_float(particle3D_location_thickness, fov_fixer * default_point_thickness);
+    zox_gpu_float(particle3D_location_thickness, fov_fixer * default_point_thickness * viewport_scale);
     zox_field_in(Position3D, position3Ds, 1)
     zox_field_in(Color, colors, 2)
 #ifndef zox_disable_particles_gpu_instancing

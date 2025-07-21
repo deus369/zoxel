@@ -146,7 +146,7 @@ void fake_plane_data(plane *planes) {
 void run_test_frustum(char *label, const float3 camera_position, const float3 camera_euler) {
     /*zox_log(" > test [%s]\n", label)
     // camera
-    float4 camera_rotation = quaternion_from_euler(float3_multiply_float(camera_euler, degreesToRadians));
+    float4 camera_rotation = quaternion_from_euler(float3_scale(camera_euler, degreesToRadians));
 
     plane planes[6];
     float4x4 transform_matrix;

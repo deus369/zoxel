@@ -139,7 +139,7 @@ static inline float4x4 float4x4_inverse_position(const float4x4 matrix) {
 
 //! View Matrix multipled by projection and used to distort pixel magic.
 static inline float4x4 float4x4_view_matrix(const float3 position, const float3 forward, const float3 up) {
-    float4x4 matrix = float4x4_position(float3_multiply_float(position, -1.0f));
+    float4x4 matrix = float4x4_position(float3_scale(position, -1.0f));
     float3 side = { };
     side = float3_cross(forward, up);
     side = float3_normalize(side);

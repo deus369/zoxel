@@ -24,7 +24,7 @@ void BoneIndexGenerateSystem(ecs_iter_t *it) {
             const ecs_entity_t bone = boneLinks->value[j];
             bone_positions[j] = zox_get_value(bone, BonePosition)
             bone_sizes[j] = zox_get_value(bone, BoneSize)
-            const float3 half_size = bone_sizes[j]; // float3_multiply_float(bone_sizes[j], 0.5f);
+            const float3 half_size = bone_sizes[j]; // float3_scale(bone_sizes[j], 0.5f);
             bones_bounds_lower[j] = float3_subtract(bone_positions[j], half_size);
             bones_bounds_upper[j] = float3_add(bone_positions[j], half_size);
         }

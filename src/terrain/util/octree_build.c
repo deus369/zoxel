@@ -57,7 +57,7 @@ void zox_build_voxel_face(const mesh_uvs_build_data *mesh_data, const byte voxel
     for (byte i = 0; i < 4; i++) {
         float3 vertex_position = voxel_face_vertices[i];
         float3_add_float3_p(&vertex_position, offset);
-        float3_multiply_float_p(&vertex_position, vert_scale);
+        float3_scale_p(&vertex_position, vert_scale);
         mesh_data->vertices->data[mesh_data->vertices->size + i] = vertex_position;
     }
     mesh_data->vertices->size += voxel_face_vertices_length;

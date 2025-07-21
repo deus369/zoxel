@@ -41,21 +41,8 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
 }
 
 zox_begin_module(ZoxGame)
-    // ecs_progress(world, 0);
+    // app settings
     headless = 0;
-
-    // Gameplay
-    boot_event = boot_zoxel_game;
-    // regen_rate = 10;
-    hit_terrain_color = (color) { 2, 185, 145, 155 };
-    hit_character_color = (color) { 155, 45, 45, 65 };
-    hit_block_vox_color = (color) { 55, 135, 185, 145 };
-
-    // mood
-    float sub_resolution = 8;
-    viewport_scale = 1 / sub_resolution;
-    grayscale_mode = 0;
-    is_generate_vox_outlines = 0;
 
     // debug
     // disable_npc_movement = 1;
@@ -71,6 +58,24 @@ zox_begin_module(ZoxGame)
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
+
+    // Gameplay
+    boot_event = boot_zoxel_game;
+    // regen_rate = 10;
+    hit_terrain_color = (color) { 2, 185, 145, 155 };
+    hit_character_color = (color) { 155, 45, 45, 65 };
+    hit_block_vox_color = (color) { 55, 135, 185, 145 };
+
+    // mood
+    const float sub_resolution = 4;
+    viewport_scale = 1 / sub_resolution;
+    grayscale_mode = 0;
+    is_generate_vox_outlines = 0;
+    character_spawn_rate = 8; // 0 | 1 | 4 | 8 | 16 | 64
+
+    // world gen
+    block_spawn_chance_grass = 2400; //  512 | 1024 | 2048 | 3000
+    terrain_amplifier = 32; // 64;
 
     // physics
     // target_fps = 15;
@@ -100,10 +105,6 @@ zox_begin_module(ZoxGame)
     character_depth = 5;
     vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
 
-    // world gen
-    block_spawn_chance_grass = 1824; //  512 | 1024 | 2048 | 3000
-    terrain_amplifier = 48; // 64;
-
     // render distance settings
     // initial_terrain_lod = 2; // 2 |3
     // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
@@ -111,7 +112,6 @@ zox_begin_module(ZoxGame)
     block_vox_render_at_lod = 0; // now using lod minimum
     fog_density = 0.034f;
     // character_render_distance = 2;  // 1 | 2
-    characters_per_chunk_count = 2; // 0 | 1 | 4 | 8 | 16 | 64
 
     // main menu
     // header

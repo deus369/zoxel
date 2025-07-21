@@ -8,7 +8,7 @@ void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
         else if (i == 3) plane_color = (color_rgb) { 55, 155, 255 };
         else if (i == 4) plane_color = (color_rgb) { 255, 255, 255 };
         else plane_color = (color_rgb) { 0, 0, 0 };
-        float3 plane_point = float3_multiply_float(planes[i].normal, planes[i].distance);
+        float3 plane_point = float3_scale(planes[i].normal, planes[i].distance);
         // float3 up = planes[i].normal;
         float3 up = (float3) { 0, 1, 0 }; // Assume an arbitrary up vector
         if (planes[i].normal.y == 1 || planes[i].normal.y == -1) up = (float3) { 1, 0, 0 };

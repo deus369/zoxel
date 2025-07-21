@@ -41,7 +41,7 @@ void set_camera_transform(ecs_world_t *world,
     }
     const CameraSpawnData data = get_camera_preset(camera_mode, vox_model_scale);
     float3 euler = data.euler;
-    float3_multiply_float_p(&euler, degreesToRadians);
+    float3_scale_p(&euler, degreesToRadians);
     float4 camera_rotation = quaternion_from_euler(euler);
     zox_set(camera, LocalPosition3D, { data.position })
     zox_set(camera, Position3D, { float3_add(target_position, data.position) })

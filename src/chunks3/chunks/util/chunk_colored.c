@@ -5,7 +5,7 @@
 
 #define add_voxel_face_colors_vertices(index) {\
     float3 vertex_position = voxel_face_vertices[index];\
-    float3_multiply_float_p(&vertex_position, voxel_scale);\
+    float3_scale_p(&vertex_position, voxel_scale);\
     float3_add_float3_p(&vertex_position, vertex_position_offset);\
     vertices->data[vertices->size + index] = vertex_position;\
 }
@@ -86,7 +86,7 @@ void build_octree_chunk_colors_d(
             const color_rgb voxel_color = colorRGBs->value[voxel_index];
             const float voxel_scale = real_chunk_scale * octree_scales3[depth] * vox_scale;
             float3 vertex_position_offset = float3_from_int3(octree_position);
-            float3_multiply_float_p(&vertex_position_offset, voxel_scale);
+            float3_scale_p(&vertex_position_offset, voxel_scale);
             float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
             byte3 node_position = octree_positions_b[node_index];
             zoxel_octree_colors_build_face_d(left, 0, voxel_face_vertices_n[0])

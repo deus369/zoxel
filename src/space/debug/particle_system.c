@@ -13,7 +13,7 @@ void toggle_test_particle_system(ecs_world_t *world, int32_t keycode) {
             return;
         }
         zox_log("+ spawning a big old particle zone")
-        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, 0, test_particle_zone_spawn_rate, float3_multiply_float(big_old_particle_zone_bounds, 2), test_color);
+        const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world, 0, test_particle_zone_spawn_rate, float3_scale(big_old_particle_zone_bounds, 2), test_color);
         big_old_particle_zone = particle3D_emitter;
     }
 }
@@ -42,7 +42,7 @@ void toggle_character_particles(ecs_world_t *world, int32_t keycode) {
             const ecs_entity_t particle3D_emitter = spawn_particle3D_emitter(world,
                 characterLink->value,
                 test_rate,
-                float3_single(test_scale), // float3_multiply_float(bounds, test_scale),
+                float3_single(test_scale), // float3_scale(bounds, test_scale),
                 test_color);
             add_to_Children(children, particle3D_emitter);
         }

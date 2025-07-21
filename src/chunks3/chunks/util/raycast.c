@@ -29,7 +29,7 @@ byte raycast_character(ecs_world_t *world,
             if (tmin < *closest_t) {
                 *closest_t = tmin;
                 data->chunk = character;
-                data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, tmin));
+                data->hit = float3_add(ray_origin, float3_scale(ray_normal, tmin));
                 // data->normal = (int3) { 0, 0, 0 }; // You may want to calculate the actual normal at the intersection point
                 hit_character = 1;
             }
@@ -87,7 +87,7 @@ byte raycast_voxel_node(
     // zero for terrain raycasting
     float3 local_ray_origin = float3_subtract(ray_origin, chunk_position_real);
     position_global = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
-    const float3 ray_origin_scaled = float3_multiply_float(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
+    const float3 ray_origin_scaled = float3_scale(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
     // ray
     const int3 step_direction = float3_to_int3(float3_sign(ray_normal));
     const float3 ray_unit_size = (float3) { 1.0f / float_abs(ray_normal.x), 1.0f / float_abs(ray_normal.y), 1.0f / float_abs(ray_normal.z) };
@@ -108,7 +108,7 @@ byte raycast_voxel_node(
     } else {
         ray_add.z = ((float) position_global.z + 1 - ray_origin_scaled.z);
     }
-    float3_multiply_float3_p(&ray_add, ray_unit_size);
+    float3_scale3_p(&ray_add, ray_unit_size);
     while (ray_distance <= ray_length && checks < safety_checks_raycasting) {
         if (raycasting_terrain) {
             const int3 new_chunk_position = voxel_position_to_chunk_position(position_global, chunk_size);
@@ -178,7 +178,7 @@ byte raycast_voxel_node(
             if (block_spawn && zox_has(block_spawn, Position3D)) {
                 // positioning
                 zox_geter_value2(block_spawn, Position3D, float3, block_position)
-                float3 ray_point = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
+                float3 ray_point = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
                 // remember: assuming centred, so make cornered position!
                 // offset to corner, half block back! voxel_scale * 0.5
                 float3_subtract_float3_p(&block_position, float3_single(voxel_scale * 0.5f));
@@ -224,7 +224,7 @@ byte raycast_voxel_node(
                     //  data->hit set by child process
                     //  data->distance set by child process
                     data->distance += ray_distance;
-                    data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, data->distance * voxel_scale));
+                    data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance * voxel_scale));
                     // zox_log("+ hit npc through grass [%f]", data->distance)
                     return ray_hit_type_character;
                 } /*else {
@@ -237,7 +237,7 @@ byte raycast_voxel_node(
         if (hit_character && closest_t < ray_distance) {
             ray_distance = closest_t;
             data->distance = ray_distance;
-            data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
+            data->hit = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
             data->normal = ray_normal;
             return ray_hit_type_character;
         }
@@ -283,8 +283,8 @@ byte raycast_voxel_node(
     if (ray_hit == ray_hit_type_block_vox && !raycasting_terrain) {
         data->normal = int3_to_float3(hit_normal);
     } else if (ray_hit == ray_hit_type_terrain || (ray_hit == ray_hit_type_block_vox && raycasting_terrain)) {
-        data->hit = float3_add(ray_origin, float3_multiply_float(ray_normal, ray_distance * voxel_scale));
-        float3 voxel_position_real = float3_multiply_float(int3_to_float3(position_global), voxel_scale);
+        data->hit = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
+        float3 voxel_position_real = float3_scale(int3_to_float3(position_global), voxel_scale);
         float3_add_float3_p(&voxel_position_real, (float3) { voxel_scale / 2.0f, voxel_scale / 2.0f, voxel_scale / 2.0f }); // add half voxel
         float3_add_float3_p(&voxel_position_real, chunk_position_real);
         data->position = position_local;
@@ -304,11 +304,11 @@ byte raycast_voxel_node(
         }
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
-        render_line3D(world, data->hit, float3_add(data->hit, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node_depth))), hit_point_line_color);
+        render_line3D(world, data->hit, float3_add(data->hit, float3_scale(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node_depth))), hit_point_line_color);
 #endif
 #ifdef zox_debug_hit_normal
         const color_rgb voxel_line_color  = (color_rgb) { 0, 0, 0 };
-        render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_multiply_float(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
+        render_line3D(world, voxel_position_real, float3_add(voxel_position_real, float3_scale(int3_to_float3(hit_normal), voxel_scale)), voxel_line_color);
 #endif
     } else if (ray_hit == ray_hit_type_none) {
         data->chunk = 0;

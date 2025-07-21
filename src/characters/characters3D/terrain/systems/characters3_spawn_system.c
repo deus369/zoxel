@@ -1,5 +1,7 @@
 ecs_entity_t prefab_character3D_terrain_spawning;
 
+
+extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
 // we need to check if chunk has generated yet - is there a component for this?
 
 void Characters3SpawnSystem(ecs_iter_t *it) {
@@ -58,7 +60,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
 
-        for (byte j = 0; j < characters_per_chunk_count; j++) {
+        for (byte j = 0; j < character_spawn_rate; j++) {
             // sometimes cannot find a position
             // many spawn checks
             byte3 local_position;
@@ -92,13 +94,11 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 .render_disabled = renderDisabled->value,
             };
             const ecs_entity_t character = spawn_character3(world, spawn_data);
-            if (disable_npc_movement) {
-                zox_set(character, DisableMovement, { 1 })
-            }
+            on_spawned_character3_npc(world, character);
 
             add_to_EntityLinks(entityLinks, character);
 
-            zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (characters_per_chunk_count))
+            zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
         }
 
         if (entityLinks->length >= 1) {

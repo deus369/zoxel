@@ -36,7 +36,7 @@ static inline float3 float3_single(const float input) {
     return (float3) { input, input, input };
 }
 
-static inline float3 float3_multiply_float(const float3 input, const float mul) {
+static inline float3 float3_scale(const float3 input, const float mul) {
     return (float3) { input.x * mul, input.y * mul, input.z * mul };
 }
 
@@ -53,7 +53,7 @@ static inline float3 float3_mul(const float3 a, const float3 b) {
 }
 
 // depreciated!
-static inline float3 float3_multiply_float3(const float3 a, const float3 b) {
+static inline float3 float3_scale3(const float3 a, const float3 b) {
     return (float3) { a.x * b.x, a.y * b.y, a.z * b.z };
 }
 
@@ -69,7 +69,7 @@ static inline float float3_distance(const float3 a, const float3 b) {
     return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
 }
 
-static inline void float3_multiply_float_p(float3* input, const float mul) {
+static inline void float3_scale_p(float3* input, const float mul) {
     input->x *= mul;
     input->y *= mul;
     input->z *= mul;
@@ -93,7 +93,7 @@ static inline void float3_subtract_float3_p(float3* a, const float3 b) {
     a->z -= b.z;
 }
 
-static inline void float3_multiply_float3_p(float3* a, const float3 b) {
+static inline void float3_scale3_p(float3* a, const float3 b) {
     a->x *= b.x;
     a->y *= b.y;
     a->z *= b.z;

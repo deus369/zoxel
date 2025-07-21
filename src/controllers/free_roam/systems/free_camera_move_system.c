@@ -33,7 +33,7 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
             }
         }
         if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
-        movement = float3_multiply_float(movement, movement_power);
+        movement = float3_scale(movement, movement_power);
         const Rotation3D *rotation3D = zox_get(cameraLink->value, Rotation3D)
         movement = float4_rotate_float3(rotation3D->value, movement);
         Position3D *position3D = zox_get_mut(cameraLink->value, Position3D)

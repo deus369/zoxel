@@ -248,7 +248,7 @@ collide_with_chunk_d3(world, chunkLinks, max_depth, block_collisions, real_posit
     collide_with_chunk(world, chunkLinks, max_depth, block_collisions, real_position_to_voxel_position(position_last, max_depth), zox_axis_##d, collision_point_real.d,  position_last.d, offset.d, &did_collide_##d, &collision_distance.d, is_negative);
 
 #define detect_voxel_collisions()\
-    const float3 offset_left = float3_multiply_float(bounds3D->value, -1);\
+    const float3 offset_left = float3_scale(bounds3D->value, -1);\
     const float3 offset_right = bounds3D->value;\
     \
     /* single axis collision, two sides per axis*/\

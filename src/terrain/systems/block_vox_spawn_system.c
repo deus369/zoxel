@@ -64,7 +64,7 @@ void spawn_block_voxes_dive(ecs_world_t *world,
         data->spawn_data->vox = data->block_voxes[block_index];
 
         float3 position_real = float3_from_int3(delve_data->octree_position);
-        float3_multiply_float_p(&position_real, scale);
+        float3_scale_p(&position_real, scale);
         float3_add_float3_p(&position_real, data->chunk_position_real);
         // offset by half
         float3_add_float3_p(&position_real, float3_single(-scale * 0.5f));
@@ -165,7 +165,7 @@ void spawn_block_voxes(ecs_world_t *world,
         }
     }
     // convert chunk position to real
-    const float3 chunk_position_real = float3_add((float3) { vox_scale, vox_scale, vox_scale }, float3_multiply_float(int3_to_float3(chunkPosition->value), chunk_scale));
+    const float3 chunk_position_real = float3_add((float3) { vox_scale, vox_scale, vox_scale }, float3_scale(int3_to_float3(chunkPosition->value), chunk_scale));
     SpawnBlockVox spawn_data = {
         .prefab = prefab_block_vox,
         .scale = chunk_scale2,

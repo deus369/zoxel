@@ -1,7 +1,7 @@
 // #define zoxel_tests_rotate_by_keys
 
 void test_rotation(ecs_world_t *world, const ecs_entity_t character, const keyboard *keyboard) {
-    if (keyboard->r.is_pressed) {
+    /*if (keyboard->r.is_pressed) {
         float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
         //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };
         //quaternion_normalize(&quaternion);
@@ -29,5 +29,5 @@ void test_rotation(ecs_world_t *world, const ecs_entity_t character, const keybo
     } else if (keyboard->g.pressed_this_frame) {
         zox_log(" > reset alpha3D\n");
         zox_set(character, Alpha3D, { quaternion_identity });
-    }
+    }*/
 }

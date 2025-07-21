@@ -12,9 +12,9 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
     float3 forward = { mat.z.x, mat.z.y, mat.z.z };
     float3 right = { mat.x.x, mat.x.y, mat.x.z };
     float3 up = { mat.y.x, mat.y.y, mat.y.z };
-    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_multiply_float(forward, line_length)), 2, spawn_life_time, camera_color2);
-    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_multiply_float(right, line_length)), 2, spawn_life_time, camera_color);
-    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_multiply_float(up, line_length)), 2, spawn_life_time, camera_color);
+    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_scale(forward, line_length)), 2, spawn_life_time, camera_color2);
+    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_scale(right, line_length)), 2, spawn_life_time, camera_color);
+    spawn_line3D_colored(world, camera_position, float3_add(camera_position, float3_scale(up, line_length)), 2, spawn_life_time, camera_color);
 }
 
 void visualize_frustum(const float4x4 mat, const plane *planes) {
@@ -80,5 +80,5 @@ void CameraDebugSystem(ecs_iter_t *it) {
 
 /*for (int j = 0; j < 6; j++) {
     const plane planer = cameraPlanes->value[j];
-    render_line3D(float3_zero, float3_multiply_float(planer.normal, planer.distance), (color_rgb) { 255, 255, j * 32 });
+    render_line3D(float3_zero, float3_scale(planer.normal, planer.distance), (color_rgb) { 255, 255, j * 32 });
 }*/

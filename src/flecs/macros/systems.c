@@ -55,6 +55,7 @@
     zox_system_internal(id_, phase, 1, 0, __VA_ARGS__)
 
 #define zox_system_1(id_, phase, ...)\
-    zox_system_internal(id_, phase, 0, 0, __VA_ARGS__)\
-    zox_log_new_system("+ new system_1 [%s]", #id_)\
-    zox_statistics_systems++;
+    zox_system_internal(id_, phase, 0, 0, __VA_ARGS__)
+
+#define zox_system_m(id_, multi_threaded_, ...)\
+    zox_system_internal(id_, EcsOnUpdate, multi_threaded_, 0, __VA_ARGS__)
