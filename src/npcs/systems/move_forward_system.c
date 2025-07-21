@@ -2,7 +2,7 @@ void MoveForwardSystem(ecs_iter_t *it) {
     const float target_angle = 45;
     const float min_dot_threshold = target_angle * degrees_to_radians; // 0.866f; // cos(30°)
     const float slow_down_distance = 1.5f;
-    const float stop_threshold = 0.1f;      // hard stop zone
+    const float stop_threshold = 0.25f;      // hard stop zone
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(MoveForwards)

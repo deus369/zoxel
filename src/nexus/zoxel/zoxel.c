@@ -68,11 +68,11 @@ zox_begin_module(ZoxGame)
     hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
     // mood
-    const float sub_resolution = 8;
+    const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
     grayscale_mode = 0;
     is_generate_vox_outlines = 0;
-    character_spawn_rate = 12; // 0 | 1 | 4 | 8 | 16 | 64
+    character_spawn_rate = 6; // 0 | 1 | 4 | 8 | 16 | 64
 
     // world gen
     block_spawn_chance_grass = 2400; //  512 | 1024 | 2048 | 3000
