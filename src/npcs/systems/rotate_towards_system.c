@@ -1,3 +1,7 @@
+static inline float wrap_angle(float angle) {
+    return remainderf(angle, 2.0f * M_PI);
+}
+
 void RotateTowardsSystem(ecs_iter_t *it) {
     const float kP = 4.0f;          // Stronger response to error
     const float kD = 0.5f;          // Still some damping
@@ -15,7 +19,6 @@ void RotateTowardsSystem(ecs_iter_t *it) {
     zox_sys_out(Alpha3D)
 
     for (int i = 0; i < it->count; i++) {
-
         zox_sys_i(RotateTowards, rotateTowards)
         zox_sys_i(DisableMovement, disable)
         zox_sys_i(Position3D, position)
@@ -39,7 +42,8 @@ void RotateTowardsSystem(ecs_iter_t *it) {
         float desiredYaw = atan2f(lookDir.x, lookDir.z);
         float currentYaw = quaternion_to_euler_y2(rotation->value);
         float rawErr     = desiredYaw - currentYaw;
-        float yawErr     = fmodf(rawErr + M_PI, 2.0f * M_PI) - M_PI;
+        // float yawErr     = fmodf(rawErr + M_PI, 2.0f * M_PI) - M_PI;
+        float yawErr = wrap_angle(rawErr);
 
         // 3) Angular velocity around Y axis (yaw rate)
         float currentRate = omega->value.y;
@@ -56,7 +60,7 @@ void RotateTowardsSystem(ecs_iter_t *it) {
         torque_y = clampf(torque_y, -max_torque, max_torque);
 
         // 5) Set alpha (angular acceleration) around Y axis
-        alpha->value = (float3){ 0, torque_y, 0 };
+        alpha->value.y += torque_y;
 
         if (is_debug_rotate_towards) {
             const float debug_len = 1.0f;
