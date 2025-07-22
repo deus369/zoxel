@@ -9,7 +9,11 @@ void DeathSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(StatValue, statValue)
         zox_sys_i(UserLink, userLink)
-        if (statValue->value > 0 || zox_gett_value(userLink->value, Dead)) {
+        if (statValue->value > 0 ||
+            !zox_valid(userLink->value) ||
+            !zox_has(userLink->value, Dead) ||
+            zox_gett_value(userLink->value, Dead))
+        {
             continue;
         }
         // we should just set a dead state here

@@ -2,6 +2,9 @@
 #define statbar_float_height 0.048f
 
 void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *data) {
+    if (disable_npc_uis) {
+        return;
+    }
     float ui_position = statbar_float_position + statbar_float_height;
     const SpawnDataElement3D label3D_spawn_data = {
         .prefab = prefab_label3D,

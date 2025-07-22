@@ -39,6 +39,11 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             .voxel = zox_block_dirt,
             .effect_nodes = 1
         };
+        const SetVoxelTargetData datam_stone = {
+            .depth = node_depth,
+            .voxel = zox_block_stone,
+            .effect_nodes = 1
+        };
         const SetVoxelTargetData datam_dirt_grass = {
             .depth = node_depth,
             .voxel = zox_block_grass,
@@ -79,31 +84,90 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
-                const double perlin_value = perlin_terrain(
-                    noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x),
-                    noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y),
-                    terrain_frequency, seed, terrain_octaves);
-                const int global_position_y = int_floorf(terrain_boost + -terrain_minus_amplifier + terrain_amplifier * perlin_value);
+                const float nposition_x = noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x);
+                const float nposition_z = noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y);
+
+                const double mountain_amplifier = 2;
+                const double mountain_noise = (perlin_terrain(
+                    nposition_x,
+                    nposition_z,
+                    0.002,
+                    seed,
+                    3) + 1.0) / 2.0;
+                const byte is_mountain = mountain_noise >= 0.6; // biome == zox_biome_mountain
+
+                const double height_frequency = is_mountain ? terrain_frequency * mountain_amplifier : terrain_frequency;
+                const double height_amplifier = is_mountain ? terrain_amplifier * mountain_amplifier : terrain_amplifier;
+                const double perlin_value = height_amplifier * perlin_terrain(
+                    nposition_x,
+                    nposition_z,
+                    height_frequency,
+                    seed,
+                    terrain_octaves);
+                const int global_position_y = int_floorf(terrain_boost + -terrain_minus_amplifier + perlin_value);
                 const int local_height_raw = global_position_y - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
+                byte did_place_grass_top = 0;
                 if (local_height >= 0) {
                     for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
                         data.position = voxel_position;
+                        // top blocks
                         if (voxel_position.y  == local_height_raw) {
-                            if (global_position_y < sand_height) {
-                                set_voxel(&datam_sand, data);
-                            } else if (global_position_y == sand_height) {
-                                set_voxel(&datam_dirt, data);
+                            if (is_mountain) {
+                                set_voxel(&datam_stone, data);
                             } else {
-                                set_voxel(&datam_dirt_grass, data);
+                                if (global_position_y < sand_height) {
+                                    set_voxel(&datam_sand, data);
+                                } else if (global_position_y == sand_height) {
+                                    set_voxel(&datam_dirt, data);
+                                } else {
+                                    const double place_value = (perlin_terrain(
+                                        nposition_x,
+                                        nposition_z,
+                                        0.16,
+                                        seed * 2,
+                                        4) + 1.0) / 2.0;
+                                    if (place_value <= 0.73) {
+                                        set_voxel(&datam_dirt_grass, data);
+                                        did_place_grass_top = 1;
+                                    } else {
+                                        set_voxel(&datam_dirt, data);   // reverse add dirt patches
+                                    }
+                                }
                             }
                         } else {
-                            set_voxel(&datam_dirt, data);
+                            set_voxel(&datam_stone, data);
                         }
                     }
                 }
-                if (!disable_block_vox_generation && local_height_raw + 1 >= 0 && local_height_raw + 1 < chunk_voxel_length && global_position_y > sand_height) {
-                    const int rando = rand() % 10000;
+                if (!disable_block_vox_generation &&
+                    !is_mountain &&
+                    did_place_grass_top &&
+                    local_height_raw + 1 >= 0 &&
+                    local_height_raw + 1 < chunk_voxel_length &&
+                    global_position_y > sand_height) {
+                    /*const double place_value = (perlin_terrain(
+                        noise_position_x,
+                        noise_position_z,
+                        0.216,
+                        seed * 16,
+                        4) + 1.0) / 2.0;
+                    const double place_value2 = (perlin_terrain(
+                        noise_position_x,
+                        noise_position_z,
+                        0.616,
+                        seed * 16,
+                        6) + 1.0) / 2.0;*/
+                    const byte place_grass = should_place_grass(nposition_x, nposition_z, seed); //  * 16
+                    if (place_grass) {
+                        voxel_position.y = local_height_raw + 1;
+                        data.position = voxel_position;
+                        set_voxel(&datam_grass, data);
+                    }
+
+                    // place_value + place_value2 * 0.1 <= 0.33) {
+
+                    /*const int rando = rand() % 10000;
                     if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
                         voxel_position.y = local_height_raw + 1;
                         data.position = voxel_position;
@@ -117,7 +181,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                             set_voxel(&datam_rubble, data);
                         }
                         // zox_log(" + flower spawned %f\n", perlin_value)
-                    }
+                    }*/
                 }
                 // obisidian bottom
                 if (chunkPosition->value.y == -render_distance_y) {

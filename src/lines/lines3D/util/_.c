@@ -2,3 +2,4 @@
 #include "frustrum.c"
 #include "terrain_grid.c"
 #include "line.c"
+#include "debug.c"

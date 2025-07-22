@@ -10,12 +10,15 @@
 // extern string_hashmap *files_hashmap_voxes;
 
 void VoxInstanceRenderSystem(ecs_iter_t *it) {
+    const uint max_meshes = 16;
+    const uint max_transforms = 1024; // 128;
     if (!material_vox_instance) {
         return;
     }
     if (!can_render_instanes) {
         return;
     }
+    // zox_log("rendering [%i] instance renderers", it->count)
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(TransformMatrix)
@@ -32,12 +35,13 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         return;
     }
     zox_geter(material_vox_instance, MaterialVoxInstance, material_attributes)
-    InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(16);
+    InstanceRenderCommand_array_d* commands = create_InstanceRenderCommand_array_d(max_meshes);
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDisabled, renderDisabled)
         zox_sys_i(InstanceLink, instanceLink)
         zox_sys_i(TransformMatrix, transformMatrix)
-        if (renderDisabled->value || !instanceLink->value) {
+        if (!zox_valid(instanceLink->value) || renderDisabled->value) {
+            // zox_log_error("cannot render instanced mesh [%s]", zox_get_name(instanceLink->value))
             continue;
         }
         int index = 0;
@@ -48,7 +52,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         } else {
             InstanceRenderCommand command = {
                 .mesh = instanceLink->value,
-                .transforms = create_float4x4_array_d(128)
+                .transforms = create_float4x4_array_d(max_transforms)
             };
             if (!command.transforms) {
                 // errored out
@@ -56,6 +60,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
             }
             add_to_float4x4_array_d(command.transforms, transformMatrix->value);
             add_to_InstanceRenderCommand_array_d(commands, command);
+            // zox_log("[%i] created new render command for [%s] at [%s]", zox_get_name(instanceLink->value), zox_get_name(it->entities[i]))
             // zox_log(" [%i] created new command %lu - %i\n", i, instanceLink->value, commands->size)
         }
     }
@@ -73,17 +78,17 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         const ecs_entity_t mesh = command.mesh;
         zox_geter(mesh, MeshGPULink, meshGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) {
-            zox_log(" ! [VoxInstanceRenderSystem] Error: MeshGPULink is 0 [%s]\n", zox_get_name(mesh))
+            zox_log_error("[VoxInstanceRenderSystem] Error: MeshGPULink is 0 [%s]\n", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, ColorsGPULink, colorsGPULink)
         if (colorsGPULink->value == 0) {
-            zox_log(" ! [VoxInstanceRenderSystem] Error: colorsGPULink is 0 [%s]\n", zox_get_name(mesh))
+            zox_log_error("[VoxInstanceRenderSystem] Error: colorsGPULink is 0 [%s]", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, MeshIndicies, meshIndicies)
         if (meshIndicies->length == 0) {
-            zox_log(" ! [VoxInstanceRenderSystem] Error: meshIndicies is 0 [%s]\n", zox_get_name(mesh))
+            zox_log_error("[VoxInstanceRenderSystem] Error: meshIndicies is 0 [%s]", zox_get_name(mesh))
             continue;
         }
         // zox_log(" [%i] rendering %lu - %i - UBO %i\n", i, mesh, command.transforms->size, uboGPULink->value)

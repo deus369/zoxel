@@ -32,5 +32,4 @@ void define_systems_stats(ecs_world_t *world) {
         [out] stats.ExperienceValue,
         [out] stats.ExperienceMax,
         [none] StatLevel)
-
 }

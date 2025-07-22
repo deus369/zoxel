@@ -11,7 +11,7 @@ void spawn_prefabs_stats(ecs_world_t *world) {
         zox_prefab_set(prefab_realm, StatLinks, { 0, NULL })
     }
     if (prefab_character3) {
-        zox_prefab_set(prefab_character3, StatLinks, { 0, NULL })
-        zox_prefab_set(prefab_character3, DotLinks, { 0, NULL })
+        zox_prefab_character_set(StatLinks, { 0, NULL })
+        zox_prefab_character_set(DotLinks, { 0, NULL })
     }
 }

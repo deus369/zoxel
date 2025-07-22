@@ -19,9 +19,9 @@ void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
         .scale = data->scale,
     };
     // offset property
-    if (zox_has(data->block, BlockVoxOffset) && zox_gett_value(data->block, BlockVoxOffset)) {
+    /*if (zox_has(data->block, BlockVoxOffset) && zox_gett_value(data->block, BlockVoxOffset)) {
         float3_add_float3_p(&spawn_data.position_real, (float3) { 0, data->scale * -0.25f, 0 });
-    }
+    }*/
     ecs_entity_t e2;
     if (zox_has(prefab, BlockVox)) {
         e2 = spawn_block_vox(world, &spawn_data);

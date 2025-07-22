@@ -18,13 +18,16 @@ void ChunkEntitiesLodSystem(ecs_iter_t *it) {
                 continue;
             }
             zox_geter_value(e2, RenderLod, byte, current_lod)
-            zox_geter_value(e2, NodeDepth, byte, node_depth)
+            // zox_geter_value(e2, NodeDepth, byte, node_depth)
             const byte new_lod = distance_to_lod_npc(renderDistance->value);
             if (current_lod == new_lod) {
                 continue;  // check if characters division
             }
             zox_set(e2, RenderLod, { new_lod })
-            zox_set(e2, ChunkMeshDirty, { chunk_dirty_state_trigger })
+            // add RenderLodDirty!
+            if (zox_has(e2, ChunkMeshDirty)) {
+                zox_set(e2, ChunkMeshDirty, { chunk_dirty_state_trigger })
+            }
         }
     }
 } zox_declare_system(ChunkEntitiesLodSystem)

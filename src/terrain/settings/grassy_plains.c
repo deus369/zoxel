@@ -8,8 +8,8 @@ const float flat_height_level = -0.56f; // 0.2f;
 double terrain_amplifier = 64.0;
 double terrain_boost = 0.0;
 int lowest_voxel_height = -24;
-const double real_terrain_frequency = 0.007216; //  0.013216; //  0.008216; // 0.004216; // 0.026216
-double terrain_frequency = 0; // 0.038216;
+const double raw_terrain_frequency = 0.007216; //  0.013216; //  0.008216; // 0.004216; // 0.026216
+double terrain_frequency; // 0.038216;
 
 // blocks
 uint block_spawn_chance_grass = 512;

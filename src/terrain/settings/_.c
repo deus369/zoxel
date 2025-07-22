@@ -23,4 +23,12 @@ byte terrain_size = 0;
 #define terrain_minus_amplifier 0.0
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 
+#define zox_biome_grassland 0
+#define zox_biome_desert 1
+#define zox_biome_savanna 2
+#define zox_biome_forest 3
+#define zox_biome_swamp 4
+#define zox_biome_mountain 5
+#define zox_biome_end 6
+
 #include "grassy_plains.c"

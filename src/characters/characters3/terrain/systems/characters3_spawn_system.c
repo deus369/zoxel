@@ -1,6 +1,5 @@
-ecs_entity_t prefab_character3_terrain_spawning;
-
-
+extern ecs_entity_t prefab_character3_npc;
+extern ecs_entity_t prefab_character3_instanced_npc;
 extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
 // we need to check if chunk has generated yet - is there a component for this?
 
@@ -56,14 +55,14 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         const byte depth = nodeDepth->value;
         int chunk_length = powers_of_two[depth];
         const byte lod = distance_to_lod_npc(renderDistance->value);
-        // zox_log("lod [%i] dist [%i]", lod, renderDistance->value)
         const int3 chunk_dimensions = (int3) { chunk_length, chunk_length, chunk_length };
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
-
         ecs_entity_t terrain = voxLink->value;
         zox_geter_value(terrain, RealmLink, ecs_entity_t, realm)
         zox_geter(realm, CharacterLinks, characters)
         zox_geter_value(realm, CharactersChanceMax, byte, max_chance)
+        byte found_position = 0;
+        float3 position;
         for (byte j = 0; j < character_spawn_rate; j++) {
 
             // 1) Find a npc to place
@@ -80,7 +79,6 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                     break;
                 }
             }
-            // string_hashmap_get(files_hashmap_voxes, new_string_data(npc_voxes[vox_index]));
             if (!vox) {
                 zox_log_error("failed to find a spawn character_meta")
                 continue;
@@ -89,23 +87,28 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             // 2) find a place for our new npc
             // sometimes cannot find a position
             // many spawn checks
-            byte3 local_position;
-            for (byte k = 0; k < chunk_length; k++) {
-                local_position = find_position_on_ground(voxelNode, depth, NULL, 0);
-                if (!byte3_equals(byte3_full, local_position)) {
-                    break;
+            if (!found_position) {
+                if (disable_npc_positioner) {
+                    found_position = 1;
                 }
+                byte3 local_position;
+                for (byte k = 0; k < chunk_length; k++) {
+                    local_position = find_position_on_ground(voxelNode, depth, NULL, 0);
+                    if (!byte3_equals(byte3_full, local_position)) {
+                        break;
+                    }
+                }
+                if (byte3_equals(byte3_full, local_position)) {
+                    zox_log_spawning("! failed to spawn npc\n")
+                    continue;
+                }
+                position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, depth, 1);
             }
-            if (byte3_equals(byte3_full, local_position)) {
-                zox_log_spawning("! failed to spawn npc\n")
-                continue;
-            }
-            float3 position = local_to_real_position_character(local_position, chunk_voxel_position, bounds, depth, 1); // voxScale->value);
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
 
             // 3) Finally we spawn and link
             spawn_character3D_data spawn_data = {
-                .prefab = prefab_character3_terrain_spawning,
+                .prefab = is_testing_instancing ? prefab_character3_instanced_npc : prefab_character3_npc,
                 .vox = vox,
                 .terrain = voxLink->value,
                 .terrain_chunk = e,
@@ -118,6 +121,15 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             const ecs_entity_t character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);
             add_to_EntityLinks(entityLinks, character);
+
+            if (is_testing_instancing) {
+                zox_geter_value(vox, VoxScale, float, meta_vox_scale)
+                zox_geter_value(vox, ChunkSize, int3, meta_chunk_size)
+                float3 meta_bounds = calculate_vox_bounds(meta_chunk_size, meta_vox_scale);
+                zox_set(character, Bounds3D, { meta_bounds })
+                // zox_set(character, Scale1D, { 2 * vox_model_scale })
+                // zox_log("vox_model_scale: %f - %f", vox_model_scale, meta_vox_scale)
+            }
 
             zox_log_spawning("   + npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
         }

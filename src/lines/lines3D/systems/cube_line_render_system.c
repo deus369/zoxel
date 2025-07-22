@@ -1,29 +1,3 @@
-// debug mode
-#define zox_cubeline_debug_none 0
-#define zox_cubeline_debug_render_lod 1
-#define zox_cubeline_debug_render_disabled 2
-#define zox_cubeline_debug_verts 3
-#define zox_cubeline_debug_end 4
-#define zox_cubeline_debug_transforms 5
-#define zox_cubeline_debug_instanced 6
-
-static inline void cycle_cubeline_debug(byte* mode) {
-    (*mode)++;
-    if (*mode == zox_cubeline_debug_end) {
-        (*mode) = 0;
-    }
-    if ((*mode) == zox_cubeline_debug_render_lod) {
-        zox_log("-> debugging render_lods")
-    } else if (*mode == zox_cubeline_debug_render_disabled) {
-        zox_log("-> debugging render_disabled")
-    } else if (*mode == zox_cubeline_debug_verts) {
-        zox_log("-> debugging verts")
-    }  else if (*mode == zox_cubeline_debug_none) {
-        zox_log("-> debugging cubes disabled")
-    } else {
-        zox_log("-> cubeline_debug_mode is set to [%i]", *mode)
-    }
-}
 
 const float cube_lines_length = 1.0f;
 
@@ -31,7 +5,6 @@ static inline void set_line3D_color(const color_rgb color_rgb2) {
     const float3 color_rgb_f3 = color_rgb_to_float3(color_rgb2);
     zox_gpu_float4(line3D_color_location, (float4) { color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z, 1 });
 }
-
 
 static inline void render_cube_line3D(const float3 position_a, const float3 position_b) {
     // glLineWidth(cubeLinesThickness->value);
@@ -41,12 +14,11 @@ static inline void render_cube_line3D(const float3 position_a, const float3 posi
 }
 
 void CubeLineRenderSystem(ecs_iter_t *it) {
-    byte is_render_invisible = 1;
     zox_gpu_material(line3D_material);
     glEnableVertexAttribArray(line3D_position_location);
     zox_gpu_float4(line3D_fog_data_location, get_fog_value());
     zox_gpu_float4x4(line3D_camera_matrix_location, render_camera_matrix);
-    zox_sys_world()
+    // zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DebugCubeLines)
     zox_sys_in(CubeLinesThickness)
@@ -54,25 +26,21 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     zox_sys_in(Position3D)
     zox_sys_in(Rotation3D)
     zox_sys_in(Bounds3D)
-    zox_sys_in(RenderLod)
-    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
+        //zox_sys_e()
         zox_sys_i(DebugCubeLines, debugCubeLines)
-        zox_sys_i(RenderLod, renderLod)
         zox_sys_i(CubeLinesThickness, cubeLinesThickness)
         zox_sys_i(Color, colorr)
         zox_sys_i(Position3D, position3D)
         zox_sys_i(Rotation3D, rotation3D)
         zox_sys_i(Bounds3D, bounds3D)
-        zox_sys_i(RenderDisabled, renderDisabled)
         const byte mode = debugCubeLines->value;
-        if (!mode || (!is_render_invisible && renderLod->value == 255)) {
+        if (!mode) {
             continue;
         }
         zox_gpu_line_thickness(cubeLinesThickness->value);
         color_rgb lines_color = color_to_color_rgb(colorr->value);
-        if (mode == zox_cubeline_debug_render_disabled) {
+        /*if (mode == zox_cubeline_debug_render_disabled) {
             if (renderDisabled->value) {
                 lines_color = (color_rgb) { 255, 0, 0 };
             } else {
@@ -109,7 +77,7 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
             } else {
                 lines_color = (color_rgb) { 255, 255, 255 };
             }
-        }
+        }*/
         if (mode == zox_cubeline_debug_transforms) {
             // up axis
             // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });

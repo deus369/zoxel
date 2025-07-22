@@ -5,6 +5,6 @@ void spawn_prefabs_quests(ecs_world_t *world) {
         zox_prefab_add(prefab_realm, QuestLinks)
     }
     if (prefab_character3) {
-        zox_prefab_add(prefab_character3, QuestLinks)
+        zox_prefab_character_add(QuestLinks)
     }
 }

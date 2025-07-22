@@ -14,13 +14,13 @@ zox_begin_module(StatsUI)
     zox_define_tag(MenuStats)
     zox_define_tag(StatsLabel)
     define_systems_stats_ui(world);
-    spawn_prefabs_ui_stats(world);
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_player_menu_stats,
         .component_id = MenuStats,
         .texture_name = "taskbar_stats"
     });
     add_hook_spawned_character3D(&spawn_character3D_healthbar3D);
+    spawn_prefabs_ui_stats(world);
 zox_end_module(StatsUI)
 
 #endif

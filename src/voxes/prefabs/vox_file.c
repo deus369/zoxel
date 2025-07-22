@@ -85,7 +85,10 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
     return e;
 }
 
-ecs_entity_t spawn_vox_file(ecs_world_t *world, const ecs_entity_t prefab, const vox_file *data) {
+ecs_entity_t spawn_vox_file(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const vox_file *data)
+{
     zox_instance(prefab)
     set_vox_file(world, e, data);
     // todo: remove RenderDisabled and just use RenderLod?
@@ -95,7 +98,7 @@ ecs_entity_t spawn_vox_file(ecs_world_t *world, const ecs_entity_t prefab, const
     zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
     zox_set(e, Scale1D, { 2 })
     zox_set(e, Position3D, { { 2 * (rand() % 6), 0, 2 * (rand() % 6) }})
-
+    zox_set(e, VoxScale, { vox_model_scale }) // this needs setting again
 #ifdef zox_disable_io_voxes
     zox_delete(e)
     return 0;

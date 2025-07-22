@@ -3,8 +3,9 @@
 
 #include "settings/_.c"
 #include "components/_.c"
-#include "util/_.c"
 #include "prefabs/_.c"
+#include "util/_.c"
+#include "spawn/_.c"
 #include "systems/_.c"
 
 zox_begin_module(Controllers3)

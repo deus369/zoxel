@@ -2,9 +2,10 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
     if (!zox_valid(local_terrain)) {
         return;
     }
-    byte mode = zox_get_value(prefab_character3_npc, DebugCubeLines)
+    byte mode = zox_get_value(prefab_character3, DebugCubeLines)
     cycle_cubeline_debug(&mode);
-    zox_set(prefab_character3_npc, DebugCubeLines, { mode })
+    zox_prefab_character_set(DebugCubeLines, { mode })
+    // zox_set(prefab_character3_npc, DebugCubeLines, { mode })
     zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];

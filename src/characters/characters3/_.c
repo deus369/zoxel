@@ -1,7 +1,10 @@
-#ifndef zox_mod_characters3D
-#define zox_mod_characters3D
+#ifndef zox_mod_characters3
+#define zox_mod_characters3
 
 // todo: rename zox_declare_tag to zox_tag
+byte disable_npc_uis = 0;
+byte disable_npc_hooks = 0;
+byte disable_npc_positioner = 0;
 zox_declare_tag(Character3D)
 zox_declare_tag(SaveCharacter)
 zox_component_entity(Character3DLink)

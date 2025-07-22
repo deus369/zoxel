@@ -45,6 +45,12 @@ zox_begin_module(ZoxGame)
     headless = 0;
 
     // debug
+    character_spawn_rate = 16; // 0 | 1 | 16 | 32 | 64 | 128
+    is_testing_instancing = 1;
+    // disable_npc_hooks = 1;
+    // disable_npc_uis = 1;
+    disable_npc_positioner = 0;
+    // disable_instancing = 1; // test so we can reverse backward etc
     // disable_npc_movement = 1;
     zox_visualize_sounds = 0;
     is_log_gpu_restore = 0;
@@ -72,10 +78,9 @@ zox_begin_module(ZoxGame)
     viewport_scale = 1 / sub_resolution;
     grayscale_mode = 0;
     is_generate_vox_outlines = 0;
-    character_spawn_rate = 6; // 0 | 1 | 4 | 8 | 16 | 64
 
     // world gen
-    block_spawn_chance_grass = 2400; //  512 | 1024 | 2048 | 3000
+    block_spawn_chance_grass = 1600; //  512 | 1024 | 2048 | 3000
     terrain_amplifier = 32; // 64;
 
     // physics

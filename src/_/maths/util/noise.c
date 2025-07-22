@@ -130,3 +130,50 @@ double perlin_terrain(double x, double y, double f, uint seed, int octaves) {
     }
     return terrain;
 }
+
+// helper to remap any -1…1 noise into 0…1
+static inline double normalize01(double v) {
+    return (v + 1.0) * 0.5;
+}
+
+// clamp helper
+static inline double clamp01(double v) {
+    if (v < 0.0) return 0.0;
+    if (v > 1.0) return 1.0;
+    return v;
+}
+
+
+// Calculate a smooth 0…1 grass density (unchanged)
+double calculate_grass_density(double x, double y, uint32_t seed) {
+    // you already love this blend—keep it
+    double rawH  = perlin_terrain(x,            y,            0.005, seed ^ 0xABCDE, 4);
+    double rawM  = perlin_terrain(x + 4321.0,   y - 9876.0,   0.01,  seed ^ 0x12345, 3);
+    double rawD  = perlin_terrain(x * 2.0,      y * 2.0,      0.1,   seed ^ 0x55555, 2);
+
+    double height   = normalize01(rawH);
+    double moisture = normalize01(rawM);
+    double detail   = normalize01(rawD);
+
+    double density = height * moisture * (0.5 + 0.5 * detail);
+    return density < 0.0 ? 0.0 : (density > 1.0 ? 1.0 : density);
+}
+
+// ONLY THIS: use your perlin_noise as the roll for grass placement
+byte should_place_grass(double x, double y, uint32_t seed) {
+    double density = calculate_grass_density(x, y, seed);
+    // push every point up slightly
+    density = pow(density, 0.9);
+
+    // —— Add this: your coverage dial ——
+    const double grass_bias = 1.6;   // 1.0 = original, 2.0 = twice as much
+    density = density * grass_bias;
+    if (density > 1.0) density = 1.0;
+
+    // sample randomness
+    double freq   = 2;
+    double rawRnd = perlin_noise(x * freq, y * freq, freq, seed ^ 0xFEDCBA);
+    double rnd    = normalize01(rawRnd);
+
+    return rnd < density;
+}

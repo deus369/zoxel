@@ -1,0 +1,1 @@
+#include "character3_player.c"

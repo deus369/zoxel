@@ -1,4 +1,6 @@
-ecs_entity_t spawn_prefab_character3(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
+    const ecs_entity_t prefab)
+{
     if (!prefab) {
         return 0;
     }
@@ -10,8 +12,7 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world, const ecs_entity_t pref
     // name
     zox_prefab_add(e, ZoxName)
     // rendering
-    zox_set(e, RenderDisabled, { 0 })
-    prefab_add_cube_lines(world, e, color_white, 0);
+    //zox_set(e, RenderDisabled, { 0 })
     // constraints
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     // In Terrain
@@ -49,5 +50,7 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world, const ecs_entity_t pref
     zox_prefab_set(e, Jump, { 0 })
     zox_prefab_set(e, Collision, { 0 })
     zox_prefab_set(e, CollisionDistance, { float3_zero })
+    // Debug
+    prefab_add_cube_lines(world, e, color_white, 0);
     return e;
 }

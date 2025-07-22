@@ -38,6 +38,29 @@ VoxelNode* get_voxel_node_at_depth(byte *value, const VoxelNode *node, byte3 *po
     return get_voxel_node_at_depth(value, &kids[child_index], position, depth);
 }
 
+VoxelNode* get_voxel_node_at_depth2(byte *value, const VoxelNode *node, byte3 *position, byte depth) {
+    // if child nodes closed or depth final, return current node
+    if (depth == 0) {
+        *value = node->value;
+        return (VoxelNode*) node;
+    }
+    if (!has_children_VoxelNode(node)) {
+        *value = 0;
+        return (VoxelNode*) node;
+    }
+    depth--;
+    const byte dividor = powers_of_two_byte[depth];
+    const byte3 node_position = (byte3) {
+        position->x / dividor,
+        position->y / dividor,
+        position->z / dividor
+    };
+    byte3_modulus_byte(position, dividor);
+    const byte child_index = byte3_octree_array_index(node_position);
+    VoxelNode* kids = get_children_VoxelNode(node);
+    return get_voxel_node_at_depth2(value, &kids[child_index], position, depth);
+}
+
 byte get_adjacent_voxel(byte direction, const VoxelNode *root_node, const VoxelNode *neighbors[], int3 position, byte depth, const byte edge_voxel) {
     byte chunk_index = 0;
     const VoxelNode *adjacent_node = find_root_adjacent_VoxelNode(root_node, position, depth, direction, neighbors, &chunk_index);

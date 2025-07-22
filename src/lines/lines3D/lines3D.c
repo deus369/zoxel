@@ -10,9 +10,8 @@ zox_component_byte(DebugCubeLines)
 zox_component(CubeLinesThickness, float)
 #include "prefabs/_.c"
 #include "shaders/line3D.c"
-#include "systems/line3D_render_system.c"
-#include "systems/cube_line_render_system.c"
 #include "util/_.c"
+#include "systems/_.c"
 
 void spawn_shaders_lines3D(ecs_world_t *world) {
     if (render_backend == zox_render_backend_opengl) {
@@ -27,28 +26,13 @@ void spawn_prefabs_lines3D(ecs_world_t *world) {
 }
 
 zox_begin_module(Lines3D)
-    add_hook_load_shader(&spawn_shaders_lines3D);
     zox_define_tag(Line3D)
     zox_define_tag(CubeLines)
     zox_define_component(DebugCubeLines)
     zox_define_component(LineData3D)
     zox_define_component(CubeLinesThickness)
-    zox_render3D_plus_system(Line3DRenderSystem,
-        [in] LineData3D,
-        [in] lines.LineThickness,
-        [in] colorz.Color,
-        [none] Line3D)
-    // todo: make overlay layer in render stack
-    zox_render3D_plus_system(CubeLineRenderSystem,
-        [in] DebugCubeLines,
-        [in] CubeLinesThickness,
-        [in] colorz.Color,
-        [in] transforms3.Position3D,
-        [in] transforms3.Rotation3D,
-        [in] generic.Bounds3D,
-        [in] rendering.RenderLod,
-        [in] rendering.RenderDisabled,
-        [none] CubeLines)
+    define_systems_lines3(world);
+    add_hook_load_shader(&spawn_shaders_lines3D);
     spawn_prefabs_lines3D(world);
 zox_end_module(Lines3D)
 

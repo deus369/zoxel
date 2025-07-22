@@ -23,6 +23,6 @@ void spawn_prefabs_skills(ecs_world_t *world) {
         zox_prefab_add(prefab_realm, SkillLinks)
     }
     if (prefab_character3) {
-        zox_prefab_add(prefab_character3, SkillLinks)
+        zox_prefab_character_add(SkillLinks)
     }
 }

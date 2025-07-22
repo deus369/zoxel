@@ -44,7 +44,7 @@ void set_terrain_render_distance() {
     terrain_spawn_distance = 16;
     terrain_vertical = 3;
 #endif
-    terrain_frequency = terrain_depth * real_terrain_frequency; // 0.002216 // 0.008216
+    terrain_frequency = terrain_depth * raw_terrain_frequency; // 0.002216 // 0.008216
     terrain_boost = 0;
     terrain_amplifier = 16 + terrain_vertical * 16;
     lowest_voxel_height = - (terrain_vertical) * 16 + 1;

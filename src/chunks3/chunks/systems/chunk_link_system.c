@@ -39,14 +39,20 @@ byte set_entity_chunk(ecs_world_t *world,
             zox_set(e, RenderDisabled, { chunk_render_disabled })
         }
         // now lod
-        const byte chunk_render_lod = zox_get_value(chunk, RenderLod)
         // calculate_lods
-        zox_geter_value(chunk, RenderDistance, byte, chunk_render_distance)
-        zox_geter_value(e, NodeDepth, byte, node_depth)
-        const byte new_lod = distance_to_lod_npc(chunk_render_distance);
-        zox_geter_value(e, RenderLod, byte, lod)
-        if (lod != new_lod) {
-            zox_set(e, RenderLod, { new_lod })
+        // zox_geter_value(e, NodeDepth, byte, node_depth)
+        if (zox_has(e, RenderLod)) {
+            zox_geter_value(chunk, RenderLod, byte, chunk_render_lod)
+            zox_geter_value(chunk, RenderDistance, byte, chunk_render_distance)
+            zox_geter_value(e, RenderLod, byte, character_lod)
+            const byte new_character_lod = distance_to_lod_npc(chunk_render_distance);
+            if (character_lod != new_character_lod) {
+                zox_set(e, RenderLod, { new_character_lod })
+                // add RenderLodDirty!
+                if (zox_has(e, ChunkMeshDirty)) {
+                    zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
+                }
+            }
         }
     }
     return 1;

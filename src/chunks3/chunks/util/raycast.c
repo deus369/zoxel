@@ -72,7 +72,13 @@ byte raycast_voxel_node(
         chunk_depth = zox_get_value(chunk, NodeDepth)
         if (raycasting_terrain) {
             entities = zox_get(chunk, EntityLinks)
-            hit_character = raycast_character(world, caster, ray_origin, ray_normal, entities, data, &closest_t);
+            hit_character = raycast_character(world,
+                caster,
+                ray_origin,
+                ray_normal,
+                entities,
+                data,
+                &closest_t);
         }
     }
     const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
@@ -137,7 +143,7 @@ byte raycast_voxel_node(
                     hit_character = raycast_character(world, caster, ray_origin, ray_normal, entities, data, &closest_t);
                 }
             } else {
-                // position_local = (byte3) { 255, 255, 255 }; // failure!
+                position_local = (byte3) { 255, 255, 255 }; // failure!
                 // return here ?
                 if (was_hitting) {
                     return ray_hit_type_none;
@@ -145,11 +151,12 @@ byte raycast_voxel_node(
             }
         }
         byte hit_voxel = 0;
-        if (byte3_in_bounds(position_local, chunk_size_b3)) {
+        byte is_in_bounds = byte3_in_bounds(position_local, chunk_size_b3);
+        if (is_in_bounds) {
             byte3 temp = position_local;
             node_voxel = get_voxel_node_at_depth(&hit_voxel, node_chunk, &temp, chunk_depth);
         }
-        if (hit_voxel) {
+        if (is_in_bounds && hit_voxel) { // ray_distance != 0 &&
             // data->voxel = hit_voxel;
             if (raycasting_terrain) {
                 data->hit_block = voxels->value[hit_voxel - 1];
@@ -159,16 +166,15 @@ byte raycast_voxel_node(
                 break;
             }
             if (!raycasting_terrain) {
-                ray_hit = ray_hit_type_block_vox;
-                break;
+                data->distance = ray_distance * voxel_scale;
+                data->normal = int3_to_float3(hit_normal);
+                // zox_log(" + hit minivox voxel; ray_distance [%f] voxel [%i] - depth [%i] x", ray_distance, hit_voxel, chunk_depth)
+                zox_log("  + at [%ix%ix%i]", position_local.x, position_local.y, position_local.z)
+                return ray_hit_type_block_vox;
             }
             // check for minivoxes here
-            ecs_entity_t block_meta = 0;
-            byte is_minivox = 0;
-            if (voxels) {
-                block_meta = voxels->value[hit_voxel - 1];
-                is_minivox = zox_has(block_meta, BlockVox);
-            }
+            ecs_entity_t block_meta = block_meta = voxels->value[hit_voxel - 1];
+            byte is_minivox = is_minivox = zox_has(block_meta, BlockVox);
             if (!is_minivox) {
                 ray_hit = ray_hit_type_terrain;
                 break;
@@ -217,18 +223,19 @@ byte raycast_voxel_node(
                     entities);
                 if (result == ray_hit_type_block_vox) {
                     ray_hit = ray_hit_type_block_vox;
-                    // chunk = block_spawn; // set hit chunk
+                    data->distance += ray_distance * voxel_scale;
+                    // zox_log("   - Hitting Block Vox, Sub Vox")
                     break;
                 } else if (result == ray_hit_type_character) {
                     // no need to set more stuff here
                     //  data->hit set by child process
                     //  data->distance set by child process
-                    data->distance += ray_distance;
-                    data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance * voxel_scale));
+                    data->distance += ray_distance * voxel_scale;
+                    data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance));
                     // zox_log("+ hit npc through grass [%f]", data->distance)
                     return ray_hit_type_character;
                 } /*else {
-                    zox_log("Passing through: %s", result == ray_hit_type_none ? "air" : "idk")
+                    zox_log("Passing through: %s in minivox", result == ray_hit_type_none ? "air" : "idk")
                 }*/
             }
         }
@@ -279,11 +286,24 @@ byte raycast_voxel_node(
         node_last = node_voxel;
         checks++; // safety first
     }
-    data->distance = ray_distance;
-    if (ray_hit == ray_hit_type_block_vox && !raycasting_terrain) {
+    /*if (ray_hit == ray_hit_type_block_vox && !raycasting_terrain) {
+        data->distance = ray_distance;
         data->normal = int3_to_float3(hit_normal);
-    } else if (ray_hit == ray_hit_type_terrain || (ray_hit == ray_hit_type_block_vox && raycasting_terrain)) {
-        data->hit = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
+    } else */
+
+    if (ray_hit == ray_hit_type_terrain ||
+        (ray_hit == ray_hit_type_block_vox && raycasting_terrain))
+    {
+        if (ray_hit == ray_hit_type_terrain) {
+            data->distance = ray_distance * voxel_scale;
+            data->normal = int3_to_float3(hit_normal);
+        } /*else {
+            zox_log("+ hit mini vox normal: %fx%fx%f", data->normal.x, data->normal.y, data->normal.z)
+            zox_log("+ hit mini vox point: %fx%fx%f", data->hit.x, data->hit.y, data->hit.z)
+        }*/
+        // calculate our point off the distance
+        data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance));
+        // calculate real position off voxel one
         float3 voxel_position_real = float3_scale(int3_to_float3(position_global), voxel_scale);
         float3_add_float3_p(&voxel_position_real, (float3) { voxel_scale / 2.0f, voxel_scale / 2.0f, voxel_scale / 2.0f }); // add half voxel
         float3_add_float3_p(&voxel_position_real, chunk_position_real);
@@ -299,9 +319,6 @@ byte raycast_voxel_node(
         data->node = node_voxel;
         data->voxel = node_voxel->value;
         data->node_last = node_last;
-        if (ray_hit == ray_hit_type_terrain) {
-            data->normal = int3_to_float3(hit_normal);
-        }
 #if zox_debug_hit_point
         const color_rgb hit_point_line_color = (color_rgb) { 0, 255, 255 };
         render_line3D(world, data->hit, float3_add(data->hit, float3_scale(int3_to_float3(hit_normal), voxel_scale * get_terrain_voxel_scale(node_depth))), hit_point_line_color);

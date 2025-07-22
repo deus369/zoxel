@@ -69,7 +69,7 @@ void spawn_block_voxes_dive(ecs_world_t *world,
         // offset by half
         float3_add_float3_p(&position_real, float3_single(-scale * 0.5f));
         if (data->block_vox_offsets[block_index]) {
-            float3_add_float3_p(&position_real, (float3) { 0, scale * -0.25f, 0 });
+            // float3_add_float3_p(&position_real, (float3) { 0, scale * -0.25f, 0 });
         }
         data->spawn_data->position_real = position_real;
         // todo: instead of hash, replace OctreeNode with OctreeNodeEntity - link directly in the node

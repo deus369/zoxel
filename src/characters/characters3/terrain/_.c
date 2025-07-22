@@ -1,6 +1,7 @@
 #ifndef zox_characters3D_terrain
 #define zox_characters3D_terrain
 
+byte is_testing_instancing = 0;
 #include "settings/_.c"
 zox_component_byte(CharactersSpawned)
 zox_component_byte(CharactersEverSpawned)

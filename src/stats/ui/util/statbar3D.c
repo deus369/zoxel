@@ -1,18 +1,7 @@
 void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data *data) {
-    /*zox_geter(data->realm, StatLinks, realm_stats)
-    ecs_entity_t realm_health = 0;
-    for (int i = 0; i < realm_stats->length; i++) {
-        const ecs_entity_t stat = realm_stats->value[i];
-        if (!realm_health && zox_has(stat, StatState)) {
-            realm_health = stat;
-        }
+    if (disable_npc_uis) {
+        return;
     }
-    // now get health stat
-    for (int i = 0; i < data->stats->length; i++) {
-        const ecs_entity_t stat = data->stats->value[i];
-    }*/
-
-    // const ecs_entity_t stat_health = stat_index_health < data->stats_length ? data->stats[stat_index_health] : 0;
     if (!zox_valid(data->health)) {
         zox_log_error("invalid stat [health] on character [%s]", zox_get_name(data->e))
         return;

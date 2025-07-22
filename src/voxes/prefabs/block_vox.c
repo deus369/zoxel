@@ -17,7 +17,9 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     return e;
 }
 
-ecs_entity_t spawn_block_vox(ecs_world_t *world, const SpawnBlockVox *data) {
+ecs_entity_t spawn_block_vox(ecs_world_t *world,
+    const SpawnBlockVox *data)
+{
     zox_instance(data->prefab)
     zox_name("block_vox")
     // transforms
