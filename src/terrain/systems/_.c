@@ -7,6 +7,7 @@
 #include "block_vox_despawn_system.c"
 #include "block_vox_lod_system.c"
 #include "block_vox_removed_system.c"
+#include "realm_voxels.c"
 zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
 void define_systems_terrain(ecs_world_t *world) {

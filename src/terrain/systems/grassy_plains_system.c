@@ -64,7 +64,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             .voxel = zox_block_vox_grass,
             .effect_nodes = 1
         };
-        const SetVoxelTargetData datam_flower = {
+        /*const SetVoxelTargetData datam_flower = {
             .depth = node_depth,
             .voxel = zox_block_vox_flower,
             .effect_nodes = 1
@@ -73,7 +73,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             .depth = node_depth,
             .voxel = zox_block_dirt_rubble,
             .effect_nodes = 1
-        };
+        };*/
         fill_new_octree(voxelNode, 0, node_depth);
 
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);

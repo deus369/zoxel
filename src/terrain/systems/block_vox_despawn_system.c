@@ -37,7 +37,7 @@ void BlockVoxDespawnSystem(ecs_iter_t *it) {
         }
         destroy_block_voxes(world, voxelNode);
         blocksSpawned->value = 0;
-        zox_geter_value(it->entities[i], ChunkPosition, int3, chunk_position)
+        // zox_geter_value(it->entities[i], ChunkPosition, int3, chunk_position)
         // zox_log("+ despawning block voxes at [%ix%ix%i]", chunk_position.x, chunk_position.y, chunk_position.z)
     }
 } zox_declare_system(BlockVoxDespawnSystem)

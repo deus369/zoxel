@@ -6,7 +6,7 @@ void Characters3DespawnSystem(ecs_iter_t *it) {
     zox_sys_out(CharactersSpawned)
     zox_sys_out(EntityLinks)
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
+        // zox_sys_e()
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
         zox_sys_i(RenderDistance, renderDistance)
         zox_sys_o(CharactersSpawned, charactersSpawned)

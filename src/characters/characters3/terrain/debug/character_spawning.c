@@ -3,7 +3,7 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
     // zox_log("keydown %i\n", keycode)
     if (keycode == SDLK_l) {
         // spawn at here
-        int3 chunk_position = int3_zero;
+        /*int3 chunk_position = int3_zero;
         float3 position = (float3) { 4, 12, 4 };
 
         const ecs_entity_t terrain = zox_get_value(local_realm, TerrainLink)
@@ -15,7 +15,7 @@ void test_spawn_character_npc(ecs_world_t *world, int32_t keycode) {
         const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
         if (!chunk) {
             return;
-        }
+        }*/
 
         // zox_log("+ spawning npc!\n")
         /*float4 rotation = quaternion_identity;

@@ -291,7 +291,7 @@ void CollisionDetectSystem(ecs_iter_t *it) {
     zox_sys_in(VoxLink)
     zox_sys_in(Bounds3D)
     zox_sys_in(Position3D)
-    zox_sys_in(Velocity3D)
+    // zox_sys_in(Velocity3D)
     zox_sys_in(LastPosition3D)
     zox_sys_out(Collision)
     zox_sys_out(CollisionDistance)
@@ -308,7 +308,7 @@ void CollisionDetectSystem(ecs_iter_t *it) {
         zox_sys_i(VoxLink, voxLink)
         zox_sys_i(Bounds3D, bounds3D)
         zox_sys_i(Position3D, position3D)
-        zox_sys_i(Velocity3D, velocity3D)
+        // zox_sys_i(Velocity3D, velocity3D)
         zox_sys_i(LastPosition3D, lastPosition3D)
         zox_sys_o(Collision, collision)
         zox_sys_o(CollisionDistance, collisionDistance)
@@ -337,7 +337,7 @@ void CollisionDetectSystem(ecs_iter_t *it) {
             continue;
         }
         const float3 position_last = lastPosition3D->value;
-        const float3 position_new = position3D->value;
+        // const float3 position_new = position3D->value;
         float3 collision_point_real = position3D->value;
         float3 collision_distance = float3_zero;
         byte did_collide_x = 0;

@@ -4,7 +4,8 @@ ecs_entity_t spawn_list(ecs_world_t *world,
     ElementSpawnData element_data,
     const SpawnList list_data)
 {
-    byte is_scrollbar = list_data.count > list_data.visible_count;
+    // byte is_scrollbar = list_data.count > list_data.visible_count;
+
     // zox_log("+ spawning ui list with [%i] elements", list_data.count)
     // zox_log("   - visible_count [%i]", list_data.visible_count)
     // offset by half a height
@@ -46,7 +47,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             SpawnTextData child_text_data = {
                 .text = child_data.text,
                 .font_size = list_data.font_size,
-                .padding = list_data.padding,
+                .padding = { list_data.padding },
                 .font_resolution = button_font_resolution,
                 .font_fill_color = button_font_fill,
                 .font_outline_color = button_font_outline,

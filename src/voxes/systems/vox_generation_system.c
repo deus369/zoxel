@@ -1,6 +1,6 @@
 void VoxGenerationSystem(ecs_iter_t *it) {
     const byte unique_colors = 8;
-    const int grass_random = 6;
+    // const int grass_random = 6;
     // const byte node_depth = block_vox_depth;
     // const byte chunk_voxel_length = powers_of_two_byte[node_depth];
     zox_sys_world()

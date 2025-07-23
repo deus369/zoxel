@@ -78,7 +78,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         const ecs_entity_t mesh = command.mesh;
         zox_geter(mesh, MeshGPULink, meshGPULink)
         if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) {
-            zox_log_error("[VoxInstanceRenderSystem] Error: MeshGPULink is 0 [%s]\n", zox_get_name(mesh))
+            zox_log_error("Invalid Instance Mesh [%s]", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, ColorsGPULink, colorsGPULink)

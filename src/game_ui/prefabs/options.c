@@ -14,11 +14,11 @@ ecs_entity_t spawn_menu_options(
     // more data
     const int max_labels = max_settings;
     const byte visible_count = 12;
-    const byte is_scrollbar = 1;
     const byte layer = 1;
-    const byte header_font_size = 80;
     const byte font_size = 32;
-    const byte is_close_button = 0;
+    // const byte is_scrollbar = 1;
+    // const byte is_close_button = 0;
+    // const byte header_font_size = 80;
 
     // # Window #
     CanvasSpawnData canvas_data = {
@@ -63,7 +63,7 @@ ecs_entity_t spawn_menu_options(
             elements[elements_count] = (SpawnListElement) {
                 .type = 1,
                 .text = s.name,
-                .on_slide = &on_settings_slider_slid,
+                .on_slide = { &on_settings_slider_slid },
                 .value = s.value_float,
                 .value_bounds = (float2) { s.min_float, s.max_float },
             };
@@ -73,7 +73,7 @@ ecs_entity_t spawn_menu_options(
     }
     elements[elements_count] = (SpawnListElement) {
         .text = "return",
-        .on_click = &button_event_menu_main,
+        .on_click = { &button_event_menu_main },
     };
     elements_count++;
     ParentSpawnData list_parent_data = {

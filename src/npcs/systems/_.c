@@ -44,7 +44,7 @@ void define_systems_npcs(ecs_world_t *world) {
         [in] physics.DisableMovement,
         [in] transforms3.Position3D,
         [in] transforms3.Rotation3D,
-        [in] physics3.Velocity3D,
+        // [in] physics3.Velocity3D,
         [in] npcs.TargetPosition,
         [in] npcs.MoveSpeed,
         [out] physics3.Acceleration3D,

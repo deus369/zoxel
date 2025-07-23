@@ -60,7 +60,9 @@
 #include "blocks/_.c"
 #include "chunks2/_.c"
 #include "chunks3/_.c"
-#include "voxes/voxes.c"
+#include "voxes/_.c"
+
+#include "models/_.c"
 #include "weathers/weathers.c"
 #include "terrain/_.c"
 #include "physics/_.c"
@@ -148,6 +150,7 @@ zox_begin_module(Zox)
     zox_import_module(Chunks3)
     zox_import_module(Voxes)
 
+    zox_import_module(Models)
     zox_import_module(Weathers)
     zox_import_module(Terrain)
     zox_import_module(Physics)

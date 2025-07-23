@@ -46,10 +46,10 @@ uint debug_label_app(ecs_world_t *world,
         zox_geter_value(element, PixelSize, int2, element_size)
         // zox_geter_value(element, TextureSize, int2, texture_size)
         int2 texture_size = get_texture_size(world, element);
-        zox_geter(element, MeshVertices2D, texture_verts)
         index += snprintf(buffer + index, size - index, "# %s\n", zox_get_name(element));
         index += snprintf(buffer + index, size - index, "   - size [%ix%i]\n", element_size.x, element_size.y);
         index += snprintf(buffer + index, size - index, "   - t_size [%ix%i]\n", texture_size.x, texture_size.y);
+        // zox_geter(element, MeshVertices2D, texture_verts)
         /*for (int j = 0; j < texture_verts->length; j++) {
             float2 vert = texture_verts->value[j];
             index += snprintf(buffer + index, size - index, "       - v [%fx%f]\n", vert.x, vert.y);

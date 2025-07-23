@@ -28,7 +28,7 @@ void MeleeSystem(ecs_iter_t *it) {
         skillActive->value = 0;
 
         // user validation
-        if (!zox_valid(user) || !zox_has(user, StatLinks) && !zox_gett_value(user, Dead)) {
+        if (!zox_valid(user) || !zox_has(user, StatLinks) || zox_gett_value(user, Dead)) {
             continue;
         }
 
@@ -85,8 +85,7 @@ void MeleeSystem(ecs_iter_t *it) {
         }
         // zox_log(" > activating melee skill [%s]\n", zox_get_name(action_entity))
         if (zox_has(hit, Character3)) {
-            const ecs_entity_t hit_character = hit;
-
+            // const ecs_entity_t hit_character = hit;
             zox_geter(hit, StatLinks, hit_stats)
             find_array_component_with_tag(hit_stats, HealthStat, health_stat)
             if (!health_stat) {

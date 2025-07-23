@@ -31,16 +31,6 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
     }
     if (zox_has(data.prefab, InstanceLink)) {
         zox_set(e, InstanceLink, { data.vox })
-        zox_set(e, InstanceLinks, {
-            data.vox,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        })
         zox_set(e, VoxScale, { vox_model_scale })
     } else {
         zox_set(e, CloneVoxLink, { data.vox })

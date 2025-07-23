@@ -166,9 +166,11 @@ byte should_place_grass(double x, double y, uint32_t seed) {
     density = pow(density, 0.9);
 
     // —— Add this: your coverage dial ——
-    const double grass_bias = 1.6;   // 1.0 = original, 2.0 = twice as much
+    const double grass_bias = 1.5;   // 1.0 = original, 2.0 = twice as much
     density = density * grass_bias;
-    if (density > 1.0) density = 1.0;
+    if (density > 1.0) {
+        density = 1.0;
+    }
 
     // sample randomness
     double freq   = 2;

@@ -12,13 +12,7 @@ void define_systems_characters3(ecs_world_t *world) {
         [none] SaveCharacter)
     zox_system(Character3LodSystem, EcsPostUpdate,
         [in] rendering.RenderLodDirty,
-        [in] rendering.RenderLod,
+        // [in] rendering.RenderLod,
         [out] chunks3.ChunkMeshDirty,
-        [none] Character3)
-    zox_system(Character3LodInstancedSystem, EcsPostUpdate,
-        [in] rendering.RenderLodDirty,
-        [in] rendering.RenderLod,
-        [in] rendering.InstanceLinks,
-        [out] rendering.InstanceLink,
         [none] Character3)
 }

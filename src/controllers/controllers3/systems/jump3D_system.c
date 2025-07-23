@@ -5,12 +5,12 @@ void Jump3System(ecs_iter_t *it) {
     zox_sys_in(DisableMovement)
     zox_sys_out(Velocity3D)
     zox_sys_out(Jump)
-    zox_sys_out(Acceleration3D)
+    //zox_sys_out(Acceleration3D)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(DisableMovement, disableMovement)
         zox_sys_o(Velocity3D, velocity3)
         zox_sys_o(Jump, jump)
-        zox_sys_o(Acceleration3D, acceleration3D)
+        //zox_sys_o(Acceleration3D, acceleration3D)
         if (disableMovement->value || !jump->value) {
             continue;
         }

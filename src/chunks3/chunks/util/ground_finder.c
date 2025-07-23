@@ -10,7 +10,7 @@ byte3 find_position_on_ground(
         return byte3_full;
     }
     const byte length = powers_of_two_byte[depth];
-    byte checks_count = 0;
+    // byte checks_count = 0;
     byte3 position = (byte3) {
         positionxz.x,
         0,
@@ -53,7 +53,6 @@ byte3 find_random_position_on_ground(
 {
     const byte length = powers_of_two_byte[depth];
     byte checks_count = 0;
-    byte3 position = byte3_full;
     while (checks_count < max_position_checks) {
         byte2 positionxz = (byte2) { rand() % length, rand() % length };
         byte3 position = find_position_on_ground(

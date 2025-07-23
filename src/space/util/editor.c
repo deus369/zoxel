@@ -25,7 +25,6 @@ void toggle_debug_block_voxes_bounds(ecs_world_t *world) {
     cycle_cubeline_debug(&mode);
     zox_set(prefab_block_vox, DebugCubeLines, { mode })
     zox_set(prefab_block_vox_instanced, DebugCubeLines, { mode })
-    zox_set(prefab_world_block_grass, DebugCubeLines, { mode })
     zox_geter(local_terrain, ChunkLinks, chunkLinks)
     for (int i = 0; i < chunkLinks->value->size; i++) {
         int3_hashmap_pair* pair = chunkLinks->value->data[i];

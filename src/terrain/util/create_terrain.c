@@ -28,7 +28,7 @@ ecs_entity_t spawn_terrain_streaming(ecs_world_t *world,
     const ecs_entity_t prefab_terrain,
     const ecs_entity_t prefab_chunk)
 {
-    const int3 chunk_position = int3_zero;
+    // const int3 chunk_position = int3_zero;
     if (!zox_has(realm, TilemapLink)) {
         zox_log_error("! realm has no TilemapLink [%lu]", realm)
         return 0;

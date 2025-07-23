@@ -111,7 +111,7 @@ void link_node_##name(name *node, const ecs_entity_t e) {\
 \
 void destroy_##name(ecs_world_t *world, name* node);\
 \
-byte destroy_node_children_##name(ecs_world_t *world, name *node) {\
+void destroy_node_children_##name(ecs_world_t *world, name *node) {\
     write_lock_node(node);\
     name* kids = get_children_unlocked_##name(node);\
     for (byte i = 0; i < octree_length; i++) {\

@@ -7,8 +7,8 @@ void ChunkLodSystem(ecs_iter_t *it) {
         return;
     }
     zox_sys_query()
-    const byte max_camera_distance = terrain_lod_far + 1;
-    const byte max_depth = terrain_depth;
+    // const byte max_camera_distance = terrain_lod_far + 1;
+    // const byte max_depth = terrain_depth;
     zox_sys_world()
     byte streamers_dirty = 0;
     int3 *stream_points = NULL;

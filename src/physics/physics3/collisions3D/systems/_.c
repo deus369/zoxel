@@ -28,13 +28,13 @@ void define_systems_collisions3D(ecs_world_t *world) {
         [in] chunks3.VoxLink,
         [in] generic.Bounds3D,
         [in] transforms3.Position3D,
-        [in] physics3.Velocity3D,
+        // [in] physics3.Velocity3D,
         [in] physics3.LastPosition3D,
         [out] collisions3.Collision,
         [out] collisions3.CollisionDistance)
     zox_system(CollisionResponseSystem, zox_pip_physics,
-        [in] chunks3.VoxLink,
-        [in] generic.Bounds3D,
+        // [in] chunks3.VoxLink,
+        // [in] generic.Bounds3D,
         [in] collisions3.CollisionDistance,
         [out] transforms3.Position3D,
         [out] physics3.Velocity3D,
@@ -49,7 +49,7 @@ void define_systems_collisions3D(ecs_world_t *world) {
     zox_system(Friction3DSystem, zox_pip_physics,
         [in] collisions3.Grounded,
         [out] physics3.Velocity3D,
-        [out] physics3.Acceleration3D,
+        // [out] physics3.Acceleration3D,
         [none] physics.Frictioned)
 #ifdef zox_gizmos_sphere_colliders
     zox_system_1(SphereColliderDrawSystem, zox_pip_mainthread,

@@ -10,8 +10,8 @@ void zox_set_app_fullscreen(ecs_world_t* world, ecs_entity_t e, byte fullscreen)
         size = get_screen_size();
     } else {
         size = zox_get_value(e, WindowSizeRestore)
-        int2 screen_size = get_screen_size();
-        /*if (int2_equals(screen_size, size)) {
+        /*int2 screen_size = get_screen_size();
+        if (int2_equals(screen_size, size)) {
             size = int2_half(screen_size);
             zox_log("> window size was set to half screen size")
         }*/

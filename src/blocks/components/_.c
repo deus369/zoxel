@@ -12,10 +12,9 @@ zox_component_byte(BlockIndex)
 zox_component_int3(VoxelPosition)
 zox_component_byte3(VoxelLocalPosition)
 zox_component_float(VoxScale)
-zox_component_entity(ModelLink)
-zox_entities_component(VoxelLinks)
 zox_component_entity(BlockLink)
 zox_component_entity(BlockPrefabLink)
+zox_entities_component(VoxelLinks)
 
 void define_components_blocks(ecs_world_t *world) {
     zox_define_tag(Voxel)
@@ -32,8 +31,7 @@ void define_components_blocks(ecs_world_t *world) {
     zox_define_component_int3(VoxelPosition)
     zox_define_component_byte3(VoxelLocalPosition)
     zox_define_component_float(VoxScale)
-    zox_define_component_entity(ModelLink)
-    zox_define_entities_component(VoxelLinks)
     zox_define_component_entity(BlockLink)
     zox_define_component_entity(BlockPrefabLink)
+    zox_define_entities_component(VoxelLinks)
 }

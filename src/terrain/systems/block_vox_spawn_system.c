@@ -20,8 +20,8 @@ void spawn_block_voxes_dive(ecs_world_t *world,
         }
         // cheeck if out of bounds
         const byte block_index = node->value - 1;
-        if (block_index >= data->block_voxes_count) {
-            zox_log_error("block_index out of bounds %i of %i", block_index, data->block_voxes_count)
+        if (block_index >= data->models_count) {
+            zox_log_error("block_index out of bounds %i of %i", block_index, data->models_count)
             return;
         }
         const ecs_entity_t block_prefab = data->block_prefabs[block_index];
@@ -61,7 +61,7 @@ void spawn_block_voxes_dive(ecs_world_t *world,
         }
         // if not same time, spawn new here
         data->spawn_data->block_index = block_index;
-        data->spawn_data->vox = data->block_voxes[block_index];
+        data->spawn_data->vox = data->models[block_index];
 
         float3 position_real = float3_from_int3(delve_data->octree_position);
         float3_scale_p(&position_real, scale);
@@ -80,18 +80,6 @@ void spawn_block_voxes_dive(ecs_world_t *world,
             e2 = spawn_block_vox(world, data->spawn_data);
         } else if (zox_has(block_prefab, RendererInstance)) {
             e2 = spawn_block_vox_instanced(world, data->spawn_data);
-
-            // quick fix until we refactor
-            if (data->spawn_data->vox == vox_grass_0 || data->spawn_data->vox == vox_grass_1 || data->spawn_data->vox == vox_grass_2) {
-                if (data->spawn_data->render_lod == 0) {
-                    zox_set(e2, InstanceLink, { vox_grass_0 })
-                } else if (data->spawn_data->render_lod == 1) {
-                    zox_set(e2, InstanceLink, { vox_grass_1 })
-                } else {
-                    zox_set(e2, InstanceLink, { vox_grass_2 })
-                }
-            }
-
         } else {
             // dungeon blocks
             e2 = zox_instancee(block_prefab)
@@ -137,25 +125,25 @@ void spawn_block_voxes(ecs_world_t *world,
     const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     const VoxelLinks *voxels = zox_get(realm, VoxelLinks)
-    const byte block_voxes_count = voxels->length;
-    if (block_voxes_count == 0) {
+    const byte models_count = voxels->length;
+    if (models_count == 0) {
         return;
     }
-    ecs_entity_t blocks[block_voxes_count];
-    ecs_entity_t block_voxes[block_voxes_count];
-    ecs_entity_t block_prefabs[block_voxes_count];
-    byte block_vox_offsets[block_voxes_count];
-    zero_memory(block_voxes, block_voxes_count, ecs_entity_t)
-    zero_memory(block_prefabs, block_voxes_count, ecs_entity_t)
-    zero_memory(block_vox_offsets, block_voxes_count, byte)
-    for (int j = 0; j < block_voxes_count; j++) {
+    ecs_entity_t blocks[models_count];
+    ecs_entity_t models[models_count];
+    ecs_entity_t block_prefabs[models_count];
+    byte block_vox_offsets[models_count];
+    zero_memory(models, models_count, ecs_entity_t)
+    zero_memory(block_prefabs, models_count, ecs_entity_t)
+    zero_memory(block_vox_offsets, models_count, byte)
+    for (int j = 0; j < models_count; j++) {
         const ecs_entity_t block = voxels->value[j];
         if (!zox_valid(block)) {
             continue;
         }
         blocks[j] = block;
         if (zox_gett_value(block, BlockModel) == zox_block_vox) {
-            block_voxes[j] = zox_get_value(block, ModelLink)
+            models[j] = zox_get_value(block, ModelLink)
             if (zox_has(block, BlockVoxOffset)) {
                 block_vox_offsets[j] = zox_get_value(block, BlockVoxOffset)
             }
@@ -177,9 +165,9 @@ void spawn_block_voxes(ecs_world_t *world,
         .chunk = e,
         .blocks = blocks, // metas
         .block_prefabs = block_prefabs,
-        .block_voxes = block_voxes,
+        .models = models,
         .block_vox_offsets = block_vox_offsets,
-        .block_voxes_count = block_voxes_count,
+        .models_count = models_count,
         .chunk_position_real = chunk_position_real,
         .spawn_data = &spawn_data,
     };

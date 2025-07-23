@@ -36,21 +36,21 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     if (has_save_game_directory(game_name)) {
         elements[elements_count++] = (SpawnListElement) {
             .text = label_continue,
-            .on_click = &button_event_continue_game,
+            .on_click = { &button_event_continue_game },
         };
     }
     elements[elements_count++] = (SpawnListElement) {
         .text = label_new,
-        .on_click = &button_event_new_game,
+        .on_click = { &button_event_new_game },
     };
     elements[elements_count++] = (SpawnListElement) {
         .text = label_options,
-        .on_click = &button_event_menu_options,
+        .on_click = { &button_event_menu_options },
     };
 #ifndef zoxel_on_android
     elements[elements_count++] = (SpawnListElement) {
         .text = label_exit,
-        .on_click = &button_event_exit_app,
+        .on_click = { &button_event_exit_app },
     };
 #endif
     SpawnList list_data = (SpawnList) {

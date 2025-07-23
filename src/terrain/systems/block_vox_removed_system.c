@@ -17,13 +17,13 @@ void remove_destroyed_block_voxes(ecs_world_t *world, VoxelNode *node) {
 
 // todo: check other types... we don't need swapping types yet
 void BlockVoxRemovedSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxelNodeDirty)
     zox_sys_in(BlocksSpawned)
     zox_sys_out(VoxelNode)
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
+        // zox_sys_e()
         zox_sys_i(VoxelNodeDirty, voxelNodeDirty)
         zox_sys_i(BlocksSpawned, blocksSpawned)
         zox_sys_o(VoxelNode, voxelNode)

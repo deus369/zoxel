@@ -22,13 +22,12 @@ void CameraRaySystem(ecs_iter_t *it) {
     const float max_ray_distance = 1;
     const double2 viewport_position = (double2) { 0.5, 0.5 };
     zox_field_world()
-    zox_field_in(FrustumCorners, frustumCornerss, 1)
+    // zox_field_in(FrustumCorners, frustumCornerss, 1)
     zox_field_out(RaycastOrigin, raycastOrigins, 2)
     zox_field_out(RaycastNormal, raycastNormals, 3)
     for (int i = 0; i < it->count; i++) {
         // generate new frustum for ray?
-        zox_field_i(FrustumCorners, frustumCornerss, frustumCorners)
-        if (!frustumCorners->value) continue;
+        // zox_field_i(FrustumCorners, frustumCornerss, frustumCorners)
         zox_field_o(RaycastOrigin, raycastOrigins, origin)
         zox_field_o(RaycastNormal, raycastNormals, normal)
         // Ray ray = camera_point_to_ray_d3(frustumCorners->value, viewport_position);

@@ -16,7 +16,7 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
     zox_sys_in(RenderDisabled)
     zox_sys_in(BoneLinks)
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
+        // zox_sys_e()
         zox_sys_i(RenderDisabled, renderDisabled)
         zox_sys_i(MeshIndicies, meshIndicies)
         zox_sys_i(MeshGPULink, meshGPULink)

@@ -20,7 +20,7 @@ zox_component_int2(TextureSize)
 zox_component_byte(ShaderSourceIndex)
 zox_component_entity(ShaderLink) // links to a shader entity
 zox_component_entity(InstanceLink) // links to a instance parent
-zox_component_array(InstanceLinks, ecs_entity_t, 8)
+// zox_component_array(InstanceLinks, ecs_entity_t, 8)
 zox_memory_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
@@ -35,6 +35,10 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 #include "colors_gpu_link.c"
 #include "shader_gpu_link.c"
 #include "compute_shader.c"
+// Models
+zox_entities_component(ModelLinks)  // realm links to models
+zox_component_entity(ModelLink)     // a render instance links to model
+zox_component_array(ModelLods, ecs_entity_t, 6) // a model has multiple models per LOD
 
 static inline int2 get_texture_size(ecs_world_t* world, ecs_entity_t e) {
     return zox_get_value(e, TextureSize)
@@ -61,7 +65,6 @@ void define_components_rendering(ecs_world_t *world) {
     zox_define_component_entity(MaterialLink)
     zox_define_component_int2(TextureSize)
     zox_define_component_entity(InstanceLink)
-    zox_define_component_array(InstanceLinks)
     zox_define_component(MaterialInstancedGPULink)
     zox_define_component_w_dest(ShaderGPULink)
     zox_define_component_w_dest(MaterialGPULink)
@@ -79,4 +82,8 @@ void define_components_rendering(ecs_world_t *world) {
     zox_define_memory_component(MeshUVs)
     zox_define_memory_component(MeshColors)
     zox_define_memory_component(MeshColorRGBs)
+    // Models
+    zox_define_entities_component(ModelLinks)
+    zox_define_component_entity(ModelLink)
+    zox_define_component_array(ModelLods)
 }

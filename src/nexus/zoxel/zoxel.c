@@ -48,9 +48,9 @@ zox_begin_module(ZoxGame)
 
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
-    // terrain_mode = terrain_mode_flatlands;
-    // render_distance_y = 1;
-    character_spawn_rate = 4; // 0 | 1 | 16 | 32 | 64 | 128
+    terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 1;
+    character_spawn_rate = 8; // 0 | 1 | 16 | 32 | 64 | 128
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;

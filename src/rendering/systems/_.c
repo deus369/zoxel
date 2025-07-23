@@ -13,6 +13,9 @@
 #include "restore_materials_system.c"
 #include "restore_meshdirty_system.c"
 
+// other
+#include "lod_instance_system.c"
+
 zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 zox_increment_system_with_reset(RenderLodDirty, zox_dirty_end)
 zox_increment_system_with_reset(RenderDistanceDirty, zox_dirty_end)
@@ -37,4 +40,10 @@ void define_systems_rendering(ecs_world_t *world) {
     zox_gpu_restore_system(ShaderRestoreSystem, [in] ShaderSourceIndex, [out] ShaderGPULink)
     zox_gpu_restore_system(MaterialRestoreSystem, [in] ShaderLink, [out] MaterialGPULink)
     zox_gpu_restore_system(MeshDirtyRestoreSystem, [out] rendering.MeshDirty)
+    // other
+    zox_system(LodInstanceSystem, EcsPostUpdate,
+        [in] rendering.RenderLodDirty,
+        [in] rendering.RenderLod,
+        [in] rendering.ModelLink,
+        [out] rendering.InstanceLink)
 }

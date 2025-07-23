@@ -32,8 +32,8 @@ void define_systems_controllers3D(ecs_world_t *world) {
     zox_system(Jump3System, zox_pip_physics,
         [in] physics.DisableMovement,
         [out] physics3.Velocity3D,
-        [out] characters.Jump,
-        [out] physics3.Acceleration3D)
+        [out] characters.Jump)
+        //[out] physics3.Acceleration3D
     zox_system(RandomJump3DSystem, zox_pip_physics,
         [in] collisions3.Grounded,
         [out] characters.Jump,

@@ -7,8 +7,8 @@ ecs_entity_t spawn_prefab_vox_instanced(ecs_world_t *world,
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, RenderLodDirty, { zox_dirty_none })
-    zox_prefab_set(e, InstanceLink, { 0 })
-    zox_prefab_set(e, InstanceLinks, { 0,0,0,0,0,0,0,0 })
+    zox_prefab_set(e, InstanceLink, { 0 })  // directly whats rendering
+    zox_prefab_set(e, ModelLink, { 0 })     // can be a model or model group
     zox_prefab_set(e, VoxScale, { vox_model_scale })
     zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.25f, 0.25f } })
     // zox_prefab_set(e, Color, { { 25, 255, 25, 255 } })

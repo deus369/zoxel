@@ -9,7 +9,7 @@ void MoveForwardSystem(ecs_iter_t *it) {
     zox_sys_in(DisableMovement)
     zox_sys_in(Position3D)
     zox_sys_in(Rotation3D)
-    zox_sys_in(Velocity3D)
+    // zox_sys_in(Velocity3D)
     zox_sys_in(TargetPosition)
     zox_sys_in(MoveSpeed)
     zox_sys_out(Acceleration3D)
@@ -20,7 +20,7 @@ void MoveForwardSystem(ecs_iter_t *it) {
         zox_sys_i(DisableMovement, disable)
         zox_sys_i(Position3D, position)
         zox_sys_i(Rotation3D, rotation)
-        zox_sys_i(Velocity3D, velocity)
+        // zox_sys_i(Velocity3D, velocity)
         zox_sys_i(TargetPosition, target)
         zox_sys_i(MoveSpeed, moveSpeed)
         zox_sys_o(Acceleration3D, acceleration)
@@ -52,8 +52,8 @@ void MoveForwardSystem(ecs_iter_t *it) {
             debug_linec(world, position->value, above_me, is_near_target ? color_rgb_red : color_rgb_cyan);
 
             // Visualize the dot threshold angle as a cone
-            float3 right = { 1, 0, 0 };
-            float3 up    = { 0, 1, 0 };
+            //float3 right = { 1, 0, 0 };
+            //float3 up    = { 0, 1, 0 };
 
             // Rotate a vector by +min angle around Y
             float3 threshold_vector_pos = {

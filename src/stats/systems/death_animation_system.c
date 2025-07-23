@@ -1,5 +1,5 @@
 void DeathAnimationSystem(ecs_iter_t *it) {
-    zox_sys_world()
+    // zox_sys_world()
     zox_sys_begin()
     zox_sys_in(Dead)
     zox_sys_out(DiedTime)

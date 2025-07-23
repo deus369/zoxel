@@ -1,0 +1,1 @@
+byte grass_variants = 8;

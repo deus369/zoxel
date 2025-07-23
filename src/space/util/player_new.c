@@ -109,10 +109,10 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
     if (did_add) {
         zox_mut_end(terrain, ChunkLinks)
     }
-    const byte depth = terrain_depth;
-    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
+    // const byte depth = terrain_depth;
+    // const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
     const float3 fake_spawn_position = (float3) { 4, 4, 4 };
-    const int3 chunk_position = real_position_to_chunk_position(fake_spawn_position, chunk_dimensions, depth);
+    // const int3 chunk_position = real_position_to_chunk_position(fake_spawn_position, chunk_dimensions, depth);
     spawn_character3D_data spawn_data = {
         .player = player,
         .vox = vox,

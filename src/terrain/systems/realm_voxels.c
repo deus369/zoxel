@@ -2,6 +2,19 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     if (!realm) {
         return;
     }
+    if (!zox_has(realm, VoxelLinks)) {
+        zox_log_error("realm does not have VoxelLinks [%lu]", realm)
+        return;
+    }
+    // clear old
+    zox_geter(realm, VoxelLinks, old_data)
+    if (old_data) {
+        for (int i = 0; i < old_data->length; i++) {
+            zox_delete(old_data->value[i])
+        }
+        free(old_data->value);
+    }
+
     const byte target_depth = block_vox_depth;
     const byte texture_dim = powers_of_two_byte[target_depth];
     voxel_texture_size = (int2) { texture_dim, texture_dim };
@@ -17,11 +30,6 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         if (tilemap) {
             zox_set(tilemap, RealmLink, { realm })
         }
-    }
-
-    if (!zox_has(realm, VoxelLinks)) {
-        zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
-        return;
     }
 
     // get realms colors
@@ -48,13 +56,8 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
         obsidian_color = realm_colors->value[color_index++];
     }
 
-    zox_geter(realm, VoxelLinks, old_data)
-    if (old_data) {
-        for (int i = 0; i < old_data->length; i++) {
-            zox_delete(old_data->value[i])
-        }
-        free(old_data->value);
-    }
+    // get models
+    zox_geter(realm, ModelLinks, models);
 
     VoxelLinks *blocks = &((VoxelLinks) { 0, NULL });
     resize_memory_component(VoxelLinks, blocks, ecs_entity_t, zox_blocks_count)
@@ -71,8 +74,14 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     zox_add_tag(blocks->value[zox_block_obsidian - 1], BlockInvinsible)
 
     // decor
-    blocks->value[zox_block_vox_grass - 1] = spawn_realm_block_grass(world, zox_block_vox_grass, grass_color);
+    ecs_entity_t model_group_grass = models->value[0];
+    blocks->value[zox_block_vox_grass - 1] = spawn_block_grass(world,
+        zox_block_vox_grass,
+        grass_color,
+        model_group_grass);
+
     blocks->value[zox_block_dirt_rubble - 1] = spawn_realm_block_rubble(world, zox_block_dirt_rubble, "rubble", dirt_color);
+
     blocks->value[zox_block_dirt_vox - 1] = spawn_realm_block_noisey(world, zox_block_dirt_vox, "dirt pile", dirt_color);
     blocks->value[zox_block_vox_flower - 1] = spawn_block_flower(world, zox_block_vox_flower);
 
