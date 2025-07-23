@@ -19,13 +19,13 @@ ecs_entity_t spawn_prefab_character3_npc(ecs_world_t *world, const ecs_entity_t 
 
 // hook to spawning
 void on_spawned_character3_npc(ecs_world_t* world, const ecs_entity_t e) {
-    if (disable_npc_movement) {
-        zox_set(e, DisableMovement, { 1 })
-    }
     if (rand() % 100 <= 88) {
         zox_set(e, DefaultBehaviour, { zox_behaviour_wander })
     }
     if (rand() % 100 <= 40) {
         zox_add_tag(e, Coward)
+    }
+    if (disable_npc_movement) {
+        zox_set(e, DisableMovement, { 1 })
     }
 }

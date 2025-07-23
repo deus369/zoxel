@@ -148,6 +148,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             }
 
             zox_log_spawning("+ npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
+            // zox_log("+ spawned npc at [%ix%ix%i]", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
             zox_stats_characters++;
         }
 

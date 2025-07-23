@@ -15,7 +15,8 @@ void Characters3DespawnSystem(ecs_iter_t *it) {
             continue;
         }
         const byte out_of_range = renderDistance->value > terrain_lod_near;
-        if (out_of_range && charactersSpawned->value) {
+        // Sometimes characters are in the chunk still when despawning, make sure to check alot!
+        if (out_of_range) {
             // zox_log("- destroying characters [%i] out of [%i]", entityLinks->length, zox_stats_characters)
             for (int j = 0; j < entityLinks->length; j++) {
                 zox_delete(entityLinks->value[j])
