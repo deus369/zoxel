@@ -1,9 +1,9 @@
 const int character_stats = 2;
 #define statbar_float_position 0.32f
 
-void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
-    //const ecs_entity_t game = zox_get_value(data->p, GameLink)
-    //const ecs_entity_t realm = zox_get_value(game, RealmLink)
+void spawn_character_stats(ecs_world_t *world,
+    spawned_character3D_data *data)
+{
     zox_geter(data->realm, StatLinks, realm_stats)
     ecs_entity_t realm_soul = 0;
     ecs_entity_t realm_health = 0;
@@ -28,17 +28,19 @@ void spawn_character_stats(ecs_world_t *world, spawned_character3D_data *data) {
     }
 
     // generate numbers here
-    float2 health = (float2) { 10, 10 };
-    health.x = (0.02f + 0.98f * ((rand() % 100) * 0.01f)) * 5.0f;
+    float soul_value = data->soul_value;
+    float2 health = (float2) { 5, 5 + soul_value * 5 };
+    health.x = randf_range(5, health.y);
 
     data->stats_length = character_stats;
+    int i = 0;
     StatLinks *stats = &((StatLinks) { 0, NULL });
     resize_memory_component(StatLinks, stats, ecs_entity_t, data->stats_length)
     data->stats = stats->value;
 
     // Stat: Soul
-    int i = 0;
     const ecs_entity_t stat_soul = spawn_user_stat(world, realm_soul, data->e);
+    zox_set(stat_soul, StatValue, { soul_value })
     stats->value[i++] = stat_soul;
 
     // Stat: Health

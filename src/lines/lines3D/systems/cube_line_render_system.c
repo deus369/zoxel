@@ -6,10 +6,10 @@ static inline void set_line3D_color(const color_rgb color_rgb2) {
     zox_gpu_float4(line3D_color_location, (float4) { color_rgb_f3.x, color_rgb_f3.y, color_rgb_f3.z, 1 });
 }
 
-static inline void render_cube_line3D(const float3 position_a, const float3 position_b) {
+static inline void zox_render_line_attr(const float3 a, const float3 b) {
     // glLineWidth(cubeLinesThickness->value);
     glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0,
-        (float[]) { position_a.x, position_a.y, position_a.z, position_b.x, position_b.y, position_b.z });
+        (float[]) { a.x, a.y, a.z, b.x, b.y, b.z });
     zox_gpu_render_lines(3);
 }
 
@@ -40,64 +40,26 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
         }
         zox_gpu_line_thickness(cubeLinesThickness->value);
         color_rgb lines_color = color_to_color_rgb(colorr->value);
-        /*if (mode == zox_cubeline_debug_render_disabled) {
-            if (renderDisabled->value) {
-                lines_color = (color_rgb) { 255, 0, 0 };
-            } else {
-                lines_color = (color_rgb) { 0, 155, 0 };
-            }
-        } else if (mode == zox_cubeline_debug_verts) {
-            if (zox_has(e, MeshIndicies)) {
-                zox_geter(e, MeshIndicies, meshIndicies)
-                if (meshIndicies->length == 0) {
-                    lines_color = (color_rgb) { 255, 0, 0 };
-                } else {
-                    lines_color = (color_rgb) { 0, 255, 0 };
-                }
-            } else {
-                lines_color = (color_rgb) { 125, 125, 125 };
-            }
-        } else if (mode == zox_cubeline_debug_render_lod) {
-            if (renderLod->value == render_lod_uninitialized) {
-                lines_color = (color_rgb) { 0, 0, 0 };
-            } else if (renderLod->value == render_lod_invisible) {
-                lines_color = (color_rgb) { 255, 0, 0 };
-            } else if (renderLod->value == 0) {
-                lines_color = (color_rgb) { 0, 255, 0 };
-            } else if (renderLod->value == 1) {
-                lines_color = (color_rgb) { 0, 0, 255 };
-            } else if (renderLod->value == 2) {
-                lines_color = (color_rgb) { 255, 255, 0 };
-            } else if (renderLod->value == 3) {
-                lines_color = (color_rgb) { 255, 0, 255 };
-            } else if (renderLod->value == 4) {
-                lines_color = (color_rgb) { 0, 255, 255 };
-            } else if (renderLod->value == 5) {
-                lines_color = (color_rgb) { 122, 122, 122 };
-            } else {
-                lines_color = (color_rgb) { 255, 255, 255 };
-            }
-        }*/
         if (mode == zox_cubeline_debug_transforms) {
             // up axis
-            // render_cube_line3D(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
+            // zox_render_line_attr(position3D->value, (float3) { position3D->value.x, position3D->value.y + cube_lines_length, position3D->value.z });
             set_line3D_color(lines_color);
             float3 up_vector = (float3) { 0, cube_lines_length, 0 };
             float4_rotate_float3_p(rotation3D->value, &up_vector);
             float3_add_float3_p(&up_vector, position3D->value);
-            render_cube_line3D(position3D->value, up_vector);
+            zox_render_line_attr(position3D->value, up_vector);
             // forward axis
             set_line3D_color(lines_color);
             float3 forward_vector = (float3) { 0, 0, cube_lines_length };
             float4_rotate_float3_p(rotation3D->value, &forward_vector);
             float3_add_float3_p(&forward_vector, position3D->value);
-            render_cube_line3D(position3D->value, forward_vector);
+            zox_render_line_attr(position3D->value, forward_vector);
             // right axis
             set_line3D_color(lines_color);
             float3 right_vector = (float3) { cube_lines_length, 0, 0 };
             float4_rotate_float3_p(rotation3D->value, &right_vector);
             float3_add_float3_p(&right_vector, position3D->value);
-            render_cube_line3D(position3D->value, right_vector);
+            zox_render_line_attr(position3D->value, right_vector);
         } else {
             // this is normal case
             set_line3D_color(lines_color);
@@ -127,20 +89,20 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
             float3_add_float3_p(&bottom_right2, position3D->value);
             float3_add_float3_p(&bottom_left2, position3D->value);
             // top
-            render_cube_line3D(top_left, top_right);
-            render_cube_line3D(top_left2, top_right2);
-            render_cube_line3D(top_left, top_left2);
-            render_cube_line3D(top_right, top_right2);
+            zox_render_line_attr(top_left, top_right);
+            zox_render_line_attr(top_left2, top_right2);
+            zox_render_line_attr(top_left, top_left2);
+            zox_render_line_attr(top_right, top_right2);
             // bottom
-            render_cube_line3D(bottom_left, bottom_right);
-            render_cube_line3D(bottom_left2, bottom_right2);
-            render_cube_line3D(bottom_left, bottom_left2);
-            render_cube_line3D(bottom_right, bottom_right2);
+            zox_render_line_attr(bottom_left, bottom_right);
+            zox_render_line_attr(bottom_left2, bottom_right2);
+            zox_render_line_attr(bottom_left, bottom_left2);
+            zox_render_line_attr(bottom_right, bottom_right2);
             // vertical
-            render_cube_line3D(bottom_right, top_right);
-            render_cube_line3D(bottom_left, top_left);
-            render_cube_line3D(bottom_right2, top_right2);
-            render_cube_line3D(bottom_left2, top_left2);
+            zox_render_line_attr(bottom_right, top_right);
+            zox_render_line_attr(bottom_left, top_left);
+            zox_render_line_attr(bottom_right2, top_right2);
+            zox_render_line_attr(bottom_left2, top_left2);
         }
     }
     zox_gpu_disable_buffer(line3D_position_location);

@@ -48,7 +48,11 @@ int3 real_position_to_chunk_position(float3 real_position, const int3 chunk_size
     return chunk_position;
 }
 
-int3 get_local_position(int3 voxel_position, int3 chunk_position, int3 chunk_size) {
+int3 get_local_position(
+    int3 voxel_position,
+    int3 chunk_position,
+    int3 chunk_size)
+{
     voxel_position.x %= chunk_size.x;
     voxel_position.y %= chunk_size.y;
     voxel_position.z %= chunk_size.z;
@@ -58,7 +62,11 @@ int3 get_local_position(int3 voxel_position, int3 chunk_position, int3 chunk_siz
     return voxel_position;
 }
 
-byte3 get_local_position_byte3(int3 voxel_position, int3 chunk_position, byte3 chunk_size) {
+static inline byte3 get_local_position_byte3(
+    int3 voxel_position,
+    int3 chunk_position,
+    byte3 chunk_size)
+{
     byte3 local_position;
     if (voxel_position.x < 0) local_position.x = chunk_size.x - 1 + ((voxel_position.x + 1) % chunk_size.x);
     else local_position.x = voxel_position.x % chunk_size.x;
@@ -79,7 +87,12 @@ int3 get_chunk_voxel_position(int3 chunk_position, int3 chunk_size) {
     return voxel_position;
 }
 
-float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_position, const byte3 chunk_size, const float voxel_scale) {
+float3 voxel_to_real_position(
+    const byte3 local_position,
+    const int3 chunk_position,
+    const byte3 chunk_size,
+    const float voxel_scale)
+{
     const int3 chunk_position_voxel = int3_multiply_int3(chunk_position, byte3_to_int3(chunk_size));
     const int3 global_voxel_position = int3_add(chunk_position_voxel, byte3_to_int3(local_position));
     float3 position = int3_to_float3(global_voxel_position);
@@ -91,7 +104,11 @@ float3 voxel_to_real_position(const byte3 local_position, const int3 chunk_posit
     return position;
 }
 
-float3 voxel_position_to_real_position(const int3 voxel_position, const byte3 chunk_size, const float voxel_scale) {
+float3 voxel_position_to_real_position(
+    const int3 voxel_position,
+    const byte3 chunk_size,
+    const float voxel_scale)
+{
     float3 position = int3_to_float3(voxel_position);
     float3_scale_p(&position, voxel_scale);
     // middle of voxel position
@@ -101,52 +118,13 @@ float3 voxel_position_to_real_position(const int3 voxel_position, const byte3 ch
     return position;
 }
 
-// uses chunk above for air check
-// chunk_above used purely for top of chunk checks
-byte3 find_position_on_ground(const VoxelNode *chunk, const byte target_depth, const VoxelNode *chunk_above, const byte spawns_in_air) {
-    if (chunk == NULL) {
-        return byte3_full;
-    }
-    const byte chunk_length = powers_of_two_byte[target_depth];
-    byte checks_count = 0;
-    byte3 local_position = byte3_full;
-    while (checks_count < max_position_checks) {
-        // get a random x-z position
-        local_position = (byte3) { rand() % chunk_length, 0, rand() % chunk_length };
-        // find ground from tallest point
-        // special case for top of chunks
-        if (chunk_above) {
-            byte3 temp1 = local_position;
-            byte3 temp2 = (byte3) { local_position.x, chunk_length - 1, local_position.z };
-            const byte voxel_up = get_sub_node_voxel(chunk_above, &temp1, target_depth);
-            const byte voxel_down = get_sub_node_voxel(chunk, &temp2, target_depth);
-            if (!voxel_up && voxel_down) { // can stand on voxel
-                local_position.y = chunk_length;
-                zox_log("placing on chunk top\n")
-                return local_position;
-            }
-        }
-        for (local_position.y = chunk_length - 1; local_position.y >= 1; local_position.y--)
-        {
-            byte3 temp3 = local_position;
-            byte3 temp4 = (byte3) { local_position.x, local_position.y - 1, local_position.z };
-            const byte voxel_up = get_sub_node_voxel(chunk, &temp3, target_depth);
-            const byte voxel_down = get_sub_node_voxel(chunk, &temp4, target_depth);
-            if (!voxel_up && voxel_down) { // can stand on voxel
-                // zox_log("placing on chunk at %i\n", local_position.y)
-                return local_position;
-            }
-        }
-        checks_count++;
-    }
-    // return find_position_in_chunk(chunk_octree, target_depth);
-    if (spawns_in_air) {
-        return local_position; // just for player
-    }
-    else return byte3_full;
-}
-
-float3 local_to_real_position_character(const byte3 in_chunk_position, const int3 chunk_grid_position, const float3 bounds, const byte depth, const float vox_scale) {
+float3 local_to_real_position_character(
+    const byte3 in_chunk_position,
+    const int3 chunk_grid_position,
+    const float3 bounds,
+    const byte depth,
+    const float vox_scale)
+{
     const float scale = get_terrain_voxel_scale(depth) * vox_scale;
     const int3 grid_position = int3_add(chunk_grid_position, byte3_to_int3(in_chunk_position));
     float3 position = int3_to_float3(grid_position);

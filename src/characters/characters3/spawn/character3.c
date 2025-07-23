@@ -31,6 +31,16 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
     }
     if (zox_has(data.prefab, InstanceLink)) {
         zox_set(e, InstanceLink, { data.vox })
+        zox_set(e, InstanceLinks, {
+            data.vox,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        })
         zox_set(e, VoxScale, { vox_model_scale })
     } else {
         zox_set(e, CloneVoxLink, { data.vox })
@@ -43,6 +53,8 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
     if (!disable_npc_hooks) {
         char *name = generate_name();
         zox_set(e, ZoxName, { text_to_zext(name) })
+         // data->;
+        float soul = data.player ? 1 : randf_range(1, 3);
         spawned_character3D_data spawned_data = (spawned_character3D_data) {
             .realm = zox_gett_value(data.terrain, RealmLink),
             .e = e,
@@ -50,6 +62,7 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
             .name = name,
             .render_disabled = data.render_disabled,
             .elementLinks = &((ElementLinks) { 0, NULL }),
+            .soul_value = soul,
         };
         run_hook_spawned_character3D(world, &spawned_data);
         zox_set(e, ElementLinks, { spawned_data.elementLinks->length, spawned_data.elementLinks->value })
@@ -88,6 +101,5 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
             min_z_local, max_z_local };
         zox_set(e, Position3DBounds, { character_bounds })
     }*/
-    zox_stats_characters++;
     return e;
 }

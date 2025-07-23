@@ -1,14 +1,6 @@
 // [none] Melee
 extern ecs_entity_t spawn_pickup(ecs_world_t *world, const float3 position, const ecs_entity_t voxel);
 
-float randf() {
-    return (float)rand() / (float)RAND_MAX;
-}
-
-float randf_range(float min, float max) {
-    return min + (max - min) * randf();
-}
-
 void MeleeSystem(ecs_iter_t *it) {
     const float popup_spawn_y = 0.18f;
     const double volume = get_volume_sfx();
@@ -18,6 +10,7 @@ void MeleeSystem(ecs_iter_t *it) {
     zox_sys_in(SkillDamage)
     zox_sys_in(SkillDamageMax)
     zox_sys_in(SkillRange)
+    zox_sys_in(SkillResourceLink)
     zox_sys_in(SkillCost)
     zox_sys_out(SkillActive)    // use state systems
     for (int i = 0; i < it->count; i++) {
@@ -25,6 +18,7 @@ void MeleeSystem(ecs_iter_t *it) {
         zox_sys_i(SkillDamage, skillDamage)
         zox_sys_i(SkillDamageMax, skillDamageMax)
         zox_sys_i(SkillRange, skillRange)
+        zox_sys_i(SkillResourceLink, skillResourceLink)
         zox_sys_i(SkillCost, skillCost)
         zox_sys_o(SkillActive, skillActive)
         const ecs_entity_t user = userLink->value;
@@ -32,25 +26,40 @@ void MeleeSystem(ecs_iter_t *it) {
             continue;
         }
         skillActive->value = 0;
+
         // user validation
         if (!zox_valid(user) || !zox_has(user, StatLinks) && !zox_gett_value(user, Dead)) {
             continue;
         }
+
+        // does have skillResourceLink
+        ecs_entity_t resource = 0;
+        ecs_entity_t strength = 0;
         zox_geter(user, StatLinks, stats)
-        if (stats->length < 4) {
-            continue;
+        for (int j = 0; j < stats->length; j++) {
+            const ecs_entity_t stat = stats->value[j];
+            zox_get_prefab(stat, stat_parent)
+            if (skillResourceLink->value == stat_parent) {
+                resource = stat;
+            }
+            if (!strength && zox_has(stat, StatAttribute)) {
+                strength = stat;
+            }
         }
         // todo: move cost use into activation system
-        const ecs_entity_t energy = stats->value[3];
-        if (!energy || !zox_has(energy, StatValue)) {
+        if (!resource || !zox_has(resource, StatValue)) {
             continue;
         }
+
         // resource cost
-        float energy_value = zox_get_value(energy, StatValue)
-        if (energy_value < skillCost->value) {
+        float resource_left = zox_get_value(resource, StatValue)
+        if (resource_left < skillCost->value) {
             continue;
         }
-        zox_set(energy, StatValue, { energy_value - skillCost->value })
+        // this should be muter -> instant use
+        zox_set(resource, StatValue, { resource_left - skillCost->value })
+
+
         // skill validation
         if (skillRange->value == 0) {
             // play sound!
@@ -58,8 +67,14 @@ void MeleeSystem(ecs_iter_t *it) {
             continue;
         }
         zox_geter(user, RaycastVoxelData,  raycastVoxelData)
+
         // todo: reduce energy stat value using SkillCost, check if has enough energy
-        const float skill_damage =  randf_range(skillDamage->value, skillDamageMax->value);
+        float skill_damage = randf_range(skillDamage->value, skillDamageMax->value);
+        if (strength) {
+            skill_damage += 3 * zox_gett_value(strength, StatValue);
+        }
+
+
         const float skill_range = skillRange->value;
         const ecs_entity_t hit = raycastVoxelData->chunk;
         const byte in_range = raycastVoxelData->distance <= skill_range;
@@ -69,7 +84,7 @@ void MeleeSystem(ecs_iter_t *it) {
             continue;
         }
         // zox_log(" > activating melee skill [%s]\n", zox_get_name(action_entity))
-        if (zox_has(hit, Character3D)) {
+        if (zox_has(hit, Character3)) {
             const ecs_entity_t hit_character = hit;
 
             zox_geter(hit, StatLinks, hit_stats)
@@ -80,13 +95,13 @@ void MeleeSystem(ecs_iter_t *it) {
             } else {
                 const float stat_value_max = zox_get_value(health_stat, StatValueMax)
                 zox_get_muter(health_stat, StatValue, statValue)
-                statValue->value += skill_damage;
+                statValue->value -= skill_damage;
                 if (statValue->value < 0) {
                     statValue->value = 0;
-                }
-                else if (statValue->value > stat_value_max) {
+                } else if (statValue->value > stat_value_max) {
                     statValue->value = stat_value_max;
                 }
+                // zox_log("[%s] took [%f] damage and is on [%f] health", zox_get_name(hit), skill_damage, statValue->value)
                 zox_set(hit, LastDamager, { user })
             }
 

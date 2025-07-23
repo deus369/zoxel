@@ -7,6 +7,7 @@ zox_component_float(SkillDamage)
 zox_component_float(SkillDamageMax)
 zox_component_float(SkillRange)
 zox_component_float(SkillCost)
+zox_component_entity(SkillResourceLink)
 
 void define_components_skills(ecs_world_t *world) {
     zox_define_tag(Melee)
@@ -18,4 +19,5 @@ void define_components_skills(ecs_world_t *world) {
     zox_define_component_float(SkillRange)
     zox_define_component_float(SkillCost)
     zox_define_component_byte(SkillActive)
+    zox_define_component_entity(SkillResourceLink)
 }

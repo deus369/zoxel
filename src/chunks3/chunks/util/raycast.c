@@ -169,7 +169,7 @@ byte raycast_voxel_node(
                 data->distance = ray_distance * voxel_scale;
                 data->normal = int3_to_float3(hit_normal);
                 // zox_log(" + hit minivox voxel; ray_distance [%f] voxel [%i] - depth [%i] x", ray_distance, hit_voxel, chunk_depth)
-                zox_log("  + at [%ix%ix%i]", position_local.x, position_local.y, position_local.z)
+                // zox_log("  + at [%ix%ix%i]", position_local.x, position_local.y, position_local.z)
                 return ray_hit_type_block_vox;
             }
             // check for minivoxes here
@@ -297,10 +297,7 @@ byte raycast_voxel_node(
         if (ray_hit == ray_hit_type_terrain) {
             data->distance = ray_distance * voxel_scale;
             data->normal = int3_to_float3(hit_normal);
-        } /*else {
-            zox_log("+ hit mini vox normal: %fx%fx%f", data->normal.x, data->normal.y, data->normal.z)
-            zox_log("+ hit mini vox point: %fx%fx%f", data->hit.x, data->hit.y, data->hit.z)
-        }*/
+        }
         // calculate our point off the distance
         data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance));
         // calculate real position off voxel one

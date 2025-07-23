@@ -5,7 +5,10 @@ ecs_entity_t vox_grass_0;
 ecs_entity_t vox_grass_1;
 ecs_entity_t vox_grass_2;
 
-ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const color block_color) {
+ecs_entity_t spawn_realm_block_grass(ecs_world_t *world,
+    const byte index,
+    const color block_color)
+{
 
     vox_grass_0 = spawn_vox_basic(world, prefab_vox, block_vox_depth);
     zox_set_unique_name(vox_grass_0, "block_grass_0")
@@ -48,6 +51,16 @@ ecs_entity_t spawn_realm_block_grass(ecs_world_t *world, const byte index, const
     // for instancing
     zox_prefab_child_named(prefab_block_vox_instanced, new_world_block)
     zox_set(new_world_block, InstanceLink, { vox_grass_0 })
+    zox_set(new_world_block, InstanceLinks, {
+        vox_grass_0,
+        vox_grass_1,
+        vox_grass_2,
+        0,
+        0,
+        0,
+        0,
+        0
+    })
     data.prefab_block_vox = new_world_block;    // links to block meta for spawning
     prefab_world_block_grass = new_world_block;
 

@@ -21,7 +21,7 @@ void define_systems_chunks(ecs_world_t *world) {
         [out] chunks3.ChunkLink,
         [none] LinkChunk)
     zox_system(ChunkEntitiesLodSystem, EcsOnUpdate,
-        [in] chunks3.ChunkLodDirty,
+        [in] rendering.RenderDistanceDirty,
         [in] rendering.RenderDistance,
         [in] generic.EntityLinks)
     zox_system(ChunkFindNeighborSystem, EcsOnLoad,
@@ -36,5 +36,6 @@ void define_systems_chunks(ecs_world_t *world) {
         [in] chunks3.VoxelNode,
         [in] chunks3.NodeDepth,
         [in] rendering.RenderDistance,
+        [in] chunks3.ChunkNeighbors,
         [none] ChunkDebugger)
 }

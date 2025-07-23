@@ -2,7 +2,7 @@
 #include "characters3_despawn_system.c"
 
 void define_systems_characters3_terrain(ecs_world_t* world) {
-    zox_system(Characters3DespawnSystem, EcsOnStore,
+    zox_system(Characters3DespawnSystem, EcsPostUpdate,
         [in] rendering.RenderDistanceDirty,
         [in] rendering.RenderDistance,
         [out] CharactersSpawned,
@@ -16,6 +16,7 @@ void define_systems_characters3_terrain(ecs_world_t* world) {
         [in] rendering.RenderDistance,
         [in] rendering.RenderDisabled,
         [in] chunks3.VoxLink,
+        [in] chunks3.ChunkNeighbors,
         [out] CharactersSpawned,
         [out] CharactersEverSpawned,
         [out] generic.EntityLinks,

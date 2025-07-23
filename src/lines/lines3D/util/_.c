@@ -3,3 +3,4 @@
 #include "terrain_grid.c"
 #include "line.c"
 #include "debug.c"
+#include "cube.c"

@@ -13,7 +13,7 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         zox_sys_i(DeviceMode, deviceMode)
         zox_sys_i(DeviceLinks, deviceLinks)
         const ecs_entity_t character = characterLink->value;
-        if (!zox_valid(character) || !zox_has(character, Character3D)) {
+        if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
         zox_geter(character, DisableMovement, disableMovement)

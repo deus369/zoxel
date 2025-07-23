@@ -34,16 +34,16 @@
     byte fi = 0;
 
 #define zox_sys_in(name)\
-    const name *name##s = ecs_field(it, name, ++fi);
+    const name *name##_ = ecs_field(it, name, ++fi);
 
 #define zox_sys_out(name)\
-    name *name##s = ecs_field(it, name, ++fi);
+    name *name##_ = ecs_field(it, name, ++fi);
 
 #define zox_sys_i(name, variable_name)\
-    const name *variable_name = &name##s[i];
+    const name *variable_name = &name##_[i];
 
 #define zox_sys_o(name, variable_name)\
-    name *variable_name = &name##s[i];
+    name *variable_name = &name##_[i];
 
 
 // Second Iterator!

@@ -7,6 +7,7 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     zox_prefab_set(e, ChunkLod, { 255 })
     zox_prefab_set(e, BlockIndex, { 0 })
     zox_prefab_set(e, RenderLod, { 255 })
+    zox_prefab_set(e, RenderLodDirty, { zox_dirty_none })
     // BlockLink to original voxel meta data
     zox_prefab_set(e, Position3D, { float3_zero })
     zox_prefab_set(e, Rotation3D, { float4_identity })

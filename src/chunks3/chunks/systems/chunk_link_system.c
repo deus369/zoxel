@@ -1,58 +1,64 @@
+// #define zox_debug_chunk_link_system
+
+void zox_log_chunk_removed(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t e2)
+{
+#ifdef zox_debug_chunk_link_system
+    const int3 chunk_position = zox_get_value(e, ChunkPosition)
+    zox_log("- chunk [%s] removed e [%s] [%ix%ix%i]", zox_get_name(e), zox_get_name(e2), chunk_position.x, chunk_position.y, chunk_position.z)
+#endif
+}
+
+void zox_log_chunk_added(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t e2)
+{
+#ifdef zox_debug_chunk_link_system
+    const int3 chunk_position = zox_get_value(e, ChunkPosition)
+    zox_log("+ chunk [%s] added e [%s] [%ix%ix%i]", zox_get_name(e), zox_get_name(e2), chunk_position.x, chunk_position.y, chunk_position.z)
+#endif
+}
+
 byte set_entity_chunk(ecs_world_t *world,
     const ecs_entity_t e,
     ChunkLink *chunkLink,
-    const ecs_entity_t chunk)
+    const ecs_entity_t new_chunk)
 {
-    if (!zox_valid(chunk)) {
-        return 0;
-    }
     ecs_entity_t old_chunk = chunkLink->value;
-    if (old_chunk == chunk) {
+    if (!zox_valid(new_chunk) || old_chunk == new_chunk) {
         return 0;
     }
-    chunkLink->value = chunk;
     // remove entity from old chunk
     if (zox_valid(old_chunk)) {
         zox_get_muter(old_chunk, EntityLinks, entityLinks)
         remove_from_EntityLinks(entityLinks, e);
-#ifdef zox_debug_chunk_link_system
-        const int3 chunk_position = zox_get_value(old_chunk, ChunkPosition)
-        zox_log(" > chunk [%s] removed e [%s] [%ix%ix%i]\n", zox_get_name(old_chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z)
-#endif
+        zox_log_chunk_removed(world, old_chunk, e);
     }
     // add entity to new chunk
-    if (zox_valid(chunk)) {
-        zox_mut_begin(chunk, EntityLinks, entityLinks)
-        if (add_to_EntityLinks(entityLinks, e)) {
-            zox_mut_end(chunk, EntityLinks)
-        }
-#ifdef zox_debug_chunk_link_system
-        const int3 chunk_position = zox_get_value(chunk, ChunkPosition)
-        zox_log(" > chunk [%s] added e [%s] [%ix%ix%i] at length [%i]\n", zox_get_name(chunk), zox_get_name(e), chunk_position.x, chunk_position.y, chunk_position.z, entityLinks->length)
-#endif
+    zox_mut_begin(new_chunk, EntityLinks, entityLinks)
+    if (add_to_EntityLinks(entityLinks, e)) {
+        zox_mut_end(new_chunk, EntityLinks)
+        zox_log_chunk_removed(world, new_chunk, e);
     }
-    if (chunk) {
-        // now render distabled
-        const byte chunk_render_disabled = zox_get_value(chunk, RenderDisabled)
-        const byte character_render_disabled = zox_get_value(e, RenderDisabled)
-        if (character_render_disabled != chunk_render_disabled) {
-            zox_set(e, RenderDisabled, { chunk_render_disabled })
-        }
-        // now lod
-        // calculate_lods
-        // zox_geter_value(e, NodeDepth, byte, node_depth)
-        if (zox_has(e, RenderLod)) {
-            zox_geter_value(chunk, RenderLod, byte, chunk_render_lod)
-            zox_geter_value(chunk, RenderDistance, byte, chunk_render_distance)
-            zox_geter_value(e, RenderLod, byte, character_lod)
-            const byte new_character_lod = distance_to_lod_npc(chunk_render_distance);
-            if (character_lod != new_character_lod) {
-                zox_set(e, RenderLod, { new_character_lod })
-                // add RenderLodDirty!
-                if (zox_has(e, ChunkMeshDirty)) {
-                    zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
-                }
-            }
+    chunkLink->value = new_chunk;
+    // now render distabled
+    zox_geter_value(new_chunk, RenderDisabled, byte, chunk_render_disabled)
+    zox_geter_value(new_chunk, RenderDistance, byte, chunk_render_distance)
+    zox_geter_value(e, RenderDisabled, byte, character_render_disabled)
+    if (character_render_disabled != chunk_render_disabled) {
+        zox_set(e, RenderDisabled, { chunk_render_disabled })
+    }
+    // now lod
+    // calculate_lods
+    // zox_geter_value(e, NodeDepth, byte, node_depth)
+    // todo: this should be used by system itself
+    if (zox_has(e, RenderLod)) {
+        zox_geter_value(e, RenderLod, byte, character_lod)
+        const byte new_character_lod = distance_to_lod_npc(chunk_render_distance);
+        if (character_lod != new_character_lod) {
+            zox_set(e, RenderLod, { new_character_lod })
+            zox_set(e, RenderLodDirty, { zox_dirty_trigger } )
         }
     }
     return 1;

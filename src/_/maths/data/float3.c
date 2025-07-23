@@ -1,5 +1,5 @@
 #define float3_zero (float3) { 0, 0, 0 }
-#define float3_half (float3) { 0.5f, 0.5f, 0.5f }
+// #define float3_half (float3) { 0.5f, 0.5f, 0.5f }
 #define float3_one (float3) { 1, 1, 1 }
 #define float3_left (float3) { -1, 0, 0 }
 #define float3_right (float3) { 1, 0, 0 }
@@ -20,6 +20,10 @@ static inline void float3_flip(float3* value) {
     value->x *= -1;
     value->y *= -1;
     value->z *= -1;
+}
+
+static inline float3 float3_half(float3 v) {
+    return (float3) { v.x / 2, v.y / 2, v.z / 2 };
 }
 
 static inline void float3_make_zero(float3* value) {

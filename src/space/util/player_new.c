@@ -2,11 +2,10 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
     const float3 bounds = (float3) { 0.5f, 1.0, 0.5f };
     // zox_geter(terrain, VoxScale, voxScale)
     zox_geter(terrain, ChunkLinks, chunk_links)
-    byte spawns_in_air = 0;
     ecs_entity_t chunk = 0;
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;
-    const VoxelNode *chunk_above = NULL;
+    const VoxelNode *voxel_node_above = NULL;
     byte node_depth = 0;
     byte found_position = 0;
     for (int i = render_distance_y; i >= -render_distance_y; i--) {
@@ -17,12 +16,15 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
         }
         zox_geter(chunk, VoxelNode, chunkd)
         node_depth = zox_get_value(chunk, NodeDepth)
-        local_position = find_position_on_ground(chunkd, node_depth, chunk_above, spawns_in_air);
+        local_position = find_random_position_on_ground(
+            chunkd,
+            voxel_node_above,
+            node_depth);
         if (!byte3_equals(byte3_full, local_position)) {
             found_position = 1;
             break;
         }
-        chunk_above = chunkd;
+        voxel_node_above = chunkd;
     }
     if (!found_position) {
         zox_log_error("failed finding spawn position for player")

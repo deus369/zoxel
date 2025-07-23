@@ -9,8 +9,13 @@ void set_voxel_node_lods(ecs_world_t *world, const VoxelNode *node, byte lod) {
             // if instance block
             if (zox_has(e, InstanceLink)) {
                 zox_geter_value(e, InstanceLink, ecs_entity_t, vox)
+                zox_geter(e, InstanceLinks, instanceLinks)
                 // zox_log("current vox rendering [%s]", zox_get_name(vox))
-                if (vox == vox_grass_0 || vox == vox_grass_1 || vox == vox_grass_2) {
+                const ecs_entity_t new_vox = instanceLinks->value[lod];
+                if (new_vox) {
+                    zox_set(e, InstanceLink, { new_vox })
+                }
+                /*if (vox == vox_grass_0 || vox == vox_grass_1 || vox == vox_grass_2) {
                     if (lod == 0) {
                         zox_set(e, InstanceLink, { vox_grass_0 })
                     } else if (lod == 1) {
@@ -18,7 +23,7 @@ void set_voxel_node_lods(ecs_world_t *world, const VoxelNode *node, byte lod) {
                     } else {
                         zox_set(e, InstanceLink, { vox_grass_2 })
                     }
-                }
+                }*/
             }
         }
     } else if (has_children_VoxelNode(node)) {

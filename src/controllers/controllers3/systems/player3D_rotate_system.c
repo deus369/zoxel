@@ -11,7 +11,7 @@ void Player3RotateSystem(ecs_iter_t *it) {
         zox_sys_i(DeviceLinks, deviceLinks)
         zox_sys_i(DeviceMode, deviceMode)
         const ecs_entity_t character = characterLink->value;
-        if (!zox_valid(character) || !zox_has(character, Character3D)) {
+        if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
         if (cameraLink->value) {

@@ -1,7 +1,9 @@
 #define statbar_float_position 0.32f
 #define statbar_float_height 0.048f
 
-void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *data) {
+void spawn_character_name_label(ecs_world_t *world,
+    spawned_character3D_data *data)
+{
     if (disable_npc_uis) {
         return;
     }
@@ -12,9 +14,17 @@ void spawn_character_name_label(ecs_world_t *world, spawned_character3D_data *da
         .position_y = ui_position,
         // .base_color = (color) { 5, 5, 5, 88 }, // background color
     };
+
+    // "Dave Lvl 3"
+    char result[64];
+    float soul_value = data->soul_value;
+    int souli = floorf(soul_value);
+    // zox_log("+ soul [%i]", souli)
+    sprintf(result, "%s lvl %i\n", data->name, souli);
+
     Text3DData label3D_text_data = {
         .prefab = prefab_text3D,
-        .text = data->name, // "Dave Lvl 3"
+        .text = result,
     };
     Zigel3DData label3D_zigel_data = {
         .prefab = prefab_zigel3D,

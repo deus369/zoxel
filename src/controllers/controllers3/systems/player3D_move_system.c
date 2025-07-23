@@ -34,7 +34,7 @@ void Player3DMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CharacterLink, characterLinks, characterLink)
         const ecs_entity_t character = characterLink->value;
-        if (!zox_valid(character) || !zox_has(character, Character3D)) {
+        if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
         zox_geter(character, DisableMovement, disableMovement)

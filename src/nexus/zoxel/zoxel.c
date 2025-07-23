@@ -10,6 +10,7 @@
 // #define zox_enable_log_ui
 // #define zox_enable_log_shader
 
+// todo: remove this and put into engine
 byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
     intialize_game_store();
     // test_steam_cloud(); // idk
@@ -41,14 +42,28 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
 }
 
 zox_begin_module(ZoxGame)
+    boot_event = boot_zoxel_game;
     // app settings
     headless = 0;
 
+    // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
-    character_spawn_rate = 16; // 0 | 1 | 16 | 32 | 64 | 128
-    is_testing_instancing = 1;
-    // disable_npc_hooks = 1;
-    // disable_npc_uis = 1;
+    // terrain_mode = terrain_mode_flatlands;
+    // render_distance_y = 1;
+    character_spawn_rate = 4; // 0 | 1 | 16 | 32 | 64 | 128
+    is_characters_instanced = 1;
+    disable_npc_hooks = 0;
+    disable_npc_uis = 0;
+
+    // max npcs
+    /*
+    terrain_mode = terrain_mode_flatlands;
+    character_spawn_rate = 128;
+    is_characters_instanced = 1;
+    disable_npc_hooks = 1;
+    disable_npc_uis = 1;
+    */
+
     disable_npc_positioner = 0;
     // disable_instancing = 1; // test so we can reverse backward etc
     // disable_npc_movement = 1;
@@ -60,13 +75,11 @@ zox_begin_module(ZoxGame)
     // zox_debug_print_components(world, 1);
     // is_log_io = 1;
     // is_log_sounds = 1;
-    // terrain_mode = terrain_mode_flatlands;
     // vsync = 0;
     // is_split_screen = 1;
     // fullscreen = 0;
 
     // Gameplay
-    boot_event = boot_zoxel_game;
     zox_experience_max_start = 10;
     // regen_rate = 10;
     hit_terrain_color = (color) { 2, 185, 145, 155 };
@@ -114,7 +127,6 @@ zox_begin_module(ZoxGame)
     // render distance settings
     // initial_terrain_lod = 2; // 2 |3
     // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
-    // render_distance_y = 2; // 1 | 2 | 4
     block_vox_render_at_lod = 0; // now using lod minimum
     fog_density = 0.034f;
     // character_render_distance = 2;  // 1 | 2

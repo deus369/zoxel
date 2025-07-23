@@ -6,7 +6,7 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_field_i(CharacterLink, characterLinks, characterLink)
         ecs_entity_t character = characterLink->value;
-        if (!character || !zox_has(character, Character3D)) {
+        if (!character || !zox_has(character, Character3)) {
             continue;
         }
         const DisableMovement *disableMovement = zox_get(character, DisableMovement)

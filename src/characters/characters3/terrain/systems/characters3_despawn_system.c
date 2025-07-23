@@ -1,7 +1,4 @@
 void Characters3DespawnSystem(ecs_iter_t *it) {
-    if (disable_npcs) {
-        return;
-    }
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)
@@ -17,18 +14,15 @@ void Characters3DespawnSystem(ecs_iter_t *it) {
         if (renderDistanceDirty->value != zox_dirty_active) {
             continue;
         }
-        const byte is_in_spawn_range = renderDistance->value <= terrain_lod_near;
-        // remove old characters
-        if (!is_in_spawn_range && entityLinks->length) { // charactersSpawned->value &&
+        const byte out_of_range = renderDistance->value > terrain_lod_near;
+        if (out_of_range && charactersSpawned->value) {
             // zox_log("- destroying characters [%i] out of [%i]", entityLinks->length, zox_stats_characters)
-            zox_stats_characters -= entityLinks->length;
             for (int j = 0; j < entityLinks->length; j++) {
                 zox_delete(entityLinks->value[j])
             }
+            zox_stats_characters -= entityLinks->length;
             clear_memory_component(EntityLinks, entityLinks)
             charactersSpawned->value = 0;
-        } else {
-            // zox_log("! [%lu] not despawned at [%i]", e, renderDistance->value)
         }
     }
 } zox_declare_system(Characters3DespawnSystem)

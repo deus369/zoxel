@@ -5,9 +5,9 @@
 byte disable_npc_uis = 0;
 byte disable_npc_hooks = 0;
 byte disable_npc_positioner = 0;
-zox_declare_tag(Character3D)
+zox_declare_tag(Character3)
 zox_declare_tag(SaveCharacter)
-zox_component_entity(Character3DLink)
+zox_component_entity(Character3Link)
 zox_component(CharacterSaveHash, ulong)
 zox_component_byte(CharactersChanceMax)
 #include "data/_.c"
@@ -25,9 +25,9 @@ void module_dispose_characters3D(ecs_world_t *world, void *ctx) {
 
 zox_begin_module(Characters3)
     // components
-    zox_define_tag(Character3D)
+    zox_define_tag(Character3)
     zox_define_tag(SaveCharacter)
-    zox_define_component_entity(Character3DLink)
+    zox_define_component_entity(Character3Link)
     zox_define_component(CharacterSaveHash)
     zox_define_component_byte(CharactersChanceMax)
     // systems

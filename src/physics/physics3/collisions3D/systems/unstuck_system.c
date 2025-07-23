@@ -11,7 +11,7 @@ void UnstuckSystem(ecs_iter_t *it) {
     zox_sys_out(LastUnstuck3)
     zox_sys_out(Position3D)
     // find realm first
-    const VoxelLinks *voxels = get_first_terrain_voxels(world, VoxLinks, it->count);
+    const VoxelLinks *voxels = get_first_terrain_voxels(world, VoxLink_, it->count);
     if (!voxels) {
         return;
     }

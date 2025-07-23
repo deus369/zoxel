@@ -25,6 +25,7 @@ void define_systems_stats(ecs_world_t *world) {
         [out] animations.AnimationStart)
     zox_system_1(ExperienceSystem, EcsOnUpdate,
         [in] combat.Dead,
+        [in] stats.StatLinks,
         [in] combat.LastDamager)
     zox_system_1(LevelUpSystem, EcsOnUpdate,
         [in] users.UserLink,

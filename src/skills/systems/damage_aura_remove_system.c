@@ -2,14 +2,15 @@
 // I could do this per debuff instead of character...! if it's a area based debuff
 void DamageAuraRemoveSystem(ecs_iter_t *it) {
     // const float damage_radius = 3.0f; // todo: grab this off skill
-    zox_field_world()
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_out(DotLinks, dotLinkss, 2)
-    zox_field_out(Children, childrens, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_out(DotLinks)
+    zox_sys_out(Children)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_o(DotLinks, dotLinkss, dotLinks)
-        zox_field_o(Children, childrens, children)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_o(DotLinks, dotLinks)
+        zox_sys_o(Children, children)
         for (int j = dotLinks->length - 1; j >= 0; j--) {
             const ecs_entity_t dot = dotLinks->value[j];
             if (!dot || !zox_has(dot, SkillLink)) {

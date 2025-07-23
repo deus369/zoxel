@@ -2,23 +2,36 @@
 void DotsSystem(ecs_iter_t *it) {
     // const float damage_rate = 1.0f; // add this property to dot entity
     init_delta_time()
-    zox_field_world()
-    zox_field_in(UserLink, userLinks, 1)
-    zox_field_in(SpawnerLink, spawnerLinks, 2)
-    zox_field_in(SkillDamage, skillDamages, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(UserLink)
+    zox_sys_in(SpawnerLink)
+    zox_sys_in(SkillDamage)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(UserLink, userLinks, userLink)
-        if (!zox_alive(userLink->value)) {
+        zox_sys_i(UserLink, userLink)
+        zox_sys_i(SkillDamage, skillDamage)
+        zox_sys_i(SpawnerLink, spawnerLink)
+        if (!zox_valid(userLink->value) || zox_gett_value(userLink->value, Dead) || !skillDamage->value) {
             continue;
         }
-        if (zox_gett_value(userLink->value, Dead)) {
-            continue;
+        float damage = skillDamage->value;
+        if (zox_valid(spawnerLink->value) && !zox_gett_value(spawnerLink->value, Dead)) {
+            // todo: influence stat link for auras -> to determine strengthing stats
+            zox_geter(spawnerLink->value, StatLinks, enemy_stats)
+            int k = 0; // assuming intelligence is like 4th stat attribute for now
+            for (int j = 0; j < enemy_stats->length; j++) {
+                const ecs_entity_t stat = enemy_stats->value[j];
+                if (zox_has(stat, StatAttribute)) {
+                    k++;
+                    if (k == 3) {
+                        float value = zox_get_value(stat, StatValue)
+                        damage += value;
+                        break;
+                    }
+                }
+            }
         }
-        zox_field_i(SkillDamage, skillDamages, skillDamage)
-        if (skillDamage->value == 0) {
-            continue;
-        }
-        zox_field_i(SpawnerLink, spawnerLinks, spawnerLink)
+
         zox_geter(userLink->value, StatLinks, statLinks)
         // find health stat, maybe poison should target a stat type directly??
         find_array_component_with_tag(statLinks, HealthStat, health_stat)
@@ -35,6 +48,7 @@ void DotsSystem(ecs_iter_t *it) {
         } else if (statValue->value > stat_value_max) {
             statValue->value = stat_value_max;
         }
-        zox_set(userLink->value, LastDamager, { spawnerLink->value }) // rememer last to give xp
+        // rememer last to give xp - wait this tick rate - warlocks will always get xp lmao
+        zox_set(userLink->value, LastDamager, { spawnerLink->value })
     }
 } zox_declare_system(DotsSystem)

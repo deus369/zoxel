@@ -13,11 +13,11 @@ void define_systems_terrain(ecs_world_t *world) {
     zox_define_system_state_event_1(RealmVoxels, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // generate terrain
     zox_system(ChunkFlatlandSystem, EcsOnUpdate,
-        [none] TerrainChunk,
         [in] chunks3.ChunkPosition,
         [out] chunks3.GenerateChunk,
         [out] chunks3.VoxelNode,
         [out] chunks3.NodeDepth,
+        [none] TerrainChunk,
         [none] FlatlandChunk)
     zox_system(GrassyPlainsSystem, EcsOnUpdate,
         [in] chunks3.ChunkPosition,

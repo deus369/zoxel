@@ -33,6 +33,7 @@ void define_systems_skills(ecs_world_t *world) {
             [in] SkillDamage,
             [in] SkillDamageMax,
             [in] SkillRange,
+            [in] SkillResourceLink,
             [in] SkillCost,
             [out] SkillActive,
             [none] Melee)

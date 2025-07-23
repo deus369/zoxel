@@ -1,5 +1,6 @@
 #include "character_save_system.c"
 #include "realm_characters.c"
+#include "character3_lod_system.c"
 zox_declare_system_state_event(RealmCharacters, GenerateRealm, zox_generate_realm_characters, spawn_realm_characters)
 
 void define_systems_characters3(ecs_world_t *world) {
@@ -9,4 +10,15 @@ void define_systems_characters3(ecs_world_t *world) {
         [in] transforms3.Euler,
         [out] CharacterSaveHash,
         [none] SaveCharacter)
+    zox_system(Character3LodSystem, EcsPostUpdate,
+        [in] rendering.RenderLodDirty,
+        [in] rendering.RenderLod,
+        [out] chunks3.ChunkMeshDirty,
+        [none] Character3)
+    zox_system(Character3LodInstancedSystem, EcsPostUpdate,
+        [in] rendering.RenderLodDirty,
+        [in] rendering.RenderLod,
+        [in] rendering.InstanceLinks,
+        [out] rendering.InstanceLink,
+        [none] Character3)
 }
