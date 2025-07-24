@@ -1,6 +1,5 @@
 typedef struct {
     ecs_entity_t prefab;
-    const ecs_entity_t vox;
     const ecs_entity_t player;
     const float3 position;
     const float4 rotation;
@@ -11,4 +10,6 @@ typedef struct {
     const byte lod;
     float scale;
     const byte render_disabled;
+    const ecs_entity_t model;
+    const ecs_entity_t vox;
 } spawn_character3D_data;

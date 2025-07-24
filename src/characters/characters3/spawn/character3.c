@@ -30,6 +30,7 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
         zox_set(e, ChunkPosition, { data.chunk_position })
     }
     if (zox_has(data.prefab, InstanceLink)) {
+        zox_set(e, ModelLink, { data.model })
         zox_set(e, InstanceLink, { data.vox })
         zox_set(e, VoxScale, { vox_model_scale })
     } else {

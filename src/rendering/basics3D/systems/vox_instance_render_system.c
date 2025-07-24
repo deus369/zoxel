@@ -76,13 +76,17 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
             continue;
         }
         const ecs_entity_t mesh = command.mesh;
+        if (!zox_has(mesh, MeshGPULink)) {
+            zox_log_error("Invalid Instance Mesh [%s]", zox_get_name(mesh))
+            continue;
+        }
         zox_geter(mesh, MeshGPULink, meshGPULink)
-        if (meshGPULink->value.x == 0 || meshGPULink->value.y == 0) {
+        if (!meshGPULink->value.x || !meshGPULink->value.y) {
             zox_log_error("Invalid Instance Mesh [%s]", zox_get_name(mesh))
             continue;
         }
         zox_geter(mesh, ColorsGPULink, colorsGPULink)
-        if (colorsGPULink->value == 0) {
+        if (!colorsGPULink->value) {
             zox_log_error("[VoxInstanceRenderSystem] Error: colorsGPULink is 0 [%s]", zox_get_name(mesh))
             continue;
         }

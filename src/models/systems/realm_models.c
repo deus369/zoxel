@@ -31,15 +31,35 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
     // grass - contains a bunch of variants
     // todo: set different heights
     {
-        zox_neww(grass)
-        zox_set_unique_name(grass, "model_group_grass")
-        ModelLinks grass_models = (ModelLinks) { 0, NULL };
+        zox_neww(e2)
+        zox_set_unique_name(e2, "model_group_grass")
+
+        ModelLinks variants = (ModelLinks) { 0, NULL };
         for (int i = 0; i < grass_variants; i++) {
-            ecs_entity_t var1 = spawn_model_grass(world, grass_color, 666 * i);
-            add_to_ModelLinks(&grass_models, var1);
+            ecs_entity_t model = spawn_model_grass(world, grass_color, 666 * i);
+            add_to_ModelLinks(&variants, model);
         }
-        zox_set_ptr(grass, ModelLinks, grass_models)
-        add_to_ModelLinks(&models, grass);
+        zox_set_ptr(e2, ModelLinks, variants)
+
+        add_to_ModelLinks(&models, e2);
+    }
+
+    // spawn slime like npc
+    {
+        zox_neww(e2)
+        zox_set_unique_name(e2, "model_group_slem")
+        zox_add_tag(e2, ModelCharacter)
+
+        ModelLinks variants = (ModelLinks) { 0, NULL };
+        for (int i = 0; i < grass_variants; i++) {
+            ecs_entity_t model = spawn_model_grass(world,
+                (color) { grass_color.g, grass_color.b, grass_color.r, grass_color.a },
+                2666 * i);
+            add_to_ModelLinks(&variants, model);
+        }
+        zox_set_ptr(e2, ModelLinks, variants)
+
+        add_to_ModelLinks(&models, e2);
     }
 
     zox_set_ptr(e, ModelLinks, models)
