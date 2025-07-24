@@ -9,11 +9,19 @@ string_data new_string_data(char *value) {
 
 string_data new_string_data_clone(char *value) {
     size_t length = strlen(value);
-    char *new_value = (char *) malloc(length + 1); // Allocate memory for the new string
-    if (!new_value) return (string_data){ .value = NULL, .length = 0 }; // Handle memory allocation failure
-    memcpy(new_value, value, length); // Copy the value to the new string
+    char* new_value = (char*) malloc(length + 1); // Allocate memory for the new string
+    if (!new_value) {
+        return (string_data) {
+            .value = NULL,
+            .length = 0
+        };
+    }
+    memcpy(new_value, value, length);
     new_value[length] = '\0'; // Null-terminate the new string
-    return (string_data){ .value = new_value, .length = length };
+    return (string_data) {
+        .value = new_value,
+        .length = length
+    };
 }
 
 uint get_string_hash(string_data input) {

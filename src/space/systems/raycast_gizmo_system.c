@@ -16,6 +16,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
     const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
     const float3 ray_normal = zox_get_value(camera, RaycastNormal)
     int3 chunk_position = (int3) { 255255, 255255, 255255 };
+    CharacterRaycast cr = { };
     byte ray_hit = raycast_voxel_node(world,
         caster,
         voxels,
@@ -29,7 +30,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
         get_terrain_voxel_scale(depth),
         terrain_ray_length,
         data,
-        NULL);
+        cr);
     if (ray_hit == ray_hit_type_terrain) {
         float3 voxel_position_real = data->position_real;
         float3 center_quad = float3_add(voxel_position_real, float3_scale(data->normal, data->voxel_scale * (0.501f)));

@@ -40,7 +40,7 @@ void spawn_realm_voxels(ecs_world_t *world, const ecs_entity_t realm) {
     color stone_color;
     color obsidian_color;
     if (realm_colors->length < 5 || grayscale_mode) {
-        zox_log_error("realm colors not found")
+        zox_log("+ grayscale_mode enabled")
         dirt_color = color_grayscale(88);
         grass_color = color_grayscale(144);
         sand_color = color_grayscale(166);

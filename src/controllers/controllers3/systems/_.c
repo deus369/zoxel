@@ -8,18 +8,18 @@
 #include "player3_respawn_system.c"
 
 void define_systems_controllers3D(ecs_world_t *world) {
-    zox_system(Player3DMoveSystem, zox_pip_player_movement,
+    zox_system(Player3DMoveSystem, EcsOnUpdate,
         [in] inputs.DeviceLinks,
         [in] inputs.DeviceMode,
         [in] characters.CharacterLink,
         [none] players.Player)
-    zox_system(Player3RotateSystem, zox_pip_player_movement,
+    zox_system(Player3RotateSystem, EcsOnUpdate,
         [in] inputs.DeviceLinks,
         [in] inputs.DeviceMode,
         [in] characters.CharacterLink,
         [in] cameras.CameraLink,
         [none] players.Player)
-    zox_system(Player3DJumpSystem, zox_pip_player_movement,
+    zox_system(Player3DJumpSystem, EcsOnUpdate,
         [in] inputs.DeviceLinks,
         [in] inputs.DeviceMode,
         [in] characters.CharacterLink,

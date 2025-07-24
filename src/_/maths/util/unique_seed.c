@@ -1,5 +1,3 @@
-#include <unistd.h>
-#include <time.h>
 
 // Robert Jenkins' 96 bit Mix Function
 /*unsigned long mix(unsigned long a, unsigned long b, unsigned long c) {

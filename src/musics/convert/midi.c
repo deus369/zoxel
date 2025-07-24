@@ -1,4 +1,4 @@
-// wsl gcc -std=c99 src/inner_core/musics/convert/midi.c -o build/midi_converter `pkg-config --cflags --libs glib-2.0` -lm -lsmf
+// wsl gcc -std=c99 src/musics/convert/midi.c -o build/midi_converter `pkg-config --cflags --libs glib-2.0` -lm -lsmf
 //  wsl gcc -std=c99 src/inner_core/musics/convert/midi.c -o build/midi_converter -lm $(pkg-config --cflags --libs glib-2.0 smf) && wsl ./build/midi_converter raw/midis/song_1.mid
 #include <stdio.h>
 #include <math.h>

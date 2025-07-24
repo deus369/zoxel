@@ -6,7 +6,7 @@ SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
 CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
-CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3
+CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 -Dzox_debug
 LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
 LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
 # Choose your game module
@@ -22,8 +22,14 @@ TARGET_DEV 	:= bin/$(GAME)-debug
 # Our makes
 
 $(TARGET): $(SRCS)
-	mkdir -p bin
-	$(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
+	@ echo "> Building [$(GAME)]"
+	@ mkdir -p bin
+	@ $(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
+	@ echo " - completed -"
+
+run: $(TARGET)
+	@ echo "> Running [$(GAME)]"
+	@ ./$(TARGET)
 
 $(TARGET_DEV): $(SRCS)
 	mkdir -p bin
@@ -32,9 +38,6 @@ $(TARGET_DEV): $(SRCS)
 build: $TARGET
 
 dev: $(TARGET_DEV)
-
-run: $(TARGET)
-	./$(TARGET)
 
 rund: dev
 	./$(TARGET_DEV)

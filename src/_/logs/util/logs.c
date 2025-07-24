@@ -1,4 +1,15 @@
 // log types
+
+
+#define zox_log(msg, ...)\
+    zox_log_basic(msg"\n", ##__VA_ARGS__)
+
+#define zox_log_error(msg, ...)\
+    zox_log_basic("! "msg"\n", ##__VA_ARGS__)
+
+#define zox_log_warning(msg, ...)\
+    zox_log_basic("@ "msg"\n", ##__VA_ARGS__)
+
 unsigned char is_log_io = 0;
 
 #define zox_log_io(msg, ...)\

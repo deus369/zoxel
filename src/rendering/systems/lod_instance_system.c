@@ -11,7 +11,7 @@ void LodInstanceSystem(ecs_iter_t *it) {
         zox_sys_i(ModelLink, modelLink)
         zox_sys_o(InstanceLink, instanceLink)
         if (renderLodDirty->value == zox_dirty_active) {
-            if (zox_valid(modelLink->value)) {
+            if (zox_valid(modelLink->value) && zox_has(modelLink->value, ModelLods)) {
                 // use InstanceLinks to set model based on Lod!
                 zox_geter(modelLink->value, ModelLods, modelLods)
                 instanceLink->value = modelLods->value[renderLod->value];

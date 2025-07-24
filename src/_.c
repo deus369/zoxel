@@ -4,11 +4,44 @@
 //todo: move our library wrappers to top of stack here:
 //  flecs, sdl, opengl, etc
 
+// release defines
+// can we check if debug here?
+#ifndef zox_debug
+    #define zox_disable_names
+    #define zox_disable_logs
+#endif
+
 // pre engine defines
 #include "zox/data/build_settings.c"
 #include "zox/data/build_disables.c"
 #include "zox/data/define_groups.c"
 #include "zox/util/defines.c"
+
+// core includes
+#include <signal.h>     // used for detecting cancel
+#include <stdlib.h>     // for malloc & free
+#include <stdio.h>      // just for sprintf and perror
+#include <stdint.h>     // for ints?
+// Memory Copies and Strlen!
+#include <string.h>
+// for thread locks in memory management - pthread_rwlock_init
+#include <pthread.h>
+// for DIR, readdir, closedir etc
+#include <dirent.h>
+// for pathing - can we do without?
+#include <sys/stat.h>   // pathing
+// used in pathing, doing funky stuff??
+#include <unistd.h>
+// math module
+#include <math.h>
+#include <float.h>
+// time module
+#include <time.h>
+
+//! Included Libraries for App
+#ifndef zox_disable_logs
+    #include <stdarg.h>
+#endif
 
 // engine modules
 #include "_/logs/_.c"
@@ -19,9 +52,9 @@
 // todo: include all these automatically
 #include "_/_.c"
 #include "generic/generic.c"
-#include "timing/timing.c"
-#include "transforms/transforms.c"
-#include "networking/networking.c"
+#include "timing/_.c"
+#include "transforms/_.c"
+#include "networking/_.c"
 #include "players/players.c"
 #include "inputs/inputs.c"
 #include "apps/apps.c"
@@ -50,7 +83,7 @@
 #include "animations/animations.c"
 #include "bones/bones.c"
 
-#include "ui/ui.c"
+#include "ui/_.c"
 #include "lines/lines2D/lines2D.c"
 #include "plots/plots.c"
 
@@ -72,7 +105,7 @@
 #include "dungeons/dungeons.c"
 #include "game_ui/game_ui.c"
 // user data
-#include "users/users.c"
+#include "users/_.c"
 #include "combat/combat.c"
 #include "stats/_.c"
 #include "items/items.c"

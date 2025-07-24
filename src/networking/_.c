@@ -1,8 +1,9 @@
 #ifndef zox_mod_networking
 #define zox_mod_networking
 
+#include "__.c"
+
 // #define zox_testing_networking
-#include "settings/includes.c"
 #include "settings/settings.c"
 #include "settings/packet_types.c"
 zox_declare_tag(Packet)

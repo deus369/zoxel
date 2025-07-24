@@ -2,7 +2,7 @@ ecs_entity_t spawn_model_grass(ecs_world_t* world,
     color c,
     const long int seed)
 {
-    byte cv = 20;
+    byte cv = 40;
     srand(seed);
     c.r += -cv + rand() % cv;
     c.g += -cv + rand() % cv;
@@ -11,7 +11,7 @@ ecs_entity_t spawn_model_grass(ecs_world_t* world,
     zox_new()
     zox_name("model_grass")
     ModelLods modelLods;
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < max_model_lods; i++) {
         if (i > block_vox_depth) {
             modelLods.value[i] = 0;
             continue;

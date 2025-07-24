@@ -1,7 +1,6 @@
 #ifndef zox_mod_time
 #define zox_mod_time
 
-#include "_includes.c"
 #include "data/settings.c"
 zox_component_double(DestroyInTime)
 zox_component_double(TimerTime)

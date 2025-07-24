@@ -1,4 +1,5 @@
 // #define zox_debug_chunk_link_system
+static inline byte can_have_characters(ecs_world_t*, ecs_entity_t);
 
 void zox_log_chunk_removed(ecs_world_t *world,
     const ecs_entity_t e,
@@ -26,7 +27,7 @@ byte set_entity_chunk(ecs_world_t *world,
     const ecs_entity_t new_chunk)
 {
     ecs_entity_t old_chunk = chunkLink->value;
-    if (!zox_valid(new_chunk) || old_chunk == new_chunk) {
+    if (!zox_valid(new_chunk) || old_chunk == new_chunk || !can_have_characters(world, new_chunk)) {
         return 0;
     }
     // remove entity from old chunk
@@ -39,7 +40,9 @@ byte set_entity_chunk(ecs_world_t *world,
     zox_mut_begin(new_chunk, EntityLinks, entityLinks)
     if (add_to_EntityLinks(entityLinks, e)) {
         zox_mut_end(new_chunk, EntityLinks)
-        zox_log_chunk_removed(world, new_chunk, e);
+        zox_log_chunk_added(world, new_chunk, e);
+    } else {
+        zox_log_error("failed to add npc to chunk")
     }
     chunkLink->value = new_chunk;
     // now render distabled
@@ -64,20 +67,6 @@ byte set_entity_chunk(ecs_world_t *world,
     return 1;
 }
 
-void set_entity_terrain_chunk_position(ecs_world_t *world,
-    const ecs_entity_t e,
-    const VoxLink *voxLink,
-    ChunkLink *chunkLink,
-    ChunkPosition *chunkPosition,
-    int3 chunk_position)
-{
-    zox_geter(voxLink->value, ChunkLinks, chunkLinks)
-    const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
-    if (set_entity_chunk(world, e, chunkLink, chunk)) {
-        chunkPosition->value = chunk_position;
-    }
-}
-
 void ChunkLinkSystem(ecs_iter_t *it) {
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
@@ -98,10 +87,13 @@ void ChunkLinkSystem(ecs_iter_t *it) {
         }
         const float3 real_position = position3D->value;
         const int3 new_chunk_position = real_position_to_chunk_position(real_position, chunk_dimensions, depth);
-        if (!chunkLink->value) {
-            set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
-        } else if (!int3_equals(new_chunk_position, chunkPosition->value)) {
-            set_entity_terrain_chunk_position(world, e, voxLink, chunkLink, chunkPosition, new_chunk_position);
+        byte is_set = !chunkLink->value || (!int3_equals(new_chunk_position, chunkPosition->value));
+        if (is_set) {
+            zox_geter(voxLink->value, ChunkLinks, chunkLinks)
+            const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, new_chunk_position);
+            if (set_entity_chunk(world, e, chunkLink, chunk)) {
+                chunkPosition->value = new_chunk_position;
+            }
         }
     }
 } zox_declare_system(ChunkLinkSystem)

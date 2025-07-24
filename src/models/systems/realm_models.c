@@ -11,7 +11,7 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
     zox_geter(e, Colors, realm_colors);
     color grass_color;
     if (realm_colors->length < 5 || grayscale_mode) {
-        zox_log_error("realm colors not found")
+        zox_log("+ grayscale_mode enabled")
         grass_color = color_grayscale(144);
     } else {
         grass_color = realm_colors->value[2];

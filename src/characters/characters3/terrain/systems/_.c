@@ -1,10 +1,15 @@
-#include "characters3_spawn_system.c"
-#include "characters3_despawn_system.c"
+#include "characters3_spawn.c"
+#include "characters3_despawn.c"
+#include "character3_spawn_zone.c"
 
 void define_systems_characters3_terrain(ecs_world_t* world) {
-    zox_system(Characters3DespawnSystem, EcsPostUpdate,
+    zox_system(Characters3SpawnZoneSystem, EcsPreUpdate,
         [in] rendering.RenderDistanceDirty,
         [in] rendering.RenderDistance,
+        [out] CharacterSpawnZone)
+    zox_system(Characters3DespawnSystem, EcsPostUpdate,
+        [in] rendering.RenderDistanceDirty,
+        [in] CharacterSpawnZone,
         [out] CharactersSpawned,
         [out] generic.EntityLinks,
         [none] terrain.TerrainChunk)

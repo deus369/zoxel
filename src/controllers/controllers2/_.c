@@ -14,7 +14,7 @@ zox_begin_module(Controllers2)
     zox_define_tag(Player2D)
     zox_define_tag(PlayerCharacter2D)
     zox_define_component_float2(Movement2)
-    zox_system(Controller2MoveSystem, zox_pip_player_movement,
+    zox_system(Controller2MoveSystem, EcsOnUpdate,
         [in] inputs.DeviceLinks,
         [in] characters.CharacterLink,
         [none] players.Player)

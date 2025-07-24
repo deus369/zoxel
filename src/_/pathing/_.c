@@ -1,11 +1,6 @@
 #ifndef zox_mod_pathing
 #define zox_mod_pathing
 
-#include <stdio.h>
-#include <dirent.h>
-#include <errno.h>
-#include <sys/stat.h>
-
 #define resources_dir_name "res"
 #define resources_folder_name resources_dir_name character_slash
 

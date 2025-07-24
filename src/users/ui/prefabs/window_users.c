@@ -13,7 +13,7 @@ ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t pr
 ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     const ecs_entity_t character = data->window.character;
     if (!zox_has_id(character, data->window.user_links_id)) {
-        zox_log(" ! character [%lu] has no [%s], cannot spawn ui\n", character, zox_get_name(data->window.user_links_id))
+        zox_log(" ! character [%lu] has no [%s], cannot spawn ui", character, zox_get_name(data->window.user_links_id))
         return 0;
     }
     // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)

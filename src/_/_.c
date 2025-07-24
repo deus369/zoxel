@@ -8,11 +8,6 @@
 #ifndef zox_mod_core
 #define zox_mod_core
 
-#include <signal.h> // used for detecting cancel
-#include <string.h> // who uses this?
-#include <stdlib.h> // for malloc & free
-#include <stdio.h>  // just for sprintf and perror
-
 #include "platforms/defines.c"
 #include "platforms/_.c"
 #include "terminals/_.c"

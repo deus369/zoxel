@@ -8,10 +8,6 @@
 #ifndef zox_mod_maths
 #define zox_mod_maths
 
-#include <math.h>       // for sqrt
-#include <float.h>
-#include <string.h>     // string hashmap
-
 #include "data/constants.c"
 #include "util/float_util.c"
 #include "data/_.c"

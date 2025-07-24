@@ -1,4 +1,3 @@
-#define zox_set_entity_names
 // #define zox_debug_spawning
 
 #define zox_get_name(e)\

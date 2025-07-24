@@ -41,21 +41,19 @@ byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
     return EXIT_SUCCESS;
 }
 
-zox_begin_module(ZoxGame)
-    boot_event = boot_zoxel_game;
-    // app settings
-    headless = 0;
-
+void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
-    terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 1;
-    character_spawn_rate = 8; // 0 | 1 | 16 | 32 | 64 | 128
+    disable_npcs = 0;
+    character_spawn_rate = 4; // 0 | 1 | 16 | 32 | 64 | 128
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;
-
+    disable_npc_movement = 0;
+    disable_npc_positioner = 0;
     // max npcs
+    // disable_instancing = 1; // test so we can reverse backward etc
+    // disable_npc_movement = 1;
     /*
     terrain_mode = terrain_mode_flatlands;
     character_spawn_rate = 128;
@@ -63,39 +61,9 @@ zox_begin_module(ZoxGame)
     disable_npc_hooks = 1;
     disable_npc_uis = 1;
     */
+}
 
-    disable_npc_positioner = 0;
-    // disable_instancing = 1; // test so we can reverse backward etc
-    // disable_npc_movement = 1;
-    zox_visualize_sounds = 0;
-    is_log_gpu_restore = 0;
-    // zox_debug_id(Block)
-    // zox_debug_print_modules(world, 1);
-    // zox_debug_print_systems(world, 1);
-    // zox_debug_print_components(world, 1);
-    // is_log_io = 1;
-    // is_log_sounds = 1;
-    // vsync = 0;
-    // is_split_screen = 1;
-    // fullscreen = 0;
-
-    // Gameplay
-    zox_experience_max_start = 10;
-    // regen_rate = 10;
-    hit_terrain_color = (color) { 2, 185, 145, 155 };
-    hit_character_color = (color) { 155, 45, 45, 65 };
-    hit_block_vox_color = (color) { 55, 135, 185, 145 };
-
-    // mood
-    const float sub_resolution = 4;
-    viewport_scale = 1 / sub_resolution;
-    grayscale_mode = 0;
-    is_generate_vox_outlines = 0;
-
-    // world gen
-    block_spawn_chance_grass = 1600; //  512 | 1024 | 2048 | 3000
-    terrain_amplifier = 32; // 64;
-
+void zoxel_settings_physics() {
     // physics
     // target_fps = 15;
     friction3D = 12; // 560;
@@ -108,29 +76,9 @@ zox_begin_module(ZoxGame)
     backwards_multiplier = 0.7f;
     player_movement_power = (float2) { 14, 14 };
     max_velocity3D = (float2) { 1.3f, 1.3f };
+}
 
-    zox_game_type = zox_game_mode_3D;
-
-    menu_sky_color = color_rgb_grayscale(15);
-    menu_sky_bottom_color = menu_sky_color;
-    fog_color = menu_sky_color;
-    viewport_clear_color = menu_sky_color;
-
-    // scaling
-    terrain_lod_near = 3;
-    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
-    terrain_depth = 4;
-    block_vox_depth = 5;
-    character_depth = 5;
-    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
-
-    // render distance settings
-    // initial_terrain_lod = 2; // 2 |3
-    // terrain_lod_far = 8; // 2 | 4 | 8 | 16 | 32
-    block_vox_render_at_lod = 0; // now using lod minimum
-    fog_density = 0.034f;
-    // character_render_distance = 2;  // 1 | 2
-
+void zoxel_settings_uis(ecs_world_t* world) {
     // main menu
     // header
     header_fill = color_grayscale(4);
@@ -163,27 +111,85 @@ zox_begin_module(ZoxGame)
     zox_set(prefab_handle, Color, { button_font_fill })
     zox_set(prefab_handle, OutlineColor, { button_font_outline })
     // nothing_font_color = debug_color; // debug font texture
+    // fades
+    is_start_game_delays = 1;
+    is_end_game_delays = 1;
+}
+
+zox_begin_module(ZoxGame)
+    boot_event = boot_zoxel_game;
+    // app settings
+    headless = 0;
+    const float sub_resolution = 8;
+    viewport_scale = 1 / sub_resolution;
+    vsync = 1;
+    is_split_screen = 0;
+
+    // art
+    is_generate_vox_outlines = 0;
+    grayscale_mode = 0;             // todo: make a grayscale biome
+
+    // game
+    zox_game_type = zox_game_mode_3D;
+    game_rule_attach_to_character = 1;
+    zox_experience_max_start = 10;
+    // regen_rate = 10;
+    // terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 1;
+
+    zoxel_settings_npcs();
+    zoxel_settings_physics();
+    zoxel_settings_uis(world);
+    // graphs
+    zox_visualize_sounds = 0;
+    // logs
+    is_log_gpu_restore = 0;
+    // Gameplay
+    hit_terrain_color = (color) { 2, 185, 145, 155 };
+    hit_character_color = (color) { 155, 45, 45, 65 };
+    hit_block_vox_color = (color) { 55, 135, 185, 145 };
+
+    // world gen
+    // block_spawn_chance_grass = 1600; //  512 | 1024 | 2048 | 3000
+    menu_sky_color = color_rgb_grayscale(15);
+    menu_sky_bottom_color = menu_sky_color;
+    fog_color = menu_sky_color;
+    viewport_clear_color = menu_sky_color;
+    block_vox_render_at_lod = 0; // now using lod minimum
+    fog_density = 0.034f;
+    // scaling
+    terrain_lod_near = 3;
+    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
+    terrain_depth = 4;
+    block_vox_depth = 5;
+    character_depth = 5;
+    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
+    terrain_amplifier = powers_of_two[terrain_depth] * render_distance_y;
+    // debug
+    disable_block_vox_generation = 0;
+    // disable_block_voxes = 1;
+    game_ui_has_taskbar = 1;
+    test_actions_skills = 0;
+    test_items_blocks = 1;
+    test_all_skills = 1;
+
+    // zox_debug_id(Block)
+    // zox_debug_print_modules(world, 1);
+    // zox_debug_print_systems(world, 1);
+    // zox_debug_print_components(world, 1);
+    // is_log_io = 1;
+    // is_log_sounds = 1;
 
     // fix prefabs
     if (prefab_vox) {
         zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
     }
-    if (prefab_character3) {
+    /*if (prefab_character3) {
         zox_prefab_set(prefab_character3, VoxScale, { vox_model_scale })
     }
     if (prefab_character3_npc) {
         zox_prefab_set(prefab_character3_npc, VoxScale, { vox_model_scale })
-    }
-
-    // debug
-    disable_block_vox_generation = 0;
-    // disable_block_voxes = 1;
-    game_rule_attach_to_character = 1;
-    disable_npcs = 0;
-    game_ui_has_taskbar = 1;
-    test_actions_skills = 0;
-    test_items_blocks = 1;
-    test_all_skills = 1;
+    }*/
 
     // get_debug_label_app
     // set_prefab_debug_label(world, &get_label_realm_colors);
@@ -217,10 +223,6 @@ zox_begin_module(ZoxGame)
     // add_hook_key_down(test_key_element_front2D);
     // add_hook_key_down(key_down_update_text3D);
     add_hook_key_down(key_down_toggle_streaming);
-
-    // fades
-    is_start_game_delays = 1;
-    is_end_game_delays = 1;
 zox_end_module(ZoxGame)
 
 #endif

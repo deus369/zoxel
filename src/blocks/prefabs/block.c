@@ -15,7 +15,7 @@ ecs_entity_t spawn_prefab_block(ecs_world_t *world) {
 // removed references to block vox
 ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     zox_instance(data->prefab)
-    zox_name("block")
+    // zox_name("block")
     zox_set(e, BlockIndex, { data->index })
     zox_set(e, Color, { data->color })
     if (data->model != zox_block_air) {

@@ -15,6 +15,7 @@ ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
     zox_geter(block, Textures, textures)
     // spawn item
     const ecs_entity_t e = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
+    zox_name("block_item")
     if (textures->length > 0) {
         zox_set(e, TextureLink, { textures->value[0] })
     } else {
