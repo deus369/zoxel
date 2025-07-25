@@ -25,13 +25,13 @@ void spawn_realm_characters(ecs_world_t *world, ecs_entity_t e) {
     byte chances[] = { 5, 30, 8, 40, 5, 3 };
 
     for (int i = 0; i < count; i++) {
-        ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(vox_names[i]));
-        if (zox_valid(vox)) {
+        ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(vox_names[i]));
+        if (zox_valid(model)) {
             // can choose here properties for spawning
             byte chance = chances[i];
             const ecs_entity_t e2 = spawn_character3_meta(world,
                 prefab_character3_meta,
-                vox,
+                model,
                 chance);
             add_to_CharacterLinks(&characters, e2);
             chance_max += chance;

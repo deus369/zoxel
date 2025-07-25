@@ -64,8 +64,8 @@ void game_start_player_new_positioner(ecs_world_t *world, const ecs_entity_t pla
 ecs_entity_t game_start_player_new(ecs_world_t *world,
     const ecs_entity_t player)
 {
-    const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
-    if (!vox) {
+    const ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
+    if (!model) {
         zox_log_error("[tall_cube] not found on player")
     }
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
@@ -115,7 +115,7 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
     // const int3 chunk_position = real_position_to_chunk_position(fake_spawn_position, chunk_dimensions, depth);
     spawn_character3D_data spawn_data = {
         .player = player,
-        .vox = vox,
+        .model = model,
         .terrain = terrain,
         .rotation = quaternion_identity,
         .position = fake_spawn_position,

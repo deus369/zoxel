@@ -57,10 +57,10 @@ byte set_entity_chunk(ecs_world_t *world,
     // zox_geter_value(e, NodeDepth, byte, node_depth)
     // todo: this should be used by system itself
     if (zox_has(e, RenderLod)) {
-        zox_geter_value(e, RenderLod, byte, character_lod)
-        const byte new_character_lod = distance_to_lod_npc(chunk_render_distance);
-        if (character_lod != new_character_lod) {
-            zox_set(e, RenderLod, { new_character_lod })
+        zox_geter_value(e, RenderLod, byte, old_lod)
+        const byte lod = distance_to_lod_npc(chunk_render_distance);
+        if (old_lod != lod) {
+            zox_set(e, RenderLod, { lod })
             zox_set(e, RenderLodDirty, { zox_dirty_trigger } )
         }
     }

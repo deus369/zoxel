@@ -31,7 +31,7 @@ void define_systems_basics3D(ecs_world_t *world) {
         [in] MaterialTextured3D,
         [none] TexturedMesh3D)
     // characters
-    zox_render3D_plus_system(RenderCharacters3DSystem,
+    zox_render3D_plus_system(Characters3RenderSystem,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshGPULink,
         [in] rendering.ColorsGPULink,

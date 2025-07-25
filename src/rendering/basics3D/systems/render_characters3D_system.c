@@ -3,7 +3,9 @@
 //#define zox_disable_render_characters
 int zox_statistics_characters_rendered;
 // extern int zox_statistics_characters_rendered;
-void RenderCharacters3DSystem(ecs_iter_t *it) {
+
+// for unique meshes
+void Characters3RenderSystem(ecs_iter_t *it) {
     zox_sys_world()
     if (!zox_valid(material_colored3D)) {
         return;
@@ -45,7 +47,7 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         zox_gpu_float4x4(material_attributes->transform_matrix, transformMatrix->value);
         zox_gpu_render(meshIndicies->length);
-        catch_basic3D_errors("! RenderCharacters3DSystem");
+        catch_basic3D_errors("! Characters3RenderSystem");
         zox_statistics_characters_rendered++;
     }
     if (has_set_material) {
@@ -58,4 +60,4 @@ void RenderCharacters3DSystem(ecs_iter_t *it) {
         glEnable(GL_CULL_FACE);
 #endif
     }
-} zox_declare_system(RenderCharacters3DSystem)
+} zox_declare_system(Characters3RenderSystem)

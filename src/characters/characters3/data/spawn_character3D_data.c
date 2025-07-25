@@ -11,5 +11,5 @@ typedef struct {
     float scale;
     const byte render_disabled;
     const ecs_entity_t model;
-    const ecs_entity_t vox;
+    // const ecs_entity_t vox;
 } spawn_character3D_data;

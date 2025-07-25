@@ -1,7 +1,10 @@
-// extern void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox);
-
-void set_colors_from_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox) {
-    if (!vox) return;
+void set_colors_from_vox_file(ecs_world_t *world,
+    const ecs_entity_t e,
+    const vox_file *vox)
+{
+    if (!vox) {
+        return;
+    }
     int colors_length = vox->palette.values_length;
     ColorRGBs *colorRGBs = zox_get_mut(e, ColorRGBs)
     resize_memory_component(ColorRGBs, colorRGBs, color_rgb, colors_length)
@@ -24,7 +27,10 @@ byte is_vox_valid(const vox_file *vox) {
     return (vox && vox->chunks);
 }
 
-void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox) {
+void set_vox_file(ecs_world_t *world,
+    const ecs_entity_t e,
+    const vox_file *vox)
+{
     if (!is_vox_valid(vox)) {
         set_as_debug_vox(world, e);
         return;
@@ -36,9 +42,15 @@ void set_vox_file(ecs_world_t *world, const ecs_entity_t e, const vox_file *vox)
     // maxed based on octree size
     const int max_length = pow(2, node_depth);
     int3 vox_size = vox->chunks[0].size.xyz;
-    if (vox_size.x > max_length) vox_size.x = max_length;
-    if (vox_size.y > max_length) vox_size.y = max_length;
-    if (vox_size.z > max_length) vox_size.z = max_length;
+    if (vox_size.x > max_length) {
+        vox_size.x = max_length;
+    }
+    if (vox_size.y > max_length) {
+        vox_size.y = max_length;
+    }
+    if (vox_size.z > max_length) {
+        vox_size.z = max_length;
+    }
     zox_muter(e, VoxelNode, node)
     fill_new_octree(node, 0, node_depth);
     byte2 set_octree_data = (byte2) { 1, node_depth };
@@ -89,19 +101,21 @@ ecs_entity_t spawn_vox_file(ecs_world_t *world,
     const ecs_entity_t prefab,
     const vox_file *data)
 {
-    zox_instance(prefab)
-    set_vox_file(world, e, data);
-    // todo: remove RenderDisabled and just use RenderLod?
-    // i can disable these later with RenderDisabled;
-    // zox_set(e, RenderDisabled, { 1 })
-    zox_set(e, RenderLod, { 0 })
-    zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
-    zox_set(e, Scale1D, { 2 })
-    zox_set(e, Position3D, { { 2 * (rand() % 6), 0, 2 * (rand() % 6) }})
-    zox_set(e, VoxScale, { vox_model_scale }) // this needs setting again
-#ifdef zox_disable_io_voxes
-    zox_delete(e)
-    return 0;
-#endif
-    return e;
+    // model_lod
+    zox_neww(model)
+    zox_set_unique_name(model, "file_model");
+    ModelLods modelLods;
+    for (int i = 0; i < max_vox_file_lods; i++) {
+        zox_instance(prefab)
+        zox_set(e, RenderLod, { i })
+        zox_set(e, VoxScale, { vox_model_scale }) // this needs setting again
+        zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
+        set_vox_file(world, e, data);
+        modelLods.value[i] = e;
+        // zox_set(e, Scale1D, { 2 })
+        // zox_set(e, Position3D, { { 2 * (rand() % 6), 0, 2 * (rand() % 6) }})
+        // build our vox mesh
+    }
+    zox_set_ptr(model, ModelLods, modelLods)
+    return model;
 }

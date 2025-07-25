@@ -29,12 +29,32 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
         zox_set(e, ChunkLink, { data.terrain_chunk })
         zox_set(e, ChunkPosition, { data.chunk_position })
     }
+
+    zox_set(e, ModelLink, { data.model })
+    ecs_entity_t vox = data.model;
+    // if model, we use lodded for vox
+    if (zox_has(vox, ModelLods)) {
+        zox_geter(vox, ModelLods, modelLods)
+        vox = modelLods->value[data.lod];
+        // zox_log("+ set model [%s] vox [%s]", zox_get_name(model), zox_get_name(vox))
+    }
+
     if (zox_has(data.prefab, InstanceLink)) {
-        zox_set(e, ModelLink, { data.model })
-        zox_set(e, InstanceLink, { data.vox })
         zox_set(e, VoxScale, { vox_model_scale })
+        zox_set(e, InstanceLink, { vox })
+
+        if (zox_has(vox, VoxScale)) {
+            zox_geter_value(vox, VoxScale, float, meta_vox_scale)
+            zox_geter_value(vox, ChunkSize, int3, meta_chunk_size)
+            float3 meta_bounds = calculate_vox_bounds(meta_chunk_size, meta_vox_scale);
+            zox_set(e, Bounds3D, { meta_bounds })
+        } else {
+            zox_log_error("vox has no VoxScale [%s]", zox_get_name(vox))
+        }
+        // zox_log("vox_model_scale: %f - %f", vox_model_scale, meta_vox_scale)
+
     } else {
-        zox_set(e, CloneVoxLink, { data.vox })
+        zox_set(e, CloneVoxLink, { vox })
         zox_set(e, CloneVox, { 1 })
         // move this to new system
         spawn_gpu_mesh(world, e);

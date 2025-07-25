@@ -1,4 +1,5 @@
 #define directory_voxes "voxes"
+const byte max_vox_file_lods = 5;
 int files_voxes_count = 0;
 ecs_entity_t *files_voxes;
 string_hashmap *files_hashmap_voxes;

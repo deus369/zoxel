@@ -101,14 +101,6 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                     model = models->value[rand() % models->length];
                 }
             }
-            // if model, we use lodded for vox
-            if (zox_has(model, ModelLods)) {
-                zox_geter(model, ModelLods, modelLods)
-                vox = modelLods->value[lod];
-                // zox_log("+ set model [%s] vox [%s]", zox_get_name(model), zox_get_name(vox))
-            } else {
-                vox = model;
-            }
 
             // 2) find a place for our new npc
             // sometimes cannot find a position
@@ -149,24 +141,11 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 .lod = lod,
                 .render_disabled = renderDisabled->value,
                 .model = model,
-                .vox = vox,
+                // .vox = vox,
             };
             const ecs_entity_t character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);
             add_to_EntityLinks(entityLinks, character);
-
-            if (is_characters_instanced) {
-                if (zox_has(vox, VoxScale)) {
-                    zox_geter_value(vox, VoxScale, float, meta_vox_scale)
-                    zox_geter_value(vox, ChunkSize, int3, meta_chunk_size)
-                    float3 meta_bounds = calculate_vox_bounds(meta_chunk_size, meta_vox_scale);
-                    zox_set(character, Bounds3D, { meta_bounds })
-                } else {
-                    zox_log_error("vox has no VoxScale [%s]", zox_get_name(vox))
-                }
-                // zox_set(character, Scale1D, { 2 * vox_model_scale })
-                // zox_log("vox_model_scale: %f - %f", vox_model_scale, meta_vox_scale)
-            }
 
             zox_log_spawning("+ npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
             // zox_log("+ spawned npc at [%ix%ix%i]", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)

@@ -4,8 +4,8 @@
 ecs_entity_t game_start_player_load(ecs_world_t *world,
     const ecs_entity_t player)
 {
-    const ecs_entity_t vox = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
-    if (!vox) {
+    const ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
+    if (!model) {
         zox_log_error("[tall_cube] not found on player")
     }
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
@@ -58,7 +58,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
         zox_log("+ player character placed into [%ix%ix%i]", chunk_position.x, chunk_position.y, chunk_position.z)
     }
     spawn_character3D_data spawn_data = {
-        .vox = vox,
+        .model = model,
         .terrain = terrain,
         .terrain_chunk = spawn_place.chunk,
         .chunk_position = chunk_position,
