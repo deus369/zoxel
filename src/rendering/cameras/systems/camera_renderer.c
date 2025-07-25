@@ -10,16 +10,19 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
     zox_sys_in(FieldOfView)
     zox_sys_in(ScreenPosition)
     zox_sys_in(ScreenDimensions)
+    zox_sys_in(FogColor)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(ViewMatrix, viewMatrix)
         zox_sys_i(FieldOfView, sysOfView)
         zox_sys_i(ScreenPosition, screenPosition)
         zox_sys_i(ScreenDimensions, screenDimensions)
+        zox_sys_i(FogColor, fogColor)
         // pass these data to systems
         renderer_camera = e;
         render_camera_fov = sysOfView->value;
         render_camera_matrix = viewMatrix->value;
+        renderer_fog_color = fogColor->value;
         // set render objects
         uint fbo = 0;
         if (!is_camera2D) {
@@ -46,18 +49,18 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
         // todo: this required but breaks it for both render cameras
         if (fbo) {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-#ifdef zoxel_catch_opengl_errors
+            #ifdef zoxel_catch_opengl_errors
             if (!check_opengl_frame_buffer_status()) {
                 zox_log(" !! camera render - error on fbo [%u]\n", fbo)
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
                 continue;
             }
-#endif
+            #endif
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
-#ifdef zox_include_vulkan
+        #ifdef zox_include_vulkan
         // else { set vulkan viewport; }
-#endif
+        #endif
         if (!is_camera2D) {
             for (int j = 0; j < render3D_systems->size; j++) {
                 ecs_run(world, render3D_systems->data[j], 0, NULL);

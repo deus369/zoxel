@@ -25,10 +25,16 @@ $(TARGET): $(SRCS)
 	@ echo "> Building [$(GAME)]"
 	@ mkdir -p bin
 	@ $(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
+	@ echo "-------------------"
+	@ sleep 1
 	@ echo " - completed -"
+	@ sleep 1
+	@ echo "-------------------"
 
 run: $(TARGET)
 	@ echo "> Running [$(GAME)]"
+	@ sleep 1
+	@ echo "-------------------"
 	@ ./$(TARGET)
 
 $(TARGET_DEV): $(SRCS)

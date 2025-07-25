@@ -11,6 +11,7 @@ ecs_entity_t prefab_taskbar;
 ecs_entity_t prefab_device_gizmo;ecs_entity_t prefab_menu_game;
 ecs_entity_t prefab_menu_game_touch;
 ecs_entity_t zoxel_main_menu;
+ecs_entity_t prefab_crosshair;
 
 #include "menu_start.c"
 #include "menu_main.c"
@@ -42,4 +43,5 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     prefab_device_gizmo = spawn_prefab_device_gizmo(world, prefab_icon);
     prefab_menu_game = spawn_prefab_menu_game(world, prefab_layout2D);
     prefab_menu_game_touch = spawn_prefab_menu_game_touch(world, prefab_layout2D);
+    prefab_crosshair = spawn_prefab_crosshair(world, prefab_element_textured);
 }

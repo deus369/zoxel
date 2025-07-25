@@ -2,7 +2,7 @@ void BehaviourSystem(ecs_iter_t *it) {
     // init_delta_time()
     zox_sys_world()
     zox_sys_begin()
-    zox_sys_in(LastDamager)
+    zox_sys_in(InCombat)
     zox_sys_in(DefaultBehaviour)
     zox_sys_out(Behaviour)
     zox_sys_out(MoveForwards)
@@ -10,17 +10,17 @@ void BehaviourSystem(ecs_iter_t *it) {
     zox_sys_out(MoveSpeed)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
-        zox_sys_i(LastDamager, lastDamager)
+        zox_sys_i(InCombat, combat)
         zox_sys_i(DefaultBehaviour, defaultBehaviour)
         zox_sys_o(Behaviour, behaviour)
         zox_sys_o(MoveForwards, moveForwards)
         zox_sys_o(RotateTowards, rotateTowards)
         zox_sys_o(MoveSpeed, moveSpeed)
-
         moveForwards->value = behaviour->value != zox_behaviour_idle;
         rotateTowards->value = behaviour->value != zox_behaviour_idle;
         // only flee if in “wander” mode and not frozen
-        if (zox_valid(lastDamager->value)) {
+        if (combat->value == zox_combat_enter_battle) {
+            // zox_valid(lastDamager->value)) {
             const byte is_coward = zox_has(e, Coward);
             if (is_coward && behaviour->value != zox_behaviour_flee) {
                 behaviour->value = zox_behaviour_flee;
@@ -35,7 +35,7 @@ void BehaviourSystem(ecs_iter_t *it) {
                     zox_log("+ has started to attack [%s]", zox_get_name(e))
                 }
             }
-        } else {
+        } else if (combat->value == zox_combat_leaving) {
             if (behaviour->value != defaultBehaviour->value) {
                 behaviour->value = defaultBehaviour->value;
                 moveSpeed->value = 3;

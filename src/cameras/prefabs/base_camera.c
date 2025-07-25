@@ -19,6 +19,7 @@ ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
     zox_prefab_set(e, CanRoam, { 0 }) // newer
     zox_prefab_set(e, CameraMode, { 0 })
     zox_prefab_set(e, ScreenToCanvas, { float4_zero })
+    zox_prefab_set(e, FogColor, { color_rgb_green })
     // culling
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     zox_prefab_add(e, CameraPlanes)

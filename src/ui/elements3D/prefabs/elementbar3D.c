@@ -21,7 +21,11 @@ ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_2 spawn_elementbar3D(ecs_world_t *world, SpawnDataElementbar3D *data, Text3DData text_data, Zigel3DData zigel_data) {
+ecs_entity_2 spawn_elementbar3(ecs_world_t *world,
+    SpawnDataElementbar3D *data,
+    Text3DData text_data,
+    Zigel3DData zigel_data)
+{
     ecs_entity_2 output = { 0, 0 };
     zox_instance(data->backbar.prefab)
     output.x = e;

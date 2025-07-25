@@ -12,48 +12,49 @@
 
 void define_systems_players2(ecs_world_t *world) {
     zox_system(QolShortcutsSystem, EcsOnUpdate,
-        [in] inputs.DeviceLinks,
-        [none] players.Player)
+            [in] inputs.DeviceLinks,
+            [none] players.Player)
     zox_system(PlayerShortcutsSystem, EcsOnUpdate,
-        [in] inputs.DeviceLinks,
-        [in] games.GameLink,
-        [none] players.Player)
+            [in] inputs.DeviceLinks,
+            [in] games.GameLink,
+            [none] players.Player)
     // zox_pipelines_pre_render
     zox_system_1(PlayerPauseSystem, EcsPreStore,
-        [in] inputs.DeviceLinks,
-        [none] players.Player)
+            [in] inputs.DeviceLinks,
+            [none] players.Player)
     zox_system_1(VirtualJoystickSystem, EcsPreStore,
-        [in] inputs.DeviceLink,
-        [in] raycasts.RaycasterResult,
-        [in] inputs.ZevicePointer,
-        [in] inputs.VirtualZeviceLink,
-        [none] inputs.Zevice)
+            [in] inputs.DeviceLink,
+            [in] raycasts.RaycasterResult,
+            [in] inputs.ZevicePointer,
+            [in] inputs.VirtualZeviceLink,
+            [none] inputs.Zevice)
     zox_system_1(EditorInputSystem, EcsPreStore,
             [in] inputs.DeviceLinks,
             [in] elements.core.CanvasLink, [none] players.Player)
     zox_system(PlayerToggleCameraSystem, EcsOnUpdate,
-        [in] inputs.DeviceLinks,
-        [in] characters.CharacterLink,
-        [in] games.GameLink,
-        [none] players.Player)
+            [in] players.PlayerState,
+            [in] inputs.DeviceLinks,
+            [in] games.GameLink,
+            [in] characters.CharacterLink,
+            [none] players.Player)
 #ifdef zox_mod_actions
     zox_system(ActionsShortcutSystem, EcsOnUpdate,
-        [in] inputs.DeviceLinks,
-        [none] players.Player)
+            [in] inputs.DeviceLinks,
+            [none] players.Player)
     zox_system(VoxelActionASystem, EcsOnLoad,
-        [in] chunks3.RaycastVoxelData,
-        [out] characters.TriggerActionA)
+            [in] chunks3.RaycastVoxelData,
+            [out] characters.TriggerActionA)
     zox_system_1(ActionActivateSystem, EcsOnLoad,
-        [in] chunks3.RaycastVoxelData,
-        [out] actions.ActionLinks,
-        [out] characters.TriggerActionB)
+            [in] chunks3.RaycastVoxelData,
+            [out] actions.ActionLinks,
+            [out] characters.TriggerActionB)
 #endif
     zox_system_1(PlayerTestSystem, EcsPreStore,
-        [in] inputs.DeviceLinks,
-        [in] elements.core.CanvasLink,
-        [none] players.Player)
+            [in] inputs.DeviceLinks,
+            [in] elements.core.CanvasLink,
+            [none] players.Player)
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
-        [in] cameras.CameraLink,
-        [in] chunks3.VoxLink,
-        [out] chunks3.RaycastVoxelData)
+            [in] cameras.CameraLink,
+            [in] chunks3.VoxLink,
+            [out] chunks3.RaycastVoxelData)
 }

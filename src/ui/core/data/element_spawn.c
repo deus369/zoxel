@@ -1,12 +1,14 @@
 // data used when spawning any element
 typedef struct {
     ecs_entity_t prefab;
+    // layout2
     int2 position;
     int2 size;
-    int2 texture_size;
     float2 anchor;
-    byte layer;
+    // rendering
     byte render_disabled;
+    byte layer;
+    int2 texture_size;
     // outputs
     int2 position_in_canvas;
 } ElementSpawnData;

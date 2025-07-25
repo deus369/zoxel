@@ -1,74 +1,63 @@
 void ElementRenderSystem(ecs_iter_t *it) {
-    zox_field_world()
-    if (!material_textured2D) {
+    zox_sys_world()
+    if (!zox_valid(material_textured2D)) {
         return;
     }
-    const uint material_link = zox_get_value(material_textured2D, MaterialGPULink)
-    const MaterialTextured2D *material_attributes = zox_get(material_textured2D, MaterialTextured2D)
-    byte has_set_material = 0;
+    byte is_rendering = 0;
     const float position_z = ((int) renderer_layer) * shader_depth_multiplier;
-    // glUniform1f(attributes.depth, position_z);
-    zox_field_in(Position2D, position2Ds, 1)
-    zox_field_in(Rotation2D, rotation2Ds, 2)
-    zox_field_in(Scale1D, scale1Ds, 3)
-    zox_field_in(Layer2D, layer2Ds, 4)
-    zox_field_in(RenderDisabled, renderDisableds, 5)
-    zox_field_in(Brightness, brightnesses, 6)
-    zox_field_in(Alpha, alphas, 7)
-    zox_field_in(MeshGPULink, meshGPULinks, 8)
-    zox_field_in(UvsGPULink, uvsGPULinks, 9)
-    zox_field_in(TextureGPULink, textureGPULinks, 10)
+    zox_geter_value(material_textured2D, MaterialGPULink, uint, material_link)
+    zox_geter(material_textured2D, MaterialTextured2D, material_attributes)
+    zox_sys_begin()
+    zox_sys_in(Position2D)
+    zox_sys_in(Rotation2D)
+    zox_sys_in(Scale1D)
+    zox_sys_in(Layer2D)
+    zox_sys_in(RenderDisabled)
+    zox_sys_in(Brightness)
+    zox_sys_in(Alpha)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(TextureGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Layer2D, layer2Ds, layer2D)
-        if (layer2D->value != renderer_layer) continue;
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
-        zox_field_e()
-        if (get_root_canvas_camera(world, e) != renderer_camera) continue;
-        zox_field_i(Position2D, position2Ds, position2D)
-        zox_field_i(Rotation2D, rotation2Ds, rotation2D)
-        zox_field_i(Scale1D, scale1Ds, scale1D)
-        zox_field_i(Brightness, brightnesses, brightness)
-        zox_field_i(Alpha, alphas, alpha)
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        if (!meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) {
+        zox_sys_e()
+        zox_sys_i(Position2D, position2D)
+        zox_sys_i(Rotation2D, rotation2D)
+        zox_sys_i(Scale1D, scale1D)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(Layer2D, layer2D)
+        zox_sys_i(Brightness, brightness)
+        zox_sys_i(Alpha, alpha)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(TextureGPULink, textureGPULink)
+        if (layer2D->value != renderer_layer || renderDisabled->value || get_root_canvas_camera(world, e) != renderer_camera || !meshGPULink->value.x || !meshGPULink->value.y || !uvsGPULink->value || !textureGPULink->value) {
             continue;
         }
-        if (!has_set_material) {
-            has_set_material = 1;
+        if (!is_rendering) {
+            is_rendering = 1;
+            // per material data
             zox_gpu_blend_enable();
             zox_gpu_material(material_link);
             zox_gpu_float4x4(material_attributes->camera_matrix, render_camera_matrix);
         }
+        // per mesh data
         opengl_set_mesh_indicies(meshGPULink->value.x);
+        opengl_bind_texture(textureGPULink->value);
         glBindBuffer(GL_ARRAY_BUFFER, meshGPULink->value.y);
         glEnableVertexAttribArray(material_attributes->vertex_position);
         glVertexAttribPointer(material_attributes->vertex_position, 2, GL_FLOAT, GL_FALSE, 0, 0);
         glBindBuffer(GL_ARRAY_BUFFER, uvsGPULink->value);
         glEnableVertexAttribArray(material_attributes->vertex_uv);
         glVertexAttribPointer(material_attributes->vertex_uv, 2, GL_FLOAT, GL_FALSE, 0, 0);
-        opengl_bind_texture(textureGPULink->value);
         zox_gpu_float3(material_attributes->position, (float3) { position2D->value.x, position2D->value.y, position_z });
         zox_gpu_float(material_attributes->angle, rotation2D->value);
         zox_gpu_float(material_attributes->scale, scale1D->value);
-        // here set float2
-        // float2 final_scale = (float2) { scale2D->value.x * canvasSize->value.x, scale2D->value.y * canvasSize->value.y };
-        // opengl_set_flaot2(material_attributes->scale, final_scale);
         zox_gpu_float(material_attributes->brightness, brightness->value);
         zox_gpu_float(material_attributes->alpha, alpha->value);
-#ifndef zox_disable_render_ui
         zox_gpu_render(6);
-#endif
-#ifdef zoxel_catch_opengl_errors
-        if (check_opengl_error_unlogged() != 0) {
-            zox_log(" > failed to render element2D [%lu]: [%i] - [%ix%i:%i]\n", it->entities[i], 6, meshGPULink->value.x, meshGPULink->value.y, uvsGPULink->value)
-            break;
-        }
-#endif
     }
-    if (has_set_material) {        
+    if (is_rendering) {
+        // cleanup material data
         zox_gpu_disable_buffer(material_attributes->vertex_uv);
         zox_gpu_disable_buffer(material_attributes->vertex_position);
         zox_gpu_blend_disable();

@@ -1,12 +1,14 @@
+extern void crosshair_set_type(ecs_world_t* world, byte new);
+
 // using DDA for raycasting
-void raycast_terrain_gizmo(ecs_world_t *world,
+byte raycast_terrain_gizmo(ecs_world_t *world,
     const ecs_entity_t caster,
     const ecs_entity_t camera,
     const ecs_entity_t terrain,
     RaycastVoxelData *data)
 {
     if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) {
-        return;
+        return ray_hit_type_none;
     }
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
@@ -92,6 +94,7 @@ void raycast_terrain_gizmo(ecs_world_t *world,
         float3 b = float3_add(data->hit, float3_scale(data->normal, 0.03f));
         render_line3D_thickness_alpha(world, data->hit, b, hit_block_vox_color, raycast_thickness);
     }
+    return ray_hit;
 }
 
 void RaycastGizmoSystem(ecs_iter_t *it) {
@@ -114,10 +117,11 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
         }
         zox_geter_value(cameraLink->value, CharacterLink, const ecs_entity_t, e2)
         ecs_entity_t caster = e2 == e ? e : 0;
-        raycast_terrain_gizmo(world,
+        byte ray_hit = raycast_terrain_gizmo(world,
             caster,
             cameraLink->value,
             voxLink->value,
             raycastVoxelData);
+        crosshair_set_type(world, ray_hit);
     }
 } zox_declare_system(RaycastGizmoSystem)

@@ -9,3 +9,4 @@
 #include "resize.c"
 #include "layers.c"
 #include "canvas_fading.c"
+#include "set_children.c"

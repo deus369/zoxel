@@ -49,6 +49,7 @@ void DotsSystem(ecs_iter_t *it) {
             statValue->value = stat_value_max;
         }
         // rememer last to give xp - wait this tick rate - warlocks will always get xp lmao
-        zox_set(userLink->value, LastDamager, { spawnerLink->value })
+        // zox_set(userLink->value, LastDamager, { spawnerLink->value })
+        combat_on_hit(world, userLink->value,spawnerLink->value);
     }
 } zox_declare_system(DotsSystem)

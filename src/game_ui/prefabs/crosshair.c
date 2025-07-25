@@ -1,27 +1,23 @@
-ecs_entity_t local_crosshair = 0;
-
-ecs_entity_t spawn_crosshair(ecs_world_t *world, const ecs_entity_t canvas, const  ecs_entity_t parent) {
-    byte layer = 1;
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t e = spawn_element_basic(world,
-        prefab_element_ready,
-        canvas,
-        parent,
-        int2_zero,
-        crosshair_pixel_size,
-        crosshair_texture_size,
-        float2_half,
-        layer,
-        int2_half(canvas_size),
-        canvas_size);
-    zox_add_tag(e, FrameTexture)
-    zox_set(e, FrameCorner, { 14 })
-    zox_set(e, OutlineThickness, { 12 })
+ecs_entity_t spawn_prefab_crosshair(ecs_world_t *world,
+    const ecs_entity_t prefab)
+{
+    zox_prefab_child(prefab)
+    zox_set(e, HitType, { 0 })
+    zox_set(e, FrameCorner, { crosshair_corner })
+    zox_set(e, OutlineThickness, { crosshair_thickness })
     zox_set(e, Color, { empty_color })
-    zox_set(e, OutlineColor, { crosshair_color })
-    zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
-    zox_set(e, Seed, { 666 })
-    // zox_log(" > crosshair [%lu]\n", crosshair_ui)
+    zox_set(e, OutlineColor, { crosshair_air })
+    return e;
+}
+
+ecs_entity_t spawn_crosshair(ecs_world_t *world,
+    const CanvasSpawnData canvas_data,
+    const ParentSpawnData parent_data,
+    ElementSpawnData element_data)
+{
+    zox_instance(element_data.prefab)
+    zox_name("crosshair")
+    set_element_spawn_data(world, e, canvas_data, parent_data, &element_data);
     local_crosshair = e;
     return e;
 }

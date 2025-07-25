@@ -1,4 +1,5 @@
 #include "new.c"
+#include "ids.c"
 #include "add.c"
 #include "get.c"
 #include "set.c"

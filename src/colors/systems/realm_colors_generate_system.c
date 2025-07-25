@@ -55,6 +55,8 @@ void generate_colors(long int seed, Colors *colors) {
 #endif
 }
 
+extern void set_camera_fog_color(ecs_world_t*, color_rgb) ;
+
 void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     if (!zox_valid(realm) || !zox_has(realm, Seed) || !zox_has(realm, Colors)) {
         zox_log_error("invalid realm in [spawn_realm_colors]")
@@ -77,8 +79,9 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
         sky_color = color_rgb_grayscale(3);
     }
     // rendering: set global game colors
-    fog_color = sky_color;
+    // fog_color = sky_color;
     game_sky_color = sky_color;
     game_sky_bottom_color = sky_color;
-    viewport_clear_color = sky_color;
+    // viewport_clear_color = sky_color;
+    set_camera_fog_color(world, sky_color);
 }

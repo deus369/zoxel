@@ -101,7 +101,8 @@ void MeleeSystem(ecs_iter_t *it) {
                     statValue->value = stat_value_max;
                 }
                 // zox_log("[%s] took [%f] damage and is on [%f] health", zox_get_name(hit), skill_damage, statValue->value)
-                zox_set(hit, LastDamager, { user })
+                // zox_set(hit, LastDamager, { user })
+                combat_on_hit(world, hit, user);
             }
 
             // add knockback

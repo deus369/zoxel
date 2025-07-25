@@ -1,4 +1,6 @@
-void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data *data) {
+/*void spawn_character3D_healthbar3D(ecs_world_t *world,
+    spawned_character3D_data *data)
+{
     if (disable_npc_uis) {
         return;
     }
@@ -30,10 +32,11 @@ void spawn_character3D_healthbar3D(ecs_world_t *world, spawned_character3D_data 
         .fill_color = statbar3D_font_color_fill,
         .outline_color = statbar3D_font_color_outline
     };
-    const ecs_entity_2 e = spawn_elementbar3D(world, &spawn_data, statbar_text_data, statbar_zigel_data);
-    add_to_ElementLinks(data->elementLinks, e.x);
+    const ecs_entity_2 e = spawn_elementbar3(world, &spawn_data, statbar_text_data, statbar_zigel_data);
+
     zox_set(e.x, StatLink, { data->health })
     zox_set(e.y, StatLink, { data->health })
     zox_set(e.x, ElementHolder, { data->e })
     zox_add_tag(e.y, StatsLabel)
-}
+    add_to_ElementLinks(data->elementLinks, e.x);
+}*/

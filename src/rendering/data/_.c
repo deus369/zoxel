@@ -4,3 +4,4 @@
 #include "mesh_states.c"
 #include "primitive_square.c"
 #include "render_lod.c"
+#include "camera_renderer.c"

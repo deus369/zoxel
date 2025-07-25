@@ -4,7 +4,6 @@
 #include "data/frame_buffer.c"
 #include "data/render_buffer.c"
 #include "util/render_camera.c"
-#include "util/camera_render_update.c"
 #include "systems/_.c"
 
 zox_begin_module(RenderingCameras)

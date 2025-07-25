@@ -4,7 +4,6 @@ void QolShortcutsSystem(ecs_iter_t *it) {
     zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
         zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
@@ -16,8 +15,6 @@ void QolShortcutsSystem(ecs_iter_t *it) {
                 toggle_fullscreen = 1;
             } else if (keyboard->f10.pressed_this_frame) {
                 toggle_maximized = 1;
-            } else if (keyboard->f9.pressed_this_frame) {
-                toggle_free_roam_camera(world, e);
             } else if (keyboard->f8.pressed_this_frame) {
                 is_render_fog = !is_render_fog;
             }

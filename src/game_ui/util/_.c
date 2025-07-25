@@ -3,6 +3,7 @@
 #include "menu_paused.c"
 #include "game_loading.c"
 #include "taskbar.c"
+#include "crosshair.c"
 
 void toggle_pause_ui(ecs_world_t *world, const ecs_entity_t player) {
     const ecs_entity_t game = zox_get_value(player, GameLink)
