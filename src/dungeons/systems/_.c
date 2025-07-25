@@ -1,1 +1,1 @@
-#include "dungeon_block_system.c"
+#include "dungeon_core.c"

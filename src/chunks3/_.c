@@ -14,21 +14,17 @@ zox_component_entity(VoxLink)
 #include "streaming/_.c"
 #include "structures/_.c"
 #include "animations/_.c"
-
-void module_dispose_chunks3(ecs_world_t *world, void *ctx) {
-    dispose_hook_spawned_block();
-}
+#include "vodes3/_.c"
 
 zox_begin_module(Chunks3)
-    initialize_hook_spawned_block();
     zox_define_component_entity(VoxLink)
-    zox_module_dispose(module_dispose_chunks3)
     define_components_chunks(world);
     define_systems_chunks(world);
     spawn_prefabs_chunks(world);
     zox_import_module(Streaming)
     zox_import_module(Structures)
     zox_import_module(VoxelsAnimations)
+    zox_import_module(Vodes3)
 zox_end_module(Chunks3)
 
 #endif

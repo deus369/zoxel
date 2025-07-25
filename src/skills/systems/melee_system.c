@@ -74,7 +74,6 @@ void MeleeSystem(ecs_iter_t *it) {
             skill_damage += 3 * zox_gett_value(strength, StatValue);
         }
 
-
         const float skill_range = skillRange->value;
         const ecs_entity_t hit = raycastVoxelData->chunk;
         const byte in_range = raycastVoxelData->distance <= skill_range;
@@ -133,6 +132,7 @@ void MeleeSystem(ecs_iter_t *it) {
                 spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
 
                 // todo: spawn pickup in VoxelNodeDirty system - TerrainItemDropSystem
+                // this requires a stack on chunk for its updates
 
                 // spawn a pickup if removed
                 if (zox_has(hit, TerrainChunk)) {
@@ -146,8 +146,6 @@ void MeleeSystem(ecs_iter_t *it) {
                         }
                     }
                 }
-
-
             } else {
                 // cannot destroy voxel sound
                 spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[42 + rand() % 6], 0.26, 1.4f * get_volume_sfx());

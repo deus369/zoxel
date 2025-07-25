@@ -3,10 +3,6 @@
 #include "chunk_bounds_debug_system.c"
 #include "chunk_flatland_system.c"
 #include "grassy_plains_system.c"
-#include "block_vox_spawn_system.c"
-#include "block_vox_despawn_system.c"
-#include "block_vox_lod_system.c"
-#include "block_vox_removed_system.c"
 #include "realm_voxels.c"
 zox_declare_system_state_event(RealmVoxels, GenerateRealm, zox_generate_realm_voxels, spawn_realm_voxels)
 
@@ -29,38 +25,6 @@ void define_systems_terrain(ecs_world_t *world) {
         [out] chunks3.VoxelNodeDirty,
         [none] !FlatlandChunk,
         [none] TerrainChunk)
-    zox_system(BlockVoxDespawnSystem, EcsOnUpdate,
-        [in] chunks3.VoxelNodeDirty,
-        [in] rendering.RenderDistanceDirty,
-        [in] rendering.RenderLod,
-        [out] chunks3.VoxelNode,
-        [out] chunks3.BlocksSpawned,
-        [none] TerrainChunk)
-    zox_system(BlockVoxLodSystem, EcsOnUpdate,
-        [in] rendering.RenderDistanceDirty,
-        [in] rendering.RenderDistance,
-        [in] chunks3.VoxelNode,
-        [in] chunks3.BlocksSpawned,
-        [none] TerrainChunk)
-    zox_system(BlockVoxRemovedSystem, EcsOnUpdate,
-        [in] chunks3.VoxelNodeDirty,
-        [in] chunks3.BlocksSpawned,
-        [out] chunks3.VoxelNode,
-        [none] TerrainChunk)
-
-    // remember: needs EcsOnUpdate, zox_pip_mainthread is called when Dirty is cleaned
-    zox_system_1(BlockVoxSpawnSystem, zox_pip_mainthread,
-        [in] chunks3.VoxelNodeDirty,
-        [in] rendering.RenderDistanceDirty,
-        [in] chunks3.ChunkPosition,
-        [in] chunks3.VoxLink,
-        [in] chunks3.NodeDepth,
-        [in] rendering.RenderDisabled,
-        [in] rendering.RenderLod,
-        [in] rendering.RenderDistance,
-        [out] chunks3.VoxelNode,
-        [out] chunks3.BlocksSpawned,
-        [none] TerrainChunk)
 #ifdef zox_debug_chunk_bounds
     zox_system_1(ChunkBoundsDrawSystem, zox_pip_mainthread,
         [in] transforms3.Position3D,
@@ -71,6 +35,7 @@ void define_systems_terrain(ecs_world_t *world) {
 #endif
     // Builds our Textured Chunks (Terrain) !
     if (!headless) {
+        // move this into chunk3, for chunk3_textured
         zox_system(ChunkTerrainBuildSystem, EcsOnUpdate,
             [in] chunks3.VoxLink,
             [in] chunks3.VoxelNode,

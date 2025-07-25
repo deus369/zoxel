@@ -36,13 +36,14 @@ void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
 }
 
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
-void close_same_nodes(ecs_world_t *world, VoxelNode *node) {
+// doesn't close any block voxes
+void reduce_voxel_nodes(ecs_world_t *world, VoxelNode *node) {
     if (!has_children_VoxelNode(node)) {
         return;
     }
     VoxelNode* kids = get_children_VoxelNode(node);
     for (byte i = 0; i < octree_length; i++) {
-        close_same_nodes(world, &kids[i]);
+        reduce_voxel_nodes(world, &kids[i]);
     }
     byte all_same = 1;
     byte all_same_voxel = 255;
@@ -68,7 +69,7 @@ void close_same_nodes(ecs_world_t *world, VoxelNode *node) {
 
 void cleanup_nodes(ecs_world_t *world, VoxelNode *node) {
 #ifndef zox_disable_closing_octree_nodes
-    close_same_nodes(world, node);
+    reduce_voxel_nodes(world, node);
 #endif
 }
 

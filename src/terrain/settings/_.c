@@ -4,7 +4,6 @@ const double start_game_delay_terrain = 1.5;
 const double start_game_delay_terrain2 = 2.5;
 const float end_game_delay_fade = 1;
 // others
-byte block_vox_render_at_lod = 0; // 3 | 4 looks best
 byte zox_log_terrain_generation = 0;
 // voxes lods
 const byte max_vox_blocks = 16; // max spawned vox_blocks

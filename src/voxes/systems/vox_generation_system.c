@@ -125,7 +125,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
                 black_voxel);
         }
 #ifndef zox_disable_closing_octree_nodes
-        close_same_nodes(world, voxelNode);
+        reduce_voxel_nodes(world, voxelNode);
 #endif
         generateVox->value = 0;
         if (zox_has(e, ChunkMeshDirty)) {

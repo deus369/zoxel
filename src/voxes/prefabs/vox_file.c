@@ -67,7 +67,7 @@ void set_vox_file(ecs_world_t *world,
         }
     }
     optimize_solid_nodes(node);
-    close_same_nodes(world, node);
+    reduce_voxel_nodes(world, node);
     zox_modified(e, VoxelNode)
     zox_set(e, ChunkSize, { vox_size }) // size
     set_colors_from_vox_file(world, e, vox); // colors
