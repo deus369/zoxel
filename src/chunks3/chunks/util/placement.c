@@ -14,7 +14,7 @@ void place_block(ecs_world_t *world,
     }
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
     zox_get_muter(chunk, VoxelNode, base_node)
-    float scale = get_terrain_voxel_scale(node_depth);
+    // float scale = get_terrain_voxel_scale(node_depth);
     // assume we checked if get_voxel == place_voxel
     // need to delete before node updated
     if (is_linked_VoxelNode(node)) {
@@ -34,31 +34,6 @@ void place_block(ecs_world_t *world,
         .position = position_local,
     };
     node = set_voxel(&datam, data2);
-    // set after node was updated
-    if (voxel && !is_linked_VoxelNode(node)) {
-        // spawn node entity here!
-        zox_geter(chunk, VoxLink, voxLink)
-        zox_geter(voxLink->value, RealmLink, realmLink)
-        zox_geter(realmLink->value, VoxelLinks, voxels)
-        const byte block_index = voxel - 1;
-        if (block_index >= voxels->length) {
-            zox_log_error("voxel [%i] is out of range [%i]", block_index, voxels->length)
-            return;
-        }
-        const ecs_entity_t block = voxels->value[block_index];
-        spawned_block_data spawned_data = (spawned_block_data) {
-            .block_index = block_index,
-            .block = block,
-            .position_local = position_local,
-            .position_global = position_global,
-            .position_real = position_real,
-            .chunk = chunk,
-            .node = node,
-            .scale = scale,
-        };
-        run_hook_spawned_block(world, &spawned_data);
-    }
-
     // if not linked block
     if (!is_linked_VoxelNode(node)) {
         close_same_nodes(world, base_node);
@@ -106,3 +81,31 @@ void raycast_action(ecs_world_t *world,
     }
     place_block(world, chunk, node, position_local, position_global, voxel, position_real);
 }
+
+
+
+    // VoxelNodeDirty ? does VoxelNodeDirty set this?
+    // set after node was updated
+    /*if (voxel && !is_linked_VoxelNode(node)) {
+        // spawn node entity here!
+        zox_geter(chunk, VoxLink, voxLink)
+        zox_geter(voxLink->value, RealmLink, realmLink)
+        zox_geter(realmLink->value, VoxelLinks, voxels)
+        const byte block_index = voxel - 1;
+        if (block_index >= voxels->length) {
+            zox_log_error("voxel [%i] is out of range [%i]", block_index, voxels->length)
+            return;
+        }
+        const ecs_entity_t block = voxels->value[block_index];
+        spawned_block_data spawned_data = (spawned_block_data) {
+            .block_index = block_index,
+            .block = block,
+            .position_local = position_local,
+            .position_global = position_global,
+            .position_real = position_real,
+            .chunk = chunk,
+            .node = node,
+            .scale = scale,
+        };
+        run_hook_spawned_block(world, &spawned_data);
+    }*/

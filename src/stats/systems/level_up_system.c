@@ -29,7 +29,7 @@ void LevelUpSystem(ecs_iter_t *it) {
             const float3 bounds = zox_get_value(userLink->value, Bounds3D)
             const ecs_entity_t e2 = spawn_particle3D_emitter(world, userLink->value, 10, float3_scale(bounds, 3), (color) { 255, 255, 0, 55 });
             add_to_Children(children, e2);
-            zox_set(e2, DestroyInTime, { 12 })
+            zox_set(e2, DestroyInTime, { 3 + statValue->value })
 
             // give 1 in all attributes for now
             //  to test them out

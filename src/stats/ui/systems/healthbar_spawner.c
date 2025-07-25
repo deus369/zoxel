@@ -32,7 +32,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
         if (!zox_valid(health)) {
             continue;
         }
-        zox_log("+ spawning healthbar on [%s]", zox_get_name(e))
+        // zox_log("+ spawning healthbar on [%s]", zox_get_name(e))
 
         // spawn 3D healtbar
         SpawnDataElementbar3D spawn_data = {

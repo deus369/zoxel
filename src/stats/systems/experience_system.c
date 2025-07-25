@@ -1,6 +1,4 @@
 void ExperienceSystem(ecs_iter_t *it) {
-    const float experience_per_level = 1;
-    const float gain_max = 2.0f;
     const float popup_spawn_y = 0.34f;
     zox_sys_world()
     zox_sys_begin()
@@ -32,10 +30,7 @@ void ExperienceSystem(ecs_iter_t *it) {
         zox_muter(enemy_soul, ExperienceValue, experience)
 
         // base xp
-        float experience_gain = my_level->value * experience_per_level;
-
-        // critical xp gain
-        experience_gain = randf_range(experience_gain, experience_gain + (my_level->value * gain_max));
+        float experience_gain = experience_gain_base + my_level->value * randf_range(experience_per_level_min, experience_per_level_max);
 
         // add to victor
         experience->value += experience_gain;

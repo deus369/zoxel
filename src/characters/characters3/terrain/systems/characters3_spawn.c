@@ -80,7 +80,6 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             byte chance_current = 0;
             byte chance_rolled = rand() % max_chance;
             ecs_entity_t model = 0;
-            ecs_entity_t vox = 0;
             for (byte k = 0; k < characters->length; k++) {
                 ecs_entity_t meta = characters->value[k];
                 zox_geter_value(meta, SpawnChance, byte, chance)
@@ -141,7 +140,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 .lod = lod,
                 .render_disabled = renderDisabled->value,
                 .model = model,
-                // .vox = vox,
+                .scale = vox_model_scale,
             };
             const ecs_entity_t character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);

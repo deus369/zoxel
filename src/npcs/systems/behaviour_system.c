@@ -19,7 +19,7 @@ void BehaviourSystem(ecs_iter_t *it) {
         moveForwards->value = behaviour->value != zox_behaviour_idle;
         rotateTowards->value = behaviour->value != zox_behaviour_idle;
         // only flee if in “wander” mode and not frozen
-        if (combat->value == zox_combat_enter_battle) {
+        if (combat->value == zox_combat_battle) {
             // zox_valid(lastDamager->value)) {
             const byte is_coward = zox_has(e, Coward);
             if (is_coward && behaviour->value != zox_behaviour_flee) {
@@ -35,7 +35,7 @@ void BehaviourSystem(ecs_iter_t *it) {
                     zox_log("+ has started to attack [%s]", zox_get_name(e))
                 }
             }
-        } else if (combat->value == zox_combat_leaving) {
+        } else if (combat->value == zox_combat_peace) {
             if (behaviour->value != defaultBehaviour->value) {
                 behaviour->value = defaultBehaviour->value;
                 moveSpeed->value = 3;

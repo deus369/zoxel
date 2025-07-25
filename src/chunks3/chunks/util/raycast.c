@@ -239,7 +239,7 @@ byte raycast_voxel_node(
                 if (zox_has(block_spawn, InstanceLink)) {
                     vox = zox_get_value(block_spawn, InstanceLink)
                 } else if (zox_has(hit_block, ModelLink)) {
-                    zox_log_error("does this happy anymore??")
+                    // zox_log_error("does this happy anymore??")
                     vox = zox_get_value(hit_block,  ModelLink)
                 } else {
                     vox = chunk;

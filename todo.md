@@ -15,10 +15,10 @@ User Interfaces
 - [ ] terminal in game
 
 IO
-- [ ] Autosaving
 - [ ] Save and load chunk edits
 - [ ] Save and load npcs
 - [ ] Save and load items/skills/stats etc
+- [x] Autosaving
 
 Graphics
 - [ ] lighting
@@ -43,14 +43,16 @@ Characters
 - [ ] merchant npcs
 
 Combat
+- [ ] screen shake
+- [ ] screen red tinge on hit
+- [ ] npcs to drop items
 - [ ] classes and skill trees
 - [ ] bullets (magic)
 - [ ] turrets
 - [ ] shields
-- [ ] knock back
-- [ ] screen shake
-- [ ] npcs to drop items
-- [ ] player and monster respawning
+- [ ] monster respawning
+- [x] knock back
+- [x] player
 
 Blocks
 - [ ] Chests

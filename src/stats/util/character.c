@@ -29,8 +29,8 @@ void spawn_character_stats(ecs_world_t *world,
 
     // generate numbers here
     float soul_value = data->soul_value;
-    float2 health = (float2) { 5, 5 + soul_value * 5 };
-    health.x = randf_range(5, health.y);
+    float2 health = (float2) { health_base, health_base + soul_value * health_level_increase };
+    health.x = randf_range(health_base, health.y);
 
     data->stats_length = character_stats;
     int i = 0;
@@ -52,13 +52,16 @@ void spawn_character_stats(ecs_world_t *world,
 
     // players are richer beings from the aether
     if (data->p) {
-        // zox_geter(realm, StatLinks, realm_stats)
-        const ecs_entity_t stat_mana = spawn_user_stat(world, realm_mana, data->e);
-        add_to_StatLinks(stats, stat_mana);
+
         const ecs_entity_t stat_energy = spawn_user_stat(world, realm_energy, data->e);
-        zox_set(stat_energy, StatValue, { 4 })
-        zox_set(stat_energy, StatValueMax, { 12 })
+        zox_set(stat_energy, StatValue, { energy_base })
+        zox_set(stat_energy, StatValueMax, { energy_base + soul_value * energy_level_increase })
         add_to_StatLinks(stats, stat_energy);
+
+        const ecs_entity_t stat_mana = spawn_user_stat(world, realm_mana, data->e);
+        zox_set(stat_mana, StatValue, { mana_base })
+        zox_set(stat_mana, StatValueMax, { mana_base + soul_value * mana_level_increase })
+        add_to_StatLinks(stats, stat_mana);
 
         /*stats->value[4] = spawn_user_stat(world, realm_stat_regen_health, data->e);
         stats->value[5] = spawn_user_stat(world, realm_stat_regen_energy, data->e);

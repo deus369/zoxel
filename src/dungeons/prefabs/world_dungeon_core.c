@@ -1,6 +1,5 @@
 // prefab for our world block
 ecs_entity_t spawn_block_world_dungeon(ecs_world_t *world) {
-    const float dungeon_grow_rate = 0.3f; // dungeon_grow_rate
     zox_prefab()
     zox_name("block_dungeon_core")
     zox_add_tag(e, BlockDungeon)
