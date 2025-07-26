@@ -45,7 +45,7 @@ void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
     disable_npcs = 0;
-    character_spawn_rate = 1; // 0 | 1 | 16 | 32 | 64 | 128
+    character_spawn_rate = 2;
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;
@@ -72,11 +72,12 @@ void zoxel_settings_physics() {
     bounce_lost_force = 0.12f;
     // zox_default_gravity.y = -8;
     zox_jump_power = 4;
-    run_speed = 1.36;
     run_accceleration = 2.2;
     backwards_multiplier = 0.7f;
     player_movement_power = (float2) { 14, 14 };
     max_velocity3D = (float2) { 1.3f, 1.3f };
+    // run_speed = 1.36;
+    run_speed = 0.3;
 }
 
 void zoxel_settings_uis(ecs_world_t* world) {
@@ -154,7 +155,7 @@ zox_begin_module(ZoxGame)
     grayscale_mode = 0; // todo: make a grayscale biome
 
     // world
-    // terrain_mode = terrain_mode_flatlands;
+    terrain_mode = terrain_mode_flatlands;
     render_distance_y = 2;
 
     // game

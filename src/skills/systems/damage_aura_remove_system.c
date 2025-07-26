@@ -13,15 +13,20 @@ void DamageAuraRemoveSystem(ecs_iter_t *it) {
         zox_sys_o(Children, children)
         for (int j = dotLinks->length - 1; j >= 0; j--) {
             const ecs_entity_t dot = dotLinks->value[j];
-            if (!dot || !zox_has(dot, SkillLink)) {
+            if (!zox_valid(dot) || !zox_has(dot, SkillLink)) {
                 continue;
             }
-            const ecs_entity_t aura = zox_get_value(dot, SkillLink)
-            const ecs_entity_t user = zox_get_value(dot, SpawnerLink)
-            const float radius = zox_get_value(aura, SkillRange)
+            zox_geter_value(dot, SkillLink, ecs_entity_t, aura)
+            zox_geter_value(dot, SpawnerLink, ecs_entity_t, user)
+            if (!zox_valid(aura) || !zox_valid(user)) {
+                // todo: remove dots when aura dies too
+                continue;
+            }
+            zox_geter_value(aura, SkillRange, float, radius)
+            zox_geter_value(aura, SkillActive, byte, active)
             byte is_still_in_aura = 0;
-            if (user && aura && zox_gett_value(aura, SkillActive)) { // if user exists and skill is active
-                const float3 aura_position = zox_get_value(user, Position3D)
+            if (active) { // if user exists and skill is active
+                zox_geter_value(user, Position3D, float3, aura_position)
                 const float distance = float3_distance(position3D->value, aura_position);
                 is_still_in_aura = distance <= radius;
             }
