@@ -1,12 +1,13 @@
 void TimerSystem(ecs_iter_t *it) {
     init_delta_time()
-    zox_field_in(TimerRate, timerRates, 1)
-    zox_field_out(TimerState, timerStates, 2)
-    zox_field_out(TimerTime, timerTimes, 3)
+    zox_sys_begin()
+    zox_sys_in(TimerRate)
+    zox_sys_out(TimerState)
+    zox_sys_out(TimerTime)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(TimerRate, timerRates, timerRate)
-        zox_field_o(TimerState, timerStates, timerState)
-        zox_field_o(TimerTime, timerTimes, timerTime)
+        zox_sys_i(TimerRate, timerRate)
+        zox_sys_o(TimerState, timerState)
+        zox_sys_o(TimerTime, timerTime)
         timerState->value = 0;
         if (timerTime->value == 0) {
             timerTime->value = timerRate->value;

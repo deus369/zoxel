@@ -1,14 +1,19 @@
 #include "action.c"
 
-void set_linked_action(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e) {
-    if (!zox_has(user, ActionLinks)) {
+void set_linked_action(ecs_world_t *world,
+    const ecs_entity_t user,
+    const int index,
+    const ecs_entity_t e)
+{
+    if (!zox_valid(user) || !zox_has(user, ActionLinks)) {
         return;
     }
-    zox_get_muter(user, ActionLinks, datas)
+    zox_mut_begin(user, ActionLinks, datas)
     if (index >= datas->length) {
         return;
     }
     datas->value[index] = e;
+    zox_mut_end(user, ActionLinks)
 }
 
 void spawn_prefabs_actions(ecs_world_t *world) {

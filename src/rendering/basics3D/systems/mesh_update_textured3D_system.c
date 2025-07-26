@@ -13,6 +13,7 @@ void update_shader3D_textured(const uint2 mesh_buffer, const uint uv_buffer, con
 }
 
 void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(MeshIndicies)
     zox_sys_in(MeshVertices)
@@ -23,6 +24,7 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
     zox_sys_in(ColorsGPULink)
     zox_sys_in(MeshDirty)
     for (int i = 0; i < it->count; i++) {
+        zox_sys_e()
         zox_sys_i(MeshDirty, meshDirty)
         zox_sys_i(MeshGPULink, meshGPULink)
         zox_sys_i(UvsGPULink, uvsGPULink)
@@ -38,8 +40,6 @@ void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
             continue;
         }
         if (meshVertices->length != meshUVs->length) {
-            zox_field_world()
-            zox_field_e()
             zox_log_error("[%s] mesh verts [%i] / uvs [%i] missmatch", zox_get_name(e), meshVertices->length, meshUVs->length)
             continue;
         }

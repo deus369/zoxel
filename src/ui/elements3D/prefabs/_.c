@@ -41,5 +41,5 @@ void spawn_prefabs_elements3D(ecs_world_t *world) {
     prefab_text3D = spawn_prefab_text3D(world, prefab_element3D_invisible);
     prefab_zigel3D = spawn_prefab_zigel3D(world, prefab_element3D_child);
     prefab_label3D = spawn_prefab_label3D(world, prefab_element3D);
-    prefab_popup3D = spawn_prefab_popup3D(world, prefab_element3D);
+    prefab_popup3D = spawn_prefab_popup3(world, prefab_element3D);
 }

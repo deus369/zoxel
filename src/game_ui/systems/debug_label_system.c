@@ -10,23 +10,24 @@ void DebugLabelSystem(ecs_iter_t *it) {
     } else {
         return;
     }
-    zox_field_world()
-    zox_field_in(PlayerLink, playerLinks, 1)
-    zox_field_in(DebugLabelData, debugLabelDatas, 2)
-    zox_field_out(ZextDirty, zextDirtys, 3)
-    zox_field_out(TextData, textDatas, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(PlayerLink)
+    zox_sys_in(DebugLabelData)
+    zox_sys_out(ZextDirty)
+    zox_sys_out(TextData)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ZextDirty, zextDirtys, zextDirty)
+        zox_sys_i(PlayerLink, playerLink)
+        zox_sys_i(DebugLabelData, debugLabelData)
+        zox_sys_o(TextData, textData)
+        zox_sys_o(ZextDirty, zextDirty)
         if (zextDirty->value) {
             continue;
         }
-        zox_field_i(PlayerLink, playerLinks, playerLink)
         const ecs_entity_t player = playerLink->value;
         if (!player) {
             continue;
         }
-        zox_field_i(DebugLabelData, debugLabelDatas, debugLabelData)
-        zox_field_o(TextData, textDatas, textData)
 
         uint index = 0;
         const uint size = max_debug_characters;

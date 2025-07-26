@@ -13,7 +13,7 @@
 #endif
 }*/
 // will this effect other children though?
-void spawn_skeleton_bones(ecs_world_t *world, const ecs_entity_t e) {
+void spawn_skeleton_bones(ecs_world_t *world, const ecs_entity_t e, float head_move_y) {
     // prefab_make_skeleton(world, e);
 
     // todo: apply voxel scale to skeleton spawning
@@ -23,7 +23,7 @@ void spawn_skeleton_bones(ecs_world_t *world, const ecs_entity_t e) {
     const float3 bone_head_position = (float3) { 0, 0.15f, 0 }; //  -0.03f * 0.5f };
     const float3 test_bone_head_size = (float3) { 0.1f, 0.1f, 0.1f };
     // animating
-    const float head_delta = randf_range(0.01f, 0.1f);
+    const float head_delta = randf_range(0.01f, 0.01f + head_move_y);
     const float3 test_bone_position_animating = (float3) { 0, 0.15f + head_delta * 2, 0 };
     const float3 test_bone_position_animating_delta = (float3) { 0, head_delta, 0 };
 

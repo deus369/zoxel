@@ -6,6 +6,8 @@ extern int zox_statistics_characters_total;*/
 
 // Note: uses zox_set here for children setting
 
+// note: I may need to thread lock/unlock EntityLinks when reading
+
 // block spawn delve function
 void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const VoxelNode *node, const byte state) {
     if (is_closed_VoxelNode(node)) {
@@ -36,6 +38,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     // zox_sys_in(NodeDepth)
     zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
+        zox_sys_e()
         zox_sys_i(Position3D, position3D)
         zox_sys_i(ChunkSize, chunkSize)
         zox_sys_i(VoxScale, voxScale)
@@ -55,13 +58,14 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             if (is_viewed) {
                 continue;
             }
-            const Position3DBounds *position3DBoundss = ecs_field(&it2, Position3DBounds, 1);
-            const CameraPlanes *cameraPlaness = ecs_field(&it2, CameraPlanes, 2);
+            zox_sys_begin_2()
+            zox_sys_in_2(Position3DBounds)
+            zox_sys_in_2(CameraPlanes)
             for (int j = 0; j < it2.count; j++) {
-                const Position3DBounds *position3DBounds = &position3DBoundss[j];
+                zox_sys_i_2(Position3DBounds, position3DBounds)
+                zox_sys_i_2(CameraPlanes, cameraPlanes)
                 is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
                 if (is_viewed) {
-                    const CameraPlanes *cameraPlanes = &cameraPlaness[j];
                     is_viewed = is_in_frustum(cameraPlanes->value, chunk_bounds);
                 }
                 if (is_viewed) {
@@ -73,7 +77,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
             // -=- Block Spawns -=-
-            if (zox_gett_value(it->entities[i], BlocksSpawned)) {
+            if (zox_gett_value(e, BlocksSpawned)) {
                 set_chunk_block_spawns_render_disabled(world, voxelNode, renderDisabled->value);
             }
             // -=- -=- -=- -=- -=- -=-

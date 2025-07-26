@@ -1,18 +1,17 @@
-
-
 // TextureRGB's
 void TextureRGBUpdateSystem(ecs_iter_t *it) {
     zox_sys_world()
-    zox_field_in(TextureData, textureDatas, 1)
-    zox_field_in(TextureSize, textureSizes, 2)
-    zox_field_in(TextureGPULink, textureGPULinks, 3)
-    zox_field_out(TextureDirty, textureDirtys, 4)
+    zox_sys_begin()
+    zox_sys_in(TextureData)
+    zox_sys_in(TextureSize)
+    zox_sys_in(TextureGPULink)
+    zox_sys_out(TextureDirty)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
-        zox_field_i(TextureData, textureDatas, textureData)
-        zox_field_i(TextureSize, textureSizes, textureSize)
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
-        zox_field_o(TextureDirty, textureDirtys, textureDirty)
+        zox_sys_i(TextureData, textureData)
+        zox_sys_i(TextureSize, textureSize)
+        zox_sys_i(TextureGPULink, textureGPULink)
+        zox_sys_o(TextureDirty, textureDirty)
         if (!textureDirty->value) {
             continue;
         }

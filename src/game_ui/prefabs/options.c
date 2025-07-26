@@ -43,6 +43,8 @@ ecs_entity_t spawn_menu_options(
         .header_padding = 4,
         .is_scrollbar = 0,
     };
+    Children children = (Children) { };
+    window_data.children = &children;
     const ecs_entity_t e = spawn_window2(world,
         canvas_data,
         window_parent_data,
@@ -106,6 +108,7 @@ ecs_entity_t spawn_menu_options(
         list_element_data,
         ui_list_data);
     add_to_Children(window_data.children, list);
+    zox_set_ptr(e, Children, children)
 
     // return our window
     return e;

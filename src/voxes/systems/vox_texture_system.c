@@ -153,29 +153,30 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
 }
 
 void VoxTextureSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(TextureSize, textureSizes, 1)
-    zox_field_in(VoxLink, voxLinks, 2)
-    zox_field_in(VoxBakeSide, voxBakeSides, 3)
-    zox_field_out(GenerateTexture, generateTextures, 4)
-    zox_field_out(TextureData, textureDatas, 5)
-    zox_field_out(TextureDirty, textureDirtys, 6)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(TextureSize)
+    zox_sys_in(VoxLink)
+    zox_sys_in(VoxBakeSide)
+    zox_sys_out(GenerateTexture)
+    zox_sys_out(TextureData)
+    zox_sys_out(TextureDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(GenerateTexture, generateTextures, generateTexture)
+        zox_sys_o(GenerateTexture, generateTexture)
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(TextureSize, textureSize)
+        zox_sys_i(VoxBakeSide, voxBakeSide)
+        zox_sys_o(TextureData, textureData)
+        zox_sys_o(TextureDirty, textureDirty)
         if (generateTexture->value != zox_generate_texture_generate) {
             continue;
         }
-        zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value || zox_gett_value(voxLink->value, GenerateVox)) {
             continue;
         }
         const ColorRGBs *colorRGBs = zox_get(voxLink->value, ColorRGBs)
         zox_geter(voxLink->value, VoxelNode, node)
         zox_geter_value(voxLink->value, NodeDepth, byte, node_depth)
-        zox_field_i(TextureSize, textureSizes, textureSize)
-        zox_field_i(VoxBakeSide, voxBakeSides, voxBakeSide)
-        zox_field_o(TextureData, textureDatas, textureData)
-        zox_field_o(TextureDirty, textureDirtys, textureDirty)
         const int2 texture_size = textureSize->value;
         resize_memory_component(TextureData, textureData, color, texture_size.x * texture_size.y)
         generate_vox_texture(textureData->value, texture_size, node, colorRGBs->value, voxBakeSide->value, node_depth);

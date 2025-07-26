@@ -31,17 +31,18 @@ void define_systems_players2(ecs_world_t *world) {
     zox_system_1(EditorInputSystem, EcsPreStore,
             [in] inputs.DeviceLinks,
             [in] elements.core.CanvasLink, [none] players.Player)
-    zox_system(PlayerToggleCameraSystem, EcsOnUpdate,
+    zox_system_1(PlayerToggleCameraSystem, EcsOnUpdate,
             [in] players.PlayerState,
             [in] inputs.DeviceLinks,
             [in] games.GameLink,
             [in] characters.CharacterLink,
             [none] players.Player)
 #ifdef zox_mod_actions
-    zox_system(ActionsShortcutSystem, EcsOnUpdate,
+    // note: this spawns sounds
+    zox_system_1(ActionsShortcutSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [none] players.Player)
-    zox_system(VoxelActionASystem, EcsOnLoad,
+    zox_system_1(VoxelActionASystem, EcsOnLoad,
             [in] chunks3.RaycastVoxelData,
             [out] characters.TriggerActionA)
     zox_system_1(ActionActivateSystem, EcsOnLoad,

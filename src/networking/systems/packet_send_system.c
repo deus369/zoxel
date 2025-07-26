@@ -8,13 +8,14 @@ void PacketSendSystem(ecs_iter_t *it) {
     last_time_send += delta_time;
     if (last_time_send < 3.0) return;
     last_time_send -= 3.0;
-    zox_field_in(SocketLink, socketLinks, 2)
-    zox_field_in(TargetNetAddress, targetNetAddresss, 3)
-    zox_field_in(TargetNetPort, targetNetPorts, 4)
+    zox_sys_begin()
+    zox_sys_in(SocketLink)
+    zox_sys_in(TargetNetAddress)
+    zox_sys_in(TargetNetPort)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(SocketLink, socketLinks, socketLink)
-        zox_field_i(TargetNetAddress, targetNetAddresss, targetNetAddress)
-        zox_field_i(TargetNetPort, targetNetPorts, targetNetPort)
+        zox_sys_i(SocketLink, socketLink)
+        zox_sys_i(TargetNetAddress, targetNetAddress)
+        zox_sys_i(TargetNetPort, targetNetPort)
         struct sockaddr_in send_addr = byte4_to_ip(targetNetAddress->value, targetNetPort->value);
         byte packet_size = 1;
         byte send_buffer[] = { zoxel_packet_type_connect };

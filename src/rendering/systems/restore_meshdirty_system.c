@@ -1,7 +1,8 @@
 void MeshDirtyRestoreSystem(ecs_iter_t *it) {
-    zox_field_out(MeshDirty, meshDirtys, 1)
+    zox_sys_begin()
+    zox_sys_out(MeshDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(MeshDirty, meshDirtys, meshDirty)
+        zox_sys_o(MeshDirty, meshDirty)
         meshDirty->value = mesh_state_trigger;
     }
 } zox_declare_system(MeshDirtyRestoreSystem)

@@ -40,7 +40,10 @@ float3 calculate_zigel3D_position(const float2 zigel3D_size, const int data_inde
     return position;
 }
 
-ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData zigel_data) {
+ecs_entity_t spawn_text3D(ecs_world_t *world,
+    const Text3DData data,
+    Zigel3DData zigel_data)
+{
     zox_instance(data.prefab)
     zox_name("text3D")
     zox_set(e, ParentLink, { data.parent })
@@ -52,25 +55,38 @@ ecs_entity_t spawn_text3D(ecs_world_t *world, const Text3DData data, Zigel3DData
     zox_set(e, FontOutlineColor, { zigel_data.outline_color })
     zox_set(e, Text3DScale, { zigel_data.scale })
     zox_set(e, TextSize, { zigel_data.resolution })
-    Children *children = &((Children) { 0, NULL });
-    TextData *textData = &((TextData) { 0, NULL });
-    const int zext_data_length = data.text != NULL ? strlen(data.text) : 0;
-    initialize_memory_component(TextData, textData, byte, zext_data_length)
-    for (int i = 0; i < textData->length; i++) {
-        textData->value[i] = convert_ascii(data.text[i]);
+    // text
+    const int length = data.text != NULL ? strlen(data.text) : 0;
+    TextData text = (TextData) { 0, NULL };
+    initialize_memory_component(TextData, (&text), byte, length);
+    for (int i = 0; i < text.length; i++) {
+        text.value[i] = convert_ascii(data.text[i]);
     }
-    const int zigels_count = calculate_total_zigels(textData->value, textData->length);
-    initialize_memory_component(Children, children, ecs_entity_t, zigels_count)
+    zox_set_ptr(e, TextData, text);
+    // children
     zigel_data.parent = e;
-    for (int i = 0; i < zigels_count; i++) {
-        const int data_index = calculate_zigel_data_index(textData->value, textData->length, i);
-        const byte zigel_index = calculate_zigel_index(textData->value, textData->length, i);
+    const int zigels_count = calculate_total_zigels(text.value, text.length);
+    Children children = (Children) { 0, NULL };
+    initialize_memory_component(Children, (&children), ecs_entity_t, zigels_count);
+    for (int i = 0; i < children.length; i++) {
+        const int data_index = calculate_zigel_data_index(
+            text.value,
+            text.length,
+            i);
+        const byte zigel_index = calculate_zigel_index(
+            text.value,
+            text.length,
+            i);
         zigel_data.zigel_index = zigel_index;
-        zigel_data.position = calculate_zigel3D_position(zigel3D_size, data_index, zigels_count, zigel_data.scale);
-        children->value[i] = spawn_zigel3D(world, zigel_data);
+        zigel_data.position = calculate_zigel3D_position(
+            zigel3D_size,
+            data_index,
+            zigels_count,
+            zigel_data.scale);
+        const ecs_entity_t zigel3 = spawn_zigel3(world, zigel_data);
+        children.value[i] = zigel3;
     }
-    zox_set(e, TextData, { textData->length, textData->value })
-    zox_set(e, Children, { children->length, children->value })
-    debug_entity_text3D = e;
+    zox_set_ptr(e, Children, children);
+
     return e;
 }

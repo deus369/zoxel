@@ -1,20 +1,27 @@
 void AnimationSequenceSystem(ecs_iter_t *it) {
     const double time = zox_current_time;
-    zox_field_world()
-    zox_field_in(AnimationSequence, animationSequences, 1)
-    zox_field_in(AnimationTimes, animationTimess, 2)
-    zox_field_in(AnimationTargets, animationTargetss, 3)
-    zox_field_in(AnimationDelay, animationDelays, 4)
-    zox_field_out(AnimationIndex, animationIndexs, 5)
-    zox_field_out(AnimationLength, animationLengths, 6)
-    zox_field_out(AnimationStart, animationStarts, 7)
-    zox_field_out(AnimationState, animationStates, 8)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(AnimationSequence)
+    zox_sys_in(AnimationTimes)
+    zox_sys_in(AnimationTargets)
+    zox_sys_in(AnimationDelay)
+    zox_sys_out(AnimationIndex)
+    zox_sys_out(AnimationLength)
+    zox_sys_out(AnimationStart)
+    zox_sys_out(AnimationState)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(AnimationIndex, animationIndexs, animationIndex)
+        zox_sys_i(AnimationTimes, animationTimes)
+        zox_sys_i(AnimationTargets, animationTargets)
+        zox_sys_i(AnimationDelay, animationDelay)
+        zox_sys_i(AnimationSequence, animationSequence)
+        zox_sys_o(AnimationStart, animationStart)
+        zox_sys_o(AnimationLength, animationLength)
+        zox_sys_o(AnimationState, animationState)
+        zox_sys_o(AnimationIndex, animationIndex)
         if (animationIndex->value == 255) {
             continue;
         }
-        zox_field_i(AnimationSequence, animationSequences, animationSequence)
         if (!animationSequence->length) {
             continue;
         }
@@ -22,12 +29,6 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
             animationIndex->value = 255;
             continue;
         }
-        zox_field_i(AnimationTimes, animationTimess, animationTimes)
-        zox_field_i(AnimationTargets, animationTargetss, animationTargets)
-        zox_field_i(AnimationDelay, animationDelays, animationDelay)
-        zox_field_o(AnimationStart, animationStarts, animationStart)
-        zox_field_o(AnimationLength, animationLengths, animationLength)
-        zox_field_o(AnimationState, animationStates, animationState)
         byte is_anim_over = 0;
         if (animationIndex->value == 0) {
             is_anim_over = 1;
@@ -43,7 +44,7 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
                 animationStart->value = time;
                 animationState->value = animationSequence->value[animationIndex->value];
                 animationLength->value = animationTimes->value[animationIndex->value];
-                zox_field_e()
+                zox_sys_e()
                 // if alpha
                 float source_float = zox_gett_value(e, Alpha);
                 float target_float = animationTargets->value[animationIndex->value];

@@ -4,23 +4,24 @@
 #endif
 
 void UITrailSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(UIHolderLink, uiHolderLinks, 1)
-    zox_field_in(UITrail, uiTrails, 2)
-    zox_field_out(Position3D, position3Ds, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(UIHolderLink)
+    zox_sys_in(UITrail)
+    zox_sys_out(Position3D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(UIHolderLink, uiHolderLinks, uiHolderLink)
+        zox_sys_e()
+        zox_sys_i(UIHolderLink, uiHolderLink)
+        zox_sys_i(UITrail, uiTrail)
+        zox_sys_o(Position3D, position3D)
         if (!zox_valid(uiHolderLink->value)) {
             if (uiHolderLink->value) {
-                zox_field_e()
+                zox_sys_e()
                 zox_log("! character ui wasn't destroyed: %lu\n", e)
                 zox_delete(e)
             }
             continue;
         }
-        zox_field_e()
-        zox_field_i(UITrail, uiTrails, uiTrail)
-        zox_field_o(Position3D, position3Ds, position3D)
         position3D->value = uiTrail->value;
         const Position3D *target_position = zox_get(uiHolderLink->value, Position3D)
         float3_add_float3_p(&position3D->value, target_position->value);

@@ -1,11 +1,12 @@
 #define zox_component_link(name, type, links_name, ...)\
     zox_component(name, type)\
     void on_destroyed##_##name(ecs_iter_t *it) {\
-        zox_field_world()\
-        name *components = ecs_field(it, name, 1);\
+        zox_sys_world()\
+        zox_sys_begin()\
+        zox_sys_out(name)\
         for (int i = 0; i < it->count; i++) {\
-            zox_field_e()\
-            name *component = &components[i];\
+            zox_sys_e()\
+            zox_sys_o(name, component)\
             if (component->value && zox_valid(component->value)) {\
                 zox_muter(component->value, links_name, links_component)\
                 remove_from_##links_name(links_component, e);\

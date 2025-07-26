@@ -33,11 +33,23 @@
 #define zox_sys_begin()\
     byte fi = 0;
 
-#define zox_sys_in(name)\
-    const name *name##_ = ecs_field(it, name, ++fi);
+#ifdef zox_flecs_4
 
-#define zox_sys_out(name)\
-    name *name##_ = ecs_field(it, name, ++fi);
+    #define zox_sys_in(name)\
+        const name *name##_ = ecs_field(it, name, fi++);
+
+    #define zox_sys_out(name)\
+        name *name##_ = ecs_field(it, name, fi++);
+
+#else
+
+    #define zox_sys_in(name)\
+        const name *name##_ = ecs_field(it, name, ++fi);
+
+    #define zox_sys_out(name)\
+        name *name##_ = ecs_field(it, name, ++fi);
+
+#endif
 
 #define zox_sys_i(name, variable_name)\
     const name *variable_name = &name##_[i];
@@ -54,14 +66,26 @@
 #define zox_sys_begin_2()\
     byte fi2 = 0;
 
-#define zox_sys_in_2(name)\
-    const name *name##s_2 = ecs_field(&it2, name, ++fi2);
+#ifdef zox_flecs_4
+
+    #define zox_sys_in_2(name)\
+        const name *name##s_2 = ecs_field(&it2, name, fi2++);
+
+    #define zox_sys_out_2(name)\
+        name *name##s_2 = ecs_field(&it2, name, fi2++);
+
+#else
+
+    #define zox_sys_in_2(name)\
+        const name *name##s_2 = ecs_field(&it2, name, ++fi2);
+
+    #define zox_sys_out_2(name)\
+        name *name##s_2 = ecs_field(&it2, name, ++fi2);
+
+#endif
 
 #define zox_sys_i_2(name, variable_name)\
     const name *variable_name = &name##s_2[j];
-
-#define zox_sys_out_2(name)\
-    name *name##s_2 = ecs_field(&it2, name, ++fi2);
 
 #define zox_sys_o_2(name, variable_name)\
     name *variable_name = &name##s_2[j];

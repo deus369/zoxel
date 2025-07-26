@@ -11,7 +11,7 @@ void Render3DSystem(ecs_iter_t *it) {
         zox_sys_i(MaterialGPULink, materialGPULink)
         zox_sys_i(Brightness, brightness)
         zox_sys_i(TransformMatrix, transformMatrix)
-        if (meshIndicies->length == 0 || meshGPULink->value.x == 0 || meshGPULink->value.y == 0 || materialGPULink->value == 0) {
+        if (!meshIndicies->length || !meshGPULink->value.x || !meshGPULink->value.y || !materialGPULink->value) {
             continue;
         }
         MaterialBasic3D attributes = create_MaterialBasic3D(materialGPULink->value);

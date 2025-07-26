@@ -23,36 +23,19 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_cube(ecs_world_t *world, const ecs_entity_t prefab, const float3 position) {
+ecs_entity_t spawn_cube(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const float3 position)
+{
     zox_instance(prefab)
     // zox_name("cube")
     // zox_add_tag(e, MeshBasic3D)
     zox_set(e, Position3D, { position })
-
-    /*spawn_gpu_mesh(world, e);
-    spawn_gpu_material(world, e, shader3D);*/
-
-    /*if (zox_has(material_basic3D, MaterialGPULink)) {
-        zox_geter(material_basic3D, MaterialGPULink, material_basic3D_link)
-        zox_prefab_set(e, MaterialGPULink, { material_basic3D_link->value })
-    } else {
-        zox_log("! (%lu) [%s] does not have material gpu link\n", material_basic3D, zox_get_name(material_basic3D))
-    }*/
-
     spawn_gpu_mesh(world, e);
-
     const uint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
     const uint material = spawn_gpu_material(world, e, shader);
     const MaterialBasic3D attributes = create_MaterialBasic3D(material);
     zox_set_data(e, MaterialBasic3D, attributes)
     zox_set(e, ShaderLink, { shader_basic3D })
-
-    // const uint2 shader = zox_get_value(shader_basic3D, ShaderGPULink)
-    // zox_set(e, ShaderLink, { shader_basic3D })
-    // spawn_gpu_material(world, e, shader);
-
-    //const MaterialTextured3D attributes = create_MaterialTextured3D(material);
-    //zox_set_data(e, MaterialTextured3D, attributes)
-
     return e;
 }

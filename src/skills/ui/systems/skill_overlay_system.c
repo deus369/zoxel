@@ -1,15 +1,16 @@
 // UserDataLink, RenderDisabled
 
 void SkillOverlaySystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(UserDataLink, userDataLinks, 1)
-    zox_field_in(Children, childrens, 2)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(UserDataLink)
+    zox_sys_in(Children)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(UserDataLink, userDataLinks, userDataLink)
+        zox_sys_i(UserDataLink, userDataLink)
+        zox_sys_i(Children, children)
         // zox_log("> action frame %lu, user data [%lu]\n", it->entities[i], userDataLink->value)
         const ecs_entity_t skill = userDataLink->value;
         byte is_skill = skill && zox_valid(skill) && zox_alive(skill) && zox_has(skill, Skill);
-        zox_field_i(Children, childrens, children)
         if (!children->length) {
             continue;
         }

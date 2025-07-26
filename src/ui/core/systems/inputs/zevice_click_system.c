@@ -1,13 +1,20 @@
 void ZeviceClickSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLink, deviceLinks, 1)
-    zox_field_in(RaycasterTarget, raycasterTargets, 2)
-    zox_field_in(WindowRaycasted, windowRaycasteds, 3)
-    zox_field_out(RaycasterResult, raycasterResults, 4)
-    zox_field_out(ClickingEntity, clickingEntitys, 5)
-    zox_field_out(WindowTarget, windowTargets, 6)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLink)
+    zox_sys_in(RaycasterTarget)
+    zox_sys_in(WindowRaycasted)
+    zox_sys_out(RaycasterResult)
+    zox_sys_out(ClickingEntity)
+    zox_sys_out(WindowTarget)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DeviceLink, deviceLinks, deviceLink)
+        zox_sys_e()
+        zox_sys_i(DeviceLink, deviceLink)
+        zox_sys_i(RaycasterTarget, raycasterTarget)
+        zox_sys_i(WindowRaycasted, windowRaycasted)
+        zox_sys_o(RaycasterResult, raycasterResult)
+        zox_sys_o(ClickingEntity, clickingEntity)
+        zox_sys_o(WindowTarget, windowTarget)
         const ecs_entity_t device = deviceLink->value;
         if (!device) {
             zox_log(" ! device null from zevice [%lu]\n", it->entities[i])
@@ -20,12 +27,6 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         }
         const byte device_mode = zox_get_value(player, DeviceMode)
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-        zox_field_e()
-        zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_i(WindowRaycasted, windowRaycasteds, windowRaycasted)
-        zox_field_o(RaycasterResult, raycasterResults, raycasterResult)
-        zox_field_o(ClickingEntity, clickingEntitys, clickingEntity)
-        zox_field_o(WindowTarget, windowTargets, windowTarget)
         unsigned click_type = 0;
         if (zox_has(e, ZevicePointer)) {
             const byte click_value = zox_get_value(e, ZevicePointer)

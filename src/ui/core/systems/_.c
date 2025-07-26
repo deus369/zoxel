@@ -30,11 +30,11 @@ void define_systems_elements_core(ecs_world_t *world) {
     zox_define_increment_system(ClickState, EcsOnLoad)
     zox_define_increment_system(SelectState, EcsOnLoad)
     zox_filter(raycast_query,
-        [none] Element,
         [in] elements.core.CanvasPosition,
         [in] layouts2.PixelSize,
         [in] elements.core.Layer2D,
         [in] rendering.RenderDisabled,
+        [none] Element,
         [none] Selectable)
     zox_system_ctx(ElementRaycastSystem, EcsOnUpdate, raycast_query,
         [in] raycasts.Raycaster,
@@ -55,7 +55,6 @@ void define_systems_elements_core(ecs_world_t *world) {
         [in] raycasts.RaycasterTarget,
         [in] WindowRaycasted,
         [in] hierarchys.Children,
-        [out] raycasts.RaycasterResult,
         [out] ClickingEntity,
         [out] WindowTarget,
         [none] inputs.Device)
@@ -88,9 +87,9 @@ void define_systems_elements_core(ecs_world_t *world) {
         [out] elements.core.Layer2D,
         [none] Window)
     zox_system(ElementSelectedSystem, EcsOnUpdate,
-        [none] Element,
         [in] elements.core.SelectState,
-        [out] rendering.Brightness)
+        [out] rendering.Brightness,
+        [none] Element)
     zox_system(ElementActiveSystem, EcsOnUpdate,
         [in] elements.core.ActiveState,
         [out] rendering.Brightness,

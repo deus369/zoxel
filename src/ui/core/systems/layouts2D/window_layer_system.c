@@ -1,17 +1,17 @@
 void WindowLayerSystem(ecs_iter_t *it) {
-    // zox_change_check()
-    zox_field_world()
-    zox_field_in(SetWindowLayer, setWindowLayers, 1)
-    zox_field_in(CanvasLink, canvasLinks, 2)
-    zox_field_in(Children, childrens, 3)
-    zox_field_out(WindowLayer, windowLayers, 4)
-    zox_field_out(Layer2D, layer2Ds, 5)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(SetWindowLayer)
+    zox_sys_in(CanvasLink)
+    zox_sys_in(Children)
+    zox_sys_out(WindowLayer)
+    zox_sys_out(Layer2D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(SetWindowLayer, setWindowLayers, setWindowLayer)
-        zox_field_o(WindowLayer, windowLayers, windowLayer)
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
-        zox_field_i(Children, childrens, children)
-        zox_field_o(Layer2D, layer2Ds, layer2D)
+        zox_sys_i(SetWindowLayer, setWindowLayer)
+        zox_sys_i(CanvasLink, canvasLink)
+        zox_sys_i(Children, children)
+        zox_sys_o(WindowLayer, windowLayer)
+        zox_sys_o(Layer2D, layer2D)
         if (windowLayer->value == setWindowLayer->value) {
             continue;
         }

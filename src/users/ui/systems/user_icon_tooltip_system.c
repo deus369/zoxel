@@ -2,22 +2,23 @@
 // todo: Give item a texture, spawn as icon!
 
 void UserIconTooltipSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(SelectState, selectStates, 1)
-    zox_field_in(UserDataLink, userDataLinks, 2)
-    zox_field_in(CanvasLink, canvasLinks, 3)
-    zox_field_in(TooltipEvent, tooltipEvents, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(SelectState)
+    zox_sys_in(UserDataLink)
+    zox_sys_in(CanvasLink)
+    zox_sys_in(TooltipEvent)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(SelectState, selectStates, selectState)
+        zox_sys_i(SelectState, selectState)
+        zox_sys_i(UserDataLink, userDataLink)
+        zox_sys_i(TooltipEvent, tooltipEvent)
+        zox_sys_i(CanvasLink, canvasLink)
         if (!(selectState->value == zox_select_state_selected_this_frame || selectState->value == zox_select_state_deselected_this_frame)) {
             continue;
         }
-        zox_field_i(UserDataLink, userDataLinks, userDataLink)
-        zox_field_i(TooltipEvent, tooltipEvents, tooltipEvent)
-        if (!userDataLink->value || !tooltipEvent->value) {
+        if (!zox_valid(userDataLink->value) || !tooltipEvent->value) {
             continue;
         }
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
         find_child_with_tag(canvasLink->value, Tooltip, tooltip)
         if (!tooltip) {
             zox_log(" ! tooltip not found in canvas\n")

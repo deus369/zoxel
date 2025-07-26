@@ -15,7 +15,6 @@ ecs_entity_t spawn_popup3_easy(ecs_world_t *world,
     };
     Zigel3DData popup_zigel_data = {
         .prefab = prefab_zigel3D,
-        // .resolution = 32,
         .resolution = text3D_resolution,
         .font_thickness = text3D_fill_thickness,
         .font_outline = text3D_outline_thickness,
@@ -31,8 +30,6 @@ ecs_entity_t spawn_popup3_easy(ecs_world_t *world,
         popup_text_data,
         popup_zigel_data,
         popup_data);
-    if (e) {
-        zox_set(e, Position3D, { position })
-    }
+    zox_set(e, Position3D, { position })
     return e;
 }

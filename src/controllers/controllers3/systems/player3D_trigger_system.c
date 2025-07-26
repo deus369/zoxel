@@ -1,22 +1,23 @@
 void Player3DTriggerSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_in(CharacterLink, characterLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_in(CharacterLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CharacterLink, characterLinks, characterLink)
+        zox_sys_i(CharacterLink, characterLink)
+        zox_sys_i(DeviceMode, deviceMode)
+        zox_sys_i(DeviceLinks, deviceLinks)
         ecs_entity_t character = characterLink->value;
-        if (!character || !zox_has(character, Character3)) {
+        if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
-        const DisableMovement *disableMovement = zox_get(character, DisableMovement)
+        zox_geter(character, DisableMovement, disableMovement)
         if (disableMovement->value) {
             continue;
         }
         byte is_triggered_a = 0;
         // byte is_triggered_b = 0;
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!device) continue;

@@ -1,11 +1,12 @@
 void ElementSelectedSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(SelectState, selectStates, 2)
-    zox_field_out(Brightness, brightnesss, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(SelectState)
+    zox_sys_out(Brightness)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(SelectState, selectStates, selectState)
-        zox_field_o(Brightness, brightnesss, brightness)
+        zox_sys_e()
+        zox_sys_i(SelectState, selectState)
+        zox_sys_o(Brightness, brightness)
         byte is_dragging = 0;
         if (zox_has(e, DraggableState)) {
             is_dragging = zox_get_value(e, DraggableState)

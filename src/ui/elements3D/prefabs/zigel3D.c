@@ -13,9 +13,11 @@ typedef struct {
     float scale;
 } Zigel3DData;
 
-ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world,
+    const ecs_entity_t prefab)
+{
     zox_prefab_child(prefab)
-    zox_prefab_name("zigel3D")
+    zox_prefab_name("zigel3")
     zox_add_tag(e, Zigel)
     zox_add_tag(e, FontTexture)
     zox_prefab_set(e, ZigelIndex, { 0 })
@@ -28,9 +30,15 @@ ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world, const ecs_entity_t prefab)
     return e;
 }
 
-ecs_entity_t spawn_zigel3D(ecs_world_t *world, const Zigel3DData data) {
+ecs_entity_t spawn_zigel3(ecs_world_t *world,
+    const Zigel3DData data)
+{
+    if (!zox_valid(data.prefab)) {
+        zox_log_error("prefab_zigel3 is invalid")
+        return 0;
+    }
     zox_instance(data.prefab)
-    zox_name("zigel3D")
+    // zox_name("zigel3")
     zox_set(e, ParentLink, { data.parent })
     zox_set(e, ZigelIndex, { data.zigel_index })
     zox_set(e, FontThickness, { data.font_thickness })

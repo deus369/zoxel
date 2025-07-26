@@ -1,18 +1,16 @@
 void DraggerEndSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_out(DraggableState, dragableStates, 1)
-    zox_field_out(DraggerLink, draggerLinks, 2)
-    zox_field_out(DraggingDelta, draggingDeltas, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_out(DraggableState)
+    zox_sys_out(DraggerLink)
+    zox_sys_out(DraggingDelta)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(DraggerLink, draggerLinks, draggerLink)
-        if (draggerLink->value == 0) {
+        zox_sys_o(DraggerLink, draggerLink)
+        zox_sys_o(DraggableState, dragableState)
+        zox_sys_o(DraggingDelta, draggingDelta)
+        if (draggerLink->value == 0 || dragableState->value == 0) {
             continue;
         }
-        zox_field_o(DraggableState, dragableStates, dragableState)
-        if (dragableState->value == 0) {
-            continue;
-        }
-        zox_field_o(DraggingDelta, draggingDeltas, draggingDelta)
         const ecs_entity_t player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         byte did_drag_end = 0;

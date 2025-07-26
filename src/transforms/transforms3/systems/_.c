@@ -15,9 +15,9 @@ void zox_define_systems_transforms3D(ecs_world_t *world) {
         [in] EulerLimitZ,
         [out] Euler)
     zox_system(EulerOverrideSystem, EcsOnUpdate,
-        [none] EulerOverride,
         [in] Euler,
-        [out] Rotation3D)
+        [out] Rotation3D,
+        [none] EulerOverride)
     zox_system(ParentRotationSystem, zox_transforms_stage,
         [in] hierarchys.ParentLink,
         [in] LocalRotation3D,

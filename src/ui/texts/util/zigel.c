@@ -59,15 +59,21 @@ byte calculate_zigel_index(const byte *data, const int length, const int spawn_i
 }
 
 // calculates the child index, takes out ascii like new line that have no zigel spawns
-int calculate_zigel_data_index(const byte *data, const int length, const int spawn_index) {
+int calculate_zigel_data_index(
+    const byte *data,
+    const int length,
+    const int spawn_index)
+{
     int j = 0;
     for (int i = 0; i < length; i++) {
         if (data[i] != zox_char_newline) {
-            if (j == spawn_index) return i;
+            if (j == spawn_index) {
+                return i;
+            }
             j++;
         }
     }
-    zox_log(" ! calculate_zigel_data_index: dataindex failed\n")
+    zox_log_error("calculate_zigel_data_index: j [%i] spawn_index [%i] length [%i]", j, spawn_index, length);
     return 0;
 }
 

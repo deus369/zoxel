@@ -5,18 +5,20 @@ extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t ra
 // todo: fix this, RaycasterTarget moved to zevices
 void ElementNavigationSystem(ecs_iter_t *it) {
     init_delta_time()
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_out(NavigatorState, navigatorStates, 3)
-    zox_field_out(NavigatorTimer, navigatorTimers, 4)
-    zox_field_out(RaycasterTarget, raycasterTargets, 5)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_out(NavigatorState)
+    zox_sys_out(NavigatorTimer)
+    zox_sys_out(RaycasterTarget)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
-        zox_field_o(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_o(NavigatorState, navigatorStates, navigatorState)
-        zox_field_o(NavigatorTimer, navigatorTimers, navigatorTimer)
+        zox_sys_e()
+        zox_sys_i(DeviceLinks, deviceLinks)
+        zox_sys_i(DeviceMode, deviceMode)
+        zox_sys_o(RaycasterTarget, raycasterTarget)
+        zox_sys_o(NavigatorState, navigatorState)
+        zox_sys_o(NavigatorTimer, navigatorTimer)
         byte device_mode = deviceMode->value;
 #ifdef zox_debug_navigation
         device_mode = zox_device_mode_gamepad;
@@ -28,12 +30,11 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             }
             continue;
         } else if (device_mode == zox_device_mode_gamepad && !raycasterTarget->value) {
-            zox_field_e()
+            zox_sys_e()
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
             canvas_select_first_button(world, e, canvas);
         }
         if (!raycasterTarget->value || !zox_alive(raycasterTarget->value)) continue;
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         float2 left_stick = float2_zero;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];

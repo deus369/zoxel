@@ -27,12 +27,15 @@ extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 point
 
 void Player3DMoveSystem(ecs_iter_t *it) {
     init_delta_time()
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_in(CharacterLink, characterLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_in(CharacterLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CharacterLink, characterLinks, characterLink)
+        zox_sys_i(CharacterLink, characterLink)
+        zox_sys_i(DeviceLinks, deviceLinks)
+        zox_sys_i(DeviceMode, deviceMode)
         const ecs_entity_t character = characterLink->value;
         if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
@@ -43,8 +46,6 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         }
         float2 left_stick = float2_zero;
         byte is_running = 0;
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
             if (!device) {

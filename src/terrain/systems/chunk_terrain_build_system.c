@@ -83,7 +83,7 @@ void build_chunk_terrain_mesh(
 
 void ChunkTerrainBuildSystem(ecs_iter_t *it) {
     uint updated_count = 0;
-    zox_field_world()
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxLink)
     int voxels_length = 0;
@@ -138,7 +138,7 @@ void ChunkTerrainBuildSystem(ecs_iter_t *it) {
         }
         // uvs
         if (!zox_has(block, Textures)) {
-            continue;    // no textures...!
+            continue;    // no texturez...!
         }
         const byte block_textures_length = zox_gett(block, Textures)->length;
         int voxel_uv_indexes_index = j * 6;

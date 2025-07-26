@@ -1,5 +1,8 @@
 int total_memorys_allocated = 0;
 
+const byte is_safe_write_memory_component = 1;
+const byte is_safe_read_memory_component = 0;
+
 #define zox_memory_component(name, type)\
     zox_memory_component_logging(name, type, 0)
 
@@ -47,16 +50,40 @@ typedef struct {\
 } name;\
 zox_custom_component(name)\
 \
+static inline void write_lock_##name(const name *component) {\
+    if (is_safe_write_memory_component) {\
+        pthread_rwlock_wrlock((pthread_rwlock_t*) &component->lock);\
+    }\
+}\
+\
+static inline void write_unlock_##name(const name *component) {\
+    if (is_safe_write_memory_component) {\
+        pthread_rwlock_unlock((pthread_rwlock_t*) &component->lock);\
+    }\
+}\
+\
+static inline void destroy_lock_##name(name *component) {\
+    if (is_safe_write_memory_component) {\
+        pthread_rwlock_destroy(&component->lock);\
+    }\
+}\
+\
+static inline void create_lock_##name(name *component) {\
+    if (is_safe_write_memory_component) {\
+        pthread_rwlock_init(&component->lock, NULL);\
+    }\
+}\
+\
 void dispose_##name(name *component) {\
     if (!component->value) {\
         return;\
     }\
-    pthread_rwlock_wrlock(&component->lock);\
+    write_lock_##name(component);\
     free(component->value);\
     component->value = NULL;\
     component->length = 0;\
-    pthread_rwlock_unlock(&component->lock);\
-    pthread_rwlock_destroy(&component->lock);\
+    write_unlock_##name(component);\
+    destroy_lock_##name(component);\
     name##_memorys_allocated--;\
     total_memorys_allocated--;\
     /*zox_log(" [%s] disposing of entity with memory component\n", #name)*/\
@@ -109,6 +136,12 @@ void name##_move(\
     }\
 }\
 \
+void ctor_##name(name *component) {\
+    component->length = 0;\
+    component->value = NULL;\
+    create_lock_##name(component);\
+}\
+\
 void name##_ctor(\
     void *ptr,\
     int32_t count,\
@@ -120,7 +153,7 @@ void name##_ctor(\
             .length = 0,\
             .value = NULL\
         };\
-        pthread_rwlock_init(&data[i].lock, NULL);\
+        create_lock_##name(&data[i]);\
     }\
 }\
 \
@@ -150,14 +183,14 @@ void name##_copy(\
 }\
 \
 byte add_to_##name(name *component, const type data) {\
-    pthread_rwlock_wrlock(&component->lock);\
+    write_lock_##name(component);\
     if (component->value) {\
         int new_length = component->length + 1;\
         int memory_length = (new_length) * sizeof(type);\
         type *new_memory = realloc(component->value, memory_length);\
         if (!new_memory) {\
             zox_log(" ! failed realloc memory in add_to_" #name "\n")\
-            pthread_rwlock_unlock(&component->lock);\
+            write_unlock_##name(component);\
             return 0;\
         }\
         component->value = new_memory;\
@@ -167,11 +200,11 @@ byte add_to_##name(name *component, const type data) {\
     }\
     if (!component->value) {\
         component->length = 0;\
-        pthread_rwlock_unlock(&component->lock);\
+        write_unlock_##name(component);\
         return 0;\
     }\
     component->value[component->length - 1] = data;\
-    pthread_rwlock_unlock(&component->lock);\
+    write_unlock_##name(component);\
     return 1;\
 }\
 \
@@ -195,7 +228,7 @@ byte remove_at_##name(name *component, int index) {\
     if (!component->value || index < 0 || index >= component->length) {\
         return 0;\
     }\
-    pthread_rwlock_wrlock(&component->lock);\
+    write_lock_##name(component);\
     for (int i = index; i < component->length - 1; i++) {\
         component->value[i] = component->value[i + 1];\
     }\
@@ -206,7 +239,7 @@ byte remove_at_##name(name *component, int index) {\
     } else {\
         component->value = realloc(component->value, component->length * sizeof(type));\
     }\
-    pthread_rwlock_unlock(&component->lock);\
+    write_unlock_##name(component);\
     return 1;\
 }\
 \

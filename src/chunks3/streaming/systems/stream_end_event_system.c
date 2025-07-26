@@ -1,15 +1,17 @@
 // A state checker for stream loading
 void StreamEndEventSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(EventInput, eventInputs, 1)
-    zox_field_in(ChunkLinks, chunkLinkss, 2)
-    zox_field_out(StreamEndEvent, events, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(EventInput)
+    zox_sys_in(ChunkLinks)
+    zox_sys_out(StreamEndEvent)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(StreamEndEvent, events, event)
+        zox_sys_o(StreamEndEvent, event)
+        zox_sys_i(ChunkLinks, chunkLinks)
+        zox_sys_i(EventInput, eventInput)
         if (!event->value) {
             continue;
         }
-        zox_field_i(ChunkLinks, chunkLinkss, chunkLinks)
         if (!chunkLinks->value || ! chunkLinks->value->size) {
             continue;
         }
@@ -58,8 +60,6 @@ void StreamEndEventSystem(ecs_iter_t *it) {
                 zox_log("+ terrain spawning ended spawning at [%f]", zox_current_time)
             }
             // we should check if all chunks have finished here
-            zox_field_world()
-            zox_field_i(EventInput, eventInputs, eventInput)
             (*event->value)(world, eventInput->value);
             event->value = NULL;
         }

@@ -9,11 +9,11 @@
 #include "util/sdl_textures.c"
 #include "io/textures_io.c"
 
-zox_begin_module(Textures)
+zox_begin_module(Texturez)
     define_components_textures(world);
     define_systems_textures(world);
     spawn_prefabs_textures_core(world);
     zox_import_module(TexturesIO)
-zox_end_module(Textures)
+zox_end_module(Texturez)
 
 #endif

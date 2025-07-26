@@ -3,7 +3,7 @@ void FontTextureSystem(ecs_iter_t *it) {
     const float2 point_padding = font_point_padding;
     // const byte default_font_outline = 1; // 4
     zox_change_check()
-    zox_field_world()
+    zox_sys_world()
     // todo: link each zigel to fontstyle's font
     ecs_entity_t zox_font_style = get_font_style_using();
     if (!zox_font_style || !zox_has(zox_font_style, Children)) {

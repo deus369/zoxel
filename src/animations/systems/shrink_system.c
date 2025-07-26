@@ -1,14 +1,17 @@
 // a simple shrink system
 void ShrinkSystem(ecs_iter_t *it) {
     const double time = zox_current_time;
-    zox_field_in(AnimationState, animationTypes, 1)
-    zox_field_in(AnimationStart, animationStarts, 2)
-    zox_field_out(Scale1D, scale1Ds, 3)
+    zox_sys_begin()
+    zox_sys_in(AnimationState)
+    zox_sys_in(AnimationStart)
+    zox_sys_out(Scale1D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(AnimationState, animationTypes, animationType)
-        if (animationType->value != zox_animation_shrink) continue;
-        zox_field_i(AnimationStart, animationStarts, animationStart)
-        zox_field_o(Scale1D, scale1Ds, scale1D)
+        zox_sys_i(AnimationState, animationType)
+        zox_sys_i(AnimationStart, animationStart)
+        zox_sys_o(Scale1D, scale1D)
+        if (animationType->value != zox_animation_shrink) {
+            continue;
+        }
         double animation_time = time - animationStart->value;
         // limit animation_time
         if (animation_time < 0) animation_time = 0;

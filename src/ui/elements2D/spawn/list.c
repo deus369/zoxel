@@ -20,7 +20,8 @@ ecs_entity_t spawn_list(ecs_world_t *world,
     zox_name("list")
     zox_set(e, Color, { list_data.fill })
     zox_set(e, OutlineColor, { list_data.outline })
-    zox_muter(e, Children, children)
+    // zox_muter(e, Children, children)
+    Children children = (Children) { };
 
     // now spawn elements to fit our window
     ParentSpawnData child_parent_data = {
@@ -97,7 +98,8 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             }
             child = e2.x;
         }
-        add_to_Children(children, child);
+        add_to_Children(&children, child);
     }
+    zox_set_ptr(e, Children, children)
     return e;
 }

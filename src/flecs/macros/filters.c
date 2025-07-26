@@ -11,10 +11,11 @@
             .expr = #__VA_ARGS__\
         });
 
-    #define zox_change_check()\
-        if (!it->ctx || !ecs_query_changed(it->ctx)) {\
+    #define zox_change_check();
+
+        /*if (!it->ctx || !ecs_query_changed(it->ctx)) {\
             return;\
-        }
+        }*/
 
     #define zox_skip()\
         ecs_iter_skip(it);

@@ -9,7 +9,7 @@ void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, con
         return;
     }
     const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    if (!character || !zox_has(character, StatLinks)) {
+    if (!zox_valid(character) || !zox_has(character, StatLinks)) {
         zox_log_error("! invalid character in [spawn_game_ui_stats]")
         return;
     }

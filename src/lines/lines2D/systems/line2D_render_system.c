@@ -21,6 +21,7 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
     zox_sys_in(Color)
     zox_sys_in(Layer2D)
     for (int i = 0; i < it->count; i++) {
+        zox_sys_e()
         zox_sys_i(Layer2D, layer2D)
         zox_sys_i(LineData2D, lineData2D)
         zox_sys_i(LineThickness, lineThickness)
@@ -29,7 +30,6 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
             if (layer2D->value != renderer_layer) {
                 continue; // render per layer
             }
-            zox_field_e()
             if (get_root_canvas_camera(world, e) != renderer_camera) {
                 continue;
             }

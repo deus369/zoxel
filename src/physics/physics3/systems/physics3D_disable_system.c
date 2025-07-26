@@ -5,15 +5,16 @@ void Physics3DDisableSystem(ecs_iter_t *it) {
     return;
 #endif
     init_delta_time()
-    zox_field_out(InitializePhysics3D, initializePhysics3Ds, 1)
-    zox_field_out(Position3D, position3Ds, 2)
-    zox_field_out(Velocity3D, velocity3Ds, 3)
+    zox_sys_begin()
+    zox_sys_out(InitializePhysics3D)
+    zox_sys_out(Position3D)
+    zox_sys_out(Velocity3D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(InitializePhysics3D, initializePhysics3Ds, initializePhysics3D)
+        zox_sys_o(InitializePhysics3D, initializePhysics3D)
+        zox_sys_o(Position3D, position3D)
+        zox_sys_o(Velocity3D, velocity3D)
         if (initializePhysics3D->value < physics_disable_frames) {
             initializePhysics3D->value++;
-            zox_field_o(Position3D, position3Ds, position3D)
-            zox_field_o(Velocity3D, velocity3Ds, velocity3D)
             position3D->value.x -= velocity3D->value.x * delta_time;
             position3D->value.y -= velocity3D->value.y * delta_time;
             position3D->value.z -= velocity3D->value.z * delta_time;

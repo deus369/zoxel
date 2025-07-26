@@ -3,15 +3,16 @@
 zox_component_entity(name)\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
-    zox_field_world()\
-    zox_field_in(name, components, 1)\
+    zox_sys_world()\
+    zox_sys_begin()\
+    zox_sys_in(name)\
     for (int i = 0; i < it->count; i++) {\
-        zox_field_i(name, components, component)\
+        zox_sys_i(name, component)\
         const ecs_entity_t parent = component->value;\
         if (!zox_valid(parent) || !zox_has(parent, parent_name)) {\
             continue;\
         }\
-        zox_field_e()\
+        zox_sys_e()\
         parent_name *parent_links = zox_get_mut(parent, parent_name)\
         if (remove_from_##parent_name(parent_links, e)) {\
             /*zox_log("! removed [%s] from [%s]\n", zox_get_name(e), zox_get_name(parent))*/\

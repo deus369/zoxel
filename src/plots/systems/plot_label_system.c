@@ -1,14 +1,16 @@
 void PlotLabelSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(ParentLink, parentLinks, 1)
-    zox_field_out(ZextDirty, zextDirtys, 2)
-    zox_field_out(TextData, textDatas, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ParentLink)
+    zox_sys_out(ZextDirty)
+    zox_sys_out(TextData)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ZextDirty, zextDirtys, zextDirty)
+        zox_sys_i(ParentLink, parentLink)
+        zox_sys_o(ZextDirty, zextDirty)
+        zox_sys_o(TextData, textData)
         if (zextDirty->value) {
             continue;
         }
-        zox_field_i(ParentLink, parentLinks, parentLink)
         if (!parentLink->value) {
             continue;
         }
@@ -20,7 +22,6 @@ void PlotLabelSystem(ecs_iter_t *it) {
         if (!data->length) {
             continue;
         }
-        zox_field_o(TextData, textDatas, textData)
         double delta_time_min = 99999;
         double delta_time_max = -99999;
         for (int j = 0; j < data->length; j++) {

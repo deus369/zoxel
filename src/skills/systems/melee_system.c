@@ -73,21 +73,18 @@ void MeleeSystem(ecs_iter_t *it) {
         if (strength) {
             skill_damage += 3 * zox_gett_value(strength, StatValue);
         }
-
         const float skill_range = skillRange->value;
         const ecs_entity_t hit = raycastVoxelData->chunk;
         const byte in_range = raycastVoxelData->distance <= skill_range;
-        if (!hit || !in_range) {
+        if (!zox_valid(hit) || !in_range) {
             // ray too far
             spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, volume);
             continue;
         }
-        // zox_log(" > activating melee skill [%s]\n", zox_get_name(action_entity))
         if (zox_has(hit, Character3)) {
-            // const ecs_entity_t hit_character = hit;
             zox_geter(hit, StatLinks, hit_stats)
             find_array_component_with_tag(hit_stats, HealthStat, health_stat)
-            if (!health_stat) {
+            if (!zox_valid(health_stat)) {
                 zox_log_error("hit user had no health")
                 continue;
             } else {
@@ -100,9 +97,11 @@ void MeleeSystem(ecs_iter_t *it) {
                     statValue->value = stat_value_max;
                 }
                 // zox_log("[%s] took [%f] damage and is on [%f] health", zox_get_name(hit), skill_damage, statValue->value)
-                // zox_set(hit, LastDamager, { user })
                 combat_on_hit(world, hit, user);
             }
+
+            // hit sound
+            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, volume);
 
             // add knockback
             float3 hit_impulse = float3_scale(raycastVoxelData->normal, randf_range(knockback_min, knockback_max));
@@ -110,41 +109,48 @@ void MeleeSystem(ecs_iter_t *it) {
             hit_velocity->value = float3_add(hit_velocity->value, hit_impulse);
             // zox_log("+ added impulse [%fx%fx%f]", hit_impulse.x, hit_impulse.y, hit_impulse.z)
 
-            // hit sound
-            spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[28], 0.6, volume);
-
             // damage popup
-            const float3 bounds3D = zox_get_value(hit, Bounds3D)
-            const float3 hit_character_position = zox_get_value(hit, Position3D)
+            zox_geter_value(hit, Bounds3D, float3, bounds3D)
+            zox_geter_value(hit, Position3D, float3, hit_character_position)
             const float3 popup_position = (float3) { hit_character_position.x, hit_character_position.y + bounds3D.y + popup_spawn_y, hit_character_position.z };
             char popup_text[64];
             sprintf(popup_text, "%i", (int) floor(skill_damage));
             const color popup_color = (color) { 255, 0, 0, 255 };
-            spawn_popup3_easy(world, popup_text, popup_color, popup_position, 2.5f, 4 + rand() % 4);
+            spawn_popup3_easy(world,
+                popup_text,
+                popup_color,
+                popup_position,
+                2.5f,
+                randf_range(4, 8));
 
-        } else if (raycastVoxelData->voxel != 0 && raycastVoxelData->hit_block) {
-            if (!zox_has(raycastVoxelData->hit_block, BlockInvinsible)) {
-
+        } else if (raycastVoxelData->voxel && raycastVoxelData->hit_block && zox_has(hit, TerrainChunk)) {
+            const ecs_entity_t block = raycastVoxelData->hit_block;
+            if (!zox_valid(block)) {
+                zox_log_error("TerrainChunk is valid but block is not.")
+                continue;
+            }
+            if (!zox_has(block, BlockInvinsible)) {
                 // effect our terrain here
                 raycast_action(world, raycastVoxelData, 0, 2);
-
                 // destroy voxel sound
                 spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
 
                 // todo: spawn pickup in VoxelNodeDirty system - TerrainItemDropSystem
                 // this requires a stack on chunk for its updates
-
                 // spawn a pickup if removed
-                if (zox_has(hit, TerrainChunk)) {
-                    const ecs_entity_t pickup = spawn_pickup_block(world, raycastVoxelData->position_real, raycastVoxelData->hit_block);
-                    const ecs_entity_t block = raycastVoxelData->hit_block; // voxel;
-                    // now get item and set to pickup
-                    if (zox_valid(block) && zox_has(block, ItemLink)) {
-                        const ecs_entity_t item = zox_get_value(block, ItemLink)
-                        if (item) {
-                            zox_set(pickup, ItemLink, { item })
-                        }
+                // now get item and set to pickup
+                if (zox_has(block, ItemLink)) {
+                    zox_geter_value(block, ItemLink, ecs_entity_t, block_item)
+                    if (zox_valid(block_item)) {
+                        const ecs_entity_t pickup = spawn_pickup_block(world,
+                            raycastVoxelData->position_real,
+                            block);
+                        zox_set(pickup, ItemLink, { block_item })
+                    } else {
+                        zox_log_error("block [%s] has no valid item", zox_get_name(block))
                     }
+                } else {
+                    zox_log_error("block [%s] has no ItemLink", zox_get_name(block))
                 }
             } else {
                 // cannot destroy voxel sound

@@ -25,15 +25,16 @@ void dispose2_##name(ecs_world_t *world, const name *component) {\
 }\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
-    zox_field_world()\
-    zox_field_in(name, components, 1)\
+    zox_sys_world()\
+    zox_sys_begin()\
+    zox_sys_in(name)\
     for (int i = 0; i < it->count; i++) {\
-        zox_field_i(name, components, component)\
+        zox_sys_e()\
+        zox_sys_i(name, component)\
         if (!component->length) {\
             continue;\
         }\
         if (is_log) {\
-            zox_field_e()\
             zox_log("- disposing [%s]'s [%s] (%i)\n", zox_get_name(e), #name, component->length)\
         }\
         dispose2_##name(world, component);\

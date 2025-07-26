@@ -11,6 +11,7 @@ zox_component_float(Text3DScale)
 #include "prefabs/_.c"
 #include "util/popup.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(Elements3)
     zox_define_tag(Element3D)

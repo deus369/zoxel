@@ -41,7 +41,10 @@ void clone_texture_to_entity(ecs_world_t *world, const ecs_entity_t e, char *fil
     zox_set(e, TextureDirty, { 1 })
 }
 
-void clone_texture_entity_to_entity(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t texture_source) {
+void clone_texture_entity_to_entity(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t texture_source)
+{
     if (!texture_source) {
         zox_log("! texture [%lu] was invalid", texture_source)
         return;

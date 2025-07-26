@@ -26,17 +26,21 @@
 #include <string.h>
 // for thread locks in memory management - pthread_rwlock_init
 #include <pthread.h>
+// math module
+#include <math.h>
+#include <float.h>
+// time module
+#include <time.h>
+// # Pathing #
 // for DIR, readdir, closedir etc
 #include <dirent.h>
 // for pathing - can we do without?
 #include <sys/stat.h>   // pathing
 // used in pathing, doing funky stuff??
 #include <unistd.h>
-// math module
-#include <math.h>
-#include <float.h>
-// time module
-#include <time.h>
+// also used in pathing - ENOENT
+// and networking - EWOULDBLOCK
+#include <errno.h>
 
 //! Included Libraries for App
 #ifndef zox_disable_logs
@@ -78,7 +82,7 @@
 #include "lines/lines.c"
 
 // inner core
-#include "textures/textures.c"
+#include "textures/_.c"
 #include "musics/musics.c"
 #include "animations/animations.c"
 #include "bones/bones.c"
@@ -144,9 +148,9 @@ zox_begin_module(Zox)
     zox_import_module(Generic)
     zox_import_module(Timing)
     zox_import_module(Transforms)
-    #ifndef zox_disable_module_networking // disabled on web atm
-        zox_import_module(Networking)
-    #endif
+#ifndef zox_disable_module_networking // disabled on web atm
+    zox_import_module(Networking)
+#endif
     zox_import_module(Players)
     zox_import_module(Inputs)
     if (!headless) {
@@ -166,7 +170,7 @@ zox_begin_module(Zox)
     zox_import_module(Raycasts)
     zox_import_module(Lines)
 
-    zox_import_module(Textures)
+    zox_import_module(Texturez)
     zox_import_module(Musics)
     zox_import_module(Animations)
     zox_import_module(Bones)

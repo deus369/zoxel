@@ -1,14 +1,15 @@
 void Particle3DEmitSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_in(ParticleEmitRate, particleEmitRates, 2)
-    zox_field_in(Bounds3D, boundss, 3)
-    zox_field_in(Color, colors, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(ParticleEmitRate)
+    zox_sys_in(Bounds3D)
+    zox_sys_in(Color)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(ParticleEmitRate, particleEmitRates, particleEmitRate)
-        zox_field_i(Bounds3D, boundss, bounds)
-        zox_field_i(Color, colors, colorr)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(ParticleEmitRate, particleEmitRate)
+        zox_sys_i(Bounds3D, bounds)
+        zox_sys_i(Color, colorr)
 #ifdef zox_bulk_spawning
         emit_particle3Ds(world, position3D->value, particleEmitRate->value);
 #else

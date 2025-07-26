@@ -1,9 +1,10 @@
 void ZevicePointerResetSystem(ecs_iter_t *it) {
-    zox_field_out(ZevicePointer, zevicePointers, 1)
-    zox_field_out(ZevicePointerOld, zevicePointerOlds, 2)
+    zox_sys_begin()
+    zox_sys_out(ZevicePointer)
+    zox_sys_out(ZevicePointerOld)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ZevicePointer, zevicePointers, zevicePointer)
-        zox_field_o(ZevicePointerOld, zevicePointerOlds, zevicePointerOld)
+        zox_sys_o(ZevicePointer, zevicePointer)
+        zox_sys_o(ZevicePointerOld, zevicePointerOld)
         zevicePointerOld->value = zevicePointer->value;
         zevicePointer->value = reset_button_state(zevicePointer->value);
     }

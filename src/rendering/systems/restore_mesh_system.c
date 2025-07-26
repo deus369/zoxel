@@ -1,7 +1,8 @@
 void MeshGPURestoreSystem(ecs_iter_t *it) {
-    zox_field_out(MeshGPULink, meshGPULinks, 1)
+    zox_sys_begin()
+    zox_sys_out(MeshGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(MeshGPULink, meshGPULinks, meshGPULink)
+        zox_sys_o(MeshGPULink, meshGPULink)
         meshGPULink->value.x = spawn_gpu_generic_buffer();
         meshGPULink->value.y = spawn_gpu_generic_buffer();
     }

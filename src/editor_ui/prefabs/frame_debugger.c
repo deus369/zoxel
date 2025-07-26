@@ -34,13 +34,16 @@ ecs_entity_t spawn_frame_debugger_ui(
     // zox_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab)
     zox_name("frame_debugger_ui")
-    // zox_set(e, HeaderHeight, { header_size.y })
+    zox_add_tag(e, FrameDebuggerWindow)
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, canvas_position);
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
-    zox_get_muter(e, Children, children)
-    resize_memory_component(Children, children, ecs_entity_t, children_count)
+    // zox_get_muter(e, Children, children)
+
+    Children children = (Children) { };
+    initialize_memory_component(Children, (&children), ecs_entity_t, children_count)
+
     if (is_header) {
-        children->value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, canvas_position, pixel_size, is_close_button, canvas_size);
+        children.value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, canvas_position, pixel_size, is_close_button, canvas_size);
     }
     if (is_plot_sub_label) {
         SpawnZext zextSpawnData = {
@@ -71,7 +74,7 @@ ecs_entity_t spawn_frame_debugger_ui(
             }
         };
         const ecs_entity_t e2 = spawn_zext(world, &zextSpawnData);
-        children->value[is_header] = e2;
+        children.value[is_header] = e2;
         zox_add_tag(e2, PlotLabel)
     }
     for (int i = 0; i < lines_count; i++) {
@@ -92,10 +95,10 @@ ecs_entity_t spawn_frame_debugger_ui(
         zox_set(e2, ChildIndex, { i })
         zox_set(e2, ParentLink, { e })
         zox_add_tag(e2, PlotLine)
-        children->value[is_header + is_plot_sub_label + i] = e2;
+        children.value[is_header + is_plot_sub_label + i] = e2;
     }
+    zox_set_ptr(e, Children, children);
     plot_window_time = e;
-    zox_add_tag(e, FrameDebuggerWindow)
     return e;
 }
 

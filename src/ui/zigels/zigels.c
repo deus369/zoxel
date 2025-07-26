@@ -13,7 +13,7 @@ zox_begin_module(Zigels)
     define_components_zigels(world);
     zox_filter(fonts,
         [none] FontTexture,
-        [out] textures.GenerateTexture)
+        [out] texturez.GenerateTexture)
     zox_system_ctx(FontTextureSystem, zox_pip_zigels, fonts,
         [in] ZigelIndex,
         [in] colorz.Color,
@@ -21,9 +21,9 @@ zox_begin_module(Zigels)
         [in] rendering.TextureSize,
         [in] zigels.FontThickness,
         [in] zigels.FontOutlineThickness,
-        [out] textures.TextureData,
+        [out] texturez.TextureData,
         [out] rendering.TextureDirty,
-        [out] textures.GenerateTexture,
+        [out] texturez.GenerateTexture,
         [none] FontTexture)
     spawn_prefabs_zigels(world);
 zox_end_module(Zigels)

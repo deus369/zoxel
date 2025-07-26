@@ -1,7 +1,7 @@
-const VoxelLinks* get_first_terrain_voxels(ecs_world_t *world, const VoxLink *voxLinks, int count) {
+const VoxelLinks* get_first_terrain_voxels(ecs_world_t *world, const VoxLink *VoxLink_, int count) {
     ecs_entity_t realm = 0;
     for (int i = 0; i < count; i++) {
-        zox_field_i(VoxLink, voxLinks, voxLink)
+        zox_sys_i(VoxLink, voxLink)
         if (!zox_valid(voxLink->value) || !zox_has(voxLink->value, RealmLink)) {
             continue;
         }

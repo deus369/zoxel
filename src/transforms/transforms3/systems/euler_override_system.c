@@ -1,9 +1,10 @@
 void EulerOverrideSystem(ecs_iter_t *it) {
-    zox_field_in(Euler, eulers, 2)
-    zox_field_out(Rotation3D, rotations, 3)
+    zox_sys_begin()
+    zox_sys_in(Euler)
+    zox_sys_out(Rotation3D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Euler, eulers, euler)
-        zox_field_o(Rotation3D, rotations, rotation)
+        zox_sys_i(Euler, euler)
+        zox_sys_o(Rotation3D, rotation)
         rotation->value = quaternion_from_euler(euler->value);
     }
 } zox_declare_system(EulerOverrideSystem)

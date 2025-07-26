@@ -4,25 +4,34 @@ extern void set_linked_item(ecs_world_t *world, const ecs_entity_t user, const i
 extern void set_linked_skill(ecs_world_t *world, const ecs_entity_t user, const int index, const ecs_entity_t e);
 
 void UserIconClickSystem(ecs_iter_t *it) {
-    if (!icon_mouse_follow) return; // global icon_mouse_follow for now
-    zox_field_world()
-    zox_field_in(ClickState, clickStates, 1)
-    zox_field_in(IconType, iconTypes, 2)
-    zox_field_in(IconIndex, iconIndexs, 3)
-    zox_field_out(UserDataLink, userDataLinks, 4)
+    if (!icon_mouse_follow) {
+        return; // global icon_mouse_follow for now
+    }
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ClickState)
+    zox_sys_in(IconType)
+    zox_sys_in(IconIndex)
+    zox_sys_out(UserDataLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(ClickState, clickStates, clickState)
-        if (clickState->value != zox_click_state_clicked_this_frame) continue;
-        zox_field_o(UserDataLink, userDataLinks, userDataLink)
-        zox_field_i(IconType, iconTypes, iconType)
-        zox_field_i(IconIndex, iconIndexs, iconIndex)
-        zox_field_e()
+        zox_sys_e()
+        zox_sys_i(ClickState, clickState)
+        zox_sys_i(IconType, iconType)
+        zox_sys_i(IconIndex, iconIndex)
+        zox_sys_o(UserDataLink, userDataLink)
+        if (clickState->value != zox_click_state_clicked_this_frame) {
+            continue;
+        }
         byte icon_type = iconType->value;
-        if (icon_type == 0) continue;
-        const ecs_entity_t mouse_data = zox_get_value(icon_mouse_follow, UserDataLink)
-        if (!mouse_data && !userDataLink->value) continue; // if both empty
-        const byte is_clicked_empty = !userDataLink->value;
-        const byte is_placing_empty = !mouse_data;
+        if (!icon_type) {
+            continue;
+        }
+        zox_geter_value(icon_mouse_follow, UserDataLink, ecs_entity_t, mouse_data)
+        byte mouse_data_empty = !zox_valid(mouse_data);
+        byte clicked_data_empty = !zox_valid(userDataLink->value);
+        if (mouse_data_empty && clicked_data_empty) {
+            continue; // if both empty
+        }
         // const byte is_mouse_empty = !mouse_data;
         // check matches mouse's icon type
         const byte mouse_icon_type = zox_get_value(icon_mouse_follow, IconType)
@@ -31,27 +40,32 @@ void UserIconClickSystem(ecs_iter_t *it) {
             continue; // didn't match
         }
         ecs_entity_t character = 0;
-        if (mouse_data) character = zox_get_value(mouse_data, UserLink)
-        if (userDataLink->value) character = zox_get_value(userDataLink->value, UserLink)
+        if (!mouse_data_empty) {
+            character = zox_get_value(mouse_data, UserLink)
+        } else if (!clicked_data_empty) {
+            character = zox_get_value(userDataLink->value, UserLink)
+        }
         // what icon frame is clicked?
         // swap with icon_mouse_follow:
         // q: is all data on icon??
         // swap icon with mouse icon
-        if (!is_clicked_empty) {
-            if (icon_type == zox_icon_type_action) icon_type = process_icon_type_action(world, userDataLink->value);
+        if (!clicked_data_empty) {
+            if (icon_type == zox_icon_type_action) {
+                icon_type = process_icon_type_action(world, userDataLink->value);
+            }
             zox_set(icon_mouse_follow, IconType, { icon_type })
         } else {
             zox_set(icon_mouse_follow, IconType, { 0 })
         }
         zox_set(icon_mouse_follow, UserDataLink, { userDataLink->value })
-        zox_set(icon_mouse_follow, RenderDisabled, { is_clicked_empty })
+        zox_set(icon_mouse_follow, RenderDisabled, { clicked_data_empty })
         userDataLink->value = mouse_data;
         // zox_log("swapping textures\n")
         swap_textures(world, e, icon_mouse_follow);
 
         // remember: this is a temporary fix for: bug where e doesn't clear on picked up items
         const ecs_entity_t frame = zox_get_value(e, ParentLink)
-        if (is_placing_empty) {
+        if (mouse_data_empty) {
             set_icon_from_user_data(world, frame, e, 0);
         }
         set_icon_label_from_user_data(world, frame, mouse_data);
@@ -73,10 +87,14 @@ void UserIconClickSystem(ecs_iter_t *it) {
         }
 
         // clear the tooltip when picked up icon
-        if (!is_clicked_empty) {
+        if (!clicked_data_empty) {
             const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
-            find_child_with_tag(canvas, Tooltip, tooltip)
-            if (tooltip) set_entity_text(world, tooltip, "");
+            if (zox_valid(canvas)) {
+                find_child_with_tag(canvas, Tooltip, tooltip)
+                if (zox_valid(tooltip)) {
+                    set_entity_text(world, tooltip, "");
+                }
+            }
         }
     }
 } zox_declare_system(UserIconClickSystem)

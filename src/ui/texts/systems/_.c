@@ -30,16 +30,15 @@ void define_systems_texts(ecs_world_t *world) {
         [none] Text2D)
     if (!headless) {
         zox_system(ZextParentBackgroundSystem, zox_pipelines_zext_backgrounds,
-            [none] Zext,
             [in] texts.ZextDirty,
             [in] texts.TextData,
             [in] texts.TextSize,
             [in] TextPadding,
             [in] rendering.MeshAlignment,
-            [in] elements.core.CanvasLink,
-            [in] hierarchys.ParentLink)
+            // [in] elements.core.CanvasLink,
+            [in] hierarchys.ParentLink,
+            [none] Zext)
         zox_system(ZextBackgroundSystem, zox_pipelines_zext_backgrounds,
-            [none] Zext,
             [in] texts.ZextDirty,
             [in] texts.TextData,
             [in] texts.TextSize,
@@ -48,8 +47,9 @@ void define_systems_texts(ecs_world_t *world) {
             [in] elements.core.CanvasLink,
             [out] layouts2.PixelSize,
             [out] rendering.TextureSize,
-            [out] textures.GenerateTexture,
+            [out] texturez.GenerateTexture,
             [out] rendering.MeshVertices2D,
-            [out] rendering.MeshDirty)
+            [out] rendering.MeshDirty,
+            [none] Zext)
     }
 }

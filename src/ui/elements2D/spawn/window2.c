@@ -9,8 +9,12 @@ ecs_entity_t spawn_window2(ecs_world_t *world,
     zox_name("window")
     set_element_spawn_data(world, e, canvas_data, parent_data, element_data);
     zox_set(e, HeaderHeight, { header_height })
+
     // start children
-    zox_muter(e, Children, children)
+    Children* children = window_data->children;
+    // zox_muter(e, Children, children)
+    // Children children = (Children) { };
+
     const ParentSpawnData e_parent_data = {
         .e = e,
         .position = element_data->position_in_canvas,
@@ -57,7 +61,7 @@ ecs_entity_t spawn_window2(ecs_world_t *world,
 
     // add_to_Children(children, scrollbar);
 
-    window_data->children = children;
+    // window_data->children = children;
 
     return e;
 }

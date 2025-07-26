@@ -1,18 +1,19 @@
 void FreeCameraToggleSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(CameraLink, cameraLinks, 2)
-    zox_field_in(GameLink, gameLinks, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(CameraLink)
+    zox_sys_in(GameLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(GameLink, gameLinks, gameLink)
+        zox_sys_i(DeviceLinks, deviceLinks)
+        zox_sys_i(CameraLink, cameraLink)
+        zox_sys_i(GameLink, gameLink)
         if (!gameLink->value) continue;
         const byte game_state = zox_get_value(gameLink->value, GameState)
         if (game_state != zox_game_playing) continue;
-        zox_field_i(CameraLink, cameraLinks, cameraLink)
         if (cameraLink->value == 0) continue;
         const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)
         if (!canRoam->value) continue;
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         byte is_triggered = 0;
         ecs_entity_t mouse = 0;
         for (int j = 0; j < deviceLinks->length; j++) {

@@ -17,15 +17,16 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     zox_gpu_float4x4(particle3D_camera_matrix_location, render_camera_matrix);
     float fov_fixer = 90.0f / ((float) render_camera_fov);
     zox_gpu_float(particle3D_location_thickness, fov_fixer * default_point_thickness * viewport_scale);
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_in(Color, colors, 2)
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(Color)
 #ifndef zox_disable_particles_gpu_instancing
 
     // position
     glBindBuffer(GL_ARRAY_BUFFER, particle3D_instanced_position_buffer);
     // glBufferData(GL_ARRAY_BUFFER, it->count * sizeof(float3), position3Ds, GL_STATIC_DRAW);
     glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, it->count * sizeof(float3), position3Ds); //, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, it->count * sizeof(float3), Position3D_); //, GL_STATIC_DRAW);
     glEnableVertexAttribArray(particle3D_position_location);// Set divisor for position attribute
     glVertexAttribDivisor(particle3D_position_location, 1); // Update per instance
 
@@ -33,7 +34,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
     glBindBuffer(GL_ARRAY_BUFFER, particle3D_instanced_color_buffer);
     // glBufferData(GL_ARRAY_BUFFER, it->count * sizeof(color), colors, GL_STATIC_DRAW);
     glVertexAttribPointer(particle3D_color_location, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, (void*) 0);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, it->count * sizeof(color), colors); // , GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, it->count * sizeof(color), Color_); // , GL_STATIC_DRAW);
     glEnableVertexAttribArray(particle3D_color_location);// Set divisor for position attribute
     glVertexAttribDivisor(particle3D_color_location, 1); // Update per instance
 
@@ -49,8 +50,8 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
 #else
     glEnableVertexAttribArray(particle3D_position_location);
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(Color, colors, color)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(Color, color)
         const float data[] = { position3D->value.x, position3D->value.y, position3D->value.z };
         glVertexAttribPointer(particle3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, data);
         float4 color_f = color_to_float4(color->value);

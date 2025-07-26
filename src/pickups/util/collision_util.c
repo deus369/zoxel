@@ -65,8 +65,13 @@ void on_overlap_pickup(
                     const Children *frame_action_children = zox_get(frame_action, Children)
                     const ecs_entity_t icon_action = frame_action_children->value[0];
                     // remember: uses meta item for texture source here
-                    set_icon_from_user_data(world, frame_action, icon_action, meta_item_block);
-                    set_icon_label_from_user_data(world, frame_action, meta_item_block);
+                    set_icon_from_user_data(world,
+                        frame_action,
+                        icon_action,
+                        meta_item_block);
+                    set_icon_label_from_user_data(world,
+                        frame_action,
+                        meta_item_block);
                     zox_set(icon_action, UserDataLink, { user_item })
                     // zox_log(" > menu_actions found [%lu] user_item [%lu]\n", icon_action, meta_item_block) // base data off meta_item_block as item is still new
                 }

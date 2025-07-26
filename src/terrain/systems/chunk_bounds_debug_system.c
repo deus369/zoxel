@@ -2,17 +2,20 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
 
 void ChunkBoundsDrawSystem(ecs_iter_t *it) {
     const color_rgb up_color = (color_rgb) { 0, 0, 255 };
-    zox_field_world()
-    zox_field_in(Position3D, position3Ds, 1)
-    zox_field_in(ChunkSize, chunkSizes, 2)
-    zox_field_in(VoxScale, voxScales, 3)
-    zox_field_in(RenderDisabled, renderDisableds, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Position3D)
+    zox_sys_in(ChunkSize)
+    zox_sys_in(VoxScale)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
-        if (renderDisabled->value) continue;
-        zox_field_i(Position3D, position3Ds, position3D)
-        zox_field_i(ChunkSize, chunkSizes, chunkSize)
-        zox_field_i(VoxScale, voxScales, voxScale)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(Position3D, position3D)
+        zox_sys_i(ChunkSize, chunkSize)
+        zox_sys_i(VoxScale, voxScale)
+        if (renderDisabled->value) {
+            continue;
+        }
         const bounds chunk_bounds = calculate_chunk_bounds(position3D->value, chunkSize->value, voxScale->value);
         // zox_log("chunk_bounds %fx%fx%f - %fx%fx%f\n", chunk_bounds.center.x, chunk_bounds.center.y, chunk_bounds.center.z, chunk_bounds.extents.x, chunk_bounds.extents.y, chunk_bounds.extents.z)
         color_rgb line_color = up_color;

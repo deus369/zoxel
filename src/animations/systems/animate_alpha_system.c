@@ -2,24 +2,25 @@
 // todo: make this a macro to animate a component - make RenderDisabled an event?
 void AnimateAlphaSystem(ecs_iter_t *it) {
     const double time = zox_current_time;
-    zox_field_in(AnimationState, animationTypes, 1)
-    zox_field_in(AnimationStart, animationStarts, 2)
-    zox_field_in(AnimationLength, animationLengths, 3)
-    zox_field_in(AnimationDelay, animationDelays, 4)
-    zox_field_in(AnimateSourceFloat, animateSourceFloats, 5)
-    zox_field_in(AnimateTargetFloat, animateTargetFloats, 6)
-    zox_field_out(Alpha, alphas, 7)
+    zox_sys_begin()
+    zox_sys_in(AnimationState)
+    zox_sys_in(AnimationStart)
+    zox_sys_in(AnimationLength)
+    zox_sys_in(AnimationDelay)
+    zox_sys_in(AnimateSourceFloat)
+    zox_sys_in(AnimateTargetFloat)
+    zox_sys_out(Alpha)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(AnimationState, animationTypes, animationType)
+        zox_sys_i(AnimationState, animationType)
+        zox_sys_i(AnimationStart, animationStart)
+        zox_sys_i(AnimationLength, animationLength)
+        zox_sys_i(AnimationDelay, animationDelay)
+        zox_sys_i(AnimateSourceFloat, animateSourceFloat)
+        zox_sys_i(AnimateTargetFloat, animateTargetFloat)
+        zox_sys_o(Alpha, alpha)
         if (animationType->value != zox_animate_alpha) {
             continue;
         }
-        zox_field_i(AnimationStart, animationStarts, animationStart)
-        zox_field_i(AnimationLength, animationLengths, animationLength)
-        zox_field_i(AnimationDelay, animationDelays, animationDelay)
-        zox_field_i(AnimateSourceFloat, animateSourceFloats, animateSourceFloat)
-        zox_field_i(AnimateTargetFloat, animateTargetFloats, animateTargetFloat)
-        zox_field_o(Alpha, alphas, alpha)
         double animation_time = (time - (animationStart->value + animationDelay->value)) / animationLength->value;
         if (animation_time < 0) {
             animation_time = 0;

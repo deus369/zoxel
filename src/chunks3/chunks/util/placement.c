@@ -9,7 +9,7 @@ void place_block(ecs_world_t *world,
     const byte voxel,
     const float3 position_real)
 {
-    if (!node || !zox_valid(chunk)) {
+    if (!node || !zox_valid(chunk) || !zox_has(chunk, VoxelNode) || !zox_has(chunk, NodeDepth)) {
         return;
     }
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
@@ -32,7 +32,6 @@ void place_block(ecs_world_t *world,
     node = set_voxel(&datam, data2);
 
     // - Refresh Meshes
-    // zox_log_error("chunk [%s] set VoxelNodeDirty to trigger.", zox_get_name(chunk))
     zox_set(chunk, VoxelNodeDirty, { zox_dirty_trigger })
     zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
     zox_set(chunk, ChunkMeshDirty, { chunk_dirty_state_trigger })

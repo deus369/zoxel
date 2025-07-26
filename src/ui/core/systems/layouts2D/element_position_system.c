@@ -1,25 +1,26 @@
 // for any elements with parent that is canvas
 void ElementPositionSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(PixelPosition, pixelPositions, 1)
-    zox_field_in(PixelSize, pixelSizes, 2)
-    zox_field_in(ParentLink, parentLinks, 3)
-    zox_field_in(Anchor, anchors, 4)
-    zox_field_in(CanvasLink, canvasLinks, 5)
-    zox_field_out(Position2D, position2Ds, 6)
-    zox_field_out(CanvasPosition, canvasPositions, 7)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(PixelPosition)
+    zox_sys_in(PixelSize)
+    zox_sys_in(ParentLink)
+    zox_sys_in(Anchor)
+    zox_sys_in(CanvasLink)
+    zox_sys_out(Position2D)
+    zox_sys_out(CanvasPosition)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(PixelPosition, pixelPositions, pixelPosition)
-        zox_field_i(PixelSize, pixelSizes, pixelSize)
-        zox_field_i(ParentLink, parentLinks, parentLink)
-        zox_field_i(Anchor, anchors, anchor)
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
+        zox_sys_e()
+        zox_sys_i(PixelPosition, pixelPosition)
+        zox_sys_i(PixelSize, pixelSize)
+        zox_sys_i(ParentLink, parentLink)
+        zox_sys_i(Anchor, anchor)
+        zox_sys_i(CanvasLink, canvasLink)
+        zox_sys_o(Position2D, position2D)
+        zox_sys_o(CanvasPosition, canvasPosition)
         if (!zox_valid(canvasLink->value) || parentLink->value != canvasLink->value) {
             continue;
         }
-        zox_field_o(Position2D, position2Ds, position2D)
-        zox_field_o(CanvasPosition, canvasPositions, canvasPosition)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         const int2 pixel_position = pixelPosition->value;
         const float2 anchor2 = anchor->value;

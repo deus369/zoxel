@@ -6,7 +6,7 @@
 */
 
 void MouseExtractSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     // remember: sdl doesn't do multiple mouses
     zox_geter_value2(main_app, WindowSize, int2, screen_size)
     // zox_log("screen_size.y: %i", screen_size.y)
@@ -29,11 +29,12 @@ void MouseExtractSystem(ecs_iter_t *it) {
     if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
         button_pressed_right = 1;
     }
-    zox_field_in(Children, childrens, 1)
-    zox_field_in(AppLink, appLinks, 2)
+    zox_sys_begin()
+    zox_sys_in(Children)
+    zox_sys_in(AppLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Children, childrens, children)
-        zox_field_i(AppLink, appLinks, appLink)
+        zox_sys_i(Children, children)
+        zox_sys_i(AppLink, appLink)
         // using button_pressed_left
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];

@@ -6,7 +6,10 @@ ecs_entity_t spawn_prefab_frame_user(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity_t frame, const byte quantity) {
+void set_icon_label_from_user_data_quantity(ecs_world_t *world,
+    const ecs_entity_t frame,
+    const byte quantity)
+{
     if (!zox_has(frame, IconLabel)) {
         return;
     }
@@ -28,31 +31,33 @@ void set_icon_label_from_user_data_quantity(ecs_world_t *world, const ecs_entity
     }
 }
 
-void set_icon_label_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const ecs_entity_t data) {
-    if (!zox_has(frame, IconLabel)) {
+void set_icon_label_from_user_data(ecs_world_t *world,
+    const ecs_entity_t frame,
+    const ecs_entity_t data)
+{
+    if (!zox_valid(frame) || !zox_has(frame, IconLabel)) {
         return;
     }
     if (!zox_has(frame, Children)) {
         zox_log(" ! frame has no children :( %lu\n", frame)
+        return;
+    }
+    zox_geter(frame, Children, children)
+    if (children->length < 2) {
+        return;
+    }
+    const ecs_entity_t zext = children->value[1];
+    if (!zox_valid(zext)) {
+        return;
+    }
+    const byte quantity = zox_valid(data) && zox_has(data, Quantity) ? zox_gett_value(data, Quantity) : 0;
+    // zox_log("x%i\n", quantity)
+    if (quantity > 1) {
+        char text[6];
+        sprintf(text, "x%i", quantity);
+        set_entity_text(world, zext, text);
     } else {
-        const Children *children = zox_get(frame, Children)
-        if (children->length < 2) {
-            return;
-        }
-        const ecs_entity_t zext = children->value[1];
-        if (zox_has(data, Quantity)) {
-            const byte quantity = zox_get_value(data, Quantity)
-            // zox_log("x%i\n", quantity)
-            if (quantity > 1) {
-                char text[6];
-                sprintf(text, "x%i", quantity);
-                set_entity_text(world, zext, text);
-            } else {
-                set_entity_text(world, zext, "");
-            }
-        } else {
-            set_entity_text(world, zext, "");
-        }
+        set_entity_text(world, zext, "");
     }
 }
 
@@ -75,10 +80,18 @@ void set_icon_label_from_user_data_direct(ecs_world_t *world, const ecs_entity_t
     }
 }
 
-void set_icon_from_user_data(ecs_world_t *world, const ecs_entity_t frame, const ecs_entity_t e, const ecs_entity_t data) {
+void set_icon_from_user_data(ecs_world_t *world,
+    const ecs_entity_t frame,
+    const ecs_entity_t e,
+    const ecs_entity_t data)
+{
+    if (!zox_valid(frame) || !zox_valid(e)) {
+        zox_log_error("invalid frame or e in icon setting")
+        return;
+    }
     zox_set(frame, UserDataLink, { data })
     zox_set(e, UserDataLink, { data })
-    if (!data) {
+    if (!zox_valid(data)) {
         clear_texture_data(world, e);
         zox_set(e, GenerateTexture, { zox_generate_texture_trigger })
         zox_set(e, TextureSize, { int2_single(default_icon_texture_size) })

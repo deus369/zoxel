@@ -7,7 +7,7 @@ void key_down_test_aura(ecs_world_t *world, int32_t keycode) {
             return;
         }
         const ecs_entity_t character = zox_get_value(player, CharacterLink)
-        if (!character) {
+        if (!zox_valid(character)) {
             zox_log("! character is null\n")
             return;
         }

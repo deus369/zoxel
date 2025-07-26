@@ -17,26 +17,27 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
     const MaterialGPULink *materialGPULink = NULL;
     const TextureGPULink *textureGPULink = NULL;
     const MaterialTextured3D *material_attributes = NULL;
-    zox_field_world()
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(MeshGPULink, meshGPULinks, 2)
-    zox_field_in(UvsGPULink, uvsGPULinks, 3)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 4)
-    zox_field_in(MeshIndicies, meshIndiciess, 5)
-    zox_field_in(VoxLink, voxLinks, 6)
-    zox_field_in(RenderDisabled, renderDisableds, 7)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(TransformMatrix)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(ColorsGPULink)
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(VoxLink)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(VoxLink, voxLink)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(ColorsGPULink, colorsGPULink)
+        zox_sys_i(TransformMatrix, transformMatrix)
         if (renderDisabled->value) continue;
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) continue;
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x) continue;
-        zox_field_i(VoxLink, voxLinks, voxLink)
         if (!voxLink->value) continue;
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
         if (vox_entity != voxLink->value) {
             vox_entity = voxLink->value;
             const TilemapLink *tilemapLink = zox_get(voxLink->value, TilemapLink)

@@ -5,38 +5,39 @@ void Element3DRenderSystem(ecs_iter_t *it) {
     if (!material_textured3D) {
         return;
     }
-    zox_field_world()
+    zox_sys_world()
     byte has_set_material = 0;
     const uint material_link = zox_get_value(material_textured3D, MaterialGPULink)
     const MaterialTextured3D *material_attributes = zox_get(material_textured3D, MaterialTextured3D)
-    zox_field_in(TransformMatrix, transformMatrixs, 1)
-    zox_field_in(MeshGPULink, meshGPULinks, 2)
-    zox_field_in(UvsGPULink, uvsGPULinks, 3)
-    zox_field_in(ColorsGPULink, colorsGPULinks, 4)
-    zox_field_in(MeshIndicies, meshIndiciess, 5)
-    zox_field_in(TextureGPULink, textureGPULinks, 6)
-    zox_field_in(RenderDisabled, renderDisableds, 7)
+    zox_sys_begin()
+    zox_sys_in(TransformMatrix)
+    zox_sys_in(MeshGPULink)
+    zox_sys_in(UvsGPULink)
+    zox_sys_in(ColorsGPULink)
+    zox_sys_in(MeshIndicies)
+    zox_sys_in(TextureGPULink)
+    zox_sys_in(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(RenderDisabled, renderDisableds, renderDisabled)
+        zox_sys_e()
+        zox_sys_i(RenderDisabled, renderDisabled)
+        zox_sys_i(MeshIndicies, meshIndicies)
+        zox_sys_i(MeshGPULink, meshGPULink)
+        zox_sys_i(TransformMatrix, transformMatrix)
+        zox_sys_i(UvsGPULink, uvsGPULink)
+        zox_sys_i(ColorsGPULink, colorsGPULink)
+        zox_sys_i(TextureGPULink, textureGPULink)
         if (renderDisabled->value) {
             continue;
         }
-        zox_field_e()
         if (!can_render_ui(world, e)) {
             continue;
         }
-        zox_field_i(MeshIndicies, meshIndiciess, meshIndicies)
         if (!meshIndicies->length) {
             continue;
         }
-        zox_field_i(MeshGPULink, meshGPULinks, meshGPULink)
         if (!meshGPULink->value.x || !meshGPULink->value.y) {
             continue;
         }
-        zox_field_i(TransformMatrix, transformMatrixs, transformMatrix)
-        zox_field_i(UvsGPULink, uvsGPULinks, uvsGPULink)
-        zox_field_i(ColorsGPULink, colorsGPULinks, colorsGPULink)
-        zox_field_i(TextureGPULink, textureGPULinks, textureGPULink)
         if (!has_set_material) {
             has_set_material = 1;
             zox_gpu_blend_enable();

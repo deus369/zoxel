@@ -32,12 +32,24 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         ecs_entity_t window_selected = 0;
         zox_sys_query_begin()
         while (zox_sys_query_loop()) {
-            const CanvasPosition *canvasPositions = ecs_field(&it2, CanvasPosition, 2);
-            const PixelSize *pixelSizes = ecs_field(&it2, PixelSize, 3);
-            const Layer2D *layer2Ds = ecs_field(&it2, Layer2D, 4);
-            const RenderDisabled *renderDisableds = ecs_field(&it2, RenderDisabled, 5);
+            zox_sys_begin_2()
+            zox_sys_in_2(CanvasPosition)
+            zox_sys_in_2(PixelSize)
+            zox_sys_in_2(Layer2D)
+            zox_sys_in_2(RenderDisabled)
+            /*const CanvasPosition *canvasPositions = ecs_field(&it2, CanvasPosition, 1);
+            const PixelSize *pixelSizes = ecs_field(&it2, PixelSize, 2);
+            const Layer2D *layer2Ds = ecs_field(&it2, Layer2D, 3);
+            const RenderDisabled *renderDisableds = ecs_field(&it2, RenderDisabled, 4);*/
             for (int j = 0; j < it2.count; j++) {
-                const RenderDisabled *renderDisabled = &renderDisableds[j];
+                zox_sys_i_2(RenderDisabled, renderDisabled)
+                zox_sys_i_2(CanvasPosition, canvasPosition2)
+                zox_sys_i_2(PixelSize, pixelSize2)
+                zox_sys_i_2(Layer2D, layer2D)
+                /*const RenderDisabled *renderDisabled = &renderDisableds[j];
+                const CanvasPosition *canvasPosition2 = &canvasPositions[j];
+                const PixelSize *pixelSize2 = &pixelSizes[j];
+                const Layer2D *layer2D = &layer2Ds[j];*/
                 if (renderDisabled->value) {
                     continue;
                 }
@@ -49,9 +61,6 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 if (player_camera_ui != camera) {
                     continue; // only do checks for player canvases
                 }
-                const CanvasPosition *canvasPosition2 = &canvasPositions[j];
-                const PixelSize *pixelSize2 = &pixelSizes[j];
-                const Layer2D *layer2D = &layer2Ds[j];
                 // SelectState *selectState = &selectableStates[j];
                 const int2 pixelSize = pixelSize2->value;
                 const int2 canvas_position = zox_get_value(camera, ScreenPosition)

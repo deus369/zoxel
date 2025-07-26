@@ -19,7 +19,7 @@ void attach_camera_to_character(ecs_world_t *world,
     const ecs_entity_t camera,
     const ecs_entity_t character)
 {
-    if (!character) {
+    if (!zox_valid(character)) {
         zox_log_error("character invalid in attach_camera_to_character")
         return;
     }

@@ -1,22 +1,27 @@
 // todo: reuse parts of ZeviceClickSystem in this
 // this is now from zevice
 void DeviceClickSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(PlayerLink, playerLinks, 1)
-    zox_field_in(Children, childrens, 4)
-    zox_field_in(RaycasterTarget, raycasterTargets, 2)
-    // zox_field_out(RaycasterResult, raycasterResults, 5)
-    zox_field_in(WindowRaycasted, windowRaycasteds, 3)
-    zox_field_out(WindowTarget, windowTargets, 7)
-    zox_field_out(ClickingEntity, clickingEntitys, 6)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(PlayerLink)
+    zox_sys_in(RaycasterTarget)
+    zox_sys_in(WindowRaycasted)
+    zox_sys_in(Children)
+    zox_sys_out(ClickingEntity)
+    zox_sys_out(WindowTarget)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(PlayerLink, playerLinks, playerLink)
+        // zox_sys_e()
+        zox_sys_i(RaycasterTarget, raycasterTarget)
+        zox_sys_i(WindowRaycasted, windowRaycasted)
+        zox_sys_i(PlayerLink, playerLink)
+        zox_sys_i(Children, children)
+        zox_sys_o(ClickingEntity, clickingEntity)
+        zox_sys_o(WindowTarget, windowTarget)
         const ecs_entity_t player = playerLink->value;
         if (!player) continue;
         if (!player || !zox_has(player, CanvasLink)) continue;
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
         if (!canvas) continue;
-        zox_field_i(Children, childrens, children)
         byte click_type = 0;
         for (int j = 0; j < children->length; j++) {
             const ecs_entity_t zevice = children->value[j];
@@ -35,12 +40,6 @@ void DeviceClickSystem(ecs_iter_t *it) {
         }
         if (click_type == 0) continue;
         const byte device_mode = zox_get_value(player, DeviceMode)
-        // zox_field_e()
-        zox_field_i(RaycasterTarget, raycasterTargets, raycasterTarget)
-        zox_field_i(WindowRaycasted, windowRaycasteds, windowRaycasted)
-        // zox_field_o(RaycasterResult, raycasterResults, raycasterResult)
-        zox_field_o(ClickingEntity, clickingEntitys, clickingEntity)
-        zox_field_o(WindowTarget, windowTargets, windowTarget)
         // used for virtual joysticks to see if a t arget was raycasted, todo: move to raycast system
         // raycasterResult->value = raycasterTarget->value || windowRaycasted->value;
         // released

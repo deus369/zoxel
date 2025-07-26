@@ -23,24 +23,29 @@ ecs_entity_t spawn_pickup_basic(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_pickup_block(ecs_world_t *world, const float3 position, const ecs_entity_t block) {
-    ecs_entity_t e;
+ecs_entity_t spawn_pickup_block(ecs_world_t *world,
+    const float3 position,
+    const ecs_entity_t block)
+{
 #ifdef zox_prefabs_non_textured
-    e = spawn_cube(world, prefab_pickup_basic, position);
+    ecs_entity_t e = spawn_cube(world, prefab_pickup_basic, position);
 #else
+    ecs_entity_t texture = 0;
+
     if (zox_valid(block) && zox_has(block, Textures)) {
         zox_geter(block, Textures, textures)
         if (textures->length) {
             if (textures->length == 1) {
-                const ecs_entity_t texture = textures->value[0];
-                e = spawn_cube_textured(world, prefab_pickup, position, texture);
+                texture = textures->value[0];
             } else {
-                const ecs_entity_t texture = textures->value[block_side_down];
-                e = spawn_cube_textured(world, prefab_pickup, position, texture);
+                texture = textures->value[block_side_down];
             }
-        } else {
-            e = spawn_cube(world, prefab_pickup_basic, position);
         }
+    }
+
+    ecs_entity_t e;
+    if (zox_valid(texture)) {
+        e = spawn_cube_textured(world, prefab_pickup, position, texture);
     } else {
         e = spawn_cube(world, prefab_pickup_basic, position);
     }

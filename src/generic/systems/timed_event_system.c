@@ -1,15 +1,16 @@
 extern double zox_delta_time;
 
 void TimedEventSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(TimedEvent, timedEvents, 1)
-    zox_field_in(EventInput, eventInputs, 2)
-    zox_field_out(EventTime, eventTimes, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(TimedEvent)
+    zox_sys_in(EventInput)
+    zox_sys_out(EventTime)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(TimedEvent, timedEvents, timedEvent)
-        zox_field_i(EventInput, eventInputs, eventInput)
-        zox_field_o(EventTime, eventTimes, eventTime)
+        zox_sys_e()
+        zox_sys_i(TimedEvent, timedEvent)
+        zox_sys_i(EventInput, eventInput)
+        zox_sys_o(EventTime, eventTime)
         eventTime->value -= zox_delta_time;
         if (eventTime->value <= 0) {
             if (timedEvent->value) {

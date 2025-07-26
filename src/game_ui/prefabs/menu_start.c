@@ -1,4 +1,7 @@
-void menu_start_triggered(ecs_world_t *world, const ecs_entity_t player, const ecs_entity_t canvas) {
+void menu_start_triggered(ecs_world_t *world,
+    const ecs_entity_t player,
+    const ecs_entity_t canvas)
+{
     find_child_with_tag(canvas, MenuStart, menu)
     if (!menu) {
         zox_log_error("No MenuStart found on canvas")
@@ -10,12 +13,16 @@ void menu_start_triggered(ecs_world_t *world, const ecs_entity_t player, const e
     spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[16], 2.8f, volume);
 }
 
-void button_event_menu_start(ecs_world_t *world, const ClickEventData *event) {
+void button_event_menu_start(ecs_world_t *world,
+    const ClickEventData *event)
+{
     const ecs_entity_t canvas = zox_get_value(event->clicker, CanvasLink)
     menu_start_triggered(world, event->clicker, canvas);
 }
 
-ecs_entity_t spawn_prefab_main_start(ecs_world_t *world, const ecs_entity_t prefab) {
+ecs_entity_t spawn_prefab_main_start(ecs_world_t *world,
+    const ecs_entity_t prefab)
+{
     zox_prefab_child(prefab)
     zox_prefab_name("menu_start")
     zox_add_tag(e, MenuStart)

@@ -19,13 +19,17 @@ byte2 count_windows_in_stack(ecs_world_t *world, const Children *children) {
 
 // Reorders windows on a stack, moves all previous ones down?
 void CanvasStackSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(Children, childrens, 1)
-    zox_field_out(WindowToTop, windowToTops, 2)
-    zox_field_out(WindowsLayers, windowsLayerss, 3)
-    zox_field_out(WindowsCount, windowsCounts, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(Children)
+    zox_sys_out(WindowToTop)
+    zox_sys_out(WindowsLayers)
+    zox_sys_out(WindowsCount)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(WindowToTop, windowToTops, windowToTop)
+        zox_sys_o(WindowToTop, windowToTop)
+        zox_sys_i(Children, children)
+        zox_sys_o(WindowsLayers, windowsLayers)
+        zox_sys_o(WindowsCount, windowsCount)
         if (!zox_valid(windowToTop->value)) {
             continue;
         }
@@ -34,9 +38,6 @@ void CanvasStackSystem(ecs_iter_t *it) {
             // zox_log(" > windowToTop->value set wrongly\n")
             continue;
         }
-        zox_field_i(Children, childrens, children)
-        zox_field_o(WindowsLayers, windowsLayerss, windowsLayers)
-        zox_field_o(WindowsCount, windowsCounts, windowsCount)
 
         byte2 counter = count_windows_in_stack(world, children);
         byte windows_count = counter.x; // maybe count windows first

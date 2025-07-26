@@ -62,7 +62,8 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
     }
     if (type == zox_character_type_skeleton) {
         spawn_gpu_bone_index(world, e);
-        spawn_skeleton_bones(world, e);
+        float head_move_y = data.player ? 0.01f : 0.1f;
+        spawn_skeleton_bones(world, e, head_move_y);
         if (is_paint_skeletons) {
             zox_add_tag(e, PaintedSkeleton)
         }

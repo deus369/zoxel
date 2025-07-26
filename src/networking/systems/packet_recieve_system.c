@@ -1,9 +1,12 @@
 void PacketRecieveSystem(ecs_iter_t *it) {
     byte recv_buffer[1];
-    zox_field_in(SocketLink, socketLinks, 2)
+    zox_sys_begin()
+    zox_sys_in(SocketLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(SocketLink, socketLinks, socketLink)
-        if (!socketLink->value) continue;
+        zox_sys_i(SocketLink, socketLink)
+        if (!socketLink->value) {
+            continue;
+        }
         int recv_size;
         struct sockaddr_in recv_addr;
         socklen_t recv_addr_len = sizeof(recv_addr);

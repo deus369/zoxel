@@ -1,15 +1,17 @@
 // #define zox_debug_log_device_mode_system
 void DeviceModeSystem(ecs_iter_t *it) {
-    zox_field_world()
+    zox_sys_world()
     if (!auto_switch_device) {
         return;
     }
-    zox_field_in(DeviceLinks, deviceLinks, 1)
-    zox_field_in(DeviceMode, deviceModes, 2)
-    zox_field_out(DeviceModeDirty, deviceModeDirtys, 3)
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(DeviceMode)
+    zox_sys_out(DeviceModeDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DeviceLinks, deviceLinks, deviceLinks2)
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
+        zox_sys_i(DeviceLinks, deviceLinks2)
+        zox_sys_i(DeviceMode, deviceMode)
+        zox_sys_o(DeviceModeDirty, deviceModeDirty)
         // first check if currently using selected inputs
         byte using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
@@ -52,7 +54,6 @@ void DeviceModeSystem(ecs_iter_t *it) {
         if (using_current_inputs) {
             continue;
         }
-        zox_field_o(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
         const byte old_device_mode = deviceMode->value;
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];
@@ -87,7 +88,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         if (deviceModeDirty->value == 0) {
             continue;
         }
-        zox_field_e()
+        zox_sys_e()
         // set player links here if dirty
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];

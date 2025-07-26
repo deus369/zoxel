@@ -3,7 +3,7 @@
 void PlotLineSystem(ecs_iter_t *it) {
     const double pixel_height_per_ms = 5;
     int2 limits = (int2) { 4, 320 };
-    zox_field_world()
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ParentLink)
     zox_sys_in(ChildIndex)

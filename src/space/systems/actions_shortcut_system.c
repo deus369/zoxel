@@ -1,11 +1,12 @@
 #ifdef zox_mod_actions
 
 void ActionsShortcutSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
     for (int i = 0; i < it->count; i++) {
-        zox_field_e()
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
+        zox_sys_e()
+        zox_sys_i(DeviceLinks, deviceLinks)
         byte is_shift_action_left = 0;
         byte is_shift_action_right = 0;
         for (int j = 0; j < deviceLinks->length; j++) {

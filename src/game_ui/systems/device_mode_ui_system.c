@@ -1,22 +1,20 @@
 // handles changes in device mode state
 void DeviceModeUISystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(DeviceMode, deviceModes, 1)
-    zox_field_in(DeviceModeDirty, deviceModeDirtys, 2)
-    zox_field_in(GameLink, gameLinks, 3)
-    zox_field_in(CanvasLink, canvasLinks, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceMode)
+    zox_sys_in(DeviceModeDirty)
+    zox_sys_in(GameLink)
+    zox_sys_in(CanvasLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(DeviceModeDirty, deviceModeDirtys, deviceModeDirty)
-        if (deviceModeDirty->value == 0) {
+        zox_sys_e()
+        zox_sys_i(GameLink, gameLink)
+        zox_sys_i(CanvasLink, canvasLink)
+        zox_sys_i(DeviceModeDirty, deviceModeDirty)
+        zox_sys_i(DeviceMode, deviceMode)
+        if (!deviceModeDirty->value || deviceModeDirty->value == deviceMode->value) {
             return;
         }
-        zox_field_i(DeviceMode, deviceModes, deviceMode)
-        if (deviceModeDirty->value == deviceMode->value) {
-            return;
-        }
-        zox_field_e()
-        zox_field_i(GameLink, gameLinks, gameLink)
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
         const ecs_entity_t canvas = canvasLink->value; // zox_get_value(e, CanvasLink)
         byte game_state = 0;
         if (gameLink->value) {
@@ -33,7 +31,7 @@ void DeviceModeUISystem(ecs_iter_t *it) {
         }
         // handle new mode
         if (deviceModeDirty->value == zox_device_mode_gamepad) {
-            zox_field_e()
+            zox_sys_e()
             raycaster_select_first_button(world, e, canvas);
         } else if (deviceModeDirty->value == zox_device_mode_keyboardmouse) {
             raycaster_select_element(world, e, 0);

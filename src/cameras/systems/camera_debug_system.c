@@ -52,11 +52,12 @@ void CameraDebugSystem(ecs_iter_t *it) {
             }
         }
     }
-    zox_field_world()
-    zox_field_in(CameraPlanes, cameraPlaness, 1)
+    zox_sys_world()
+    zox_sys_in(CameraPlanes)
     for (int i = 0; i < it->count; i++) {
-        if (it->entities[i] != main_cameras[0]) continue;
-        zox_field_i(CameraPlanes, cameraPlaness, cameraPlanes)
+        zox_sys_e()
+        zox_sys_i(CameraPlanes, cameraPlanes)
+        if (e != main_cameras[0]) continue;
         // when this works, disable renders based on frustum checks
         // byte is_seen = is_in_frustum(cameraPlanes->value, test_bounds);
         //color_rgb cube_color = miss_color;

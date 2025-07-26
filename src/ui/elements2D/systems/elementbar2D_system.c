@@ -1,13 +1,17 @@
 extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, byte mesh_alignment);
 
 void Elementbar2DSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(ElementBar, elementBars, 1)
-    zox_field_in(ElementBarSize, elementBarSizes, 2)
-    zox_field_in(Children, childrens, 3)
-    zox_field_in(PixelSize, pixelSizes, 4)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ElementBar)
+    zox_sys_in(ElementBarSize)
+    zox_sys_in(Children)
+    zox_sys_in(PixelSize)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(Children, childrens, children)
+        zox_sys_i(Children, children)
+        zox_sys_i(PixelSize, pixelSize)
+        zox_sys_i(ElementBar, elementBar)
+        zox_sys_i(ElementBarSize, elementBarSize)
         if (!children->length) {
             continue;
         }
@@ -19,10 +23,7 @@ void Elementbar2DSystem(ecs_iter_t *it) {
         if (initializeElement->value) {
             continue; // removing this breaks it?!?!
         }
-        // zox_field_e()
-        zox_field_i(PixelSize, pixelSizes, pixelSize)
-        zox_field_i(ElementBar, elementBars, elementBar)
-        zox_field_i(ElementBarSize, elementBarSizes, elementBarSize)
+        // zox_sys_e()
         if (zox_has(front_bar, MeshVertices2D)) {
             // important
             if (zox_gett_value(front_bar, MeshDirty) != 0) {

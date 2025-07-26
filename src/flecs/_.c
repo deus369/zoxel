@@ -1,5 +1,5 @@
 // zox_flecs_3 | zox_flecs_4
-#define zox_flecs_3
+#define zox_flecs_4
 // #define zox_enable_log_new_system
 
 #define FLECS_CUSTOM_BUILD

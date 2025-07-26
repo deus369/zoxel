@@ -1,13 +1,16 @@
 void ParentPositionSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(ParentLink, parentLinks, 1)
-    zox_field_in(LocalPosition3D, localPosition3Ds, 2)
-    zox_field_out(Position3D, position3Ds, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ParentLink)
+    zox_sys_in(LocalPosition3D)
+    zox_sys_out(Position3D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(ParentLink, parentLinks, parentLink)
-        if (!zox_valid(parentLink->value)) continue;
-        zox_field_i(LocalPosition3D, localPosition3Ds, localPosition3D)
-        zox_field_o(Position3D, position3Ds, position3D)
+        zox_sys_i(ParentLink, parentLink)
+        zox_sys_i(LocalPosition3D, localPosition3D)
+        zox_sys_o(Position3D, position3D)
+        if (!zox_valid(parentLink->value)) {
+            continue;
+        }
         set_position_from_parents(world, parentLink->value, &position3D->value, localPosition3D->value);
     }
 } zox_declare_system(ParentPositionSystem)

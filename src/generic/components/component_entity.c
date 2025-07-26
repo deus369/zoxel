@@ -12,10 +12,11 @@ component_id_list(entity)
 // add to tilemap link
 #define zox_component_parented(name) zox_component_entity(name)\
 void on_destroyed##_##name(ecs_iter_t *it) {\
-    zox_field_world()\
-    zox_field_out(name, components, 1)\
+    zox_sys_world()\
+    zox_sys_begin()\
+    zox_sys_out(name)\
     for (int i = 0; i < it->count; i++) {\
-        zox_field_o(name, components, component)\
+        zox_sys_o(name, component)\
         zox_delete(component->value);\
         component->value = 0;\
     }\

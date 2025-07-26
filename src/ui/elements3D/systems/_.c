@@ -34,16 +34,16 @@ void define_systems_elements3D(ecs_world_t *world) {
         [none] Text3D)
     if (!headless) {
         zox_system_1(Element3DMeshSystem, zox_pip_mainthread,
-            [none] Element3D,
-            [in] layouts2.PixelSize,
-            [in] elements.core.CanvasLink,
+            //[in] layouts2.PixelSize,
+            //[in] elements.core.CanvasLink,
             [out] elements.core.InitializeElement,
             [out] rendering.MeshDirty,
-            [out] textures.GenerateTexture,
+            // [out] texturez.GenerateTexture,
             [out] rendering.MeshGPULink,
             [out] rendering.UvsGPULink,
             [out] rendering.ColorsGPULink,
-            [out] rendering.TextureGPULink)
+            [out] rendering.TextureGPULink,
+            [none] Element3D)
         zox_render3D_plus_system(Element3DRenderSystem,
             [in] transforms3.TransformMatrix,
             [in] rendering.MeshGPULink,

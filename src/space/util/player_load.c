@@ -38,6 +38,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
     zox_mut_begin(terrain, ChunkLinks, chunkLinks)
     spawn_place.chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
     // check if exists first
+    byte spawned_first_chunk = 0;
     if (!zox_valid(spawn_place.chunk)) {
         spawn_place.chunk = spawn_chunk_terrain(world,
             prefab_chunk_height,
@@ -45,6 +46,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
             chunk_position,
             chunk_position,
             real_chunk_scale);
+        spawned_first_chunk = 1;
         if (zox_valid(spawn_place.chunk)) {
             int3_hashmap_add(chunkLinks->value,
                 chunk_position,
@@ -69,10 +71,17 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
     };
     zox_set(camera, Position3D, { spawn_place.position }) // reposition camera too
     const ecs_entity_t e = spawn_character3_player(world, spawn_data);
-    if (zox_valid(spawn_place.chunk)) {
-        zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
-        if (add_to_EntityLinks(entityLinks, e)) {
-            zox_mut_end(spawn_place.chunk, EntityLinks)
+    // assuming we just spawned it
+    if (spawned_first_chunk) {
+        EntityLinks entities = (EntityLinks) { };
+        add_to_EntityLinks(&entities, e);
+        zox_set_ptr(spawn_place.chunk, EntityLinks, entities);
+    } else {
+        if (zox_valid(spawn_place.chunk)) {
+            zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
+            if (add_to_EntityLinks(entityLinks, e)) {
+                zox_mut_end(spawn_place.chunk, EntityLinks)
+            }
         }
     }
 

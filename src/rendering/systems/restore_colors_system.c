@@ -1,7 +1,8 @@
 void ColorsGPULinkRestoreSystem(ecs_iter_t *it) {
-    zox_field_out(ColorsGPULink, colorsGPULinks, 1)
+    zox_sys_begin()
+    zox_sys_out(ColorsGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ColorsGPULink, colorsGPULinks, colorsGPULink)
+        zox_sys_o(ColorsGPULink, colorsGPULink)
         colorsGPULink->value = spawn_gpu_generic_buffer();
     }
 } zox_declare_system(ColorsGPULinkRestoreSystem)

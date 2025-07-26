@@ -9,12 +9,13 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     const byte lowest_note = 12;
     const byte highest_note = 36;
     const byte note_verse_difference = 6;
-    zox_field_world()
-    zox_field_out(GenerateMusic, generateMusics, 1)
-    zox_field_out(NoteLinks, noteLinkss, 2)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_out(GenerateMusic)
+    zox_sys_out(NoteLinks)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(GenerateMusic, generateMusics, generateMusic)
-        zox_field_o(NoteLinks, noteLinkss, noteLinks)
+        zox_sys_o(GenerateMusic, generateMusic)
+        zox_sys_o(NoteLinks, noteLinks)
         if (!generateMusic->value) {
             continue;
         }

@@ -46,6 +46,10 @@ void spawn_realm_characters(ecs_world_t *world, ecs_entity_t e) {
     // add model links with tag ModelCharacter
     for (int i = 0; i < models->length; i++) {
         const ecs_entity_t model = models->value[i];
+        if (!zox_valid(model)) {
+            zox_log_error("realm has invalid model [%i]", i)
+            continue;
+        }
         if (!zox_has(model, ModelCharacter)) {
             continue;
         }

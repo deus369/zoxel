@@ -11,7 +11,9 @@ void define_systems_collisions3D(ecs_world_t *world) {
         [in] SphereRadius,
         [in] physics.CollisionDisabled,
         [none] SphereCollider)
-    zox_system_ctx(SphereCollideSystem, zox_pip_physics, sphere_colliders,
+    // todo: break this up between ResponseSystem and Detection
+    //      - needs to be main thread for the events
+    zox_system_ctx_1(SphereCollideSystem, zox_pip_physics, sphere_colliders,
         [in] transforms3.Position3D,
         [in] SphereRadius,
         [in] physics.CollisionDisabled,

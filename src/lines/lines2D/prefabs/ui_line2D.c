@@ -82,8 +82,10 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world,
     zox_set(e, LineThickness, { thickness })
     zox_set(e, LinePosition2D, { line_position2D })
     zox_set(e, LineAnchor, { line_anchor })
-    zox_get_muter(e, LineData2D, lineData2D)
-    set_ui_line_position(lineData2D, line_position2D, canvas_size_f, aspect_ratio);
+
+    LineData2D line_data = (LineData2D) { };
+    set_ui_line_position(&line_data, line_position2D, canvas_size_f, aspect_ratio);
+    zox_set_ptr(e, LineData2D, line_data);
     if (life_time != 0.0f) {
         zox_set(e, DestroyInTime, { life_time })
     }

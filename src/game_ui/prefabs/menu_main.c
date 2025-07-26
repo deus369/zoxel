@@ -74,6 +74,11 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         list_data.visible_count);
     window_element_data.size.y += header_height;
     // zox_log("+ calculated size for list [%ix%i]", window_element_data.size.x, window_element_data.size.y)
+    // memset(&children, 0, sizeof(Children)); // full zero
+    // ctor_Children(&children);
+
+    Children children = (Children) { };
+    window_data.children = &children;
     const ecs_entity_t e = spawn_window2(world,
         canvas_data,
         window_parent_data,
@@ -102,6 +107,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         list_data);
     add_to_Children(window_data.children, list);
 
+    zox_set_ptr(e, Children, children)
 
     /*text_group labels[max_labels];
     ClickEvent events[max_labels];

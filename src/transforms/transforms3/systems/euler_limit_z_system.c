@@ -1,9 +1,10 @@
 void EulerLimitZSystem(ecs_iter_t *it) {
-    zox_field_in(EulerLimitZ, eulerLimitZs, 1)
-    zox_field_out(Euler, eulers, 2)
+    zox_sys_begin()
+    zox_sys_in(EulerLimitZ)
+    zox_sys_out(Euler)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(EulerLimitZ, eulerLimitZs, eulerLimitZ)
-        zox_field_o(Euler, eulers, euler)
+        zox_sys_i(EulerLimitZ, eulerLimitZ)
+        zox_sys_o(Euler, euler)
         if (euler->value.z < eulerLimitZ->value.x) euler->value.z = eulerLimitZ->value.x;
         else if (euler->value.z > eulerLimitZ->value.y) euler->value.z = eulerLimitZ->value.y;
     }

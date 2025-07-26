@@ -3,11 +3,13 @@ void Controller2MoveSystem(ecs_iter_t *it) {
     float2 max_delta_velocity = max_velocity2D;
     max_delta_velocity.x *= delta_time;
     max_delta_velocity.y *= delta_time;
-    zox_field_world()
-    zox_field_in(DeviceLinks, deviceLinkss, 1)
-    zox_field_in(CharacterLink, characterLinks, 2)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(DeviceLinks)
+    zox_sys_in(CharacterLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CharacterLink, characterLinks, characterLink)
+        zox_sys_i(DeviceLinks, deviceLinks)
+        zox_sys_i(CharacterLink, characterLink)
         const ecs_entity_t character = characterLink->value;
         if (!zox_valid(character) || !zox_has(character, Character2D)) {
             continue;
@@ -21,7 +23,6 @@ void Controller2MoveSystem(ecs_iter_t *it) {
         byte is_running = 0;
         float2 movement = float2_zero; // { 0, 0 };
         float2 left_stick = float2_zero;
-        zox_field_i(DeviceLinks, deviceLinkss, deviceLinks)
         // get the player input vector
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device = deviceLinks->value[j];

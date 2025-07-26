@@ -1,17 +1,22 @@
 void ZextParentBackgroundSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(ZextDirty, zextDirtys, 2)
-    zox_field_in(TextData, textDatas, 3)
-    zox_field_in(TextSize, textSizes, 4)
-    zox_field_in(TextPadding, textPaddings, 5)
-    zox_field_in(MeshAlignment, meshAlignments, 6)
-    zox_field_in(ParentLink, parentLinks, 8)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(ZextDirty)
+    zox_sys_in(TextData)
+    zox_sys_in(TextSize)
+    zox_sys_in(TextPadding)
+    zox_sys_in(MeshAlignment)
+    zox_sys_in(ParentLink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(ZextDirty, zextDirtys, zextDirty)
+        zox_sys_i(ZextDirty, zextDirty)
+        zox_sys_i(ParentLink, parentLink)
+        zox_sys_i(TextData, textData)
+        zox_sys_i(TextSize, textSize)
+        zox_sys_i(TextPadding, textPadding)
+        zox_sys_i(MeshAlignment, meshAlignment)
         if (zextDirty->value != zext_update_update) {
             continue;
         }
-        zox_field_i(ParentLink, parentLinks, parentLink)
         const ecs_entity_t e2 = parentLink->value;
         if (!zox_has(e2, ZextLabel)) {
             continue;
@@ -20,10 +25,6 @@ void ZextParentBackgroundSystem(ecs_iter_t *it) {
         if (generate_texture) {
             return;
         }
-        zox_field_i(TextData, textDatas, textData)
-        zox_field_i(TextSize, textSizes, textSize)
-        zox_field_i(TextPadding, textPaddings, textPadding)
-        zox_field_i(MeshAlignment, meshAlignments, meshAlignment)
         const int2 size = calculate_zext_size(textData->value, textData->length, textSize->value, textPadding->value, default_line_padding);
         on_element_pixels_resized(world, e2, size, meshAlignment->value);
     }

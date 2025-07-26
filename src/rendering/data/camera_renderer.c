@@ -20,6 +20,10 @@ static inline float4 get_fog_value() {
 void set_camera_fog_color(ecs_world_t* world, color_rgb c) {
     for (int i = 0; i < main_cameras_count; i++) {
         ecs_entity_t camera = main_cameras[i];
-        zox_set(camera, FogColor, { c })
+        if (zox_valid(camera)) {
+            zox_set(camera, FogColor, { c })
+        } else {
+            zox_log_error("camera [%i] is invalid", i)
+        }
     }
 }

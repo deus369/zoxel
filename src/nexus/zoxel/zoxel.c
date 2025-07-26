@@ -117,6 +117,29 @@ void zoxel_settings_uis(ecs_world_t* world) {
     is_end_game_delays = 1;
 }
 
+void zoxel_debug_keys() {
+    add_hook_key_down(toggle_life_terrain);
+    add_hook_key_down(toggle_player_death);
+    add_hook_key_down(spawn_tilemap_ui);
+    add_hook_key_down(toggle_editor);
+    add_hook_key_down(key_down_toggle_debug_chunks);
+    add_hook_key_down(key_down_toggle_debug_character_bounds);
+    add_hook_key_down(key_down_toggle_debug_voxes_bounds);
+    add_hook_key_down(key_down_toggle_streaming);
+    // add_hook_key_down(key_down_test_aura);
+    // add_hook_key_down(keydown_test_cubes);
+    // add_hook_key_down(keydown_test_popup3);
+    // add_hook_key_down(test_game_end);
+    // add_hook_key_down(test_fall_through_terrain);
+    // add_hook_key_down(toggle_character_particles);
+    // test function for npc spawning
+    // add_hook_key_down(test_spawn_character_npc);
+    // add_hook_key_down(key_down_test_aura);
+    // add_hook_key_down(test_spawn_chunk_terrain);
+    // add_hook_key_down(test_key_element_front2D);
+    // add_hook_key_down(key_down_update_text3D);
+}
+
 zox_begin_module(ZoxGame)
     boot_event = boot_zoxel_game;
     // app settings
@@ -143,6 +166,8 @@ zox_begin_module(ZoxGame)
     zoxel_settings_npcs();
     zoxel_settings_physics();
     zoxel_settings_uis(world);
+    zoxel_debug_keys();
+
     // graphs
     zox_visualize_sounds = 0;
     // logs
@@ -206,26 +231,6 @@ zox_begin_module(ZoxGame)
     // set_prefab_debug_label(world, &debug_label_collisions);
     set_prefab_debug_label(world, &debug_label_chunk_link);
     // set_prefab_debug_label(world, &debug_label_app);
-
-    // add_hook_key_down(key_down_test_aura);
-    add_hook_key_down(toggle_life_terrain);
-    add_hook_key_down(toggle_player_death);
-    add_hook_key_down(test_game_end);
-    add_hook_key_down(test_fall_through_terrain);
-    add_hook_key_down(spawn_tilemap_ui);
-    add_hook_key_down(toggle_editor);
-    add_hook_key_down(toggle_character_particles);
-    // test function for npc spawning
-    // add_hook_key_down(test_spawn_character_npc);
-    // add_hook_key_down(key_down_test_aura);
-    add_hook_key_down(key_down_toggle_debug_chunks);
-    add_hook_key_down(key_down_toggle_debug_character_bounds);
-    add_hook_key_down(key_down_toggle_debug_voxes_bounds);
-    // add_hook_key_down(test_spawn_chunk_terrain);
-    add_hook_spawned_character3D(&spawn_character_skills);
-    // add_hook_key_down(test_key_element_front2D);
-    // add_hook_key_down(key_down_update_text3D);
-    add_hook_key_down(key_down_toggle_streaming);
 zox_end_module(ZoxGame)
 
 #endif

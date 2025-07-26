@@ -9,10 +9,10 @@ void define_systems_voxes(ecs_world_t *world) {
         [in] rendering.TextureSize,
         [in] chunks3.VoxLink,
         [in] blocks.VoxBakeSide,
-        [out] textures.GenerateTexture,
-        [out] textures.TextureData,
+        [out] texturez.GenerateTexture,
+        [out] texturez.TextureData,
         [out] rendering.TextureDirty,
-        [none] textures.VoxTexture)
+        [none] texturez.VoxTexture)
     // remember: timing specific, fucks up if changes position
     zox_system(Bounds3DGrowSystem, EcsOnUpdate,
         [in] rendering.MeshDirty,

@@ -2,15 +2,16 @@ void QuadsLabelSystem(ecs_iter_t *it) {
     const int triangles_count = MeshIndicies_memorys_allocated * 3;
     char buffer[32];
     //byte system_updated = 0;
-    zox_field_out(QuadsCount, quadsCounts, 2)
-    zox_field_out(ZextDirty, zextDirtys, 3)
-    zox_field_out(TextData, textDatas, 4)
+    zox_sys_begin()
+    zox_sys_out(QuadsCount)
+    zox_sys_out(ZextDirty)
+    zox_sys_out(TextData)
     for (int i = 0; i < it->count; i++) {
-        zox_field_o(ZextDirty, zextDirtys, zextDirty)
+        zox_sys_o(ZextDirty, zextDirty)
+        zox_sys_o(QuadsCount, quadsCount)
+        zox_sys_o(TextData, textData)
         if (zextDirty->value) continue;
-        zox_field_o(QuadsCount, quadsCounts, quadsCount)
         if (quadsCount->value == triangles_count) continue;
-        zox_field_o(TextData, textDatas, textData)
         quadsCount->value = triangles_count;
         //if (!system_updated) {
             //system_updated = 1;

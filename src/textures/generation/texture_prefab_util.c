@@ -1,20 +1,22 @@
 
 void clear_texture_data(ecs_world_t *world, const ecs_entity_t e) {
-    if (!e || !zox_has(e, TextureData)) return;
-
-    zox_geter(e, TextureData, oldData)
-    if (oldData->value) free(oldData->value);
-
-    TextureData *data = &((TextureData) { 0, NULL });
-    zox_set(e, TextureData, { data->length, data->value })
-
-    // zox_get_muter(e, TextureData, data)
-    //if (data->value) free(data->value); // remember to free it first
-    //data->value = NULL;
-    //data->length = 0;
+    if (!zox_valid(e) || !zox_has(e, TextureData)) {
+        return;
+    }
+    //zox_geter(e, TextureData, old)
+    zox_muter(e, TextureData, old)
+    if (old->value) {
+        clear_memory_component(TextureData, old);
+        // free(old->value);
+    }
+    //TextureData data = (TextureData) { 0, NULL };
+    //zox_set_ptr(e, TextureData, data);
 }
 
-void clone_texture_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source) {
+void clone_texture_data(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t source)
+{
     if (!source || !zox_has(source, TextureSize) || !zox_has(source, TextureData)) {
         if (!source) {
             zox_log_error("[texture not found] [%s]", zox_get_name(e))
@@ -23,16 +25,16 @@ void clone_texture_data(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
         }
         return;
     }
-    const TextureData *source_data = zox_get(source, TextureData)
+    zox_geter(source, TextureData, source_data)
     if (source_data->length == 0 || !source_data->value) {
         zox_log("! clone_texture_data invalid source data [%lu] > source [%lu]\n", e, source)
         return;
     }
-    const int2 size = zox_get_value(source, TextureSize)
+    zox_geter_value(source, TextureSize, int2, size)
     const int bytes_length = sizeof(color) * source_data->length;
     // free old one
     if (zox_has(e, TextureData)) {
-        zox_geter(e, TextureData, oldData)
+        zox_geter(e, TextureData, oldData);
         if (oldData->value) {
             free(oldData->value);
         }
@@ -41,10 +43,10 @@ void clone_texture_data(ecs_world_t *world, const ecs_entity_t e, const ecs_enti
     data.length = source_data->length;
     data.value = malloc(bytes_length);
     if (!data.value) {
-        zox_log("! texture data malloc failed\n")
+        zox_log_error("texture data malloc failed")
         return;
     }
     memcpy(data.value, source_data->value, bytes_length);
-    zox_set(e, TextureData, { data.length, data.value })
-    zox_set(e, TextureSize, { size })
+    zox_set_ptr(e, TextureData, data);
+    zox_set(e, TextureSize, { size });
 }

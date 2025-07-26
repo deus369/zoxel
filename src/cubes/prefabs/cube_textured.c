@@ -33,14 +33,20 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t p
     return e;
 }
 
-ecs_entity_t spawn_cube_textured(ecs_world_t *world, const ecs_entity_t prefab, const float3 position, const ecs_entity_t texture) {
+// unique mesh, need to instance these!
+ecs_entity_t spawn_cube_textured(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const float3 position,
+    const ecs_entity_t texture)
+{
     const ecs_entity_t e = spawn_cube(world, prefab, position);
     // zox_name("cube_textured")
-    clone_texture_entity_to_entity(world, e, texture);
-    if (headless || !shader_textured3D) {
+    if (zox_valid(texture)) {
+        clone_texture_entity_to_entity(world, e, texture);
+    }
+    if (headless || !zox_valid(shader_textured3D)) {
         return e;
     }
-    // zox_log("+ spawned cubet\n")
     spawn_gpu_mesh(world, e);
     spawn_gpu_uvs(world, e);
     spawn_gpu_colors(world, e);

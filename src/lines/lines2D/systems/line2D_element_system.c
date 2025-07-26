@@ -13,17 +13,18 @@ void set_ui_line_position(LineData2D *lineData2D, const int4 linePosition2D, con
 
 // this just sets posiions - sets render position based on canvas
 void Line2DElementSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(LinePosition2D, linePosition2Ds, 1)
-    zox_field_in(CanvasLink, canvasLinks, 2)
-    zox_field_out(LineData2D, lineData2Ds, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(LinePosition2D)
+    zox_sys_in(CanvasLink)
+    zox_sys_out(LineData2D)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(CanvasLink, canvasLinks, canvasLink)
+        zox_sys_i(CanvasLink, canvasLink)
+        zox_sys_i(LinePosition2D, linePosition2D)
+        zox_sys_o(LineData2D, lineData2D)
         if (!zox_valid(canvasLink->value)) {
             continue;
         }
-        zox_field_i(LinePosition2D, linePosition2Ds, linePosition2D)
-        zox_field_o(LineData2D, lineData2Ds, lineData2D)
         const int2 canvas_size = zox_get_value(canvasLink->value, PixelSize)
         const float2 canvas_size_f = int2_to_float2(canvas_size);
         const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
