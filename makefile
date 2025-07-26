@@ -125,7 +125,7 @@ package-deb: $(TARGET)
 	echo "Architecture: amd64"                              >> $(CONTROL_DIR)/control
 	echo "Maintainer: Deus <you@example.com>"               >> $(CONTROL_DIR)/control
 	echo "Description: A procedurally-generated voxel RPG"  >> $(CONTROL_DIR)/control
-	echo "Depends: libc6 (>= 2.31), libgl1, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libsdl2-image-2.0-0, flecs (3.2.7)" >> $(CONTROL_DIR)/control
+	echo "Depends: libc6 (>= 2.31), libgl1, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libsdl2-image-2.0-0, flecs (4.1.0)" >> $(CONTROL_DIR)/control
 
 	# .desktop launcher
 	echo "[Desktop Entry]"                              >  $(DESKTOP_DIR)/$(GAME).desktop

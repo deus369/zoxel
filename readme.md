@@ -33,7 +33,7 @@ The ultimate plan [ todo list ](todo.md)
 
 Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
 
-Flecs (v3.2.7) [_flecsing_](https://codeberg.org/deus/flecsing)
+Flecs (v4.1.0) [_flecsing_](https://codeberg.org/deus/flecsing)
 
 ---
 
