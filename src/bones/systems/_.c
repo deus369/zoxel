@@ -6,7 +6,7 @@
 void define_systems_bones(ecs_world_t *world) {
     // generating bone indexes here
     if (!headless) {
-        zox_render3D_plus_system(SkeletonRender3DSystem,
+        zox_render3D_plus_system(Skeleton3RenderSystem,
             [in] rendering.MeshIndicies,
             [in] rendering.MeshGPULink,
             [in] rendering.ColorsGPULink,
@@ -14,7 +14,7 @@ void define_systems_bones(ecs_world_t *world) {
             [in] transforms3.TransformMatrix,
             [in] rendering.RenderDisabled,
             [in] BoneLinks,
-            [none] Skeleton,
+            [none] rendering3.SkeletonMesh,
             [none] rendering.MeshColorRGBs,
             [none] !rendering.UvsGPULink)
         zox_system(BoneIndexGenerateSystem, EcsOnUpdate,
@@ -26,7 +26,7 @@ void define_systems_bones(ecs_world_t *world) {
             [in] rendering.MeshDirty,
             [in] BoneIndexes,
             [out] rendering.MeshColorRGBs,
-            [in] PaintedSkeleton)
+            [none] PaintedSkeleton)
         zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread,
             [in] rendering.MeshDirty,
             [in] BoneIndexes,

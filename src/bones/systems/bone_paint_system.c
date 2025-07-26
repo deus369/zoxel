@@ -1,12 +1,15 @@
 void BonePaintSystem(ecs_iter_t *it) {
-    zox_field_in(MeshDirty, meshDirtys, 1)
-    zox_field_in(BoneIndexes, boneIndexess, 2)
-    zox_field_out(MeshColorRGBs, meshColorRGBss, 3)
+    zox_sys_begin()
+    zox_sys_in(MeshDirty)
+    zox_sys_in(BoneIndexes)
+    zox_sys_out(MeshColorRGBs)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
-        if (meshDirty->value != mesh_state_generate) continue;
-        zox_field_i(BoneIndexes, boneIndexess, boneIndexes)
-        zox_field_o(MeshColorRGBs, meshColorRGBss, meshColorRGBs)
+        zox_sys_i(MeshDirty, meshDirty)
+        zox_sys_i(BoneIndexes, boneIndexes)
+        zox_sys_o(MeshColorRGBs, meshColorRGBs)
+        if (meshDirty->value != mesh_state_generate) {
+            continue;
+        }
         for (int j = 0; j < meshColorRGBs->length; j++) {
             const byte bone = boneIndexes->value[j];
             color_rgb bone_color = (color_rgb) { 255, 0, 0 };

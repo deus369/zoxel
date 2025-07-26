@@ -5,6 +5,8 @@ float spawn_many_radius = 0.5f;
 float3 spawn_many_offset = float3_zero;
 float spawn_many_y = 0.6f;
 
+byte is_paint_skeletons = 0;
+
 void set_character_settings() {
     if (cpu_tier == 3) {
         spawn_characters3D_count = 512; // 2048;

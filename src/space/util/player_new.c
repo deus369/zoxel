@@ -122,7 +122,7 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
         // .chunk_position = chunk_position,
         // .terrain_chunk = spawn_place.chunk,
     };
-    const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
+    const ecs_entity_t e = spawn_character3_player(world, spawn_data);
     delay_event(world, &game_start_player_new_positioner, player, 0.5);
     delay_event(world, &spawn_player_game_ui, player, 0.5);
     return e;

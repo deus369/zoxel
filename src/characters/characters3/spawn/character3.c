@@ -1,6 +1,7 @@
 ecs_entity_t spawn_character3(ecs_world_t *world,
     const spawn_character3D_data data)
 {
+    zox_geter_value(data.prefab, Character3Type, byte, type)
     zox_instance(data.prefab)
     zox_name("character3")
     zox_set(e, Position3D, { data.position })
@@ -39,7 +40,8 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
         // zox_log("+ set model [%s] vox [%s]", zox_get_name(model), zox_get_name(vox))
     }
 
-    if (zox_has(data.prefab, InstanceLink)) {
+    if (type == zox_character_type_instanced) {
+        // zox_has(data.prefab, InstanceLink)) {
         zox_set(e, InstanceLink, { vox })
         if (zox_has(vox, VoxScale)) {
             zox_geter_value(vox, VoxScale, float, meta_vox_scale)
@@ -57,6 +59,13 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
         // move this to new system
         spawn_gpu_mesh(world, e);
         spawn_gpu_colors(world, e);
+    }
+    if (type == zox_character_type_skeleton) {
+        spawn_gpu_bone_index(world, e);
+        spawn_skeleton_bones(world, e);
+        if (is_paint_skeletons) {
+            zox_add_tag(e, PaintedSkeleton)
+        }
     }
     // name
     if (!disable_npc_hooks) {

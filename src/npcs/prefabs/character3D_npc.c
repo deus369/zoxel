@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_character3_npc(ecs_world_t *world, const ecs_entity_t 
     zox_prefab_child(prefab)
     zox_prefab_name("character3D_npc")
     zox_add_tag(e, Npc)
-    zox_add_tag(e, RendererColored)
+    zox_add_tag(e, VoxMesh)
     zox_add_tag(e, Jumper)
     zox_prefab_set(e, Behaviour, { zox_behaviour_idle })
     zox_prefab_set(e, DefaultBehaviour, { zox_behaviour_wander })

@@ -2,19 +2,21 @@
 // todo: use SphereRadius float per bone for a simple radius
 
 void BoneIndexGenerateSystem(ecs_iter_t *it) {
-    zox_field_world()
-    zox_field_in(MeshDirty, meshDirtys, 1)
-    zox_field_in(MeshVertices, meshVerticess, 2)
-    zox_field_in(BoneLinks, boneLinkss, 3)
+    zox_sys_world()
+    zox_sys_begin()
+    zox_sys_in(MeshDirty)
+    zox_sys_in(MeshVertices)
+    zox_sys_in(BoneLinks)
     // outputting the generated weights
-    zox_field_out(BoneIndexes, boneIndexess, 4)
+    zox_sys_out(BoneIndexes)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        zox_sys_i(MeshDirty, meshDirty)
+        zox_sys_i(MeshVertices, meshVertices)
+        zox_sys_i(BoneLinks, boneLinks)
+        zox_sys_o(BoneIndexes, boneIndexes)
         if (meshDirty->value != mesh_state_generate) {
             continue;
         }
-        zox_field_i(MeshVertices, meshVerticess, meshVertices)
-        zox_field_i(BoneLinks, boneLinkss, boneLinks)
         // get all children bone positions and sizes
         float3 bone_positions[boneLinks->length];
         float3 bone_sizes[boneLinks->length];
@@ -28,7 +30,6 @@ void BoneIndexGenerateSystem(ecs_iter_t *it) {
             bones_bounds_lower[j] = float3_subtract(bone_positions[j], half_size);
             bones_bounds_upper[j] = float3_add(bone_positions[j], half_size);
         }
-        zox_field_o(BoneIndexes, boneIndexess, boneIndexes)
         resize_memory_component(BoneIndexes, boneIndexes, byte, meshVertices->length)
         for (int j = 0; j < meshVertices->length; j++) {
             const float3 position = meshVertices->value[j];

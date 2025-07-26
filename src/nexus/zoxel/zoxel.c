@@ -51,6 +51,7 @@ void zoxel_settings_npcs() {
     disable_npc_uis = 0;
     disable_npc_movement = 0;
     disable_npc_positioner = 0;
+    is_paint_skeletons = 0;
     // max npcs
     // disable_instancing = 1; // test so we can reverse backward etc
     // disable_npc_movement = 1;

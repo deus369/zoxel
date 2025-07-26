@@ -59,9 +59,9 @@ zox_begin_module(Rendering)
 
 
     zox_import_module(Shaders)
-    zox_import_module(RenderingBasics2D)
+    zox_import_module(Rendering2)
 #ifdef zox_mod_rendering_basics3D
-    zox_import_module(RenderingBasics3D)
+    zox_import_module(Rendering3)
 #endif
     zox_import_module(RenderingCameras)
     zox_module_dispose(dispose_rendering)

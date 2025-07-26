@@ -68,7 +68,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
         .player = player,
     };
     zox_set(camera, Position3D, { spawn_place.position }) // reposition camera too
-    const ecs_entity_t e = spawn_character3D_player(world, spawn_data);
+    const ecs_entity_t e = spawn_character3_player(world, spawn_data);
     if (zox_valid(spawn_place.chunk)) {
         zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
         if (add_to_EntityLinks(entityLinks, e)) {

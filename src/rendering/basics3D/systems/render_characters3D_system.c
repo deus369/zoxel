@@ -1,3 +1,4 @@
+// todo: move this to voxes
 // #define zox_debug_render3D_colored
 // #define max_character_mesh_indicies 1000000
 //#define zox_disable_render_characters

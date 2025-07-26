@@ -1,5 +1,4 @@
-extern ecs_entity_t prefab_character3_npc;
-extern ecs_entity_t prefab_character3_instanced_npc;
+
 extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
 // we need to check if chunk has generated yet - is there a component for this?
 
@@ -79,17 +78,23 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             // find random from realm characters
             byte chance_current = 0;
             byte chance_rolled = rand() % max_chance;
-            ecs_entity_t model = 0;
+            ecs_entity_t meta = 0;
             for (byte k = 0; k < characters->length; k++) {
-                ecs_entity_t meta = characters->value[k];
-                zox_geter_value(meta, SpawnChance, byte, chance)
+                ecs_entity_t e2 = characters->value[k];
+                zox_geter_value(e2, SpawnChance, byte, chance)
                 chance_current += chance;
                 if (chance_rolled <= chance_current) {
-                    model = zox_get_value(meta, ModelLink)
+                    meta = e2;
                     break;
                 }
             }
-            if (!model) {
+            if (!meta) {
+                zox_log_error("failed to find a spawn character_meta")
+                continue;
+            }
+            zox_geter_value2(meta, ModelLink, ecs_entity_t, model)
+            zox_geter_value(meta, Character3PrefabLink, ecs_entity_t, prefab_character)
+            if (!model || !prefab_character) {
                 zox_log_error("failed to find a spawn character_meta")
                 continue;
             }
@@ -129,7 +134,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
 
             // 3) Finally we spawn and link
-            ecs_entity_t prefab_character = is_characters_instanced ? prefab_character3_instanced_npc : prefab_character3_npc;
+            // ecs_entity_t prefab_character = is_characters_instanced ? prefab_character3_instanced_npc : prefab_character3_npc;
             spawn_character3D_data spawn_data = {
                 .prefab = prefab_character,
                 .terrain = voxLink->value,

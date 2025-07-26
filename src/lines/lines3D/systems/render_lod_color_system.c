@@ -53,6 +53,8 @@ void RenderLodColorSystem(ecs_iter_t *it) {
             } else {
                 output = (color_rgb) { 255, 255, 255 };
             }
+        } else {
+            continue;
         }
         colorr->value = color_rgb_to_color(output);
     }

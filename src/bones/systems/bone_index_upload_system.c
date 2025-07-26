@@ -1,15 +1,16 @@
 // uploads bon indexes to shader
 void BoneIndexUploadSystem(ecs_iter_t *it) {
-    zox_field_in(MeshDirty, meshDirtys, 1)
-    zox_field_in(BoneIndexes, boneIndexess, 2)
-    zox_field_out(BoneIndexGPULink, boneIndexGPULinks, 3)
+    zox_sys_begin()
+    zox_sys_in(MeshDirty)
+    zox_sys_in(BoneIndexes)
+    zox_sys_out(BoneIndexGPULink)
     for (int i = 0; i < it->count; i++) {
-        zox_field_i(MeshDirty, meshDirtys, meshDirty)
+        zox_sys_i(MeshDirty, meshDirty)
+        zox_sys_i(BoneIndexes, boneIndexes)
+        zox_sys_o(BoneIndexGPULink, boneIndexGPULink)
         if (meshDirty->value != mesh_state_upload) {
             continue;
         }
-        zox_field_i(BoneIndexes, boneIndexess, boneIndexes)
-        zox_field_o(BoneIndexGPULink, boneIndexGPULinks, boneIndexGPULink)
         if (boneIndexes->length == 0) {
             // zox_log(" ! boneIndexes 0\n")
             if (boneIndexGPULink->value != 0) {
@@ -21,7 +22,7 @@ void BoneIndexUploadSystem(ecs_iter_t *it) {
             boneIndexGPULink->value = spawn_gpu_generic_buffer();
         }
         glBindBuffer(GL_ARRAY_BUFFER, boneIndexGPULink->value);
-        glBufferData(GL_ARRAY_BUFFER, boneIndexess->length * sizeof(byte), boneIndexess->value, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, boneIndexes->length * sizeof(byte), boneIndexes->value, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 #ifdef zoxel_catch_opengl_errors
         check_opengl_error("BoneIndexUploadSystem");

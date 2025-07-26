@@ -123,7 +123,7 @@ void spawn_vodes(ecs_world_t *world,
 {
     const float vox_scale = get_terrain_voxel_scale(max_depth);
     const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
-    const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
+    // const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     zox_geter(realm, VoxelLinks, blocks)
     const byte blocks_length = blocks->length;

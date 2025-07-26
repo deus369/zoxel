@@ -1,6 +1,6 @@
 ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     const ecs_entity_t prefab,
-    byte instanced)
+    byte type)
 {
     if (!prefab) {
         return 0;
@@ -8,6 +8,7 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     zox_prefab_child(prefab)
     zox_prefab_name("character3")
     zox_add_tag(e, Character3)
+    zox_prefab_set(e, Character3Type, { type })
     // generation
     zox_prefab_set(prefab, Seed, { 999 })
     // name
@@ -21,7 +22,7 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     zox_prefab_set(e, Position3DBounds, { float6_zero })
     // Vox Mesh
     zox_prefab_set(e, ModelLink, { 0 })
-    if (!instanced) {
+    if (type != zox_character_type_instanced) {
         zox_prefab_set(e, ChunkLod, { 255 })
         zox_prefab_set(e, CloneVox, { 0 })
         zox_prefab_set(e, CloneVoxLink, { 0 })

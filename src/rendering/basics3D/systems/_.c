@@ -39,7 +39,8 @@ void define_systems_basics3D(ecs_world_t *world) {
         [in] rendering.RenderDisabled,
         [none] rendering.MeshColorRGBs,
         [none] !rendering.UvsGPULink,
-        [none] rendering.RendererColored)
+        [none] rendering.VoxMesh,
+        [none] !rendering3.SkeletonMesh)
 #ifndef zox_disable_rendering_instances
     zox_render3D_plus_system(VoxInstanceRenderSystem,
         [in] transforms3.TransformMatrix,

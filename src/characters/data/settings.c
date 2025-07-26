@@ -1,6 +1,7 @@
 byte disable_npcs = 0;
 byte disable_npc_movement = 0;
 ulong zox_stats_characters = 0;
+byte is_characters_instanced = 0;
 
 void process_arguments_characters(ecs_world_t *world, char* args[], int count) {
     for (int i = 1; i < count; i++) {

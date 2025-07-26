@@ -1,4 +1,4 @@
-void SkeletonRender3DSystem(ecs_iter_t *it) {
+void Skeleton3RenderSystem(ecs_iter_t *it) {
     if (!material_bone) {
         return;
     }
@@ -76,4 +76,4 @@ void SkeletonRender3DSystem(ecs_iter_t *it) {
         glEnable(GL_CULL_FACE);
 #endif
     }
-} zox_declare_system(SkeletonRender3DSystem)
+} zox_declare_system(Skeleton3RenderSystem)
