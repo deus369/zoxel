@@ -8,9 +8,9 @@ zox_increment_system_with_reset(ProcessSound, zox_sound_process_end)
 zox_increment_system_with_reset(GenerateSound, zox_sound_generate_end)
 
 void define_systems_sounds(ecs_world_t *world) {
-    zox_define_increment_system(TriggerSound, EcsOnLoad, [none] Sound)
-    zox_define_increment_system(ProcessSound, EcsOnLoad, [none] Sound)
-    zox_define_increment_system(GenerateSound, EcsOnLoad, [none] Sound)
+    zox_define_increment_system(TriggerSound, [none] Sound)
+    zox_define_increment_system(ProcessSound, [none] Sound)
+    zox_define_increment_system(GenerateSound, [none] Sound)
     zox_system(SoundProcessSystem, EcsOnUpdate,
         [in] ProcessSound,
         [in] SoundData,

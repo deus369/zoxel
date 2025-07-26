@@ -21,9 +21,9 @@ zox_increment_system_with_reset(RenderLodDirty, zox_dirty_end)
 zox_increment_system_with_reset(RenderDistanceDirty, zox_dirty_end)
 
 void define_systems_rendering(ecs_world_t *world) {
-    zox_define_increment_system(MeshDirty, EcsOnLoad)
-    zox_define_increment_system(RenderLodDirty, EcsOnLoad)
-    zox_define_increment_system(RenderDistanceDirty, EcsOnLoad)
+    zox_define_increment_system(MeshDirty)
+    zox_define_increment_system(RenderLodDirty)
+    zox_define_increment_system(RenderDistanceDirty)
     // dispose
     zox_gpu_dispose_system(MeshGPUDisposeSystem, [in] MeshGPULink)
     zox_gpu_dispose_system(MeshUvsGPUDisposeSystem, [in] rendering.UvsGPULink)

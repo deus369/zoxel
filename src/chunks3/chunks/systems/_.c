@@ -9,11 +9,11 @@ zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end)
 #include "chunk_find_neighbor_system.c"
 
 void define_systems_chunks(ecs_world_t *world) {
-    zox_define_increment_system(ChunkDirty, EcsOnLoad)
-    zox_define_increment_system(ChunkMeshDirty, EcsOnLoad)
-    zox_define_increment_system(GenerateChunk, EcsOnLoad)
-    zox_define_increment_system(ChunkLodDirty, EcsOnLoad)
-    zox_define_increment_system(VoxelNodeDirty, EcsOnLoad)
+    zox_define_increment_system(ChunkDirty)
+    zox_define_increment_system(ChunkMeshDirty)
+    zox_define_increment_system(GenerateChunk)
+    zox_define_increment_system(ChunkLodDirty)
+    zox_define_increment_system(VoxelNodeDirty)
     zox_system(ChunkLinkSystem, EcsOnUpdate,
         [in] chunks3.VoxLink,
         [in] transforms3.Position3D,

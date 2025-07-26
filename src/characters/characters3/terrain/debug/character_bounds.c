@@ -24,7 +24,7 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
 }
 
 void key_down_toggle_debug_character_bounds(ecs_world_t *world, int32_t keycode) {
-    if (keycode == SDLK_z) {
+    if (keycode == SDLK_F5) {
         toggle_debug_character_bounds(world);
     }
 }

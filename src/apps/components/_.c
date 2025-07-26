@@ -24,5 +24,5 @@ void define_components_apps(ecs_world_t *world) {
 #ifdef zox_include_vulkan
     zox_define_component(VulkanSurface)
 #endif
-    zox_define_increment_system(WindowSizeDirty, EcsOnLoad, [none] App)
+    zox_define_increment_system(WindowSizeDirty, [none] App)
 }

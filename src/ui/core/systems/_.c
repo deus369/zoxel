@@ -25,10 +25,10 @@ zox_increment_system_with_reset_extra(ClickState, zox_click_state_trigger_clicke
 zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_selected, zox_select_state_selected, zox_select_state_trigger_deselect, zox_select_state_deselected_idle)
 
 void define_systems_elements_core(ecs_world_t *world) {
-    zox_define_increment_system(InitializeElement, EcsOnStore)
+    zox_define_increment_system_pip(InitializeElement, EcsOnStore)
     // zox_define_reset_system_pip(ClickState, EcsOnLoad)
-    zox_define_increment_system(ClickState, EcsOnLoad)
-    zox_define_increment_system(SelectState, EcsOnLoad)
+    zox_define_increment_system(ClickState)
+    zox_define_increment_system(SelectState)
     zox_filter(raycast_query,
         [in] elements.core.CanvasPosition,
         [in] layouts2.PixelSize,

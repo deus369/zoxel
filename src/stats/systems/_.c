@@ -9,14 +9,14 @@ void define_systems_stats(ecs_world_t *world) {
     zox_define_system_state_event_1(RealmStats, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // debuff system here, skills will add debuffs
     zox_system(DeathSystem, EcsOnUpdate,
-        [in] StatValue,
+        [in] stats.StatValue,
         [in] users.UserLink,
-        [none] HealthStat)
+        [none] stats.HealthStat)
     zox_system(StatRegenSystem, EcsOnUpdate,
         [in] users.UserLink,
-        [in] StatValueMax,
-        [out] StatValue,
-        [none] StatState)
+        [in] stats.StatValueMax,
+        [out] stats.StatValue,
+        [none] stats.StatState)
     zox_system(DeathAnimationSystem, EcsOnUpdate,
         [in] combat.Dead,
         [out] combat.DiedTime,
@@ -32,5 +32,5 @@ void define_systems_stats(ecs_world_t *world) {
         [out] stats.StatValue,
         [out] stats.ExperienceValue,
         [out] stats.ExperienceMax,
-        [none] StatLevel)
+        [none] stats.StatLevel)
 }

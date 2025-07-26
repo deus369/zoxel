@@ -3,8 +3,8 @@ typedef struct {
     ecs_entity_t value;
 } NodeEntityLink;
 
-const byte is_safe_write_nodes = 1;
-const byte is_safe_read_nodes = 0;
+const byte nodes_w_safety_checks = 1;
+const byte nodes_r_safety_checks = 0;
 
 #define node_type_closed 0
 #define node_type_children 1
@@ -21,25 +21,25 @@ struct name {\
 }; zox_custom_component(name)\
 \
 static inline void write_lock_node(const name *node) {\
-    if (is_safe_write_nodes) {\
+    if (nodes_w_safety_checks) {\
         pthread_rwlock_wrlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
 static inline void write_unlock_node(const name *node) {\
-    if (is_safe_write_nodes) {\
+    if (nodes_w_safety_checks) {\
         pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
 static inline void read_lock_node(const name *node) {\
-    if (is_safe_read_nodes) {\
+    if (nodes_r_safety_checks) {\
         pthread_rwlock_rdlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
 static inline void read_unlock_node(const name *node) {\
-    if (is_safe_read_nodes) {\
+    if (nodes_r_safety_checks) {\
         pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\

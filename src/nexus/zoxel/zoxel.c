@@ -155,8 +155,8 @@ zox_begin_module(ZoxGame)
     grayscale_mode = 0; // todo: make a grayscale biome
 
     // world
-    terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 2;
+    // terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 3;
 
     // game
     zox_game_type = zox_game_mode_3D;

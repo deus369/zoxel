@@ -9,7 +9,7 @@
 zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_end)
 
 void define_systems_textures(ecs_world_t *world) {
-    zox_define_increment_system(GenerateTexture, EcsOnLoad, [none] Texture)
+    zox_define_increment_system(GenerateTexture, [none] Texture)
     zox_system(MouseTextureSystem, EcsOnUpdate,
             [in] inputs.MouseLock,
             [in] TextureLink,

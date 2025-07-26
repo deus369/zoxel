@@ -16,7 +16,7 @@ zox_begin_module(Pickups)
     zox_define_tag(Pickup)
     zox_define_tag(PickUpperer)
     zox_define_component_byte(PickedUp)
-    zox_define_increment_system(PickedUp, EcsOnLoad, [none] Pickup)
+    zox_define_increment_system(PickedUp, [none] Pickup)
     zox_system_1(PickupSoundSystem, zox_pip_mainthread,
         [in] PickedUp,
         [none] Pickup)
