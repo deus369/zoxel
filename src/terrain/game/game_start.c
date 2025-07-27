@@ -28,12 +28,7 @@ void game_start_terrain(ecs_world_t *world,
     byte is_delays)
 {
     if (zox_game_type == zox_game_mode_3D) {
-        if (is_delays) {
-            delay_event(world, &game_start_terrain3D, game, start_game_delay_terrain);
-        } else {
-            // game_start_terrain3D(world, game);
-            delay_event(world, &game_start_terrain3D, game, 0.01f);
-        }
+        delay_event(world, &game_start_terrain3D, game, start_game_delay_terrain);
     } else if (zox_game_type == zox_game_mode_2D) {
         delay_event(world, &game_start_terrain2D, game, start_game_delay_terrain);
     }

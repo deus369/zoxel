@@ -11,7 +11,7 @@ byte boot_zixel(ecs_world_t *world, ecs_entity_t app) {
         spawn_connected_devices(world, app);
         players_playing = spawn_players(world, game);
     }
-    spawn_players_cameras_canvases(world, game, app);
+    spawn_players_cameras_canvases(world, game, players_playing, app);
     spawn_players_start_ui(world);
     // if (!headless) spawn_music(world, prefab_music);
     // spawn_character2D(world, prefab_character2D, float2_zero);

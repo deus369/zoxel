@@ -10,7 +10,7 @@ void Camera2FollowSystem(ecs_iter_t *it) {
         zox_sys_i(CameraTarget, cameraTarget)
         zox_sys_o(Position3D, position3D)
         zox_sys_o(Rotation3D, rotation3D)
-        if (canRoam->value) {
+        if (canRoam->value || !zox_valid(cameraTarget->value)) {
             continue;
         }
         if (zox_has(cameraTarget->value, Position2D)) {

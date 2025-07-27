@@ -85,6 +85,12 @@ pick:
 runp:
 	$(MAKE) pick ACTION=run
 
+runpd:
+	$(MAKE) pick ACTION=rund
+
+gdbp:
+	$(MAKE) pick ACTION=gdb
+
 # our packaging, move this to Zoxelder
 
 VERSION      := 0.0.1

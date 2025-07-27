@@ -2,19 +2,11 @@
 #define zox_mod_sdl
 
 // SDL2
-#ifdef zox_lib_sdl_direct
-    #include <SDL.h>
-#else
-    #include <SDL2/SDL.h>
-#endif
+#include <SDL2/SDL.h>
 
 // SDL_Image
 #ifdef zox_lib_sdl_images
-    #if defined(zox_lib_sdl_direct)
-        #include <SDL_image.h>
-    #else
-        #include <SDL2/SDL_image.h>
-    #endif
+    #include <SDL2/SDL_image.h>
 #endif
 
 #ifdef zox_include_vulkan
