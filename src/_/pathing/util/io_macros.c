@@ -1,7 +1,9 @@
+#define io_path_size 512
+
 #define create_load_and_save_functions(Name, name)\
 \
 void save_##name(const char *game, const char *filename, Name *data) {\
-    char path[256];\
+    char path[io_path_size];\
     get_save_filepath(game, filename, path, sizeof(path));\
     FILE *file = fopen(path, "wb");\
     if (file == NULL) {\
@@ -15,7 +17,7 @@ void save_##name(const char *game, const char *filename, Name *data) {\
 }\
 \
 byte load_##name(const char *game, const char *filename, Name *data) {\
-    char path[256];\
+    char path[io_path_size];\
     get_save_filepath(game, filename, path, sizeof(path));\
     FILE *file = fopen(path, "rb");\
     if (file == NULL) {\

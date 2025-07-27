@@ -11,9 +11,9 @@ LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
 LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
 # Choose your game module
 ifdef game
-    LDFLAGS +=-Dzox_game=$(game)
     GAME := $(game)
 endif
+LDFLAGS +=-Dzox_game=$(GAME)
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
 

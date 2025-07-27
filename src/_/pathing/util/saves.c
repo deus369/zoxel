@@ -46,12 +46,6 @@ void get_save_directory(const char *game, char *path, size_t size) {
 #endif
 }
 
-void get_save_filepath(const char *game, const char *filename, char *path, size_t size) {
-    char dir[max_path_characters];
-    get_save_directory(game, dir, sizeof(dir));
-    snprintf(path, size, "%s/%s", dir, filename);
-}
-
 byte has_path_directory(const char *path) {
 #ifdef zoxel_on_windows
     DWORD attrib = GetFileAttributesA(path);
@@ -192,7 +186,23 @@ byte create_new_save_directory(const char *game) {
 /*
     User-specific Config Directory: ~/.config/<YourGame>
     User-specific Data Directory: ~/.local/share/<YourGame>
-*/
+    */
+
+byte get_save_filepath(
+    const char *game,
+    const char *filename,
+    char *path,
+    size_t size)
+{
+    char dir[max_path_characters];
+    get_save_directory(game, dir, sizeof(dir));
+    int written = snprintf(path, size, "%s/%s", dir, filename);
+    if (written < 0 || (size_t) written >= size) {
+        fprintf(stderr, "⚠️ get_save_filepath: Path truncated [%s/%s] (%d >= %zu)\n", game, filename, written, size);
+        return 0;
+    }
+    return 1;
+}
 
 byte has_save_game_file(const char *game, const char *filename) {
     char path[max_path_characters];
