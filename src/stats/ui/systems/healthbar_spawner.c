@@ -2,12 +2,12 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
     const float ui_position = statbar_float_position;
     zox_sys_world()
     zox_sys_begin()
-    zox_sys_in(InCombat)
+    zox_sys_in(CombatState)
     zox_sys_in(StatLinks)
     zox_sys_out(ElementLinks)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
-        zox_sys_i(InCombat, combat)
+        zox_sys_i(CombatState, combat)
         zox_sys_i(StatLinks, stats)
         zox_sys_o(ElementLinks, elementLinks)
         // remove old

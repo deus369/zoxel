@@ -19,9 +19,6 @@ void SphereCollideSystem(ecs_iter_t *it) {
             zox_sys_in_2(Position3D)
             zox_sys_in_2(SphereRadius)
             zox_sys_in_2(CollisionDisabled)
-            /*const Position3D *position3Ds2 = ecs_sys(&it2, Position3D, 1);
-            const SphereRadius *sphereRadiuss2 = ecs_sys(&it2, SphereRadius, 2);
-            const CollisionDisabled *collisionDisableds2 = ecs_sys(&it2, CollisionDisabled, 3);*/
             for (int j = 0; j < it2.count; j++) {
                 zox_sys_i_2(Position3D, position3D2)
                 zox_sys_i_2(SphereRadius, sphereRadius2)

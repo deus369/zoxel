@@ -19,7 +19,7 @@ byte is_debug_attack = 0;
 
 void define_systems_npcs(ecs_world_t *world) {
     zox_system(BehaviourSystem, EcsOnUpdate,
-        [in] combat.InCombat,
+        [in] combat.CombatState,
         [in] npcs.DefaultBehaviour,
         [out] npcs.Behaviour,
         [out] npcs.MoveForwards,

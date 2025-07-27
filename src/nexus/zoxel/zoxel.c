@@ -150,13 +150,13 @@ zox_begin_module(ZoxGame)
     vsync = 1;
     is_split_screen = 0;
 
+    // world
+    // terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 1;
+
     // art
     is_generate_vox_outlines = 0;
     grayscale_mode = 0; // todo: make a grayscale biome
-
-    // world
-    // terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 3;
 
     // game
     zox_game_type = zox_game_mode_3D;

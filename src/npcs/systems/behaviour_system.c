@@ -2,7 +2,7 @@ void BehaviourSystem(ecs_iter_t *it) {
     // init_delta_time()
     zox_sys_world()
     zox_sys_begin()
-    zox_sys_in(InCombat)
+    zox_sys_in(CombatState)
     zox_sys_in(DefaultBehaviour)
     zox_sys_out(Behaviour)
     zox_sys_out(MoveForwards)
@@ -10,7 +10,7 @@ void BehaviourSystem(ecs_iter_t *it) {
     zox_sys_out(MoveSpeed)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
-        zox_sys_i(InCombat, combat)
+        zox_sys_i(CombatState, combat)
         zox_sys_i(DefaultBehaviour, defaultBehaviour)
         zox_sys_o(Behaviour, behaviour)
         zox_sys_o(MoveForwards, moveForwards)

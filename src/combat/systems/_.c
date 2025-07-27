@@ -6,7 +6,7 @@ void define_systems_combat(ecs_world_t* world) {
     zox_define_increment_system(Dead)
     zox_system(CombatStateSystem, EcsOnLoad,
             [in] combat.LastCombatTime,
-            [out] combat.InCombat)
+            [out] combat.CombatState)
     zox_system(DeathCleanSystem, EcsOnUpdate,
             [in] combat.Dead,
             [in] DiedTime)

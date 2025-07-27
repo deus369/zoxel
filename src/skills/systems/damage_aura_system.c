@@ -53,7 +53,7 @@ void DamageAuraSystem(ecs_iter_t *it) {
                     if (!zox_has(dot, SkillLink)) {
                         continue;
                     }
-                    const ecs_entity_t skill_spawner = zox_get_value(dot, SkillLink)
+                    zox_geter_value(dot, SkillLink, ecs_entity_t, skill_spawner)
                     // zox_get_prefab(prefab_aura, e)
                     // if added in this function, SpawnerLink doesn't get added into flecs table until after the function, so the dot will not have component access yet, assume we havn't added a dot yet from the current user
                     if (skill_spawner == e) { // zox_has(dot, SpawnerLink) && zox_gett_value(dot, SpawnerLink) == user) {

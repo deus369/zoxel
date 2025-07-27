@@ -37,10 +37,6 @@ void ElementRaycastSystem(ecs_iter_t *it) {
             zox_sys_in_2(PixelSize)
             zox_sys_in_2(Layer2D)
             zox_sys_in_2(RenderDisabled)
-            /*const CanvasPosition *canvasPositions = ecs_field(&it2, CanvasPosition, 1);
-            const PixelSize *pixelSizes = ecs_field(&it2, PixelSize, 2);
-            const Layer2D *layer2Ds = ecs_field(&it2, Layer2D, 3);
-            const RenderDisabled *renderDisableds = ecs_field(&it2, RenderDisabled, 4);*/
             for (int j = 0; j < it2.count; j++) {
                 zox_sys_i_2(RenderDisabled, renderDisabled)
                 zox_sys_i_2(CanvasPosition, canvasPosition2)

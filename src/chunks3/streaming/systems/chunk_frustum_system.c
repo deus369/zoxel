@@ -35,7 +35,6 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
     zox_sys_in(VoxScale)
     zox_sys_in(EntityLinks)
     zox_sys_in(VoxelNode)
-    // zox_sys_in(NodeDepth)
     zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
@@ -44,9 +43,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
         zox_sys_i(VoxScale, voxScale)
         zox_sys_i(EntityLinks, entityLinks)
         zox_sys_i(VoxelNode, voxelNode)
-        // zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_o(RenderDisabled, renderDisabled)
-        // const float terrain_mesh_scale = get_terrain_voxel_scale(nodeDepth->value);
         bounds chunk_bounds = calculate_chunk_bounds(
             position3D->value,
             chunkSize->value,
