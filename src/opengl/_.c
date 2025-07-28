@@ -5,15 +5,7 @@
 unsigned short shader_opengl_version = 300;
 byte shader_include_es = 1;
 #define GL_GLEXT_PROTOTYPES
-    #ifdef zox_lib_sdl_direct
-        #include <SDL_opengl.h>
-    #else
-    #ifdef USE_SDL_3
-        #include <SDL3/SDL_opengl.h>
-    #else
-        #include <SDL2/SDL_opengl.h>
-    #endif
-#endif
+#include <SDL2/SDL_opengl.h>
 #include "data/_.c"
 #include "util/_.c"
 

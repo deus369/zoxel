@@ -1,5 +1,3 @@
-#include <android/log.h>
-
 void zoxel_log(const char* format, ...) {
     char msg[max_characters_log] = { 0 };
     va_list args;

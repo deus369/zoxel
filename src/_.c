@@ -42,6 +42,10 @@
 // and networking - EWOULDBLOCK
 #include <errno.h>
 
+#ifdef __ANDROID__
+    #include <android/log.h>
+#endif
+
 //! Included Libraries for App
 #ifndef zox_disable_logs
     #include <stdarg.h>
