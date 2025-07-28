@@ -4,11 +4,14 @@
 #include zox_nexus_game
 
 int run_main(int argc, char* argv[]) {
-    #ifndef zox_mod_game
-        zox_log(" ! game not loaded")
-        return EXIT_FAILURE;
-    #endif
-    fetch_pc_info();
+#ifdef __ANDROID__
+    zox_log("ANDROID BEGINS")
+#endif
+#ifndef zox_mod_game
+    zox_log_error("game not loaded")
+    return EXIT_FAILURE;
+#endif
+    // fetch_pc_info();
     ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (world == NULL) {
         zox_log(" ! ecs failed to initialize.")
