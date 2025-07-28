@@ -1,6 +1,11 @@
 # ==== Zoxel ====
 # 	-todo: remember last picked game
-GAME    	:= zoxel
+# Choose your game module
+ifndef game
+    GAME    	:= zoxel
+else
+    GAME 	:= $(game)
+endif
 SRC_DIR 	:= src
 SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
@@ -8,12 +13,7 @@ CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
 CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 -Dzox_debug
 LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
-LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images
-# Choose your game module
-ifdef game
-    GAME := $(game)
-endif
-LDFLAGS +=-Dzox_game=$(GAME)
+LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images -Dzox_game=$(GAME)
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
 

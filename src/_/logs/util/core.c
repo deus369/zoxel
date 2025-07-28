@@ -31,7 +31,7 @@ void zoxel_log(const char* msg, ...) { }
 
 #define zox_log_basic(msg, ...) { }
 
-int clear_zoxel_log() { }
+int clear_zoxel_log() { return 0; }
 
 int zoxel_log_error(void *stream, const char *msg, ...) { return 0; }
 

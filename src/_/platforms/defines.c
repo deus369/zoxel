@@ -20,6 +20,7 @@
 #else
     #define zoxel_on_linux
 #endif
+
 #if defined(STEAMDECK)
     #define zoxel_on_steamdeck
 #endif
