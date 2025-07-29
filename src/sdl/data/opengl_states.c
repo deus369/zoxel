@@ -4,7 +4,7 @@
 #define zox_opengl_compatibility 2
 
 byte override_opengl_es = 0;
-#ifdef __ANDROID__
+#ifdef zox_android
     byte opengl_mode = zox_opengl_es;
     byte sdl_gl_major = 3;
     byte sdl_gl_minor = 0;

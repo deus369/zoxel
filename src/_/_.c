@@ -39,8 +39,14 @@ zox_begin_module(Core)
     initialize_post_update_loop();
     initialize_hook_terminal_command();
     add_hook_terminal_command(process_arguments_core);
-    if (initialize_pathing() == EXIT_FAILURE) {
-        zox_log(" ! FAILED PATHING\n")
+    byte pathing_success = EXIT_FAILURE;
+#ifdef zox_android
+    pathing_success = initialize_pathing_android();
+#else
+    pathing_success = initialize_pathing();
+#endif
+    if (pathing_success == EXIT_FAILURE) {
+        zox_log_error("pathing failed")
         return;
     } else {
         set_noise_seed(get_unique_time_seed());

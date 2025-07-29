@@ -27,7 +27,7 @@ const char* data_path = NULL;
 char* resources_path = NULL;
 char* raw_path = NULL;
 
-#include "data/file_list.c"
+#include "data/_.c"
 #include "util/_.c"
 #include "steam/test_steam_io.c"
 

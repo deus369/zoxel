@@ -44,7 +44,7 @@
     #include <stdarg.h>
 #endif
 // android libs
-#ifdef __ANDROID__
+#ifdef zox_android
     #include <android/log.h>
     #include <android/asset_manager.h>
     #include <android/asset_manager_jni.h>

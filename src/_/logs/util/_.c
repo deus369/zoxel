@@ -1,36 +1,29 @@
 // log implementation
 #ifndef zox_disable_logs
-    #ifdef zoxel_on_android
-        #include "android.c"
+    #ifdef zox_android
+
+        #define zox_log_(msg, ...) \
+            __android_log_print(ANDROID_LOG_INFO, "SDL", "zox_log: "msg, ##__VA_ARGS__);
+
     #else
         #include "default.c"
+
+        #define ARG_COUNT(...) (ARG_COUNT_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        # define ARG_COUNT_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, count, ...) count
+
+        #define zox_log_(msg, ...) {\
+            if (!ARG_COUNT(__VA_ARGS__)) {\
+                zox_log__(msg);\
+            } else {\
+                zox_log_a(msg, ##__VA_ARGS__);\
+            }\
+        }
     #endif
-#endif
-
-// zox_log_
-#ifndef zox_disable_logs
-
-    #define ARG_COUNT(...) (ARG_COUNT_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
-    # define ARG_COUNT_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, count, ...) count
-
-    #define zox_log_(msg, ...) {\
-        if (!ARG_COUNT(__VA_ARGS__)) {\
-            zox_log__(msg);\
-        } else {\
-            zox_log_a(msg, ##__VA_ARGS__);\
-        }\
-    }
-
-    /*#define _zox_log(_1, _2, NAME, ...) NAME
-
-    #define zox_log_(...) \
-        _zox_log(__VA_ARGS__, zox_log_a, zox_log__)(__VA_ARGS__)*/
 
     int clear_logs() {
 #ifdef log_to_file
         fclose(fopen("log.txt", "w"));
 #endif
-        //zox_log(" > begin [%s]\n", "zox_logs")
         return 0;
     }
 

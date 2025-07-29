@@ -13,7 +13,7 @@
 // #define zox_disable_touch_buttons
 
 // if android, this shouldn't need to be here?
-#ifdef __ANDROID__
+/*#ifdef zox_android
     #ifndef zox_lib_sdl
         #define zox_lib_sdl
     #endif
@@ -23,7 +23,7 @@
     #ifndef zox_lib_sdl_mixer
         #define zox_lib_sdl_mixer
     #endif
-#endif
+#endif*/
 
 // #define zox_disable_tilemaps
 // #define zox_log_realm_generate
@@ -85,7 +85,6 @@
 
 // === Disables ===
 
-// #define zox_disable_logs
 // #define zox_disable_terrain
 // #define zox_disable_characters3D_voxes
 

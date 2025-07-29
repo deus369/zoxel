@@ -101,9 +101,13 @@ void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
     fileList->count++;
 }
 
-void traverse_directory(FileList *fileList, const char *directory, byte keep_extension) {
+void traverse_directory(
+    FileList *fileList,
+    const char *directory,
+    byte keep_extension)
+{
     if (directory == NULL) {
-        zox_log(" ! directory is null in [traverse_directory]\n")
+        zox_log_error("[traverse_directory] null directory")
         return;
     }
     DIR *dp;
@@ -112,7 +116,7 @@ void traverse_directory(FileList *fileList, const char *directory, byte keep_ext
     // zox_log(" ! opening directory [%s]\n", directory)
     dp = opendir(directory);
     if (dp == NULL) {
-        zox_log(" ! directory error [%s]\n", directory)
+        zox_log_error("[traverse_directory] null opendir dp [%s]", directory)
         perror("        - ");
         return;
     }

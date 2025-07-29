@@ -17,7 +17,7 @@ void get_save_directory(const char *game, char *path, size_t size) {
     } else {
         zox_log(" ! home_directory null [get_save_directory]")
     }*/
-#elif defined(zoxel_on_android)
+#elif defined(zox_android)
     // Android-specific code
     JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
     jobject activity = (jobject) SDL_AndroidGetActivity();

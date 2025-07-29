@@ -1,4 +1,4 @@
-#ifdef zoxel_on_android
+#ifdef zox_android
 
 void delete_directory_recursive(const char* path) {
     DIR* dir = opendir(path);
@@ -114,25 +114,6 @@ void decompress_android_directory(AAssetManager *assetManager, char *path) {
     free(path_output);
 }
 
-int resource_directories_length = 15;
-char* resource_directories[] = {
-    "voxes",
-    "fonts",
-    "music",
-    "sounds",
-    "textures",
-    "textures/cursors",
-    "textures/input",
-    "textures/skills",
-    "textures/taskbar",
-    "textures/voxels",
-    "textures/stats",
-    "textures/stats/attributes",
-    "textures/stats/base",
-    "textures/stats/regens",
-    "textures/stats/states",
-};
-
 void decompress_android_resources() {
     #ifdef zox_log_android_io
     zox_log(" > zoxel: decompressing android resources from jar\n")
@@ -150,4 +131,38 @@ void decompress_android_resources() {
         decompress_android_directory(assetManager, resource_directories[i]);
     }
 }
+
+byte initialize_pathing_android() {
+    raw_path = get_terminal_path_with_raw();
+    char* base_path = initialize_base_path();
+    if (base_path == NULL) {
+        zox_log("! failed to get base_path\n")
+        return EXIT_FAILURE;
+    }
+    data_path = base_path;
+    zox_log_io("> io base_path [%s]", base_path)
+    DIR* dir = opendir(base_path);
+    if (dir) {
+        resources_path = malloc(strlen(base_path) + strlen("/"resources_dir_name"/") + 1);
+        strcpy(resources_path, base_path);
+        strcat(resources_path, "/"resources_dir_name"/");
+        zox_log_io("> resources_path [%s]", resources_path)
+
+        decompress_android_resources();
+
+        DIR* dir2 = opendir(resources_path);
+        if (dir2) {
+            closedir(dir2);
+        } else {
+            zox_log("! resources_path does not exist [%s]\n", resources_path)
+        }
+        closedir(dir);
+    } else if (ENOENT == errno) {
+        zox_log("SDL data_path (DOES NOT EXIST): %s\n", data_path)
+    } else {
+        zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path)
+    }
+    return EXIT_SUCCESS;
+}
+
 #endif

@@ -1,11 +1,4 @@
-#if defined(__ANDROID__)
-
-    #define zoxel_on_android
-
-    // custom defines for android
-    // #define zox_disable_post_processing
-
-#elif defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__)
 
     #define zoxel_on_web
 
