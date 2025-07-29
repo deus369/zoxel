@@ -7,7 +7,7 @@ const char *blue = "\x1b[34m";
 const char *magenta = "\x1b[35m";
 const char *cyan = "\x1b[36m";
 
-void zox_log_internal(const char* msg, ...) {
+void zox_log_a(const char* msg, ...) {
     va_list a;
     va_start(a, msg);
     char msg2[max_characters_log] = { 0 };
@@ -26,7 +26,7 @@ void zox_log_internal(const char* msg, ...) {
     va_end(a);
 }
 
-void zox_log_internal_(const char* msg) {
+void zox_log_(const char* msg) {
     #ifdef log_to_file
     FILE* f = fopen("log.txt", "a");
     if (f) {

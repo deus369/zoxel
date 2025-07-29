@@ -1,13 +1,17 @@
-void zox_log_internal(const char* format, ...) {
-    char msg[max_characters_log] = { 0 };
+/*void zox_log_a(const char* format, ...) {
+    char log[max_characters_log] = { 0 };
     va_list args;
     va_start(args, format);
-    vsprintf(msg, format, args); // less safe, can lead to buffer overflows
-    vsnprintf(msg, sizeof(msg), format, args);
+    vsprintf(log, format, args); // less safe, can lead to buffer overflows
+    vsnprintf(log, sizeof(log), format, args);
     va_end(args);
-    __android_log_print(ANDROID_LOG_INFO, "SDL", "%s", msg);
+    __android_log_print(ANDROID_LOG_INFO, "SDL", log);
 }
 
-void zox_log_internal__(const char* msg) {
-    __android_log_print(ANDROID_LOG_INFO, "SDL", "%s", msg);
-}
+void zox_log_(const char* log) {
+    __android_log_print(ANDROID_LOG_INFO, "SDL", log);
+}*/
+
+#define zox_log_a(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SDL", __VA_ARGS__))
+
+#define zox_log_(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "SDL", __VA_ARGS__))

@@ -1,14 +1,21 @@
 // log types
-unsigned char is_log_io = 0;
+#ifndef zox_disable_logs
+    #ifdef zoxel_on_android
+        #include "android.c"
+    #else
+        #include "default.c"
+    #endif
+#endif
+#include "core.c"   // zox_log__
 
 #define zox_log(msg, ...) \
-    zox_log_basic("> "msg"\n", ##__VA_ARGS__)
+    zox_log__("> "msg"\n", ##__VA_ARGS__)
 
 #define zox_log_error(msg, ...) \
-    zox_log_basic("! "msg"\n", ##__VA_ARGS__)
+    zox_log__("! "msg"\n", ##__VA_ARGS__)
 
 #define zox_log_warning(msg, ...) \
-    zox_log_basic("@ "msg"\n", ##__VA_ARGS__)
+    zox_log__("@ "msg"\n", ##__VA_ARGS__)
 
 #define zox_log_io(msg, ...) \
     if (is_log_io) { zox_log(msg, ##__VA_ARGS__) }
@@ -34,9 +41,6 @@ unsigned char is_log_io = 0;
 #else
     #define zox_log_ui(msg, ...) { }
 #endif
-
-// realms
-// games
 
 // error no
 #define zox_log_errno(msg, ...) \
