@@ -29,14 +29,19 @@ static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
     byte shader_include_es = opengl_mode == zox_opengl_es;
     char* versioned_source = append_shader_version(source, shader_opengl_version, shader_include_es);
     free(source);
-    if (!versioned_source) {
+
+    char* processed_source = process_ubo_max_define(versioned_source, zox_get_safe_ubo_size());
+    free(versioned_source);
+
+
+    if (!processed_source) {
         return 0;
     }
     if (is_log_shaders) {
-        zox_log("versioned_source [%s]\n%s", path, versioned_source)
+        zox_log("final source [%s]\n%s", path, processed_source)
         zox_log("-------------------------------")
     }
-    return spawn_file_shader(world, prefab, versioned_source);
+    return spawn_file_shader(world, prefab, processed_source);
 }
 
 void load_files_shaders(ecs_world_t *world) {

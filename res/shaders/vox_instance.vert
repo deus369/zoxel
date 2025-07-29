@@ -1,7 +1,7 @@
 layout(location=0) in highp vec3 vertex_position;
 layout(location=1) in highp vec3 vertex_color;
 uniform InstanceMatrices {
-    lowp mat4 matrices[10000];
+    lowp mat4 matrices[zox_ubo_max];
 };
 uniform highp mat4 camera_matrix;
 uniform lowp vec4 fog_data;
