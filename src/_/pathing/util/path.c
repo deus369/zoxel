@@ -69,34 +69,11 @@ char* get_base_path() {
 }
 
 char* initialize_base_path() {
-    char* base_path;
-#ifdef zox_android
-    base_path = clone_str(SDL_AndroidGetInternalStoragePath());
-    __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
-#else
-    base_path = get_base_path();
-#endif
+    char* base_path = get_base_path();
 #ifdef zoxel_debug_base_path
     debug_base_path(base_path);
 #endif
     return base_path;
-}
-
-char* get_terminal_path_with_raw() {
-    char* cwd = getcwd(NULL, 0);  // malloc'd by glibc
-    if (!cwd) return NULL;
-    const char* suffix = "/raw/";
-    size_t cwd_len = strlen(cwd);
-    size_t suffix_len = strlen(suffix);
-    char* result = malloc(cwd_len + suffix_len + 1);
-    if (!result) {
-        free(cwd);
-        return NULL;
-    }
-    strcpy(result, cwd);
-    strcat(result, suffix);
-    free(cwd);
-    return result;
 }
 
 char* join_paths(const char* base, const char* folder) {
@@ -153,7 +130,6 @@ char* find_resources_path(char* base_path, const char* resources) {
 
 // sets base_path, data_path
 byte initialize_pathing() {
-    raw_path = get_terminal_path_with_raw();
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
         zox_log("! failed to get base_path\n")

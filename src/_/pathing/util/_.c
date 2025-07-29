@@ -1,4 +1,5 @@
 #include "path.c"
+#include "android_decompress.c"
 #include "android.c"
 #include "directory.c"
 #include "saves.c"

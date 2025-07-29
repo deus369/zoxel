@@ -70,7 +70,15 @@ ecs_entity_t spawn_ttf_path_as_font_style(ecs_world_t *world, const ecs_entity_t
     return e;
 }
 
-ecs_entity_t spawn_ttf_from_file(ecs_world_t *world, const ecs_entity_t prefab, const FT_Library *library, const char *load_path) {
+ecs_entity_t spawn_ttf_from_file(ecs_world_t *world,
+    const ecs_entity_t prefab,
+    const FT_Library *library,
+    const char *load_path)
+{
+    if (!raw_path) {
+        zox_log_error("raw_path null, fix flow here")
+        return 0;
+    }
     // resources_path
     char* load_directory = concat_file_path(raw_path, directory_fonts);
     char* load_directory_slash = concat_file_path(load_directory, character_slash);

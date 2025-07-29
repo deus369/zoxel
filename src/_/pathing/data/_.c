@@ -1,5 +1,5 @@
 // android directories
-int resource_directories_length = 15;
+int resource_directories_length = 16;
 char* resource_directories[] = {
     "shaders",
     "voxes",

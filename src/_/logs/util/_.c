@@ -46,7 +46,7 @@
     zox_log_("@ "msg"\n", ##__VA_ARGS__)
 
 #define zox_log_io(msg, ...) \
-    if (is_log_io) { zox_log(msg, ##__VA_ARGS__) }
+    if (is_log_io) zox_log(msg, ##__VA_ARGS__)
 
 
 // inputs
