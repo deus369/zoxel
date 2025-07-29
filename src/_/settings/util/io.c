@@ -17,7 +17,11 @@ static const char* get_settings_file(const char *app_name) {
     } else {
         return "./settings.cfg";
     }
+#if zox_windows
+    mkdir(base_path);
+#else
     mkdir(base_path, 0755);
+#endif
     snprintf(final_path, sizeof(final_path), "%s/settings.cfg", base_path);
     return final_path;
 }

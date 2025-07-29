@@ -6,22 +6,22 @@
 static inline byte get_dynamic_lod_from_distance(
     const byte distance,
     const byte depth,
-    const byte near,
-    const byte far)
+    const byte nearf,   // reserved words on windows..
+    const byte farf)
 {
     // vanish beyond the horizon
-    if (distance > far) {
+    if (distance > farf) {
         // zox_log_error(" lod finder out of range: dist [%i] range [%i-%i] depth [%i]", distance, near, far, depth)
         return render_lod_invisible;
     }
     // carve the remaining range (render_distance–init_lod) into max_lod+1 equal slices
     // then find which slice “distance” lives in
-    float total_range = (float) (far - near);
+    float total_range = (float) (farf - nearf);
     // +1 to avoid divide‑by‑zero when node_depth==0, and to have a small slice at the very end
     int slice = ceil(total_range / ((float) (depth))); //  + 1
     // each increment of i moves us one slice further out
     for (byte i = 0; i <= depth; i++) {
-        byte threshold = near + (int)(slice * i); //  + 1
+        byte threshold = nearf + (int)(slice * i); //  + 1
         if (distance <= threshold) {
             if (depth == 5) {
                 //found lod: dist [2] range [1-3] depth [5] slice [0.400000] output [3]
@@ -31,7 +31,7 @@ static inline byte get_dynamic_lod_from_distance(
             return i;
         }
     }
-    zox_log_error(" fallback lod finder: dist [%i] range [%i-%i] depth [%i] slice [%f]", distance, near, far, depth, slice)
+    zox_log_error(" fallback lod finder: dist [%i] range [%i-%i] depth [%i] slice [%f]", distance, nearf, farf, depth, slice)
     // fallback (shouldn’t hit, but safe)
     return render_lod_invisible;
 }

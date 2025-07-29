@@ -12,7 +12,7 @@ byte initialize_opengl(ecs_world_t *world) {
 #ifdef zox_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {
-        printf(stderr, "[glewInit] failed - [%s]\n", glewGetErrorString(err));
+        zox_log_errno("[glewInit] failed - [%s]", glewGetErrorString(err));
         return EXIT_FAILURE;
     }
 #endif

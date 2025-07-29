@@ -150,6 +150,7 @@ FileList get_files(char *directory, byte keep_extension) {
 #ifndef zox_windows
     traverse_directory(&fileList, directory, keep_extension);
 #else
+    int len = strlen(directory);
     if (len > 1 && directory[len - 1] != '/') {
         traverse_directory(&fileList, directory, keep_extension);
     } else {
