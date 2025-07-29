@@ -55,15 +55,21 @@ SDL_Window* create_sdl_window_basic_vulkan(
 
 static inline int get_sdl_window_flags() {
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-/*#ifdef zoxel_on_android
+#ifdef zoxel_on_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
-#else
+#endif
+/*
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE; // | SDL_WINDOW_BORDERLESS;
 #endif*/
     return flags;
 }
 
-SDL_Window* create_sdl_window(const int2 position, const int2 size, const char *name, byte flags) {
+SDL_Window* create_sdl_window(
+    const int2 position,
+    const int2 size,
+    const char *name,
+    byte flags)
+{
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (!window) {

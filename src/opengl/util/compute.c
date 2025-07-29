@@ -1,6 +1,10 @@
 // uses opengl version to check iif compute is supported
 int check_compute_shader_support_from_version() {
     const char* version_str = (const char*) glGetString(GL_VERSION);
+    if (!version_str) {
+        zox_log_error("GL not enabled.");
+        return EXIT_FAILURE;
+    }
     int is_opengl_es = strstr(version_str, "ES") != NULL;
     int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);

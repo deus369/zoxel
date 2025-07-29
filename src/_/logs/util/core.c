@@ -11,28 +11,26 @@
 
 #define zox_log_basic(msg, ...) {\
     if (ARG_COUNT(__VA_ARGS__) == 0) {\
-        zoxel_log_no_args(msg);\
+        zox_log_internal_(msg);\
     } else {\
-        zoxel_log(msg, ##__VA_ARGS__);\
+        zox_log_internal(msg, ##__VA_ARGS__);\
     }\
 }
 
-int clear_zoxel_log() {
-    #ifdef log_to_file
+int clear_logs() {
+#ifdef log_to_file
     fclose(fopen("log.txt", "w"));
-    #endif
+#endif
     //zox_log(" > begin [%s]\n", "zox_logs")
     return 0;
 }
 
 #else
 
-void zoxel_log(const char* msg, ...) { }
+void zox_log_internal(const char* msg, ...) { }
 
 #define zox_log_basic(msg, ...) { }
 
-int clear_zoxel_log() { return 0; }
-
-int zoxel_log_error(void *stream, const char *msg, ...) { return 0; }
+int clear_logs() { return 0; }
 
 #endif

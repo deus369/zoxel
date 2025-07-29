@@ -65,6 +65,10 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
         fullscreen,
         maximized,
         monitor);
+    if (!e) {
+        zox_log_error("failed spawning sdl window")
+        return 0;
+    }
     if (create_window_opengl_context(world, e) == EXIT_FAILURE) {
         zox_log_error(" opengl_context creation failed")
         return 0;

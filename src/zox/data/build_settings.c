@@ -1,8 +1,3 @@
-#if defined(__ANDROID__)
-    #define zox_lib_sdl_direct
-    // #define zox_disable_rendering_instances
-#endif
-
 // Here? select which zoxel modules I shall use?
 
 // #define zox_transparent_voxes
@@ -115,8 +110,8 @@
 // #define debug_viewport_resize
 // #define zox_debug_log_element_raycasting
 // Timings
-// #define zoxel_log_frame_ms
-// #define zoxel_log_frames_per_second
+// #define zox_log_frame_ms
+// #define zox_log_frames_per_second
 // tests for single thread systems, I get alot more ms timing there
 // #define main_thread_zext_update_system
 // voxels timing
@@ -134,8 +129,6 @@
 // #define zoxel_time_render_3d_uvs
 // audio
 // #define zoxel_debug_music
-// #define zoxel_log_sound_generation
-// #define zoxel_log_music_playing
 // #define zoxel_slow_music
 // audio timing
 // #define zoxel_time_sound_generate_system
@@ -153,8 +146,6 @@
 // #define zoxel_voxes_color_randomize
 // #define zoxel_debug_vox_read
 // Fixed color shader gpu things and systems
-// #define zoxel_log_characters_count
-// #define zoxel_log_files
 // #define zoxel_spawn_character3Ds         // spawn x penguins
 // player testing
 // #define zoxel_debug_basic_collision3D_system

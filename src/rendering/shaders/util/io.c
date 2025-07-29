@@ -26,6 +26,7 @@ static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
         return 0;
     }
     // Example: #version 320 es
+    byte shader_include_es = opengl_mode == zox_opengl_es;
     char* versioned_source = append_shader_version(source, shader_opengl_version, shader_include_es);
     free(source);
     if (!versioned_source) {

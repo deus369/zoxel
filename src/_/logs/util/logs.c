@@ -1,18 +1,16 @@
 // log types
-
-
-#define zox_log(msg, ...)\
-    zox_log_basic(msg"\n", ##__VA_ARGS__)
-
-#define zox_log_error(msg, ...)\
-    zox_log_basic("! "msg"\n", ##__VA_ARGS__)
-
-#define zox_log_warning(msg, ...)\
-    zox_log_basic("@ "msg"\n", ##__VA_ARGS__)
-
 unsigned char is_log_io = 0;
 
-#define zox_log_io(msg, ...)\
+#define zox_log(msg, ...) \
+    zox_log_basic("> "msg"\n", ##__VA_ARGS__)
+
+#define zox_log_error(msg, ...) \
+    zox_log_basic("! "msg"\n", ##__VA_ARGS__)
+
+#define zox_log_warning(msg, ...) \
+    zox_log_basic("@ "msg"\n", ##__VA_ARGS__)
+
+#define zox_log_io(msg, ...) \
     if (is_log_io) { zox_log(msg, ##__VA_ARGS__) }
 
 
@@ -39,3 +37,7 @@ unsigned char is_log_io = 0;
 
 // realms
 // games
+
+// error no
+#define zox_log_errno(msg, ...) \
+    zox_log("%s: %s", msg, strerror(errno), ##__VA_ARGS__)

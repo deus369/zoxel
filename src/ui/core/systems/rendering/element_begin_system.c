@@ -23,10 +23,10 @@ void ElementBeginSystem(ecs_iter_t *it) {
         if (initializeElement->value != zox_dirty_active || !canvasLink->value) {
             continue;
         }
+        // we also set mesh verts here
         zox_geter_value(canvasLink->value, PixelSize, int2, canvas_size)
-        const float2 canvasSizef = int2_to_float2(canvas_size);
-        // { (float) canvas_size.x, (float) canvas_size.y };
-        const float2 size2D = (float2) { pixelSize->value.x / canvasSizef.y, pixelSize->value.y / canvasSizef.y };
+        const float2 canvas_sizef = int2_to_float2(canvas_size);
+        const float2 size2D = (float2) { pixelSize->value.x / canvas_sizef.y, pixelSize->value.y / canvas_sizef.y };
         set_mesh_vertices_scale2D(meshVertices2D, get_aligned_mesh2D(meshAlignment->value), 4, size2D);
         // spawn gpu bufers
         if (!headless) {
@@ -34,8 +34,6 @@ void ElementBeginSystem(ecs_iter_t *it) {
             meshGPULink->value = spawn_gpu_mesh_buffers();
             textureGPULink->value = spawn_gpu_texture_buffer();
             uvsGPULink->value = spawn_gpu_generic_buffer();
-            // zox_log("> [%s] activated mesh2D: size [%ix%i]\n", zox_get_name(it->entities[i]), pixelSize->value.x, pixelSize->value.y)
-            // doing this again?
         }
         meshDirty->value = mesh_state_trigger; // mesh_state_upload;
     }

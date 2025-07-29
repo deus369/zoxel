@@ -14,11 +14,15 @@ uint spawn_gpu_material(ecs_world_t *world,
     const ecs_entity_t e,
     const uint2 shader)
 {
+    if (!shader.x || !shader.y) {
+        zox_log_error("[spawn_gpu_material] has invalid shader");
+        return 0;
+    }
     uint gpu_material = 0;
     if (!headless) {
         gpu_material = spawn_gpu_material_program(shader);
         if (!gpu_material) {
-            zox_log_error("spawn_gpu_material failed to initialize")
+            zox_log_error("[spawn_gpu_material_program] failed");
         } else {
             zox_set(e, MaterialGPULink, { gpu_material })
         }

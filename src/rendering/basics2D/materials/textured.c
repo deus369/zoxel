@@ -34,13 +34,19 @@ ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
     const ecs_entity_t e = spawn_shader(world, shader_index);
+    if (!e) {
+        zox_log_error("[textured2D] failed to spawn")
+        return 0;
+    }
     zox_name("shader_textured2D")
     return e;
 }
 
 ecs_entity_t spawn_material_textured2D(ecs_world_t *world) {
     const ecs_entity_t shader = spawn_shader_textured2D(world);
-    if (!shader) return 0;
+    if (!shader) {
+        return 0;
+    }
     uint material;
     const ecs_entity_t e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })

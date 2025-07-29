@@ -57,11 +57,11 @@ void iterate_time(ecs_world_t *world) {
         frames_per_second_time -= 1.0;
         frames_per_second = frames_count;
         frames_count = 0;
-#ifdef zoxel_log_frames_per_second
+#ifdef zox_log_frames_per_second
         zox_log("frames_per_second [%i]\n", frames_per_second);
 #endif
     }
-#ifdef zoxel_log_frame_ms
+#ifdef zox_log_frame_ms
     zox_log(" > frame time [%fms]\n", (float) (zox_delta_time * 1000.0f))
 #endif
 }

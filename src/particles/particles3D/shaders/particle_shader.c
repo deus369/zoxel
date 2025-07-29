@@ -62,7 +62,11 @@ void cleanup_particle_gpu_instancing() {
 int initialize_shader_particle3D(ecs_world_t *world) {
     char* vert = get_shader_source(world, "particle3D.vert");
     char* frag = get_shader_source(world, "particle3D.frag");
-    particle3D_shader = spawn_gpu_shader_inline(vert, frag);
+    particle3D_shader = zox_gpu_compile_shader(vert, frag);
+    if (uint2_equals(particle3D_shader, uint2_zero)) {
+        zox_log_error("particle3D_shader has failed")
+        return EXIT_FAILURE;
+    }
     particle3D_material = spawn_gpu_material_program((const uint2) { particle3D_shader.x, particle3D_shader.y });
     if (!particle3D_material) {
         zox_log_error("shader particle3D failed to initialize")

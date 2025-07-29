@@ -7,7 +7,7 @@ const char *blue = "\x1b[34m";
 const char *magenta = "\x1b[35m";
 const char *cyan = "\x1b[36m";
 
-void zoxel_log(const char* msg, ...) {
+void zox_log_internal(const char* msg, ...) {
     va_list a;
     va_start(a, msg);
     char msg2[max_characters_log] = { 0 };
@@ -26,7 +26,7 @@ void zoxel_log(const char* msg, ...) {
     va_end(a);
 }
 
-void zoxel_log_no_args(const char* msg) {
+void zox_log_internal_(const char* msg) {
     #ifdef log_to_file
     FILE* f = fopen("log.txt", "a");
     if (f) {
@@ -38,9 +38,4 @@ void zoxel_log_no_args(const char* msg) {
     fputs(msg, stderr);
     fputs(reset, stderr);
     #endif
-}
-
-int zoxel_log_error(void *stream, const char *msg, ...) {
-    //    return fprintf((FILE*) stream, msg, __VA_ARGS__);
-    return 0;
 }

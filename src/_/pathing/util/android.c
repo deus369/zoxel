@@ -1,12 +1,4 @@
 #ifdef zoxel_on_android
-// #define zox_log_android_io
-// i will have to manually add in the resource directories for android until ndk updates
-// #define resources_folder_name character_slash resources_dir_name character_slash
-#include <SDL2/SDL_system.h>
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 void delete_directory_recursive(const char* path) {
     DIR* dir = opendir(path);

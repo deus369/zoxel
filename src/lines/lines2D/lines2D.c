@@ -13,12 +13,6 @@ zox_component(LineAnchor, float4)
 #include "util/_.c"
 #include "systems/_.c"
 
-void spawn_shaders_lines2D(ecs_world_t *world) {
-    if (render_backend == zox_render_backend_opengl) {
-        initialize_shader_line2D(world);
-    }
-}
-
 zox_begin_module(Lines2D)
     zox_define_tag(Line2D)
     zox_define_tag(ElementLine2D)
@@ -27,7 +21,7 @@ zox_begin_module(Lines2D)
     zox_define_component(LineLocalPosition2D)
     zox_define_component(LineAnchor)
     define_systems_line2D(world);
-    add_hook_load_shader(&spawn_shaders_lines2D);
+    add_hook_load_shader(&spawn_shader_line2D);
     spawn_prefabs_lines2D(world);
 zox_end_module(Lines2D)
 

@@ -34,7 +34,7 @@ void process_arguments_core(ecs_world_t *world, char* args[], int count) {
 
 zox_begin_module(Core)
     zox_module_dispose(module_dispose_core)
-    clear_zoxel_log();
+    clear_logs();
     initialize_update_loop();
     initialize_post_update_loop();
     initialize_hook_terminal_command();

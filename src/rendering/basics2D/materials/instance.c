@@ -30,7 +30,11 @@ void initialize_mesh(uint material) {
 int load_instance2D_material(ecs_world_t *world) {
     char* vert = get_shader_source(world, "basic2D.vert");
     char* frag = get_shader_source(world, "basic2D.frag");
-    shader2D_basic = spawn_gpu_shader_inline(vert, frag);
+    shader2D_basic = zox_gpu_compile_shader(vert, frag);
+    if (uint2_equals(shader2D_basic, uint2_zero)) {
+        zox_log_error("shader2D_basic has failed")
+        return EXIT_FAILURE;
+    }
     square2DMaterial = spawn_gpu_material_program((const uint2) { shader2D_basic.x, shader2D_basic.y });
     if (!square2DMaterial) {
         zox_log_error("square2DMaterial failed to initialize")

@@ -42,7 +42,7 @@ int check_opengl_error(char* function_name) {
                 error_message = "UNKNOWN";
                 break;
         }
-        zoxel_log(" ! render error [%s]:[%d] - %s\n", error_message, error_code, function_name);
+        zox_log(" ! render error [%s]:[%d] - %s\n", error_message, error_code, function_name);
         error_code = glGetError();
     }
     return is_error;

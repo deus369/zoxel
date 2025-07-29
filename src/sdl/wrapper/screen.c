@@ -8,7 +8,10 @@ int2 get_screen_size() {
 
 int2 get_sdl_screen_size() {
     SDL_DisplayMode displayMode;
-    SDL_GetCurrentDisplayMode(monitor, &displayMode);
+    if (SDL_GetCurrentDisplayMode(0, &displayMode)) {
+        zox_log_error("[SDL_GetCurrentDisplayMode] (get_sdl_screen_size) failed at %i: %s", 0, SDL_GetError());
+        return (int2) { 480, 480 };
+    }
     return (int2) { displayMode.w, displayMode.h };
 }
 
