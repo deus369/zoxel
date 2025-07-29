@@ -9,15 +9,16 @@
     #define zox_disable_logs
 #endif
 
-// pre engine defines
-#include "_.c" // defines our platform things too
-
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     #define max_args 64
     #define max_arg_len 256
+    #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
     #include <shellapi.h>
 #endif
+
+// pre engine defines
+#include "_.c" // defines our platform things too
 
 // core includes
 #include <signal.h>     // used for detecting cancel
@@ -307,7 +308,7 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-#ifdef zoxel_on_windows
+#ifdef zox_windows
 
 int WINAPI WinMain(
     HINSTANCE hInstance,

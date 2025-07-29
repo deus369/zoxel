@@ -3,7 +3,7 @@
 #define resources_dir_name "res"
 #define resources_folder_name resources_dir_name character_slash
 
-#if defined(zoxel_on_windows) && !defined(_WINE)
+#if defined(zox_windows) && !defined(_WINE)
     #define character_slash "\\"
     #define char_slash '\\'
 #else

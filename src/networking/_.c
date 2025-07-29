@@ -28,7 +28,7 @@ zox_memory_component(PacketData, byte)
 #include "systems/packet_recieve_system.c"
 
 void spawn_prefabs_networking(ecs_world_t *world) {
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     initialize_windows_sockets();
 #else
     sockets_enabled = 1;

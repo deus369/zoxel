@@ -9,11 +9,11 @@ byte is_steam_deck() {
 void debug_platform() {
 #if defined(zox_android)
     zox_log(" > platform [android]\n")
-#elif defined(zoxel_on_windows)
+#elif defined(zox_windows)
     zox_log(" > platform [windows]\n")
 #elif defined(zoxel_on_web)
     zox_log(" > platform [web]\n")
-#elif defined(zoxel_on_linux)
+#elif defined(zox_linux)
     zox_log(" > platform [linux]\n")
 #endif
 #if defined(zoxel_on_steamdeck)
@@ -27,7 +27,7 @@ void debug_platform() {
 // char* wine_prefix = getenv("WINEPREFIX");
 
 byte is_platform_wine() {
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     return 0;
 #else
     return 0;

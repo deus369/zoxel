@@ -1,5 +1,5 @@
 byte sockets_enabled = 0;
-#ifndef zoxel_on_windows
+#ifndef zox_windows
     #define peek_packet_size 1
     #define socket_error_code -1
     const unsigned long non_blocking = O_NONBLOCK;
@@ -82,7 +82,7 @@ byte sockets_enabled = 0;
 
 
 int check_socket_error(char *debug) {
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     // Handle errors on Windows
     int error_code = WSAGetLastError();
     if (error_code != WSAEWOULDBLOCK) {

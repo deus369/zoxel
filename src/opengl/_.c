@@ -9,7 +9,7 @@
 #include "util/_.c"
 
 byte initialize_opengl(ecs_world_t *world) {
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {
         printf(stderr, "[glewInit] failed - [%s]\n", glewGetErrorString(err));

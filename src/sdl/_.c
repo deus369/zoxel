@@ -16,7 +16,7 @@
 #endif
 
 // Platforms
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     #include <glew.h>
 #endif
 #ifdef zoxel_on_web

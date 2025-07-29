@@ -4,7 +4,7 @@ void get_save_directory(const char *game, char *path, size_t size) {
 #ifdef zox_disable_save_games
     return;
 #else
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     const char *home_directory = getenv("USERPROFILE");
     if (home_directory) {
         snprintf(path, size, "%s\\AppData\\Local\\%s", home_directory, game);
@@ -47,7 +47,7 @@ void get_save_directory(const char *game, char *path, size_t size) {
 }
 
 byte has_path_directory(const char *path) {
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     DWORD attrib = GetFileAttributesA(path);
     if (attrib != INVALID_FILE_ATTRIBUTES && (attrib & FILE_ATTRIBUTE_DIRECTORY)) {
         return 1;  // Save game directory exists
@@ -160,7 +160,7 @@ byte create_new_save_directory(const char *game) {
     get_save_directory(game, path, sizeof(path));
     if (!has_path_directory(path)) {
         zox_log_io(" + creating new save directory [%s]", path)
-#ifdef zoxel_on_windows
+#ifdef zox_windows
         if (mkdir(path) == 0) {
             return 1;
         } else {

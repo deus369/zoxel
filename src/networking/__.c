@@ -1,4 +1,4 @@
-#ifdef zoxel_on_windows
+#ifdef zox_windows
     #include <winsock2.h>
     #include <ws2tcpip.h>
 #else
