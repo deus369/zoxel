@@ -29,18 +29,52 @@ byte create_directory(const char* path) {
 }
 
 AAssetManager* get_asset_manager() {
-    #ifdef zox_mod_sdl
     JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+    if (!env) {
+        zox_log_error("SDL_AndroidGetJNIEnv() returned NULL");
+        return NULL;
+    }
+
     jobject activity = (jobject) SDL_AndroidGetActivity();
-    #else
-    JNIEnv* env = NULL;
-    jobject activity = NULL;
-    #endif
-    jclass activityClass = (*env)->GetObjectClass(env, activity);
-    jmethodID methodID = (*env)->GetMethodID(env, activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
-    jobject assetManager = (*env)->CallObjectMethod(env, activity, methodID);
-    AAssetManager* asset_manager = AAssetManager_fromJava(env, assetManager);
-    return asset_manager;
+    if (!activity) {
+        zox_log_error("SDL_AndroidGetActivity() returned NULL");
+        return NULL;
+    }
+
+    jclass activityClass = (*env)->GetObjectClass(
+        env,
+        activity);
+    if (!activityClass) {
+        zox_log_error("GetObjectClass failed");
+        return NULL;
+    }
+
+    jmethodID methodID = (*env)->GetMethodID(
+        env,
+        activityClass,
+        "getAssets",
+        "()Landroid/content/res/AssetManager;");
+    if (!methodID) {
+        zox_log_error("GetMethodID failed for getAssets()");
+        return NULL;
+    }
+
+    jobject assetManagerObj = (*env)->CallObjectMethod(
+        env,
+        activity,
+        methodID);
+    if (!assetManagerObj) {
+        zox_log_error("CallObjectMethod returned NULL for getAssets()");
+        return NULL;
+    }
+
+    AAssetManager* manager = AAssetManager_fromJava(env, assetManagerObj);
+    if (!manager) {
+        zox_log_error("AAssetManager_fromJava() failed");
+        return NULL;
+    }
+
+    return manager;
 }
 
 void copy_resources_directory(AAssetManager* asset_manager, const char* source_path, const char* destination_path) {
@@ -119,18 +153,23 @@ void decompress_android_resources(const char* resources_path) {
         zox_log_error("resources_path is null.")
         return;
     }
-    zox_log("decompressing android: %s", resources_path)
-    AAssetManager *assetManager = get_asset_manager();
-    delete_directory_recursive(resources_path);
-    if (!create_directory(resources_path)) {
+    zox_log("decompressing into [%s]", resources_path)
+    AAssetManager *manager = get_asset_manager();
+    if (!manager) {
+        zox_log_error("android asset manager null")
         return;
     }
-    #ifdef zox_log_android_io
-    zox_log(" + created new directory [%s]\n", resources_path)
-    #endif
+    delete_directory_recursive(resources_path);
+    if (!create_directory(resources_path)) {
+        zox_log_error("could not create directory: %s", resources_path)
+        return;
+    }
+#ifdef zox_log_android_io
+    zox_log("created new directory [%s]", resources_path)
+#endif
     // now copy all our data out
     for (int i = 0; i < resource_directories_length; i++) {
-        decompress_android_directory(assetManager, resource_directories[i]);
+        decompress_android_directory(manager, resource_directories[i]);
     }
 }
 

@@ -40,12 +40,12 @@ byte initialize_pathing_android() {
         strcpy(resources_path, base_path);
         strcat(resources_path, "/"resources_dir_name"/");
         zox_log_io("> resources_path [%s]", resources_path)
-        DIR* dir2 = opendir(resources_path);
+        /*DIR* dir2 = opendir(resources_path);
         if (dir2) {
             closedir(dir2);
         } else {
-            zox_log_error("resources_path does not exist [%s]", resources_path)
-        }
+            zox_log_error("could not open directory [%s]", resources_path)
+        }*/
         closedir(dir);
     } else if (ENOENT == errno) {
         zox_log_error("SDL data_path (DOES NOT EXIST): %s", data_path)
