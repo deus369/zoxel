@@ -7,7 +7,7 @@ byte is_steam_deck() {
 }
 
 void debug_platform() {
-#if defined(zoxel_on_android)
+#if defined(zox_android)
     zox_log(" > platform [android]\n")
 #elif defined(zoxel_on_windows)
     zox_log(" > platform [windows]\n")

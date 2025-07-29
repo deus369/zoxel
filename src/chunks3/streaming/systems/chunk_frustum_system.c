@@ -80,6 +80,9 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             // -=- -=- -=- -=- -=- -=-
             for (int j = 0; j < entityLinks->length; j++) {
                 const ecs_entity_t e2 = entityLinks->value[j];
+                if (!zox_valid(e2)) {
+                    continue;
+                }
                 zox_set(e2, RenderDisabled, { renderDisabled->value })
                 if (!zox_valid(e2) || !zox_has(e2, ElementLinks)) {
                     continue;

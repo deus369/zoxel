@@ -42,7 +42,7 @@ SDL_Window* create_sdl_window_basic_vulkan(
     const char *name)
 {
     int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
-#ifdef zoxel_on_android
+#ifdef zox_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
 #endif
     SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
@@ -55,7 +55,7 @@ SDL_Window* create_sdl_window_basic_vulkan(
 
 static inline int get_sdl_window_flags() {
     int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-#ifdef zoxel_on_android
+#ifdef zox_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
 #endif
 /*

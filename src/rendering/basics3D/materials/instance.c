@@ -2,8 +2,8 @@
 //  also LODing support
 byte can_render_instanes = 1;
 #define zox_max_vox_instances 10000
-ecs_entity_t shader_vox_instance;
-ecs_entity_t material_vox_instance;
+ecs_entity_t shader_vox_instance = 0;
+ecs_entity_t material_vox_instance = 0;
 
 typedef struct {
     GLint vertex_position;
@@ -69,9 +69,9 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     }
     const MaterialVoxInstance materialVoxInstance =  create_MaterialVoxInstance(material);
     zox_set_data(e, MaterialVoxInstance, materialVoxInstance)
-    material_vox_instance = e;
-    shader_vox_instance = shader;
     uint ubo = generate_ubo(materialVoxInstance.matrices);
     zox_set(e, UboGPULink, { ubo })
+    material_vox_instance = e;
+    shader_vox_instance = shader;
     return e;
 }

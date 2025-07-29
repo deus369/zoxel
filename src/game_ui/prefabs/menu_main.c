@@ -47,7 +47,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         .text = label_options,
         .on_click = { &button_event_menu_options },
     };
-#ifndef zoxel_on_android
+#ifndef zox_android
     elements[elements_count++] = (SpawnListElement) {
         .text = label_exit,
         .on_click = { &button_event_exit_app },
@@ -123,7 +123,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     labels[labels_count] = (text_group) { label_options };
     events[labels_count] = (ClickEvent) { button_event_menu_options };
     labels_count++;
-#ifndef zoxel_on_android
+#ifndef zox_android
     labels[labels_count] = (text_group) { label_exit };
     events[labels_count] = (ClickEvent) { button_event_exit_app };
     labels_count++;
