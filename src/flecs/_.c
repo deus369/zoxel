@@ -8,10 +8,11 @@
 #define FLECS_PIPELINE
 #include <flecs.h>
 
+byte running = 1;
 #include "macros/_.c"
 #include "data/_.c"
-#include "util/_.c"
 #include "components/_.c"
+#include "util/_.c"
 #include "systems/_.c"
 
 ecs_world_t* open_ecs(int argc, char* argv[]) {
@@ -24,10 +25,4 @@ ecs_world_t* initialize_ecs(int argc, char* argv[], byte cores) {
     ecs_world_t *new_world = open_ecs(argc, argv);
     local_world = new_world;
     return new_world;
-}
-
-void dispose_ecs(ecs_world_t *world) {
-    dispose_update_loop();
-    dispose_post_update_loop();
-    ecs_fini(world);
 }

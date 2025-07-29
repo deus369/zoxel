@@ -1,4 +1,4 @@
-
+byte zox_game_camera_mode = 0;
 // Scaling
 float viewport_scale = 1;
 

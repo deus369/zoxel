@@ -25,6 +25,7 @@ zox_begin_module(Zigels)
         [out] rendering.TextureDirty,
         [out] texturez.GenerateTexture,
         [none] FontTexture)
+    add_hook_files_load(load_files_fonts);
     spawn_prefabs_zigels(world);
 zox_end_module(Zigels)
 

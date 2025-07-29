@@ -1,32 +1,16 @@
 #ifndef zox_mod_game
 #define zox_mod_game
 
-// Realm,  players, skybox
-byte boot_zixel(ecs_world_t *world, ecs_entity_t app) {
-    game_name = "zixel";
-    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-    const ecs_entity_t game = spawn_game(world, realm);
-    spawn_weather(world);
-    if (!headless) {
-        spawn_connected_devices(world, app);
-        players_playing = spawn_players(world, game);
-    }
-    spawn_players_cameras_canvases(world, game, players_playing, app);
-    spawn_players_start_ui(world);
-    // if (!headless) spawn_music(world, prefab_music);
-    // spawn_character2D(world, prefab_character2D, float2_zero);
-    return EXIT_SUCCESS;
-}
-
 zox_begin_module(ZoxGame)
+    game_name = "zixel";
     zox_game_type = zox_game_mode_2D;
-    boot_event = boot_zixel;
     headless = 0;
     menu_sky_color = (color_rgb) { 33, 33, 166 };
     menu_sky_bottom_color = (color_rgb) { 33, 33, 166 };
     game_sky_color = (color_rgb) { 22, 177, 33 };
     game_sky_bottom_color = (color_rgb) { 22, 177, 33 };
     set_prefab_debug_label(world, &get_label_character2_player);
+    zox_game_camera_mode = zox_camera_mode_2D;
 zox_end_module(ZoxGame)
 
 #endif

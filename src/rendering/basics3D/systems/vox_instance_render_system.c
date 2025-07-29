@@ -15,9 +15,6 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
     if (!material_vox_instance) {
         return;
     }
-    if (!can_render_instanes) {
-        return;
-    }
     // zox_log("rendering [%i] instance renderers", it->count)
     zox_sys_world()
     zox_sys_begin()

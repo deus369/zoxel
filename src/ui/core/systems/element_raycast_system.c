@@ -15,6 +15,9 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         if (!deviceLink->value) {
             continue;
         }
+        if (zox_gett_value(deviceLink->value, DeviceDisabled)) {
+            continue;
+        }
         const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
         if (!player) {
             continue;

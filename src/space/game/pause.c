@@ -4,11 +4,11 @@
 */
 
 void pause_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
-    if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
+    // if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
         if (local_mouse) {
             zox_set(local_mouse, MouseLock, { 0 })
         }
-    }
+    // }
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     if (game_ui_has_taskbar) {
         spawn_taskbar(world, prefab_taskbar, canvas, canvas, pause_ui_overlay_layer + 1);

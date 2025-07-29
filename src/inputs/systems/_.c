@@ -4,11 +4,11 @@
 #include "zevice_button_enable_system.c"
 #include "zevice_stick_enable_system.c"
 #include "zevice_pointer_enable_system.c"
-#include "device_mode_system.c"
 #include "device_mode_dirty_system.c"
 #include "keyboard_reset_system.c"
 #include "zevice_pointer_right_reset_button.c"
 #include "zevice_finger_reset_button.c"
+#include "device_mode_system.c"
 
 void define_systems_input(ecs_world_t* world) {
     // resets

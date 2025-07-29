@@ -1,5 +1,5 @@
 void initialize_sounds(ecs_world_t *world) {
-    if (initialize_sdl_mixer() == EXIT_SUCCESS) {
+    if (initialize_sdl_mixer(channel_sample_rate, channels_count) == EXIT_SUCCESS) {
         audio_enabled = 1;
         zox_log_sounds("> initialize_sdl_mixer success")
     } else {

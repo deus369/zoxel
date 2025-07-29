@@ -6,3 +6,4 @@
 #include "opengl.c"
 #include "debug.c"
 #include "sdl.c"
+#include "sdl_mixer.c"

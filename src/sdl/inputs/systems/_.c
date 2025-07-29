@@ -20,6 +20,7 @@ void define_systems_sdl_inputs(ecs_world_t* world) {
         [in] apps.AppLink,
         [none] inputs.Mouse)
     zox_system_1(MouseConstrainSystem, zox_extract_pipeline,
+        [in] inputs.DeviceDisabled,
         [in] inputs.MouseLock,
         [in] hierarchys.Children,
         [in] apps.AppLink,

@@ -26,7 +26,7 @@ void Controller2MoveSystem(ecs_iter_t *it) {
         // get the player input vector
         for (int j = 0; j < deviceLinks->length; j++) {
             ecs_entity_t device = deviceLinks->value[j];
-            if (!device) {
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             if (zox_has(device, Keyboard)) {

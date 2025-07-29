@@ -1,6 +1,13 @@
 void set_player_action(ecs_world_t *world, const ecs_entity_t player, const byte index) {
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuActions, actionbar)
+    zox_geter_value(player, CharacterLink, ecs_entity_t, character);
+    if (!character) {
+        return;
+    }
+    zox_geter(character, ElementLinks, elements)
+    find_array_component_with_tag(elements, MenuActions, actionbar)
+
+    //const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+    //find_child_with_tag(canvas, MenuActions, actionbar)
     if (!actionbar) {
         return;
     }
@@ -75,16 +82,13 @@ void player_action_ui_move(ecs_world_t *world, const ecs_entity_t player, const 
     spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, get_volume_sfx());
 }
 
-byte get_player_action_index(ecs_world_t *world, const ecs_entity_t player) {
-    if (!zox_valid(player)) {
-        zox_log_error(" ! player invalid")
+byte get_character_action_index(ecs_world_t *world, const ecs_entity_t e) {
+    if (!zox_valid(e)) {
+        zox_log_error("character invalid")
         return 255;
     }
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    if (!canvas) {
-        return 255;
-    }
-    find_child_with_tag(canvas, MenuActions, actionbar)
+    zox_geter(e, ElementLinks, elements)
+    find_array_component_with_tag(elements, MenuActions, actionbar)
     if (!actionbar) {
         return 255;
     }

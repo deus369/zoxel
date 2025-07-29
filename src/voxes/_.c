@@ -25,6 +25,7 @@ zox_begin_module(Voxes)
     zox_define_prefabs_voxes(world);
     add_hook_terminal_command(process_arguments_voxes);
     add_hook_spawned_block(&spawned_block_vox);
+    add_hook_files_load(load_files_voxes);
 zox_end_module(Voxes)
 
 #endif

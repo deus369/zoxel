@@ -16,8 +16,11 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         zox_sys_o(ClickingEntity, clickingEntity)
         zox_sys_o(WindowTarget, windowTarget)
         const ecs_entity_t device = deviceLink->value;
-        if (!device) {
-            zox_log(" ! device null from zevice [%lu]\n", it->entities[i])
+        if (!zox_valid(device)) {
+            zox_log_error(" device null from zevice [%lu]", it->entities[i])
+            continue;
+        }
+        if (zox_gett_value(device, DeviceDisabled)) {
             continue;
         }
         const ecs_entity_t player = zox_get_value(device, PlayerLink)
@@ -39,16 +42,20 @@ void ZeviceClickSystem(ecs_iter_t *it) {
                 const ZeviceDisabled *zeviceDisabled = zox_get(e, ZeviceDisabled)
                 if (!zeviceDisabled->value) {
                     const byte click_value = zox_get_value(e, ZeviceButton)
-                    if (devices_get_pressed_this_frame(click_value)) click_type = 1;
-                    else if (devices_get_released_this_frame(click_value)) click_type = 2;
+                    if (devices_get_pressed_this_frame(click_value)) {
+                        click_type = 1;
+                    } else if (devices_get_released_this_frame(click_value)) {
+                        click_type = 2;
+                    }
                 }
             }
         }
         // used for virtual joysticks to see if a t arget was raycasted, todo: move to raycast system
         raycasterResult->value = raycasterTarget->value || windowRaycasted->value;
         // released
-        if (click_type == 0) continue;
-        else if (click_type == 1) {
+        if (click_type == 0) {
+            continue;
+        } else if (click_type == 1) {
             clickingEntity->value = raycasterTarget->value; // clicked
             on_element_clicked(world, player, clickingEntity->value);
         }
@@ -68,7 +75,9 @@ void ZeviceClickSystem(ecs_iter_t *it) {
                 set_element_dragged(world, player, raycasterTarget->value, drag_mode);
             }
         } else if (click_type == 2) { // released
-            if (raycasterTarget->value == clickingEntity->value) on_element_released(world, player, raycasterTarget->value);
+            if (raycasterTarget->value == clickingEntity->value) {
+                on_element_released(world, player, raycasterTarget->value);
+            }
             clickingEntity->value = 0;
         }
     }

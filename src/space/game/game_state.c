@@ -9,11 +9,11 @@ void player_end_game(ecs_world_t *world,
     if (is_delays) {
         trigger_canvas_fade_transition(world, canvas, end_game_delay_fade, 0.8);
     }
-    if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
+    //if (zox_gett_value(player, DeviceMode) == zox_device_mode_keyboardmouse) {
         if (zox_valid(local_mouse)) {
             zox_set(local_mouse, MouseLock, { 0 })
         }
-    }
+    //}
     // remove player uis
     if (zox_valid(menu_paused)) {
         zox_delete(menu_paused) // for second player

@@ -8,7 +8,9 @@ void PlayerPauseSystem(ecs_iter_t *it) {
         zox_sys_i(DeviceLinks, deviceLinks)
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) continue;
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+                continue;
+            }
             if (zox_has(device, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->escape.pressed_this_frame ||

@@ -27,8 +27,8 @@ void on_overlap_pickup(
                 if (quantity != max_stack_quantity) {
                     quantity++;
                     zox_set(stack_item, Quantity, { quantity })
-                    const ecs_entity_t player = zox_get_value(user, PlayerLink)
-                    on_set_quantity(world, player, stack_index, quantity);
+                    // const ecs_entity_t player = zox_get_value(user, PlayerLink)
+                    on_set_quantity(world, user, stack_index, quantity);
                     did_stack = 1;
                 }
             }
@@ -51,14 +51,10 @@ void on_overlap_pickup(
                 actions->value[action_index] = user_item;
                 // zox_log(" + adding item [%s] to actions slot [%i]\n", zox_get_name(item), action_index)
                 // now to effect ui!
-
-                // todo: use generic ElementLinks here to get actionbar
-                const ecs_entity_t player = zox_get_value(user, PlayerLink)
-                if (!player) return;
-                const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-                find_child_with_tag(canvas, MenuActions, menu_actions)
-                if (menu_actions) {
-                    const Children *menu_actions_children = zox_get(menu_actions, Children)
+                zox_geter(user, ElementLinks, elements)
+                find_array_component_with_tag(elements, MenuActions, actionbar)
+                if (actionbar) {
+                    const Children *menu_actions_children = zox_get(actionbar, Children)
                     const ecs_entity_t menu_actions_body = menu_actions_children->value[1];
                     const Children *menu_actions_body_children = zox_get(menu_actions_body, Children)
                     const ecs_entity_t frame_action = menu_actions_body_children->value[action_index];

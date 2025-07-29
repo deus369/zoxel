@@ -20,7 +20,9 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
         // byte is_triggered_b = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) continue;
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+                continue;
+            }
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Mouse)) {
                 zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {

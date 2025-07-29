@@ -11,7 +11,7 @@ void EditorInputSystem(ecs_iter_t *it) {
         const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) {
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             if (zox_has( device, Keyboard)) {

@@ -1,4 +1,3 @@
-byte running = 1;
 byte headless = 0;
 // app
 int2 default_window_position = { 0, 0 };

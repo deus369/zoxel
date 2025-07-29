@@ -13,6 +13,10 @@ void spawn_connected_devices(ecs_world_t *world, ecs_entity_t app) {
     local_touchscreen = spawn_touchscreen(world, prefab_touchscreen);
     zox_set(local_mouse, AppLink, { app })
     zox_set(local_touchscreen, AppLink, { app })
+
+    /*zox_set(local_keyboard, PlayerLink, { zox_players[0] })
+    zox_set(local_mouse, PlayerLink, { zox_players[0] })
+    zox_set(local_touchscreen, PlayerLink, { zox_players[0] })*/
 #ifndef zoxel_disable_gamepads
     initialize_sdl_gamepads(world);
 #else

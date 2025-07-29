@@ -224,13 +224,11 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     }
     zox_set(e, Children, { children->length, children->value })
     // zox_modified(e, Children)
-#ifdef zoxel_include_players
     if (!headless && elements_count > 0 && player) {
         const byte device_mode = zox_get_value(player, DeviceMode)
         if (device_mode == zox_device_mode_gamepad) {
             raycaster_select_element(world, player, children->value[list_start]);
         }
     }
-#endif
     return e;
 }

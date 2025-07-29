@@ -12,8 +12,8 @@ void define_systems_textures(ecs_world_t *world) {
     zox_define_increment_system(GenerateTexture, [none] Texture)
     zox_system(MouseTextureSystem, EcsOnUpdate,
             [in] inputs.MouseLock,
-            [in] TextureLink,
-            [in] players.PlayerLink)
+            [in] texturez.TextureLink,
+            [in] inputs.DeviceDisabled)
     zox_filter(generate_textures2,
             [none] FrameTexture,
             [out] texturez.GenerateTexture)

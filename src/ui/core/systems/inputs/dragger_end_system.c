@@ -16,7 +16,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
         byte did_drag_end = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) {
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             zox_geter(device, Children, zevices)

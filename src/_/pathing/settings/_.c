@@ -20,7 +20,8 @@
     #define PATH_SIZE PATH_MAX
 #endif
 
-#define get_asset_path(folder_path, filename) concat_file_path(resources_path, folder_path character_slash filename);
+#define get_asset_path(folder_path, filename) \
+    concat_file_path(resources_path, folder_path character_slash filename);
 
 const char* data_path = NULL;
 char* resources_path = NULL;

@@ -66,7 +66,9 @@ void save_settings() {
 }
 
 // Load and apply each setting, firing on_set as needed
-void load_settings(ecs_world_t* world, const char* app_name) {
+extern const char* game_name;
+void load_files_settings(ecs_world_t* world) {
+    const char* app_name = game_name;
     settings_game_name = app_name;
     const char* fn = get_settings_file(app_name);
     FILE* f = fopen(fn, "r");

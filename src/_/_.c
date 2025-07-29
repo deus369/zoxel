@@ -14,9 +14,13 @@
 #include "pathing/_.c"
 #include "states/_.c"
 #include "settings/_.c"
+#include "hooks/_.c"
 
 void module_dispose_core(ecs_world_t *world, void *ctx) {
     dispose_hook_terminal_command();
+    dispose_game_store();
+    dispose_hook_files_load();
+    dispose_hook_on_boot();
 }
 
 void process_arguments_core(ecs_world_t *world, char* args[], int count) {
@@ -38,7 +42,11 @@ zox_begin_module(Core)
     initialize_update_loop();
     initialize_post_update_loop();
     initialize_hook_terminal_command();
+    initialize_hook_files_load();
+    initialize_hook_on_boot();
+    // hooks
     add_hook_terminal_command(process_arguments_core);
+    add_hook_on_boot(on_boot_game_store);
     byte pathing_success = EXIT_FAILURE;
 #ifdef zox_android
     pathing_success = initialize_pathing_android();

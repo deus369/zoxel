@@ -18,7 +18,9 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
         ecs_entity_t mouse = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) continue;
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+                continue;
+            }
             if (zox_has(device, Mouse)) {
                 zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {

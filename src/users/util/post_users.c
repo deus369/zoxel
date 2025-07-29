@@ -1,13 +1,17 @@
 // todo: refactor how these work so i can just hook into user events
 
-void on_set_quantity(ecs_world_t *world, const ecs_entity_t player, const unsigned action_selected, const byte quantity) {
-    if (!player) {
+void on_set_quantity(ecs_world_t *world,
+    const ecs_entity_t character,
+    const unsigned action_selected,
+    const byte quantity)
+{
+    if (!zox_valid(character) || !zox_has(character, ElementLinks)) {
         return;
     }
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuActions, menu_actions)
-    if (menu_actions) {
-        const Children *menu_actions_children = zox_get(menu_actions, Children)
+    zox_geter(character, ElementLinks, elements)
+    find_array_component_with_tag(elements, MenuActions, actionbar)
+    if (actionbar) {
+        const Children *menu_actions_children = zox_get(actionbar, Children)
         const ecs_entity_t menu_actions_body = menu_actions_children->value[1];
         const Children *menu_actions_body_children = zox_get(menu_actions_body, Children)
         const ecs_entity_t frame_action = menu_actions_body_children->value[action_selected];

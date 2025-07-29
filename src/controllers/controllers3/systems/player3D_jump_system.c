@@ -27,7 +27,7 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         byte is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) {
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Keyboard)) {

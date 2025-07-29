@@ -3,6 +3,7 @@
 void DeviceClickSystem(ecs_iter_t *it) {
     zox_sys_world()
     zox_sys_begin()
+    zox_sys_in(DeviceDisabled)
     zox_sys_in(PlayerLink)
     zox_sys_in(RaycasterTarget)
     zox_sys_in(WindowRaycasted)
@@ -10,14 +11,17 @@ void DeviceClickSystem(ecs_iter_t *it) {
     zox_sys_out(ClickingEntity)
     zox_sys_out(WindowTarget)
     for (int i = 0; i < it->count; i++) {
-        // zox_sys_e()
+        zox_sys_i(DeviceDisabled, deviceDisabled)
+        zox_sys_i(PlayerLink, playerLink)
         zox_sys_i(RaycasterTarget, raycasterTarget)
         zox_sys_i(WindowRaycasted, windowRaycasted)
-        zox_sys_i(PlayerLink, playerLink)
         zox_sys_i(Children, children)
         zox_sys_o(ClickingEntity, clickingEntity)
         zox_sys_o(WindowTarget, windowTarget)
         const ecs_entity_t player = playerLink->value;
+        if (deviceDisabled->value) {
+            continue;
+        }
         if (!player) continue;
         if (!player || !zox_has(player, CanvasLink)) continue;
         const ecs_entity_t canvas = zox_get_value(player, CanvasLink)

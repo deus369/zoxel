@@ -4,7 +4,7 @@
 #include "__.c"
 
 // #define zox_testing_networking
-#include "settings/settings.c"
+#include "settings/_.c"
 #include "settings/packet_types.c"
 zox_declare_tag(Packet)
 zox_declare_tag(NetRoom)
@@ -37,17 +37,28 @@ void spawn_prefabs_networking(ecs_world_t *world) {
     spawn_prefab_net_player(world);
 }
 
-void initialize_networking() {
-#ifdef zox_testing_networking
-    if (server_mode) spawn_net_room(world, SERVER_PORT);
-    else spawn_net_player(world, PORT, server_ip, SERVER_PORT);
-    if (server_mode) zox_log(" > network server mode activated\n")
-    else zox_log(" > network client mode activated\n")
-#endif
+void initialize_networking(ecs_world_t* world) {
+    if (server_mode) {
+        spawn_net_room(world, SERVER_PORT);
+    } else {
+        spawn_net_player(world, PORT, server_ip, SERVER_PORT);
+    }
+    if (server_mode) {
+        zox_log(" > network server mode activated")
+    } else {
+        zox_log(" > network client mode activated")
+    }
+}
+
+void on_boot_networking(ecs_world_t* world, ecs_entity_t app) {
+    if (zox_is_networking) {
+        initialize_networking(world);
+    }
 }
 
 zox_begin_module(Networking)
     add_hook_terminal_command(process_arguments_networking);
+    add_hook_on_boot(on_boot_networking);
     zox_define_tag(Packet)
     zox_define_tag(NetRoom)
     zox_define_tag(NetPlayer)

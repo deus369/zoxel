@@ -18,13 +18,11 @@ void ActionActivateSystem(ecs_iter_t *it) {
         }
 
         // todo: action index should be based on character not player ui... omg
-        const ecs_entity_t player = zox_get_value(e, PlayerLink)
+        /*const ecs_entity_t player = zox_get_value(e, PlayerLink)
         if (!zox_valid(player)) {
             continue;
-        }
-        const byte action_selected = get_player_action_index(world, player);
-
-
+        }*/
+        const byte action_selected = get_character_action_index(world, e);
         if (action_selected == 255) {
             triggerActionB->value = 0;
             continue; // no actionbar
@@ -80,7 +78,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
 
                     if (quantity > 0) {
                         zox_set(action, Quantity, { quantity })
-                        on_set_quantity(world, player, action_selected, quantity);
+                        on_set_quantity(world, e, action_selected, quantity);
                     } else {
                         // set action to nullptr
                         // destroy entity

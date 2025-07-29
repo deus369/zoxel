@@ -126,18 +126,20 @@ void set_camera_mode_2D(ecs_world_t *world) {
     set_camera_mode(world, zox_camera_mode_2D, 0);
 }
 
-void set_camera_mode_pre_defined(ecs_world_t *world, const float vox_model_scale) {
-#if defined(zox_set_camera_2D)
-    set_camera_mode_2D(world, 0);
-#elif defined(zox_set_camera_firstperson)
-    set_camera_mode_first_person(world, vox_model_scale);
-#elif defined(zox_set_camera_thirdperson)
-    set_camera_mode_third_person(world, 0);
-#elif defined(zox_set_camera_ortho)
-    set_camera_mode_ortho(world, 0);
-#elif defined(zox_set_camera_topdown)
-    set_camera_mode_topdown(world, 0);
-#endif
+void set_camera_mode_pre_defined(ecs_world_t *world,
+    const float vox_model_scale)
+{
+    if (zox_game_camera_mode == zox_camera_mode_2D) {
+        set_camera_mode_2D(world);
+    } else if (zox_game_camera_mode == zox_camera_mode_first_person) {
+        set_camera_mode_first_person(world, vox_model_scale);
+    } else if (zox_game_camera_mode == zox_camera_mode_third_person) {
+        set_camera_mode_third_person(world);
+    } else if (zox_game_camera_mode == zox_camera_mode_ortho) {
+        set_camera_mode_ortho(world);
+    } else if (zox_game_camera_mode == zox_camera_mode_topdown) {
+        set_camera_mode_topdown(world);
+    }
 }
 
 // sets camera to main menu location

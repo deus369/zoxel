@@ -1,3 +1,10 @@
+SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
+    return (SoundData) {
+        .value = zox_mix_chunk_samples(mix_chunk),
+        .length = zox_mix_chunk_length(mix_chunk)
+    };
+}
+
 void load_files_sounds(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     FileList files = get_files(load_directory, 0);

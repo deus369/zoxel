@@ -51,6 +51,7 @@ void define_systems_elements_core(ecs_world_t *world) {
         [out] WindowTarget,
         [none] inputs.Zevice)
     zox_system(DeviceClickSystem, EcsPostUpdate,
+        [in] inputs.DeviceDisabled,
         [in] players.PlayerLink,
         [in] raycasts.RaycasterTarget,
         [in] WindowRaycasted,

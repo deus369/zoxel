@@ -1,45 +1,13 @@
 #if !defined(zox_mod_game) // && defined(zox_mod_players)
 #define zox_mod_game
 
-// todo: remove boot function
-// todo: spawn prefabs after settings are set here
+// todo: spawn_prefab_hook -> spawn after settings are set here in GameModule
 
 // log types
 // #define zox_enable_log_ios
 // #define zox_enable_log_input
 // #define zox_enable_log_ui
 // #define zox_enable_log_shader
-
-// todo: remove this and put into engine
-byte boot_zoxel_game(ecs_world_t *world, const ecs_entity_t app) {
-    intialize_game_store();
-    // test_steam_cloud(); // idk
-#ifdef zox_mod_networking
-    initialize_networking();
-#endif
-#ifdef zox_mod_realms
-    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
-#endif
-#ifdef zox_mod_games
-    game_name = "Zoxel";
-    const ecs_entity_t game = spawn_game(world, realm);
-#endif
-    spawn_weather(world);
-#ifdef zox_mod_space
-    if (!headless) {
-        spawn_connected_devices(world, app);
-        players_playing = spawn_players(world, game);
-    }
-#endif
-#ifdef zox_mod_ui
-    spawn_players_cameras_canvases(world, game, players_playing, app);
-    spawn_players_start_ui(world);
-#endif
-#ifdef zox_mod_musics
-    spawn_realm_playlist(world, realm);
-#endif
-    return EXIT_SUCCESS;
-}
 
 void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
@@ -142,14 +110,13 @@ void zoxel_debug_keys() {
 }
 
 zox_begin_module(ZoxGame)
-    boot_event = boot_zoxel_game;
+    game_name = "Zoxel";
     // app settings
     headless = 0;
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
     vsync = 1;
     is_split_screen = 0;
-
     // world
     // terrain_mode = terrain_mode_flatlands;
     render_distance_y = 1;
@@ -163,6 +130,8 @@ zox_begin_module(ZoxGame)
     game_rule_attach_to_character = 1;
     zox_experience_max_start = 10;
     // regen_rate = 10;
+    // zox_camera_mode_free | zox_camera_mode_first_person | zox_camera_mode_third_person | zox_camera_mode_ortho | zox_camera_mode_topdown | zox_camera_mode_2D
+    zox_game_camera_mode = zox_camera_mode_first_person;
 
     zoxel_settings_npcs();
     zoxel_settings_physics();

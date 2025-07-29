@@ -19,7 +19,9 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
         if (roam_state != 2) continue;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) continue;
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+                continue;
+            }
             zox_geter(device, Children, zevices)
             for (int k = 0; k < zevices->length; k++) {
                 const ecs_entity_t zevice = zevices->value[k];

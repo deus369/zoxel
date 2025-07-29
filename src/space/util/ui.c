@@ -28,7 +28,13 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
     if (!texture_source) {
         zox_log_error("[cursor_01] mouse texture not found")
     }
-    const ecs_entity_t fake_mouse = spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 2, float2_zero, 32, zevice_follow);
+    const ecs_entity_t fake_mouse = spawn_icon_mouse_follow_canvas(world,
+        prefab_icon_mouse_follow,
+        canvas, dimensions,
+        max_layers2D - 2,
+        float2_zero,
+        32,
+        zevice_follow);
     zox_set(fake_mouse, RenderDisabled, { 0 })
     zox_set(fake_mouse, GenerateTexture, { zox_generate_texture_none })
     clone_texture_data(world, fake_mouse, texture_source);
@@ -36,7 +42,14 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
     zox_set(fake_mouse, MeshAlignment, { zox_mesh_alignment_top_left })
     // used for icon mouse pickup
     const int icon_size = default_icon_size * zox_ui_scale;
-    icon_mouse_follow = spawn_icon_mouse_follow_canvas(world, prefab_icon_mouse_follow, canvas, dimensions, max_layers2D - 3, float2_half, icon_size, zevice_follow);
+    icon_mouse_follow = spawn_icon_mouse_follow_canvas(world,
+        prefab_icon_mouse_follow,
+        canvas,
+        dimensions,
+        max_layers2D - 3,
+        float2_half,
+        icon_size,
+        zevice_follow);
     if (local_mouse) {
         zox_set(local_mouse, TextureLink, { fake_mouse })
     }
@@ -45,6 +58,7 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
 
 #endif
 
+// move to game ui?
 void spawn_players_cameras_canvases(ecs_world_t *world,
     const ecs_entity_t game,
     int players_playing,
@@ -109,4 +123,10 @@ void spawn_players_start_ui(ecs_world_t *world) {
         // disable until line2Ds reposition/scale based on canvas
         // spawn_canvas_edge_lines(world, canvas, 4, color_black);
     }
+}
+
+void on_boot_space(ecs_world_t* world, ecs_entity_t app) {
+    zox_geter_value(app, GameLink, ecs_entity_t, game);
+    spawn_players_cameras_canvases(world, game, players_playing, app);
+    spawn_players_start_ui(world);
 }

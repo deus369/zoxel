@@ -10,10 +10,7 @@
 #endif
 
 // pre engine defines
-#include "zox/data/build_settings.c"
-#include "zox/data/build_disables.c"
-#include "zox/data/define_groups.c"
-#include "zox/util/defines.c"
+#include "zox/data/defines.c"
 
 // core includes
 #include <signal.h>     // used for detecting cancel
@@ -60,88 +57,88 @@
 
 // todo: include all these automatically
 #include "_/_.c"
-#include "generic/generic.c"
+#include "generic/_.c"
 #include "timing/_.c"
 #include "transforms/_.c"
 #include "networking/_.c"
-#include "players/players.c"
-#include "inputs/inputs.c"
-#include "apps/apps.c"
-#include "sdl/sdl.c"
+#include "inputs/_.c"
+#include "apps/_.c"
+#include "sdl/_.c"
 #include "opengl/_.c"
 #include "vulkan/_.c"
 
 // basic b locks
-#include "assets/assets.c" // uses sdl path function atm
-#include "nodes/nodes.c"
-#include "realms/realms.c"
-#include "games/games.c"
-#include "colors/colors.c"
+#include "assets/_.c" // uses sdl path function atm
+#include "nodes/_.c"
+#include "realms/_.c"
+#include "games/_.c"
+#include "players/_.c"
+#include "colors/_.c"
 
 // beef
 #include "cameras/_.c"
 #include "rendering/_.c"
-#include "sounds/sounds.c"
+#include "sounds/_.c"
 
-#include "raycasts/raycasts.c"
-#include "lines/lines.c"
+#include "raycasts/_.c"
+#include "lines/_.c"
 
 // inner core
 #include "textures/_.c"
-#include "musics/musics.c"
-#include "animations/animations.c"
-#include "bones/bones.c"
+#include "musics/_.c"
+#include "animations/_.c"
+#include "bones/_.c"
 
 #include "ui/_.c"
-#include "lines/lines2D/lines2D.c"
-#include "plots/plots.c"
+#include "lines/lines2/_.c"
+#include "plots/_.c"
 
-#include "genetics/genetics.c"
-#include "neurals/neurals.c"
-#include "cubes/cubes.c"
+#include "genetics/_.c"
+#include "neurals/_.c"
+#include "cubes/_.c"
 #include "blocks/_.c"
 #include "chunks2/_.c"
 #include "chunks3/_.c"
 #include "voxes/_.c"
 
 #include "models/_.c"
-#include "weathers/weathers.c"
+#include "weathers/_.c"
 #include "terrain/_.c"
 #include "physics/_.c"
-#include "particles/particles.c"
-#include "blueprints/blueprints.c"
+#include "particles/_.c"
+#include "blueprints/_.c"
 #include "characters/_.c"
-#include "dungeons/dungeons.c"
-#include "game_ui/game_ui.c"
+#include "dungeons/_.c"
+#include "game_ui/_.c"
 // user data
 #include "users/_.c"
-#include "combat/combat.c"
+#include "combat/_.c"
 #include "stats/_.c"
-#include "items/items.c"
-#include "skills/skills.c"
-#include "actions/actions.c"
-#include "dialogues/dialogues.c"
-#include "quests/quests.c"
-#include "classes/classes.c"
-#include "jobs/jobs.c"
-#include "races/races.c"
-#include "clans/clans.c"
-#include "lores/lores.c"
-#include "achievements/achievements.c"
+#include "items/_.c"
+#include "skills/_.c"
+#include "actions/_.c"
+#include "dialogues/_.c"
+#include "quests/_.c"
+#include "classes/_.c"
+#include "jobs/_.c"
+#include "races/_.c"
+#include "clans/_.c"
+#include "lores/_.c"
+#include "achievements/_.c"
 #include "users/util/post_users.c"
 // gameplay
-#include "pickups/pickups.c"
-#include "crafting/crafting.c"
-#include "farming/farming.c"
-#include "turrets/turrets.c"
-#include "combat/combat.c"
-#include "maps/maps.c"
+#include "pickups/_.c"
+#include "crafting/_.c"
+#include "farming/_.c"
+#include "turrets/_.c"
+#include "combat/_.c"
+#include "maps/_.c"
 #include "npcs/_.c"
-#include "editor_ui/editor_ui.c"
+#include "editor_ui/_.c"
 // on top
 #include "controllers/_.c"
-#include "space/space.c"
-#include "debug/debug.c"
+#include "space/_.c"
+#include "debug/_.c"
 #include "zox/_.c"
 
 // engine imports, besides sub modules, it's core is flecs
@@ -153,7 +150,6 @@ zox_begin_module(Zox)
 #ifndef zox_disable_module_networking // disabled on web atm
     zox_import_module(Networking)
 #endif
-    zox_import_module(Players)
     zox_import_module(Inputs)
     if (!headless) {
         zox_import_module(Apps)
@@ -162,6 +158,7 @@ zox_begin_module(Zox)
     zox_import_module(Assets)
     zox_import_module(Realms)
     zox_import_module(Games)
+    zox_import_module(Players)
     zox_import_module(Nodes)
     zox_import_module(Colorz)
 
@@ -258,7 +255,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
     // spawn app (creates our opengl context too)
-    ecs_entity_t app = !headless ? engine_spawn_window(world) : 0;
+    ecs_entity_t app = !headless ? spawn_window_opengl_with_icon(world) : 0;
     // inits glew on windows
     if (initialize_rendering(world, render_backend) == EXIT_FAILURE) {
         zox_log_error("[initialize_rendering] failed")
@@ -274,15 +271,26 @@ int main(int argc, char* argv[]) {
         dispose_zox(world);
         return EXIT_FAILURE;
     }
+
     // loads all our files
-    load_files_zox(world);
+    run_hook_files_load(world);
+
     // black screen if no shaders btw
-    process_shaders(world);
-    if (boot_event(world, app) == EXIT_FAILURE) {
+    process_shaders(world); // we should process them after loaded?
+
+    // always have realm and game
+    const ecs_entity_t realm = spawn_realm(world, prefab_realm);
+    const ecs_entity_t game = spawn_game(world, realm);
+    zox_set(app, RealmLink, { realm });
+    zox_set(app, GameLink, { game });
+
+    run_hook_on_boot(world, app);
+    if (boot_event && boot_event(world, app) == EXIT_FAILURE) {
         zox_log_error("[boot_event] failed")
         dispose_zox(world);
         return EXIT_FAILURE;
     }
+
     zox_log("+ running main loop [%s]", game_name)
     engine_loop(world);
     // return after loop ends; during a close event

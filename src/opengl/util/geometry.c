@@ -5,8 +5,9 @@ byte does_support_geometry_shaders() {
 }
 
 void check_geometry() {
-#ifdef zox_print_shader_support
-    if (does_support_geometry_shaders()) zox_log(" + geometry shader supported\n")
-    else zox_log(" ! geometry shader unsupported\n")
-#endif
+    if (does_support_geometry_shaders()) {
+        zox_log(" + geometry shader supported\n")
+    } else {
+        zox_log(" ! geometry shader unsupported\n")
+    }
 }

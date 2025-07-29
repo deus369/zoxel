@@ -17,7 +17,9 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
         float3 movement = { 0, 0, 0 };
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!device) continue;
+            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+                continue;
+            }
             if (zox_has(device, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device, Keyboard)
                 if (keyboard->a.is_pressed) movement.x += -1;

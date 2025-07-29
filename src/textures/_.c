@@ -9,6 +9,7 @@
 #include "util/sdl_textures.c"
 #include "io/textures_io.c"
 
+// todo: rename Textures as TextureLinks, and Texturez to Textures again
 zox_begin_module(Texturez)
     define_components_textures(world);
     define_systems_textures(world);

@@ -29,6 +29,16 @@ ecs_entity_t local_mouse;
 #include "gamepad.c"
 #include "touchscreen.c"
 
+int prefabs_count_devices = 0;
+ecs_entity_t prefabs_devices[32];
+
+// setters for higher modules to add to characters
+#define zox_prefab_set_device(T, ...) {\
+    for (int i = 0; i < prefabs_count_devices; i++) {\
+        zox_prefab_set(prefabs_devices[i], T, __VA_ARGS__)\
+    }\
+}
+
 void spawn_prefabs_inputs(ecs_world_t *world) {
     prefab_zevice_button = spawn_prefab_device_button(world);
     prefab_zevice_stick = spawn_prefab_device_stick(world);
@@ -38,4 +48,9 @@ void spawn_prefabs_inputs(ecs_world_t *world) {
     prefab_mouse = spawn_prefab_mouse(world, prefab_device);
     prefab_gamepad = spawn_prefab_gamepad(world, prefab_device);
     prefab_touchscreen = spawn_prefab_touchscreen(world, prefab_device);
+    prefabs_devices[prefabs_count_devices++] = prefab_device;
+    prefabs_devices[prefabs_count_devices++] = prefab_keyboard;
+    prefabs_devices[prefabs_count_devices++] = prefab_mouse;
+    prefabs_devices[prefabs_count_devices++] = prefab_gamepad;
+    prefabs_devices[prefabs_count_devices++] = prefab_touchscreen;
 }
