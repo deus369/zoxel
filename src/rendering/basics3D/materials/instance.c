@@ -55,6 +55,7 @@ ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
     shader_frags[shader_index] = frag;
     const ecs_entity_t shader = spawn_shader(world, shader_index);
     if (!shader) {
+        zox_log_error("[shader_vox_instance] failed to spawn")
         can_render_instanes = 0;
         return 0;
     }

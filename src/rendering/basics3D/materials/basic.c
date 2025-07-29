@@ -27,6 +27,10 @@ ecs_entity_t spawn_shader_basic3D(ecs_world_t *world) {
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
     const ecs_entity_t e = spawn_shader(world, shader_index);
+    if (!e) {
+        zox_log_error("[shader_basic3D] failed to spawn")
+        return 0;
+    }
     zox_name("shader_basic3D")
     return e;
 }
