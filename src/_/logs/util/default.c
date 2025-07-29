@@ -12,30 +12,30 @@ void zox_log_a(const char* msg, ...) {
     va_start(a, msg);
     char msg2[max_characters_log] = { 0 };
     vsnprintf(msg2, sizeof(msg2), msg, a);
-    #ifdef log_to_file
+#ifdef log_to_file
     FILE* f = fopen("log.txt", "a");
     if (f) {
         fputs(msg2, f);
         fclose(f);
     }
-    #else
+#else
     fputs(green, stdout);
     fputs(msg2, stderr);
     fputs(reset, stderr);
-    #endif
+#endif
     va_end(a);
 }
 
-void zox_log_(const char* msg) {
-    #ifdef log_to_file
+void zox_log__(const char* msg) {
+#ifdef log_to_file
     FILE* f = fopen("log.txt", "a");
     if (f) {
         fputs(msg, f);
         fclose(f);
     }
-    #else
+#else
     fputs(red, stderr);
     fputs(msg, stderr);
     fputs(reset, stderr);
-    #endif
+#endif
 }
