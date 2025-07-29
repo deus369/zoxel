@@ -1,5 +1,5 @@
-#include "android.c"
 #include "path.c"
+#include "android.c"
 #include "directory.c"
 #include "saves.c"
 #include "io_macros.c"

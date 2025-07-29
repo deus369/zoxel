@@ -137,7 +137,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
                 }
             }
         } else {
-            zox_log_error("action is not a block item", zox_get_name(action))
+            zox_log_error("action is not a block item [%s]", zox_get_name(action))
         }
         triggerActionB->value = 0;
     }
