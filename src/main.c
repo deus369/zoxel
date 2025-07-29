@@ -10,7 +10,7 @@
 #endif
 
 // pre engine defines
-#include "zox/data/defines.c"
+#include "_.c"
 
 // core includes
 #include <signal.h>     // used for detecting cancel
@@ -139,7 +139,10 @@
 #include "controllers/_.c"
 #include "space/_.c"
 #include "debug/_.c"
-#include "zox/_.c"
+
+// event used by testers atm
+typedef byte (*boot_zox)(ecs_world_t*, ecs_entity_t);
+boot_zox boot_event;
 
 // engine imports, besides sub modules, it's core is flecs
 zox_begin_module(Zox)
