@@ -154,7 +154,7 @@ void extract_android_assets(
         } else {
             // zox_log_error("asset failed to open [%s]", full_source_path)
             // Not a file? Treat it as a nested directory.
-            zox_logv("📁 found nested directory: [%s]", nested_source_path);
+            zox_logv("📁 found nested directory: [%s]", nested_source_path, nested_dest_path);
             extract_android_assets(asset_manager, nested_source_path, nested_dest_path);
         }
     }
@@ -191,7 +191,8 @@ void decompress_android_resources(const char* resources_path) {
         return;
     }
     zox_logv("Created new directory [%s]", resources_path);
-    extract_android_assets_init(manager, "");
+    // extract_android_assets_init(manager, "");
+    extract_android_assets(manager, "", "");
     // now copy all our data out
     /*for (int i = 0; i < resource_directories_length; i++) {
         extract_android_assets(manager, resource_directories[i]);
