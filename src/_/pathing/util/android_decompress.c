@@ -131,8 +131,17 @@ void extract_android_assets(
 
         char nested_source_path[1024];
         char nested_dest_path[1024];
-        snprintf(nested_source_path, sizeof(nested_source_path), "%s/%s", source_path, filename);
-        snprintf(nested_dest_path, sizeof(nested_dest_path), "%s/%s", destination_path, filename);
+        // snprintf(nested_source_path, sizeof(nested_source_path), "%s/%s", source_path, filename);
+        // snprintf(nested_dest_path, sizeof(nested_dest_path), "%s/%s", destination_path, filename);
+        snprintf(nested_source_path, sizeof(nested_source_path), "%s%s%s",
+                 source_path,
+                 (source_path[strlen(source_path) - 1] == '/') ? "" : "/",
+                 filename);
+        snprintf(nested_dest_path, sizeof(nested_dest_path), "%s%s%s",
+                 destination_path,
+                 (destination_path[strlen(destination_path) - 1] == '/') ? "" : "/",
+                 filename);
+
 
         AAsset* asset = AAssetManager_open(
             asset_manager,
@@ -192,7 +201,7 @@ void decompress_android_resources(const char* resources_path) {
     }
     zox_logv("Created new directory [%s]", resources_path);
     // extract_android_assets_init(manager, "");
-    extract_android_assets(manager, "", "");
+    extract_android_assets(manager, resources_dir_name, resources_path);
     // now copy all our data out
     /*for (int i = 0; i < resource_directories_length; i++) {
         extract_android_assets(manager, resource_directories[i]);
