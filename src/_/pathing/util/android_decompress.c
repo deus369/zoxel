@@ -173,13 +173,13 @@ void extract_android_assets_init(AAssetManager *assetManager, char *path) {
 // todo: when building, we create a txt file with resource paths
 void decompress_android_resources(const char* resources_path) {
     if (!resources_path) {
-        zox_log_error("resources_path is null.")
+        zox_log_error("[decompress_android_resources]: resources_path is null.")
         return;
     }
     zox_logv("Initial Decompression at [%s]", resources_path);
     AAssetManager *manager = get_asset_manager();
     if (!manager) {
-        zox_log_error("Android AssetManager Null")
+        zox_log_error("[decompress_android_resources]: Android AssetManager Null")
         return;
     }
     zox_logv("Deleting old Resources [%s]", resources_path);
@@ -187,7 +187,7 @@ void decompress_android_resources(const char* resources_path) {
 
     zox_logv("Creating Export Path [%s]", resources_path);
     if (!android_create_directory_r(resources_path)) {
-        zox_log_error("could not create directory: %s", resources_path)
+        zox_log_error("[decompress_android_resources]: could not create directory: %s", resources_path)
         return;
     }
     zox_logv("Created new directory [%s]", resources_path);

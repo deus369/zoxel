@@ -129,7 +129,7 @@ char* find_resources_path(char* base_path, const char* resources) {
 }
 
 // sets base_path, data_path
-byte initialize_pathing() {
+byte initialize_pathing_native() {
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
         zox_log("! failed to get base_path\n")

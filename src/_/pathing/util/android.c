@@ -38,7 +38,7 @@ byte initialize_pathing_android() {
         resources_path = malloc(strlen(base_path) + strlen("/"resources_dir_name"/") + 1);
         strcpy(resources_path, base_path);
         strcat(resources_path, "/"resources_dir_name"/");
-        zox_log_io("> resources_path [%s]", resources_path)
+        zox_logv("resources_path [%s]", resources_path)
         closedir(dir);
     } else if (ENOENT == errno) {
         zox_log_error("SDL data_path (DOES NOT EXIST): %s", data_path)

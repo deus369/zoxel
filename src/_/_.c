@@ -36,6 +36,18 @@ void process_arguments_core(ecs_world_t *world, char* args[], int count) {
     }
 }
 
+// sets up resources path per platform - during preload stage
+byte initialize_pathing() {
+    zox_logv("Begin Pathing")
+    byte pathing_success = EXIT_FAILURE;
+#ifdef zox_android
+    pathing_success = initialize_pathing_android();
+#else
+    pathing_success = initialize_pathing_native();
+#endif
+    return pathing_success;
+}
+
 zox_begin_module(Core)
     zox_module_dispose(module_dispose_core)
     clear_logs();
@@ -47,21 +59,10 @@ zox_begin_module(Core)
     // hooks
     add_hook_terminal_command(process_arguments_core);
     add_hook_on_boot(on_boot_game_store);
-    byte pathing_success = EXIT_FAILURE;
-#ifdef zox_android
-    pathing_success = initialize_pathing_android();
-#else
-    pathing_success = initialize_pathing();
-#endif
-    if (pathing_success == EXIT_FAILURE) {
-        zox_log_error("pathing failed")
-        return;
-    } else {
-        set_noise_seed(get_unique_time_seed());
+    set_noise_seed(get_unique_time_seed());
 #if zox_web
-        add_to_update_loop(update_web_canvas);
+    add_to_update_loop(update_web_canvas);
 #endif
-    }
 zox_end_module(Core)
 
 #endif

@@ -278,6 +278,11 @@ int main(int argc, char* argv[]) {
     zox_import_module(ZoxGame)
     zox_logv("Running Terminal Commands");
     run_hook_terminal_command(world, argv, argc);
+    zox_logv("Initialize Pathing");
+    if (initialize_pathing() == EXIT_FAILURE) {
+        zox_log_error("Pathing Setup Failed.")
+        return EXIT_FAILURE;
+    }
     zox_logv("Initializing ECS Settings");
     initialize_ecs_settings(world);                 // sets ecs threads
     zox_logv("Initializing SDL Video");
