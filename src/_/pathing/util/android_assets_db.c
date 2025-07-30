@@ -3,7 +3,11 @@
 // Reads assets.txt from Android assets and returns array of strings (dirs).
 // *out_count will be set to number of dirs read.
 // Caller must free returned array and each string inside it.
-char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int* out_count) {
+char** get_assets_dirs(
+    AAssetManager* manager,
+    const char* assets_txt_path,
+    int* out_count)
+{
     *out_count = 0;
     AAsset* asset = AAssetManager_open(manager, assets_txt_path, AASSET_MODE_STREAMING);
     if (!asset) {
@@ -32,14 +36,20 @@ char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int*
         zox_log_error("Failed to read assets.txt content");
         return NULL;
     }
+    zox_logv("⚠️ Raw buffer from assets.txt:\n%s", buffer);
     buffer[read_size] = '\0'; // Null terminate
 
     // Count lines first
     int lines = 0;
     for (char* p = buffer; *p; p++) {
-        if (*p == '\n') lines++;
+        if (*p == '\n') {
+            lines++;
+        }
     }
-    if (read_size > 0 && buffer[read_size - 1] != '\n') lines++; // last line may not have newline
+    if (read_size > 0 && buffer[read_size - 1] != '\n') {
+        lines++; // last line may not have newline
+    }
+    zox_log("⚠️  Line count estimate: %d", lines);
 
     char** dirs = malloc(sizeof(char*) * lines);
     if (!dirs) {
@@ -48,23 +58,17 @@ char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int*
         return NULL;
     }
 
-    // Split lines
+    // Split lines - supports \n, \r\n, and \r
     int idx = 0;
     char* line = buffer;
     for (char* p = buffer; ; p++) {
-        if (*p == '\n' || *p == '\0') {
+        if (*p == '\r' || *p == '\n' || *p == '\0') {
+            char prev = *p;
             *p = '\0';
 
-            // Strip trailing '\r' for Windows line endings
-            char* end = p - 1;
-            if (end >= line && *end == '\r') {
-                *end = '\0';
-            }
-
-            if (*line) { // skip empty lines
+            if (*line) {
                 dirs[idx] = strdup(line);
                 if (!dirs[idx]) {
-                    // Free previously allocated strings on failure
                     for (int j = 0; j < idx; j++) free(dirs[j]);
                     free(dirs);
                     free(buffer);
@@ -73,8 +77,12 @@ char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int*
                 }
                 idx++;
             }
+
+            // Handle \r\n combo
+            if (prev == '\r' && *(p + 1) == '\n') p++;
+
             line = p + 1;
-            if (*p == '\0') break;
+            if (prev == '\0') break;
         }
     }
 
