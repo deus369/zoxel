@@ -170,13 +170,38 @@ void extract_android_assets(
     AAssetDir_close(asset_dir);
 }
 
-/*void extract_android_assets_init(AAssetManager *assetManager, char *path) {
+void android_assets_init(AAssetManager *assetManager, char *path) {
     char path_input[1024];
     char path_output[1024];
     snprintf(path_input, 1024, "%s%s", resources_folder_name, path);
     snprintf(path_output, 1024, "%s%s", resources_path, path);
     extract_android_assets(assetManager, path_input, path_output);
-}*/
+}
+
+char** get_assets_dirs(AAssetManager* m, const char* path, int* count) {
+    AAsset* a = AAssetManager_open(m, path, AASSET_MODE_STREAMING);
+    if (!a) return NULL;
+    size_t sz = AAsset_getLength(a);
+    char* buf = malloc(sz + 1);
+    AAsset_read(a, buf, sz);
+    AAsset_close(a);
+    buf[sz] = 0;
+    char** arr = malloc(sizeof(char*) * 64); // max 64 dirs
+    int c=0; char* p=buf; char* l=buf;
+    while (1) {
+        if (*p == '\n' || *p == 0) {
+            *p=0;
+            if (*l) arr[c++]=strdup(l);
+            if (*p==0) break;
+            l=p+1;
+        }
+        p++;
+    }
+    *count=c;
+    free(buf);
+    return arr;
+}
+
 
 // todo: when building, we create a txt file with resource paths
 void decompress_android_resources(const char* resources_path) {
@@ -204,28 +229,40 @@ void decompress_android_resources(const char* resources_path) {
 
     // todo: generate this in android build step and load in first: assets.txt
     // android directories
-    char* dirs[] = {
-        "res",
-        "res/shaders",
-        "res/voxes",
-        "res/fonts",
-        "res/music",
-        "res/sounds",
-        "res/textures",
-        "res/textures/cursors",
-        "res/textures/input",
-        "res/textures/skills",
-        "res/textures/taskbar",
-        "res/textures/voxels",
-        "res/textures/stats",
-        "res/textures/stats/attributes",
-        "res/textures/stats/base",
-        "res/textures/stats/regens",
-        "res/textures/stats/states",
+    char assets_txt_filepath[1024];
+    snprintf(assets_txt_filepath, 1024, "%sassets.txt", resources_folder_name);
+
+    int dir_len = 0;
+    char** dirs = get_assets_dirs(manager, assets_txt_filepath, &dir_len);
+
+    /*char* dirs[] = {
+        "shaders",
+        "voxes",
+        "fonts",
+        "music",
+        "sounds",
+        "textures",
+        "textures/cursors",
+        "textures/input",
+        "textures/skills",
+        "textures/taskbar",
+        "textures/voxels",
+        "textures/stats",
+        "textures/stats/attributes",
+        "textures/stats/base",
+        "textures/stats/regens",
+        "textures/stats/states",
     };
-    int dir_len = sizeof(dirs) / sizeof(dirs[0]);
-    for (int i = 0; i < dir_len; i++) {
-        extract_android_assets(manager, dirs[i]);
+    int dir_len = sizeof(dirs) / sizeof(dirs[0]);*/
+
+    if (dirs) {
+        for (int i = 0; i < dir_len; i++) {
+            android_assets_init(manager, dirs[i], dirs[i]);
+            free(dirs[i]); // free each strdup'd string after usage
+        }
+        free(dirs);
+    } else {
+        zox_log_error("Failed to load asset directories from assets.txt");
     }
 }
 
