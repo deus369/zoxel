@@ -45,26 +45,34 @@ char* clone_str(const char* text) {
 char* get_base_path() {
     char path[PATH_SIZE];
     char *base = NULL;
-    #ifdef _WIN32
-        /* Get the full path to the executable */
-        DWORD len = GetModuleFileNameA(NULL, path, sizeof(path));
-        if (len == 0 || len == sizeof(path)) return NULL;
-        /* Find the last backslash and terminate the string just after it */
-        char *last_backslash = strrchr(path, '\\');
-        if (!last_backslash) return NULL;
-        *(last_backslash + 1) = '\0';
-        base = _strdup(path);  /* use strdup (or _strdup on Windows) */
-    #else
-        /* Linux and other Unix-like systems: use /proc/self/exe */
-        ssize_t n = readlink("/proc/self/exe", path, sizeof(path) - 1);
-        if (n == -1) return NULL;
-        path[n] = '\0';
-        /* Find the last '/' and terminate the string after it */
-        char *last_slash = strrchr(path, '/');
-        if (!last_slash) return NULL;
-        *(last_slash + 1) = '\0';
-        base = strdup(path);
-    #endif
+#ifdef zox_windows
+    /* Get the full path to the executable */
+    DWORD len = GetModuleFileNameA(NULL, path, sizeof(path));
+    if (len == 0 || len == sizeof(path)) {
+        return NULL;
+    }
+    /* Find the last backslash and terminate the string just after it */
+    char *last_backslash = strrchr(path, character_slash);
+    if (!last_backslash) {
+        return NULL;
+    }
+    *(last_backslash + 1) = '\0';
+    base = _strdup(path);  /* use strdup (or _strdup on Windows) */
+#else
+    /* Linux and other Unix-like systems: use /proc/self/exe */
+    ssize_t n = readlink("/proc/self/exe", path, sizeof(path) - 1);
+    if (n == -1) {
+        return NULL;
+    }
+    path[n] = '\0';
+    /* Find the last '/' and terminate the string after it */
+    char *last_slash = strrchr(path, character_slash);
+    if (!last_slash) {
+        return NULL;
+    }
+    *(last_slash + 1) = '\0';
+    base = strdup(path);
+#endif
     return base;
 }
 
@@ -84,8 +92,8 @@ char* join_paths(const char* base, const char* folder) {
     }
     strcpy(path, base);
     // Add trailing slash if needed
-    if (path[strlen(path)-1] != '/') {
-        strcat(path, "/");
+    if (path[strlen(path)-1] != character_slash) {
+        strcat(path, character_slash);
     }
     strcat(path, folder);
     return path;
@@ -109,12 +117,12 @@ char* find_resources_path(char* base_path, const char* resources) {
         free(path);
 
         // If we’re at root or empty path, stop searching
-        if (strcmp(base_path, "/") == 0 || strlen(base_path) == 0) {
+        if (strcmp(base_path, character_slash) == 0 || strlen(base_path) == 0) {
             return NULL; // Not found
         }
 
         // Strip last directory from base_path (in place)
-        slash_pos = strrchr(base_path, '/');
+        slash_pos = strrchr(base_path, character_slash);
         if (!slash_pos) {
             // No slash found, cannot go up further
             return NULL;
@@ -136,12 +144,12 @@ byte initialize_pathing_native() {
         return EXIT_FAILURE;
     }
     data_path = base_path;
-    zox_log_io("> io base_path [%s]", base_path)
+    zox_logv("> io base_path [%s]", base_path)
     DIR* dir = opendir(base_path);
     if (dir) {
         resources_path = find_resources_path(base_path, resources_folder_name);
         if (resources_path) {
-            zox_log("🔥 [resources_path] found [%s]", resources_path)
+            zox_logv("🔥 [resources_path] found [%s]", resources_path)
         } else {
             zox_log_error("[resources_path] not found.")
             return EXIT_FAILURE;

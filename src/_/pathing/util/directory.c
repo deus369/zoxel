@@ -151,7 +151,7 @@ FileList get_files(char *directory, byte keep_extension) {
     traverse_directory(&fileList, directory, keep_extension);
 #else
     int len = strlen(directory);
-    if (len > 1 && directory[len - 1] != '/') {
+    if (len > 1 && directory[len - 1] != character_slash) {
         traverse_directory(&fileList, directory, keep_extension);
     } else {
         char directory_non_slash[len - 1];

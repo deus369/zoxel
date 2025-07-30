@@ -161,9 +161,6 @@ void extract_android_assets(
             AAsset_close(asset);
         } else {
             zox_log_error("asset failed to open [%s]", nested_source_path)
-            // Not a file? Treat it as a nested directory.
-            // zox_logv("📁 found nested directory: [%s]", nested_source_path, nested_dest_path);
-            // extract_android_assets(asset_manager, nested_source_path, nested_dest_path);
         }
     }
 
@@ -178,8 +175,7 @@ void android_assets_init(AAssetManager *assetManager, char *path) {
     extract_android_assets(assetManager, path_input, path_output);
 }
 
-
-// todo: when building, we create a txt file with resource paths
+// todo: auto generate assets.txt later from zoxelder
 void decompress_android_resources(const char* resources_path) {
     if (!resources_path) {
         zox_log_error("[decompress_android_resources]: resources_path is null.")
