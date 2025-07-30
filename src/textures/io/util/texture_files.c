@@ -1,6 +1,7 @@
 // #define zox_print_texture_files
 void load_files_textures(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_textures);
+    zox_logv("  - Loading Files Textures [%s]", load_directory);
     FileList files = get_files(load_directory, 0);
     files_count_textures = files.count;
     files_textures = malloc(sizeof(ecs_entity_t) * files.count);

@@ -7,6 +7,7 @@ SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
 
 void load_files_sounds(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
+    zox_logv("  - Loading Files Sounds [%s]", load_directory);
     FileList files = get_files(load_directory, 0);
     sound_files_count = files.count;
     files_sounds = malloc(sizeof(ecs_entity_t) * files.count);

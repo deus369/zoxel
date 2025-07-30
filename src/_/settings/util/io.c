@@ -75,6 +75,7 @@ void load_files_settings(ecs_world_t* world) {
     const char* app_name = game_name;
     settings_game_name = app_name;
     const char* fn = get_settings_file(app_name);
+    zox_logv("  - Loading Files Settings [%s]", fn);
     FILE* f = fopen(fn, "r");
     if (!f) {
         if (is_log_settings_io) {

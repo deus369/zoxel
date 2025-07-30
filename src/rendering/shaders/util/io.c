@@ -38,6 +38,7 @@ static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
 
 void load_files_shaders(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_shaders);
+    zox_logv("  - Loading Files Shaders [%s]", load_directory);
     FileList files = get_files(load_directory, 1);
     files_shaders = malloc(sizeof(ecs_entity_t) * files.count);
     files_hashmap_shaders = create_string_hashmap(files.count);

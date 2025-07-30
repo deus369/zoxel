@@ -1,5 +1,6 @@
 // android directories
-int resource_directories_length = 16;
+/*int resource_directories_length = 16;
+// todo: generate this in android build step and load in first: assets.txt
 char* resource_directories[] = {
     "shaders",
     "voxes",
@@ -17,6 +18,6 @@ char* resource_directories[] = {
     "textures/stats/base",
     "textures/stats/regens",
     "textures/stats/states",
-};
+};*/
 
 #include "file_list.c"

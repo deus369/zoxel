@@ -307,7 +307,7 @@ int main(int argc, char* argv[]) {
     }
 
     // loads all our files
-    zox_logv("Loading All Files");
+    zox_logv("Loading Files All");
     run_hook_files_load(world);
 
     // black screen if no shaders btw

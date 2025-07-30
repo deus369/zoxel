@@ -77,77 +77,71 @@ AAssetManager* get_asset_manager() {
     return manager;
 }
 
-void copy_resources_directory(AAssetManager* asset_manager, const char* source_path, const char* destination_path) {
-    #ifdef zox_log_android_io
-    zox_log(" > extracting directory from [%s]\n", source_path)
-    zox_log("   > destination [%s]\n", destination_path)
-    #endif
-    AAssetDir* asset_directory = AAssetManager_openDir(asset_manager, source_path);
-    if (!asset_directory) {
-        zox_log("   ! android source directory does not exist [%s]\n", source_path)
+// remember - source is assets, the jar apk
+void extract_android_assets(
+    AAssetManager* asset_manager,
+    const char* source_path,
+    const char* destination_path)
+{
+    zox_logv("📦 decompressing directory from [%s] -> [%s]", source_path, destination_path)
+
+    AAssetDir* asset_dir = AAssetManager_openDir(asset_manager, source_path);
+    if (!asset_dir) {
+        zox_log_error("asset directory does not exist [%s]", source_path)
         return;
     }
-    // zox_log("     + asset source directory exists [%s]\n", source_path)
+
+    if (!create_directory(destination_path)) {
+        zox_log_error("failed creating directory [%s]", destination_path)
+        return;
+    }
+
+    zox_logv("Success creating directory [%s]", destination_path)
     const char* filename = NULL;
-    if (!create_directory(destination_path)) { // create the directory we are copying to
-        return;
-    }
-    #ifdef zox_log_android_io
-    zox_log("   + created new directory [%s]\n", destination_path)
-    #endif
-    int files_count = 0;
-    while ((filename = AAssetDir_getNextFileName(asset_directory)) != NULL) {
-        char full_source_path[512]; // asset folder
-        char full_destination_path[512];    // internal storage
-        sprintf(full_source_path, "%s/%s", source_path, filename);
-        sprintf(full_destination_path, "%s/%s", destination_path, filename);
-        AAsset* asset = AAssetManager_open(asset_manager, full_source_path, AASSET_MODE_BUFFER);
+    while ((filename = AAssetDir_getNextFileName(asset_dir)) != NULL) {
+
+        char nested_source_path[1024];
+        char nested_dest_path[1024];
+        snprintf(nested_source_path, sizeof(nested_source_path), "%s/%s", source_path, filename);
+        snprintf(nested_dest_path, sizeof(nested_dest_path), "%s/%s", destination_path, filename);
+
+        AAsset* asset = AAssetManager_open(
+            asset_manager,
+            nested_source_path,
+            AASSET_MODE_BUFFER);
+
         if (asset) {
             const void* data = AAsset_getBuffer(asset);
-            if (data) {
-                size_t size = AAsset_getLength(asset);
-                #ifdef zox_log_android_io
-                zox_log("       - extracting bytes [%i] from [%s]\n", (int) size, full_source_path)
-                zox_log("       + to [%s]\n", full_destination_path)
-                #endif
-                // zox_log("         + asset opened size [%i]\n", (int) size)
-                // Open the destination file on the device's internal storage
-                FILE* destination_file = fopen(full_destination_path, "wb");
-                if (destination_file) {
-                    fwrite(data, size, 1, destination_file);
-                    fclose(destination_file);
-                } else zox_log("    ! file opened is null [%s]\n", full_destination_path)
-            } else zox_log("    ! asset data is null [%s]\n", full_source_path)
-                AAsset_close(asset);
-        } else  zox_log("         ! asset failed to open [%s]\n", full_source_path)
-            files_count++;
+            size_t size = AAsset_getLength(asset);
+            FILE* out = fopen(nested_dest_path, "wb");
+            if (data && out && size) {
+                zox_logv("  + asset opened size [%i]", (int) size)
+                fwrite(data, size, 1, out);
+                fclose(out);
+            } else {
+                zox_log_error("⚠️ failed writing to [%s]", nested_dest_path);
+            }
+            AAsset_close(asset);
+        } else {
+            // zox_log_error("asset failed to open [%s]", full_source_path)
+            // Not a file? Treat it as a nested directory.
+            zox_logv("📁 found nested directory: [%s]", nested_source_path);
+            extract_android_assets(asset_manager, nested_source_path, nested_dest_path);
+        }
     }
-    AAssetDir_close(asset_directory);
-    #ifdef zox_log_android_io
-    zox_log("       - total files was [%i]\n", files_count)
-    #endif
+
+    AAssetDir_close(asset_dir);
 }
 
-// zox_log("     + directory has sub directories count [%i]\n", num_of_directories);
-// Iterate over all the files in the directory and copy them to the destination path
-// If the file is a directory, recursively copy its contents
-// zox_log("     > is directory? [%s]\n", full_source_path);
-// Open the source file in the APK's assets folder
-// zox_log("         - file opened [%s]\n", full_destination_path);
-// zox_log("         - file contents copied [%s]\n", full_destination_path);
-
-void decompress_android_directory(AAssetManager *assetManager, char *path) {
-    char *path_input = malloc(strlen(resources_folder_name) + strlen(path) + 1);
-    strcpy(path_input, resources_folder_name);
-    strcat(path_input, path);
-    char *path_output = malloc(strlen(resources_path) + strlen(path) + 1);
-    strcpy(path_output, resources_path);
-    strcat(path_output, path);
+void extract_android_assets_init(AAssetManager *assetManager, char *path) {
+    char path_input[1024];
+    char path_output[1024];
+    snprintf(path_input, 1024, "%s%s", resources_folder_name, path);
+    snprintf(path_output, 1024, "%s%s", resources_path, path);
     copy_resources_directory(assetManager, path_input, path_output);
-    free(path_input);
-    free(path_output);
 }
 
+// todo: when building, we create a txt file with resource paths
 void decompress_android_resources(const char* resources_path) {
     if (!resources_path) {
         zox_log_error("resources_path is null.")
@@ -164,13 +158,12 @@ void decompress_android_resources(const char* resources_path) {
         zox_log_error("could not create directory: %s", resources_path)
         return;
     }
-#ifdef zox_log_android_io
-    zox_log("created new directory [%s]", resources_path)
-#endif
+    zox_logv("created new directory [%s]", resources_path);
+    extract_android_assets_init(manager, "");
     // now copy all our data out
-    for (int i = 0; i < resource_directories_length; i++) {
-        decompress_android_directory(manager, resource_directories[i]);
-    }
+    /*for (int i = 0; i < resource_directories_length; i++) {
+        extract_android_assets(manager, resource_directories[i]);
+    }*/
 }
 
 #endif

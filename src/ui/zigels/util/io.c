@@ -94,6 +94,7 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
     free(directory);
     char* path = concat_file_path(directory_slash, filename);
     free(directory_slash);
+    zox_logv("  - Loading Files Font [%s]", path);
     FILE *file = fopen(path, "rb");
 #ifdef zox_log_font_io
     zox_log(" + loading font style entity")
