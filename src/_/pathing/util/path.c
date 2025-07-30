@@ -53,7 +53,7 @@ char* get_base_path_native() {
     }
     path[n] = '\0';
     /* Find the last '/' and terminate the string after it */
-    char *last_slash = strrchr(path, character_slash);
+    char *last_slash = strrchr(path, char_slash);
     if (!last_slash) {
         return NULL;
     }
@@ -82,7 +82,7 @@ char* join_paths(const char* base, const char* folder) {
     }
     strcpy(path, base);
     // Add trailing slash if needed
-    if (path[strlen(path)-1] != character_slash) {
+    if (path[strlen(path)-1] != char_slash) {
         strcat(path, character_slash);
     }
     strcat(path, folder);
@@ -112,7 +112,7 @@ char* find_resources_path(char* base_path, const char* resources) {
         }
 
         // Strip last directory from base_path (in place)
-        slash_pos = strrchr(base_path, character_slash);
+        slash_pos = strrchr(base_path, char_slash);
         if (!slash_pos) {
             // No slash found, cannot go up further
             return NULL;
@@ -130,7 +130,7 @@ char* find_resources_path(char* base_path, const char* resources) {
 byte initialize_pathing_native() {
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
-        zox_log_error("failed at [initialize_base_path] character_slash [%c]", character_slash)
+        zox_log_error("failed at [initialize_base_path] char_slash [%c]", char_slash)
         return EXIT_FAILURE;
     }
     data_path = base_path;

@@ -22,7 +22,7 @@ char* get_base_path_windows() {
 
     zox_logv("Full executable path: %s", path);
 
-    char *last_backslash = strrchr(path, character_slash);
+    char *last_backslash = strrchr(path, char_slash);
     if (!last_backslash) {
         zox_log_error("Failed to find last backslash in path");
         return NULL;
