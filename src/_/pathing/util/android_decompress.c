@@ -1,5 +1,16 @@
 #ifdef zox_android
 
+int directory_exists(const char *path) {
+    struct stat info;
+    if (stat(path, &info) != 0) {
+        // Can't access path (doesn't exist or other error)
+        return 0;
+    } else {
+        // Check if it is a directory
+        return (info.st_mode & S_IFDIR) != 0;
+    }
+}
+
 void delete_directory_recursive(const char* path) {
     DIR* dir = opendir(path);
     if (dir != NULL) {
