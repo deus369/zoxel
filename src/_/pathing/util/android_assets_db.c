@@ -39,7 +39,7 @@ char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int*
     for (char* p = buffer; *p; p++) {
         if (*p == '\n') lines++;
     }
-    if (buffer[read_size - 1] != '\n') lines++; // last line may not have newline
+    if (read_size > 0 && buffer[read_size - 1] != '\n') lines++; // last line may not have newline
 
     char** dirs = malloc(sizeof(char*) * lines);
     if (!dirs) {
@@ -54,6 +54,13 @@ char** get_assets_dirs(AAssetManager* manager, const char* assets_txt_path, int*
     for (char* p = buffer; ; p++) {
         if (*p == '\n' || *p == '\0') {
             *p = '\0';
+
+            // Strip trailing '\r' for Windows line endings
+            char* end = p - 1;
+            if (end >= line && *end == '\r') {
+                *end = '\0';
+            }
+
             if (*line) { // skip empty lines
                 dirs[idx] = strdup(line);
                 if (!dirs[idx]) {

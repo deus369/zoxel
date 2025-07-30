@@ -207,7 +207,6 @@ void decompress_android_resources(const char* resources_path) {
     // android directories
     char assets_txt_filepath[1024];
     snprintf(assets_txt_filepath, 1024, "%sassets.txt", resources_folder_name);
-
     int dir_len = 0;
     char** dirs = get_assets_dirs(manager, assets_txt_filepath, &dir_len);
 
@@ -232,7 +231,9 @@ void decompress_android_resources(const char* resources_path) {
     int dir_len = sizeof(dirs) / sizeof(dirs[0]);*/
 
     if (dirs) {
+        zox_logv("Directories Found [%i]", dir_len);
         for (int i = 0; i < dir_len; i++) {
+            zox_logv("  - [%i] [%s]", i, dirs[i]);
             android_assets_init(manager, dirs[i]);
             free(dirs[i]); // free each strdup'd string after usage
         }

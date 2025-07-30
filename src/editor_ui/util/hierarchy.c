@@ -106,29 +106,41 @@ void zox_print_entity(ecs_world_t *world, ecs_entity_t e) {
             // zox_log(" [%i]", ecs_get_id(world, target, id)->value)
             if (is_component_type_byte(id)) {
                 const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, e, id));
-                if (byte_component) zox_log(" b [%i]", byte_component->value)
+                if (byte_component) {
+                    zox_log(" b [%i]", byte_component->value)
+                }
             } else if (is_component_type_long_int(id)) {
                 const Seed *long_int_component = ((const Seed*) ecs_get_id(world, e, id));
-                if (long_int_component) zox_log(" lu [%lu]", long_int_component->value)
+                if (long_int_component) {
+                    zox_log(" lu [%lu]", long_int_component->value)
+                }
             } else if (is_component_type_int2(id)) {
                 const DraggingDelta *int2_component = ((const DraggingDelta*) ecs_get_id(world, e, id));
-                if (int2_component) zox_log(" i2 [%ix%i]", int2_component->value.x, int2_component->value.y)
+                if (int2_component) {
+                    zox_log(" i2 [%ix%i]", int2_component->value.x, int2_component->value.y)
+                }
             } else if (is_component_type_int(id)) {
                 const ID *int_component = ((const ID*) ecs_get_id(world, e, id));
-                if (int_component) zox_log(" i [%i]", int_component->value)
+                if (int_component) {
+                    zox_log(" i [%i]", int_component->value)
+                }
             } else if (is_component_type_float(id)) {
                 const Brightness *component_float = ((const Brightness*) ecs_get_id(world, e, id));
-                if (component_float) zox_log(" f [%f]", component_float->value)
+                if (component_float) {
+                    zox_log(" f [%f]", component_float->value);
+                }
             } else if (is_component_type_color(id)) {
-                const Color *component_ = ((const Color*) ecs_get_id(world, e, id));
-                if (component_) {
-                    zox_log(zox_component_string_color_rgb(component_));
+                const Color *c = ((const Color*) ecs_get_id(world, e, id));
+                if (c) {
+                    zox_log(" c [%i.%i.%i]", c->value.r, c->value.g, c->value.b);
                 }
             } else {
                 const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
                 //const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, target, id));
                 //if (byte_component) zox_log(" [uknown]")
-                if (zoxName) zox_log(" %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
+                if (zoxName) {
+                    zox_log(" %i: [%s]", zoxName->length, convert_zext_to_text(zoxName->value, zoxName->length))
+                }
                 // else zox_log(" [tag]")
             }
             /*const long int *value = ((const long int*) ecs_get_id(world, target, id));

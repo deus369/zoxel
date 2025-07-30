@@ -1,6 +1,8 @@
 #ifndef zox_editor_ui
 #define zox_editor_ui
 
+// todo: make basic structs just to read out generic component data
+
 // todo: add_entity_to_labels should be a macro that takes in Tag so I can filter it with zox_has before adding: try these - Element, Character, Camera, Position3D, Position2D,
 zox_declare_tag(EditorElement)
 zox_declare_tag(HierarchyUI)
