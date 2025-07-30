@@ -9,6 +9,7 @@
     #define zox_disable_logs
 #endif
 
+// Platforms
 #ifdef zox_windows
     #define max_args 64
     #define max_arg_len 256
@@ -16,10 +17,19 @@
     #include <windows.h>
     #include <shellapi.h>
 #endif
+#ifdef zox_web
+    #include <emscripten.h>
+#endif
+#ifdef zox_android
+    #include <android/log.h>
+    #include <android/asset_manager.h>
+    #include <android/asset_manager_jni.h>
+    #include <SDL2/SDL_system.h>
+    #include <sys/types.h>
+#endif
 
-// pre engine defines
+// Libraries
 #include "_.c" // defines our platform things too
-
 // core includes
 #include <signal.h>     // used for detecting cancel
 #include <stdlib.h>     // for malloc & free
@@ -49,12 +59,13 @@
     #include <stdarg.h>
 #endif
 
-// SDL2
-#include <SDL2/SDL.h>
+// SDL2 & OpenGL
 #define GL_GLEXT_PROTOTYPES
+#include <SDL2/SDL.h>
+#ifdef zox_windows
+    #include <GL/glew.h>
+#endif
 #include <SDL2/SDL_opengl.h>
-
-// SDL_Image
 #ifdef zox_sdl_images
     #include <SDL2/SDL_image.h>
 #endif
@@ -62,24 +73,6 @@
     #include <SDL2/SDL_vulkan.h>
     #include <vulkan/vulkan.h>
     #include <vulkan/vulkan_wayland.h>
-#endif
-
-// Platforms
-#ifdef zox_windows
-    #include <GL/glew.h>
-#endif
-
-#ifdef zox_web
-    #include <emscripten.h>
-#endif
-
-// android libs
-#ifdef zox_android
-    #include <android/log.h>
-    #include <android/asset_manager.h>
-    #include <android/asset_manager_jni.h>
-    #include <SDL2/SDL_system.h>
-    #include <sys/types.h>
 #endif
 
 // engine modules
@@ -283,6 +276,8 @@ int main(int argc, char* argv[]) {
     // load modules
     zox_import_module(Zox)
     zox_import_module(ZoxGame)
+    // terminal settings
+    run_hook_terminal_command(world, argv, argc);
     // settings and sdl initialization
     // starts sdl video
     if (initialize_sdl_video(world) == EXIT_FAILURE) {
@@ -293,15 +288,14 @@ int main(int argc, char* argv[]) {
     // spawn app (creates our opengl context too)
     ecs_entity_t app = !headless ? spawn_window_opengl_with_icon(world) : 0;
     // inits glew on windows
-    if (initialize_rendering(world, render_backend) == EXIT_FAILURE) {
+    initialize_rendering(world, render_backend);
+    if (zox_init_glew() == EXIT_FAILURE) {
         zox_log_error("[initialize_rendering] failed")
         dispose_zox(world);
         return EXIT_FAILURE;
     }
     initialize_sounds(world);                       // starts sdl mixer
     initialize_ecs_settings(world);                 // sets ecs threads etc
-    // terminal settings
-    run_hook_terminal_command(world, argv, argc);
     if (!headless && !app) {
         zox_log_error("[engine_spawn_window] failed")
         dispose_zox(world);

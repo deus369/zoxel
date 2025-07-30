@@ -6,7 +6,7 @@
 #include "data/_.c"
 #include "util/_.c"
 
-byte initialize_opengl(ecs_world_t *world) {
+byte zox_init_glew() {
 #ifdef zox_windows
     GLenum err = glewInit();
     if (err != GLEW_OK) {
@@ -14,6 +14,10 @@ byte initialize_opengl(ecs_world_t *world) {
         return EXIT_FAILURE;
     }
 #endif
+    return EXIT_SUCCESS;
+}
+
+void initialize_opengl(ecs_world_t *world) {
     check_frame_buffer();
     check_compute();
     // check_geometry();
@@ -22,7 +26,6 @@ byte initialize_opengl(ecs_world_t *world) {
         print_opengl();
     }
     zox_log("+++ ubo size: %i +++", zox_get_safe_ubo_size());
-    return EXIT_SUCCESS;
 }
 
 #endif

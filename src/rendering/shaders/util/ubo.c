@@ -1,6 +1,8 @@
 char* process_ubo_max_define(const char* source, int ubo_max) {
-    if (!source) return NULL;
-
+    if (!source) {
+        zox_log_error("[process_ubo_max_define] invalid source")
+        return NULL;
+    }
     const char* token = "zox_ubo_max";
     size_t token_len = strlen(token);
     char ubo_max_str[32];
@@ -19,8 +21,10 @@ char* process_ubo_max_define(const char* source, int ubo_max) {
 
     size_t new_len = strlen(source) + count * (strlen(ubo_max_str) - token_len) + 1;
     char* result = malloc(new_len);
-    if (!result) return NULL;
-
+    if (!result) {
+        zox_log_error("[process_ubo_max_define] invalid result, malloc failed")
+        return NULL;
+    }
     const char* src = source;
     char* dst = result;
     while ((p = strstr(src, token))) {

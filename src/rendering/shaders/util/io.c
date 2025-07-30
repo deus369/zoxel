@@ -1,22 +1,3 @@
-char* append_shader_version(
-    const char* source,
-    unsigned short version,
-    byte is_es)
-{
-    if (!source || version < 100 || version > 450) {
-        return NULL;
-    }
-    // Enough for "#version 450 es\n"
-    size_t length = strlen(source) + 32;
-    char* new_buffer = malloc(length);
-    if (!new_buffer) {
-        return NULL;
-    }
-    snprintf(new_buffer, 32, "#version %u%s\n", version, is_es ? " es" : "");
-    strcat(new_buffer, source);
-    return new_buffer;
-}
-
 static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
     const ecs_entity_t prefab,
     const char* path)
@@ -25,16 +6,27 @@ static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
     if (!source) {
         return 0;
     }
+    byte shader_include_es = is_shaders_es; // opengl_mode == zox_opengl_es;
+    int ubo_size = zox_get_safe_ubo_size();
+
+    // zox_log("+ shader processing with ver [%i] es [%s] ubo_size [%i]", shader_opengl_version, (shader_include_es ? "es" : ""), ubo_size);
+    // zox_log(" - source [%s]\n%s", path, source)
+    // zox_log("-------------------------------")
+
     // Example: #version 320 es
-    byte shader_include_es = opengl_mode == zox_opengl_es;
     char* versioned_source = append_shader_version(source, shader_opengl_version, shader_include_es);
     free(source);
 
-    char* processed_source = process_ubo_max_define(versioned_source, zox_get_safe_ubo_size());
+    if (!versioned_source) {
+        zox_log_error("[versioned_source] is invalid")
+        return 0;
+    }
+
+    char* processed_source = process_ubo_max_define(versioned_source, ubo_size);
     free(versioned_source);
 
-
     if (!processed_source) {
+        zox_log_error("[processed_source] is invalid")
         return 0;
     }
     if (is_log_shaders) {

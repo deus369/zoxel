@@ -76,7 +76,7 @@ byte sockets_enabled = 0;
             perror("    open_socket: bind");
             return -1;
         }
-        zox_log(" > success opening socket [%i] port [%i]\n", sock, port)
+        zox_log(" > success opening socket [%i] port [%i]", sock, port)
         return sock;
     }
 
@@ -110,7 +110,7 @@ byte peek_at_packet(int socket, struct sockaddr_in *recv_addr) {
         return 0;
     } else {
 #ifdef zox_testing_networking
-        zox_log(" > client packet recieved [%i]\n", recv_buffer[0])
+        zox_log(" > client packet recieved [%i]", recv_buffer[0])
         // zox_log("     - sender ip [%s]\n", ip4_to_string(*recv_addr));
 #endif
         return recv_buffer[0];

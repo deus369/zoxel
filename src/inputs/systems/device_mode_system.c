@@ -102,7 +102,6 @@ void DeviceModeSystem(ecs_iter_t *it) {
         if (deviceModeDirty->value == 0) {
             continue;
         }
-        zox_sys_e()
         // set player links here if dirty
         for (int j = 0; j < deviceLinks2->length; j++) {
             const ecs_entity_t device = deviceLinks2->value[j];

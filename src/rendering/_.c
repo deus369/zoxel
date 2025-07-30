@@ -22,7 +22,8 @@ byte initialize_rendering(ecs_world_t *world, byte render_backend) {
         return EXIT_SUCCESS;
     } else if (render_backend == zox_render_backend_opengl) {
         rendering_initialized = 1;
-        return initialize_opengl(world);
+        initialize_opengl(world);
+        return EXIT_SUCCESS;
     } else if (render_backend == zox_render_backend_vulkan) {
         rendering_initialized = 1;
         return initialize_vulkan(world); // SDL_WINDOW_VULKAN
