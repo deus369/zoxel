@@ -86,4 +86,4 @@
 
 // error no
 #define zox_log_errno(msg, ...) \
-    zox_log("%s: [%s] %s", msg, strerror(errno), ##__VA_ARGS__)
+    zox_log("%s: [%s]", msg, strerror(errno), ##__VA_ARGS__)

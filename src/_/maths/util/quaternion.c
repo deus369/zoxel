@@ -215,7 +215,7 @@ static inline float4 quaternion_from_axis_angle(float3 v, float a) {
 }
 
 // is there a way to do this with just quaternions without messing up the magnitude??
-static inline float4 get_delta_rotation(float4 quaternion, float magnitude, double delta_time) {
+static inline float4 get_delta_rotation(float4 quaternion, float magnitude) {
     //float4 normalized = quaternion_normalized(quaternion, magnitude);
     //return quaternion_from_axis_angle(magnitude * delta_time, normalized.x, normalized.y, normalized.z);
     float3 euler = quaternion_to_euler(quaternion);

@@ -3,7 +3,7 @@ void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indi
         return;
     }
     if (!zox_has(e, MeshIndicies)) {
-        zox_log_error("[%lu] has no MeshIndicies")
+        zox_log_error("[%lu] has no MeshIndicies", e);
         return;
     }
     MeshIndicies *meshIndicies = &((MeshIndicies) { 0, NULL });

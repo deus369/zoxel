@@ -178,30 +178,6 @@ void android_assets_init(AAssetManager *assetManager, char *path) {
     extract_android_assets(assetManager, path_input, path_output);
 }
 
-char** get_assets_dirs(AAssetManager* m, const char* path, int* count) {
-    AAsset* a = AAssetManager_open(m, path, AASSET_MODE_STREAMING);
-    if (!a) return NULL;
-    size_t sz = AAsset_getLength(a);
-    char* buf = malloc(sz + 1);
-    AAsset_read(a, buf, sz);
-    AAsset_close(a);
-    buf[sz] = 0;
-    char** arr = malloc(sizeof(char*) * 64); // max 64 dirs
-    int c=0; char* p=buf; char* l=buf;
-    while (1) {
-        if (*p == '\n' || *p == 0) {
-            *p=0;
-            if (*l) arr[c++]=strdup(l);
-            if (*p==0) break;
-            l=p+1;
-        }
-        p++;
-    }
-    *count=c;
-    free(buf);
-    return arr;
-}
-
 
 // todo: when building, we create a txt file with resource paths
 void decompress_android_resources(const char* resources_path) {
@@ -257,7 +233,7 @@ void decompress_android_resources(const char* resources_path) {
 
     if (dirs) {
         for (int i = 0; i < dir_len; i++) {
-            android_assets_init(manager, dirs[i], dirs[i]);
+            android_assets_init(manager, dirs[i]);
             free(dirs[i]); // free each strdup'd string after usage
         }
         free(dirs);

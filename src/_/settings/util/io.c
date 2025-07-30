@@ -54,7 +54,7 @@ void save_settings() {
             case zox_data_type_float:
                 fprintf(f, "%s:float:%f\n",s.name, s.value_float);
                 if (is_log_save_settings) {
-                    zox_log("+ saved float [%s] [%i]", s.name, s.value_float)
+                    zox_log("+ saved float [%s] [%f]", s.name, s.value_float)
                 }
                 break;
             case zox_data_type_string:

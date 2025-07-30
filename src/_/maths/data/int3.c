@@ -97,7 +97,7 @@ static inline int3 int3_reverse_left(const int3 input, const int3 size) {
     return (int3) { size.x - 1, input.y, input.z };
 }
 
-static inline int3 int3_reverse_right(const int3 input, const int3 size) {
+static inline int3 int3_reverse_right(const int3 input) {
     return (int3) { 0, input.y, input.z };
 }
 
@@ -105,7 +105,7 @@ static inline int3 int3_reverse_down(const int3 input, const int3 size) {
     return (int3) { input.x, size.y - 1, input.z };
 }
 
-static inline int3 int3_reverse_up(const int3 input, const int3 size) {
+static inline int3 int3_reverse_up(const int3 input) {
     return (int3) { input.x, 0, input.z };
 }
 
@@ -113,7 +113,7 @@ static inline int3 int3_reverse_back(const int3 input, const int3 size) {
     return (int3) { input.x, input.y, size.z - 1 };
 }
 
-static inline int3 int3_reverse_front(const int3 input, const int3 size) {
+static inline int3 int3_reverse_front(const int3 input) {
     return (int3) { input.x, input.y, 0 };
 }
 

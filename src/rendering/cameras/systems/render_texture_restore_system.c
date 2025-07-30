@@ -27,7 +27,7 @@ void RenderTextureRestoreSystem(ecs_iter_t *it) {
                 zox_log("   - texture [%i] linked to fbo [%i] and rbo [%i]", textureGPULink->value, fbo, rbo)
             }
         } else {
-            zox_log("! camera does not have frame buffer link: %i\n", cameraLink->value)
+            zox_log_error("camera does not have frame buffer link: %lu", cameraLink->value)
         }
     }
 } zox_declare_system(RenderTextureRestoreSystem)

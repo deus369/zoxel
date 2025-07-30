@@ -13,12 +13,12 @@ void PlotLineSystem(ecs_iter_t *it) {
         zox_sys_i(ChildIndex, childIndex)
         zox_sys_o(LineLocalPosition2D, lineLocalPosition2D)
         if (!parentLink->value || !zox_has(parentLink->value, PlotDataDouble)) {
-            zox_log(" > no PlotDataDouble found on parent\n")
+            zox_log_error("No PlotDataDouble found on parent");
             continue;
         }
         zox_geter(parentLink->value, PlotDataDouble, data)
         if (childIndex->value >= data->length) {
-            zox_log(" > index [%i] out of bounds for PlotLineSystem\n", childIndex->value, data->length)
+            zox_log_error("index [%i] out of bounds (len: %i)", childIndex->value, data->length);
             continue;
         }
         double this_time = data->value[childIndex->value];

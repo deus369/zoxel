@@ -58,7 +58,7 @@ static inline byte3 byte3_reverse_left(const byte3 input, const byte3 size) {
     return (byte3) { size.x - 1, input.y, input.z };
 }
 
-static inline byte3 byte3_reverse_right(const byte3 input, const byte3 size) {
+static inline byte3 byte3_reverse_right(const byte3 input) {
     return (byte3) { 0, input.y, input.z };
 }
 
@@ -66,7 +66,7 @@ static inline byte3 byte3_reverse_down(const byte3 input, const byte3 size) {
     return (byte3) { input.x, size.y - 1, input.z };
 }
 
-static inline byte3 byte3_reverse_up(const byte3 input, const byte3 size) {
+static inline byte3 byte3_reverse_up(const byte3 input) {
     return (byte3) { input.x, 0, input.z };
 }
 
@@ -74,12 +74,12 @@ static inline byte3 byte3_reverse_back(const byte3 input, const byte3 size) {
     return (byte3) { input.x, input.y, size.z - 1 };
 }
 
-static inline byte3 byte3_reverse_front(const byte3 input, const byte3 size) {
+static inline byte3 byte3_reverse_front(const byte3 input) {
     return (byte3) { input.x, input.y, 0 };
 }
 
 static inline byte byte3_in_bounds(const byte3 input, const byte3 size) {
-    return (input.x >= 0 && input.x < size.x && input.y >= 0 && input.y < size.y && input.z >= 0 && input.z < size.z);
+    return (input.x < size.x && input.y < size.y && input.z < size.z);
 }
 
 static inline byte byte3_on_edge(const byte3 pos, const byte3 size) {

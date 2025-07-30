@@ -41,29 +41,3 @@ void Omega3System(ecs_iter_t *it) {
 
     }
 } zox_declare_system(Omega3System)
-
-
-
-        /*if (float4_equals(omega-->value, quaternion_identity)) {
-            continue;
-        }
-        float magnitude = quaternion_magnitude(omega-->value);
-        if (magnitude) {
-            float4 delta_rotation = get_delta_rotation(omega-->value, magnitude, delta_time);
-            quaternion_rotate_quaternion_p(&rotation->value, delta_rotation);
-        }*/
-
-
-
-        // extract axis & full angle
-        /*float angle = 2.0f * acosf(omega->value.w);
-        float s     = sqrtf(1.0f - omega->value.w * omega->value.w);
-        float3 axis = (s < 1e-6f)
-        ? (float3){1,0,0}             // degenerate: pick X
-        : float3_scale((float3){omega->value.x, omega->value.y, omega->value.z}, 1.0f / s);
-
-        // scale rotation to this frame
-        float frameAngle = angle * delta_time;
-        float4 deltaQ = quaternion_from_axis_angle(axis, frameAngle);
-
-        quaternion_rotate_quaternion_p(&rotation->value, deltaQ);*/

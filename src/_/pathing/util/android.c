@@ -26,7 +26,7 @@ char* get_terminal_path_with_raw() {
 }
 
 byte initialize_pathing_android() {
-    char* base_path = SDL_AndroidGetInternalStoragePath();
+    const char* base_path = SDL_AndroidGetInternalStoragePath();
     if (!base_path) {
         zox_log_error("[pathing_android] failed to get base_path")
         return EXIT_FAILURE;

@@ -31,7 +31,7 @@ static inline byte get_dynamic_lod_from_distance(
             return i;
         }
     }
-    zox_log_error(" fallback lod finder: dist [%i] range [%i-%i] depth [%i] slice [%f]", distance, nearf, farf, depth, slice)
+    zox_log_error(" fallback lod finder: dist [%i] range [%i-%i] depth [%i] slice [%i]", distance, nearf, farf, depth, slice)
     // fallback (shouldn’t hit, but safe)
     return render_lod_invisible;
 }
