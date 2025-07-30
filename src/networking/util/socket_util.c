@@ -86,14 +86,18 @@ int check_socket_error(char *debug) {
     // Handle errors on Windows
     int error_code = WSAGetLastError();
     if (error_code != WSAEWOULDBLOCK) {
-        zox_log(" ! [%s] error_code %d\n", debug, error_code)
+        if (zox_log_network_errors) {
+            zox_log_error("[%s] error_code %d", debug, error_code);
+        }
     }
     return error_code;
 #else
     // Handle errors on Unix-like systems
     if (!(errno == EAGAIN || errno == EWOULDBLOCK)) {
-        perror("    check_socket_error: recvfrom");
-        zox_log(" ! [%s]\n", debug)
+        if (zox_log_network_errors) {
+            perror("    check_socket_error: recvfrom");
+            zox_log_error("[%s]", debug)
+        }
     }
     return errno;
 #endif

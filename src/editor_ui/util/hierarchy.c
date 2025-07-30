@@ -121,7 +121,9 @@ void zox_print_entity(ecs_world_t *world, ecs_entity_t e) {
                 if (component_float) zox_log(" f [%f]", component_float->value)
             } else if (is_component_type_color(id)) {
                 const Color *component_ = ((const Color*) ecs_get_id(world, e, id));
-                if (component_) zox_log("%s", zox_component_string_color_rgb(component_))
+                if (component_) {
+                    zox_log(zox_component_string_color_rgb(component_));
+                }
             } else {
                 const ZoxName *zoxName = ((const ZoxName*) ecs_get_id(world, e, id));
                 //const EntityDirty *byte_component = ((const EntityDirty*) ecs_get_id(world, target, id));

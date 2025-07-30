@@ -7,6 +7,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
     const ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!model) {
         zox_log_error("[tall_cube] not found on player")
+        return 0;
     }
     const ecs_entity_t camera = zox_get_value(player, CameraLink)
     if (!camera) {

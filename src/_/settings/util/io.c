@@ -106,7 +106,7 @@ void load_files_settings(ecs_world_t* world) {
             float v = strtof(val, NULL);
             zoxs_set_float(world, name, v);
             if (is_log_load_settings) {
-                zox_log("- loaded float [%s] [%i]", name, v)
+                zox_log("- loaded float [%s] [%f]", name, v)
             }
         } else if (strcmp(type, "string") == 0) {
             zoxs_set_string(world, name, val);

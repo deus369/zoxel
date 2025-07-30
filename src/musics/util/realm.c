@@ -1,11 +1,11 @@
 void spawn_realm_playlist(ecs_world_t *world, const ecs_entity_t realm) {
     if (!realm) {
-        zox_log_error("! realm is null.")
+        zox_log_error("realm invalid")
         return;
     }
     // add them to realm
     if (!zox_has(realm, PlaylistLinks)) {
-        zox_log_error("! realm [%lu] has no PlaylistLinks")
+        zox_log_error("realm [%lu] has no PlaylistLinks", realm);
         return;
     }
     // zox_get_muter(realm, PlaylistLinks, playlistLinks)

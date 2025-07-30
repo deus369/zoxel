@@ -4,6 +4,7 @@
 #include "__.c"
 
 // #define zox_testing_networking
+byte zox_log_network_errors = 0;
 #include "settings/_.c"
 #include "settings/packet_types.c"
 zox_declare_tag(Packet)
