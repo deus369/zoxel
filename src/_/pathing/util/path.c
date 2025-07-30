@@ -42,23 +42,10 @@ char* clone_str(const char* text) {
     return new_text;
 }
 
-char* get_base_path() {
+
+char* get_base_path_native() {
     char path[PATH_SIZE];
     char *base = NULL;
-#ifdef zox_windows
-    /* Get the full path to the executable */
-    DWORD len = GetModuleFileNameA(NULL, path, sizeof(path));
-    if (len == 0 || len == sizeof(path)) {
-        return NULL;
-    }
-    /* Find the last backslash and terminate the string just after it */
-    char *last_backslash = strrchr(path, character_slash);
-    if (!last_backslash) {
-        return NULL;
-    }
-    *(last_backslash + 1) = '\0';
-    base = _strdup(path);  /* use strdup (or _strdup on Windows) */
-#else
     /* Linux and other Unix-like systems: use /proc/self/exe */
     ssize_t n = readlink("/proc/self/exe", path, sizeof(path) - 1);
     if (n == -1) {
@@ -72,12 +59,15 @@ char* get_base_path() {
     }
     *(last_slash + 1) = '\0';
     base = strdup(path);
-#endif
     return base;
 }
 
 char* initialize_base_path() {
-    char* base_path = get_base_path();
+#ifdef zox_windows
+    char* base_path = get_base_path_windows();
+#else
+    char* base_path = get_base_path_native();
+#endif
 #ifdef zoxel_debug_base_path
     debug_base_path(base_path);
 #endif
@@ -140,7 +130,7 @@ char* find_resources_path(char* base_path, const char* resources) {
 byte initialize_pathing_native() {
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
-        zox_log("! failed to get base_path\n")
+        zox_log_error("failed at [initialize_base_path] character_slash [%c]", character_slash)
         return EXIT_FAILURE;
     }
     data_path = base_path;

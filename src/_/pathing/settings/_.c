@@ -1,15 +1,15 @@
 #define zox_log_android_io
 
-#define resources_dir_name "res"
-#define resources_folder_name resources_dir_name character_slash
-
-#if defined(zox_windows) // && !defined(_WINE)
+#ifdef zox_windows
     #define character_slash "\\"
     #define char_slash '\\'
 #else
     #define character_slash "/"
     #define char_slash '/'
 #endif
+
+#define resources_dir_name "res"
+#define resources_folder_name resources_dir_name character_slash
 
 #ifdef _WIN32
     #define PATH_SIZE MAX_PATH
