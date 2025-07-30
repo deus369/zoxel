@@ -1,7 +1,7 @@
-#ifdef zox_lib_sdl_images
+#ifdef zox_sdl_images
 
 SDL_Surface* load_png_as_surface(const char *filepath) {
-#ifndef zox_lib_sdl_images
+#ifndef zox_sdl_images
     return NULL;
 #else
     return (SDL_Surface*) IMG_Load(filepath);

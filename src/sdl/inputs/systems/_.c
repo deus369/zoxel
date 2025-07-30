@@ -4,7 +4,7 @@
 #include "mouse_constrain_system.c"
 
 void define_systems_sdl_inputs(ecs_world_t* world) {
-#ifdef zox_lib_sdl
+#ifdef zox_sdl
     zox_system_1(GamepadExtractSystem, zox_extract_pipeline,
         [in] hierarchys.Children,
         [in] SDLGamepad,

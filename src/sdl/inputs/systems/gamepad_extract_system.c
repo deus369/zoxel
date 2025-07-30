@@ -1,4 +1,4 @@
-#ifdef zox_lib_sdl
+#ifdef zox_sdl
 void GamepadExtractSystem(ecs_iter_t *it) {
     zox_sys_world()
     zox_sys_begin()

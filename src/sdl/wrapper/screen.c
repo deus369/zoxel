@@ -1,5 +1,5 @@
 int2 get_screen_size() {
-#ifdef zoxel_on_web
+#ifdef zox_web
     return get_webasm_screen_size();
 #else
     return get_screen_size_monitor(monitor);

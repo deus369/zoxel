@@ -58,7 +58,7 @@ void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
             #endif
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
-        #ifdef zox_include_vulkan
+        #ifdef zox_vulkan
         // else { set vulkan viewport; }
         #endif
         if (!is_camera2D) {

@@ -1,4 +1,4 @@
-#ifdef zoxel_on_web
+#ifdef zox_web
 // todo: move this to apps / viewports
 
 // #define debug_ui_scaling

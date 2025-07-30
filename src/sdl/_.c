@@ -1,28 +1,6 @@
 #ifndef zox_mod_sdl
 #define zox_mod_sdl
 
-// SDL2
-#include <SDL2/SDL.h>
-
-// SDL_Image
-#ifdef zox_lib_sdl_images
-    #include <SDL2/SDL_image.h>
-#endif
-
-#ifdef zox_include_vulkan
-    #include <SDL2/SDL_vulkan.h>
-    #include <vulkan/vulkan.h>
-    #include <vulkan/vulkan_wayland.h>
-#endif
-
-// Platforms
-#ifdef zox_windows
-    #include <glew.h>
-#endif
-#ifdef zoxel_on_web
-    #include <emscripten.h>
-#endif
-
 #include "components/_.c"
 #include "data/_.c"
 #include "wrapper/_.c"

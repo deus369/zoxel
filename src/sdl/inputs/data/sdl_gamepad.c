@@ -1,4 +1,4 @@
-#ifdef zox_lib_sdl
+#ifdef zox_sdl
 zox_component(SDLGamepad, SDL_Joystick*)
 
 void free_sdl_gamepad(SDLGamepad *ptr) {

@@ -4,7 +4,7 @@ const float begin_rotate_power = 0.46; // 0.62
 
 void FreeCameraRotateSystem(ecs_iter_t *it) {
     double rotate_power = begin_rotate_power * zox_delta_time * degreesToRadians * 32.0;
-#ifdef zoxel_on_web
+#ifdef zox_web
     rotate_power *= 10.0;
 #endif
     zox_sys_world()

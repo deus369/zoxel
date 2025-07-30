@@ -7,7 +7,7 @@ int initialize_sdl_video(ecs_world_t *world) {
     if (is_log_sdl) {
         print_sdl();
     }
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
     if (!load_vulkan_library()) {
         return EXIT_FAILURE;
     }

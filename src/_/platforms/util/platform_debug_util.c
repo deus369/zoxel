@@ -11,7 +11,7 @@ void debug_platform() {
     zox_log(" > platform [android]\n")
 #elif defined(zox_windows)
     zox_log(" > platform [windows]\n")
-#elif defined(zoxel_on_web)
+#elif defined(zox_web)
     zox_log(" > platform [web]\n")
 #elif defined(zox_linux)
     zox_log(" > platform [linux]\n")

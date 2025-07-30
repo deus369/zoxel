@@ -4,7 +4,7 @@ int joystick_axes;
 int last_axis_index;
 int last_clicked_index = 0;
 
-#ifdef zox_lib_sdl
+#ifdef zox_sdl
 
 float get_gamepad_axis(SDL_Joystick *joystick, const int index) {
     if (index < 0 || index > 10) return 0; // deadzone limits

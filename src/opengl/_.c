@@ -3,8 +3,6 @@
 #define zoxel_opengl
 
 // byte shader_include_es = 1;
-#define GL_GLEXT_PROTOTYPES
-#include <SDL2/SDL_opengl.h>
 #include "data/_.c"
 #include "util/_.c"
 

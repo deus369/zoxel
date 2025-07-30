@@ -1,6 +1,6 @@
 #if defined(__EMSCRIPTEN__)
 
-    #define zoxel_on_web
+    #define zox_web
 
     // custom defines for web
     #define zox_disable_module_networking

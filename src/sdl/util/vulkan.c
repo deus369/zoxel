@@ -1,5 +1,5 @@
 // sdl - vulkan load stuff
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
 
 // #define zox_debug_vulkan_core
 // make VULKAN=1 && make run-vulkan

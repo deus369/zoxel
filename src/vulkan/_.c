@@ -3,12 +3,12 @@
 
 // #include "vulkan/vulkan.c"
 #include "util/vulkan_check.c"
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
     #include "util/vulkan_setup.c"
 #endif
 
 void dispose_vulkan(ecs_world_t *world) {
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
     dispose_vulkan_globals();
 #endif
 }

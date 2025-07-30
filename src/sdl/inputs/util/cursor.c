@@ -19,7 +19,7 @@ extern color float4_to_color(const float4 input);
 
 // Function to create a cursor from an SDL texture
 SDL_Cursor* create_sdl_cursor(const char* path, const int2 hotspot) {
-#ifndef zox_lib_sdl_images
+#ifndef zox_sdl_images
     return NULL;
 #else
     // SDL_Surface* surface = IMG_Load(path);

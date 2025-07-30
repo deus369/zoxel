@@ -1,6 +1,6 @@
 // this is our sdl mixer wrapper!
 // todo: move to sdl module
-#ifdef zox_lib_sdl_mixer
+#ifdef zox_sdl_mixer
 #include <SDL2/SDL_mixer.h>
 
 byte initialize_sdl_mixer(ulong sample_rate, byte channels_count) {

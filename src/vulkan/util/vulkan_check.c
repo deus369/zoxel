@@ -1,4 +1,4 @@
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
 
 #include <vulkan/vulkan.h>
 
@@ -27,7 +27,7 @@ byte is_vulkan_supported() {
 
 
 /*byte vulkan_supported() {
-    #ifdef zox_include_vulkan
+    #ifdef zox_vulkan
         uint extensionCount = 0;
         vkEnumerateInstanceExtensionProperties(NULL, &extensionCount, NULL);
         VkExtensionProperties* extensions = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * extensionCount);

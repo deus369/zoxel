@@ -58,7 +58,7 @@ zox_begin_module(Core)
         return;
     } else {
         set_noise_seed(get_unique_time_seed());
-#if zoxel_on_web
+#if zox_web
         add_to_update_loop(update_web_canvas);
 #endif
     }

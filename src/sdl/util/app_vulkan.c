@@ -3,7 +3,7 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world,
     const byte fullscreen,
     const char *name)
 {
-#ifdef zox_include_vulkan
+#ifdef zox_vulkan
     if (fullscreen) {
         size = screen_dimensions;
     }

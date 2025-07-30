@@ -12,8 +12,8 @@ SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
 CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
 CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 -Dzox_debug
-LDFLAGS 	:= -lm -lpthread -lflecs -lSDL2 -lSDL2_image -lSDL2_mixer -lGL
-LDFLAGS 	+= -Dzox_lib_sdl -Dzox_lib_sdl_mixer -Dzox_lib_sdl_images -Dzox_game=$(GAME)
+LDFLAGS 	:= -lflecs -lm -lpthread -lGL -lSDL2 -lSDL2_image -lSDL2_mixer
+LDFLAGS 	+= -Dzox_sdl -Dzox_sdl_mixer -Dzox_sdl_images -Dzox_game=$(GAME)
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
 

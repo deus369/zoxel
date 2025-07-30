@@ -17,7 +17,7 @@ void load_files_sounds(ecs_world_t *world) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         zox_log_io("   - [%i] [sound] [%s]", i, filepath)
-        #ifdef zox_lib_sdl_mixer
+        #ifdef zox_sdl_mixer
         Mix_Chunk *mix_chunk = Mix_LoadWAV(filepath);
         if (!mix_chunk) {
             zox_log_error("sound file failed to load [%s] due to [%s]", filepath, Mix_GetError())

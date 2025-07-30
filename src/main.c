@@ -48,6 +48,31 @@
 #ifndef zox_disable_logs
     #include <stdarg.h>
 #endif
+
+// SDL2
+#include <SDL2/SDL.h>
+#define GL_GLEXT_PROTOTYPES
+#include <SDL2/SDL_opengl.h>
+
+// SDL_Image
+#ifdef zox_sdl_images
+    #include <SDL2/SDL_image.h>
+#endif
+#ifdef zox_vulkan
+    #include <SDL2/SDL_vulkan.h>
+    #include <vulkan/vulkan.h>
+    #include <vulkan/vulkan_wayland.h>
+#endif
+
+// Platforms
+#ifdef zox_windows
+    #include <GL/glew.h>
+#endif
+
+#ifdef zox_web
+    #include <emscripten.h>
+#endif
+
 // android libs
 #ifdef zox_android
     #include <android/log.h>
