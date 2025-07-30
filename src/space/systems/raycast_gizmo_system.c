@@ -115,7 +115,7 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
             zox_log_error("camera attached has no character link")
             continue;
         }
-        zox_geter_value(cameraLink->value, CharacterLink, const ecs_entity_t, e2)
+        zox_geter_value(cameraLink->value, CharacterLink, ecs_entity_t, e2)
         ecs_entity_t caster = e2 == e ? e : 0;
         byte ray_hit = raycast_terrain_gizmo(world,
             caster,

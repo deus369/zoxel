@@ -36,12 +36,12 @@ void attach_camera_to_character(ecs_world_t *world,
 }
 
 void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {
-    zox_geter_value(e, GameLink, const ecs_entity_t, game)
-    zox_geter_value(game, GameState, const byte, game_state)
+    zox_geter_value(e, GameLink, ecs_entity_t, game)
+    zox_geter_value(game, GameState, byte, game_state)
     if (game_state == zox_game_playing) {
         const ecs_entity_t camera = zox_get_value(e, CameraLink)
         const ecs_entity_t character = zox_get_value(e, CharacterLink)
-        zox_geter_value(camera, CanRoam, const byte, is_camera_free)
+        zox_geter_value(camera, CanRoam, byte, is_camera_free)
         if (is_camera_free) {
             zox_set(e, PlayerState, { zox_player_state_playing })
             attach_camera_to_character(world, e, camera, character);

@@ -2,7 +2,7 @@ void set_camera_free(ecs_world_t *world,
     const ecs_entity_t camera,
     const byte is_free)
 {
-    zox_geter_value(camera, Rotation3D, const float4, camera_rotation3D)
+    zox_geter_value(camera, Rotation3D, float4, camera_rotation3D)
     const float3 euler = quaternion_to_euler(camera_rotation3D);
     zox_remove(camera, FirstPersonCamera)
     zox_add_tag(camera, EulerOverride)

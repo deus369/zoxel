@@ -34,7 +34,7 @@ void taskbar_set_icons(ecs_world_t *world, const ecs_entity_t canvas, const ecs_
 void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event) {
     const byte index = zox_get_value(event->clicked, IconIndex)
     if (index >= hook_taskbars->size) {
-        zox_log("! taskbar button index [%i] out of bounds [%i]\n", index, hook_taskbars->size)
+        zox_log_error("taskbar button index [%i] out of bounds [%zu]", index, hook_taskbars->size)
         return;
     }
     hook_taskbar hook = hook_taskbars->data[index];

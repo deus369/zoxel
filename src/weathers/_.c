@@ -16,7 +16,7 @@ void spawn_shaders_weather(ecs_world_t *world) {
     shader_skybox = spawn_shader_skybox(world);
 }
 
-void on_boot_weathers(ecs_world_t* world, ecs_entity_t) {
+void on_boot_weathers(ecs_world_t* world, ecs_entity_t app) {
     spawn_weather(world);
 }
 

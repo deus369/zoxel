@@ -138,7 +138,7 @@ void extract_android_assets_init(AAssetManager *assetManager, char *path) {
     char path_output[1024];
     snprintf(path_input, 1024, "%s%s", resources_folder_name, path);
     snprintf(path_output, 1024, "%s%s", resources_path, path);
-    copy_resources_directory(assetManager, path_input, path_output);
+    extract_android_assets(assetManager, path_input, path_output);
 }
 
 // todo: when building, we create a txt file with resource paths
