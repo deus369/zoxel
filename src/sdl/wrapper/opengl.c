@@ -4,16 +4,16 @@ void set_sdl_attributes() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, sdl_gl_major);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, sdl_gl_minor);
     if (is_log_sdl) {
-        zox_log("+++ SDL OpenGL Version [%i.%i] +++", sdl_gl_major, sdl_gl_minor)
+        zox_log_info("+++ SDL OpenGL Version [%i.%i] +++", sdl_gl_major, sdl_gl_minor)
     }
     if (opengl_mode == zox_opengl_es) {
-        zox_log("> running with opengl es!")
+        zox_log_info("Running with OpenGL ES")
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     } else if (opengl_mode == zox_opengl_core) {
-        zox_log("> running with opengl core!")
+        zox_log_info("Running with OpenGL Core")
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     } else {
-        zox_log("> running with opengl compatibility")
+        zox_log_info("Running with OpenGL Compatibility")
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     }
 }

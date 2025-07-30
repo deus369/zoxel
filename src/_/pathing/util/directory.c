@@ -181,7 +181,9 @@ void list_files(const char *directory) {
     zox_log(" + directory opened [%s]\n", directory)
     while ((entry = readdir(dp)) != NULL) {
         // Skipping '.' and '..' entries
-        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) continue;
+        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
+            continue;
+        }
         // Printing the file name
         // printf("%s\n", entry->d_name);
         zox_log("   + file [%s]\n", entry->d_name)

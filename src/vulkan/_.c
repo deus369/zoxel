@@ -20,8 +20,11 @@ byte initialize_vulkan(ecs_world_t *world) {
 
 byte check_vulkan_suppport() {
     const byte vulkan_supported = is_vulkan_supported();
-    if (vulkan_supported) zox_log(" > vulkan is supported\n")
-    else zox_log(" ! vulkan not supported\n")
+    if (vulkan_supported) {
+        zox_log(" > vulkan is supported");
+    } else {
+        zox_log(" ! vulkan not supported\n");
+    }
     return vulkan_supported;
 }
 

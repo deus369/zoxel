@@ -35,18 +35,32 @@
 
 #endif
 
+#define zox_logv(msg, ...) \
+    if (zox_verbose) zox_log_("⚡️ "msg"\n", ##__VA_ARGS__);
 
 #define zox_log(msg, ...) \
-    zox_log_("> "msg"\n", ##__VA_ARGS__)
+    zox_log_("> "msg"\n", ##__VA_ARGS__);
 
 #define zox_log_error(msg, ...) \
-    zox_log_("! "msg"\n", ##__VA_ARGS__)
+    zox_log_("❌ "msg"\n", ##__VA_ARGS__);
 
 #define zox_log_warning(msg, ...) \
-    zox_log_("@ "msg"\n", ##__VA_ARGS__)
+    zox_log_("⚠️ "msg"\n", ##__VA_ARGS__);
 
 #define zox_log_io(msg, ...) \
-    if (is_log_io) zox_log(msg, ##__VA_ARGS__)
+    if (is_log_io) zox_log(msg, ##__VA_ARGS__);
+
+#define zox_log_info(msg, ...) \
+    zox_log_("ℹ️ " msg "\n", ##__VA_ARGS__)
+
+#define zox_log_debug(msg, ...) \
+    if (zox_verbose) zox_log_("🐞 DEBUG: " msg "\n", ##__VA_ARGS__)
+
+#define zox_log_success(msg, ...) \
+    zox_log_("✅ " msg "\n", ##__VA_ARGS__)
+
+#define zox_log_critical(msg, ...) \
+    zox_log_("🔥 CRITICAL: " msg "\n", ##__VA_ARGS__)
 
 
 // inputs
