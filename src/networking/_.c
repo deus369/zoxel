@@ -29,16 +29,16 @@ zox_memory_component(PacketData, byte)
 #include "systems/packet_recieve_system.c"
 
 void spawn_prefabs_networking(ecs_world_t *world) {
-#ifdef zox_windows
-    initialize_windows_sockets();
-#else
-    sockets_enabled = 1;
-#endif
     spawn_prefab_net_room(world);
     spawn_prefab_net_player(world);
 }
 
 void initialize_networking(ecs_world_t* world) {
+#ifdef zox_windows
+    initialize_windows_sockets();
+#else
+    sockets_enabled = 1;
+#endif
     if (server_mode) {
         spawn_net_room(world, SERVER_PORT);
     } else {

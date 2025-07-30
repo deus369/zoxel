@@ -1,9 +1,9 @@
 // #define zox_print_files
 
 void load_vox_file(const char* filename, vox_file *vox) {
-#ifdef zox_disable_io
+    #ifdef zox_disable_io
     return;
-#endif
+    #endif
     vox->chunks = NULL;
     read_vox(filename, vox);
 }
@@ -16,11 +16,11 @@ void load_files_voxes(ecs_world_t *world) {
     files_voxes_count = files.count;
     files_voxes = malloc(sizeof(ecs_entity_t) * files_voxes_count);
     files_hashmap_voxes = create_string_hashmap(files_voxes_count);
-    zox_log_io(" + io loaded [voxes] [%i]", files.count)
+    zox_logv("      + Count [%i]", files.count);
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
-        zox_log_io("   - [%i] [vox] [%s]", i, filepath)
+        zox_logv("   - [%i] [vox] [%s]", i, filepath);
         vox_file data;
         load_vox_file(filepath, &data);
         if (data.chunks) {

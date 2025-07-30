@@ -127,7 +127,7 @@ void traverse_directory(
         }
         char *name = entry->d_name;
         char path[1024];
-        snprintf(path, sizeof(path), "%s/%s", directory, name);
+        snprintf(path, sizeof(path), "%s"character_slash"%s", directory, name);
         if (stat(path, &statbuf) == -1) {
             perror("Unable to stat file");
             continue;

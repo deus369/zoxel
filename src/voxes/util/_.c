@@ -1,7 +1,5 @@
-#include "vox_read.c"
 #include "vox.c"
 #include "outlines.c"
-#include "vox_files.c"
 #include "io.c"
 #include "voronoi3D.c"
 #include "spawned_block_vox.c"

@@ -57,12 +57,12 @@ static inline int int3_array_index(const int3 input, const int3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
-static inline byte int3_to_node_index(const int3 position) {
-    return position.x * 4 + position.y * 2 + position.z;
+static inline int int3_array_index2(int3 position, int3 size) {
+    return position.z * size.x * size.y + position.y * size.x + position.x;
 }
 
-static inline int int3_array_index2(const int3 input, const int3 size) {
-    return input.z + size.z * (input.y + size.y * input.x);
+static inline byte int3_to_node_index(const int3 position) {
+    return position.x * 4 + position.y * 2 + position.z;
 }
 
 static inline int int3_array_size(const int3 size) {

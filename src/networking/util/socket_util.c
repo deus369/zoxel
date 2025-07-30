@@ -26,14 +26,16 @@ byte sockets_enabled = 0;
     const unsigned long f_setfl = 4; // F_SETFL
 
     void initialize_windows_sockets() {
-        if (sockets_enabled) return;
+        if (sockets_enabled) {
+            return;
+        }
         WSADATA wsaData;
         if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
             int error_code = WSAGetLastError();
             zox_log("    open_socket: WSAStartup failed with error code %d\n", error_code)
         } else {
             sockets_enabled = 1;
-            zox_log(" + enabled windows sockets\n")
+            zox_log(" + enabled windows sockets")
         }
     }
 

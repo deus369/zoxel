@@ -1,5 +1,4 @@
 int total_memorys_allocated = 0;
-const byte memory_component_safety_locks = 1;
 
 #define zox_memory_component(name, type)\
     zox_memory_component_logging(name, type, 0)

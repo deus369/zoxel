@@ -5,7 +5,7 @@ byte get_cpu_count() {
 #elif zox_windows
     SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
-    return (byte) sysinfo.dwNumberOfProcessors;
+    return (sysinfo.dwNumberOfProcessors > 255) ? 255 : (byte) sysinfo.dwNumberOfProcessors;
 #elif defined(_SC_NPROCESSORS_ONLN)
     long nprocs = sysconf(_SC_NPROCESSORS_ONLN);
     return (nprocs < 1 ? 1 : (byte) nprocs);

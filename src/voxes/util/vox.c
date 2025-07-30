@@ -1,5 +1,3 @@
-
-
 // todo: make this a update function so it does one node at a time! load per entity per depth level to slow it down
 void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, byte max_depth) {
     if (!source) return;

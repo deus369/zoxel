@@ -38,6 +38,7 @@ void process_arguments_core(ecs_world_t *world, char* args[], int count) {
 
 // sets up resources path per platform - during preload stage
 byte initialize_pathing() {
+    zox_logv("Threads Support? %s", supports_threads() ? "YES" : "NO");
     zox_logv("Begin Pathing")
     byte pathing_success = EXIT_FAILURE;
 #ifdef zox_android

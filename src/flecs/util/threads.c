@@ -1,8 +1,9 @@
 void initialize_threads(ecs_world_t* world) {
+    zox_logv("Setting Threads [%i]", use_cores);
     if (use_cores > 1 && is_multithreading) {
         ecs_set_threads(world, use_cores);
     } else {
-        zox_log("# warning, single threads set")
+        zox_log("# warning, single threads set");
         ecs_set_threads(world, 0);
     }
 }

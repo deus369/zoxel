@@ -3,3 +3,4 @@ dist
 include
 lib
 *.o
+CMakeLists.txt
