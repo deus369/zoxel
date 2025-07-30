@@ -21,12 +21,30 @@ void delete_directory_recursive(const char* path) {
 
 byte create_directory(const char* path) {
     if (mkdir(path, 0777) != 0) {
-        zox_log(" !!! directory failed to create [%s]\n", path)
+        zox_log_error("directory failed to create [%s]", path)
         return 0;
     } else {
         return 1;   // success
     }
 }
+
+byte android_create_directory_r(const char* path) {
+    if (directory_exists(path)) {
+        return 1;
+    }
+    char parent[1024];
+    strcpy(parent, path);
+    // remove last directory component from parent
+    char* last_slash = strrchr(parent, '/');
+    if (last_slash) {
+        *last_slash = 0;
+        if (!android_create_directory_r(parent)) {
+            return 0;
+        }
+    }
+    return mkdir(path, 0777) == 0 || errno == EEXIST;
+}
+
 
 AAssetManager* get_asset_manager() {
     JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
@@ -83,7 +101,7 @@ void extract_android_assets(
     const char* source_path,
     const char* destination_path)
 {
-    zox_logv("📦 decompressing directory from [%s] -> [%s]", source_path, destination_path)
+    zox_logv("📦 Decompressing [%s] -> [%s]", source_path, destination_path)
 
     AAssetDir* asset_dir = AAssetManager_openDir(asset_manager, source_path);
     if (!asset_dir) {
@@ -91,8 +109,8 @@ void extract_android_assets(
         return;
     }
 
-    if (!create_directory(destination_path)) {
-        zox_log_error("failed creating directory [%s]", destination_path)
+    if (!android_create_directory_r(destination_path)) {
+        zox_log_error("Failed Destination Directory [%s]", destination_path)
         return;
     }
 
@@ -147,18 +165,21 @@ void decompress_android_resources(const char* resources_path) {
         zox_log_error("resources_path is null.")
         return;
     }
-    zox_log("decompressing into [%s]", resources_path)
+    zox_logv("Initial Decompression at [%s]", resources_path);
     AAssetManager *manager = get_asset_manager();
     if (!manager) {
-        zox_log_error("android asset manager null")
+        zox_log_error("Android AssetManager Null")
         return;
     }
+    zox_logv("Deleting old Resources [%s]", resources_path);
     delete_directory_recursive(resources_path);
-    if (!create_directory(resources_path)) {
+
+    zox_logv("Creating Export Path [%s]", resources_path);
+    if (!android_create_directory_r(resources_path)) {
         zox_log_error("could not create directory: %s", resources_path)
         return;
     }
-    zox_logv("created new directory [%s]", resources_path);
+    zox_logv("Created new directory [%s]", resources_path);
     extract_android_assets_init(manager, "");
     // now copy all our data out
     /*for (int i = 0; i < resource_directories_length; i++) {

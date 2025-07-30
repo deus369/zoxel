@@ -1,10 +1,10 @@
 #ifdef zox_android
 
-char* android_base_path() {
+/*char* android_base_path() {
     char* base_path = clone_str(SDL_AndroidGetInternalStoragePath());
     // __android_log_print(ANDROID_LOG_VERBOSE, "Zoxel", "base_path [%s]", base_path);
     return base_path;
-}
+}*/
 
 char* get_terminal_path_with_raw() {
     char* cwd = getcwd(NULL, 0);  // malloc'd by glibc
@@ -26,14 +26,13 @@ char* get_terminal_path_with_raw() {
 }
 
 byte initialize_pathing_android() {
-    // raw_path = get_terminal_path_with_raw();
-    char* base_path = android_base_path();
+    char* base_path = SDL_AndroidGetInternalStoragePath();
     if (!base_path) {
         zox_log_error("[pathing_android] failed to get base_path")
         return EXIT_FAILURE;
     }
-    data_path = base_path;
-    zox_log_io("> io base_path [%s]", base_path)
+    zox_logv("Android Base Path [%s]", base_path);
+    data_path = clone_str(base_path);
     DIR* dir = opendir(base_path);
     if (dir) {
         resources_path = malloc(strlen(base_path) + strlen("/"resources_dir_name"/") + 1);
