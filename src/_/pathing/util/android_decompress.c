@@ -129,18 +129,17 @@ void extract_android_assets(
     const char* filename = NULL;
     while ((filename = AAssetDir_getNextFileName(asset_dir)) != NULL) {
 
+        // sanity checks for our slashes
         char nested_source_path[1024];
         char nested_dest_path[1024];
-        // snprintf(nested_source_path, sizeof(nested_source_path), "%s/%s", source_path, filename);
-        // snprintf(nested_dest_path, sizeof(nested_dest_path), "%s/%s", destination_path, filename);
         snprintf(nested_source_path, sizeof(nested_source_path), "%s%s%s",
-                 source_path,
-                 (source_path[strlen(source_path) - 1] == '/') ? "" : "/",
-                 filename);
+            source_path,
+            (source_path[strlen(source_path) - 1] == '/') ? "" : "/",
+            filename);
         snprintf(nested_dest_path, sizeof(nested_dest_path), "%s%s%s",
-                 destination_path,
-                 (destination_path[strlen(destination_path) - 1] == '/') ? "" : "/",
-                 filename);
+            destination_path,
+            (destination_path[strlen(destination_path) - 1] == '/') ? "" : "/",
+            filename);
 
 
         AAsset* asset = AAssetManager_open(
@@ -153,7 +152,7 @@ void extract_android_assets(
             size_t size = AAsset_getLength(asset);
             FILE* out = fopen(nested_dest_path, "wb");
             if (data && out && size) {
-                zox_logv("  + asset opened size [%i]", (int) size)
+                zox_logv("+ opened -> [%s] s[%i]", nested_source_path, (int) size)
                 fwrite(data, size, 1, out);
                 fclose(out);
             } else {
@@ -161,23 +160,23 @@ void extract_android_assets(
             }
             AAsset_close(asset);
         } else {
-            // zox_log_error("asset failed to open [%s]", full_source_path)
+            zox_log_error("asset failed to open [%s]", nested_source_path)
             // Not a file? Treat it as a nested directory.
-            zox_logv("📁 found nested directory: [%s]", nested_source_path, nested_dest_path);
-            extract_android_assets(asset_manager, nested_source_path, nested_dest_path);
+            // zox_logv("📁 found nested directory: [%s]", nested_source_path, nested_dest_path);
+            // extract_android_assets(asset_manager, nested_source_path, nested_dest_path);
         }
     }
 
     AAssetDir_close(asset_dir);
 }
 
-void extract_android_assets_init(AAssetManager *assetManager, char *path) {
+/*void extract_android_assets_init(AAssetManager *assetManager, char *path) {
     char path_input[1024];
     char path_output[1024];
     snprintf(path_input, 1024, "%s%s", resources_folder_name, path);
     snprintf(path_output, 1024, "%s%s", resources_path, path);
     extract_android_assets(assetManager, path_input, path_output);
-}
+}*/
 
 // todo: when building, we create a txt file with resource paths
 void decompress_android_resources(const char* resources_path) {
@@ -201,11 +200,33 @@ void decompress_android_resources(const char* resources_path) {
     }
     zox_logv("Created new directory [%s]", resources_path);
     // extract_android_assets_init(manager, "");
-    extract_android_assets(manager, resources_dir_name, resources_path);
-    // now copy all our data out
-    /*for (int i = 0; i < resource_directories_length; i++) {
-        extract_android_assets(manager, resource_directories[i]);
-    }*/
+    // extract_android_assets(manager, resources_dir_name, resources_path);
+
+    // todo: generate this in android build step and load in first: assets.txt
+    // android directories
+    char* dirs[] = {
+        "res",
+        "res/shaders",
+        "res/voxes",
+        "res/fonts",
+        "res/music",
+        "res/sounds",
+        "res/textures",
+        "res/textures/cursors",
+        "res/textures/input",
+        "res/textures/skills",
+        "res/textures/taskbar",
+        "res/textures/voxels",
+        "res/textures/stats",
+        "res/textures/stats/attributes",
+        "res/textures/stats/base",
+        "res/textures/stats/regens",
+        "res/textures/stats/states",
+    };
+    int dir_len = sizeof(dirs) / sizeof(dirs[0]);
+    for (int i = 0; i < dir_len; i++) {
+        extract_android_assets(manager, dirs[i]);
+    }
 }
 
 #endif
