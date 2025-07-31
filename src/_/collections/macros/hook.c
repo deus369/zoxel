@@ -8,8 +8,8 @@
 
 #define unwrap_args(...) __VA_ARGS__
 
-#define zox_hook(name, args_decl, arg_names)\
-zox_event_type(hook_##name, void, unwrap_args args_decl)\
+#define zox_hookr(name, return_type, args_decl, arg_names)\
+zox_event_type(hook_##name, return_type, unwrap_args args_decl)\
 zoxel_dynamic_array(hook_##name)\
 hook_##name##_array_d* functions_##name;\
 \
@@ -21,7 +21,7 @@ void dispose_hook_##name() { \
     dispose_hook_##name##_array_d(functions_##name); \
 } \
 \
-void add_hook_##name(void (*event) args_decl) {\
+void add_hook_##name(return_type (*event) args_decl) {\
     if (!functions_##name) {\
         zox_log_error("hook [%s] not initialized yet", #name)\
     } else {\
@@ -37,6 +37,10 @@ void run_hook_##name args_decl { \
         } \
     } \
 }
+
+
+#define zox_hook(name, args_decl, arg_names)\
+    zox_hookr(name, void, args_decl, arg_names)
 
 
 /*#define zox_hook(name, args_decl, arg_names) \

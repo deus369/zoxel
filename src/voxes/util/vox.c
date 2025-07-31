@@ -1,6 +1,12 @@
 // todo: make this a update function so it does one node at a time! load per entity per depth level to slow it down
-void clone_vox_data(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t source, byte max_depth) {
-    if (!source) return;
+void clone_vox_data(ecs_world_t *world,
+    const ecs_entity_t e,
+    const ecs_entity_t source,
+    byte max_depth)
+{
+    if (!source) {
+        return;
+    }
     const int3 chunk_size = zox_get_value(source, ChunkSize)
     zox_set(e, ChunkSize, { chunk_size })
     zox_geter(source, VoxelNode, chunk_octree_source)

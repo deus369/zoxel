@@ -2,7 +2,7 @@ void destroy_vodes(ecs_world_t *world, VoxelNode *node) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
-        if (!destroy_node_entity_VoxelNode(world, node)) {
+        if (!destroy_node_link_VoxelNode(world, node)) {
             zox_log_error("failed to destroy voxel instance")
         }
     } else if (has_children_VoxelNode(node)) {

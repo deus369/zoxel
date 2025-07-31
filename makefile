@@ -28,16 +28,6 @@ GAMES_DIR	:= $(SRC_DIR)/nexus
 
 .PHONY: game help clean build dev pick run rund runp runpd gdb val
 
-game:
-	@ echo "> You are working on [$(GAME)]"
-
-help:
-	@ cat doc/help.md
-
-clean:
-	@ echo "> You are removing [bin dist]"
-	@ rm -rf bin dist
-
 # Build
 
 $(TARGET): $(SRCS)
@@ -49,6 +39,18 @@ $(TARGET): $(SRCS)
 	@ echo "-------------------"
 
 build: $TARGET
+
+# Extra
+
+game:
+	@ echo "> You are working on [$(GAME)]"
+
+help:
+	@ cat doc/help.md
+
+clean:
+	@ echo "> You are removing [bin dist]"
+	@ rm -rf bin dist
 
 # Dev
 

@@ -65,15 +65,15 @@ static inline void lock_unlock_##name(const name *component) {\
     }\
 }\
 \
-static inline void destroy_lock_##name(name *component) {\
-    if (memory_component_safety_locks) {\
-        pthread_rwlock_destroy(&component->lock);\
-    }\
-}\
-\
 static inline void create_lock_##name(name *component) {\
     if (memory_component_safety_locks) {\
         pthread_rwlock_init(&component->lock, NULL);\
+    }\
+}\
+\
+static inline void destroy_lock_##name(name *component) {\
+    if (memory_component_safety_locks) {\
+        pthread_rwlock_destroy(&component->lock);\
     }\
 }\
 \

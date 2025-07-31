@@ -1,0 +1,1 @@
+float strength_damage_multiplier = 0.7f;

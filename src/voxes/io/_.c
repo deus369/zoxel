@@ -16,6 +16,6 @@ int peek(FILE* file) {
 }
 
 #include "dispose.c"
-#include "read.c"
-// #include "read2.c"
+// #include "read.c"
+#include "read2.c"
 #include "files.c"

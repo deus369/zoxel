@@ -6,8 +6,8 @@ void generate_colors(long int seed, Colors *colors) {
     const float2 dirt_saturation = (float2) { 33, 43 };
     float3 dirt_hsv = generate_hsv_v_s(dirt_hue, dirt_value, dirt_saturation);
     const float2 grass_hue = (float2) { 0, 360 };
-    const float2 grass_value = (float2) { 44, 54 };
-    const float2 grass_saturation = (float2) { 38, 48 };
+    const float2 grass_value = (float2) { 22, 66 };         // { 44, 54 };
+    const float2 grass_saturation = (float2) { 12, 66 };    // { 38, 48 };
     float3 grass_hsv = generate_hsv_v_s(grass_hue, grass_value, grass_saturation);
     if (hsv_to_color(grass_hsv).r > hsv_to_color(dirt_hsv).r)
     {

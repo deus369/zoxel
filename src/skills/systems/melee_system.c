@@ -71,7 +71,7 @@ void MeleeSystem(ecs_iter_t *it) {
         // todo: reduce energy stat value using SkillCost, check if has enough energy
         float skill_damage = randf_range(skillDamage->value, skillDamageMax->value);
         if (strength) {
-            skill_damage += 3 * zox_gett_value(strength, StatValue);
+            skill_damage += strength_damage_multiplier * zox_gett_value(strength, StatValue);
         }
         const float skill_range = skillRange->value;
         const ecs_entity_t hit = raycastVoxelData->chunk;

@@ -6,8 +6,8 @@ zox_component_double(DestroyInTime)
 zox_component_double(TimerTime)
 zox_component_double(TimerRate)
 zox_component_byte(TimerState)
-#include "util/time_macros.c"
-#include "util/time_util.c"
+#include "macros/_.c"
+#include "util/_.c"
 #include "systems/destroy_in_time_system.c"
 #include "systems/timer_system.c"
 

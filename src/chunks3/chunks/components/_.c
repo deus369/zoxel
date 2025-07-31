@@ -16,7 +16,9 @@ zox_component_link(ChunkLink, ecs_entity_t, EntityLinks)
 zox_component_byte(NodeDepth)
 #include "node.c"
 #include "node_helper.c"
-zox_component_node(VoxelNode, byte, 0)    // todo: Rename to VoxelNode
+#include "node_link.c"
+zox_component_node(VoxelNode, byte, 0)
+zox_node_add_link(VoxelNode)
 zox_component_node_helper(VoxelNode, byte)
 zox_component_byte(VoxelNodeDirty)
 #include "neighbors.c"

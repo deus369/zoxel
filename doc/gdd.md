@@ -1,4 +1,9 @@
 # Inspired by:
 
-* Warcraft, Minecraft and Cube World
-* 
+* Warcraft
+* Minecraft
+* Cube World
+* Age of Empires
+* Slime Rancher
+* Runescape
+* Hollow Knight

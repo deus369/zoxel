@@ -205,12 +205,4 @@ void clone_depth_##name(\
         dst->ptr = src->ptr;\
         /*dst->ptr = NULL;*/\
     }\
-}\
-\
-void open_##name(name* node) {\
-    if (node->ptr == NULL) {\
-        open_new_##name(node);\
-    }\
 }
-
-

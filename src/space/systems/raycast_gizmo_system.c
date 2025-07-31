@@ -30,7 +30,7 @@ byte raycast_terrain_gizmo(ecs_world_t *world,
         ray_origin,
         ray_normal,
         get_terrain_voxel_scale(depth),
-        terrain_ray_length,
+        terrain_raycast_length,
         data,
         cr);
     if (ray_hit == ray_hit_type_terrain) {

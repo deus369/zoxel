@@ -4,7 +4,7 @@ void remove_vodes(ecs_world_t *world, VoxelNode *node) {
     } else if (is_linked_VoxelNode(node)) {
         if (!node->value) { // if air
             if (is_linked_VoxelNode(node)) {
-                destroy_node_entity_VoxelNode(world, node);
+                destroy_node_link_VoxelNode(world, node);
             }
         }
     } else if (has_children_VoxelNode(node)) {

@@ -39,8 +39,8 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     meta_skill_punch = spawn_realm_skill_melee(world,
         "punch",
         1,
-        3,
-        3,
+        2,
+        2,
         energy,
         1,
         "punch");
@@ -49,9 +49,9 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
 
     ecs_entity_t mana_punch = spawn_realm_skill_melee(world,
         "mana punch",
-        5,
-        8,
-        3,
+        2,
+        6,
+        4,
         mana,
         3,
         "punch");

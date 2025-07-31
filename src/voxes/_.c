@@ -9,6 +9,7 @@
 
 #include "data/_.c"
 #include "components/_.c"
+#include "util/set.c"
 #include "prefabs/_.c"
 #include "util/_.c"
 #include "generation/_.c"

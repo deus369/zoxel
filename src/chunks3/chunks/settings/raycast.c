@@ -1,1 +1,1 @@
-const float terrain_ray_length = 4; // 8;
+float terrain_raycast_length = 2; // 8;

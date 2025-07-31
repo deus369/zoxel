@@ -1,14 +1,4 @@
-// used to link static chunk voxel to a entity in world
-typedef struct {
-    ecs_entity_t value;
-} NodeEntityLink;
-
-#define node_type_closed 0
-#define node_type_children 1
-#define node_type_instance 255
-
 #define zox_component_node(name, base, default_value)\
-\
 typedef struct name name;\
 struct name {\
     base value;\
@@ -17,40 +7,55 @@ struct name {\
     pthread_rwlock_t lock;\
 }; zox_custom_component(name)\
 \
-static inline void write_lock_node(const name *node) {\
+zox_hookr(on_destroyed_##name, byte, (ecs_world_t* world, name* node), (world, node));\
+\
+void destroy_##name(ecs_world_t *world, name* node);\
+\
+void release_children_##name(name *node) {\
+    free(node->ptr);\
+}\
+void* get_new_children_##name() {\
+    return (void*) malloc(sizeof(name) * octree_length);\
+}\
+\
+static inline void write_lock_##name(const name *node) {\
     if (nodes_w_safety_locks) {\
         pthread_rwlock_wrlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
-static inline void write_unlock_node(const name *node) {\
+static inline void write_unlock_##name(const name *node) {\
     if (nodes_w_safety_locks) {\
         pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
-static inline void read_lock_node(const name *node) {\
+static inline void read_lock_##name(const name *node) {\
     if (nodes_r_safety_locks) {\
         pthread_rwlock_rdlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
-static inline void read_unlock_node(const name *node) {\
+static inline void read_unlock_##name(const name *node) {\
     if (nodes_r_safety_locks) {\
         pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
     }\
 }\
 \
+static inline void create_lock_##name(name *node) {\
+    if (nodes_w_safety_locks || nodes_r_safety_locks) {\
+        pthread_rwlock_init(&node->lock, NULL);\
+    }\
+}\
+\
+static inline void destroy_lock_##name(name *node) {\
+    if (nodes_w_safety_locks || nodes_r_safety_locks) {\
+        pthread_rwlock_destroy(&node->lock);\
+    }\
+}\
+\
 static inline name* get_children_unlocked_##name(const name *node) {\
     return (name*) node->ptr;\
-}\
-\
-static inline byte is_linked_unlocked##name(const name *node) {\
-    return node->type == node_type_instance;\
-}\
-\
-const ecs_entity_t get_node_entity_unlocked_##name(const name *node) {\
-    return is_linked_unlocked##name(node) ? ((NodeEntityLink*) node->ptr)->value : 0;\
 }\
 \
 static inline byte is_opened_##name(const name *node) {\
@@ -62,117 +67,69 @@ static inline byte is_closed_##name(const name *node) {\
 }\
 \
 static inline name* get_children_##name(const name *node) {\
-    read_lock_node(node);\
+    read_lock_##name(node);\
     name* children = (name*) node->ptr;\
-    read_unlock_node(node);\
+    read_unlock_##name(node);\
     return children;\
 }\
 \
-static inline ecs_entity_t get_entity_##name(const name *node) {\
-    read_lock_node(node);\
-    const ecs_entity_t e = ((NodeEntityLink*) node->ptr)->value;\
-    read_unlock_node(node);\
-    return e;\
-}\
-\
 static inline byte has_children_##name(const name *node) {\
-    read_lock_node(node);\
+    read_lock_##name(node);\
     const byte has_children = node->ptr && node->type == node_type_children;\
-    read_unlock_node(node);\
+    read_unlock_##name(node);\
     return has_children;\
 }\
 \
-static inline byte is_linked_##name(const name *node) {\
-    read_lock_node(node);\
-    const byte linked = node->type == node_type_instance;\
-    read_unlock_node(node);\
-    return linked;\
+void create_##name(name* node) {\
+    node->ptr = NULL;\
+    node->value = default_value;\
+    node->type = 0;\
+    create_lock_##name(node);\
 }\
 \
-const ecs_entity_t get_node_entity_##name(const name *node) {\
-    read_lock_node(node);\
-    const ecs_entity_t e = is_linked_unlocked##name(node) ? ((NodeEntityLink*) node->ptr)->value : 0;\
-    read_unlock_node(node);\
-    return e;\
+void open_new_##name(name* node) { \
+    write_lock_##name(node); \
+    node->ptr = get_new_children_##name(); \
+    if (node->ptr) { \
+        node->type = node_type_children; \
+        name* kids = get_children_unlocked_##name(node); \
+        for (byte i = 0; i < octree_length; i++) { \
+            create_##name(&kids[i]); \
+        } \
+    } \
+    write_unlock_##name(node); \
 }\
-\
-void link_node_##name(name *node, const ecs_entity_t e) {\
-    write_lock_node(node);\
-    if (node->type == node_type_closed) {\
-        node->type = node_type_instance;\
-        node->ptr = malloc(sizeof(NodeEntityLink));\
-        *(NodeEntityLink*) node->ptr = (NodeEntityLink) { e };\
-    }\
-    write_unlock_node(node);\
-}\
-\
-void destroy_##name(ecs_world_t *world, name* node);\
 \
 void destroy_node_children_##name(ecs_world_t *world, name *node) {\
-    write_lock_node(node);\
+    write_lock_##name(node);\
     name* kids = get_children_unlocked_##name(node);\
     for (byte i = 0; i < octree_length; i++) {\
         destroy_##name(world, &kids[i]);\
     }\
-    free(node->ptr);\
+    release_children_##name(node->ptr);\
     node->type = node_type_closed;\
     node->ptr = NULL;\
-    write_unlock_node(node);\
-}\
-\
-byte destroy_node_entity_##name(ecs_world_t *world, name *node) {\
-    write_lock_node(node);\
-    byte did_destroy = 0;\
-    if (is_linked_##name(node)) {\
-        const ecs_entity_t e = get_node_entity_unlocked_##name(node);\
-        if (zox_valid(e)) {\
-            zox_delete(e)\
-            did_destroy = 1;\
-        }\
-        free(node->ptr);\
-        node->ptr = NULL;\
-        node->type = node_type_closed;\
-    }\
-    write_unlock_node(node);\
-    return did_destroy;\
+    write_unlock_##name(node);\
 }\
 \
 void destroy_##name(ecs_world_t *world, name* node) {\
     if (!is_closed_##name(node)) {\
-        if (is_linked_##name(node)) {\
-            destroy_node_entity_##name(world, node);\
-        } else {\
+        if (has_children_##name(node)) {\
             destroy_node_children_##name(world, node);\
+        } else {\
+            run_hook_on_destroyed_##name(world, node);\
         }\
     }\
-    pthread_rwlock_destroy(&node->lock);\
+    destroy_lock_##name(node);\
 }\
 \
 ECS_DTOR(name, ptr, {\
     destroy_##name(local_world, ptr);\
 })\
 \
-void create_##name(name* node) {\
-    node->ptr = NULL;\
-    node->value = default_value;\
-    node->type = 0;\
-    pthread_rwlock_init(&node->lock, NULL);\
-}\
-\
 ECS_CTOR(name, ptr, {\
     create_##name(ptr);\
 })\
-\
-void open_new_##name(name* node) {\
-    write_lock_node(node);\
-    node->ptr = malloc(sizeof(name) * octree_length);\
-    node->type = node_type_children;\
-    name* kids = get_children_unlocked_##name(node);\
-    for (byte i = 0; i < octree_length; i++) {\
-        create_##name(&kids[i]);\
-    }\
-    write_unlock_node(node);\
-}\
 \
 void clone_tree_##name(\
     name* dst,\
@@ -199,11 +156,11 @@ ECS_COPY(name, dst, src, {\
 })\
 \
 ECS_MOVE(name, dst, src, {\
-    write_lock_node(dst);\
+    write_lock_##name(dst);\
     dst->ptr = src->ptr;\
     dst->value = src->value;\
     dst->type = src->type;\
-    write_unlock_node(dst);\
+    write_unlock_##name(dst);\
     src->ptr = NULL;\
     src->value = default_value;\
     src->type = 0;\

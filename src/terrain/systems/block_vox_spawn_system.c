@@ -62,7 +62,7 @@
     // if null or air, remove
     if (!node->value) {
         //if (is_linked_VoxelNode(node)) {
-        //    destroy_node_entity_VoxelNode(world, node);
+        //    destroy_node_link_VoxelNode(world, node);
         //}
         return; // air returns!
     }
@@ -76,7 +76,7 @@
     // Remove and return if not a World Block
     const ecs_entity_t block_prefab = data->block_prefabs[block_index];
     if (!block_prefab) {
-        destroy_node_entity_VoxelNode(world, node);
+        destroy_node_link_VoxelNode(world, node);
         return;
     }
 

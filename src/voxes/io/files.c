@@ -1,13 +1,3 @@
-// #define zox_print_files
-
-void load_vox_file(const char* filename, vox_file *vox) {
-    #ifdef zox_disable_io
-    return;
-    #endif
-    vox->chunks = NULL;
-    read_vox(filename, vox);
-}
-
 void load_files_voxes(ecs_world_t *world) {
     const ecs_entity_t prefab = prefab_vox_file;
     char* load_directory = concat_file_path(resources_path, directory_voxes);
@@ -20,16 +10,20 @@ void load_files_voxes(ecs_world_t *world) {
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
+        files_voxes[i] = 0;
         zox_logv("   - [%i] [vox] [%s]", i, filepath);
         vox_file data;
-        load_vox_file(filepath, &data);
+        if (read_vox(filepath, &data) == EXIT_FAILURE) {
+            zox_log_error("[%s] failed to load", filepath);
+            continue;
+        }
         if (data.chunks) {
             const ecs_entity_t e = spawn_vox_file(world, prefab, &data);
             dispose_vox_file(&data);
             if (e) {
                 string_hashmap_add(files_hashmap_voxes, new_string_data_clone(filename), e);
+                files_voxes[i] = e;
             }
-            files_voxes[i] = e;
         } else {
             zox_log_error("[%s] failed to load properly", filepath)
         }
