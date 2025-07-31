@@ -19,18 +19,21 @@ In the shadowed depths where pixels twist and reality frays, **Zoxel** awakens. 
 
 ---
 
+## Play the Latest Ritual
+
+Summon the freshest shadows from the depths:
+
+- [_itch.io_](https://deus0.itch.io/zox) — Where the cult gathers  
+
+---
+
+
 ## How Do I Summon Zoxel?
 
 ```bash
-git clone --depth=1 https://codeberg.org/deus/zoxel
+git clone https://codeberg.org/deus/zoxel
 cd zoxel
 make run
-```
-
-- Package it!
-
-```bash
-make package
 ```
 
 ---
@@ -87,7 +90,6 @@ sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-de
 
 ### The Links
 
-  - [_itchio_](https://deus0.itch.io/zox) — Where the cult gathers
   - [ twitter ](https://twitter.com/deusxyz) — Whisper to the void
   - [ mastodon ](https://mastodon.gamedev.place/@deus) — The distant signal
   - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s) — See the shadows dance
