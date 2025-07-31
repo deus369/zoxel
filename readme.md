@@ -1,17 +1,25 @@
-![zoxel banner](https://pbs.twimg.com/media/GvGarlgbAAA3jG-?format=png&name=large)
+[![Zoxel Banner](doc/banner.png)](https://codeberg.org/deus/zoxel)
 
-### What is Zoxel?
+# 🐙 Zoxel — Embrace the Madness of the Voxels
 
-* A procedural simulation role-playing game
-* Inspired by Warcraft, Minecraft and Cube World
-* Flat module structure, built with Flecs chaos
-* Open‑source GPL license
-* Voxels, stats, items, skills, quests, dialogue & more
-* Experience the thrill of discovery & adventure!
+In the shadowed depths where pixels twist and reality frays, **Zoxel** awakens. A procedural RPG forged in chaos, inspired by the ancient worlds of Warcraft, Minecraft, and Cube World — but beware: every block holds secrets older than time itself.
+
+> *“Ph’nglui mglw’nafh Zoxel R’lyeh wgah’nagl fhtagn.”*  
+> *(In its house at the corner of your screen, Zoxel waits dreaming.)*
 
 ---
 
-### How do I Build?
+## What is Zoxel?
+
+- A procedural simulation RPG where the voxels whisper untold secrets
+- Crafted with a flat, nimble architecture fueled by Flecs chaos
+- Open-source, GPL-licensed — the abyss is free to all brave enough to dive
+- Features: voxels, stats, items, skills, quests, and eldritch dialogues
+- Venture forth… and uncover the madness lurking beneath the surface
+
+---
+
+## How Do I Summon Zoxel?
 
 ```bash
 git clone --depth=1 https://codeberg.org/deus/zoxel
@@ -27,13 +35,13 @@ make package
 
 ---
 
-### The Docs
+### The Tomes of Knowledge
 
-The ultimate plan [ todo list ](todo.md)
+The grand design awaits your eyes [ todo list ](doc/todo.md)
 
-Building is on [_zoxelder_](https://codeberg.org/deus/zoxelder)
+For the arcane forge, peek at [_zoxelder_](https://codeberg.org/deus/zoxelder)
 
-Flecs (v4.1.0) [_flecsing_](https://codeberg.org/deus/flecsing)
+And the mysterious Flecs (v4.0.5) [_flecsing_](https://codeberg.org/deus/flecsing)
 
 ---
 
@@ -47,10 +55,10 @@ Flecs (v4.1.0) [_flecsing_](https://codeberg.org/deus/flecsing)
 - **Libraries:**  
   - math (`-lm`)  
   - pthreads (`-lpthread`)  
-  - Flecs ECS (`-lflecs`)  
-  - SDL2 core (`-lSDL2`)  
-  - SDL2 image support (`-lSDL2_image`)  
-  - SDL2 mixer (audio) (`-lSDL2_mixer`)  
+  - Flecs (`-lflecs`)  
+  - SDL2 (`-lSDL2`)  
+  - SDL2 image (`-lSDL2_image`)  
+  - SDL2 mixer (`-lSDL2_mixer`)  
   - OpenGL (`-lGL`)
 
 ---
@@ -77,19 +85,15 @@ sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-de
 
 ---
 
-### The Socials
+### The Links
 
-  - [ twitter ](https://twitter.com/deusxyz)
-  - [ mastodon ](https://mastodon.gamedev.place/@deus)
-  - [ itchio ](https://deusxyz.itch.io/zoxel-foss)
-  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s)
-  - [_github_](https://github.com/deus369/zoxel)
-  - [ codeberg ](https://codeberg.org/deus/zoxel)
+  - [_itchio_](https://deus0.itch.io/zox) — Where the cult gathers
+  - [ twitter ](https://twitter.com/deusxyz) — Whisper to the void
+  - [ mastodon ](https://mastodon.gamedev.place/@deus) — The distant signal
+  - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s) — See the shadows dance
+  - [_github_](https://github.com/deus369/zoxel) — Peer into the abyss
+  - [ codeberg ](https://codeberg.org/deus/zoxel) — The cryptic archive
 
 ---
 
-### Some Notes
-
- - Flecs 3.2.8, prefab tags dont check properly
- - Flecs 3.2.9 to 3.2.12 have crashes when exiting game
- - Need to refactor for 4, so have no tried yet
+*Dare you plunge into Zoxel’s depths? The voxels remember... but will you?*

@@ -4,3 +4,4 @@ include
 lib
 *.o
 CMakeLists.txt
+.game

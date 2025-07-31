@@ -1,11 +1,19 @@
 # ==== Zoxel ====
-# 	-todo: remember last picked game
+# 	- remembers last picked game
 # Choose your game module
-ifndef game
-    GAME    	:= zoxel
+LAST_GAME_FILE := .game
+
+ifeq ($(origin game), undefined)
+    ifeq ($(shell test -f $(LAST_GAME_FILE) && echo yes),)
+        GAME := zoxel
+    else
+        GAME := $(shell cat $(LAST_GAME_FILE))
+    endif
 else
-    GAME 	:= $(game)
+    GAME := $(game)
 endif
+
+
 SRC_DIR 	:= src
 SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c") # Change Detection
@@ -16,34 +24,48 @@ LDFLAGS 	:= -lflecs -lm -lpthread -lGL -lSDL2 -lSDL2_image -lSDL2_mixer
 LDFLAGS 	+= -Dzox_sdl -Dzox_sdl_mixer -Dzox_sdl_images -Dzox_game=$(GAME)
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
+GAMES_DIR	:= $(SRC_DIR)/nexus
 
-.PHONY: all run dev rund gdb val clean package-deb package-pac package pick runp install install-deb
+.PHONY: game help clean build dev pick run rund runp runpd gdb val
 
-# Our makes
+game:
+	@ echo "> You are working on [$(GAME)]"
+
+help:
+	@ cat doc/help.md
+
+clean:
+	@ echo "> You are removing [bin dist]"
+	@ rm -rf bin dist
+
+# Build
 
 $(TARGET): $(SRCS)
 	@ echo "> Building [$(GAME)]"
 	@ mkdir -p bin
 	@ $(CC) $(CFLAGS) $(SRC) -o $@ $(LDFLAGS)
 	@ echo "-------------------"
-	@ sleep 1
 	@ echo " - completed -"
-	@ sleep 1
 	@ echo "-------------------"
+
+build: $TARGET
+
+# Dev
+
+$(TARGET_DEV): $(SRCS)
+	mkdir -p bin
+	$(CC) $(CFLAGS_DEV) $(INCLUDES) $(SRC) -o $@ $(LDFLAGS)
+
+dev: $(TARGET_DEV)
+
+
+# Run
 
 run: $(TARGET)
 	@ echo "> Running [$(GAME)]"
 	@ sleep 1
 	@ echo "-------------------"
 	@ ./$(TARGET)
-
-$(TARGET_DEV): $(SRCS)
-	mkdir -p bin
-	$(CC) $(CFLAGS_DEV) $(INCLUDES) $(SRC) -o $@ $(LDFLAGS)
-
-build: $TARGET
-
-dev: $(TARGET_DEV)
 
 rund: dev
 	./$(TARGET_DEV)
@@ -54,20 +76,25 @@ gdb: dev
 val: dev
 	valgrind ./$(TARGET_DEV)
 
-clean:
-	rm -rf bin
-	rm -rf dist
+gdbp:
+	$(MAKE) pick ACTION=gdb
+
+# Dep
 
 flecs:
 	cd ../flecsing && make clean && make download && make refresh
 
+
+
+# Pick
+
 ACTION ?= build
 
 pick:
-	@echo "Scanning the nexus...";\
+	@echo "Scanning the Games...";\
 	i=1; \
-	for d in src/nexus/*/; do \
-		gamename=$$(echo $$d | sed 's|src/nexus/||; s|/$$||'); \
+	for d in $(GAMES_DIR)/*/; do \
+		gamename=$$(echo $$d | sed 's|$(GAMES_DIR)/||; s|/$$||'); \
 		echo "$$i) $$gamename"; \
 		eval "game_$$i=$$gamename"; \
 		i=$$((i + 1)); \
@@ -75,7 +102,8 @@ pick:
 	read -p "Pick a game by number: " choice; \
 	selected_game=$$(eval echo \$$$$(echo game_$$choice)); \
 	if [ -n "$$selected_game" ]; then \
-		echo "You selected: $$selected_game"; \
+		echo "$$selected_game" > $(LAST_GAME_FILE); \
+		echo "You selected: $$selected_game $$ACTION"; \
 		$(MAKE) game=$$selected_game $$ACTION; \
 	else \
 		echo "Invalid selection."; \
@@ -87,126 +115,3 @@ runp:
 
 runpd:
 	$(MAKE) pick ACTION=rund
-
-gdbp:
-	$(MAKE) pick ACTION=gdb
-
-# our packaging, move this to Zoxelder
-
-VERSION      := 0.0.1
-PACKAGE_DIR  := dist/$(GAME)_$(VERSION)
-INSTALL_DIR  := $(PACKAGE_DIR)/usr/local/games/$(GAME)
-BIN_DIR      := $(INSTALL_DIR)/bin
-RES_DIR      := $(INSTALL_DIR)/res
-DESKTOP_DIR  := $(PACKAGE_DIR)/usr/share/applications
-CONTROL_DIR  := $(PACKAGE_DIR)/DEBIAN
-ICON_DIR     := $(PACKAGE_DIR)/usr/share/icons/hicolor/64x64/apps
-ICON_SRC     := res/textures/game_icon.png
-ICON_DEST    := $(ICON_DIR)/$(GAME).png
-PKGBUILD := $(PACKAGE_DIR)/PKGBUILD
-
-package-deb: $(TARGET)
-	# Create required dirs
-	mkdir -p $(CONTROL_DIR)
-	mkdir -p $(BIN_DIR)
-	mkdir -p $(RES_DIR)
-	mkdir -p $(DESKTOP_DIR)
-	mkdir -p $(ICON_DIR)
-
-	# Copy binary
-	cp $(TARGET) $(BIN_DIR)/$(GAME)
-	chmod +x $(BIN_DIR)/$(GAME)
-
-	# Copy resources (recursive)
-	cp -r res/* $(RES_DIR)/ || true
-
-	# Copy icon
-	cp $(ICON_SRC) $(ICON_DEST)
-
-	# Control file
-	echo "Package: $(GAME)"                                  >  $(CONTROL_DIR)/control
-	echo "Version: $(VERSION)"                              >> $(CONTROL_DIR)/control
-	echo "Section: games"                                   >> $(CONTROL_DIR)/control
-	echo "Priority: optional"                               >> $(CONTROL_DIR)/control
-	echo "Architecture: amd64"                              >> $(CONTROL_DIR)/control
-	echo "Maintainer: Deus <you@example.com>"               >> $(CONTROL_DIR)/control
-	echo "Description: A procedurally-generated voxel RPG"  >> $(CONTROL_DIR)/control
-	echo "Depends: libc6 (>= 2.31), libgl1, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libsdl2-image-2.0-0, flecs (4.1.0)" >> $(CONTROL_DIR)/control
-
-	# .desktop launcher
-	echo "[Desktop Entry]"                              >  $(DESKTOP_DIR)/$(GAME).desktop
-	echo "Name=Zoxel"                                   >> $(DESKTOP_DIR)/$(GAME).desktop
-	echo "Exec=/usr/local/games/$(GAME)/bin/$(GAME)"    >> $(DESKTOP_DIR)/$(GAME).desktop
-	echo "Icon=$(GAME)"                                 >> $(DESKTOP_DIR)/$(GAME).desktop
-	echo "Type=Application"                             >> $(DESKTOP_DIR)/$(GAME).desktop
-	echo "Categories=Game;"                             >> $(DESKTOP_DIR)/$(GAME).desktop
-
-	# Build the .deb
-	dpkg-deb --build $(PACKAGE_DIR)
-
-
-# Pacman package
-
-package-pac: $(TARGET)
-	@# 1. Prepare directory layout
-	mkdir -p $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin \
-	         $(PACKAGE_DIR)/usr/share/games/$(GAME)/res
-
-	@# 2. Copy executable and resources
-	cp $(TARGET) $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin/$(GAME)
-	chmod +x $(PACKAGE_DIR)/usr/share/games/$(GAME)/bin/$(GAME)
-	cp -r res/* $(PACKAGE_DIR)/usr/share/games/$(GAME)/res/ || true
-
-	@# 3. Emit PKGBUILD line by line (no heredoc)
-	@echo "pkgname=$(GAME)"                                                       >  $(PKGBUILD)
-	@echo "pkgver=$(VERSION)"                                                     >> $(PKGBUILD)
-	@echo "pkgrel=1"                                                              >> $(PKGBUILD)
-	@echo "pkgdesc=\"A procedurally-generated voxel RPG\""                       >> $(PKGBUILD)
-	@echo "arch=('x86_64')"                                                       >> $(PKGBUILD)
-	@echo "depends=('sdl2' 'sdl2_image' 'sdl2_mixer' 'flecs')"                    >> $(PKGBUILD)
-	@echo "source=(\"\$${srcdir}/$(TARGET)\" \"res/*\")"                         >> $(PKGBUILD)
-	@echo "build() { return 0; }"                                                 >> $(PKGBUILD)
-	@echo "package() {"                                                           >> $(PKGBUILD)
-	@echo "  install -Dm755 \"\$${srcdir}/$(TARGET)\" \"\$${pkgdir}/usr/share/games/$(GAME)/bin/$(GAME)\"" \
-	                                                                               >> $(PKGBUILD)
-	@echo "  cp -r \"\$${srcdir}/res\" \"\$${pkgdir}/usr/share/games/$(GAME)/res/\"" >> $(PKGBUILD)
-	@echo "}"                                                                     >> $(PKGBUILD)
-
-	@# 4. Build the Arch package
-	@(cd $(PACKAGE_DIR) && makepkg --force --noconfirm --packagetype pkg)
-
-# Wrapper to auto‑select package format
-package:
-	@if command -v pacman >/dev/null; then \
-		$(MAKE) package-pac; \
-	elif command -v dpkg-deb >/dev/null; then \
-		$(MAKE) package-deb; \
-	else \
-		echo "Unsupported packaging system."; exit 1; \
-	fi
-
-install-deb:
-	@echo "Installing $(PACKAGE_DIR).deb"
-	@sudo apt install ./$(PACKAGE_DIR).deb
-
-install:
-	@if command -v dpkg-deb >/dev/null; then \
-		$(MAKE) install-deb; \
-	else \
-		echo "Unsupported packaging system."; exit 1; \
-	fi
-
-help:
-	@printf "\n\033[1;30m⟡ Zoxel Build System ⟡\033[0m\n\n"
-	@printf "  \033[38;5;208m▶ build\033[0m    Build release for $(GAME)\n"
-	@printf "  \033[38;5;208m▶ dev\033[0m      Build debug\n"
-	@printf "  \033[38;5;208m▶ run\033[0m      Run release\n"
-	@printf "  \033[38;5;208m▶ rund\033[0m     Run debug\n"
-	@printf "  \033[38;5;208m▶ gdb\033[0m      Debug in gdb\n"
-	@printf "  \033[38;5;208m▶ val\033[0m      Debug in valgrind\n\n"
-	@printf "  \033[38;5;208m▶ pick\033[0m     Pick & build game\n"
-	@printf "  \033[38;5;208m▶ runp\033[0m     Pick & run game\n\n"
-	@printf "  \033[38;5;208m▶ package\033[0m  Package game (auto)\n"
-	@printf "  \033[38;5;208m▶ install\033[0m  Installs game!!!\n"
-	@printf "  \033[38;5;208m▶ clean\033[0m    Clean build & dist\n"
-	@printf "  \033[38;5;208m▶ flecs\033[0m    Rebuild Flecs ECS\n\n"
