@@ -79,10 +79,10 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
 
 ecs_entity_t spawn_window_opengl_with_icon(ecs_world_t *world) {
     const char* window_name;
-#ifdef zox_mod_games
+#ifdef zox_game
     window_name = game_name;
 #else
-    window_name = "nogame";
+    window_name = "unknown";
 #endif
     const ecs_entity_t app = spawn_window_opengl(world,
         window_name,

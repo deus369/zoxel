@@ -8,7 +8,7 @@ else
 endif
 SRC_DIR 	:= src
 SRC    		:= src/main.c
-SRCS 		:= $(shell find $(SRC_DIR) -name "*.c")  # Recursive
+SRCS 		:= $(shell find $(SRC_DIR) -name "*.c") # Change Detection
 CC      	:= gcc
 CFLAGS  	:= -O3 -fPIC
 CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 -Dzox_debug # -Wextra
