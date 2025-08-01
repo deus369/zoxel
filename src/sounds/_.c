@@ -16,7 +16,6 @@ zox_begin_module(Sounds)
     define_components_sounds(world);
     define_systems_sounds(world);
     // init
-    // spawn_mixer_pool(1000, 44100 * 8);
     initialize_settings_sounds(world);
     // hooks
     zox_module_dispose(dispose_sounds)

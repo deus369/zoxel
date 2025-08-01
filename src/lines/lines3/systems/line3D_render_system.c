@@ -16,13 +16,7 @@ void Line3DRenderSystem(ecs_iter_t *it) {
         const float4 colorf = color_to_float4(colorr->value);
         glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0, (GLfloat*) &lineData3D->value);
         zox_gpu_float4(line3D_color_location, colorf);
-        zox_gpu_render_lines(3);
-#ifdef zoxel_catch_opengl_errors
-        if (check_opengl_error_unlogged() != 0) {
-            zox_log(" ! Line3DRenderSystem [%lu]: [%i]\n", it->entities[i], 2)
-            break;
-        }
-#endif
+        zox_gpu_render_lines(2);
     }
     glDisableVertexAttribArray(line3D_position_location);
     zox_disable_material();

@@ -20,12 +20,6 @@ void spawn_shaders_lines3D(ecs_world_t *world) {
     }
 }
 
-void spawn_prefabs_lines3D(ecs_world_t *world) {
-    spawn_prefab_line3D(world);
-    spawn_prefab_temporary_line3D(world);
-    spawn_prefab_cube_lines(world);
-}
-
 zox_begin_module(Lines3)
     zox_define_tag(Line3D)
     zox_define_tag(CubeLines)

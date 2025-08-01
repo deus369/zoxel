@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_sound_file_instance(ecs_world_t *world,
     return e;
 }
 
-// clones the files sound data for processing
+// clones the files sound data for processing to a new frequency
 ecs_entity_t spawn_sound_from_file(ecs_world_t *world,
     const ecs_entity_t prefab,
     const ecs_entity_t src,

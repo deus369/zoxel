@@ -2,11 +2,19 @@
 // todo: move to sdl module
 #ifdef zox_sdl_mixer
 
+/*static void free_mix_chunk(int channel) {
+    Mix_Chunk* chunk = Mix_GetChunk(channel);
+    if (chunk) {
+        // free(chunk);
+    }
+}*/
+
 byte initialize_sdl_mixer(ulong sample_rate, byte channels_count) {
     if (Mix_OpenAudio(sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
-        zox_log_error("sdl audio could not initialize [%s]\n", Mix_GetError())
+        zox_log_error("sdl audio could not initialize [%s]\n", Mix_GetError());
         return EXIT_FAILURE;
     } else {
+        // Mix_ChannelFinished(free_mix_chunk);
         return EXIT_SUCCESS;
     }
 }
@@ -19,24 +27,51 @@ int get_channels_count() {
     return Mix_GroupAvailable(-1);
 }
 
-__attribute__((optimize("O0")))
 byte sdl_play_sound(
+    SDLMixChunk* chunk,
     const float* data,
     const int length,
-    const int channels,
-    const float volume)
-{
-    Mix_Chunk mix_chunk = (Mix_Chunk) {
-        .volume = volume,
+    const float volume,
+    const int channel
+) {
+    if (!length || !volume || !data) {
+        return 0;
+    }
+    if (!chunk->value) {
+        chunk->value = malloc(sizeof(Mix_Chunk));
+    }
+    if (!chunk->value) {
+        return 0;
+    }
+    *chunk->value = (Mix_Chunk) {
+        .volume = (Uint8)(volume * 128.f),
         .alen = length * sizeof(float),
-        .allocated = 0,
         .abuf = (void*) data,
     };
-    int channel = Mix_PlayChannel(-1, &mix_chunk, 0);
-    if (channel == -1) {
+    if (Mix_PlayChannel(channel, chunk->value, 0) == -1) {
+        zox_log_error("Failed to play sound: %s", Mix_GetError());
+        return 0;
+    }
+    return 1;
+}
+
+
+byte sdl_play_sound2(
+    const float* data,
+    const int length,
+    const float volume,
+    const int channel)
+{
+    Mix_Chunk chunk = (Mix_Chunk) {
+        .volume = volume,
+        .alen = length * sizeof(float),
+        .abuf = (void*) data,
+    };
+    int success = Mix_PlayChannel(channel, &chunk, 0);
+    if (success == -1) {
         zox_log_error("Failed to play sound: %s", Mix_GetError());
     }
-    return channel != -1;
+    return success != -1;
 }
 
 static inline float* zox_mix_chunk_samples(Mix_Chunk *mix_chunk) {

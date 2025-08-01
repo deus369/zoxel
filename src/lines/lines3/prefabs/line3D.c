@@ -1,6 +1,3 @@
-ecs_entity_t prefab_line3D;
-ecs_entity_t prefab_temporary_line3D;
-
 ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("line3D")
@@ -9,7 +6,6 @@ ecs_entity_t spawn_prefab_line3D(ecs_world_t *world) {
     zox_prefab_set(e, LineThickness, { 1 })
     zox_prefab_set(e, DestroyInTime, { 0 })
     zox_prefab_set(e, Color, { { 0, 0, 0, 255 } })
-    prefab_line3D = e;
     return e;
 }
 

@@ -10,7 +10,7 @@ static inline void zox_render_line_attr(const float3 a, const float3 b) {
     // glLineWidth(cubeLinesThickness->value);
     glVertexAttribPointer(line3D_position_location, 3, GL_FLOAT, GL_FALSE, 0,
         (float[]) { a.x, a.y, a.z, b.x, b.y, b.z });
-    zox_gpu_render_lines(3);
+    zox_gpu_render_lines(2);
 }
 
 void CubeLineRenderSystem(ecs_iter_t *it) {

@@ -1,13 +1,17 @@
-ecs_entity_t spawn_prefab_character2D(ecs_world_t *world, const int2 textureSize) {
-    zox_prefab()
-    zox_add_tag(e, Character2D)
+ecs_entity_t spawn_prefab_character2D(ecs_world_t *world,
+    const int2 textureSize)
+{
+    zox_prefab();
+    zox_add_tag(e, Character2D);
+    zox_add_tag(e, Frictioned);
     zox_prefab_set(e, Position2D, { float2_zero })
     zox_prefab_set(e, Rotation2D, { 0 })
     zox_prefab_set(e, Scale1D, { 1 })
-    zox_add_tag(e, Frictioned);
-    add_physics2D(world, e, world_grid2D_size);
-    zox_prefab_add(e, Brightness)
+    zox_prefab_set(e, Brightness, { 1 });
     zox_prefab_set(e, Rotation2D, { - 90 * degreesToRadians })
+    add_physics2D(world, e, world_grid2D_size);
+    add_gpu_material(world, e);
+    add_gpu_texture(world, e);
     /*zox_add_tag(e, Texture)
     zox_prefab_set(e, TextureData, { 0, NULL })
     zox_prefab_set(e, TextureSize, { texture_size })
@@ -15,8 +19,6 @@ ecs_entity_t spawn_prefab_character2D(ecs_world_t *world, const int2 textureSize
     zox_prefab_set(e, Seed, { 666 })
     zox_prefab_set(e, GenerateTexture, { zox_generate_texture_trigger })*/
     // add_animated_noise_texture(world, e);
-    add_gpu_material(world, e);
-    add_gpu_texture(world, e);
     return e;
 }
 

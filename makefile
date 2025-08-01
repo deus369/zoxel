@@ -21,7 +21,7 @@ CC      	:= gcc
 
 # 🧱 Release build — for speed and glory
 # 03 breaks my sounds for now
-CFLAGS      	:= -fPIC -O0 -march=native -flto=auto -DNDEBUG # 03
+CFLAGS      	:= -fPIC -O3 -march=native -flto=auto -DNDEBUG # 03
 
 # 🐛 Debug build — for truth and stacktraces
 CFLAGS_DEV 	:= -fPIC -O0 -g -Wall -ggdb3 -Dzox_debug # -Wextra

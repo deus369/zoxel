@@ -8,6 +8,10 @@ static inline int2 int2_half(const int2 value) {
     return (int2) { value.x / 2, value.y / 2 };
 }
 
+static inline int2 int2_scalef(const int2 value, const float f) {
+    return (int2) { (int) (value.x * f), (int) (value.y * f) };
+}
+
 static inline int2 int2_single(const int value) {
     return (int2) { value, value };
 }

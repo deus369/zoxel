@@ -1,5 +1,3 @@
-ecs_entity_t prefab_cube_lines;
-
 void prefab_add_cube_lines(ecs_world_t *world,
     const ecs_entity_t e,
     const color lines_color,
@@ -20,7 +18,6 @@ ecs_entity_t spawn_prefab_cube_lines(ecs_world_t *world) {
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, Bounds3D, { float3_zero })
     zox_prefab_set(e, DestroyInTime, { 0 })
-    prefab_cube_lines = e;
     return e;
 }
 

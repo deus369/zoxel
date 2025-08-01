@@ -9,9 +9,9 @@ ecs_entity_t spawn_prefab_character3_npc(ecs_world_t *world, const ecs_entity_t 
     zox_prefab_set(e, MoveForwards, { 0 })
     zox_prefab_set(e, RotateTowards, { 0 })
     zox_prefab_set(e, MoveSpeed, { 4 })
-    zox_prefab_add(e, TargetPosition)
-    zox_prefab_add(e, ThreatPosition)
-    zox_prefab_add(e, WanderDirection)
+    zox_prefab_set(e, TargetPosition, { float3_zero });
+    zox_prefab_set(e, ThreatPosition, { float3_zero });
+    zox_prefab_set(e, WanderDirection, { float3_zero });
     zox_set(e, RenderDisabled, { 1 })
     return e;
 }

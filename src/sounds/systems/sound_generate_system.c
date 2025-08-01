@@ -33,8 +33,9 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         const float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         const float dampen = sound_dampen_multiplier * sound_time_length;
         //f (generateSound->value == 1) {
-        resize_memory_component(SoundData, soundData, float, data_length)
-        float value = 0.0f;
+        initialize_SoundData(soundData, data_length);
+        // resize_memory_component(SoundData, soundData, float, data_length);
+        float value = 0;
         for (int j = 0; j < data_length; j++) {
             const float time = (float) (j / sample_rate_f);
             if (instrument_type == instrument_piano) {

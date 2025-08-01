@@ -30,10 +30,12 @@ void define_systems_sounds(ecs_world_t *world) {
     zox_system(SoundPlaySystem, EcsOnUpdate,
         [in] TriggerSound,
         [in] SoundData,
+        [out] sdl.SDLMixChunk,
         [none] Sound)
     zox_system(SoundPlayRefSystem, EcsOnUpdate,
         [in] TriggerSound,
         [in] SoundDataRef,
+        [out] sdl.SDLMixChunk,
         [none] Sound)
     zox_system_1(SoundDebugSystem, zox_pip_mainthread,
         [in] SoundData,

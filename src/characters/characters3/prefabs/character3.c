@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     // generation
     zox_prefab_set(prefab, Seed, { 999 })
     // name
-    zox_prefab_add(e, ZoxName)
+    zox_prefab_set(e, ZoxName, { 0, NULL });
     // In Terrain
     zox_add_tag(e, LinkChunk)
     zox_prefab_set(e, VoxLink, { 0 })
@@ -31,8 +31,8 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     zox_prefab_set(e, AnimationState, { zox_animation_idle })
     zox_prefab_set(e, AnimationStart, { 0 })
     // hierarchy
-    zox_prefab_add(e, Children)         // for bones, particles, etc (transforms)
-    zox_prefab_add(e, ElementLinks)     // uis
+    zox_prefab_set(e, Children, { 0, NULL }); // for bones, particles, etc (transforms)
+    zox_prefab_set(e, ElementLinks, { 0, NULL }); // uis
     // physics3
     // physics -- too big atm to refactor
     zox_add_tag(e, Frictioned)

@@ -1,7 +1,6 @@
 extern ecs_entity_t game_start_player_new(ecs_world_t*, const ecs_entity_t);
 
 void Player3RespawnSystem(ecs_iter_t *it) {
-    const double respawn_time = 5;
     zox_sys_world()
     zox_sys_begin()
     zox_sys_out(PlayerState)
@@ -13,8 +12,13 @@ void Player3RespawnSystem(ecs_iter_t *it) {
         zox_sys_o(PlayerRespawn, playerRespawn)
         zox_sys_o(CharacterLink, characterLink)
         // what happened HHere...? NANI?
-        if (playerRespawn->value > 0 && playerState->value != zox_player_state_respawning) {
-            zox_log("+++ Respawning Cancelled! +++")
+        if (playerRespawn->value > 0 && zox_valid(characterLink->value)) {
+            zox_log("+++ Respawning Cancelled! (Character Lives) +++");
+            playerRespawn->value = 0;
+            playerState->value = zox_player_state_playing;
+        }
+        else if (playerRespawn->value > 0 && playerState->value != zox_player_state_respawning) {
+            zox_log("+++ Respawning Cancelled! (PlayerState changed) +++");
             playerRespawn->value = 0;
         }
         // Playing happily!
