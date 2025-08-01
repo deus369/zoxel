@@ -96,7 +96,7 @@ type name##_get(name* map, key_type key_raw) {\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
-    int checks = 0;\
+    uint checks = 0;\
     type value = type_zero;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) {\
@@ -118,7 +118,7 @@ byte name##_has(name* map, key_type key_raw) {\
     hash_type key = convert_to_hash(key_raw);\
     hash_type index = name##_hash(key, map->size);\
     name##_pair* pair = map->data[index];\
-    int checks = 0;\
+    uint checks = 0;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) {\
             lock_unlock_##name(map);\
@@ -163,7 +163,7 @@ void name##_dispose(name* map) {\
         return;\
     }\
     write_lock_##name(map);\
-    for (int i = 0; i < map->size; i++) {\
+    for (size_t i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
         uint checks = 0;\
         while (pair != NULL && checks < max_safety_checks_hashmap) {\
@@ -184,8 +184,8 @@ int count_##name(name* map) {\
         return 0;\
     }\
     read_lock_##name(map);\
-    int count = 0;\
-    for (int i = 0; i < map->size; i++) {\
+    size_t count = 0;\
+    for (size_t i = 0; i < map->size; i++) {\
         name##_pair* pair = map->data[i];\
         uint checks = 0;\
         while (pair != NULL && checks < max_safety_checks_hashmap) {\

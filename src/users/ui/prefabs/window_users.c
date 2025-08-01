@@ -1,8 +1,3 @@
-// todo: use spawn_icon_grid for all user menus
-// todo: spawn a body ui (as regular element) for icons
-// todo: fetch highest layer from canvas? save it refreshing stack when spawning a new window
-// todo: prefab_inventory_menu - child prefab of game_icon_window?
-
 ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("window_users")
@@ -39,7 +34,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     const int children_length = 1 + is_header;
     // zox_get_muter(e, Children, children)
     Children *children = &((Children) { 0, NULL });
-    initialize_memory_component(Children, children, ecs_entity_t, children_length)
+    initialize_Children(children, children_length);
     if (children->length != children_length) {
         zox_log(" ! failed to iniitalize children\n")
         return e;
@@ -102,7 +97,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world, SpawnWindowUsers *data) {
     children->value[is_header] = body;
     // zox_get_muter(body, Children, body_children)
     Children *body_children = &((Children) { 0, NULL });
-    initialize_memory_component(Children, body_children, ecs_entity_t, grid_elements_count)
+    initialize_Children(body_children, grid_elements_count);
     int item_index = 0;
     int array_index = 0;
     const byte active_states = zox_has(data->frame.prefab, ActiveState);

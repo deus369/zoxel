@@ -16,7 +16,7 @@ byte tooltip_event_skill(ecs_world_t *world, const TooltipEventData *data) {
         }
     }
     if (!used_name) {
-        sprintf(result, "[%lu]\n", data->data);
+        sprintf(result, "[%s]\n", zox_get_name(data->data));
     }
     set_entity_text(world, data->tooltip, result);
     // zox_log(" > tooltip icon skill set [%lu] selected at %f\n", data->tooltip, zox_current_time)

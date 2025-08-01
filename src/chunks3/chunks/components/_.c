@@ -14,9 +14,6 @@ zox_component_int3(ChunkSize)
 zox_component_byte(BlocksSpawned)
 zox_component_link(ChunkLink, ecs_entity_t, EntityLinks)
 zox_component_byte(NodeDepth)
-#include "node.c"
-#include "node_helper.c"
-#include "node_link.c"
 zox_component_node(VoxelNode, byte, 0)
 zox_node_add_link(VoxelNode)
 zox_component_node_helper(VoxelNode, byte)

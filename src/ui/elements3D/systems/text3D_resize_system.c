@@ -42,11 +42,6 @@ void resize_text3D(ecs_world_t *world, Children *children, const TextData *textD
     if (has_old_children) {
         free(old_children);
     }
-    if (!has_old_children && new_children) {    // stats
-        total_memorys_allocated++;
-    } else if (has_old_children && !new_children) {
-        total_memorys_allocated--;
-    }
 }
 
 // todo: split up into update system, and resize system

@@ -20,13 +20,13 @@ void add_to_gpu_restore_systems(long int id) {
 }
 
 void run_gpu_dispose_systems(ecs_world_t *world) {
-    for (int i = 0; i < gpu_dispose_systems->size; i++) {
+    for (size_t i = 0; i < gpu_dispose_systems->size; i++) {
         ecs_run(world, gpu_dispose_systems->data[i], 0, NULL);
     }
 }
 
 void run_gpu_restore_systems(ecs_world_t *world) {
-    for (int i = 0; i < gpu_restore_systems->size; i++) {
+    for (size_t i = 0; i < gpu_restore_systems->size; i++) {
         ecs_run(world, gpu_restore_systems->data[i], 0, NULL);
     }
 }

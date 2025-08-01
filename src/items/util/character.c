@@ -29,7 +29,7 @@ void spawn_character_items(ecs_world_t *world, spawned_character3D_data *data) {
     }
 
     ItemLinks *items = &((ItemLinks) { 0, NULL });
-    initialize_memory_component(ItemLinks, items, ecs_entity_t, inventory_count)
+    initialize_ItemLinks(items, inventory_count);
     if (!items->value) {
         zox_log_error(" ! failed allocating memory for items")
         return;

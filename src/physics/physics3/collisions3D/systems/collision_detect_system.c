@@ -90,7 +90,7 @@ void collide_with_chunk_d3(ecs_world_t *world,
     if (!node)  {
         return;
     }
-    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
+    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_dimensions_b3);
     if (!byte3_in_bounds(voxel_position_local, chunk_dimensions_b3)) {
         return;
     }
@@ -166,7 +166,7 @@ void collide_with_chunk_d2(ecs_world_t *world,
     if (!chunk_octree) {
         return;
     }
-    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
+    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_dimensions_b3);
     if (!byte3_in_bounds(voxel_position_local, chunk_dimensions_b3))  {
         return;
     }
@@ -226,7 +226,7 @@ void collide_with_chunk(ecs_world_t *world,
     if (!chunk_octree) {
         return;
     }
-    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
+    byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_dimensions_b3);
     if (!byte3_in_bounds(voxel_position_local, chunk_dimensions_b3)) {
         return;
     }

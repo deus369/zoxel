@@ -1,7 +1,7 @@
 // #define test_particles2D
 // Shortcuts for settings
-void PlayerShortcutsSystem(ecs_iter_t *it) {
-    /*zox_field_world()
+/*void PlayerShortcutsSystem(ecs_iter_t *it) {
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinkss, 1)
     zox_field_in(GameLink, gameLinks, 2)
     for (int i = 0; i < it->count; i++) {
@@ -30,5 +30,5 @@ void PlayerShortcutsSystem(ecs_iter_t *it) {
                 }
             }
         }
-    }*/
-} zox_declare_system(PlayerShortcutsSystem)
+    }
+} zox_declare_system(PlayerShortcutsSystem)*/

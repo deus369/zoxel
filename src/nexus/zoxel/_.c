@@ -24,7 +24,6 @@ void zoxel_settings_npcs() {
     // disable_instancing = 1; // test so we can reverse backward etc
     // disable_npc_movement = 1;
     /*
-    terrain_mode = terrain_mode_flatlands;
     character_spawn_rate = 128;
     is_characters_instanced = 1;
     disable_npc_hooks = 1;
@@ -109,6 +108,11 @@ void zoxel_debug_keys() {
     // add_hook_key_down(key_down_update_text3D);
 }
 
+void zox_set_terrain_settings() {
+    terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 1;
+}
+
 zox_begin_module(ZoxGame)
     game_name = "Zoxel";
     // app settings
@@ -118,8 +122,7 @@ zox_begin_module(ZoxGame)
     vsync = 1;
     is_split_screen = 0;
     // world
-    // terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 1;
+    zox_set_terrain_settings();
 
     // art
     is_generate_vox_outlines = 0;
@@ -172,9 +175,9 @@ zox_begin_module(ZoxGame)
     test_all_skills = 1;
 
     // zox_debug_id(Block)
-    // zox_debug_print_modules(world, 1);
-    // zox_debug_print_systems(world, 1);
-    // zox_debug_print_components(world, 1);
+    // zox_debug_print_modules();
+    // zox_debug_print_systems(world);
+    // zox_debug_print_components();
     // is_log_io = 1;
     // is_log_sounds = 1;
 

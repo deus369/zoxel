@@ -1,4 +1,4 @@
-void QuadsLabelSystem(ecs_iter_t *it) {
+/*void QuadsLabelSystem(ecs_iter_t *it) {
     const int triangles_count = MeshIndicies_memorys_allocated * 3;
     char buffer[32];
     //byte system_updated = 0;
@@ -23,4 +23,4 @@ void QuadsLabelSystem(ecs_iter_t *it) {
 #ifndef zox_windows
     //if (!system_updated) zox_skip()   // skip changes if isn't has_set
 #endif
-} zox_declare_system(QuadsLabelSystem)
+} zox_declare_system(QuadsLabelSystem)*/

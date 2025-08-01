@@ -52,11 +52,16 @@ void add_entity_to_labels(ecs_world_t *world,
     add_to_ecs_entity_t_array_d(entities, e);
 }
 
-int get_max_characters_d(const char *header_label, text_group_dynamic_array_d* labels) {
+int get_max_characters_d(
+    const char *header_label,
+    text_group_dynamic_array_d* labels)
+{
     int max_characters = 0; // get max text length out of all of the words
-    for (int i = 0; i < labels->size; i++) {
+    for (size_t i = 0; i < labels->size; i++) {
         int txt_size = strlen(labels->data[i].text);
-        if (txt_size > max_characters) max_characters = txt_size;
+        if (txt_size > max_characters) {
+            max_characters = txt_size;
+        }
     }
     int header_txt_size = strlen(header_label);
     if (header_txt_size > max_characters) {
@@ -190,6 +195,7 @@ void set_ui_list_hierarchy(ecs_world_t *world,
     const int2 window_size,
     const int2 canvas_size)
 {
+    (void) window_position;
     // resize scrollbar
     resize_window_scrollbar(world, children, window_size, canvas_size, elements_visible, labels_count);
     // refresh elements
@@ -203,7 +209,7 @@ void set_ui_list_hierarchy(ecs_world_t *world,
     for (int j = 0; j < labels_count; j++) {
         const byte render_disabled = !(j >= 0 && j < elements_visible);
         int2 label_position = get_element_label_position(j, font_size, button_padding, button_inner_margins, window_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
-        const ecs_entity_t list_element = spawn_button_old(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled, button_fill);
+        const ecs_entity_t list_element = spawn_button_old(world, window_entity, canvas, label_position, button_padding, float2_half, labels->data[j].text, font_size, button_layer, window_pixel_position_global, window_size, canvas_size, render_disabled);
         zox_set(list_element, ClickEvent, { click_event.value })
         zox_set(list_element, EntityTarget, { entities->data[j] })
         children->value[list_start + j] = list_element;

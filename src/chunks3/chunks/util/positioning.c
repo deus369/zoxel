@@ -64,7 +64,6 @@ int3 get_local_position(
 
 static inline byte3 get_local_position_byte3(
     int3 voxel_position,
-    int3 chunk_position,
     byte3 chunk_size)
 {
     byte3 local_position;

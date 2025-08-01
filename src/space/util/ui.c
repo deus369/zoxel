@@ -60,7 +60,6 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
 
 // move to game ui?
 void spawn_players_cameras_canvases(ecs_world_t *world,
-    const ecs_entity_t game,
     int players_playing,
     const ecs_entity_t app)
 {
@@ -126,7 +125,7 @@ void spawn_players_start_ui(ecs_world_t *world) {
 }
 
 void on_boot_space(ecs_world_t* world, ecs_entity_t app) {
-    zox_geter_value(app, GameLink, ecs_entity_t, game);
-    spawn_players_cameras_canvases(world, game, players_playing, app);
+    // zox_geter_value(app, GameLink, ecs_entity_t, game);
+    spawn_players_cameras_canvases(world, players_playing, app);
     spawn_players_start_ui(world);
 }

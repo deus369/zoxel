@@ -1,9 +1,6 @@
 #ifndef zox_mod_networking
 #define zox_mod_networking
 
-#include "__.c"
-
-// #define zox_testing_networking
 byte zox_log_network_errors = 0;
 #include "settings/_.c"
 #include "settings/packet_types.c"
@@ -21,17 +18,10 @@ zox_memory_component(PacketData, byte)
 #include "util/ip_util.c"
 #include "util/socket_util.c"
 #include "components/socket_link.c"
-#include "prefabs/packet.c"
-#include "prefabs/net_player.c"
-#include "prefabs/net_room.c"
+#include "prefabs/_.c"
 #include "util/packet_test.c"
 #include "systems/packet_send_system.c"
 #include "systems/packet_recieve_system.c"
-
-void spawn_prefabs_networking(ecs_world_t *world) {
-    spawn_prefab_net_room(world);
-    spawn_prefab_net_player(world);
-}
 
 void initialize_networking(ecs_world_t* world) {
 #ifdef zox_windows
@@ -40,9 +30,9 @@ void initialize_networking(ecs_world_t* world) {
     sockets_enabled = 1;
 #endif
     if (server_mode) {
-        spawn_net_room(world, SERVER_PORT);
+        spawn_net_room(world, prefab_net_room, SERVER_PORT);
     } else {
-        spawn_net_player(world, PORT, server_ip, SERVER_PORT);
+        spawn_net_player(world, prefab_net_player, PORT, server_ip, SERVER_PORT);
     }
     if (server_mode) {
         zox_log(" > network server mode activated")

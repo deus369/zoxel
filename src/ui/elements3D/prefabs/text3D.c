@@ -58,7 +58,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world,
     // text
     const int length = data.text != NULL ? strlen(data.text) : 0;
     TextData text = (TextData) { 0, NULL };
-    initialize_memory_component(TextData, (&text), byte, length);
+    initialize_TextData(&text, length);
     for (int i = 0; i < text.length; i++) {
         text.value[i] = convert_ascii(data.text[i]);
     }
@@ -67,7 +67,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world,
     zigel_data.parent = e;
     const int zigels_count = calculate_total_zigels(text.value, text.length);
     Children children = (Children) { 0, NULL };
-    initialize_memory_component(Children, (&children), ecs_entity_t, zigels_count);
+    initialize_Children(&children, zigels_count);
     for (int i = 0; i < children.length; i++) {
         const int data_index = calculate_zigel_data_index(
             text.value,

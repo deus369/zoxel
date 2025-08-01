@@ -43,8 +43,8 @@ color hsv_to_color(const float3 hsv) {
     const float saturation = hsv.y / 100.0f;
     const float value = hsv.z / 100.0f;
     float chroma = value * saturation;
-    float hue_ = fmod(hue / 60.0f, 6.0f);
-    float x = chroma * (1 - fabs(fmod(hue_, 2.0f) - 1));
+    float hue_ = zox_fmod(hue / 60.0f, 6.0f);
+    float x = chroma * (1 - fabs(zox_fmod(hue_, 2.0f) - 1));
     float r, g, b;
     if (hue_ >= 0 && hue_ < 1) {
         r = chroma;

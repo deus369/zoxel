@@ -17,6 +17,8 @@
 #include "hooks/_.c"
 
 void module_dispose_core(ecs_world_t *world, void *ctx) {
+    (void) world;
+    (void) ctx;
     dispose_hook_terminal_command();
     dispose_game_store();
     dispose_hook_files_load();
@@ -24,6 +26,7 @@ void module_dispose_core(ecs_world_t *world, void *ctx) {
 }
 
 void process_arguments_core(ecs_world_t *world, char* args[], int count) {
+    (void) world;
     for (int i = 1; i < count; i++) {
         if (!strcmp(args[i], "--fps")) {
             target_fps = (byte) (atoi(args[i + 1]));

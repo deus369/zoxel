@@ -146,7 +146,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             new_window_size,
             canvas_size);
         // dispose allocated things
-        for (int j = 0; j < labels->size; j++) {
+        for (size_t j = 0; j < labels->size; j++) {
             free(labels->data[j].text);
         }
         dispose_text_group_dynamic_array_d(labels);

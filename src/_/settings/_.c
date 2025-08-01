@@ -33,7 +33,7 @@ void zoxs_set(const char* name, byte type, on_set_event on_set) {
 }
 
 setting zoxs_get(const char *name) {
-    for (int i = 0; i < settings_count; i++) {
+    for (uint i = 0; i < settings_count; i++) {
         setting setting = settings[i];
         if (!strcmp(name, setting.name)) {
             // zox_log("found %s at [%i]", name, i)

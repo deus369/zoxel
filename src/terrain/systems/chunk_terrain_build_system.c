@@ -59,11 +59,6 @@ void build_chunk_terrain_mesh(
     meshVertices->value = finalize_float3_array_d(mesh_data.vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(mesh_data.color_rgbs);
     meshUVs->value = finalize_float2_array_d(mesh_data.uvs);
-    // for data statistics
-    on_memory_component_created(meshIndicies, MeshIndicies)
-    on_memory_component_created(meshVertices, MeshVertices)
-    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
-    on_memory_component_created(meshUVs, MeshUVs)
 }
 
 

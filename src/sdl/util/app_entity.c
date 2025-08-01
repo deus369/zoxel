@@ -77,6 +77,8 @@ ecs_entity_t spawn_window_opengl(ecs_world_t *world,
 }
 
 
+extern byte load_app_icon(SDL_Window* window, const char *icon_path);
+
 ecs_entity_t spawn_window_opengl_with_icon(ecs_world_t *world) {
     const char* window_name;
 #ifdef zox_game
@@ -94,11 +96,9 @@ ecs_entity_t spawn_window_opengl_with_icon(ecs_world_t *world) {
         return 0;
     }
     // Shaders
-    char* icon_path = get_asset_path("textures", "game_icon.png")
+    char* icon_path = get_asset_path("textures", "game.png")
     if (icon_path) {
-#ifdef zox_mod_textures
         load_app_icon(zox_gett_value(app, SDLWindow), icon_path);
-#endif
         free(icon_path);
     }
     main_app = app;

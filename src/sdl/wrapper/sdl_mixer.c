@@ -1,7 +1,6 @@
 // this is our sdl mixer wrapper!
 // todo: move to sdl module
 #ifdef zox_sdl_mixer
-#include <SDL2/SDL_mixer.h>
 
 byte initialize_sdl_mixer(ulong sample_rate, byte channels_count) {
     if (Mix_OpenAudio(sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
@@ -13,7 +12,6 @@ byte initialize_sdl_mixer(ulong sample_rate, byte channels_count) {
 }
 
 void close_audio_sdl() {
-    // zox_log("- closing sdl_mixer");
     Mix_Quit();
 }
 
@@ -21,6 +19,7 @@ int get_channels_count() {
     return Mix_GroupAvailable(-1);
 }
 
+__attribute__((optimize("O0")))
 byte sdl_play_sound(
     const float* data,
     const int length,
@@ -30,14 +29,14 @@ byte sdl_play_sound(
     Mix_Chunk mix_chunk = (Mix_Chunk) {
         .volume = volume,
         .alen = length * sizeof(float),
-        .abuf = (void*) data
+        .allocated = 0,
+        .abuf = (void*) data,
     };
-    if (Mix_PlayChannel(-1, &mix_chunk, 0) == -1) {
-        zox_log_error(" ! failed to play sound: %s", Mix_GetError())
-        return 0;
-    } else {
-        return 1;
+    int channel = Mix_PlayChannel(-1, &mix_chunk, 0);
+    if (channel == -1) {
+        zox_log_error("Failed to play sound: %s", Mix_GetError());
     }
+    return channel != -1;
 }
 
 static inline float* zox_mix_chunk_samples(Mix_Chunk *mix_chunk) {
@@ -92,16 +91,26 @@ Mix_Chunk* clone_mix_chunk(const Mix_Chunk* original) {
 
 #else
 
-byte initialize_sdl_mixer() { return EXIT_FAILURE; }
+byte initialize_sdl_mixer() {
+    return EXIT_FAILURE;
+}
 
 void close_audio_sdl() { }
 
-int get_channels_count() { return -1; }
+int get_channels_count() {
+    return -1;
+}
 
-byte sdl_play_sound(const SoundData *soundData, int channels, float volume) { return 1; }
+byte sdl_play_sound(const SoundData *soundData, int channels, float volume) {
+    return 1;
+}
 
 SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
     return (SoundData) { .value = NULL, .length = 0 };
 }
+
+void spawn_mixer_pool(int max_buffers, int buffer_size) { }
+
+void dispose_mixer_pool() { }
 
 #endif

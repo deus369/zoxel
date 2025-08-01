@@ -2,12 +2,6 @@
 #define zox_flecs_4
 // #define zox_enable_log_new_system
 
-#define FLECS_CUSTOM_BUILD
-#define FLECS_MODULE
-#define FLECS_SYSTEM
-#define FLECS_PIPELINE
-#include <flecs.h>
-
 byte running = 1;
 #include "macros/_.c"
 #include "data/_.c"

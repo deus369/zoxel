@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_character2_player(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_character2_player(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t camera) {
+ecs_entity_t spawn_character2_player(ecs_world_t *world, const ecs_entity_t prefab) {
     const ecs_entity_t e = spawn_character2D(world, prefab, float2_zero);
     // zox_instance(prefab_player_character2D) // child prefabs don't seem to inherit tags ??
     zox_name("character2_player")

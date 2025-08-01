@@ -5,7 +5,7 @@ void spawn_character_actions(ecs_world_t *world, spawned_character3D_data *data)
         return;
     }
     ActionLinks *actions = &((ActionLinks) { 0, NULL });
-    initialize_memory_component(ActionLinks, actions, ecs_entity_t, actions_count)
+    initialize_ActionLinks(actions, actions_count);
     if (!actions->value) {
         zox_log(" ! failed allocating memory for actions\n")
         return;

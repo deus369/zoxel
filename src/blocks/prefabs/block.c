@@ -29,7 +29,7 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
     }
     if (data->textures) {
         Textures *textures = &((Textures) { 0, NULL });
-        initialize_memory_component(Textures, textures, ecs_entity_t, data->textures)
+        initialize_Textures(textures, data->textures);
         for (int i = 0; i < data->textures; i++) {
             ecs_entity_t e2;
             if (data->texture_filename) {

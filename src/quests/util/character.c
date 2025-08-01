@@ -5,7 +5,7 @@ void spawn_character_quests(ecs_world_t *world, spawned_character3D_data *data) 
         return;
     }
     QuestLinks *quests = &((QuestLinks) { 0, NULL });
-    initialize_memory_component(QuestLinks, quests, ecs_entity_t, quests_count)
+    initialize_QuestLinks(quests, quests_count);
     if (!quests->value) {
         zox_log_error(" ! failed allocating memory for quests")
         return;

@@ -18,7 +18,6 @@ void set_camera_free(ecs_world_t *world,
 }
 
 void detatch_camera_from_character(ecs_world_t *world,
-    const ecs_entity_t player,
     const ecs_entity_t camera,
     const ecs_entity_t character,
     const byte is_free)

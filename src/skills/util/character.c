@@ -10,7 +10,7 @@ void spawn_character_skills(ecs_world_t *world, spawned_character3D_data *data) 
         skills_count = 16;
     }
     SkillLinks *skills = &((SkillLinks) { 0, NULL });
-    initialize_memory_component(SkillLinks, skills, ecs_entity_t, skills_count)
+    initialize_SkillLinks(skills, skills_count);
     if (!skills->value) {
         zox_log(" ! failed allocating memory for skills\n")
         return;

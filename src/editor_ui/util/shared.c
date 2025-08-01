@@ -30,8 +30,7 @@ ecs_entity_t spawn_button_old(ecs_world_t *world,
     const int2 parent_pixel_position_global,
     const int2 parent_pixel_size,
     const int2 canvas_size,
-    const byte render_disabled,
-    const color button_color)
+    const byte render_disabled)
 {
     const int2 zext_size = (int2) { font_size * strlen(text), font_size };
     const int2 pixel_size = (int2) { zext_size.x + padding.x * 2, zext_size.y + padding.y * 2 };

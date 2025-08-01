@@ -55,7 +55,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
     };
     const ecs_entity_t e = spawn_element(world, &spawn_actionbar);
     Children *children = &((Children) { 0, NULL });
-    initialize_memory_component(Children, children, ecs_entity_t, taskbar_count)
+    initialize_Children(children, taskbar_count);
     ElementSpawn spawn_frame_data = {
         .canvas = spawn_actionbar.canvas,
         .parent = {
@@ -96,7 +96,7 @@ ecs_entity_t spawn_taskbar(ecs_world_t *world, const ecs_entity_t prefab, const 
         const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
         children->value[i] = frame;
         Children *frame_children = &((Children) { 0, NULL });
-        initialize_memory_component(Children, frame_children, ecs_entity_t, 1)
+        initialize_Children(frame_children, 1);
         spawn_icon_data.parent.e = frame;
         spawn_icon_data.parent.position = spawn_frame_data.element.position;
         const ecs_entity_t icon = spawn_element(world, &spawn_icon_data);

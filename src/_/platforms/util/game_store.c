@@ -23,28 +23,26 @@ void dispose_game_store() {
 
 void unlock_achievement(const char* achievement) {
     if (is_steam_running) {
-#ifdef zox_log_achievements
-        zox_log(" > [steam] unlocking achievement [%s]\n", achievement)
-#endif
+        zox_logv(" > [steam] unlocking achievement [%s]", achievement)
         steam_unlock_achievement(achievement);
-    } else {
-        zox_log(" > [steam] cannot unlock achievement [%s]\n", achievement)
     }
 }
 
 #else
 
 void intialize_game_store() { } //  zox_log(" > game store [none]")
+
 void dispose_game_store() { }
+
 void unlock_achievement(const char* achievement) {
-#ifdef zox_log_achievements
-    zox_log(" > [none] unlocking achievement [%s]\n", achievement)
-#endif
+    zox_logv(" > [none] unlocking achievement [%s]", achievement);
 }
 
 #endif
 
 void on_boot_game_store(ecs_world_t* world, ecs_entity_t app) {
+    (void)world;
+    (void)app;
     intialize_game_store();
     // test_steam_cloud(); // idk
 }

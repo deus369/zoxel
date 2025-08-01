@@ -57,7 +57,7 @@ ecs_entity_t spawn_menu_options(
 
     SpawnListElement elements[max_labels];
     int elements_count = 0;
-    for (int i = 0; i < settings_count; i++) {
+    for (uint i = 0; i < settings_count; i++) {
         setting s = settings[i];
         // zox_log("spawning setting %s [%f] [%fx%f]", s.name, s.value_float, s.min_float, s.max_float)
         // set slider label

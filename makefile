@@ -18,10 +18,20 @@ SRC_DIR 	:= src
 SRC    		:= src/main.c
 SRCS 		:= $(shell find $(SRC_DIR) -name "*.c") # Change Detection
 CC      	:= gcc
-CFLAGS  	:= -O3 -fPIC
-CFLAGS_DEV 	:= -O0 -fPIC -g -Wall -ggdb3 -Dzox_debug # -Wextra
-LDFLAGS 	:= -lflecs -lm -lpthread -lGL -lSDL2 -lSDL2_image -lSDL2_mixer
-LDFLAGS 	+= -Dzox_sdl -Dzox_sdl_mixer -Dzox_sdl_images -Dzox_game=$(GAME)
+
+# 🧱 Release build — for speed and glory
+# 03 breaks my sounds for now
+CFLAGS      	:= -fPIC -O0 -march=native -flto=auto -DNDEBUG # 03
+
+# 🐛 Debug build — for truth and stacktraces
+CFLAGS_DEV 	:= -fPIC -O0 -g -Wall -ggdb3 -Dzox_debug # -Wextra
+CFLAGS_DEV2  	:= -Dzox_debug -O0 -fPIC -g3 -Wall -Wextra -Werror \
+			-fno-omit-frame-pointer -fdiagnostics-color=always \
+			-std=c99 -D_POSIX_C_SOURCE=200809L
+
+LDFLAGS 	:= -lflecs -lm -lpthread -lGL -lSDL2 -lSDL2_image -lSDL2_mixer \
+			-Dzox_sdl -Dzox_sdl_mixer -Dzox_sdl_images \
+			-Dzox_game=$(GAME)
 TARGET  	:= bin/$(GAME)
 TARGET_DEV 	:= bin/$(GAME)-debug
 GAMES_DIR	:= $(SRC_DIR)/nexus
@@ -55,8 +65,8 @@ clean:
 # Dev
 
 $(TARGET_DEV): $(SRCS)
-	mkdir -p bin
-	$(CC) $(CFLAGS_DEV) $(INCLUDES) $(SRC) -o $@ $(LDFLAGS)
+	@ mkdir -p bin
+	$(CC) $(CFLAGS_DEV) $(SRC) -o $@ $(LDFLAGS)
 
 dev: $(TARGET_DEV)
 
@@ -71,6 +81,9 @@ run: $(TARGET)
 
 rund: dev
 	./$(TARGET_DEV)
+
+runv: dev
+	./$(TARGET_DEV) --verbose
 
 gdb: dev
 	gdb -ex "set debuginfod enabled off" -ex run --args ./$(TARGET_DEV)

@@ -51,11 +51,6 @@ void spawn_text2D_zigels(ecs_world_t *world, SpawnZigel *data, Children *childre
         zox_log("    - deleted old_children [%i]", (old_children_length - new_children_length))
 #endif
     }
-    if (!has_old_children && new_children) {
-        total_memorys_allocated++;
-    } else if (has_old_children && !new_children) {
-        total_memorys_allocated--;
-    }
     if (has_old_children) {
         free(old_children);
     }

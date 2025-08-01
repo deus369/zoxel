@@ -19,7 +19,7 @@ zox_begin_module(GameUI)
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_menu_paused,
         .component_id = MenuPaused,
-        .texture_name = "game_icon"
+        .texture_name = "paused"
     });
 zox_end_module(GameUI)
 

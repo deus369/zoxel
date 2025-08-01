@@ -10,8 +10,9 @@
 #include "util/_.c"
 
 zox_begin_module(Sdl)
-    zox_module_dispose(dispose_apps_sdl)
     define_components_sdl(world);
+    // init
+    zox_module_dispose(dispose_apps_sdl);
     // hooks
     add_to_update_loop(update_sdl);
     add_to_post_update_loop(app_update_gpu);

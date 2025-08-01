@@ -5,7 +5,7 @@ static inline byte zoxs_get_byte(const setting s) {
 
 // limit
 byte zoxs_limit_byte(ecs_world_t* world, const char *name, byte min, byte max) {
-    for (int i = 0; i < settings_count; i++) {
+    for (uint i = 0; i < settings_count; i++) {
         setting s = settings[i];
         if (strcmp(name, s.name) == 0) {
             if (s.type == zox_data_type_byte) {
@@ -31,7 +31,8 @@ byte zoxs_limit_byte(ecs_world_t* world, const char *name, byte min, byte max) {
 // set
 
 byte zoxs_set_byte_silently(ecs_world_t *world, const char *name, byte value) {
-    for (int i = 0; i < settings_count; i++) {
+    (void) world;
+    for (uint i = 0; i < settings_count; i++) {
         setting s = settings[i];
         if (strcmp(name, s.name) == 0) {
             if (s.type == zox_data_type_byte) {
@@ -51,7 +52,7 @@ byte zoxs_set_byte_silently(ecs_world_t *world, const char *name, byte value) {
 }
 
 byte zoxs_set_byte(ecs_world_t *world, const char *name, byte value) {
-    for (int i = 0; i < settings_count; i++) {
+    for (uint i = 0; i < settings_count; i++) {
         setting s = settings[i];
         if (strcmp(name, s.name) == 0) {
             if (s.type == zox_data_type_byte) {

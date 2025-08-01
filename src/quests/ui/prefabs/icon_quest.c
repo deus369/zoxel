@@ -17,7 +17,7 @@ byte tooltip_event_quest(ecs_world_t *world, const TooltipEventData *data) {
         }
     }
     if (!used_name) {
-        sprintf(result, "[%lu] q\n", data->data);
+        sprintf(result, "[%s] q\n", zox_get_name(data->data));
     }
     set_entity_text(world, data->tooltip, result);
     return 1;

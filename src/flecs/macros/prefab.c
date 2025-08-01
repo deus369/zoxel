@@ -21,8 +21,8 @@
 #endif
 
 #define zox_prefab_set(e, T, ...) {\
-    zox_prefab_add(e, T)\
-    ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__);\
+    zox_prefab_add(e, T) \
+    ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__); \
 }
 
 // Retrieve the prefab (parent) from the entity

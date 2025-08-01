@@ -16,7 +16,7 @@ float sawtooth_wave##_##index(float time, float frequency, float pi_offset)\
 
 
 // return amplitude * (time_value * frequency - floor(time_value * frequency));
-// return amplitude * (fmod((frequency * time_value) + offset, 1.0f) * 2.0f - 1.0f);
+// return amplitude * (zox_fmod((frequency * time_value) + offset, 1.0f) * 2.0f - 1.0f);
 
 sawtooth_wave_function(0, 1.0f, 2.0f)
 sawtooth_wave_function(1, 1.0f, 4.0f)

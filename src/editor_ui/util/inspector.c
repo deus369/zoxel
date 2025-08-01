@@ -1,7 +1,5 @@
 const int inspector_component_size_buffer = 128;
 
-void add_entity_components(ecs_world_t *world, text_group_dynamic_array_d* labels) { }
-
 void button_event_clicked_inspepctor(ecs_world_t *world,
     const ecs_entity_t trigger_entity)
 {
@@ -108,7 +106,7 @@ void set_inspector_element(ecs_world_t *world, const ecs_entity_t window, const 
             text = "no name";
         }
         const int2 label_position = get_element_label_position(list_index, font_size, button_padding, button_inner_margins, parent_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
-        const ecs_entity_t list_element = spawn_button_old(world, window, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, layout_position, parent_size, canvas_size, render_disabled, button_fill);
+        const ecs_entity_t list_element = spawn_button_old(world, window, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, layout_position, parent_size, canvas_size, render_disabled);
         if (did_allocate_text) {
             free(text);
         }

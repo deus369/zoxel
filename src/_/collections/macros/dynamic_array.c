@@ -73,42 +73,15 @@ data_type* finalize_##data_type##_##array_d(data_type##_##array_d* dynamic_array
 }
 
 #define create_is_in_array_d(data_type)\
-byte is_in##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type value) {\
-    for (int i = 0; i < dynamic_array->size; i++) if (dynamic_array->data[i] == value) return 1;\
+\
+byte is_in##_##data_type##_##array_d( \
+    data_type##_##array_d* dynamic_array, \
+    const data_type value) \
+{\
+    for (size_t i = 0; i < dynamic_array->size; i++) {\
+        if (dynamic_array->data[i] == value) {\
+            return 1;\
+        }\
+    }\
     return 0;\
 }
-
-/*
-
-*/
-/*
-#define finalize_dynamic_array(name, data_type, data_type##_##array_d* dynamic_array)\
-data_type* return##_##name = finalize##_##data_type##_##array_d(dynamic_array);\
-if (return##_##name) {\
-    total_memorys_allocated++;\
-    name##_##memorys_allocated++;\
-}\
-return return##_##name;
-*/
-
-
-/*
-data_type* finalize##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array) {\
-    if (dynamic_array->size == 0) {\
-        dispose##_##data_type##_##array_d(dynamic_array);\
-        return NULL;\
-    } else if (dynamic_array->size == dynamic_array->capacity) {\
-        data_type* data = dynamic_array->data;\
-        total_memorys_allocated++;\
-        triangles_count += dynamic_array->size / 3;\
-        free(dynamic_array);\
-        return data;\
-    } else {\
-        data_type* data = realloc(dynamic_array->data, dynamic_array->size * sizeof(data_type));\
-        free(dynamic_array);\
-        total_memorys_allocated++;\
-        triangles_count += dynamic_array->size / 3;\
-        return data;\
-    }\
-}
-*/

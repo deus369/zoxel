@@ -9,4 +9,5 @@ void dispose_apps_sdl(ecs_world_t *world, void *ctx) {
     // dispose_sdl_cursor();
     close_sdl_input();
     close_sdl_video();
+    // dispose_mixer_pool();
 }

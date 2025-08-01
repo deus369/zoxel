@@ -10,6 +10,8 @@ ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     return e;
 }
 
+byte zox_log_sdl_window = 1;
+
 ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     const char* name,
     const byte fullscreen,
@@ -21,13 +23,19 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     int2 size = fullscreen ? screen_size : size_restore;
     // calculate position
     int2 position = calculate_monitor_position(monitor, 1, size_restore);
+
     byte flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
     if (fullscreen) {
         flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP;
+#if zox_windows
+        SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
+        SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
+#endif
         if (maximized) {
             flags = flags | SDL_WINDOW_MAXIMIZED;
         }
     }
+
     SDL_Window* sdl_window = create_sdl_window(position, size, name, flags);
     if (!sdl_window) {
         zox_log_error(" opengl did not create sdl_window, exiting zoxel")
@@ -52,12 +60,14 @@ ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     zox_set(e, WindowMonitor, { monitor })
 
     // debugs
-    zox_log_sdl("+ spawned window !")
-    zox_log_sdl("   - position [%ix%i]", position.x, position.y)
-    zox_log_sdl("   - size [%ix%i]", size.x, size.y)
-    zox_log_sdl("   - fullscreen [%i]", fullscreen)
-    zox_log_sdl("   - maximized [%i]", maximized)
-    zox_log_sdl("   - monitor [%i]", monitor)
+    if (zox_log_sdl_window) {
+        zox_log("+ spawned window !")
+        zox_log("   - position [%ix%i]", position.x, position.y)
+        zox_log("   - size [%ix%i]", size.x, size.y)
+        zox_log("   - fullscreen [%i]", fullscreen)
+        zox_log("   - maximized [%i]", maximized)
+        zox_log("   - monitor [%i]", monitor)
+    }
 
     return e;
 }

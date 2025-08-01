@@ -11,7 +11,6 @@ void DestroyInTimeSystem(ecs_iter_t *it) {
         }
         destroyInTime->value -= delta_time;
         if (destroyInTime->value <= 0) {
-            // zox_log("+ [%s] deleting [%lu]", zox_get_name(e), e)
             zox_delete(e)
         }
     }

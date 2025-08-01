@@ -50,12 +50,12 @@ ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
     Children *children = &((Children) { 0, NULL });
     TextData *textData = &((TextData) { 0, NULL });
     const int zext_data_length = data->zext.text != NULL ? strlen(data->zext.text) : 0;
-    initialize_memory_component(TextData, textData, byte, zext_data_length)
+    initialize_TextData(textData, zext_data_length);
     for (int i = 0; i < textData->length; i++) {
         textData->value[i] = convert_ascii(data->zext.text[i]);
     }
     const int zigels_count = calculate_total_zigels(textData->value, textData->length);
-    initialize_memory_component(Children, children, ecs_entity_t, zigels_count)
+    initialize_Children(children, zigels_count);
     const int2 pixel_size = calculate_zext_size(textData->value, textData->length, data->zext.font_size, data->zext.padding, default_line_padding);
     SpawnZigel spawn_data = {
         .canvas = data->canvas,

@@ -70,14 +70,16 @@ void save_texture_as_png(const color *data, const int2 size, const char *filepat
 
 #endif
 
-void load_app_icon(SDL_Window* window, const char *icon_path) {
-#ifndef zox_disable_io
+byte load_app_icon(SDL_Window* window, const char *icon_path) {
+#ifndef zox_disable_ioe
     SDL_Surface *surface = load_png_as_surface(icon_path);
-    if (surface == NULL) {
-        zox_log(" ! failed to load app icon [%s]\n", icon_path);
-    } else  {
+    if (surface) {
         SDL_SetWindowIcon(window, surface);
         SDL_FreeSurface(surface);
+    } else {
+        zox_log_error("Failed to load app icon [%s]\n", icon_path);
     }
+    return surface != NULL;
 #endif
+    return 1;
 }

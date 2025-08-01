@@ -148,7 +148,4 @@ void build_node_mesh_colors(
     meshIndicies->value = finalize_int_array_d(indicies);
     meshVertices->value = finalize_float3_array_d(vertices);
     meshColorRGBs->value = finalize_color_rgb_array_d(color_rgbs);
-    on_memory_component_created(meshIndicies, MeshIndicies)
-    on_memory_component_created(meshVertices, MeshVertices)
-    on_memory_component_created(meshColorRGBs, MeshColorRGBs)
 }

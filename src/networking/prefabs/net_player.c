@@ -1,5 +1,3 @@
-ecs_entity_t prefab_net_player;
-
 ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("net_player")
@@ -11,12 +9,16 @@ ecs_entity_t spawn_prefab_net_player(ecs_world_t *world) {
     zox_prefab_add(e, TargetNetAddress)
     zox_prefab_add(e, TargetNetPort)
     zox_prefab_set(e, SocketLink, { -1 })
-    prefab_net_player = e;
     return e;
 }
 
-ecs_entity_t spawn_net_player(ecs_world_t *world, int port, byte4 target_ip, int target_port) {
-    zox_instance(prefab_net_player)
+ecs_entity_t spawn_net_player(ecs_world_t *world,
+    ecs_entity_t prefab,
+    int port,
+    byte4 target_ip,
+    int target_port)
+{
+    zox_instance(prefab)
     zox_name("net_player")
     zox_set(e, NetPort, { port })
     zox_set(e, TargetNetAddress, { target_ip })

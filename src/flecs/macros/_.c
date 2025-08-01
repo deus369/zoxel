@@ -19,3 +19,4 @@
 #include "filters.c"
 #include "entities.c"
 #include "query.c"
+#include "hooks.c"

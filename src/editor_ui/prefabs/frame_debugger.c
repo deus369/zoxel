@@ -40,7 +40,7 @@ ecs_entity_t spawn_frame_debugger_ui(
     // zox_get_muter(e, Children, children)
 
     Children children = (Children) { };
-    initialize_memory_component(Children, (&children), ecs_entity_t, children_count)
+    initialize_Children(&children, children_count);
 
     if (is_header) {
         children.value[0] = spawn_header(world, e, canvas, header_position, header_size, header_anchor, header_label, font_size, header_margins, header_layer, canvas_position, pixel_size, is_close_button, canvas_size);

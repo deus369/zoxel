@@ -1,6 +1,4 @@
-void StayUprightSystem(ecs_iter_t *it) {
-    return;
-/*
+/*void StayUprightSystem(ecs_iter_t *it) {
     const float kP = 3.5f;              // a bit stronger correction
     const float kD = 1.0f;              // stronger damping for snappy response
     const float max_upright_torque = 10.0f;
@@ -57,5 +55,6 @@ void StayUprightSystem(ecs_iter_t *it) {
         float4 torque_quat_z = quaternion_from_axis_angle((float3) {0, 0, 1}, torque.z);
         alpha->value = quaternion_rotate(alpha->value, torque_quat_z);
 
-    }*/
+    }
 } zox_declare_system(StayUprightSystem)
+*/

@@ -8,6 +8,40 @@ byte has_loaded = 0;
 static const char* get_settings_file(const char *app_name) {
     static char final_path[2048];
     char base_path[1024];
+    const char* home = getenv("HOME");
+#if zox_windows
+    const char* appdata = getenv("APPDATA");
+    if (appdata && *appdata) {
+        // Windows preferred: %APPDATA%\<appname>
+        snprintf(base_path, sizeof(base_path), "%s%c%s", appdata, char_slash, app_name);
+    } else if (home && *home) {
+        // Fallback: C:\Users\<user>\AppData\Roaming\<appname>
+        snprintf(base_path, sizeof(base_path), "%s%cAppData%cRoaming%c%s",
+                 home, char_slash, char_slash, char_slash, app_name);
+    } else {
+        strcpy(base_path, ".");
+    }
+    mkdir(base_path);
+#else
+    const char* xdg = getenv("XDG_CONFIG_HOME");
+    if (xdg && *xdg) {
+        snprintf(base_path, sizeof(base_path), "%s%c%s", xdg, char_slash, app_name);
+    } else if (home && *home) {
+        snprintf(base_path, sizeof(base_path), "%s%c.config%c%s", home, char_slash, char_slash, app_name);
+    } else {
+        strcpy(base_path, ".");
+    }
+    mkdir(base_path, 0755);
+#endif
+
+    snprintf(final_path, sizeof(final_path), "%s%csettings.cfg", base_path, char_slash);
+    return final_path;
+}
+
+
+/*static const char* get_settings_file(const char *app_name) {
+    static char final_path[2048];
+    char base_path[1024];
     const char* xdg = getenv("XDG_CONFIG_HOME");
     const char* home = getenv("HOME");
     if (xdg && *xdg) {
@@ -24,21 +58,22 @@ static const char* get_settings_file(const char *app_name) {
 #endif
     snprintf(final_path, sizeof(final_path), "%s/settings.cfg", base_path);
     return final_path;
-}
+}*/
 
 // Save all settings to disk as simple "name:type:value\n"
 void save_settings() {
     if (!has_loaded) {
-        // zox_log_error(" Trying to save before loaded...")
+        // zox_log_warning("Cannot save before loaded...")
         return;
     }
     const char* app_name = settings_game_name;
-    const char* fn = get_settings_file(app_name);
-    FILE* f = fopen(fn, "w");
+    const char* filepath = get_settings_file(app_name);
+    FILE* f = fopen(filepath, "w");
     if (!f) {
-        zox_log_error("failed to open settings file [%s]: %s", fn, strerror(errno))
+        zox_log_error("failed to open settings file [%s]: %s", filepath, strerror(errno))
         return;
     }
+    zox_logv("Saving Settings to [%s]", filepath);
     for (uint i = 0; i < settings_count; i++) {
         setting s = settings[i];
         switch (s.type) {
@@ -65,12 +100,13 @@ void save_settings() {
     }
     fclose(f);
     if (is_log_settings_io) {
-        zox_log("> saved %u settings to %s", settings_count, fn)
+        zox_log("> saved %u settings to %s", settings_count, filepath)
     }
 }
 
 // Load and apply each setting, firing on_set as needed
 extern const char* game_name;
+
 void load_files_settings(ecs_world_t* world) {
     const char* app_name = game_name;
     settings_game_name = app_name;
@@ -78,9 +114,8 @@ void load_files_settings(ecs_world_t* world) {
     zox_logv("  - Loading Files Settings [%s]", fn);
     FILE* f = fopen(fn, "r");
     if (!f) {
-        if (is_log_settings_io) {
-            zox_log("> no settings file at %s, skipping load", fn)
-        }
+        zox_logv("      - No settings File Found.");
+        has_loaded = 1;
         return;
     }
     char line[1024];
@@ -113,8 +148,5 @@ void load_files_settings(ecs_world_t* world) {
         }
     }
     fclose(f);
-    if (is_log_settings_io) {
-        zox_log("> loaded settings from %s", fn)
-    }
     has_loaded = 1;
 }

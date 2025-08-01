@@ -132,9 +132,6 @@ void GameDebugLabelSystem(ecs_iter_t *it) {
         if (test_read_byte != 255)
                 buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, "cloud data [%i]\n", test_read_byte);
 #endif
-#ifdef zox_debug_ui_memorys_allocated
-        buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " memorys [%i]", total_memorys_allocated);
-#endif
 #ifdef zox_debug_ui_terrain_chunks
         buffer_index += snprintf(buffer + buffer_index, buffer_size - buffer_index, " terrain [%i]", get_terrain_chunks_count(it->world));
 #endif

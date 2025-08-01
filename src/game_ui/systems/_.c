@@ -9,11 +9,11 @@ void define_systems_game_ui(ecs_world_t *world) {
             [out] texts.ZextDirty,
             [out] FPSDisplayTicker,
             [none] FPSDisplay)
-    zox_system(QuadsLabelSystem, EcsOnUpdate,
+    /*zox_system(QuadsLabelSystem, EcsOnUpdate,
             [out] QuadsCount,
             [out] texts.ZextDirty,
             [out] texts.TextData,
-            [none] QuadsCountLabel)
+            [none] QuadsCountLabel)*/
     zox_system(DebugLabelSystem, EcsOnStore,
             [in] players.PlayerLink,
             [in] DebugLabelData,

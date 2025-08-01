@@ -14,10 +14,10 @@ void define_systems_players2(ecs_world_t *world) {
     zox_system(QolShortcutsSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [none] players.Player)
-    zox_system(PlayerShortcutsSystem, EcsOnUpdate,
+    /*zox_system(PlayerShortcutsSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [in] games.GameLink,
-            [none] players.Player)
+            [none] players.Player)*/
     // zox_pipelines_pre_render
     zox_system_1(PlayerPauseSystem, EcsPreStore,
             [in] inputs.DeviceLinks,
@@ -50,10 +50,10 @@ void define_systems_players2(ecs_world_t *world) {
             [out] actions.ActionLinks,
             [out] characters.TriggerActionB)
 #endif
-    zox_system_1(PlayerTestSystem, EcsPreStore,
+    /*zox_system_1(PlayerTestSystem, EcsPreStore,
             [in] inputs.DeviceLinks,
             [in] elements.core.CanvasLink,
-            [none] players.Player)
+            [none] players.Player)*/
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
             [in] cameras.CameraLink,
             [in] chunks3.VoxLink,

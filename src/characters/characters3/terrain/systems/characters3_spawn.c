@@ -152,14 +152,11 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             add_to_EntityLinks(entityLinks, character);
 
             zox_log_spawning("+ npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
-            // zox_log("+ spawned npc at [%ix%ix%i]", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
             zox_stats_characters++;
         }
 
         if (entityLinks->length >= 1) {
             zox_log_spawning("+ characters spawned [%i] at [%ix%ix%i]", entityLinks->length, chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
-            // zox_log("+ [%lu] spawned [%i]", e, entityLinks->length)
-            // zox_log("- spawned characters [%i] out of [%i]", entityLinks->length, zox_stats_characters)
         }
 
         charactersSpawned->value = 1;

@@ -1,5 +1,6 @@
 #include "entities_child.c"
-#include "memory_component.c"
-#include "hashmap_component.c"
+#include "entities.c"
+#include "arrayd.c" // dynamic array
+#include "hashmap.c"
 #include "link.c"
 #include "array.c"

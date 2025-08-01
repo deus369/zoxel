@@ -1,79 +1,23 @@
-// profiling: make build/dev && make run-dev-profiler
-//todo: move our library wrappers to top of stack here:
-//  flecs, sdl, opengl, etc
-
+#ifndef zox_game
+    #define zox_game zoxel
+#endif
+#define str_macro(x) #x
+#define inc_nexus_game(x) str_macro(nexus/x/_.c)
+#define zox_nexus_game inc_nexus_game(zox_game)
+#define zox_glitch_fix_hierarchy_labels
+#define zox_set_camera_firstperson
+#define zoxel_time_main_loop_cutoff 33.33f
+#define zox_disable_mouse_constraint
+#define zox_disable_gamepad_stick_as_any_input // used for samsung phone, it's buggy af
+#define zox_disable_gamepad_deadzones
+// #define zox_disable_post_processing
 // release defines
-// can we check if debug here?
 #ifndef zox_debug
     #define zox_disable_names
     #define zox_disable_logs
 #endif
 
-// Platforms
-#ifdef zox_windows
-    #define max_args 64
-    #define max_arg_len 256
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #include <shellapi.h>
-#endif
-#ifdef zox_web
-    #include <emscripten.h>
-#endif
-#ifdef zox_android
-    #include <android/log.h>
-    #include <android/asset_manager.h>
-    #include <android/asset_manager_jni.h>
-    #include <SDL2/SDL_system.h>
-    #include <sys/types.h>
-#endif
-
-// Libraries
-#include "_.c" // defines our platform things too
-// core includes
-#include <signal.h>     // used for detecting cancel
-#include <stdlib.h>     // for malloc & free
-#include <stdio.h>      // just for sprintf and perror
-#include <stdint.h>     // for ints?
-// Memory Copies and Strlen!
-#include <string.h>
-// for thread locks in memory management - pthread_rwlock_init
-#include <pthread.h>
-// math module
-#include <math.h>
-#include <float.h>
-// time module
-#include <time.h>
-// # Pathing #
-// for DIR, readdir, closedir etc
-#include <dirent.h>
-// for pathing - can we do without?
-#include <sys/stat.h>   // pathing
-// used in pathing, doing funky stuff??
-#include <unistd.h>
-// also used in pathing - ENOENT
-// and networking - EWOULDBLOCK
-#include <errno.h>
-//! Included Libraries for App
-#ifndef zox_disable_logs
-    #include <stdarg.h>
-#endif
-
-// SDL2 & OpenGL
-#define GL_GLEXT_PROTOTYPES
-#include <SDL2/SDL.h>
-#ifdef zox_windows
-    #include <GL/glew.h>
-#endif
-#include <SDL2/SDL_opengl.h>
-#ifdef zox_sdl_images
-    #include <SDL2/SDL_image.h>
-#endif
-#ifdef zox_vulkan
-    #include <SDL2/SDL_vulkan.h>
-    #include <vulkan/vulkan.h>
-    #include <vulkan/vulkan_wayland.h>
-#endif
+#include "includes.c"
 
 // engine modules
 #include "_/logs/_.c"
@@ -273,50 +217,62 @@ int main(int argc, char* argv[]) {
         zox_log_error("[initialize_ecs] failed")
         return EXIT_FAILURE;
     }
+
     zox_logv("Loading Modules");
     zox_import_module(Zox)
     zox_import_module(ZoxGame)
+
     zox_logv("Running Terminal Commands");
     run_hook_terminal_command(world, argv, argc);
+
     zox_logv("Initialize Pathing");
     if (initialize_pathing() == EXIT_FAILURE) {
         zox_log_error("Pathing Setup Failed.")
         return EXIT_FAILURE;
     }
+
     zox_logv("Initializing ECS Settings");
     initialize_ecs_settings(world);                 // sets ecs threads
+
+    // sound file loading needs mixer
+    zox_logv("Initializing Sounds");
+    initialize_sounds(world);                       // starts sdl mixer etc
+
+    // loads all our files
+    zox_logv("Loading Files All");
+    run_hook_files_load(world);
+
     zox_logv("Initializing SDL Video");
     if (initialize_sdl_video(world) == EXIT_FAILURE) {
         zox_log_error("[initialize_sdl_video] failed")
         dispose_zox(world);
         return EXIT_FAILURE;
     }
+
     // spawn app (creates our opengl context too)
     zox_logv("Spawning SDL Window");
     ecs_entity_t app = !headless ? spawn_window_opengl_with_icon(world) : 0;
+
     // inits glew on windows
     zox_logv("Initializing Rendering");
     initialize_rendering(world, render_backend);
+
     zox_logv("Initializing Glew");
     if (zox_init_glew() == EXIT_FAILURE) {
         zox_log_error("[initialize_rendering] failed")
         dispose_zox(world);
         return EXIT_FAILURE;
     }
-    zox_logv("Initializing Sounds");
-    initialize_sounds(world);                       // starts sdl mixer etc
+
     if (!headless && !app) {
         zox_log_error("[engine_spawn_window] failed")
         dispose_zox(world);
         return EXIT_FAILURE;
     }
 
-    // loads all our files
-    zox_logv("Loading Files All");
-    run_hook_files_load(world);
-
     // black screen if no shaders btw
     zox_logv("Procecssing Shaders");
+    load_files_shaders(world);          // this needs to use render gpu data atm (we append ubo on)
     process_shaders(world); // we should process them after loaded?
 
     // always have realm and game
@@ -326,6 +282,7 @@ int main(int argc, char* argv[]) {
     zox_set(app, RealmLink, { realm });
     zox_set(app, GameLink, { game });
 
+    // Yet another Hook
     zox_logv("Running our Boot Hook");
     run_hook_on_boot(world, app);
     if (boot_event && boot_event(world, app) == EXIT_FAILURE) {

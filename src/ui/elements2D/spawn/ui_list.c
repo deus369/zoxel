@@ -91,7 +91,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
         position2D,
         pixel_position_global);
     Children *children = &((Children) { 0, NULL });
-    initialize_memory_component(Children, children, ecs_entity_t, children_length)
+    initialize_Children(children, children_length);
     if (is_header) {
         const int2 header_size = (int2) { pixel_size.x, header_height };
         const int2 header_position = (int2) { 0, header_height / 2 };

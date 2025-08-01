@@ -12,6 +12,6 @@ ecs_entity_t spawn_character3_player(ecs_world_t *world,
     zox_set(e, PlayerLink, { spawn_data.player })
     zox_set(e, CameraLink, { camera })
     zox_set(spawn_data.player, CharacterLink, { e })
-    attach_camera_to_character(world, spawn_data.player, camera, e);
+    attach_camera_to_character(world, camera, e);
     return e;
 }

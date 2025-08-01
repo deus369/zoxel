@@ -42,7 +42,7 @@ void RotateTowardsSystem(ecs_iter_t *it) {
         float desiredYaw = atan2f(lookDir.x, lookDir.z);
         float currentYaw = quaternion_to_euler_y2(rotation->value);
         float rawErr     = desiredYaw - currentYaw;
-        // float yawErr     = fmodf(rawErr + M_PI, 2.0f * M_PI) - M_PI;
+        // float yawErr     = zox_fmod(rawErr + M_PI, 2.0f * M_PI) - M_PI;
         float yawErr = wrap_angle(rawErr);
 
         // 3) Angular velocity around Y axis (yaw rate)

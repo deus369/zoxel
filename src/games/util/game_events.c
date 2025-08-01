@@ -13,7 +13,11 @@ void add_to_event_game_state(zox_game_event funn) {
     add_to_zox_game_event_array_d(game_state_event, funn);
 }
 
-void trigger_event_game(ecs_world_t* world, const ecs_entity_t game, const byte old_game_state, const byte new_game_state) {
+void trigger_event_game(ecs_world_t* world,
+    const ecs_entity_t game,
+    const byte old_game_state,
+    const byte new_game_state)
+{
     for (int i = 0; i < game_state_event->size; i++) {
         if (game_state_event->data[i].value) (*game_state_event->data[i].value)(world, game, old_game_state, new_game_state);
     }

@@ -11,7 +11,7 @@ void handle_segfault(int sig) {
 }
 
 void handle_terminal_close(int sig) {
-    zox_log("...")
+    zox_log("...[%i]", sig)
     zox_log("# SOOooo you wanna deffffyyy my orders? heh..")
     zox_log("*ominous noises*")
     engine_end();

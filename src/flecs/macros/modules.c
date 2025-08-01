@@ -19,9 +19,16 @@
     /* end timings here */\
 }
 
-void zox_debug_module(ecs_world_t *world, const char *name, const ecs_entity_t module_type) {
+void zox_debug_module(ecs_world_t *world,
+    const char *name,
+    const ecs_entity_t module_type)
+{
 #ifdef zox_debug_modules
     zox_log(" + module [%s] > [%s]\n", name, zox_get_name(module_type))
+#else
+    (void)world;
+    (void)name;
+    (void)module_type;
 #endif
 }
 

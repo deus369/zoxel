@@ -1,5 +1,5 @@
 void initialize_flecs_profiler(ecs_world_t* world) {
-    #ifdef zox_using_profiler
+#ifdef zox_using_profiler
     //zox_log("+ flecs profiler enabled\n")
     zox_import_module(FlecsRest)
     zox_import_module(FlecsMonitor)
@@ -8,5 +8,7 @@ void initialize_flecs_profiler(ecs_world_t* world) {
     ecs_log_set_level(0);
     ecs_measure_frame_time(world, true);
     ecs_measure_system_time(world, true);
-    #endif
+#else
+    (void) world;
+#endif
 }

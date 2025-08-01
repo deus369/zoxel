@@ -12,7 +12,11 @@ void SoundPlayRefSystem(ecs_iter_t *it) {
         if (triggerSound->value == zox_sound_play_run) {
             if (soundDataRef->value) {
                 zox_log("+ playing sound ref")
-                sdl_play_sound(soundDataRef->value, soundDataRef->length, channels, mixer_audio_volume);
+                sdl_play_sound(
+                    soundDataRef->value,
+                    soundDataRef->length,
+                    channels,
+                    mixer_audio_volume);
             }
         }
     }

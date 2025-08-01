@@ -6,7 +6,9 @@
 #include "util/system.c"
 #include "systems/game_debug_label_system.c"
 
-void dispose_debug(ecs_world_t *world, void *ctx) {
+void dispose_debug(ecs_world_t* world, void* ctx) {
+    (void) world;
+    (void) ctx;
     dispose_amd();
 }
 

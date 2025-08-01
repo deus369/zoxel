@@ -3,8 +3,11 @@ extern ecs_entity_t prefab_character3_instanced_npc;
 extern ecs_entity_t prefab_character3_skeleton_npc;
 
 void spawn_realm_characters(ecs_world_t *world, ecs_entity_t e) {
+    if (!zox_valid(e)) {
+        return;
+    }
     if (!zox_has(e, CharacterLinks)) {
-        zox_log_error("realm does not have CharacterLinks [%lu]", e)
+        zox_log_error("realm does not have CharacterLinks [%s]", zox_get_name(e))
         return;
     }
     // zox_get_muter(e, StatLinks, stats)

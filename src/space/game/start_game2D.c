@@ -1,7 +1,9 @@
 // todo: put this as a hook in game module
-extern ecs_entity_t spawn_character2_player(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t camera);
+extern ecs_entity_t spawn_character2_player(ecs_world_t *world, const ecs_entity_t prefab);
 
-void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) {
+void player_start_game2D_delayed(ecs_world_t *world,
+    const ecs_entity_t player)
+{
     zox_geter_value(player, CameraLink, ecs_entity_t, camera)
     // set camera2D data
     zox_add_tag(camera, CameraFollower2)
@@ -11,8 +13,7 @@ void player_start_game2D_delayed(ecs_world_t *world, const ecs_entity_t player) 
     zox_set(camera, EternalRotation, { float4_identity })
     // spawn character
     const ecs_entity_t character = spawn_character2_player(world,
-        prefab_start_game2D_player,
-        camera);
+        prefab_start_game2D_player);
     // character-camera
     zox_set(character, CameraLink, { camera })
     zox_set(camera, CharacterLink, { character })

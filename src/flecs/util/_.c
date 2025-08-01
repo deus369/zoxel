@@ -7,3 +7,4 @@
 #include "profiler.c"
 #include "threads.c"
 #include "engine.c"
+#include "find.c"

@@ -154,7 +154,7 @@ byte raycast_voxel_node(
                     zox_log("2 ### Hit [%s]: cray [%f] < vray [%f]?", zox_get_name(data->chunk), closest_t, ray_distance)
                 }*/
             }
-            position_local = get_local_position_byte3(position_global, chunk_position, chunk_size_b3);
+            position_local = get_local_position_byte3(position_global, chunk_size_b3);
         } else {
             if (int3_in_bounds(position_global, chunk_size)) {
                 position_local = int3_to_byte3(position_global);

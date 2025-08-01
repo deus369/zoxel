@@ -38,7 +38,7 @@ void UnstuckSystem(ecs_iter_t *it) {
         const byte3 chunk_dimensions_b3 = int3_to_byte3(chunk_dimensions);
         // positions
         const int3 voxel_position = real_position_to_voxel_position(point, node_depth);
-        byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_position, chunk_dimensions_b3);
+        byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_dimensions_b3);
         // voxel
         const byte voxel = get_sub_node_voxel(node, &voxel_position_local, node_depth);
         if (!voxel || !colliders[voxel]) {
