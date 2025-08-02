@@ -1,4 +1,9 @@
 byte optimize_generation_lods = 0;
+define_fun_stopwatch(time_grassy_plains, 0);
+byte disable_biomes = 1;
+byte disable_top_placements = 0;
+byte disable_dirt_patches = 1;
+byte disable_grass_placements = 1;
 
 // generates our terrain voxels
 void GrassyPlainsSystem(ecs_iter_t *it) {
@@ -31,6 +36,9 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         if (!node_depth) {
             continue;
         }
+
+        startwatch(time_grassy_plains);
+
         nodeDepth->value = node_depth;
         const byte chunk_voxel_length = powers_of_two_byte[node_depth];
         const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
@@ -64,17 +72,11 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             .voxel = zox_block_vox_grass,
             .effect_nodes = 1
         };
-        /*const SetVoxelTargetData datam_flower = {
-            .depth = node_depth,
-            .voxel = zox_block_vox_flower,
-            .effect_nodes = 1
-        };
-        const SetVoxelTargetData datam_rubble = {
-            .depth = node_depth,
-            .voxel = zox_block_dirt_rubble,
-            .effect_nodes = 1
-        };*/
+        // zox_block_vox_flower
+        // zox_block_dirt_rubble
         fill_new_octree(voxelNode, 0, node_depth);
+        // fill_new_octree(voxelNode, 0, 0);
+        tapwatch(time_grassy_plains, "fill_new_octree");
 
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
@@ -84,18 +86,23 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         byte3 voxel_position;
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
+
                 const float nposition_x = noise_positiver2 + chunk_position_float3.x + (voxel_position.x / map_size_f.x);
                 const float nposition_z = noise_positiver2 + chunk_position_float3.z + (voxel_position.z / map_size_f.y);
 
                 const double mountain_amplifier = 2;
-                const double mountain_noise = (perlin_terrain(
-                    nposition_x,
-                    nposition_z,
-                    0.002,
-                    seed,
-                    3) + 1.0) / 2.0;
-                const byte is_mountain = mountain_noise >= 0.6; // biome == zox_biome_mountain
+                byte is_mountain = 0;
+                if (!disable_biomes) {
+                    const double mountain_noise = (perlin_terrain(
+                        nposition_x,
+                        nposition_z,
+                        0.002,
+                        seed,
+                        3) + 1.0) / 2.0;
+                        is_mountain = mountain_noise >= 0.6; // biome == zox_biome_mountain
+                }
 
+                // our height calc
                 const double height_frequency = is_mountain ? terrain_frequency * mountain_amplifier : terrain_frequency;
                 const double height_amplifier = is_mountain ? terrain_amplifier * mountain_amplifier : terrain_amplifier;
                 const double perlin_value = height_amplifier * perlin_terrain(
@@ -104,43 +111,52 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     height_frequency,
                     seed,
                     terrain_octaves);
+
+
                 const int global_position_y = int_floorf(terrain_boost + -terrain_minus_amplifier + perlin_value);
                 const int local_height_raw = global_position_y - chunk_position_y;
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
+
+
                 byte did_place_grass_top = 0;
                 if (local_height >= 0) {
                     for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
                         data.position = voxel_position;
                         // top blocks
-                        if (voxel_position.y  == local_height_raw) {
+                        if (!disable_top_placements && voxel_position.y  == local_height_raw) {
                             if (is_mountain) {
-                                set_voxel(&datam_stone, data);
+                                set_voxel(datam_stone, data);
                             } else {
                                 if (global_position_y < sand_height) {
-                                    set_voxel(&datam_sand, data);
+                                    set_voxel(datam_sand, data);
                                 } else if (global_position_y == sand_height) {
-                                    set_voxel(&datam_dirt, data);
+                                    set_voxel(datam_dirt, data);
                                 } else {
-                                    const double place_value = (perlin_terrain(
-                                        nposition_x,
-                                        nposition_z,
-                                        0.16,
-                                        seed * 2,
-                                        4) + 1.0) / 2.0;
-                                    if (place_value <= 0.73) {
-                                        set_voxel(&datam_dirt_grass, data);
-                                        did_place_grass_top = 1;
+                                    if (!disable_dirt_patches) {
+                                        set_voxel(datam_dirt_grass, data);
                                     } else {
-                                        set_voxel(&datam_dirt, data);   // reverse add dirt patches
+                                        const double place_value = (perlin_terrain(
+                                            nposition_x,
+                                            nposition_z,
+                                            0.16,
+                                            seed * 2,
+                                            4) + 1.0) / 2.0;
+                                        if (place_value <= 0.73) {
+                                            set_voxel(datam_dirt_grass, data);
+                                            did_place_grass_top = 1;
+                                        } else {
+                                            set_voxel(datam_dirt, data);   // reverse add dirt patches
+                                        }
                                     }
                                 }
                             }
                         } else {
-                            set_voxel(&datam_stone, data);
+                            set_voxel(datam_stone, data);
                         }
                     }
                 }
-                if (!disable_block_vox_generation &&
+                if (!disable_grass_placements &&
+                    !disable_block_vox_generation &&
                     !is_mountain &&
                     did_place_grass_top &&
                     local_height_raw + 1 >= 0 &&
@@ -162,7 +178,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     if (place_grass) {
                         voxel_position.y = local_height_raw + 1;
                         data.position = voxel_position;
-                        set_voxel(&datam_grass, data);
+                        set_voxel(datam_grass, data);
                     }
 
                     // place_value + place_value2 * 0.1 <= 0.33) {
@@ -190,12 +206,18 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     for (voxel_position.y = 0; voxel_position.y <= obsidian_height; voxel_position.y++) {
                         data.position = voxel_position;
                         data.position = voxel_position;
-                        set_voxel(&setter_obsidian, data);
+                        set_voxel(setter_obsidian, data);
                     }
                 }
             }
         }
+        tapwatch(time_grassy_plains, "mass set_voxels");
+
         cleanup_nodes(world, voxelNode);
+        tapwatch(time_grassy_plains, "cleanup_nodes");
+
+        endwatch(time_grassy_plains, "grassy_plains");
+
         update_count++;
         voxelNodeDirty->value = zox_dirty_trigger;
     }

@@ -47,9 +47,9 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
                     for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
                         data.position = voxel_position;
                         if (voxel_position.y  == local_height_raw) {
-                            set_voxel(&datam_grass, data);
+                            set_voxel(datam_grass, data);
                         } else {
-                            set_voxel(&datam_dirt, data);
+                            set_voxel(datam_dirt, data);
                         }
                     }
                 }

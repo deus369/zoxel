@@ -111,8 +111,8 @@ void zoxel_debug_keys() {
 }
 
 void zox_set_terrain_settings() {
+    render_distance_y = 1;
     // terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 2;
 }
 
 zox_begin_module(ZoxGame)
@@ -153,6 +153,7 @@ zox_begin_module(ZoxGame)
     hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
     // world gen
+    terrain_frequency = 0.162216;
     // block_spawn_chance_grass = 1600; //  512 | 1024 | 2048 | 3000
     menu_sky_color = color_rgb_grayscale(15);
     menu_sky_bottom_color = menu_sky_color;

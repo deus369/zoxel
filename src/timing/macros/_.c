@@ -9,7 +9,7 @@
     double start_total = get_time_ms(); \
     double start = get_time_ms(); \
     if (zox_##name) { \
-        zox_log("-> Stopwatch Started [%s]: %.01fms", #name, start_total); \
+        zox_log("-> Stopwatch Started [%s]", #name); \
     }
 
 #define tapwatch(name, label)\

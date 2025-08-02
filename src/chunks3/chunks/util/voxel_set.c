@@ -49,9 +49,10 @@ void fill_octree(VoxelNode* node, const byte voxel, byte depth) {
     }
 }
 
-VoxelNode* set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
-    byte depth_reached = data.depth == datam->depth;
-    if (datam->effect_nodes && !depth_reached && is_closed_VoxelNode(data.node)) {
+// recursive set_voxel
+VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
+    byte depth_reached = data.depth == datam.depth;
+    if (datam.effect_nodes && !depth_reached && is_closed_VoxelNode(data.node)) {
         open_new_VoxelNode(data.node);
         VoxelNode* kids = get_children_VoxelNode(data.node);
         for (byte i = 0; i < octree_length; i++) {
@@ -59,13 +60,13 @@ VoxelNode* set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
         }
     }
     // wait this overrides child nodes, rather than reevaluating them
-    if (depth_reached || datam->voxel) {
-        data.node->value = datam->voxel;
+    if (depth_reached || datam.voxel) {
+        data.node->value = datam.voxel;
     }
     if (depth_reached || !has_children_VoxelNode(data.node)) {
         return data.node;
     }
-    const byte dividor = powers_of_two_byte[datam->depth - data.depth - 1]; // difference LoD
+    const byte dividor = powers_of_two_byte[datam.depth - data.depth - 1]; // difference LoD
     byte3 node_position = (byte3) { data.position.x / dividor, data.position.y / dividor, data.position.z / dividor };
     byte3_modulus_byte(&data.position, dividor);
     VoxelNode* kids = get_children_VoxelNode(data.node);
@@ -77,7 +78,7 @@ VoxelNode* set_voxel(const SetVoxelTargetData *datam, SetVoxelData data) {
 void set_octree_voxel(VoxelNode *node, byte3 *position, const byte2 *set_octree_data, byte depth) {
     const SetVoxelTargetData datam = { .depth = set_octree_data->y, .voxel = set_octree_data->x };
     SetVoxelData data = { .node = node, .position = *position, .depth = depth };
-    set_voxel(&datam, data);
+    set_voxel(datam, data);
 }
 
 void set_octree_voxel_final(

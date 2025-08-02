@@ -29,7 +29,7 @@ void place_block(ecs_world_t *world,
         .node = base_node,
         .position = position_local,
     };
-    node = set_voxel(&datam, data2);
+    node = set_voxel(datam, data2);
 
     // - Refresh Meshes
     zox_set(chunk, VoxelNodeDirty, { zox_dirty_trigger })

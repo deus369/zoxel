@@ -2,7 +2,7 @@
 byte vox_lod_near = 1;
 byte terrain_lod_near = 3;      // also character far
 byte terrain_lod_far = 8;       // 1 | 2 | 4 | 8 | 16
-byte render_distance_y = 2;     // vertical
+byte render_distance_y = 1;     // vertical
 // Sub Divisions
 byte terrain_depth = 4;         // 4 | 5
 byte block_vox_depth = 5;       // 4 | 5
@@ -11,6 +11,7 @@ byte character_depth = 5;
 byte terrain_lod_far_buffer = 2;    // buffer the near to far - adds a minimum low lods
 byte terrain_lod_near_min = 1;
 byte terrain_lod_near_max = 5;
+float settings_terrain_lod_start = 0.1f;
 byte terrain_lod_far_max = 12;  // options, min + percentage*max
 
 extern int get_characters_count(ecs_world_t *world);
