@@ -45,7 +45,10 @@ if (child_##tag)
     }\
     if (child)
 
-void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_entity_t child) {
+void on_child_added(ecs_world_t *world,
+    const ecs_entity_t parent,
+    const ecs_entity_t child)
+{
     // zox_log(" + added [%lu] to canvas [%lu]\n", e, canvas)
     // todo: make this generic for when component is set, event
     // this isn't systematic enough for children linking!
@@ -55,7 +58,9 @@ void on_child_added(ecs_world_t *world, const ecs_entity_t parent, const ecs_ent
     }
 }
 
-void zox_debug_children(ecs_world_t *world, const ecs_entity_t parent) {
+void zox_debug_children(ecs_world_t *world,
+    const ecs_entity_t parent)
+{
     Children *children = zox_get_mut(parent, Children)
     zox_log(" > children of [%s]\n", zox_get_name(parent))
     for (int i = 0; i < children->length; i++) {

@@ -13,11 +13,12 @@ ecs_entity_t prefab_render_texture;     // a child of prefab_element_basic
 ecs_entity_t prefab_canvas_overlay;
 
 void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
-    // Player -> Devices
+    // Player -> Devices (move this to device module)
     zox_prefab_set(e, DeviceMode, { 0 })
     zox_prefab_set(e, DeviceModeDirty, { 0 })
-    zox_prefab_add(e, DeviceLinks)
-    zox_prefab_add(e, ElementLinks)
+    zox_prefab_set(e, DeviceLinks, { 0, NULL });
+    // Player -> UI Links
+    zox_prefab_set(e, ElementLinks, { 0, NULL });
     zox_prefab_set(e, CanvasLink, { 0 })
     // this is all UI interaction
     zox_prefab_set(e, NavigatorState, { 0 })

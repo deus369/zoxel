@@ -9,6 +9,7 @@
 #include "util/_.c"
 #include "prefabs/_.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(GameUI)
     zox_module_dispose(dispose_gameui)

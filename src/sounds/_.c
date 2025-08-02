@@ -10,6 +10,7 @@
 #include "util/_.c"
 #include "instruments/_.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(Sounds)
     // ecs defines

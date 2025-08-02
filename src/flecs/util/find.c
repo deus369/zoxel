@@ -21,6 +21,20 @@
     }\
 }
 
+ecs_entity_t find_array_element_with_id(
+    ecs_world_t* world,
+    ecs_entity_t* value,
+    int length,
+    ecs_entity_t id)
+{
+    for (int i = 0; i < length; i++) {
+        if (zox_has_id(value[i], id)) {
+            return value[i];
+        }
+    }
+    return 0;
+}
+
 #define find_array_component_with_tag2(value, length, tag, e)\
     ecs_entity_t e = 0;\
     for (int i = 0; i < length; i++) {\

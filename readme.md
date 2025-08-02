@@ -40,7 +40,7 @@ make run
 
 ### The Tomes of Knowledge
 
-The grand design awaits your eyes [ todo list ](doc/todo.md)
+The grand design awaits your eyes [ todo list ](https://codeberg.org/deus/zelder/src/branch/main/doc/tsk/todo.md)
 
 For the arcane forge, peek at [_zoxelder_](https://codeberg.org/deus/zoxelder)
 

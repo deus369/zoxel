@@ -86,6 +86,8 @@ void zoxel_settings_uis(ecs_world_t* world) {
 }
 
 void zoxel_debug_keys() {
+    add_hook_key_down(toggle_sound);
+    add_hook_key_down(toggle_fps_viewer);
     add_hook_key_down(toggle_life_terrain);
     add_hook_key_down(toggle_player_death);
     add_hook_key_down(spawn_tilemap_ui);
@@ -109,8 +111,8 @@ void zoxel_debug_keys() {
 }
 
 void zox_set_terrain_settings() {
-    terrain_mode = terrain_mode_flatlands;
-    render_distance_y = 1;
+    // terrain_mode = terrain_mode_flatlands;
+    render_distance_y = 2;
 }
 
 zox_begin_module(ZoxGame)

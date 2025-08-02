@@ -4,7 +4,7 @@ void set_player_action(ecs_world_t *world, const ecs_entity_t player, const byte
         return;
     }
     zox_geter(character, ElementLinks, elements)
-    find_array_component_with_tag(elements, MenuActions, actionbar)
+    find_array_component_with_tag(elements, MenuActions, actionbar);
 
     //const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     //find_child_with_tag(canvas, MenuActions, actionbar)

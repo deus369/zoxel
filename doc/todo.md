@@ -45,7 +45,7 @@ Characters
 Combat
 - [ ] screen shake
 - [ ] screen red tinge on hit
-- [ ] npcs to drop items
+- [x] npcs to drop items
 - [ ] classes and skill trees
 - [ ] bullets (magic)
 - [ ] turrets

@@ -1,10 +1,10 @@
-#ifndef zoxel_hierarchy
-#define zoxel_hierarchy
+#ifndef zoxm_hierarchy
+#define zoxm_hierarchy
 
 zox_component_byte(ChildIndex)
 zox_entities_component(Children)
 zox_declare_component_entities_child(ParentLink, Children)
-#include "util/children_util.c"
+#include "util/_.c"
 
 zox_begin_module(Hierarchys)
     zox_define_component_byte(ChildIndex)
