@@ -1,84 +1,39 @@
-// todo: move to actions module
-/*ecs_entity_t spawn_prefab_actionbar(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_prefab_child(prefab)
-    zox_prefab_name("actionbar")
-    // zox_add_tag(e, Actionbar)
-    zox_prefab_add(e, Children)
-    return e;
-}
-
-ecs_entity_t spawn_actionbar(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t canvas, const ecs_entity_t parent, const int2 position, const float2 anchor, const byte layer, const byte size) {
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const int actions_count = 8;
-    const int padding_x = 6;
-    const int padding_y = 12;
-    const int margins = size / 4; //  16;
-    // const color actionbar_color = (color) { 66, 35, 25, 255 };
-    const int2 actionbar_size = (int2) { padding_x + (size + padding_x) * actions_count + margins * 2, size + padding_y * 2 };
-    ElementSpawn spawn_actionbar = {
-        .canvas = {
-            .e = canvas,
-            .size = canvas_size
-        },
-        // todo: pass in parent info for actionbar
-        .parent = {
-            .e = parent,
-            .position = int2_half(canvas_size),
-            .size = canvas_size
-        },
-        .element = {
-            .prefab = prefab,
-            .layer = layer,
-            .anchor = anchor,
-            .position = position,
-            .size = actionbar_size,
-        },
-        .texture = {
-            .fill_color = window_fill,
-            .outline_color = window_outline,
-        }
-    };
-
-    // todo: make this spawn window, with a tiny header of 8 pixels (so i can drag around actionbar)
-    const ecs_entity_t e = spawn_element(world, &spawn_actionbar);
-    zox_prefab_add(e, Children)
-    zox_get_muter(e, Children, children)
-    initialize_memory_component(Children, children, ecs_entity_t, actions_count)
-    const int2 action_frame_size = (int2) { size, size };
-    ElementSpawn spawn_frame_data = {
-        .canvas = spawn_actionbar.canvas,
-        .parent = {
-            .e = e,
-            .position = position,
-            .size = actionbar_size
-        },
-        .element = {
-            .prefab = prefab_frame_action,
-            .layer = layer + 1,
-            .anchor = float2_half,
-            .size = action_frame_size,
-        },
-        .texture = {
-            .fill_color = default_fill_color_frame,
-            .outline_color = default_outline_color_frame,
-        }
-    };
-    for (int i = 0; i < actions_count; i++) {
-        const int position_x = (int) ((i - (actions_count / 2) + 0.5f) * (size + padding_x));
-        spawn_frame_data.element.position = (int2) { position_x, 0 };
-        const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
-        if (i == 0) zox_set(frame, ActiveState, { 1 }) // first one should be active
-        children->value[i] = frame;
-    }
-    return e;
-}
-
-
-ecs_entity_t spawn_actionbar_player(ecs_world_t *world, const ecs_entity_t player) {
+ecs_entity_t spawn_player_menu_actions(ecs_world_t *world, const ecs_entity_t player) {
+    const ecs_entity_t character = zox_get_value(player, CharacterLink)
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    // const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    return spawn_actionbar(world, prefab_actionbar, canvas, canvas, int2_zero, float2_half, 2, 64);
-}*/
-
-// const ecs_entity_t actionbar_ui = spawn_element(world, prefab, canvas, parent, actionbar_position, actionbar_size, actionbar_anchor, 1, actionbar_color, int2_half(canvas_size), canvas_size);
-// children->value[i] = spawn_element(world, prefab_frame_action, canvas, actionbar_ui, action_icon_position, action_icon_size, float2_half, 2, action_color, actionbar_position, actionbar_size);
+    const int2 canvas_size = zox_get_value(canvas, PixelSize)
+    SpawnWindowUsers data = get_default_spawn_window_users_data(world,
+        prefab_menu_actions,
+        character,
+        canvas,
+        canvas_size);
+    // window
+    data.element.prefab = prefab_menu_actions;
+    data.element.anchor = (float2) { 0.5f, 0 };
+    data.element.position = (int2) { 0, 48 };
+    data.window.user_links_id = zox_id(ActionLinks);
+    // header
+    data.header_zext.text = "";
+    data.header_zext.font_size = 4;
+    // grid
+    data.window.grid_size = (byte2) { 8, 1 };
+    data.window.grid_padding.x = 12;
+    data.window.grid_padding.y = 0;
+    data.window.grid_margins.x = 20;
+    data.window.grid_margins.y = 8;
+    // elements
+    data.frame.prefab = prefab_frame_action;
+    data.icon.prefab = prefab_icon_action;
+    int header_height = data.header_zext.font_size + data.header.margins * 2;
+    data.element.size = (int2) {
+        data.window.grid_padding.x + (data.window.icon_size + data.window.grid_padding.x) * data.window.grid_size.x + data.window.grid_margins.x * 2,
+        data.window.grid_padding.y + (data.window.icon_size + data.window.grid_padding.y) * data.window.grid_size.y + data.window.grid_margins.y * 2 + header_height
+    };
+    data.frame.texture.fill_color = fill_color_frame_action;
+    data.frame.texture.outline_color = outline_color_frame_action;
+    FrameTextureData texture = (FrameTextureData) {
+        .fill_color = fill_color_actionbar,
+        .outline_color = outline_color_actionbar
+    };
+    return spawn_window_users(world, data, texture);
+}

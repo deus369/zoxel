@@ -3,6 +3,7 @@
 #include "death_animation_system.c"
 #include "level_up_system.c"
 #include "experience_system.c"
+#include "realm.c"
 zox_declare_system_state_event(RealmStats, GenerateRealm, zox_generate_realm_stats, spawn_realm_stats)
 
 void define_systems_stats(ecs_world_t *world) {

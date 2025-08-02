@@ -20,7 +20,7 @@ typedef struct {
     // header
     const char *header_text;
     const byte header_font_size;
-    const byte header_padding;
+    const byte2 header_padding;
     // list area
     byte is_scrollbar;
 

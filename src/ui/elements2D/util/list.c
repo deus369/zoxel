@@ -22,3 +22,14 @@ static inline int2 calculate_list_size(
         (font_size + padding * 2 + spacing) * list_count + spacing
     };
 }
+
+static inline int2 calculate_header_size(
+    byte length,
+    byte font_size,
+    byte2 padding)
+{
+    return (int2) {
+        length * font_size + padding.x * 2,
+        font_size + padding.y * 2
+    };
+}

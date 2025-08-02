@@ -4,6 +4,7 @@ void on_settings_slider_slid(ecs_world_t* world, const SlideEventData* data) {
     zoxs_set_float(world, slider_name, data->value);
 }
 
+// Options uses a set size that has elements adjust
 ecs_entity_t spawn_menu_options(
     ecs_world_t *world,
     const ecs_entity_t player,
@@ -12,6 +13,7 @@ ecs_entity_t spawn_menu_options(
     const float2 anchor)
 {
     // more data
+    const char* header_label = "Ponder";
     const int max_labels = max_settings;
     const byte visible_count = 12;
     const byte layer = 1;
@@ -38,11 +40,17 @@ ecs_entity_t spawn_menu_options(
         .position = int2_half(canvas_data.size),
     };
     SpawnWindow2 window_data = {
-        .header_text = "Ponder",
+        .header_text = header_label,
         .header_font_size = 32,
-        .header_padding = 4,
+        .header_padding = (byte2) { 8, 4 },
         .is_scrollbar = 0,
     };
+    /*int2 header_size = calculate_header_size(
+        strlen(header_label),
+        window_data.header_font_size,
+        window_data.header_padding);
+    int header_height = header_size.y;*/
+
     Children children = (Children) { };
     window_data.children = &children;
     const ecs_entity_t e = spawn_window2(world,
@@ -97,7 +105,7 @@ ecs_entity_t spawn_menu_options(
         .font_size = font_size,
         .fill = (color) { 0, 0, 0, 0 },
         .outline = (color) { 0, 255, 255, 55 },
-        .padding = 8,
+        .padding = byte2_single(8),
         .spacing = 24,
         .slider_height = 64,
         .slider_padding = 64,

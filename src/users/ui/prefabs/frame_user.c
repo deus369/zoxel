@@ -116,7 +116,10 @@ void set_icon_from_user_data(ecs_world_t *world,
     zox_set(e, TextureDirty, { 1 })
 }
 
-ecs_entity_t spawn_frame_user(ecs_world_t *world, SpawnFrame *data, const ecs_entity_t userdata) {
+ecs_entity_t spawn_frame_user(ecs_world_t *world,
+    SpawnFrame data,
+    const ecs_entity_t userdata)
+{
     const ecs_entity_3 e = spawn_frame(world, data);
     set_icon_from_user_data(world, e.x, e.y, userdata);
     set_icon_label_from_user_data_direct(world, e.z, userdata);

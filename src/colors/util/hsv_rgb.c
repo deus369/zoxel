@@ -1,4 +1,4 @@
-float color_to_hue(const color value) {
+float color_rgb_to_hue(const color_rgb value) {
     const float red = (int) value.r / 255.0f;
     const float green = (int) value.g / 255.0f;
     const float blue = (int) value.b / 255.0f;
@@ -7,25 +7,34 @@ float color_to_hue(const color value) {
     const float delta = (max - min);
     int multi = 60; // 42; // 60
     float hue = 0; // (int) ceil
-    if (red == max) hue = (multi * ((green - blue) / delta)); //  % 6;
-    else if (green == max) hue = (multi * ((int) 2 + ((blue - red) / delta)));
-    else hue = (multi * ((int) 4 + ((red - green) / delta)));
-    if (hue < 0) hue = 360 + hue;
+    if (red == max) {
+        hue = (multi * ((green - blue) / delta)); //  % 6;
+    } else if (green == max) {
+        hue = (multi * ((int) 2 + ((blue - red) / delta)));
+    } else {
+        hue = (multi * ((int) 4 + ((red - green) / delta)));
+    }
+    if (hue < 0) {
+        hue = 360 + hue;
+    }
     return hue;
 }
 
-float color_to_saturation(const color value) {
+float color_rgb_to_saturation(const color_rgb value) {
     const float red = (int) value.r / 255.0f;
     const float green = (int) value.g / 255.0f;
     const float blue = (int) value.b / 255.0f;
     const float max = float_max(red, float_max(green, blue));
     const float min = float_min(red, float_min(green, blue));
     const float delta = (max - min);
-    if (max == 0) return 0;
-    else return 100.0f * (delta / max);
+    if (max == 0) {
+        return 0;
+    } else {
+        return 100.0f * (delta / max);
+    }
 }
 
-float color_to_value(const color value) {
+float color_rgb_to_value(const color_rgb value) {
     const float red = (int) value.r / 255.0f;
     const float green = (int) value.g / 255.0f;
     const float blue = (int) value.b / 255.0f;
@@ -33,21 +42,21 @@ float color_to_value(const color value) {
     return max * 100;
 }
 
-float3 color_to_hsv(const color value) {
+float3 color_rgb_to_hsv(const color_rgb value) {
     return (float3) {
-        color_to_hue(value),
-        color_to_saturation(value),
-        color_to_value(value)
+        color_rgb_to_hue(value),
+        color_rgb_to_saturation(value),
+        color_rgb_to_value(value)
     };
 }
-// hsv is 0 to 360, 0 to 100, 0 to 100, hue, saturation and value
-color hsv_to_color(const float3 hsv) {
+
+color_rgb hsv_to_color_rgb(const float3 hsv) {
     const float hue = hsv.x;
     const float saturation = hsv.y / 100.0f;
     const float value = hsv.z / 100.0f;
     float chroma = value * saturation;
-    float hue_ = zox_fmod(hue / 60.0f, 6.0f);
-    float x = chroma * (1 - fabs(zox_fmod(hue_, 2.0f) - 1));
+    float hue_ = fmod(hue / 60.0f, 6.0f); // zox_fmod
+    float x = chroma * (1 - fabs(fmod(hue_, 2.0f) - 1));
     float r, g, b;
     if (hue_ >= 0 && hue_ < 1) {
         r = chroma;
@@ -81,17 +90,17 @@ color hsv_to_color(const float3 hsv) {
     r = ceil(r * 255);
     g = ceil(g * 255);
     b = ceil(b * 255);
-    return (color) { (byte) r, (byte) g, (byte) b, 255 };
+    return (color_rgb) { (byte) r, (byte) g, (byte) b };
 }
 
-float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, const float2 saturation_limits) {
-    return (float3) {
-        hue_limits.x + (hue_limits.y - hue_limits.x) * (rand() % 100) * 0.01f,
-        saturation_limits.x + (saturation_limits.y - saturation_limits.x) * (rand() % 100) * 0.01f,
-        value_limits.x + (value_limits.y - value_limits.x) * (rand() % 100) * 0.01f };
+color_rgb color_rgb_saturate(color_rgb in, float sat) {
+    float3 hsv = color_rgb_to_hsv(in);
+    hsv.y *= sat;
+    return hsv_to_color_rgb(hsv);
 }
 
-// Depending on what RGB color channel is the max value. The three different formulas are:
-// If Red is max, then Hue = (green-blue)/(max-min)
-// If Green is max, then Hue = 2.0 + (blue-red)/(max-min)
-// If Blue is max, then Hue = 4.0 + (red-green)/(max-min)
+color_rgb color_rgb_darken(color_rgb in, float mul) {
+    float3 hsv = color_rgb_to_hsv(in);
+    hsv.z *= mul;
+    return hsv_to_color_rgb(hsv);
+}

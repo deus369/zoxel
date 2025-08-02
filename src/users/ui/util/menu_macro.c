@@ -20,7 +20,11 @@ ecs_entity_t spawn_player_menu_##name(ecs_world_t *world, const ecs_entity_t pla
     data.element.prefab = prefab_menu_##name;\
     data.icon.prefab = prefab_icon_##name2;\
     data.window.user_links_id = zox_id(Name2##Links);\
-    return spawn_window_users(world, &data);\
+    FrameTextureData texture = (FrameTextureData) { \
+        .fill_color = window_fill, \
+        .outline_color = window_outline \
+    }; \
+    return spawn_window_users(world, data, texture);\
 }
 
 #define zox_user_menu_functions_frame_color(Name, Name2, name, name2, fill_color_frame)\
@@ -37,7 +41,11 @@ ecs_entity_t spawn_player_menu_##name(ecs_world_t *world, const ecs_entity_t pla
     data.icon.prefab = prefab_icon_##name2;\
     data.window.user_links_id = zox_id(Name2##Links);\
     data.frame.texture.fill_color = fill_color_frame;\
-    return spawn_window_users(world, &data);\
+    FrameTextureData texture = (FrameTextureData) { \
+        .fill_color = window_fill, \
+        .outline_color = window_outline \
+    }; \
+    return spawn_window_users(world, data, texture);\
 }
 
 // Example: zox_user_menu_functions(Skills, Skill, skills, skill)

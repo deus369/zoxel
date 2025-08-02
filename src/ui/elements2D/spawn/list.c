@@ -11,7 +11,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
     // offset by half a height
     // move down by header size
     // position_y -= window_data.header_font_size + window_data.header_padding * 2;
-    int element_height = list_data.font_size + list_data.padding * 2;
+    int element_height = list_data.font_size + list_data.padding.y * 2;
     int position_y = (int) (element_data.size.y / 2);
     position_y += (int) (0.5f * element_height);
 
@@ -48,7 +48,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             SpawnTextData child_text_data = {
                 .text = child_data.text,
                 .font_size = list_data.font_size,
-                .padding = { list_data.padding },
+                .padding = list_data.padding,
                 .font_resolution = button_font_resolution,
                 .font_fill_color = button_font_fill,
                 .font_outline_color = button_font_outline,

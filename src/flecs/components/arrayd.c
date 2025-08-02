@@ -3,12 +3,14 @@
 typedef struct { \
     int length; \
     type *value; \
+    SpinLock lock; \
 } T; \
 zox_custom_component(T) \
 \
 ECS_CTOR(T, ptr, { \
     ptr->length = 0; \
     ptr->value = NULL; \
+    ptr->lock = SPINLOCK_INIT; \
 }) \
 \
 ECS_DTOR(T, ptr, { \
@@ -22,6 +24,7 @@ ECS_DTOR(T, ptr, { \
 ECS_MOVE(T, dst, src, { \
     dst->value = src->value; \
     dst->length = src->length; \
+    dst->lock = SPINLOCK_INIT; \
     src->value = NULL; \
     src->length = 0; \
 }) \
@@ -32,6 +35,7 @@ ECS_COPY(T, dst, src, { \
         if (dst->value) { \
             memcpy(dst->value, src->value, src->length * sizeof(type)); \
             dst->length = src->length; \
+            dst->lock = SPINLOCK_INIT; \
         } else { \
             dst->value = NULL; \
             dst->length = 0; \
@@ -87,20 +91,20 @@ void initialize_##T(T* ptr, int length) {\
 } \
 \
 byte add_to_##T(T *ptr, const type data) { \
-    if (ptr->value) { \
-        int length = ptr->length + 1; \
-        type *new_memory = realloc(ptr->value, length * sizeof(type)); \
-        if (new_memory) { \
-            ptr->value = new_memory; \
-            ptr->length = length; \
-        } else {\
-            zox_log_error("failed realloc memory in add_to_" #T); \
-            return 0; \
-        } \
-    } else { \
-        initialize_##T(ptr, 1); \
-    }\
-    ptr->value[ptr->length - 1] = data; \
+    spin_lock(&ptr->lock); \
+    int new_length = ptr->length + 1; \
+    type* new_value = ptr->value \
+        ? realloc(ptr->value, new_length * sizeof(type)) \
+        : malloc(new_length * sizeof(type)); \
+    if (!new_value) { \
+        zox_log_error("malloc failed in add_to_" #T); \
+        spin_unlock(&ptr->lock); \
+        return 0; \
+    } \
+    ptr->value = new_value; \
+    ptr->value[ptr->length] = data; \
+    ptr->length++; \
+    spin_unlock(&ptr->lock); \
     return 1; \
 }
 

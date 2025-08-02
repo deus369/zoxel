@@ -1,9 +1,11 @@
+// List Menus adjust to the menu size
 ecs_entity_t spawn_main_menu(ecs_world_t *world,
     const ecs_entity_t player,
     const ecs_entity_t canvas,
     const char *header_label)
 {
     const byte window_layer = 3;
+
     // # Window #
     // window_fill = color_grayscale(10);
     // window_outline = color_grayscale(44);
@@ -13,8 +15,8 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     };
     ElementSpawnData window_element_data = {
         .prefab = prefab_window,
-        .position = (int2) { 200, -200 },
-        .anchor = (float2) { 0.0f, 1.0f },
+        .position = int2_zero, // (int2) { 200, -200 },
+        .anchor = float2_half, // (float2) { 0.0f, 1.0f },
         .layer = window_layer,
     };
     ParentSpawnData window_parent_data = {
@@ -25,10 +27,15 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     SpawnWindow2 window_data = {
         .header_text = header_label,
         .header_font_size = 80,
-        .header_padding = 4,
+        .header_padding = (byte2) { 24, 8 },
         .is_scrollbar = 0,
     };
-    int header_height = window_data.header_font_size + window_data.header_padding * 2;
+    // we need to calculate header size too
+    int2 header_size = calculate_header_size(
+        strlen(header_label),
+        window_data.header_font_size,
+        window_data.header_padding);
+    int header_height = header_size.y;
 
     // # List #
     SpawnListElement elements[4];
@@ -60,22 +67,23 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         .font_size = 60,
         .fill = button_fill,
         .outline = button_outline,
-        .padding = 8,
+        .padding = (byte2) { 18, 8 },
         .spacing = 18,
     };
 
     // Our window again, spawn using list size
     // calculate size
-    window_element_data.size = calculate_list_size(
+    int2 list_size = calculate_list_size(
         calculate_list_max_characters(list_data),
         list_data.font_size,
-        list_data.padding,
+        list_data.padding.y,
         list_data.spacing,
         list_data.visible_count);
-    window_element_data.size.y += header_height;
-    // zox_log("+ calculated size for list [%ix%i]", window_element_data.size.x, window_element_data.size.y)
-    // memset(&children, 0, sizeof(Children)); // full zero
-    // ctor_Children(&children);
+    // we use the bigger size out of list and header widths
+    window_element_data.size = (int2) {
+        int_max(list_size.x, header_size.x),
+        list_size.y + header_height
+    };
 
     Children children = (Children) { };
     window_data.children = &children;
@@ -95,8 +103,14 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     };
     ElementSpawnData list_element_data = {
         .prefab = prefab_list,
-        .position = (int2) { 0, -header_height / 2 },
-        .size = (int2) { window_element_data.size.x, window_element_data.size.y - header_height },
+        .position = (int2) {
+            0,
+            -header_height / 2
+        },
+        .size = (int2) {
+            window_element_data.size.x,
+            window_element_data.size.y - header_height
+        },
         .anchor = float2_half,
         .layer = window_layer + 1,
     };
@@ -108,46 +122,6 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     add_to_Children(window_data.children, list);
 
     zox_set_ptr(e, Children, children)
-
-    /*text_group labels[max_labels];
-    ClickEvent events[max_labels];
-    int labels_count = 0;
-    if (has_save_game_directory(game_name)) {
-        labels[labels_count] = (text_group) { label_continue };
-        events[labels_count] = (ClickEvent) { button_event_continue_game };
-        labels_count++;
-    }
-    labels[labels_count] = (text_group) { label_new };
-    events[labels_count] = (ClickEvent) { button_event_new_game };
-    labels_count++;
-    labels[labels_count] = (text_group) { label_options };
-    events[labels_count] = (ClickEvent) { button_event_menu_options };
-    labels_count++;
-#ifndef zox_android
-    labels[labels_count] = (text_group) { label_exit };
-    events[labels_count] = (ClickEvent) { button_event_exit_app };
-    labels_count++;
-#endif
-    ecs_entity_t e = spawn_ui_list(world,
-        prefab_ui_list,
-        canvas,
-        header_label,
-        labels_count,
-        labels_count,
-        labels,
-        events,
-        NULL,
-        NULL,
-        position,
-        anchor,
-        is_close_button,
-        header_font_size,
-        font_size,
-        layer,
-        0,
-        player);
-    zox_name("main_menu")
-    zox_add_tag(e, MenuMain)*/
 
     return e;
 }

@@ -1,4 +1,5 @@
 #include "hsv.c"
+#include "hsv_rgb.c"
 #include "color.c"
 #include "color_rgb.c"
 #include "debug_label.c"

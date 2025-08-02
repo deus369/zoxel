@@ -3,6 +3,7 @@
 // #define zox_enable_log_new_system
 
 byte running = 1;
+#include "util/spinlock.c"
 #include "macros/_.c"
 #include "data/_.c"
 #include "components/_.c"

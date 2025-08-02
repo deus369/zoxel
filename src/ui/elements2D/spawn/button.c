@@ -22,7 +22,7 @@ ecs_entity_t spawn_button(ecs_world_t *world,
     zox_set(e, Color, { button_data.fill })
     zox_set(e, OutlineColor, { button_data.outline })
 
-    Children *children = &((Children) { 0, NULL });
+    Children children = (Children) { 0, NULL };
 
     // text
     SpawnZext spawnZext = {
@@ -42,8 +42,8 @@ ecs_entity_t spawn_button(ecs_world_t *world,
         .zext = zext_data,
     };
     const ecs_entity_t zext = spawn_zext(world, &spawnZext);
-    add_to_Children(children, zext);
+    add_to_Children(&children, zext);
 
-    zox_set(e, Children, { children->length, children->value })
+    zox_set_ptr(e, Children, children);
     return e;
 }

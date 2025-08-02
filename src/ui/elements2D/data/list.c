@@ -9,7 +9,7 @@ typedef struct {
     // from window
     Children *children;
     // list spacing
-    byte padding; // = 8;   // space in button around font
+    byte2 padding; // = 8;   // space in button around font
     byte spacing; // = 24;  // space between list elements
     // slider
     int slider_height; // = 64; // now we doing labels

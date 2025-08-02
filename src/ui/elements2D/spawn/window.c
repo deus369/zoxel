@@ -1,40 +1,68 @@
-ecs_entity_t spawn_window(
-    ecs_world_t *world,
-    const char *header_label,
-    int2 pixel_position,
-    const int2 pixel_size,
-    const float2 anchor,
-    const ecs_entity_t canvas,
-    const byte layer)
+ecs_entity_t spawn_window2(ecs_world_t *world,
+    const CanvasSpawnData canvas_data,
+    const ParentSpawnData parent_data,
+    ElementSpawnData* element_data,
+    SpawnWindow2* window_data)
 {
-    const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const byte header_layer = layer + 1;
-    const int font_size = 28;
-    const int header_margins = 16;
-    const ecs_entity_t parent = canvas;
-    const int2 pixel_position_global = get_element_pixel_position_global(int2_half(canvas_size), canvas_size, pixel_position, anchor);
-    const float2 position2D = get_element_position(pixel_position_global, canvas_size);
-    const int2 header_position = (int2) { 0, - font_size / 2 - header_margins / 2 };
-    const int2 header_size = (int2) { pixel_size.x, font_size + header_margins};
-    const float2 header_anchor = (float2) { 0.5f, 1.0f };
-    zox_instance(prefab_window)
+    const byte header_height = window_data->header_font_size + window_data->header_padding.y * 2;
+    zox_instance(element_data->prefab)
     zox_name("window")
-    initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
-    set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
-    Children *children = &((Children) { 0, NULL });
-    const ecs_entity_t header = spawn_header(world, e, canvas,
-        header_position,
-        header_size,
-        header_anchor,
-        header_label,
-        font_size,
-        header_margins,
-        header_layer,
-        pixel_position_global,
-        pixel_size,
-        1,
-        canvas_size);
+    set_element_spawn_data(world, e, canvas_data, parent_data, element_data);
+    zox_set(e, HeaderHeight, { header_height })
+
+    // start children
+    Children* children = window_data->children;
+    // zox_muter(e, Children, children)
+    // Children children = (Children) { };
+
+    const ParentSpawnData e_parent_data = {
+        .e = e,
+        .position = element_data->position_in_canvas,
+        .size = element_data->size,
+    };
+
+    // # Window Header #
+    // todo: pass more of t this in from top
+    ElementSpawnData header_element_data = {
+        .prefab = prefab_header,
+        .anchor = (float2) { 0.5f, 1.0f },
+        .position = (int2) { 0, 0 },
+        .size = (int2) { element_data->size.x, header_height },
+        .layer = element_data->layer + 1,
+    };
+    SpawnHeaderData header_data = {
+        .prefab_zext = prefab_zext,
+        // .color = color_white,
+    };
+    SpawnTextData header_text_data = {
+        .text = window_data->header_text,
+        .font_size = window_data->header_font_size,
+        .font_resolution = header_font_resolution,
+        .font_thickness = header_font_thickness_fill,
+        .font_outline_thickness = header_font_thickness_outline,
+        .font_fill_color = header_font_fill,
+        .font_outline_color = header_font_outline,
+        .padding = window_data->header_padding,
+    };
+    // n/a
+    SpawnButtonData close_button_data = { };
+    const ecs_entity_t header = spawn_header3(world,
+        canvas_data,
+        e_parent_data,
+        header_element_data,
+        close_button_data,
+        header_text_data,
+        header_data);
     add_to_Children(children, header);
-    zox_set(e, Children, { children->length, children->value })
+    set_window_bounds_to_canvas(world, e, canvas_data.size, element_data->size, element_data->anchor);
+
+    // spawn body
+
+    // spawn scrollbar
+
+    // add_to_Children(children, scrollbar);
+
+    // window_data->children = children;
+
     return e;
 }
