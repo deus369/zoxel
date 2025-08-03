@@ -5,7 +5,7 @@ ecs_entity_t spawn_header(
     const int2 pixel_position,
     const int2 pixel_size,
     const float2 anchor,
-    const char* text,
+    const char* label,
     const int font_size,
     int header_margins,
     const byte layer,
@@ -14,7 +14,7 @@ ecs_entity_t spawn_header(
     const byte is_close_button,
     const int2 canvas_size)
 {
-    const int string_length = strlen(text);
+    const int string_length = strlen(label);
     int2 zext_position = (int2) {
         ((font_size * string_length) / 2) + header_margins / 2,
         0
@@ -59,7 +59,7 @@ ecs_entity_t spawn_header(
             .anchor = zext_anchor,
             .position = zext_position },
         .zext = {
-            .text = text,
+            .text = label,
             .font_size = font_size,
             .font_resolution = header_font_resolution,
             .font_thickness = header_font_thickness_fill,
@@ -69,16 +69,29 @@ ecs_entity_t spawn_header(
             .padding = padding,
         }
     };
-    Children *children = &((Children) { 0, NULL });
-    // zox_get_mutt(e, Children, children)
-    const ecs_entity_t header_zext = spawn_zext(world, &zext_spawn_data);
-    add_to_Children(children, header_zext);
+    Children children = (Children) { 0, NULL };
+
+    const ecs_entity_t text = spawn_zext(world, &zext_spawn_data);
+    add_to_Children(&children, text);
+
     if (is_close_button) {
-        int2 close_button_position = (int2) { - (font_size / 2) - header_margins / 2, 0 };
-        add_to_Children(children, spawn_close_button(world, e, canvas, global_position, pixel_size, close_button_position, font_size, padding, button_layer, canvas_size));
+        int2 close_button_position = (int2) {
+            0, // - (font_size / 2), // - padding.x, //  - header_margins / 2,
+            0
+        };
+        add_to_Children(&children, spawn_close_button(world,
+            e,
+            canvas,
+            global_position,
+            pixel_size,
+            close_button_position,
+            font_size,
+            padding,
+            button_layer,
+            canvas_size));
     }
-    zox_set(e, Children, { children->length, children->value })
-    // zox_modified(e, Children)
+
+    zox_set_ptr(e, Children, children);
     return e;
 }
 

@@ -10,6 +10,7 @@
 
 #include "platforms/defines.c"
 #include "platforms/_.c"
+#include "system/_.c"
 #include "terminals/_.c"
 #include "pathing/_.c"
 #include "states/_.c"

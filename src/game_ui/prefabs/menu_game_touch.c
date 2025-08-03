@@ -60,7 +60,7 @@ ecs_entity_t spawn_menu_game_touch(ecs_world_t *world,
     const ecs_entity_t canvas)
 {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_t e = spawn_element_invisible_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
+    const ecs_entity_t e = spawn_layout2_on_canvas(world, prefab, canvas, int2_zero, canvas_size, float2_half);
     zox_name("menu_game_touch")
     const byte button_size = 140;
     const byte button_padding = 20;

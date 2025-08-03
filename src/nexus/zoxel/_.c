@@ -153,7 +153,7 @@ zox_begin_module(ZoxGame)
     hit_block_vox_color = (color) { 55, 135, 185, 145 };
 
     // world gen
-    terrain_frequency = 0.162216;
+    terrain_frequency = 0.062216;
     // block_spawn_chance_grass = 1600; //  512 | 1024 | 2048 | 3000
     menu_sky_color = color_rgb_grayscale(15);
     menu_sky_bottom_color = menu_sky_color;
@@ -168,7 +168,7 @@ zox_begin_module(ZoxGame)
     block_vox_depth = 5;
     character_depth = 5;
     vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
-    terrain_amplifier = powers_of_two[terrain_depth] * render_distance_y;
+    // terrain_amplifier = powers_of_two[terrain_depth] * render_distance_y;
     // debug
     disable_block_vox_generation = 0;
     // disable_block_voxes = 1;

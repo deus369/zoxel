@@ -1,4 +1,5 @@
 typedef struct {
+    byte result;
     byte voxel;
     ecs_entity_t hit_block;
     byte3 position;

@@ -67,7 +67,11 @@ VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
         return data.node;
     }
     const byte dividor = powers_of_two_byte[datam.depth - data.depth - 1]; // difference LoD
-    byte3 node_position = (byte3) { data.position.x / dividor, data.position.y / dividor, data.position.z / dividor };
+    byte3 node_position = (byte3) {
+        data.position.x / dividor,
+        data.position.y / dividor,
+        data.position.z / dividor
+    };
     byte3_modulus_byte(&data.position, dividor);
     VoxelNode* kids = get_children_VoxelNode(data.node);
     data.node = &kids[byte3_octree_array_index(node_position)];

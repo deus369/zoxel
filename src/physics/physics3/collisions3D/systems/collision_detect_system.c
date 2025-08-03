@@ -96,7 +96,7 @@ void collide_with_chunk_d3(ecs_world_t *world,
     }
     zox_geter_value(chunk, NodeDepth, byte, node_depth)
 
-    const byte voxel = get_sub_node_voxel(node, &voxel_position_local, node_depth);
+    const byte voxel = get_sub_node_voxel_locked(node, &voxel_position_local, node_depth);
     if (block_collisions[voxel]) {
         // Calculate deltas
         const int delta_vox_d1 = int_abs(position_vox_d1 - position_vox_last_d1);
@@ -170,7 +170,7 @@ void collide_with_chunk_d2(ecs_world_t *world,
     if (!byte3_in_bounds(voxel_position_local, chunk_dimensions_b3))  {
         return;
     }
-    const byte voxel = get_sub_node_voxel(chunk_octree, &voxel_position_local, node_depth);
+    const byte voxel = get_sub_node_voxel_locked(chunk_octree, &voxel_position_local, node_depth);
     if (block_collisions[voxel]) {
         // float_abs
         const int delta_vox_d1 = int_abs(position_vox_d1 - position_vox_last_d1);
@@ -230,7 +230,7 @@ void collide_with_chunk(ecs_world_t *world,
     if (!byte3_in_bounds(voxel_position_local, chunk_dimensions_b3)) {
         return;
     }
-    const byte voxel = get_sub_node_voxel(chunk_octree, &voxel_position_local, node_depth);
+    const byte voxel = get_sub_node_voxel_locked(chunk_octree, &voxel_position_local, node_depth);
     if (block_collisions[voxel]) {
         *collided_d = 1 + is_negative;
         *distance_d = offset_d;

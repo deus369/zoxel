@@ -5,7 +5,7 @@
 #include "canvas_overlay.c"
 #include "render_texture.c"
 ecs_entity_t prefab_canvas;
-ecs_entity_t prefab_layout2D;           // a non textured element
+ecs_entity_t prefab_layout2;           // a non textured element
 ecs_entity_t prefab_element_shell;      // has a texture and renderer, good for setting
 ecs_entity_t prefab_element_ready;      // ready for generating textures
 ecs_entity_t prefab_element_textured;   // rename to textured_frame
@@ -38,9 +38,9 @@ void spawn_prefabs_ui_core(ecs_world_t *world) {
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
 #endif
     // just has transform and layouts2D
-    prefab_layout2D = spawn_prefab_layout2D(world);
+    prefab_layout2 = spawn_prefab_layout2(world);
     // has a texture also
-    prefab_element_shell = spawn_prefab_element_shell(world, prefab_layout2D);
+    prefab_element_shell = spawn_prefab_element_shell(world, prefab_layout2);
     // has a texture also
     prefab_element_ready = spawn_prefab_element_ready(world, prefab_element_shell);
     // has a frame texture

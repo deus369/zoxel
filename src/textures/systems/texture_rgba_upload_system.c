@@ -9,7 +9,7 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         zox_sys_i(TextureSize, textureSize)
         zox_sys_i(TextureGPULink, textureGPULink)
         zox_sys_o(TextureDirty, textureDirty)
-        if (textureDirty->value == 0 || textureData->length != textureSize->value.x * textureSize->value.y || !textureData->value || !textureGPULink->value) {
+        if (!textureDirty->value || textureData->length != textureSize->value.x * textureSize->value.y || !textureData->value || !textureGPULink->value) {
             continue;
         }
         glBindTexture(GL_TEXTURE_2D, textureGPULink->value);

@@ -4,7 +4,6 @@ void print_terrain_settings() {
     zox_log("     + terrain_depth is [%i]", terrain_depth)
     zox_log("     + render distance is [%i]", terrain_spawn_distance)
     zox_log("     + terrain vertical is [%i]", terrain_vertical)
-    zox_log("     + height amplifier is [%f]", terrain_amplifier)
     zox_log("     + height noise frequency is [%f]", terrain_frequency)
     zox_log("     + height boost is [%f]", terrain_boost)
     zox_log("     + lowest low is [%i]", lowest_voxel_height)

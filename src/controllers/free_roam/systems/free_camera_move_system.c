@@ -11,7 +11,9 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(CameraLink, cameraLink)
         zox_sys_i(DeviceLinks, deviceLinks)
-        if (cameraLink->value == 0) continue;
+        if (cameraLink->value == 0) {
+            continue;
+        }
         const CanRoam *canRoam = zox_get(cameraLink->value, CanRoam)
         if (canRoam->value != 2) continue;
         float3 movement = { 0, 0, 0 };
@@ -29,13 +31,15 @@ void FreeCameraMoveSystem(ecs_iter_t *it) {
                 if (keyboard->q.is_pressed) movement.y += -1;
                 if (keyboard->e.is_pressed) movement.y = 1;
                 if (keyboard->left_shift.is_pressed) {
-                    movement.x *= shift_movement_multiplier;
-                    movement.y *= shift_movement_multiplier;
-                    movement.z *= shift_movement_multiplier;
+                    movement.x *= free_camera_run_multiplier;
+                    movement.y *= free_camera_run_multiplier;
+                    movement.z *= free_camera_run_multiplier;
                 }
             }
         }
-        if (movement.x == 0 && movement.y == 0 && movement.z == 0) continue;
+        if (movement.x == 0 && movement.y == 0 && movement.z == 0) {
+            continue;
+        }
         movement = float3_scale(movement, movement_power);
         const Rotation3D *rotation3D = zox_get(cameraLink->value, Rotation3D)
         movement = float4_rotate_float3(rotation3D->value, movement);

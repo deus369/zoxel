@@ -38,8 +38,9 @@ void place_block(ecs_world_t *world,
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position_local, chunk_size_b3)) {
         zox_geter(chunk, ChunkNeighbors, chunk_neighbors)
         for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
-            if (byte3_on_edge_axis(position_local, chunk_size_b3, axis)) {
-                zox_set(chunk_neighbors->value[axis], ChunkMeshDirty, { chunk_dirty_state_trigger })
+            ecs_entity_t neighbor = chunk_neighbors->value[axis];
+            if (byte3_on_edge_axis(position_local, chunk_size_b3, axis) && zox_valid(neighbor)) {
+                zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
         }
     }

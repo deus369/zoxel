@@ -1,8 +1,7 @@
 // sets the lines height based on frame times
 // todo: use PlotData
 void PlotLineSystem(ecs_iter_t *it) {
-    const double pixel_height_per_ms = 5;
-    int2 limits = (int2) { 4, 320 };
+    const int graph_plot_height = 100;
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ParentLink)
@@ -17,17 +16,20 @@ void PlotLineSystem(ecs_iter_t *it) {
             continue;
         }
         zox_geter(parentLink->value, PlotDataDouble, data)
+        zox_geter_value(parentLink->value, PlotMin, double, min)
+        zox_geter_value(parentLink->value, PlotMax, double, max)
+        zox_geter_value(parentLink->value, PixelSize, int2, parent_size)
         if (childIndex->value >= data->length) {
             zox_log_error("index [%i] out of bounds (len: %i)", childIndex->value, data->length);
             continue;
         }
-        double this_time = data->value[childIndex->value];
-        int new_height = (int) (this_time * 1000 * pixel_height_per_ms);
-        if (new_height < limits.x) {
-            new_height = limits.x;
-        } else if (new_height > limits.y) {
-            new_height = limits.y;
+        double line_max = max;
+        if (max - min <= graph_plot_height) {
+            // reset max bounds of our ms
+            line_max = min + graph_plot_height;
         }
-        lineLocalPosition2D->value.w = new_height;
+        double value = data->value[childIndex->value];
+        value /= line_max;
+        lineLocalPosition2D->value.w = (int) (value * parent_size.y);
     }
 } zox_declare_system(PlotLineSystem)

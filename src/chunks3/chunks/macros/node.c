@@ -67,16 +67,16 @@ static inline byte is_closed_##name(const name *node) {\
 }\
 \
 static inline name* get_children_##name(const name *node) {\
-    read_lock_##name(node);\
-    name* children = (name*) node->ptr;\
-    read_unlock_##name(node);\
+    /*read_lock_##name(node);*/\
+    name* children = node ? (name*) node->ptr : NULL;\
+    /*read_unlock_##name(node);*/\
     return children;\
 }\
 \
 static inline byte has_children_##name(const name *node) {\
-    read_lock_##name(node);\
-    const byte has_children = node->ptr && node->type == node_type_children;\
-    read_unlock_##name(node);\
+    /*read_lock_##name(node);*/\
+    const byte has_children = node && node->ptr && node->type == node_type_children;\
+    /*read_unlock_##name(node);*/\
     return has_children;\
 }\
 \
@@ -101,7 +101,6 @@ void open_new_##name(name* node) { \
 }\
 \
 void destroy_node_children_##name(ecs_world_t *world, name *node) {\
-    write_lock_##name(node);\
     name* kids = get_children_unlocked_##name(node);\
     for (byte i = 0; i < octree_length; i++) {\
         destroy_##name(world, &kids[i]);\
@@ -109,10 +108,10 @@ void destroy_node_children_##name(ecs_world_t *world, name *node) {\
     release_children_##name(node->ptr);\
     node->type = node_type_closed;\
     node->ptr = NULL;\
-    write_unlock_##name(node);\
 }\
 \
 void destroy_##name(ecs_world_t *world, name* node) {\
+    write_lock_##name(node);\
     if (!is_closed_##name(node)) {\
         if (has_children_##name(node)) {\
             destroy_node_children_##name(world, node);\
@@ -120,6 +119,7 @@ void destroy_##name(ecs_world_t *world, name* node) {\
             run_hook_on_destroyed_##name(world, node);\
         }\
     }\
+    write_unlock_##name(node);\
     destroy_lock_##name(node);\
 }\
 \

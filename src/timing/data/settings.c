@@ -21,6 +21,6 @@ void disable_time() {
     }
 }
 
-#define record_frames_count 120
+#define record_frames_count 300
 // double zox_delta_times[record_frames_count];
 // double system_times[record_frames_count];

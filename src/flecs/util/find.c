@@ -61,35 +61,3 @@ ecs_entity_t find_array_element_with_id(
             break;\
         }\
     }
-
-
-
-#define zox_memory_component_removes(T, type)\
-    \
-    byte remove_at_##T(T *component, int index) {\
-        if (!component->value || index < 0 || index >= component->length) {\
-            return 0;\
-        }\
-        for (int i = index; i < component->length - 1; i++) {\
-            component->value[i] = component->value[i + 1];\
-        }\
-        component->length--;\
-        if (!component->length) {\
-            free(component->value);\
-            component->value = NULL;\
-        } else {\
-            component->value = realloc(component->value, component->length * sizeof(type));\
-        }\
-        return 1;\
-    }\
-    \
-    byte remove_from_##T(T *component, const type data) {\
-        byte success = 0;\
-        for (int i = 0; i < component->length; i++) {\
-            if (component->value[i] == data) {\
-                success = remove_at_##T(component, i);\
-                break;\
-            }\
-        }\
-        return success;\
-    }

@@ -1,7 +1,11 @@
 
 // used by physics and raycasting
 // i think const was the issue
+
 const byte get_sub_node_voxel(const VoxelNode *node, byte3 *position, const byte depth) {
+    if (!node) {
+        return 0;
+    }
     if (depth == 0 || !has_children_VoxelNode(node)) {
         return node->value;
     }
@@ -16,6 +20,13 @@ const byte get_sub_node_voxel(const VoxelNode *node, byte3 *position, const byte
     const byte child_index = byte3_octree_array_index(node_position);
     VoxelNode* kids = get_children_VoxelNode(node);
     return get_sub_node_voxel(&kids[child_index], position, new_depth);
+}
+
+const byte get_sub_node_voxel_locked(const VoxelNode *node, byte3 *position, const byte depth) {
+    read_lock_VoxelNode(node);
+    const byte value = get_sub_node_voxel(node, position, depth);
+    read_unlock_VoxelNode(node);
+    return value;
 }
 
 // returns node, also sets voxel
@@ -102,7 +113,16 @@ byte is_adjacent_all_solid(
     const byte *voxel_solidity) {
     /*byte is_adjacent_solid(direction, root_node, neighbors[], node_position, depth, edge_voxel, voxel_solidity);*/
     byte chunk_index = 0;
-    const VoxelNode *adjacent_node = find_adjacent_VoxelNode(root_node, parent_node, octree_position, node_index, node_position, depth, direction, neighbors, &chunk_index);
+    const VoxelNode *adjacent_node = find_adjacent_VoxelNode(
+        root_node,
+        parent_node,
+        octree_position,
+        node_index,
+        node_position,
+        depth,
+        direction,
+        neighbors,
+        &chunk_index);
     if (adjacent_node == NULL) { // || depth == max_depth) {
         return edge_voxel;
     } else if (adjacent_node->value == 0) {

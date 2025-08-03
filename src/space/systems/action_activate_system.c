@@ -1,4 +1,7 @@
 #ifdef zox_mod_actions
+
+const float block_place_range = 2;
+
 // right click = place
 // todo: use a state and implement results inside respective systems
 // todo: move item activate to a seperate item system
@@ -57,15 +60,13 @@ void ActionActivateSystem(ecs_iter_t *it) {
                 zox_log(" ! cannot place with zero quantity")
             } else {
                 byte is_use_quantity = 0;
-                if (zox_has(action, ItemBlock)) {
+                const byte hit_block = raycastVoxelData->result == ray_hit_type_terrain;
+                const byte in_range = raycastVoxelData->distance <= block_place_range;
+                if (hit_block && in_range && zox_has(action, ItemBlock)) {
                     const ecs_entity_t block = zox_get_value(action, BlockLink)
                     if (zox_valid(block) && zox_has(block, BlockIndex)) {
-                        // zox_log("! placing block %s", zox_get_name(block))
-                        // todo: check placing on type and normal
-                        const byte block_index = zox_get_value(block, BlockIndex)
-
+                        zox_geter_value(block, BlockIndex, byte, block_index);
                         raycast_action(world, raycastVoxelData, block_index, 1);
-
                         is_use_quantity = 1;
                     } else {
                         zox_log_error("invalid block [%s]", zox_get_name(block))

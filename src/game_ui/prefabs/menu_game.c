@@ -17,7 +17,7 @@ ecs_entity_t spawn_menu_game(ecs_world_t *world,
     const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     // make layout2 instead of element_invisible
-    const ecs_entity_t e = spawn_element_invisible_on_canvas(world,
+    const ecs_entity_t e = spawn_layout2_on_canvas(world,
         prefab,
         canvas,
         int2_zero,

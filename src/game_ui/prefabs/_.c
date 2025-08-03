@@ -41,7 +41,7 @@ void spawn_prefabs_game_ui(ecs_world_t *world) {
     prefab_frame_taskbar = spawn_prefab_frame_taskbar(world, prefab_frame);
     prefab_taskbar = spawn_prefab_taskbar(world, prefab_element_textured);
     prefab_device_gizmo = spawn_prefab_device_gizmo(world, prefab_icon);
-    prefab_menu_game = spawn_prefab_menu_game(world, prefab_layout2D);
-    prefab_menu_game_touch = spawn_prefab_menu_game_touch(world, prefab_layout2D);
+    prefab_menu_game = spawn_prefab_menu_game(world, prefab_layout2);
+    prefab_menu_game_touch = spawn_prefab_menu_game_touch(world, prefab_layout2);
     prefab_crosshair = spawn_prefab_crosshair(world, prefab_element_textured);
 }

@@ -17,10 +17,11 @@ void EditorInputSystem(ecs_iter_t *it) {
             if (zox_has( device, Keyboard)) {
                 const Keyboard *keyboard = zox_get(device, Keyboard);
                 // toggle uis
-                if (keyboard->v.pressed_this_frame) {
-                    toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
-                } else if (keyboard->b.pressed_this_frame) {
+                if (keyboard->x.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
+                }
+                if (keyboard->c.pressed_this_frame) {
+                    toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)
                 }
                 // test game uis
                 /*else if (keyboard->u.pressed_this_frame) {

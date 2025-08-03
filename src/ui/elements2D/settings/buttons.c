@@ -8,5 +8,9 @@ color button_font_outline = (color) { 5, 5, 5, 255 };
 byte button_font_resolution = 32;
 byte button_font_thickness_fill = 2;
 byte button_font_thickness_outline = 1;
-color close_button_fill = (color) { 88, 33, 33, 255 };
-color close_button_outline = (color) { 202, 44, 44, 255 };
+
+// CLOSE
+color close_button_fill = (color) { 33, 33, 43, 255 };
+color close_button_outline = (color) { 133, 133, 143, 255 };
+color close_button_font_fill = (color) { 88, 99, 88, 255 };
+color close_button_font_outline = (color) { 122, 144, 122, 255 };

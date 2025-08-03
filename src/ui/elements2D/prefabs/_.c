@@ -68,7 +68,7 @@ void spawn_prefabs_elements(ecs_world_t *world) {
     prefab_header = spawn_prefab_header(world, prefab_element_textured);
     prefab_close_button = spawn_prefab_button_close(world, prefab_button);
     // windows
-    prefab_window_invisible = spawn_prefab_window_invisible(world, prefab_layout2D);
+    prefab_window_invisible = spawn_prefab_window_invisible(world, prefab_layout2);
     prefab_window = spawn_prefab_window(world, prefab_element_textured);
     // lists
     prefab_ui_list = spawn_prefab_ui_list(world, prefab_window);

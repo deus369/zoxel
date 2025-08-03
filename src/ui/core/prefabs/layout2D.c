@@ -1,6 +1,6 @@
 // contains only pixel / transform data - invisible element
 // todo: debug tools for these, using line drawing
-ecs_entity_t spawn_prefab_layout2D(ecs_world_t *world) {
+ecs_entity_t spawn_prefab_layout2(ecs_world_t *world) {
     zox_prefab()
     zox_prefab_name("layout2D")
     // transform2D

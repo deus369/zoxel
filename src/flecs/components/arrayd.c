@@ -106,9 +106,47 @@ byte add_to_##T(T *ptr, const type data) { \
     ptr->length++; \
     spin_unlock(&ptr->lock); \
     return 1; \
+} \
+\
+byte remove_at_##T(T *ptr, int index) {\
+    spin_lock(&ptr->lock); \
+    if (!ptr->value || index < 0 || index >= ptr->length) {\
+        spin_unlock(&ptr->lock); \
+        return 0;\
+    }\
+    for (int i = index; i < ptr->length - 1; i++) {\
+        ptr->value[i] = ptr->value[i + 1];\
+    }\
+    ptr->length--;\
+    if (!ptr->length) {\
+        free(ptr->value);\
+        ptr->value = NULL;\
+    } else {\
+        ptr->value = realloc(ptr->value, ptr->length * sizeof(type));\
+    }\
+    spin_unlock(&ptr->lock); \
+    return 1;\
 }
 
 
 #define zox_define_memory_component(T)\
     zox_define_component(T)\
     zox_define_hooks(T);
+
+// equals function required here
+#define zox_memory_component_removes(T, type) \
+byte remove_from_##T(T* ptr, const type data) { \
+    spin_lock(&ptr->lock); \
+    int index = -1; \
+    for (int i = 0; i < ptr->length; i++) { \
+        if (ptr->value[i] == data) { \
+            index = i; \
+            break;\
+        }\
+    }\
+    spin_unlock(&ptr->lock); \
+    if (index == -1) { \
+        return 0; \
+    } \
+    return remove_at_##T(ptr, index);\
+}

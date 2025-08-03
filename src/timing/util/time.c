@@ -22,7 +22,6 @@ void skip_time_to_current() {
 void clear_system_times() {
     // for (int i = 0; i < record_frames_count; i++) system_times[i] = 0;
 }
-
 // todo: find a better way to grab time data in a new module
 
 void iterate_time(ecs_world_t *world) {

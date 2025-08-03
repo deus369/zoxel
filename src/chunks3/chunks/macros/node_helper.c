@@ -30,7 +30,7 @@ const name* find_node_##name(\
     int3 position,\
     byte depth)\
 {\
-    if (depth == 0 || node->ptr == NULL) {\
+    if (!depth || !has_children_##name(node)) {\
         return node;\
     }\
     depth--;\
@@ -46,7 +46,9 @@ const name* find_node_##name(\
         position.z % dividor\
     };\
     name* kids = get_children_##name(node);\
-    return find_node_##name(&kids[int3_to_node_index(local_position)], child_octree_position, depth);\
+    return find_node_##name( \
+        &kids[int3_to_node_index(local_position)], \
+        child_octree_position, depth);\
 }\
 \
 /* maybe make below function use this if it isn't in the non root node */\

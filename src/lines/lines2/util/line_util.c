@@ -6,16 +6,25 @@ int4 get_new_line_position(const float2 real_position2D, const float2 canvas_siz
     return output;
 }
 
-
-void set_line_element_real_position2D(ecs_world_t *world, const ecs_entity_t e, const float2 real_position2D, const int2 canvas_size, const int2 parent_position) {
+// setting our canvas line points
+void set_line_element_real_position2D(ecs_world_t *world,
+    const ecs_entity_t e,
+    const float2 positionf,
+    const int2 canvas_size,
+    const int2 parent_position)
+{
     if (zox_has(e, LinePosition2D)) {
         const float2 canvas_size_f = int2_to_float2(canvas_size);
         const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-        const LineLocalPosition2D *lineLocalPosition2D = zox_get(e, LineLocalPosition2D)
-        const int4 new_line_position = get_new_line_position(real_position2D, canvas_size_f, aspect_ratio, parent_position, lineLocalPosition2D->value);
-        LinePosition2D *linePosition2D = zox_get_mut(e, LinePosition2D)
-        linePosition2D->value = new_line_position;
-        zox_modified(e, LinePosition2D);
+        zox_geter(e, LineLocalPosition2D, localPoints)
+        const int4 points = get_new_line_position(
+            positionf,
+            canvas_size_f,
+            aspect_ratio,
+            parent_position,
+            localPoints->value);
+        zox_get_muter(e, LinePosition2D, linePosition2D);
+        linePosition2D->value = points;
     }
 }
 

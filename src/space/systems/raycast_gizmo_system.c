@@ -122,6 +122,7 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
             cameraLink->value,
             voxLink->value,
             raycastVoxelData);
-        crosshair_set_type(world, ray_hit);
+        raycastVoxelData->result = ray_hit;
+        crosshair_set_type(world, raycastVoxelData->result);
     }
 } zox_declare_system(RaycastGizmoSystem)

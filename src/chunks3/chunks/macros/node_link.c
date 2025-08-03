@@ -16,16 +16,16 @@ const ecs_entity_t get_node_entity_unlocked_##name(const name *node) {\
 }\
 \
 static inline ecs_entity_t get_entity_##name(const name *node) {\
-    read_lock_##name(node);\
+    /*read_lock_##name(node);*/\
     const ecs_entity_t e = ((NodeLink*) node->ptr)->value;\
-    read_unlock_##name(node);\
+    /*read_unlock_##name(node);*/\
     return e;\
 }\
 \
 static inline byte is_linked_##name(const name *node) {\
-    read_lock_##name(node);\
+    /*read_lock_##name(node);*/\
     const byte linked = node->type == node_type_instance;\
-    read_unlock_##name(node);\
+    /*read_unlock_##name(node);*/\
     return linked;\
 }\
 \

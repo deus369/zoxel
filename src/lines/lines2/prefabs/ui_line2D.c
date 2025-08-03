@@ -55,9 +55,10 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world,
     const color line_color,
     const float thickness,
     const double life_time,
-    const float2 parent_real_position,
+    const float2 parent_positionf,
     const int2 parent_position,
-    const byte layer) {
+    const byte layer)
+{
     if (canvas == 0) {
         canvas = zox_canvases[0];
     }
@@ -72,23 +73,39 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world,
     zox_set(e, CanvasLink, { canvas })
     const float2 canvas_size_f = { (float) canvas_size.x, (float) canvas_size.y };
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
-    const float4 line_anchor = (float4) { anchor_a.x, anchor_a.y, anchor_b.x, anchor_b.y };
-    int4 points = (int4) { point_a.x, point_a.y, point_b.x, point_b.y };
+    const float4 line_anchor = (float4) {
+        anchor_a.x,
+        anchor_a.y,
+        anchor_b.x,
+        anchor_b.y
+    };
+    int4 points = (int4) {
+        point_a.x,
+        point_a.y,
+        point_b.x,
+        point_b.y
+    };
     zox_set(e, LineLocalPosition2D, { points })
     offset_line_points(&points, line_anchor, canvas_size_f);
-    int4 line_position2D = get_new_line_position(parent_real_position, canvas_size_f, aspect_ratio, parent_position, points);
+    int4 line_position2D = get_new_line_position(
+        parent_positionf,
+        canvas_size_f,
+        aspect_ratio,
+        parent_position,
+        points);
     zox_set(e, Layer2D, { layer })
     zox_set(e, Color, { line_color })
     zox_set(e, LineThickness, { thickness })
     zox_set(e, LinePosition2D, { line_position2D })
     zox_set(e, LineAnchor, { line_anchor })
+    if (life_time) {
+        zox_set(e, DestroyInTime, { life_time })
+    }
 
     LineData2D line_data = (LineData2D) { };
     set_ui_line_position(&line_data, line_position2D, canvas_size_f, aspect_ratio);
     zox_set_ptr(e, LineData2D, line_data);
-    if (life_time != 0.0f) {
-        zox_set(e, DestroyInTime, { life_time })
-    }
+
     // adds to canvas
     if (parent == canvas) {
         on_child_added(world, canvas, e);
@@ -105,9 +122,10 @@ ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world,
     const color line_color,
     const float thickness,
     const double life_time,
-    const float2 parent_real_position,
+    const float2 parent_positionf,
     const int2 parent_position,
-    const byte layer) {
+    const byte layer)
+{
     return spawn_ui_line2D(world,
         canvas,
         parent,
@@ -118,7 +136,7 @@ ecs_entity_t spawn_ui_line2D_v2(ecs_world_t *world,
         line_color,
         thickness,
         life_time,
-        parent_real_position,
+        parent_positionf,
         parent_position,
         layer);
 }

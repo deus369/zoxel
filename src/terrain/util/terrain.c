@@ -35,7 +35,14 @@
     }
 }*/
 
-void set_terrain_block(ecs_world_t *world, VoxelNode *voxelNode, const byte3 voxel_position, const int chunk_position_y, const byte chunk_voxel_length, const byte2 set_voxel, const int global_place_y) {
+void set_terrain_block(ecs_world_t *world,
+    VoxelNode *voxelNode,
+    const byte3 voxel_position,
+    const int chunk_position_y,
+    const byte chunk_voxel_length,
+    const byte2 set_voxel,
+    const int global_place_y)
+{
     const int local_place_y = global_place_y - chunk_position_y;
     const byte place_in_bounds = local_place_y >= 0 && local_place_y < chunk_voxel_length;
     if (place_in_bounds) {
