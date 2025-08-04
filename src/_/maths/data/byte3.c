@@ -10,6 +10,10 @@ static inline int byte3_array_index(const byte3 input, const byte3 size) {
     return input.z + size.z * (input.y + size.y * input.x);
 }
 
+static inline int byte3_array_indexl(const byte3 input, const byte length) {
+    return input.z + length * (input.y + length * input.x);
+}
+
 static inline byte byte3_octree_array_index(const byte3 input) {
     return input.z + 2 * (input.y + 2 * input.x);
 }

@@ -14,6 +14,7 @@ ecs_entity_t spawn_prefab_character3_player(ecs_world_t *world,
     zox_prefab_set(e, DisableMovement, { 0 })
     // Raycasting
     zox_prefab_set(e, RaycastVoxelData, { })
+    zox_prefab_set(e, RaycastRange, { 2.5f })
     // Input Triggers
     zox_prefab_set(e, TriggerActionA, { 0 })
     zox_prefab_set(e, TriggerActionB, { 0 })

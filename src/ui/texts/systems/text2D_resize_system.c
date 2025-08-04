@@ -1,7 +1,12 @@
 //! Dynamically updates zext by spawning/destroying zigels and updating remaining
 // #define zoxel_debug_zext_updates
 
-void spawn_text2D_zigels(ecs_world_t *world, SpawnZigel *data, Children *children, const TextData *textData) {
+void spawn_text2D_zigels(
+    ecs_world_t* world,
+    SpawnZigel* data,
+    Children* children,
+    const TextData* textData
+) {
     const int old_children_length = children->length;
     const int new_children_length = calculate_total_zigels(textData->value, textData->length);
     const int has_old_children = old_children_length > 0;
@@ -15,10 +20,8 @@ void spawn_text2D_zigels(ecs_world_t *world, SpawnZigel *data, Children *childre
     ecs_entity_t *old_children = children->value;
     ecs_entity_t *new_children = NULL;
     if (new_children_length > 0) {
-        new_children = malloc(new_children_length * sizeof(ecs_entity_t));
+        new_children = zalloc(new_children_length * sizeof(ecs_entity_t));
     }
-    children->value = new_children;
-    children->length = new_children_length;
     // old children needs new
     //  - set old positions, as we are resizing
     for (int i = 0; i < reuse_count; i++) {
@@ -52,8 +55,10 @@ void spawn_text2D_zigels(ecs_world_t *world, SpawnZigel *data, Children *childre
 #endif
     }
     if (has_old_children) {
-        free(old_children);
+        dispose_Children(children);
     }
+    children->value = new_children;
+    children->length = new_children_length;
 }
 
 //! When ui text updates, spawn/destroy font entities
@@ -136,6 +141,5 @@ void Text2DResizeSystem(ecs_iter_t *it) {
             }
         };
         spawn_text2D_zigels(world, &spawn_data, children, textData);
-        // zox_log("+ resizing text [%s]", zox_get_name(e))
     }
 } zox_declare_system(Text2DResizeSystem)

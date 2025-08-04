@@ -1,6 +1,5 @@
 #include "settings.c"
 #include "chunk.c"
-#include "octree_build.c"
 #include "block_vox.c"
 #include "debug.c"
 #include "terrain.c"

@@ -1,9 +1,6 @@
-SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
-    return (SoundData) {
-        .value = zox_mix_chunk_samples(mix_chunk),
-        .length = zox_mix_chunk_length(mix_chunk)
-    };
-}
+/*SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
+    return data;
+}*/
 
 void load_files_sounds(ecs_world_t *world) {
     char* load_directory = concat_file_path(resources_path, directory_sounds);
@@ -18,7 +15,7 @@ void load_files_sounds(ecs_world_t *world) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         zox_log_io("   - [%i] [sound] [%s]", i, filepath)
-        #ifdef zox_sdl_mixer
+#ifdef zox_sdl_mixer
         Mix_Chunk *mix_chunk = Mix_LoadWAV(filepath);
         if (!mix_chunk) {
             zox_log_error("sound file failed to load [%s] due to [%s]", filepath, Mix_GetError())
@@ -26,14 +23,20 @@ void load_files_sounds(ecs_world_t *world) {
             continue;
         }
         const float sound_length = get_mix_chunk_sound_length(mix_chunk);
-        SoundData soundData = process_mix_chunk(mix_chunk);
-        const ecs_entity_t e = spawn_sound_filepath(world, prefab_sound_filepath, soundData, sound_length);
+        float* value = zox_mix_chunk_samples(mix_chunk);
+        int length = zox_mix_chunk_length(mix_chunk);
+        const ecs_entity_t e = spawn_sound_filepath(
+            world,
+            prefab_sound_filepath,
+            value,
+            length,
+            sound_length);
         zox_log_sounds("   - [%i] [sound] [%s] - length [%f]", i, filepath, sound_length)
         files_sounds[i] = e;
         string_hashmap_add(files_hashmap_sounds, new_string_data_clone(filename), e);
-        #else
+#else
         files_sounds[i] = 0;
-        #endif
+#endif
     }
     free_files(&files);
 }

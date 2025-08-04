@@ -1,7 +1,14 @@
 const color empty_color = { 0, 0, 0, 0 };
 
 // move this to prefab
-void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, byte corner, byte thickness) {
+void add_frame_texture_type(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const color primary,
+    const color secondary,
+    byte corner,
+    byte thickness
+) {
     zox_add_tag(e, FrameTexture)
     zox_prefab_set(e, FrameCorner, { corner })
     zox_prefab_set(e, OutlineThickness, { thickness })
@@ -9,16 +16,33 @@ void add_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const colo
     zox_prefab_set(e, OutlineColor, { secondary })
 }
 
-void set_frame_texture_type(ecs_world_t *world, const ecs_entity_t e, const color primary, const color secondary, byte corner, byte thickness) {
+void set_frame_texture_type(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const color primary,
+    const color secondary,
+    byte corner,
+    byte thickness
+) {
     zox_set(e, FrameCorner, { corner })
     zox_set(e, OutlineThickness, { thickness })
     zox_set(e, Color, { primary })
     zox_set(e, OutlineColor, { secondary })
 }
 
-byte check_texture(const color *data, const int2 size, const int2 pixel_position, const color find_color, int distance) {
-    if (!int2_in_bounds(pixel_position, size)) return 0;
-    if (color_equal(find_color, data[int2_array_index(pixel_position, size)])) return 1;
+byte check_texture(
+    const color *data,
+    const int2 size,
+    const int2 pixel_position,
+    const color find_color,
+    int distance
+) {
+    if (!int2_in_bounds(pixel_position, size)) {
+        return 0;
+    }
+    if (color_equal(find_color, data[int2_array_index(pixel_position, size)])) {
+        return 1;
+    }
     if (distance >= 0) {
         distance--;
         if (check_texture(data, size, int2_down(pixel_position), find_color, distance)) return 1;
@@ -29,7 +53,19 @@ byte check_texture(const color *data, const int2 size, const int2 pixel_position
     return 0;
 }
 
-void generate_texture_frame(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const byte frame_thickness, const byte corner_size, const byte is_noise) {
+void generate_texture_frame(
+    color* data,
+    const int length,
+    const int2 size,
+    const color fill_color,
+    const color outline_color,
+    const byte frame_thickness,
+    const byte corner_size,
+    const byte is_noise)
+{
+    if (!data) {
+        return;
+    }
     int index = 0;
     int2 pixel_position = { 0, 0 };
     for (pixel_position.y = 0; pixel_position.y < size.y; pixel_position.y++) {
@@ -91,14 +127,23 @@ void generate_texture_frame(color *data, const int length, const int2 size, cons
     }
 }
 
-void generate_texture_fill(color* data, const int2 size, const color fill_color) {
+void generate_texture_fill(
+    color* data,
+    const int2 size,
+    const color fill_color)
+{
     int2 position;
     for (position.x = 0; position.x < size.x; position.x++)
         for (position.y = 0; position.y < size.y; position.y++)
             data[int2_array_index(position, size)] = fill_color;
 }
 
-void generate_texture_graybox(color* data, const int2 big_size, int2 position, const int2 size) {
+void generate_texture_graybox(
+    color* data,
+    const int2 big_size,
+    int2 position,
+    const int2 size)
+{
     for (int j = position.x; j < position.x + size.x; j++) {
         for (int k = position.y; k < position.y + size.y; k++) {
             int index = j + k * big_size.x;
@@ -115,7 +160,13 @@ void generate_texture_graybox(color* data, const int2 big_size, int2 position, c
     }
 }
 
-void generate_texture_noise(color* data, const int2 size, const byte texture_type, const byte outline_type, color fill_color) {
+void generate_texture_noise(
+    color* data,
+    const int2 size,
+    const byte texture_type,
+    const byte outline_type,
+    color fill_color
+) {
     color color_min = { 15, 15, 15, 255 };
     color color_max = { 15, 15, 15, 255 };
     /*int2 redRange = { 15, 244 };

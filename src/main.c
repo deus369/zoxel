@@ -292,7 +292,7 @@ int main(int argc, char* argv[]) {
     }
 
     zox_logv("Running Main Loop [%s]", game_name);
-    engine_loop(world);
+    main_loop(world);
 
     // return after loop ends; during a close event
     zox_logv("Ended Main Loop [%s]", game_name);

@@ -10,33 +10,32 @@ void SoundGenerateSystem(ecs_iter_t *it) {
     zox_sys_in(SoundFrequency)
     zox_sys_in(SoundVolume)
     zox_sys_in(GenerateSound)
+    zox_sys_in(SoundData)
     zox_sys_out(TriggerSound)
-    zox_sys_out(SoundData)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(SoundLength, soundLength)
         zox_sys_i(SoundFrequency, soundFrequency)
         zox_sys_i(InstrumentType, instrumentType)
         zox_sys_i(SoundVolume, soundVolume)
         zox_sys_i(GenerateSound, generateSound)
+        zox_sys_i(SoundData, soundData)
         zox_sys_o(TriggerSound, triggerSound)
-        zox_sys_o(SoundData, soundData)
         if (generateSound->value != zox_sound_generate_run) {
             continue;
         }
         const float volume = soundVolume->value;
         const double sound_time_length = soundLength->value;
         const float frequency = soundFrequency->value;
-        const int data_length = (int) (sound_sample_rate * sound_time_length);
+        // const int data_length = (int) (sound_sample_rate * sound_time_length);
         const float noise = sound_noise * (rand() % 101) / 100.0f;
         // random.NextFloat(generateSound.noise.x, generateSound.noise.y);
         const byte instrument_type = instrumentType->value; // rand() % 3; // 2;
         const float attack = sound_attack_multiplier * sound_time_length; //  0.02f * sound_time_length;
         const float dampen = sound_dampen_multiplier * sound_time_length;
-        //f (generateSound->value == 1) {
-        initialize_SoundData(soundData, data_length);
-        // resize_memory_component(SoundData, soundData, float, data_length);
+
+        // initialize_SoundData(soundData, data_length);
         float value = 0;
-        for (int j = 0; j < data_length; j++) {
+        for (int j = 0; j < soundData->length; j++) {
             const float time = (float) (j / sample_rate_f);
             if (instrument_type == instrument_piano) {
                 value = piano_sound(time, frequency);

@@ -18,6 +18,7 @@ zox_component_node(VoxelNode, byte, 0)
 zox_node_add_link(VoxelNode)
 zox_component_node_helper(VoxelNode, byte)
 zox_component_byte(VoxelNodeDirty)
+zox_component_float(RaycastRange)
 #include "neighbors.c"
 #include "chunk_links.c"
 #include "raycast_voxel_data.c"
@@ -38,6 +39,7 @@ void define_components_chunks(ecs_world_t *world) {
     zox_define_component_byte(GenerateChunk)
     zox_define_component_byte(BlocksSpawned)
     zox_define_component(RaycastVoxelData)
+    zox_define_component_float(RaycastRange)
     zox_define_component(ChunkNeighbors)
     zox_define_links_component(ChunkLink)
     zox_define_component_byte(NodeDepth)

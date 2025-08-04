@@ -21,18 +21,17 @@ void spawn_realm_quests(ecs_world_t *world, const ecs_entity_t realm) {
             }
         }
     }
-    QuestLinks *quests = &((QuestLinks) { 0, NULL });
-    resize_memory_component(QuestLinks, quests, ecs_entity_t, 1)
+    QuestLinks quests = (QuestLinks) { 0, NULL };
+    initialize_QuestLinks(&quests, 1);
     // slay them dirty slems
     meta_quest_slay_slems = spawn_meta_quest(world, prefab_quest, "find bob");
     // meta_quest_slay_slems = spawn_meta_quest(world, prefab_quest, "slay slems");
     // set quest objectives
     // zox_set(meta_quest_slay_slems, TextureLink, { files_textures[12] });
     zox_set(meta_quest_slay_slems, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("Discord")) })
-    quests->value[0] = meta_quest_slay_slems;
+    quests.value[0] = meta_quest_slay_slems;
 
-    zox_set(realm, QuestLinks, { quests->length, quests->value })
-#ifdef zox_log_realm_generate
-    zox_log(" + generated realm [quests]\n")
-#endif
+    zox_set_ptr(realm, QuestLinks, quests);
+
+    zox_logv("At [%f] Realm [quests] [%i] spawned.", zox_current_time, quests.length);
 }

@@ -1,4 +1,5 @@
 ecs_entity_t prefab_app_sdl;
+byte zox_log_sdl_window = 0;
 
 ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     zox_prefab_child(prefab_app)
@@ -9,8 +10,6 @@ ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     // zox_add_tag(e, ViewPort)
     return e;
 }
-
-byte zox_log_sdl_window = 1;
 
 ecs_entity_t spawn_app_sdl(ecs_world_t *world,
     const char* name,

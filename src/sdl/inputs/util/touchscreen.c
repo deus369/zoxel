@@ -62,12 +62,17 @@ void finger_released(ecs_world_t *world, const ecs_entity_t e) {
     }
 }
 
-void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const int2 touchscreen_size) {
+void sdl_extract_touchscreen(ecs_world_t *world,
+    const Children *children,
+    const int2 touchscreen_size)
+{
     touch_fingers_count = 0;
     touch_devices_count = SDL_GetNumTouchDevices();
-    for (int i = 0; i < zevices->length; i++) {
-        const ecs_entity_t zevice = zevices->value[i];
-        if (!zox_has(zevice, Finger)) continue;
+    for (int i = 0; i < children->length; i++) {
+        const ecs_entity_t zevice = children->value[i];
+        if (!zox_valid(zevice) || !zox_has(zevice, Finger)) {
+            continue;
+        }
         const int zevice_id = zox_get_value(zevice, ID)
         if (zevice_id) {
             SDL_Finger *finger = find_finger(zevice_id);
@@ -89,7 +94,7 @@ void sdl_extract_touchscreen(ecs_world_t *world, const Children *zevices, const 
             }
         } else {
             // get unused finger! find a finger that isn't used yet
-            SDL_Finger *finger = find_finger_unused(world, zevices);
+            SDL_Finger *finger = find_finger_unused(world, children);
             if (finger) {
                 const int finger_id = finger->id + 1;
                 set_id(world, zevice, finger_id);

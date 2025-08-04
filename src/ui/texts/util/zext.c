@@ -50,9 +50,9 @@ void print_entity_zext(ecs_world_t *world, const ecs_entity_t e) {
         return;
     }
     const TextData *textData = zox_get(e, TextData)
-    char *text = get_zext_text(textData);
-    zox_log("   > zext %lu [%s] length %i\n", e, text, textData->length)
-    free(text);
+    char *debug_text = get_zext_text(textData);
+    zox_log("   > zext %lu [%s] length %i\n", e, debug_text, textData->length)
+    free(debug_text);
 }
 
 byte is_zext_updating(ecs_world_t *world, const Children *children) {
@@ -72,9 +72,10 @@ void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, b
     ecs_entity_t e = name_label_children->value[0];
     zox_get_muter(e, TextData, textData)
     if (textData->value) {
-        free(textData->value);
+        dispose_TextData(textData);
     }
-    textData->value = memcpy(malloc(length), value, length);
+    initialize_TextData(textData, length);
+    memcpy(textData->value, value, length);
     textData->length = length;
     zox_modified(e, TextData)
     zox_set(e, ZextDirty, { zext_update_start })

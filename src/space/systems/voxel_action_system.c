@@ -1,7 +1,7 @@
 #ifdef zox_mod_actions
 
 // left click - destroy
-void VoxelActionASystem(ecs_iter_t *it) {
+/*void VoxelActionASystem(ecs_iter_t *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(RaycastVoxelData)
@@ -18,6 +18,6 @@ void VoxelActionASystem(ecs_iter_t *it) {
         }
         triggerActionA->value = 0;
     }
-} zox_declare_system(VoxelActionASystem)
+} zox_declare_system(VoxelActionASystem)*/
 
 #endif

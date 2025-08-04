@@ -15,7 +15,7 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
     }
 
     zox_geter(realm, StatLinks, stats)
-    SkillLinks *skills = &((SkillLinks) { 0, NULL });
+    SkillLinks skills = (SkillLinks) { 0, NULL };
     // aura - damage one
     // char *name = generate_name();
     // todo: perhaps life aura can effect character themself!
@@ -36,7 +36,7 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
         }
     }
 
-    meta_skill_punch = spawn_realm_skill_melee(world,
+    meta_skill_punch = spawn_skill_melee_t(world,
         "punch",
         1,
         2,
@@ -47,7 +47,7 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
 
     // testing
 
-    ecs_entity_t mana_punch = spawn_realm_skill_melee(world,
+    ecs_entity_t mana_punch = spawn_skill_melee_t(world,
         "mana punch",
         2,
         6,
@@ -57,33 +57,32 @@ void spawn_realm_skills(ecs_world_t *world, const ecs_entity_t realm) {
         "punch");
     // zox_set(meta_skill_punch, TextureLink, { string_hashmap_get(files_hashmap_textures, new_string_data("punch")) })
 
-    meta_skill_aura_death = spawn_realm_skill_aura(world,
+    meta_skill_aura_death = spawn_skill_aura_t(world,
         "death aura",
         -base_death_aura_damage,
         base_death_aura_range,
         (color) { 5, 5, 5, 122 },
         "aura_death");
-    meta_skill_aura_life = spawn_realm_skill_aura(world,
+    meta_skill_aura_life = spawn_skill_aura_t(world,
         "life aura",
         base_death_aura_damage,
         base_death_aura_range,
         (color) { 255, 255, 255, 88 },
         "aura_life");
-    meta_skill_aura_fire = spawn_realm_skill_aura(world,
+    meta_skill_aura_fire = spawn_skill_aura_t(world,
         "fire aura",
         -base_death_aura_damage * 0.5f,
         base_death_aura_range * 4,
         (color) { 255, 22, 22, 144 },
         "aura_fire");
 
-    add_to_SkillLinks(skills, meta_skill_punch);
-    add_to_SkillLinks(skills, mana_punch);
-    add_to_SkillLinks(skills, meta_skill_aura_death);
-    add_to_SkillLinks(skills, meta_skill_aura_life);
-    add_to_SkillLinks(skills, meta_skill_aura_fire);
+    add_to_SkillLinks(&skills, meta_skill_punch);
+    add_to_SkillLinks(&skills, mana_punch);
+    add_to_SkillLinks(&skills, meta_skill_aura_death);
+    add_to_SkillLinks(&skills, meta_skill_aura_life);
+    add_to_SkillLinks(&skills, meta_skill_aura_fire);
 
-    zox_set(realm, SkillLinks, { skills->length, skills->value })
-#ifdef zox_log_realm_generate
-    zox_log(" + generated realm [skills]\n")
-#endif
+    zox_set_ptr(realm, SkillLinks, skills);
+
+    zox_logv("At [%f] Realm [skills] [%i] spawned.", zox_current_time, skills.length);
 }

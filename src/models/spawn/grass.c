@@ -29,7 +29,7 @@ ecs_entity_t spawn_model_grass(ecs_world_t* world,
         zox_set_unique_name(e2, "model_lod_grass")
         // default
         zox_set(e2, VoxType, { vox_type_rubble })
-        zox_set(e2, GenerateVox, { 1 })
+        zox_set(e2, GenerateVox, { zox_dirty_trigger })
         zox_set(e2, RenderLod, { 0 })
         // important
         zox_set(e2, Seed, { seed })

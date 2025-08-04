@@ -74,10 +74,7 @@ static inline name* get_children_##name(const name *node) {\
 }\
 \
 static inline byte has_children_##name(const name *node) {\
-    /*read_lock_##name(node);*/\
-    const byte has_children = node && node->ptr && node->type == node_type_children;\
-    /*read_unlock_##name(node);*/\
-    return has_children;\
+    return node && node->type == node_type_children && node->ptr;\
 }\
 \
 void create_##name(name* node) {\

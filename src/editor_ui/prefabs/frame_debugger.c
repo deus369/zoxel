@@ -12,7 +12,7 @@ ecs_entity_t spawn_frame_debugger_ui(
 
     const byte plot_layer = layer + 1;
     const byte header_layer = layer + 3;
-    const byte lines_layer = layer + 2;
+    // const byte lines_layer = layer + 2;
 
     const int font_size = 28;
     const int header_margins = 16;

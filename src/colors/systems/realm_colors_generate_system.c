@@ -65,12 +65,12 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     zox_geter(realm, Seed, seed)
     zox_geter(realm, Colors, old_data)
     if (old_data->length) {
-        free(old_data->value);
+        dispose_Colors_const(old_data);
     }
+    Colors colors = (Colors) { 0, NULL };
     color_rgb sky_color;
     if (!grayscale_mode) {
-        Colors colors = (Colors) { 0, NULL };
-        resize_memory_component(Colors, (&colors), color, 6)
+        initialize_Colors(&colors, 6);
         generate_colors(seed->value, (&colors));
         // zox_set(realm, Colors, { .value = colors->value, .length = colors->length })
         zox_set_ptr(realm, Colors, colors)
@@ -84,4 +84,5 @@ void spawn_realm_colors(ecs_world_t *world, const ecs_entity_t realm) {
     game_sky_bottom_color = sky_color;
     // viewport_clear_color = sky_color;
     set_camera_fog_color(world, sky_color);
+    zox_logv("At [%f] Realm [colors] [%i] spawned.", zox_current_time, colors.length);
 }

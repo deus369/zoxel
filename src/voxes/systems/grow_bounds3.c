@@ -1,4 +1,4 @@
-void Bounds3DGrowSystem(ecs_iter_t *it) {
+void Bounds3GrowSystem(ecs_iter_t *it) {
     zox_sys_begin()
     zox_sys_in(MeshDirty)
     zox_sys_in(ChunkSize)
@@ -14,4 +14,4 @@ void Bounds3DGrowSystem(ecs_iter_t *it) {
         }
         bounds3D->value = calculate_vox_bounds(chunkSize->value, voxScale->value);
     }
-} zox_declare_system(Bounds3DGrowSystem)
+} zox_declare_system(Bounds3GrowSystem)

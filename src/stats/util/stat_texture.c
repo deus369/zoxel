@@ -1,5 +1,5 @@
 // spawn prefabs for each meta stats
-ecs_entity_t spawn_realm_stat_state(ecs_world_t* world,
+ecs_entity_t spawn_stat_state_t(ecs_world_t* world,
     const char* name,
     char* texture_name,
     const color_rgb c)
@@ -9,7 +9,7 @@ ecs_entity_t spawn_realm_stat_state(ecs_world_t* world,
     return e;
 }
 
-ecs_entity_t spawn_realm_stat_level(ecs_world_t* world,
+ecs_entity_t spawn_stat_level_t(ecs_world_t* world,
     const char* name,
     char* texture_name,
     const color_rgb c)
@@ -19,7 +19,7 @@ ecs_entity_t spawn_realm_stat_level(ecs_world_t* world,
     return e;
 }
 
-ecs_entity_t spawn_realm_stat_regen(ecs_world_t* world,
+ecs_entity_t spawn_stat_regen_t(ecs_world_t* world,
     const char* name,
     char* texture_name)
 {
@@ -28,7 +28,7 @@ ecs_entity_t spawn_realm_stat_regen(ecs_world_t* world,
     return e;
 }
 
-ecs_entity_t spawn_realm_stat_attribute(ecs_world_t* world,
+ecs_entity_t spawn_stat_attribute_t(ecs_world_t* world,
     const char* name,
     char* texture_name)
 {

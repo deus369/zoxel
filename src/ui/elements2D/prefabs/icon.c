@@ -17,6 +17,6 @@ ecs_entity_t spawn_prefab_icon(ecs_world_t *world, const ecs_entity_t prefab) {
     zox_prefab_set(e, Color, { default_fill_color_icon })
     zox_prefab_set(e, OutlineColor, { default_outline_color_icon })
     zox_prefab_set(e, IconRadius, { default_icon_radius })
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL });
     return e;
 }

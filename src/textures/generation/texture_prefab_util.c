@@ -6,11 +6,8 @@ void clear_texture_data(ecs_world_t *world, const ecs_entity_t e) {
     //zox_geter(e, TextureData, old)
     zox_muter(e, TextureData, old)
     if (old->value) {
-        clear_memory_component(TextureData, old);
-        // free(old->value);
+        dispose_TextureData_const(old);
     }
-    //TextureData data = (TextureData) { 0, NULL };
-    //zox_set_ptr(e, TextureData, data);
 }
 
 void clone_texture_data(ecs_world_t *world,
@@ -36,12 +33,13 @@ void clone_texture_data(ecs_world_t *world,
     if (zox_has(e, TextureData)) {
         zox_geter(e, TextureData, oldData);
         if (oldData->value) {
-            free(oldData->value);
+            dispose_TextureData_const(oldData);
         }
     }
     TextureData data = { 0, NULL };
-    data.length = source_data->length;
-    data.value = malloc(bytes_length);
+    initialize_TextureData(&data, source_data->length);
+    //data.length = source_data->length;
+    //data.value = malloc(bytes_length);
     if (!data.value) {
         zox_log_error("texture data malloc failed")
         return;

@@ -13,8 +13,8 @@ ecs_entity_t spawn_prefab_cube(ecs_world_t *world) {
         return e;
     }
     zox_add_tag(e, MeshBasic3D)
-    zox_prefab_add(e, MeshIndicies)
-    zox_prefab_add(e, MeshVertices)
+    zox_prefab_set(e, MeshIndicies, { 0, NULL });
+    zox_prefab_set(e, MeshVertices, { 0, NULL });
     zox_prefab_set(e, ShaderLink, { 0 })
     add_gpu_mesh(world, e);
     add_gpu_material(world, e);

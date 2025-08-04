@@ -24,6 +24,8 @@ void SoundPlaySystem(ecs_iter_t *it) {
                     soundData->length,
                     mixer_audio_volume,
                     channel);
+            } else {
+                zox_log_error("Invalid SoundData, triggered.");
             }
         }
     }

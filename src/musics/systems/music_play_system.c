@@ -42,7 +42,6 @@ void MusicPlaySystem(ecs_iter_t *it) {
             const float volume = note_volume * get_volume_music();
             const byte note_instrument = zox_get_value(note, InstrumentType)
             const float frequency = note_frequencies[music_note];
-            //ecs_entity_t sound;
             // zox_log(" > spawning note type: %i\n", note_instrument)
 
             if (note_instrument == instrument_piano_file) {

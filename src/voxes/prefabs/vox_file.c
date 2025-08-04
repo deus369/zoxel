@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
     zox_add_tag(e, Vox)
     zox_prefab_add(e, ChunkSize)
     zox_prefab_add(e, VoxelNode)
-    zox_prefab_add(e, ColorRGBs)
+    zox_prefab_set(e, ColorRGBs, { 0, NULL });
     zox_prefab_add(e, UboGPULink)
     // extra for rendering
     zox_prefab_set(e, VoxScale, { vox_model_scale })

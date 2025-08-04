@@ -31,7 +31,7 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
             if (!zox_valid(block)) {
                 continue;
             }
-            zox_geter(block, Textures, block_textures)
+            zox_geter(block, TextureLinks, block_textures)
             for (int k = 0; k < block_textures->length; k++) {
                 const ecs_entity_t block_texture =  block_textures->value[k];
                 add_to_TextureLinks(textureLinks, block_texture);

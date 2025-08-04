@@ -81,4 +81,5 @@ void spawn_realm_characters(ecs_world_t *world, ecs_entity_t e) {
 
     zox_set(e, CharactersChanceMax, { chance_max })
     zox_set_ptr(e, CharacterLinks, characters)
+    zox_logv("At [%f] Realm [characters] [%i] spawned.", zox_current_time, characters.length);
 }

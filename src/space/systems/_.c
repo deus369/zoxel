@@ -42,10 +42,12 @@ void define_systems_players2(ecs_world_t *world) {
     zox_system_1(ActionsShortcutSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [none] players.Player)
-    zox_system_1(VoxelActionASystem, EcsOnLoad,
+    /*zox_system_1(VoxelActionASystem, EcsOnLoad,
+            [in] chunks3.RaycastRange,
             [in] chunks3.RaycastVoxelData,
-            [out] characters.TriggerActionA)
+            [out] characters.TriggerActionA)*/
     zox_system_1(ActionActivateSystem, EcsOnLoad,
+            [in] chunks3.RaycastRange,
             [in] chunks3.RaycastVoxelData,
             [out] actions.ActionLinks,
             [out] characters.TriggerActionB)
@@ -57,5 +59,6 @@ void define_systems_players2(ecs_world_t *world) {
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
             [in] cameras.CameraLink,
             [in] chunks3.VoxLink,
+            [in] chunks3.RaycastRange,
             [out] chunks3.RaycastVoxelData)
 }

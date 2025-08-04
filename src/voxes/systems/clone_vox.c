@@ -44,7 +44,9 @@ void CloneVoxSystem(ecs_iter_t *it) {
             const int memory_length = sizeof(color_rgb) * colors_source->length;
             chunkSize->value = source_chunk_size->value;
             colorRGBs->length = colors_source->length;
-            colorRGBs->value = memcpy(malloc(memory_length), colors_source->value, memory_length);
+
+            initialize_ColorRGBs(colorRGBs, memory_length);
+            memcpy(colorRGBs->value, colors_source->value, memory_length);
             cloneVox->value = 0;
             chunkMeshDirty->value = chunk_dirty_state_trigger;
         }

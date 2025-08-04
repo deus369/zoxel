@@ -1,1 +1,1 @@
-float terrain_raycast_length = 2; // 8;
+float terrain_raycast_range = 3; // 8;

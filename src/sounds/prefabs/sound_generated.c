@@ -24,5 +24,16 @@ ecs_entity_t spawn_sound_generated(ecs_world_t *world,
     zox_set(e, SoundFrequency, { frequency })
     zox_set(e, InstrumentType, { instrument_type })
     zox_set(e, SoundVolume, { volume })
+
+    uint length = (uint) (sound_sample_rate * sound_length);
+    if (length > MAX_SOUND_DATA) {
+        zox_log_error("length out of bounds [%i] of [%i]", length, MAX_SOUND_DATA);
+        length = MAX_SOUND_DATA;
+    }
+    SoundData data = { 0 };
+    data.value = soundpool_alloc();
+    data.length = length;
+    zox_set_ptr(e, SoundData, data);
+
     return e;
 }

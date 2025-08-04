@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_menu_game_touch(ecs_world_t *world, const ecs_entity_t
     zox_prefab_name("menu_game_touch")
     zox_add_tag(e, MenuGameTouch)
     zox_prefab_set(e, AnchorSize, { float2_one })
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL });
     return e;
 }
 

@@ -10,7 +10,7 @@ void resize_text3D(ecs_world_t *world, Children *children, const TextData *textD
     const int reuse_count = int_min(old_children_length, new_children_length);
     ecs_entity_t *new_children = NULL;
     if (new_children_length > 0) {
-        new_children = malloc(new_children_length * sizeof(ecs_entity_t));
+        new_children = zalloc(new_children_length * sizeof(ecs_entity_t));
     }
     if (new_children_length > old_children_length) {    // spawn new zigels
         for (int i = old_children_length; i < new_children_length; i++) {
@@ -37,11 +37,11 @@ void resize_text3D(ecs_world_t *world, Children *children, const TextData *textD
         new_children[i] = e;
         zox_log_text3D("    > reusing [%i] zigel [%s]", i, zox_get_name(e))
     }
+    if (has_old_children) {
+        dispose_Children(children);
+    }
     children->value = new_children;
     children->length = new_children_length;
-    if (has_old_children) {
-        free(old_children);
-    }
 }
 
 // todo: split up into update system, and resize system

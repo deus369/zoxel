@@ -7,7 +7,7 @@ ecs_entity_t spawn_prefab_popup3(ecs_world_t *world,
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
     zox_prefab_set(e, DestroyInTime, { 5 })
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL });
     return e;
 }
 

@@ -1,25 +1,5 @@
-
-
 #define clear_memory_component(name, component)\
     dispose_##name(component);
-
-#define resize_memory_component(T, component, type, new_length) {\
-    if (component->length != new_length) {\
-        if (new_length == 0) {\
-            clear_memory_component(T, component)\
-        } else if (component->value) {\
-            type* new_memory = realloc(component->value, new_length * sizeof(type));\
-            if (!new_memory) {\
-                zox_log_error("Failure with realloc")\
-            } else {\
-                component->value = new_memory;\
-                component->length = new_length;\
-            }\
-        } else {\
-            initialize_##T(component, new_length);\
-        }\
-    }\
-}
 
 ecs_entity_t find_array_element_with_id(
     ecs_world_t* world,

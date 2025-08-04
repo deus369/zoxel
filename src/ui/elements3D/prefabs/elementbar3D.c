@@ -7,16 +7,16 @@ typedef struct {
 } SpawnDataElementbar3D;
 
 ecs_entity_t spawn_prefab_elementbar3D(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_prefab_child(prefab)
-    zox_prefab_name("elementbar3D")
-    zox_add_tag(e, FillTexture)
-    zox_prefab_set(e, ElementBar, { 1 })
-    zox_prefab_set(e, ElementBarSize, { float2_zero })
-    zox_prefab_set(e, PixelSize, { int2_one })
-    zox_prefab_set(e, TextureSize, { int2_one })
-    zox_prefab_set(e, Color, { back_bar3D_color })
-    zox_prefab_add(e, Children)
-    zox_set(e, UITrail, {{ 0, 0.43f, 0 }})
+    zox_prefab_child(prefab);
+    zox_prefab_name("elementbar3D");
+    zox_add_tag(e, FillTexture);
+    zox_prefab_set(e, ElementBar, { 1 });
+    zox_prefab_set(e, ElementBarSize, { float2_zero });
+    zox_prefab_set(e, PixelSize, { int2_one });
+    zox_prefab_set(e, TextureSize, { int2_one });
+    zox_prefab_set(e, Color, { back_bar3D_color });
+    zox_prefab_set(e, Children, { 0, NULL });
+    zox_set(e, UITrail, {{ 0, 0.43f, 0 }});
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_back_mesh_scale);
     return e;
 }

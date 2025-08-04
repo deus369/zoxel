@@ -1,6 +1,6 @@
 #include "mesh_indicies.c"
 #include "resource_management.c"
-#include "mesh_util.c"
+#include "mesh.c"
 #include "mesh_indicies2.c"
 #include "shader_loading.c"
 #include "render_passes.c"

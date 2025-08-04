@@ -22,7 +22,9 @@ void FrameTextureSystem(ecs_iter_t *it) {
         if (generateTexture->value != zox_generate_texture_generate) {
             continue;
         }
-        resize_memory_component(TextureData, textureData, color, textureSize->value.x * textureSize->value.y)
+        int length = textureSize->value.x * textureSize->value.y;
+        initialize_TextureData(textureData, length);
+        // resize_memory_component(TextureData, textureData, color, )
         const byte add_noise = zox_has(e, TextureAddNoise);
         const color fill_color = color2->value;
         color outline_color;

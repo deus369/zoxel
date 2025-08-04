@@ -11,6 +11,18 @@ const byte octree_node_size = 2;
 // debugging
 int node_memory = 0;
 
+byte reverse_direction(byte d) {
+    switch (d) {
+        case direction_left:  return direction_right;
+        case direction_right: return direction_left;
+        case direction_up:    return direction_down;
+        case direction_down:  return direction_up;
+        case direction_front: return direction_back;
+        case direction_back:  return direction_front;
+        default: return d; // or error
+    }
+}
+
 const float octree_scales[] = {
     1.0f,
     0.5f,

@@ -2,7 +2,7 @@
 /*void prefab_make_skeleton(ecs_world_t *world, const ecs_entity_t e) {
     zox_add_tag(e, Skeleton)
     zox_add_tag(e, SkeletonMesher)
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL });
     zox_prefab_add(e, BoneLinks)
     zox_prefab_add(e, BoneIndexes)
     // add_gpu_bone_index(world, e);

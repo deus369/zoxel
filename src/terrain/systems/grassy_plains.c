@@ -1,5 +1,10 @@
 define_fun_stopwatch(time_grassy_plains, 0);
+byte profile_grassy_plains = 0; // add to profiler
+
+// FIXME(deus): This LOD+1 patch prevents chunk seems.
 byte optimize_generation_lods = 1;
+byte boost_generation_hack = 1; // 🔥 applied until truth is revealed
+
 byte disable_biomes = 1;
 byte disable_top_placements = 0;
 byte disable_dirt_patches = 1;
@@ -57,13 +62,13 @@ VoxelNode* set_voxelt(
 // generates our terrain voxels
 void GrassyPlainsSystem(ecs_iter_t *it) {
     // zox_log_terrain_generation = 1;
-    uint update_count = 0;
-    int stage_id = get_thread_index();
-    double time_start = get_time_ms();
-    zox_start_time_system();
+    // uint update_count = 0;
+    // int stage_id = get_thread_index();
+    // double time_start = get_time_ms();
+    zox_ts_begin(grassy_plains);
     // for now while types are global
     // const byte target_depth = terrain_depth;
-    const uint seed = global_seed;
+    const uint seed = global_seed;  // todo: use terrains seed
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkPosition)
@@ -74,6 +79,23 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     zox_sys_out(NodeDepth)
     zox_sys_out(VoxelNodeDirty)
     zox_sys_out(ChunkMeshDirty)
+
+    byte any_dirty = 0;
+    for (int i = 0; i < it->count; i++) {
+        zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
+        if (renderDistanceDirty->value == zox_dirty_active) {
+            any_dirty = 1;
+            break;
+        }
+    }
+    if (!any_dirty) {
+        zox_ts_end(grassy_plains, 5, profile_grassy_plains);
+        return;
+    }
+
+    startwatch(time_grassy_plains);
+
+
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(ChunkPosition, chunkPosition)
@@ -89,26 +111,30 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
             continue;
         }
 
-        byte new_depth = optimize_generation_lods ?  get_chunk_terrain_depth_from_lod(renderLod->value, terrain_depth) : terrain_depth;
+        byte depth = optimize_generation_lods ?  terrain_lod_to_node_depth(renderLod->value, terrain_depth) : terrain_depth;
+        if (boost_generation_hack && depth < terrain_depth) {
+            depth++;
+        }
+        // zox_log("render lod [%i] building to depth [%i]", renderLod->value, depth);
 
         // if already at that level
-        if (nodeDepth->value >= new_depth) {
+        if (nodeDepth->value >= depth) {
             continue;
         }
-        nodeDepth->value = new_depth;
+        nodeDepth->value = depth;
+        byte is_max_depth = nodeDepth->value == terrain_depth;
         // if no depth, skip
         if (!nodeDepth->value) {
             continue;
         }
         const double terrain_amplifier = powers_of_two[nodeDepth->value] * render_distance_y;
 
-        startwatch(time_grassy_plains);
-
         const byte chunk_voxel_length = powers_of_two_byte[nodeDepth->value];
         const float2 map_size_f = (float2) { chunk_voxel_length, chunk_voxel_length };
         const float3 chunk_position_float3 = float3_from_int3(chunkPosition->value);
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         byte3 voxel_position;
+        // For each XZ position
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
 
@@ -145,6 +171,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                 const int local_height = int_min(chunk_voxel_length - 1, local_height_raw);
 
                 byte did_place_grass_top = 0;
+                // For each Y position
                 if (local_height >= 0) {
                     for (voxel_position.y = 0; voxel_position.y <= local_height; voxel_position.y++) {
                         // top blocks
@@ -193,7 +220,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                 if (!disable_grass_placements &&
                     !disable_block_vox_generation &&
                     !is_mountain &&
-                    nodeDepth->value == terrain_depth && // if max depth
+                    is_max_depth && // if max depth
                     did_place_grass_top &&
                     local_height_raw + 1 >= 0 &&
                     local_height_raw + 1 < chunk_voxel_length &&
@@ -212,74 +239,68 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                             zox_block_vox_grass,
                             0);
                     }
-
-                    /*const double place_value = (perlin_terrain(
-                     n oise_position_x, *
-                     noise_position_z,
-                     0.216,
-                     seed * 16,
-                     4) + 1.0) / 2.0;
-                     const double place_value2 = (perlin_terrain(
-                         noise_position_x,
-                         noise_position_z,
-                         0.616,
-                         seed * 16,
-                         6) + 1.0) / 2.0;*/
-                    // place_value + place_value2 * 0.1 <= 0.33) {
-
-                    /*const int rando = rand() % 10000;
-                    if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
-                        voxel_position.y = local_height_raw + 1;
-                        data.position = voxel_position;
-                        if (rando <= block_spawn_chance_grass) {
-                            set_voxel(&datam_grass, data);
-                        }
-                        else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower) {
-                            set_voxel(&datam_flower, data);
-                        }
-                        else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
-                            set_voxel(&datam_rubble, data);
-                        }
-                        // zox_log(" + flower spawned %f\n", perlin_value)
-                    }*/
                 }
-                // obisidian bottom
-                /*if (chunkPosition->value.y == -render_distance_y) {
-                    voxel_position.y = 0;
-                    const int obsidian_height = rand() % terrain_obsidian_height;
-                    for (voxel_position.y = 0; voxel_position.y <= obsidian_height; voxel_position.y++) {
-                        // set_voxel(setter_obsidian, data);
-                        set_voxelt(
-                            voxelNode,
-                            node_depth,
-                            voxel_position,
-                            zox_block_obsidian,
-                            0);
-                    }
-                }*/
             }
         }
         tapwatch(time_grassy_plains, "mass set_voxels");
 
-        // cleanup_nodes(world, voxelNode);
-        // tapwatch(time_grassy_plains, "cleanup_nodes");
-
         voxelNodeDirty->value = zox_dirty_trigger;
-
         chunkMeshDirty->value = chunk_dirty_state_trigger;
-        for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
+        /*for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
             ecs_entity_t neighbor = neighbors->value[axis];
             if (zox_valid(neighbor)) {
                 zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
-        }
-
-        update_count++;
-        endwatch(time_grassy_plains, "grassy_plains");
+        }*/
     }
-    if (update_count > 0 && zox_log_terrain_generation) {
-        double time_taken = get_time_ms() - time_start;
-        zox_log(" - [%i] - frame_i [%i] count [%i] taken [%f]", stage_id, ecs_run_count, update_count, time_taken);
-    }
-    zox_end_time_system();
+    endwatch(time_grassy_plains, "grassy_plains");
+    zox_ts_end(grassy_plains, 5, profile_grassy_plains);
 } zox_declare_system(GrassyPlainsSystem)
+
+
+
+
+/*const double place_value = (perlin_terrain(
+    n oise_position_x, *
+    noise_position_z,
+    0.216,
+    seed * 16,
+    4) + 1.0) / 2.0;
+    const double place_value2 = (perlin_terrain(
+        noise_position_x,
+        noise_position_z,
+        0.616,
+        seed * 16,
+        6) + 1.0) / 2.0;*/
+// place_value + place_value2 * 0.1 <= 0.33) {
+
+/*const int rando = rand() % 10000;
+if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
+    voxel_position.y = local_height_raw + 1;
+    data.position = voxel_position;
+    if (rando <= block_spawn_chance_grass) {
+        set_voxel(&datam_grass, data);
+    }
+    else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower) {
+        set_voxel(&datam_flower, data);
+    }
+    else if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_chance_rubble) {
+        set_voxel(&datam_rubble, data);
+    }
+    // zox_log(" + flower spawned %f\n", perlin_value)
+}*/
+
+// obisidian bottom
+/*if (chunkPosition->value.y == -render_distance_y) {
+    voxel_position.y = 0;
+    const int obsidian_height = rand() % terrain_obsidian_height;
+    for (voxel_position.y = 0; voxel_position.y <= obsidian_height; voxel_position.y++) {
+        // set_voxel(setter_obsidian, data);
+        set_voxelt(
+            voxelNode,
+            node_depth,
+            voxel_position,
+            zox_block_obsidian,
+            0);
+    }
+}*/

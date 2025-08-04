@@ -1,14 +1,14 @@
 ecs_entity_t spawn_prefab_block(ecs_world_t *world) {
-    zox_prefab()
-    zox_prefab_name("block")
-    zox_add_tag(e, Voxel)
-    zox_add_tag(e, Block)
-    zox_prefab_set(e, BlockIndex, { 0 })
-    zox_prefab_set(e, Color, { color_white })
-    zox_prefab_set(e, BlockModel, { zox_block_solid })
-    zox_prefab_set(e, BlockCollider, { zox_block_solid })
-    zox_prefab_add(e, Textures)
-    zox_prefab_add(e, ZoxName)
+    zox_prefab();
+    zox_prefab_name("block");
+    zox_add_tag(e, Voxel);
+    zox_add_tag(e, Block);
+    zox_prefab_set(e, BlockIndex, { 0 });
+    zox_prefab_set(e, Color, { color_white });
+    zox_prefab_set(e, BlockModel, { zox_block_solid });
+    zox_prefab_set(e, BlockCollider, { zox_block_solid });
+    zox_prefab_set(e, TextureLinks, { 0, NULL });
+    zox_prefab_set(e, ZoxName, { 0, NULL });
     return e;
 }
 
@@ -28,8 +28,8 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
         zox_set(e, BlockCollider, { zox_block_air })
     }
     if (data->textures) {
-        Textures *textures = &((Textures) { 0, NULL });
-        initialize_Textures(textures, data->textures);
+        TextureLinks textures = (TextureLinks) { 0, NULL };
+        initialize_TextureLinks(&textures, data->textures);
         for (int i = 0; i < data->textures; i++) {
             ecs_entity_t e2;
             if (data->texture_filename) {
@@ -42,9 +42,9 @@ ecs_entity_t spawn_block(ecs_world_t *world, const SpawnBlock *data) {
             if (data->texture_tag) {
                 zox_add_tag_id(e2, data->texture_tag);
             }
-            textures->value[i] = e2;
+            textures.value[i] = e2;
         }
-        zox_set(e, Textures, { textures->length, textures->value })
+        zox_set_ptr(e, TextureLinks, textures);
     }
     zox_set(e, ZoxName, { text_to_zext(data->name) })
     return e;

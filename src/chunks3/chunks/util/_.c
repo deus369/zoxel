@@ -8,7 +8,6 @@
 #include "voxel_optimize.c"
 #include "positioning.c"
 #include "ground_finder.c"
-#include "chunk_colored.c"
 #include "chunk_entity_links.c"
 #include "debug.c"
 #include "raycast.c"

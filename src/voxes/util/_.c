@@ -1,5 +1,6 @@
+#include "voxelc.c"
 #include "vox.c"
 #include "outlines.c"
 #include "io.c"
-#include "voronoi3D.c"
+#include "voronoi3.c"
 #include "spawned_block_vox.c"

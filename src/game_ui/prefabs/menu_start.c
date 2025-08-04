@@ -29,7 +29,7 @@ ecs_entity_t spawn_prefab_main_start(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_main_start(
+ecs_entity_t spawn_menu_start(
     ecs_world_t *world,
     const ecs_entity_t prefab,
     const ecs_entity_t player,

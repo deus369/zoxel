@@ -6,13 +6,13 @@ ecs_entity_t meta_item_block_stone;
 ecs_entity_t meta_item_block_dungeon_core;
 
 ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
-    if (!zox_valid(block) || !zox_has(block, ZoxName) || !zox_has(block, Textures)) {
+    if (!zox_valid(block) || !zox_has(block, ZoxName) || !zox_has(block, TextureLinks)) {
         zox_log_error(" ! problem with block components name? [%i]\n", zox_has(block, ZoxName))
         return 0;
     }
     // get block data
     zox_geter(block, ZoxName, voxel_name)
-    zox_geter(block, Textures, textures)
+    zox_geter(block, TextureLinks, textures)
     // spawn item
     const ecs_entity_t e = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
     zox_name("block_item")
@@ -44,50 +44,48 @@ void spawn_realm_items(ecs_world_t *world, const ecs_entity_t realm) {
         zox_log("! realm does not have VoxelLinks [%lu]\n", realm)
         return;
     }
-    zox_geter(realm, VoxelLinks, voxels)
-    if (!voxels) {
-        zox_log("! realm voxels was null [%lu]\n", realm)
+    zox_geter(realm, VoxelLinks, blocks)
+    if (!blocks) {
+        zox_log("! realm blocks was null [%lu]\n", realm)
         return;
     }
-    if (voxels->length == 0 || voxels->value == NULL) {
-        zox_log(" ! no voxels to spawn items from\n")
+    if (blocks->length == 0 || blocks->value == NULL) {
+        zox_log(" ! no blocks to spawn items from\n")
         return;
     }
     // i should make a BlockItemLinks perhaps? nah  that overcomplicates
     // clear previous
-    zox_geter(realm, ItemLinks, oldItems)
-    if (oldItems) {
-        for (int i = 0; i < oldItems->length; i++) {
-            if (oldItems->value[i]) {
-                zox_delete(oldItems->value[i])
+    zox_geter(realm, ItemLinks, old)
+    if (old) {
+        for (int i = 0; i < old->length; i++) {
+            if (old->value[i]) {
+                zox_delete(old->value[i])
             }
         }
     }
-    ItemLinks *items = &((ItemLinks) { 0, NULL });
-    resize_memory_component(ItemLinks, items, ecs_entity_t, voxels->length)
-    for (int i = 0; i < voxels->length; i++) {
-        const ecs_entity_t block = voxels->value[i];
+    ItemLinks items = (ItemLinks) { 0, NULL };
+    initialize_ItemLinks(&items, blocks->length);
+    for (int i = 0; i < blocks->length; i++) {
+        const ecs_entity_t block = blocks->value[i];
         if (!zox_valid(block)) {
             zox_log_error("block [%i] invalid", i)
-            items->value[i] = 0;
+            items.value[i] = 0;
             continue;
         }
-        items->value[i] = spawn_block_item(world, block);
+        items.value[i] = spawn_block_item(world, block);
         if (i == zox_block_grass - 1) {
-            const ecs_entity_t item_block_dirt = items->value[zox_block_dirt - 1];
+            const ecs_entity_t item_block_dirt = items.value[zox_block_dirt - 1];
             zox_set(block, ItemLink, { item_block_dirt })
         }
     }
-    zox_set(realm, ItemLinks, { items->length, items->value })
+    zox_set_ptr(realm, ItemLinks, items);
 
-    meta_item_block_dirt = items->value[zox_block_dirt - 1];
-    meta_item_block_obsidian = items->value[zox_block_obsidian - 1];
-    meta_item_block_dark = items->value[zox_block_dark - 1];
-    meta_item_block_sand = items->value[zox_block_sand - 1];
-    meta_item_block_stone = items->value[zox_block_stone - 1];
-    meta_item_block_dungeon_core = items->value[zox_block_dungeon_core - 1];
+    meta_item_block_dirt = items.value[zox_block_dirt - 1];
+    meta_item_block_obsidian = items.value[zox_block_obsidian - 1];
+    meta_item_block_dark = items.value[zox_block_dark - 1];
+    meta_item_block_sand = items.value[zox_block_sand - 1];
+    meta_item_block_stone = items.value[zox_block_stone - 1];
+    meta_item_block_dungeon_core = items.value[zox_block_dungeon_core - 1];
 
-#ifdef zox_log_realm_generate
-    zox_log(" + generated realm [items]")
-#endif
+    zox_logv("At [%f] Realm [items] [%i] spawned.", zox_current_time, items.length);
 }

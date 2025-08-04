@@ -25,6 +25,10 @@
     ecs_set_id(world, e, ecs_id(T), sizeof(T), &(T)__VA_ARGS__); \
 }
 
+#define zox_prefab_set_ptr(e, T, c) \
+    zox_prefab_add(e, T) \
+    ecs_set_ptr(world, e, T, &c);
+
 // Retrieve the prefab (parent) from the entity
 #define zox_get_prefab(e, name)\
     const ecs_entity_t name = ecs_get_target(world, e, EcsIsA, 0);

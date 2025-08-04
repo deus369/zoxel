@@ -30,36 +30,35 @@ void spawn_realm_stats(ecs_world_t *world, ecs_entity_t realm) {
 
     byte i = 0;
     // levels
-    stats.value[i++] = spawn_realm_stat_level(world, "soul", "soul", soul_c);
+    stats.value[i++] = spawn_stat_level_t(world, "soul", "soul", soul_c);
     zox_add_tag(stats.value[i - 1], StatSoul);
 
     // states
-    stats.value[i++] = spawn_realm_stat_state(world, "health", "health", health_c);
+    stats.value[i++] = spawn_stat_state_t(world, "health", "health", health_c);
     zox_add_tag(stats.value[i - 1], HealthStat);
-    stats.value[i++] = spawn_realm_stat_state(world, "energy", "energy", energy_c);
-    stats.value[i++] = spawn_realm_stat_state(world, "mana", "mana", mana_c);
+    stats.value[i++] = spawn_stat_state_t(world, "energy", "energy", energy_c);
+    stats.value[i++] = spawn_stat_state_t(world, "mana", "mana", mana_c);
     // Regens
-    stats.value[i++] = spawn_realm_stat_regen(world, "health regen", "healthregen");
-    stats.value[i++] = spawn_realm_stat_regen(world, "energy regen", "energyregen");
-    stats.value[i++] = spawn_realm_stat_regen(world, "mana regen", "manaregen");
+    stats.value[i++] = spawn_stat_regen_t(world, "health regen", "healthregen");
+    stats.value[i++] = spawn_stat_regen_t(world, "energy regen", "energyregen");
+    stats.value[i++] = spawn_stat_regen_t(world, "mana regen", "manaregen");
 
     // Attributes
-    stats.value[i++] = spawn_realm_stat_attribute(world, "strength", "strength");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "vitality", "vitality");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "endurance", "endurance");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "intelligence", "intelligence");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "wisdom", "wisdom");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "agility", "agility");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "dexterity", "dexterity");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "charm", "charm");
-    stats.value[i++] = spawn_realm_stat_attribute(world, "luck", "luck");
+    stats.value[i++] = spawn_stat_attribute_t(world, "strength", "strength");
+    stats.value[i++] = spawn_stat_attribute_t(world, "vitality", "vitality");
+    stats.value[i++] = spawn_stat_attribute_t(world, "endurance", "endurance");
+    stats.value[i++] = spawn_stat_attribute_t(world, "intelligence", "intelligence");
+    stats.value[i++] = spawn_stat_attribute_t(world, "wisdom", "wisdom");
+    stats.value[i++] = spawn_stat_attribute_t(world, "agility", "agility");
+    stats.value[i++] = spawn_stat_attribute_t(world, "dexterity", "dexterity");
+    stats.value[i++] = spawn_stat_attribute_t(world, "charm", "charm");
+    stats.value[i++] = spawn_stat_attribute_t(world, "luck", "luck");
 
     // Jobs
     // create regen stat
-    // stats.value[i++] = spawn_realm_stat_level(world, "farming", "farming", color_rgb_gray);
+    // stats.value[i++] = spawn_stat_level_t(world, "farming", "farming", color_rgb_gray);
 
     zox_set_ptr(realm, StatLinks, stats);
-#ifdef zox_log_realm_generate
-    zox_log(" + generated realm [stats]\n")
-#endif
+
+    zox_logv("At [%f] Realm [stats] [%i] spawned.", zox_current_time, stats.length);
 }

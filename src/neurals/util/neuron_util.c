@@ -98,7 +98,7 @@ void randomize_brain_weights(ecs_world_t *world, const ecs_entity_t brain) {
 
 void save_brain_as_texture(ecs_world_t *world, const ecs_entity_t brain) {
     int i2 = 0;
-    color *colors = malloc(brain_texture_size.x * brain_texture_size.y * sizeof(color));
+    color colors[brain_texture_size.x * brain_texture_size.y];
     const BrainOutputs *children = zox_get(brain, BrainOutputs)
     for (int i = 0; i < children->length; i++) {
         const ecs_entity_t e2 = children->value[i];
@@ -109,7 +109,6 @@ void save_brain_as_texture(ecs_world_t *world, const ecs_entity_t brain) {
         i2++;
     }
     save_texture_as_png(colors, brain_texture_size, "build/brain_test.png");
-    free(colors);
 }
 
 ecs_entity_t spawn_brain_as_texture(ecs_world_t *world, const ecs_entity_t brain) {

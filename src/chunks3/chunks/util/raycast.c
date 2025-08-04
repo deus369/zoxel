@@ -1,5 +1,6 @@
 // actually, we raycast character bounds and terrain seperately
 //  todo: seperate character raycast from terrain, and we just compare them both
+byte raycast_locks = 0;
 
 typedef struct {
     ecs_entity_t e;
@@ -79,8 +80,11 @@ byte raycast_voxel_node(
     byte was_hitting = 0;
     uint checks = 0;
     if (chunk) {
-        node_chunk = zox_get(chunk, VoxelNode)
-        chunk_depth = zox_get_value(chunk, NodeDepth)
+        node_chunk = zox_get(chunk, VoxelNode);
+        if (raycast_locks && node_chunk) {
+            read_lock_VoxelNode(node_chunk);
+        }
+        chunk_depth = zox_get_value(chunk, NodeDepth);
         if (raycasting_terrain) {
             zox_geter(chunk, EntityLinks, entities)
             character_raycast = raycast_character(world,
@@ -129,13 +133,19 @@ byte raycast_voxel_node(
             const int3 new_chunk_position = voxel_position_to_chunk_position(position_global, chunk_size);
             // Steps through chunks in our terrain!
             if (!int3_equals(chunk_position, new_chunk_position)) {
+                if (raycast_locks && node_chunk) {
+                    read_unlock_VoxelNode(node_chunk);
+                }
                 chunk = int3_hashmap_get(chunk_links->value, new_chunk_position);
                 if (!zox_valid(chunk)) {
                     return 0;
                 }
-                node_chunk = zox_get(chunk, VoxelNode)
+                node_chunk = zox_get(chunk, VoxelNode);
                 if (!node_chunk) {
                     return 0;
+                }
+                if (raycast_locks) {
+                    read_lock_VoxelNode(node_chunk);
                 }
                 chunk_depth = zox_get_value(chunk, NodeDepth)
                 chunk_position = new_chunk_position;
@@ -171,6 +181,9 @@ byte raycast_voxel_node(
                 position_local = (byte3) { 255, 255, 255 }; // failure!
                 // return here ?
                 if (was_hitting) {
+                    if (raycast_locks && node_chunk) {
+                        read_unlock_VoxelNode(node_chunk);
+                    }
                     return ray_hit_type_none;
                 }
             }
@@ -183,6 +196,9 @@ byte raycast_voxel_node(
             data->distance = character_raycast.distance;
             data->normal = ray_normal;
             // data->hit = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
+            if (raycast_locks && node_chunk) {
+                read_unlock_VoxelNode(node_chunk);
+            }
             return ray_hit_type_character;
         }/*else {
             // zox_log("cp [%ix%ix%i]", new_chunk_position.x, new_chunk_position.y, new_chunk_position.z)
@@ -201,11 +217,17 @@ byte raycast_voxel_node(
                 data->normal = int3_to_float3(hit_normal);
                 // zox_log(" + hit minivox voxel; ray_distance [%f] voxel [%i] - depth [%i] x", ray_distance, hit_voxel, chunk_depth)
                 // zox_log("  + at [%ix%ix%i]", position_local.x, position_local.y, position_local.z)
+                if (raycast_locks && node_chunk) {
+                    read_unlock_VoxelNode(node_chunk);
+                }
                 return ray_hit_type_block_vox;
             }
             // safety!
             if (hit_voxel - 1 >= voxels->length) {
-                zox_log_error("voxel index out of bounds [%i]", hit_voxel)
+                zox_log_warning("voxel index out of bounds [%i]", hit_voxel);
+                if (raycast_locks && node_chunk) {
+                    read_unlock_VoxelNode(node_chunk);
+                }
                 return ray_hit_type_none;
             }
             ecs_entity_t hit_block = voxels->value[hit_voxel - 1];
@@ -245,7 +267,10 @@ byte raycast_voxel_node(
                     vox = chunk;
                 }
                 if (!zox_has(vox, NodeDepth)) {
-                    zox_log_error("invalid vox selected [%s]", zox_get_name(vox))
+                    zox_log_error("invalid vox selected [%s]", zox_get_name(vox));
+                    if (raycast_locks && node_chunk) {
+                        read_unlock_VoxelNode(node_chunk);
+                    }
                     return ray_hit_type_none;
                 }
                 const byte node_depth = zox_get_value(vox, NodeDepth)
@@ -278,6 +303,9 @@ byte raycast_voxel_node(
                     data->distance += ray_distance * voxel_scale;
                     data->hit = float3_add(ray_origin, float3_scale(ray_normal, data->distance));
                     // zox_log("+ hit npc through grass [%f]", data->distance)
+                    if (raycast_locks && node_chunk) {
+                        read_unlock_VoxelNode(node_chunk);
+                    }
                     return ray_hit_type_character;
                 } /*else {
                     zox_log("Passing through: %s in minivox", result == ray_hit_type_none ? "air" : "idk")
@@ -372,6 +400,9 @@ byte raycast_voxel_node(
         data->position_real_last = float3_zero;
         data->chunk_last = 0;
         data->node_last = NULL;
+    }
+    if (raycast_locks && node_chunk) {
+        read_unlock_VoxelNode(node_chunk);
     }
     return ray_hit;
 }

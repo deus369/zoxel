@@ -8,24 +8,24 @@ typedef struct {
 } Text3DData;
 
 ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) {
-    zox_prefab_child(prefab)
-    zox_prefab_name("text3D")
-    zox_add_tag(e, Zext)
-    zox_add_tag(e, Text3D)
-    zox_prefab_set(e, MeshAlignment, { 0 })
-    zox_prefab_set(e, TextSize, { 0 })
-    zox_prefab_set(e, TextResolution, { 0 })
-    zox_prefab_set(e, TextPadding, { byte2_zero })
-    zox_prefab_set(e, ZextDirty, { 0 })
-    zox_prefab_set(e, ParentLink, { 0 })
-    zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }})
-    zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }})
-    zox_prefab_set(e, FontThickness, { 1 })
-    zox_prefab_set(e, FontOutlineThickness, { 1 })
-    zox_prefab_add(e, TextData)
-    zox_prefab_add(e, Children)
-    zox_prefab_set(e, RenderDisabled, { 0 })
-    zox_prefab_set(e, Text3DScale, { 1 })
+    zox_prefab_child(prefab);
+    zox_prefab_name("text3D");
+    zox_add_tag(e, Zext);
+    zox_add_tag(e, Text3D);
+    zox_prefab_set(e, MeshAlignment, { 0 });
+    zox_prefab_set(e, TextSize, { 0 });
+    zox_prefab_set(e, TextResolution, { 0 });
+    zox_prefab_set(e, TextPadding, { byte2_zero });
+    zox_prefab_set(e, ZextDirty, { 0 });
+    zox_prefab_set(e, ParentLink, { 0 });
+    zox_prefab_set(e, FontOutlineColor, { { 255, 0, 0, 255 }});
+    zox_prefab_set(e, FontFillColor, { { 0, 255, 0, 255 }});
+    zox_prefab_set(e, FontThickness, { 1 });
+    zox_prefab_set(e, FontOutlineThickness, { 1 });
+    zox_prefab_set(e, TextData, { 0, NULL });
+    zox_prefab_set(e, Children, { 0, NULL });
+    zox_prefab_set(e, RenderDisabled, { 0 });
+    zox_prefab_set(e, Text3DScale, { 1 });
     return e;
 }
 

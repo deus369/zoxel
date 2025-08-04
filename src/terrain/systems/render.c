@@ -7,7 +7,7 @@ if (check_opengl_error_unlogged()) {\
         break;\
 }
 
-void TerrainChunksRenderSystem(ecs_iter_t *it) {
+void Chunk3RenderSystem(ecs_iter_t *it) {
 #ifdef zox_disable_chunks_rendering
     return;
 #endif
@@ -74,4 +74,4 @@ void TerrainChunksRenderSystem(ecs_iter_t *it) {
         opengl_disable_texture(0);
         zox_disable_material();
     }
-} zox_declare_system(TerrainChunksRenderSystem)
+} zox_declare_system(Chunk3RenderSystem)

@@ -8,17 +8,15 @@ void set_colors_from_vox_file(ecs_world_t *world,
         return;
     }
     int colors_length = vox->palette.values_length;
-    ColorRGBs *colorRGBs = zox_get_mut(e, ColorRGBs)
+    zox_muter(e, ColorRGBs, colorRGBs);
     resize_memory_component(ColorRGBs, colorRGBs, color_rgb, colors_length)
     memcpy(colorRGBs->value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
-    zox_modified(e, ColorRGBs)
 }
 
 void set_as_debug_vox(ecs_world_t *world, const ecs_entity_t e) {
-    ColorRGBs *colorRGBs = zox_get_mut(e, ColorRGBs)
+    zox_muter(e, ColorRGBs, colorRGBs);
     resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 1)
     colorRGBs->value[0] = (color_rgb) { 223, 239, 2 };
-    zox_modified(e, ColorRGBs)
     zox_set(e, ChunkSize, { { 1, 1, 1 } })
     VoxelNode *voxelNode = zox_get_mut(e, VoxelNode)
     fill_new_octree(voxelNode, 1, 1);

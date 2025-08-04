@@ -8,32 +8,36 @@ void add_noise_chunk(ecs_world_t *world, ecs_entity_t e) {
 }
 
 void prefab_add_mesh_basic(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) return;
-    zox_prefab_add(e, MeshIndicies)
-    zox_prefab_add(e, MeshVertices)
-    add_gpu_mesh(world, e);
+    if (!headless) {
+        zox_prefab_set(e, MeshIndicies, { 0, NULL });
+        zox_prefab_set(e, MeshVertices, { 0, NULL });
+        add_gpu_mesh(world, e);
+    }
 }
 
 void add_components_mesh_textured(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) return;
-    zox_prefab_add(e, MeshUVs)
-    zox_prefab_add(e, MeshColorRGBs)
-    add_gpu_uvs(world, e);
-    add_gpu_texture(world, e);
-    add_gpu_colors(world, e);
+    if (!headless) {
+        zox_prefab_set(e, MeshUVs, { 0, NULL });
+        zox_prefab_set(e, MeshColorRGBs, { 0, NULL });
+        add_gpu_uvs(world, e);
+        add_gpu_texture(world, e);
+        add_gpu_colors(world, e);
+    }
 }
 
 void prefab_add_chunk_colors(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) return;
-    zox_add_tag(e, ColorChunk)
-    zox_prefab_add(e, ColorRGBs)
-    zox_prefab_add(e, MeshColorRGBs)
+    if (!headless) {
+        zox_add_tag(e, ColorChunk)
+        zox_prefab_set(e, ColorRGBs, { 0, NULL });
+        zox_prefab_set(e, MeshColorRGBs, { 0, NULL });
+    }
 }
 
 void add_components_mesh_colored(ecs_world_t *world, const ecs_entity_t e) {
-    if (headless) return;
-    prefab_add_chunk_colors(world, e);
-    add_gpu_colors(world, e);
+    if (!headless) {
+        prefab_add_chunk_colors(world, e);
+        add_gpu_colors(world, e);
+    }
 }
 
 void set_chunk_neighbors(ecs_world_t *world, ecs_entity_t e, ecs_entity_t chunk_left, ecs_entity_t chunk_right, ecs_entity_t chunk_back, ecs_entity_t chunk_front) {

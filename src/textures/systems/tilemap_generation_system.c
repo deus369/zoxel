@@ -44,21 +44,23 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         }
         for (texture_position.y = 0; texture_position.y < tilemapSize->value.y && texture_index < textureLinks->length; texture_position.y++) {
             for (texture_position.x = 0; texture_position.x < tilemapSize->value.x && texture_index < textureLinks->length; texture_position.x++) {
-                const ecs_entity_t texture_entity = textureLinks->value[texture_index];
-                if (!zox_valid(texture_entity) || !zox_has(texture_entity, TextureData)) {
-                    zox_log_error("invalid texture [%lu] index [%i]", texture_entity, texture_index)
+                const ecs_entity_t texture = textureLinks->value[texture_index];
+                if (!zox_valid(texture) || !zox_has(texture, TextureData)) {
+                    zox_log_error("invalid texture [%s] index [%i]", zox_get_name(texture), texture_index)
                     texture_index++;
                     continue;
                 }
-                zox_geter(texture_entity, TextureData, voxel_texture_data)
+                zox_geter(texture, TextureData, voxel_texture_data)
                 if (!voxel_texture_data->value) {
-                    zox_log_error("invalid texture data [%lu] index [%i]", texture_entity, texture_index)
+                    zox_log_error("invalid texture data [%s] index [%i]", zox_get_name(texture), texture_index)
                     texture_index++;
                     continue;
                 }
-                const int2 texture_size = zox_get_value(texture_entity, TextureSize)
-                const int2 tilemap_position = (int2) { texture_position.x * unit_size.x, texture_position.y * unit_size.y };
-
+                zox_geter_value(texture, TextureSize, int2, texture_size)
+                const int2 tilemap_position = (int2) {
+                    texture_position.x * unit_size.x,
+                    texture_position.y * unit_size.y
+                };
                 // tod: refactor - make this into a function
                 int2 pixel_position = int2_zero;
                 for (pixel_position.x = 0; pixel_position.x < texture_size.x; pixel_position.x++) {

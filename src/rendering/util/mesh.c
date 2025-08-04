@@ -1,4 +1,9 @@
-void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indicies[], int length) {
+void prefab_set_mesh_indicies(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const int* indicies,
+    int length
+) {
     if (headless) {
         return;
     }
@@ -12,7 +17,12 @@ void prefab_set_mesh_indicies(ecs_world_t *world, ecs_entity_t e, const int indi
     zox_prefab_set(e, MeshIndicies, { meshIndicies->length, meshIndicies->value })
 }
 
-void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2 *vertices, int length) {
+void prefab_set_mesh2D_vertices(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const float2 *vertices,
+    int length
+) {
     if (headless || !vertices) {
         return;
     }
@@ -22,23 +32,38 @@ void prefab_set_mesh2D_vertices(ecs_world_t *world, ecs_entity_t e, const float2
     zox_prefab_set(e, MeshVertices2D, { meshVertices2D->length, meshVertices2D->value })
 }
 
-void prefab_set_mesh3D_vertices(ecs_world_t *world, const ecs_entity_t e, const float2 vertices[], const int length, const float2 scale) {
+void prefab_set_mesh3D_vertices(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const float2* vertices,
+    const int length,
+    const float2 scale
+) {
     if (headless) {
         return;
     }
     zox_geter(e, MeshVertices, oldVertices)
     if (oldVertices->value) {
-        free(oldVertices->value);
+        dispose_MeshVertices_const(oldVertices);
     }
-    MeshVertices *meshVertices = &((MeshVertices) { 0, NULL });
-    resize_memory_component(MeshVertices, meshVertices, float3, length)
+    MeshVertices meshVertices = (MeshVertices) { 0, NULL };
+    initialize_MeshVertices(&meshVertices, length);
     for (int i = 0; i < length; i++) {
-        meshVertices->value[i] = (float3) { vertices[i].x * scale.x, vertices[i].y * scale.y, 0 };
+        meshVertices.value[i] = (float3) {
+            vertices[i].x * scale.x,
+            vertices[i].y * scale.y,
+            0
+        };
     }
-    zox_prefab_set(e, MeshVertices, { meshVertices->length, meshVertices->value })
+    zox_prefab_set_ptr(e, MeshVertices, meshVertices);
 }
 
-void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb color, int length) {
+void prefab_set_mesh_colors_rgb(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    color_rgb color,
+    int length
+) {
     if (headless) {
         return;
     }
@@ -48,7 +73,12 @@ void prefab_set_mesh_colors_rgb(ecs_world_t *world, ecs_entity_t e, color_rgb co
     zox_prefab_set(e, MeshColorRGBs, { meshColorRGBs->length, meshColorRGBs->value })
 }
 
-void prefab_set_mesh_vertices_float(ecs_world_t *world, ecs_entity_t e, const float vertices[], int length) {
+void prefab_set_mesh_vertices_float(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const float* vertices,
+    int length
+) {
     if (headless) {
         return;
     }
@@ -58,7 +88,12 @@ void prefab_set_mesh_vertices_float(ecs_world_t *world, ecs_entity_t e, const fl
     zox_prefab_set(e, MeshVertices, { meshVertices->length, meshVertices->value })
 }
 
-void prefab_set_mesh_vertices_float3(ecs_world_t *world, ecs_entity_t e, const float3 vertices[], int length) {
+void prefab_set_mesh_vertices_float3(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const float3* vertices,
+    int length
+) {
     if (headless) {
         return;
     }
@@ -68,7 +103,12 @@ void prefab_set_mesh_vertices_float3(ecs_world_t *world, ecs_entity_t e, const f
     zox_prefab_set(e, MeshVertices, { meshVertices->length, meshVertices->value })
 }
 
-void set_mesh_vertices_scale2D(MeshVertices2D *meshVertices2D, const float2 new_vertices[], const int length, const float2 scale2D) {
+void set_mesh_vertices_scale2D(
+    MeshVertices2D *meshVertices2D,
+    const float2* new_vertices,
+    const int length,
+    const float2 scale2D
+) {
     resize_memory_component(MeshVertices2D, meshVertices2D, float2, length)
     if (length > 0) {
         memcpy(meshVertices2D->value, new_vertices, length * sizeof(float2));
@@ -78,7 +118,12 @@ void set_mesh_vertices_scale2D(MeshVertices2D *meshVertices2D, const float2 new_
     }
 }
 
-void prefab_set_mesh_uvs_float(ecs_world_t *world, ecs_entity_t e, const float uvs[], int length) {
+void prefab_set_mesh_uvs_float(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const float* uvs,
+    int length
+) {
     if (headless) {
         return;
     }
@@ -88,7 +133,12 @@ void prefab_set_mesh_uvs_float(ecs_world_t *world, ecs_entity_t e, const float u
     zox_prefab_set(e, MeshUVs, { meshUVs->length, meshUVs->value })
 }
 
-void prefab_set_mesh_uvs_float2(ecs_world_t *world, ecs_entity_t e, const float2 uvs[], int length) {
+void prefab_set_mesh_uvs_float2(
+    ecs_world_t *world,
+    ecs_entity_t e,
+    const float2* uvs,
+    int length
+) {
     if (headless) {
         return;
     }

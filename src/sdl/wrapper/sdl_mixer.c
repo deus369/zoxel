@@ -2,13 +2,6 @@
 // todo: move to sdl module
 #ifdef zox_sdl_mixer
 
-/*static void free_mix_chunk(int channel) {
-    Mix_Chunk* chunk = Mix_GetChunk(channel);
-    if (chunk) {
-        // free(chunk);
-    }
-}*/
-
 byte initialize_sdl_mixer(ulong sample_rate, byte channels_count) {
     if (Mix_OpenAudio(sample_rate, AUDIO_F32SYS, channels_count, 2048) < 0) {
         zox_log_error("sdl audio could not initialize [%s]\n", Mix_GetError());
@@ -38,12 +31,13 @@ byte sdl_play_sound(
         return 0;
     }
     if (!chunk->value) {
-        chunk->value = malloc(sizeof(Mix_Chunk));
+        chunk->value = zalloc(sizeof(Mix_Chunk));
     }
     if (!chunk->value) {
         return 0;
     }
     *chunk->value = (Mix_Chunk) {
+        .allocated = 0,
         .volume = (Uint8)(volume * 128.f),
         .alen = length * sizeof(float),
         .abuf = (void*) data,
@@ -53,25 +47,6 @@ byte sdl_play_sound(
         return 0;
     }
     return 1;
-}
-
-
-byte sdl_play_sound2(
-    const float* data,
-    const int length,
-    const float volume,
-    const int channel)
-{
-    Mix_Chunk chunk = (Mix_Chunk) {
-        .volume = volume,
-        .alen = length * sizeof(float),
-        .abuf = (void*) data,
-    };
-    int success = Mix_PlayChannel(channel, &chunk, 0);
-    if (success == -1) {
-        zox_log_error("Failed to play sound: %s", Mix_GetError());
-    }
-    return success != -1;
 }
 
 static inline float* zox_mix_chunk_samples(Mix_Chunk *mix_chunk) {
@@ -96,34 +71,6 @@ static inline double get_mix_chunk_sound_length(Mix_Chunk* chunk) {
     return (double) chunk->alen / (frequency * bytes_per_sample);
 }
 
-Mix_Chunk* clone_mix_chunk(const Mix_Chunk* original) {
-    if (original == NULL) {
-        // Can't clone what doesn't exist!
-        zox_log_error("original Mix_Chunk null")
-        return NULL;
-    }
-    // Allocate memory for the new chunk
-    Mix_Chunk* clone = (Mix_Chunk*) malloc(sizeof(Mix_Chunk));
-    if (clone == NULL) {
-        // Alas, the memory allocation spell has failed
-        zox_log_error("failed to allocate Mix_Chunk")
-        return NULL;
-    }
-    // Copy the Mix_Chunk structure
-    memcpy(clone, original, sizeof(Mix_Chunk));
-    // Now, clone the actual sound data
-    clone->abuf = (Uint8*) malloc(original->alen);
-    if (clone->abuf == NULL) {
-        // The cloning process stumbled at the final hurdle
-        zox_log_error("failed to allocate abuf")
-        free(clone);
-        return NULL;
-    }
-    memcpy(clone->abuf, original->abuf, original->alen);
-    return clone;
-}
-
-
 #else
 
 byte initialize_sdl_mixer() {
@@ -141,7 +88,7 @@ byte sdl_play_sound(const SoundData *soundData, int channels, float volume) {
 }
 
 SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
-    return (SoundData) { .value = NULL, .length = 0 };
+    return (SoundData) { }; // .value = NULL, .length = 0
 }
 
 void spawn_mixer_pool(int max_buffers, int buffer_size) { }

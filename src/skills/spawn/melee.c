@@ -16,7 +16,7 @@ ecs_entity_t spawn_skill_melee(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_realm_skill_melee(ecs_world_t *world,
+ecs_entity_t spawn_skill_melee_t(ecs_world_t *world,
     char* name,
     const float value,
     const float value_max,

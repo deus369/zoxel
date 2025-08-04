@@ -22,7 +22,7 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
         for (int i = 0; i < old->length; i++) {
             zox_delete(old->value[i])
         }
-        free(old->value);
+        dispose_ModelLinks_const(old);
     }
 
     ModelLinks models = (ModelLinks) { 0, NULL };
@@ -63,4 +63,6 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
     }
 
     zox_set_ptr(e, ModelLinks, models)
+
+    zox_logv("At [%f] Realm [models] [%i] spawned.", zox_current_time, models.length);
 }

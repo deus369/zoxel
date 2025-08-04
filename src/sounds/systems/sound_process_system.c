@@ -16,7 +16,11 @@ void SoundProcessSystem(ecs_iter_t *it) {
         zox_sys_i(SoundVolume, soundVolume)
         zox_sys_i(SoundFrequency, soundFrequency)
         zox_sys_o(TriggerSound, triggerSound)
-        if (processSound->value != zox_sound_process_run || !soundData->value) {
+        if (processSound->value != zox_sound_process_run) {
+            continue;
+        }
+        if (!soundData->value) {
+            zox_log_error("Failed processing, no sound data");
             continue;
         }
         const float frequency = soundFrequency->value;
@@ -44,6 +48,6 @@ void SoundProcessSystem(ecs_iter_t *it) {
         }
         memcpy(soundData->value, new_data, soundData->length * sizeof(float));
         triggerSound->value = zox_sound_play_trigger;
-        zox_log_sounds("  -> updated sound frequency to [%f]", frequency_scale)
+        zox_log_sounds("  -> updated sound frequency to [%f]", frequency_scale);
     }
 } zox_declare_system(SoundProcessSystem)

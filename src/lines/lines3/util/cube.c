@@ -6,7 +6,7 @@ void add_debug_cube(ecs_world_t* world, const ecs_entity_t e, const float3 size)
     zox_prefab_set(e, Bounds3D, { size })
     zox_prefab_set(e, RenderLod, { 0 })
     zox_prefab_set(e, RenderDisabled, { 0 })
-    zox_prefab_add(e, MeshIndicies)
+    zox_prefab_set(e, MeshIndicies, { 0, NULL });
 }
 
 void debug_cubec(ecs_world_t* world, const float3 p, const float3 s, color_rgb c) {

@@ -118,9 +118,7 @@ void spawn_players_start_ui(ecs_world_t *world) {
         const ecs_entity_t canvas = zox_canvases[i];
         zox_log_start_game("    - player [%lu - %s]", player, zox_get_name(player))
         zox_log_start_game("    - canvas [%lu - %s]", canvas, zox_get_name(canvas))
-        spawn_main_start(world, prefab_menu_start, player, canvas, game_name);
-        // disable until line2Ds reposition/scale based on canvas
-        // spawn_canvas_edge_lines(world, canvas, 4, color_black);
+        spawn_menu_start(world, prefab_menu_start, player, canvas, game_name);
     }
 }
 

@@ -60,8 +60,8 @@ byte destroy_node_link_##name(ecs_world_t *world, name *node) {\
 }\
 \
 const ecs_entity_t get_node_entity_##name(const name *node) {\
-    read_lock_##name(node);\
+    /*read_lock_##name(node);*/\
     const ecs_entity_t e = is_linked_unlocked_##name(node) ? ((NodeLink*) node->ptr)->value : 0;\
-    read_unlock_##name(node);\
+    /*read_unlock_##name(node);*/\
     return e;\
 }

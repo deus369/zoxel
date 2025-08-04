@@ -8,6 +8,7 @@
 #ifndef zox_mod_collections
 #define zox_mod_collections
 
+#include "../memory/_.c"
 #include "data/types.c"
 #include "settings/_.c"
 #include "macros/_.c"

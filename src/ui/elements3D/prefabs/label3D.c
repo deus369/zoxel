@@ -6,7 +6,7 @@ ecs_entity_t spawn_prefab_label3D(ecs_world_t *world, const ecs_entity_t prefab)
     zox_prefab_set(e, PixelSize, { int2_one })
     zox_prefab_set(e, TextureSize, { int2_one })
     zox_prefab_set(e, Color, { label3D_fill })
-    zox_prefab_add(e, Children)
+    zox_prefab_set(e, Children, { 0, NULL });
     prefab_set_mesh3D_vertices(world, e, square_vertices, 4, statbar_back_mesh_scale);
     return e;
 }

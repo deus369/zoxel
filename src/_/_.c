@@ -24,6 +24,7 @@ void module_dispose_core(ecs_world_t *world, void *ctx) {
     dispose_game_store();
     dispose_hook_files_load();
     dispose_hook_on_boot();
+    free_zems();
 }
 
 void process_arguments_core(ecs_world_t *world, char* args[], int count) {
@@ -54,6 +55,7 @@ byte initialize_pathing() {
 }
 
 zox_begin_module(Core)
+    init_zems();
     zox_module_dispose(module_dispose_core)
     clear_logs();
     initialize_update_loop();

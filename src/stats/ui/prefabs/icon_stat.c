@@ -33,7 +33,9 @@ byte tooltip_event_stat(ecs_world_t *world, const TooltipEventData *data) {
         sprintf(result, "[%s]\n", name_string);
     }
     set_entity_text(world, data->tooltip, result);
-    if (name_string) free(name_string);
+    if (name_string) {
+        free(name_string);
+    }
     zox_set(data->tooltip, RenderDisabled, { 0 })
     return 1;
 }

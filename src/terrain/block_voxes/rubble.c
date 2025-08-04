@@ -4,7 +4,7 @@ ecs_entity_t spawn_realm_block_rubble(ecs_world_t *world, const byte index, char
     zox_set_unique_name(vox, "block_rubble")
     zox_set(vox, VoxType, { vox_type_rubble })
     zox_set(vox, Color, { block_color })
-    zox_set(vox, GenerateVox, { 1 })
+    zox_set(vox, GenerateVox, { zox_dirty_trigger })
     zox_set(vox, RenderLod, { 0 })
     SpawnBlock data = {
         .name = name,

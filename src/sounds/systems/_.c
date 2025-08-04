@@ -24,8 +24,8 @@ void define_systems_sounds(ecs_world_t *world) {
         [in] SoundFrequency,
         [in] SoundVolume,
         [in] GenerateSound,
+        [in] SoundData,
         [out] TriggerSound,
-        [out] SoundData,
         [none] Sound)
     zox_system(SoundPlaySystem, EcsOnUpdate,
         [in] TriggerSound,

@@ -1,5 +1,6 @@
 #define initial_dynamic_array_size 16
 
+// used in many functions - todo: rename to arraye (expandable)
 #define zoxel_dynamic_array(data_type)\
 typedef struct {\
     data_type *data;\
@@ -20,7 +21,10 @@ void dispose##_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
     free(dynamic_array);\
 }\
 \
-void add_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, data_type array_entry) {\
+void add_to##_##data_type##_##array_d( \
+    data_type##_##array_d* dynamic_array, \
+    data_type array_entry \
+) {\
     if (dynamic_array->size == dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
         dynamic_array->data = realloc(dynamic_array->data, dynamic_array->capacity * sizeof(data_type));\
@@ -28,7 +32,10 @@ void add_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, data
     dynamic_array->data[dynamic_array->size++] = array_entry;\
 }\
 \
-void expand_capacity##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, int add_count) {\
+void expand_capacity##_##data_type##_##array_d( \
+    data_type##_##array_d* dynamic_array, \
+    int add_count \
+) {\
     size_t required_capacity = dynamic_array->size + add_count;\
     if (required_capacity > dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
@@ -36,7 +43,10 @@ void expand_capacity##_##data_type##_##array_d(data_type##_##array_d* dynamic_ar
     }\
 }\
 \
-void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array, const data_type block[], byte length) {\
+void add_block_to##_##data_type##_##array_d( \
+    data_type##_##array_d* dynamic_array, \
+    const data_type block[], byte length \
+) {\
     size_t required_capacity = dynamic_array->size + length; \
     if (required_capacity > dynamic_array->capacity) { \
         dynamic_array->capacity *= 2;\
@@ -46,7 +56,10 @@ void add_block_to##_##data_type##_##array_d(data_type##_##array_d* dynamic_array
     dynamic_array->size += length; \
 }\
 \
-void add_block_to##_##data_type##_##array_d2(data_type##_##array_d* dynamic_array, const data_type block[], byte length) {\
+void add_block_to##_##data_type##_##array_d2( \
+    data_type##_##array_d* dynamic_array, \
+    const data_type block[], byte length \
+) { \
     size_t required_capacity = dynamic_array->size + length;\
     if (required_capacity > dynamic_array->capacity) {\
         dynamic_array->capacity *= 2;\
@@ -68,6 +81,19 @@ data_type* finalize_##data_type##_##array_d(data_type##_##array_d* dynamic_array
     } else {\
         data_type* data = realloc(dynamic_array->data, dynamic_array->size * sizeof(data_type));\
         free(dynamic_array);\
+        return data;\
+    }\
+}\
+\
+\
+data_type* zinalize_##data_type##_##array_d(data_type##_##array_d* dynamic_array) {\
+    if (!dynamic_array->size) {\
+        dispose##_##data_type##_##array_d(dynamic_array);\
+        return NULL;\
+    } else {\
+        data_type* data = zalloc(dynamic_array->size * sizeof(data_type)); \
+        memcpy(data, dynamic_array->data, dynamic_array->size * sizeof(data_type)); \
+        dispose##_##data_type##_##array_d(dynamic_array);\
         return data;\
     }\
 }

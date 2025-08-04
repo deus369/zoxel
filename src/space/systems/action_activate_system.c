@@ -1,6 +1,6 @@
 #ifdef zox_mod_actions
 
-const float block_place_range = 2;
+// const float block_place_range = 2;
 
 // right click = place
 // todo: use a state and implement results inside respective systems
@@ -8,11 +8,13 @@ const float block_place_range = 2;
 void ActionActivateSystem(ecs_iter_t *it) {
     zox_sys_world()
     zox_sys_begin()
+    zox_sys_in(RaycastRange)
     zox_sys_in(RaycastVoxelData)
     zox_sys_out(ActionLinks)
     zox_sys_out(TriggerActionB)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
+        zox_sys_i(RaycastRange, raycastRange)
         zox_sys_i(RaycastVoxelData, raycastVoxelData)
         zox_sys_o(ActionLinks, actions)
         zox_sys_o(TriggerActionB, triggerActionB)
@@ -61,7 +63,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
             } else {
                 byte is_use_quantity = 0;
                 const byte hit_block = raycastVoxelData->result == ray_hit_type_terrain;
-                const byte in_range = raycastVoxelData->distance <= block_place_range;
+                const byte in_range = raycastVoxelData->distance <= raycastRange->value;
                 if (hit_block && in_range && zox_has(action, ItemBlock)) {
                     const ecs_entity_t block = zox_get_value(action, BlockLink)
                     if (zox_valid(block) && zox_has(block, BlockIndex)) {
