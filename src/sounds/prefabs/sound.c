@@ -9,6 +9,8 @@ ecs_entity_t spawn_prefab_sound(ecs_world_t *world) {
     zox_prefab_set(e, ProcessSound, { zox_sound_process_none })
     zox_prefab_set(e, DestroyInTime, { sound_play_death_delay })
     zox_prefab_set(e, SoundData, { .length = 0 }) // 0, NULL
-    zox_prefab_set(e, SDLMixChunk, { NULL })
+    if (!headless) {
+        zox_prefab_set(e, SDLMixChunk, { NULL });
+    }
     return e;
 }

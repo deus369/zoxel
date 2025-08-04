@@ -1,8 +1,4 @@
 const float fudge_frustum_extents = 2.0f;
-/*extern int zox_statistics_chunks_visible;
-extern int zox_statistics_chunks_total;
-extern int zox_statistics_characters_visible;
-extern int zox_statistics_characters_total;*/
 
 // Note: uses zox_set here for children setting
 

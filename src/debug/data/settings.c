@@ -22,12 +22,6 @@
 // #define zox_debug_player_element_links
 // #define zox_debug_player_canvas
 
-// streaming
-#define zox_debug_statistics_chunks
-// #define zox_debug_zox_statistics2
-// #define zox_debug_statistics_characters
-// #define zox_debug_statistics_particles3D
-
 // camera
 // #define zox_debug_player_camera_position
 // #define zox_debug_player_camera_euler

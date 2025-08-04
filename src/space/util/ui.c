@@ -63,6 +63,10 @@ void spawn_players_cameras_canvases(ecs_world_t *world,
     int players_playing,
     const ecs_entity_t app)
 {
+    if (!app) {
+        zox_logv("No spawning Cameras and Canvases.");
+        return;
+    }
 #if defined(zox_mod_players) && defined(zox_mod_ui)
     set_camera_mode_pre_defined(world, vox_model_scale);
     set_main_cameras((int) players_playing);

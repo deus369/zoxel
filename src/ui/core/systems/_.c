@@ -106,13 +106,15 @@ void define_systems_elements_core(ecs_world_t *world) {
         [out] elements.core.DraggableState,
         [out] DraggerLink,
         [out] elements.core.DraggingDelta)
-    zox_system(CanvasResizeSystem, EcsOnUpdate,
-        [in] cameras.CameraLink,
-        [in] hierarchys.Children,
-        [in] cameras.ScreenToCanvas,
-        [in] apps.AppLink,
-        [out] layouts2.PixelSize,
-        [none] Canvas)
+    if (!headless) {
+        zox_system(CanvasResizeSystem, EcsOnUpdate,
+            [in] cameras.CameraLink,
+            [in] hierarchys.Children,
+            [in] cameras.ScreenToCanvas,
+            [in] apps.AppLink,
+            [out] layouts2.PixelSize,
+            [none] Canvas)
+    }
     // all ui
     zox_render2D_system(RenderTextureRenderSystem,
         [in] transforms3.TransformMatrix,

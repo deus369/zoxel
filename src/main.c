@@ -208,18 +208,20 @@ zox_end_module(Zox)
 
 int main(int argc, char* argv[]) {
 #ifndef zox_mod_game
-    zox_log_error("[zox_mod_game] not defined: game cannot load")
+    zox_log_error("[zox_mod_game] not defined: game cannot load");
     return EXIT_FAILURE;
 #endif
     fetch_pc_info();    // gets our cpu core count
     ecs_world_t *world = initialize_ecs(argc, argv, cpu_core_count);
     if (!world) {
-        zox_log_error("[initialize_ecs] failed")
+        zox_log_error("[initialize_ecs] failed");
         return EXIT_FAILURE;
     }
 
-    zox_logv("Loading Modules");
+    zox_logv("Loading Zox Modules");
     zox_import_module(Zox)
+
+    zox_logv("Loading Game Modules");
     zox_import_module(ZoxGame)
 
     zox_logv("Running Terminal Commands");
@@ -227,60 +229,65 @@ int main(int argc, char* argv[]) {
 
     zox_logv("Initialize Pathing");
     if (initialize_pathing() == EXIT_FAILURE) {
-        zox_log_error("Pathing Setup Failed.")
+        zox_log_error("Pathing Setup Failed.");
         return EXIT_FAILURE;
     }
 
     zox_logv("Initializing ECS Settings");
     initialize_ecs_settings(world);                 // sets ecs threads
 
-    // sound file loading needs mixer
-    zox_logv("Initializing Sounds");
-    initialize_sounds(world);                       // starts sdl mixer etc
+    if (nosounds) {
+        // sound file loading needs mixer
+        zox_logv("Initializing Sounds");
+        initialize_sounds(world);                       // starts sdl mixer etc
+    }
 
     // loads all our files
     zox_logv("Loading Files All");
     run_hook_files_load(world);
 
-    zox_logv("Initializing SDL Video");
-    if (initialize_sdl_video(world) == EXIT_FAILURE) {
-        zox_log_error("[initialize_sdl_video] failed")
-        dispose_zox(world);
-        return EXIT_FAILURE;
-    }
-
     // spawn app (creates our opengl context too)
-    zox_logv("Spawning SDL Window");
-    ecs_entity_t app = !headless ? spawn_window_opengl_with_icon(world) : 0;
-
-    // inits glew on windows
-    zox_logv("Initializing Rendering");
-    initialize_rendering(world, render_backend);
-
-    zox_logv("Initializing Glew");
-    if (zox_init_glew() == EXIT_FAILURE) {
-        zox_log_error("[initialize_rendering] failed")
-        dispose_zox(world);
-        return EXIT_FAILURE;
+    ecs_entity_t app = 0;
+    if (!headless) {
+        zox_logv("Initializing SDL Video");
+        if (initialize_sdl_video(world) == EXIT_FAILURE) {
+            zox_log_error("[initialize_sdl_video] failed");
+            dispose_zox(world);
+            return EXIT_FAILURE;
+        }
+        zox_logv("Spawning SDL Window");
+        app = spawn_window_opengl_with_icon(world);
+        // inits glew on windows
+        zox_logv("Initializing Rendering");
+        initialize_rendering(world, render_backend);
+        zox_logv("Initializing Glew");
+        if (zox_init_glew() == EXIT_FAILURE) {
+            zox_log_error("[initialize_rendering] failed");
+            dispose_zox(world);
+            return EXIT_FAILURE;
+        }
+        if (!app) {
+            zox_log_error("[engine_spawn_window] failed");
+            dispose_zox(world);
+            return EXIT_FAILURE;
+        }
+        // black screen if no shaders btw
+        zox_logv("Loading Shaders");
+        load_files_shaders(world);          // this needs to use render gpu data atm (we append ubo on)
+        zox_logv("Processing Shaders");
+        process_shaders(world); // we should process them after loaded?
+    } else  {
+        zox_logv("Headless Mode Enabled.");
     }
-
-    if (!headless && !app) {
-        zox_log_error("[engine_spawn_window] failed")
-        dispose_zox(world);
-        return EXIT_FAILURE;
-    }
-
-    // black screen if no shaders btw
-    zox_logv("Procecssing Shaders");
-    load_files_shaders(world);          // this needs to use render gpu data atm (we append ubo on)
-    process_shaders(world); // we should process them after loaded?
 
     // always have realm and game
     zox_logv("Spawning Realm and Game");
     const ecs_entity_t realm = spawn_realm(world, prefab_realm);
     const ecs_entity_t game = spawn_game(world, realm);
-    zox_set(app, RealmLink, { realm });
-    zox_set(app, GameLink, { game });
+    if (app) {
+        zox_set(app, RealmLink, { realm });
+        zox_set(app, GameLink, { game });
+    }
 
     // Yet another Hook
     zox_logv("Running our Boot Hook");

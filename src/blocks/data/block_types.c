@@ -1,9 +1,8 @@
-// temp lookup for voxels
-// #define zox_block_air 0
-
 // TODO: Fix Bug: if there is non texture models  before texture bake ones, it fails ! we will get a white block.
 // TODO: Make it dynamic, no need for these, link biomes up with them instead
 
+// temp lookup for voxels
+// #define zox_block_air 0
 // solids
 #define zox_block_dirt 1
 #define zox_block_grass 2

@@ -117,11 +117,10 @@ void zox_set_terrain_settings() {
 
 zox_begin_module(ZoxGame)
     game_name = "Zoxel";
-
-    global_music_speed = 1.25f;
-
+    // global_music_speed = 1;
     // app settings
-    headless = 0;
+    // headless = 0;
+    // nosounds = 0;
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
     vsync = 1;

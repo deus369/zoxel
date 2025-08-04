@@ -3,6 +3,10 @@
 }*/
 
 void load_files_sounds(ecs_world_t *world) {
+    if (nosounds) {
+        zox_logv("Sounds are disabled: No Loading Sounds.");
+        return;
+    }
     char* load_directory = concat_file_path(resources_path, directory_sounds);
     zox_logv("  - Loading Files Sounds [%s]", load_directory);
     FileList files = get_files(load_directory, 0);
