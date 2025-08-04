@@ -148,9 +148,21 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             byte black_voxel_3 = colors->length;
 
             build_vox_bricks(voxelNode,
-                           node_depth,
-                           voxel_range,
-                           black_voxel_3);
+                             node_depth,
+                             voxel_range,
+                             black_voxel_3);
+
+        } else if (voxType->value == vox_type_flowers) {
+            color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
+            color_rgb_multiply_float(&dirt_dark_voxel, fracture_dark_multiplier);
+            add_to_ColorRGBs(colors, dirt_dark_voxel);
+            byte black_voxel_3 = colors->length;
+            build_vox_flower_patch(
+                voxelNode,
+                node_depth,
+                (byte2) { voxel_range.x, voxel_range.y / 2 }, // (byte2) { 2, 6 },
+                (byte2) { voxel_range.y / 2, voxel_range.y }, // (byte2) { 1, 4 },
+                black_voxel_3);
 
         } else {
             zox_log_error("unknown vox type [%s]", zox_get_name(e));

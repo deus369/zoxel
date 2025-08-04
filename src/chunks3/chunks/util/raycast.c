@@ -79,7 +79,7 @@ byte raycast_voxel_node(
     // CharacterRaycast character_raycast = { };
     byte was_hitting = 0;
     uint checks = 0;
-    if (chunk) {
+    if (zox_valid(chunk)) {
         node_chunk = zox_get(chunk, VoxelNode);
         if (raycast_locks && node_chunk) {
             read_lock_VoxelNode(node_chunk);
@@ -266,8 +266,12 @@ byte raycast_voxel_node(
                 } else {
                     vox = chunk;
                 }
-                if (!zox_has(vox, NodeDepth)) {
-                    zox_log_error("invalid vox selected [%s]", zox_get_name(vox));
+                if (!zox_valid(vox) || !zox_has(vox, NodeDepth)) {
+                    if (zox_valid(vox)) {
+                        zox_log_error("invalid vox selected [%s]", zox_get_name(vox));
+                    } else {
+                        zox_log_error("invalid vox selected");
+                    }
                     if (raycast_locks && node_chunk) {
                         read_unlock_VoxelNode(node_chunk);
                     }

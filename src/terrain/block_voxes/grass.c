@@ -14,9 +14,9 @@ ecs_entity_t spawn_block_grass(ecs_world_t *world,
         .color = generate_random_voxel_color(),
         .model = zox_block_vox,
         .disable_collision = 1,
-        .vox = model
+        .vox = model,
+        .prefab_block_vox = prefab_block_vox_instanced
     };
-    data.prefab_block_vox = prefab_block_vox_instanced;
 
     // thats all fokes
     process_disabled_block_vox(world, &data, 1);

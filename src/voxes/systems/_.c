@@ -43,7 +43,7 @@ void define_systems_voxes(ecs_world_t *world) {
             [in] rendering.ModelLink,
             [in] texturez.TextureLinks)
     if (!headless) {
-        zox_system(ChunkColorsBuildSystem, EcsOnUpdate,
+        zox_system(ChunkColorsBuildSystem, EcsOnStore,
                 [in] chunks3.ChunkMeshDirty,
                 [in] chunks3.VoxelNode,
                 [in] chunks3.NodeDepth,

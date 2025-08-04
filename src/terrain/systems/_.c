@@ -38,7 +38,7 @@ void define_systems_terrain(ecs_world_t *world) {
             [none] TerrainChunk)
     if (!headless) {
         // move this into chunk3, for chunk3_textured
-        zox_system(Chunk3BuildSystem, EcsOnUpdate,
+        zox_system(Chunk3BuildSystem, EcsOnStore,
                 [in] chunks3.VoxLink,
                 [in] chunks3.VoxelNode,
                 [in] chunks3.NodeDepth,

@@ -38,6 +38,9 @@ void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
 // doesn't close any block voxes
 void reduce_voxel_nodes(ecs_world_t *world, VoxelNode *node) {
+    if (!node) {
+        return;
+    }
     if (!has_children_VoxelNode(node)) {
         return;
     }
