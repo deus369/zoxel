@@ -3,7 +3,7 @@ byte profile_grassy_plains = 0; // add to profiler
 
 // FIXME(deus): This LOD+1 patch prevents chunk seems.
 byte optimize_generation_lods = 1;
-byte boost_generation_hack = 1; // 🔥 applied until truth is revealed
+byte boost_generation_hack = 0; // 🔥 applied until truth is revealed
 
 byte disable_biomes = 1;
 byte disable_top_placements = 0;
@@ -246,12 +246,12 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 
         voxelNodeDirty->value = zox_dirty_trigger;
         chunkMeshDirty->value = chunk_dirty_state_trigger;
-        /*for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
+        for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
             ecs_entity_t neighbor = neighbors->value[axis];
             if (zox_valid(neighbor)) {
                 zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
-        }*/
+        }
     }
     endwatch(time_grassy_plains, "grassy_plains");
     zox_ts_end(grassy_plains, 5, profile_grassy_plains);

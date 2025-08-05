@@ -44,14 +44,11 @@
 #define zox_log_error(msg, ...) \
     zox_log_("❌ "msg"\n", ##__VA_ARGS__);
 
-#define zox_log_warning(msg, ...) \
+#define zox_logw(msg, ...) \
     zox_log_("⚠️ "msg"\n", ##__VA_ARGS__);
 
-#define zox_log_io(msg, ...) \
-    if (is_log_io) zox_log(msg, ##__VA_ARGS__);
-
-#define zox_log_info(msg, ...) \
-    zox_log_("ℹ️ " msg "\n", ##__VA_ARGS__)
+#define zox_logi(msg, ...) \
+    zox_log_("ℹ️  "msg"\n", ##__VA_ARGS__)
 
 #define zox_log_debug(msg, ...) \
     if (zox_verbose) zox_log_("🐞 DEBUG: " msg "\n", ##__VA_ARGS__)
@@ -62,6 +59,8 @@
 #define zox_log_critical(msg, ...) \
     zox_log_("🔥 CRITICAL: " msg "\n", ##__VA_ARGS__)
 
+#define zox_log_io(msg, ...) \
+    if (is_log_io) zox_log(msg, ##__VA_ARGS__);
 
 // inputs
 #if defined(zox_enable_log_input) && !defined(zox_disable_logs)

@@ -110,32 +110,30 @@ char* find_resources_path(char* base_path, const char* resources) {
 byte initialize_pathing_native() {
     char* base_path = initialize_base_path();
     if (base_path == NULL) {
-        zox_log_error("failed at [initialize_base_path] char_slash [%c]", char_slash)
+        zox_log_error("failed at [initialize_base_path] char_slash [%c]", char_slash);
         return EXIT_FAILURE;
     }
     data_path = base_path;
-    zox_logv("> io base_path [%s]", base_path)
-    DIR* dir = opendir(base_path);
-    if (dir) {
+    zox_logi("Base Path [%s]", base_path);
+    DIR* base_dir = opendir(base_path);
+    if (base_dir) {
+        closedir(base_dir);
         resources_path = find_resources_path(base_path, resources_folder_name);
-        if (resources_path) {
-            zox_logv("🔥 [resources_path] found [%s]", resources_path)
-        } else {
-            zox_log_error("[resources_path] not found.")
+        if (!resources_path) {
+            zox_log_error("[resources_path] not found.");
             return EXIT_FAILURE;
         }
-        zox_log_io("🔥 resources_path [%s]", resources_path)
-        DIR* dir2 = opendir(resources_path);
-        if (dir2) {
-            closedir(dir2);
-        } else {
-            zox_log_error("resources_path not found [%s]\n", resources_path)
+        zox_logi("Resources Path [%s]", resources_path);
+        DIR* resources_dir = opendir(resources_path);
+        if (!resources_dir) {
+            zox_log_error("Resources Path cannot open.");
+            return EXIT_FAILURE;
         }
-        closedir(dir);
+        closedir(resources_dir);
     } else if (ENOENT == errno) {
-        zox_log("SDL data_path (DOES NOT EXIST): %s\n", data_path)
+        zox_log("SDL data_path (DOES NOT EXIST): %s\n", data_path);
     } else {
-        zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path)
+        zox_log("SDL data_path (MYSTERIOUSLY DOES NOT EXIST): %s\n", data_path);
     }
     return EXIT_SUCCESS;
 }

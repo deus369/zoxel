@@ -114,18 +114,6 @@ void spawn_players_cameras_canvases(ecs_world_t *world,
     zox_set_ptr(app, CameraLinks, cameras)
 #endif
 }
-
-void spawn_players_start_ui(ecs_world_t *world) {
-    zox_log_start_game("> spawn_players_start_ui [%i]", players_playing)
-    for (int i = 0; i < players_playing; i++) {
-        const ecs_entity_t player = zox_players[i];
-        const ecs_entity_t canvas = zox_canvases[i];
-        zox_log_start_game("    - player [%lu - %s]", player, zox_get_name(player))
-        zox_log_start_game("    - canvas [%lu - %s]", canvas, zox_get_name(canvas))
-        spawn_menu_start(world, prefab_menu_start, player, canvas, game_name);
-    }
-}
-
 void on_boot_space(ecs_world_t* world, ecs_entity_t app) {
     // zox_geter_value(app, GameLink, ecs_entity_t, game);
     spawn_players_cameras_canvases(world, players_playing, app);

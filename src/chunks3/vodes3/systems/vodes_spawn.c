@@ -221,7 +221,7 @@ void VodesSpawnSystem(ecs_iter_t *it) {
             renderDisabled,
             voxelNode,
             nodeDepth->value);
-        reduce_voxel_nodes(world, voxelNode);
+        // reduce_voxel_nodes(world, voxelNode);
         blocksSpawned->value = 1;
     }
 } zox_declare_system(VodesSpawnSystem)

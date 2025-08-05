@@ -22,7 +22,8 @@ void define_systems_voxes(ecs_world_t *world) {
             [out] texturez.TextureData,
             [out] rendering.TextureDirty,
             [none] texturez.VoxTexture)
-    zox_system(VoxGenerationSystem, EcsOnUpdate,
+    // NOTE: Writes to VoxelNode
+    zox_system(VoxGenerationSystem, zoxp_write_voxels,
             [in] GenerateVox,
             [in] colorz.Color,
             [in] VoxType,
@@ -30,7 +31,8 @@ void define_systems_voxes(ecs_world_t *world) {
             [out] chunks3.NodeDepth,
             [out] colorz.ColorRGBs,
             [out] chunks3.ChunkMeshDirty)
-    zox_system(CloneVoxSystem, EcsOnUpdate,
+    // NOTE: Writes to VoxelNode
+    zox_system(CloneVoxSystem, zoxp_write_voxels,
             [in] CloneVoxLink,
             [out] CloneVox,
             [out] chunks3.VoxelNode,

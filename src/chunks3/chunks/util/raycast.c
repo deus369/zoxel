@@ -224,7 +224,7 @@ byte raycast_voxel_node(
             }
             // safety!
             if (hit_voxel - 1 >= voxels->length) {
-                zox_log_warning("voxel index out of bounds [%i]", hit_voxel);
+                zox_logw("voxel index out of bounds [%i]", hit_voxel);
                 if (raycast_locks && node_chunk) {
                     read_unlock_VoxelNode(node_chunk);
                 }

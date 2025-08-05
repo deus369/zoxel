@@ -25,7 +25,7 @@ void initialize_opengl(ecs_world_t *world) {
         zox_log_sdl("zoxel opengl version [%u]", shader_opengl_version)
         print_opengl();
     }
-    zox_log("+++ ubo size: %i +++", zox_get_safe_ubo_size());
+    zox_logi("UBO Size [%i]", zox_get_safe_ubo_size());
 }
 
 #endif

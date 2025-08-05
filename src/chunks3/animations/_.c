@@ -20,6 +20,7 @@ zox_begin_module(VoxelsAnimations)
     zox_system(AnimateChunkSystem, EcsOnUpdate,
         [out] AnimateChunk,
         [out] chunks3.GenerateChunk)
+    // NOTE: Writes to VoxelNode
     zox_system_ctx(NoiseVoxelNodeSystem, EcsPreUpdate, noise_chunks,
         [in] chunks3.NodeDepth,
         [out] chunks3.ChunkDirty,

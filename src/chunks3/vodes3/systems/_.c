@@ -4,22 +4,24 @@
 #include "vodes_lods.c"
 
 void define_systems_vodes3(ecs_world_t* world) {
-    zox_system(VodesDespawnSystem, EcsOnUpdate,
+// NOTE: Writes to VoxelNode
+    zox_system(VodesDespawnSystem, zoxp_write_voxels,
             [in] chunks3.VoxelNodeDirty,
             [in] rendering.RenderDistanceDirty,
             [in] rendering.RenderLod,
             [out] chunks3.VoxelNode,
             [out] chunks3.BlocksSpawned)
+    // NOTE: Writes to VoxelNode
+    zox_system(VodesRemoveSystem, zoxp_write_voxels,
+            [in] chunks3.VoxelNodeDirty,
+            [in] chunks3.BlocksSpawned,
+            [out] chunks3.VoxelNode)
     zox_system(VodesLodSystem, EcsOnUpdate,
             [in] rendering.RenderDistanceDirty,
             [in] rendering.RenderDistance,
             [in] chunks3.VoxelNode,
             [in] chunks3.BlocksSpawned)
-    zox_system(VodesRemoveSystem, EcsOnUpdate,
-            [in] chunks3.VoxelNodeDirty,
-            [in] chunks3.BlocksSpawned,
-            [out] chunks3.VoxelNode)
-    zox_system_1(VodesSpawnSystem, zox_pip_mainthread,
+    zox_system_1(VodesSpawnSystem, zoxp_write_voxels,
             [in] chunks3.VoxelNodeDirty,
             [in] rendering.RenderDistanceDirty,
             [in] chunks3.ChunkPosition,

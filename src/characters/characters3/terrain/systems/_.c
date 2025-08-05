@@ -13,6 +13,7 @@ void define_systems_characters3_terrain(ecs_world_t* world) {
         [out] CharactersSpawned,
         [out] generic.EntityLinks,
         [none] terrain.TerrainChunk)
+    // NOTE: Writes to VoxelNode
     zox_system_1(Characters3SpawnSystem, zox_pip_mainthread,
         [in] rendering.RenderDistanceDirty,
         [in] chunks3.VoxelNode,

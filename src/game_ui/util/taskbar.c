@@ -24,14 +24,22 @@ void add_taskbar_button(const hook_taskbar data) {
 }
 
 // set active stat based on ui component id
-void taskbar_set_icons(ecs_world_t *world, const ecs_entity_t canvas, const ecs_entity_t frame, const int i) {
+void taskbar_set_icons(
+    ecs_world_t *world,
+    const ecs_entity_t canvas,
+    const ecs_entity_t frame,
+    const int i
+) {
     hook_taskbar hook = hook_taskbars->data[i];
     if_has_child_with_id(canvas, hook.component_id) {
         zox_set(frame, ActiveState, { 1 })
     }
 }
 
-void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event) {
+void taskbar_button_click_event(
+    ecs_world_t *world,
+    const ClickEventData *event
+) {
     const byte index = zox_get_value(event->clicked, IconIndex)
     if (index >= hook_taskbars->size) {
         zox_log_error("taskbar button index [%i] out of bounds [%zu]", index, hook_taskbars->size)
@@ -46,6 +54,25 @@ void taskbar_button_click_event(ecs_world_t *world, const ClickEventData *event)
     }
     byte window_state = zox_valid(window_ui);
     zox_set(frame, ActiveState, { window_state })
+}
+
+
+
+// todo: make tooltip function just return a string
+byte tooltip_event_taskbar_icon(
+    ecs_world_t *world,
+    const TooltipEventData *data
+) {
+    if (!data->triggered || !zox_has(data->triggered, TooltipText)) {
+        zox_log("! issue with ui, on tooltip\n")
+        return 0;
+    }
+    zox_geter(data->triggered, TooltipText, tooltip_text)
+    char *result = convert_zext_to_text(tooltip_text->value, tooltip_text->length);
+    // char *result = "opens a game ui";
+    set_entity_text(world, data->tooltip, result);
+    free(result);
+    return 1;
 }
 
 /*for (int i = 0; i < load_shader_functions->size; i++) {

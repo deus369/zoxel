@@ -28,7 +28,7 @@ void VodesRemoveSystem(ecs_iter_t *it) {
         zox_sys_o(VoxelNode, voxelNode)
         if (voxelNodeDirty->value == zox_dirty_active && blocksSpawned->value) {
             remove_vodes(world, voxelNode);
-            reduce_voxel_nodes(world, voxelNode);   // reduce for air now
+            // reduce_voxel_nodes(world, voxelNode);   // reduce for air now
         }
     }
 } zox_declare_system(VodesRemoveSystem)

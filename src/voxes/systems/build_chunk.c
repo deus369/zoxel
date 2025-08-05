@@ -1,72 +1,119 @@
 // todo: remove macros, they're not useful here, debugging and maintainance bad
-
-#define add_voxel_face_colors_indicies(index)\
-    indicies->data[indicies->size + index] = vertices->size + voxel_face_indicies[index];
-
-#define add_voxel_face_colors_vertices(index) {\
-    float3 vertex_position = voxel_face_vertices[index];\
-    float3_scale_p(&vertex_position, voxel_scale);\
-    float3_add_float3_p(&vertex_position, vertex_position_offset);\
-    vertices->data[vertices->size + index] = vertex_position;\
-}
-
 // this takes 14ms on a 24core cpu, 6ms though during streaming
 // scales vertex, offsets vertex by voxel position in chunk, adds total mesh offset
-void add_voxel_face_colors_d(
-    int_array_d *indicies,
-    float3_array_d* vertices,
+
+
+void add_voxel_face_colors(
     color_rgb_array_d* color_rgbs,
-    float3 vertex_position_offset,
     color_rgb voxel_color,
-    const float voxel_scale,
-    const int* voxel_face_indicies,
-    const float3 voxel_face_vertices[],
     const byte direction
 ) {
-    expand_capacity_int_array_d(indicies, voxel_face_indicies_length);
-        add_voxel_face_colors_indicies(0)
-        add_voxel_face_colors_indicies(1)
-        add_voxel_face_colors_indicies(2)
-        add_voxel_face_colors_indicies(3)
-        add_voxel_face_colors_indicies(4)
-        add_voxel_face_colors_indicies(5)
-    indicies->size += voxel_face_indicies_length;
-    expand_capacity_float3_array_d(vertices, voxel_face_vertices_length);
-        add_voxel_face_colors_vertices(0)
-        add_voxel_face_colors_vertices(1)
-        add_voxel_face_colors_vertices(2)
-        add_voxel_face_colors_vertices(3)
-    vertices->size += voxel_face_vertices_length;
-    for (int a = 0; a < voxel_face_vertices_length; a++) {
+    for (byte a = 0; a < voxel_face_vertices_length; a++) {
         color_rgb vertex_color = voxel_color;
-#ifndef zox_disable_fake_voxel_lighting
+
         if (direction == direction_down) {
             color_rgb_multiply_float(&vertex_color, 0.33f);
-        } else if (direction == direction_front) color_rgb_multiply_float(&vertex_color, 0.44f);
-        else if (direction == direction_left) color_rgb_multiply_float(&vertex_color, 0.55f);
-        else if (direction == direction_back) color_rgb_multiply_float(&vertex_color, 0.66f);
-        else if (direction == direction_right) color_rgb_multiply_float(&vertex_color, 0.76f);
-#endif
+        } else if (direction == direction_front) {
+            color_rgb_multiply_float(&vertex_color, 0.44f);
+        } else if (direction == direction_left) {
+            color_rgb_multiply_float(&vertex_color, 0.55f);
+        } else if (direction == direction_back) {
+            color_rgb_multiply_float(&vertex_color, 0.66f);
+        } else if (direction == direction_right) {
+            color_rgb_multiply_float(&vertex_color, 0.76f);
+        }
         add_to_color_rgb_array_d(color_rgbs, vertex_color);
     }
 }
 
-#define zoxel_octree_colors_build_face_d(direction_name, is_positive, face_verts)\
-if (!is_adjacent_all_solid( \
-    NULL, \
-    color_edge_voxel, \
-    neighbors, \
-    neighbor_lods, \
-    root_node, \
-    octree_position, \
-    direction##_##direction_name, \
-    depth \
-)) {\
-    add_voxel_face_colors_d(indicies, vertices, color_rgbs, vertex_position_offset, voxel_color, voxel_scale, get_voxel_indicies_##is_positive, face_verts, direction##_##direction_name);\
+void add_voxel_face(
+    int_array_d *indicies,
+    float3_array_d* vertices,
+    const float3 offset,
+    const float voxel_scale,
+    const int* indiciesf,
+    const float3* verticesf
+) {
+    expand_capacity_int_array_d(indicies, voxel_face_indicies_length);
+    for (int i = 0, j = indicies->size; i < voxel_face_indicies_length; i++, j++) {
+        indicies->data[j] = vertices->size + indiciesf[i];
+    }
+    indicies->size += voxel_face_indicies_length;
+
+    expand_capacity_float3_array_d(vertices, voxel_face_vertices_length);
+    for (int i = 0, j = vertices->size; i < voxel_face_vertices_length; i++, j++) {
+        vertices->data[j] = verticesf[i];
+        float3_scale_p(&vertices->data[j], voxel_scale);
+        float3_add_float3_p(&vertices->data[j], offset);
+    }
+    vertices->size += voxel_face_vertices_length;
+}
+
+void build_voxel_faces_c(
+    const VoxelNode* root,
+    const VoxelNode** cneighbors,
+    const byte* cneighbor_lods,
+    int_array_d* indicies,
+    float3_array_d* vertices,
+    color_rgb_array_d* color_rgbs,
+    const color_rgb voxel_color,
+    const float scale,
+    const float3 offset,
+    byte depth,
+    int3 position
+) {
+    const byte edge = 0; // 255
+    byte neighbors[6];
+    for (int i = 0; i < 6; i++) {
+        neighbors[i] = is_adjacent_all_solid(
+            NULL,
+            edge,
+            cneighbors,
+            cneighbor_lods,
+            root,
+            position,
+            i,          // direction
+            depth
+        );
+    }
+
+    for (int i = 0; i < 6; i++) {
+        if (!neighbors[i] || neighbors[i] == 255) {
+            const int* indiciesf = voxel_face_indicies_n + i * voxel_face_indicies_length;
+            const float3* verticesf = voxel_face_vertices_n[i];
+
+            add_voxel_face(
+                indicies,
+                vertices,
+                offset,
+                scale,
+                indiciesf,
+                verticesf
+            );
+
+#ifdef DISABLE_AO
+            add_voxel_face_colors(
+                color_rgbs,
+                voxel_color,
+                i
+            );
+#else
+            add_voxel_face_colors_ao(
+                color_rgbs,
+                voxel_color,
+                i,
+                neighbors
+            );
+#endif
+        }
+        /*if (i != 1 && i != 3) { // why does up need different indicies??
+            is_positive = !is_positive;
+        }*/
+    }
 }
 
 void build_octree_chunk_colors_d(
-    const VoxelNode* root_node,
+    const VoxelNode* root,
     const VoxelNode* parent_node,
     const VoxelNode* node,
     const VoxelNode** neighbors,
@@ -77,10 +124,11 @@ void build_octree_chunk_colors_d(
     color_rgb_array_d* color_rgbs,
     const byte max_depth,
     byte depth,
-    int3 octree_position,
+    int3 position,
     const byte node_index,
     const float3 total_mesh_offset,
-    const float vox_scale) {
+    const float vox_scale
+) {
     if (node == NULL) {
         return;
     }
@@ -89,29 +137,37 @@ void build_octree_chunk_colors_d(
         if (voxel) {
             const byte voxel_index = voxel - 1;
             if (voxel_index >= colorRGBs->length) {
-                // warning here?
+                zox_logw("voxel_index oob: %i / %i", voxel_index, colorRGBs->length);
                 return;
             }
             const color_rgb voxel_color = colorRGBs->value[voxel_index];
             const float voxel_scale = real_chunk_scale * octree_scales3[depth] * vox_scale;
-            float3 vertex_position_offset = float3_from_int3(octree_position);
-            float3_scale_p(&vertex_position_offset, voxel_scale);
-            float3_add_float3_p(&vertex_position_offset, total_mesh_offset);
-            byte3 node_position = octree_positions_b[node_index];
-            zoxel_octree_colors_build_face_d(left, 0, voxel_face_vertices_n[0])
-            zoxel_octree_colors_build_face_d(right, 1, voxel_face_vertices_n[1])
-            zoxel_octree_colors_build_face_d(down, 1, voxel_face_vertices_n[2])
-            zoxel_octree_colors_build_face_d(up, 0, voxel_face_vertices_n[3])
-            zoxel_octree_colors_build_face_d(back, 0, voxel_face_vertices_n[4])
-            zoxel_octree_colors_build_face_d(front, 1, voxel_face_vertices_n[5])
+            float3 offset = float3_from_int3(position);
+            float3_scale_p(&offset, voxel_scale);
+            float3_add_float3_p(&offset, total_mesh_offset);
+
+            build_voxel_faces_c(
+                root,
+                neighbors,
+                neighbor_lods,
+                indicies,
+                vertices,
+                color_rgbs,
+                voxel_color,
+                voxel_scale,
+                offset,
+                depth,
+                position
+            );
         }
     } else {
         depth++;
-        int3_multiply_int_p(&octree_position, 2);
+        int3_multiply_int_p(&position, 2);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
+            int3 child_position = int3_add(position, octree_positions[i]);
             build_octree_chunk_colors_d(
-                root_node,
+                root,
                 node,
                 &kids[i],
                 neighbors,
@@ -122,18 +178,13 @@ void build_octree_chunk_colors_d(
                 color_rgbs,
                 max_depth,
                 depth,
-                int3_add(octree_position, octree_positions[i]),
+                child_position,
                 i,
                 total_mesh_offset,
                 vox_scale);
         }
     }
 }
-
-// basically it goes downwards even if upper value nodes are air
-// so with our optimizing somewhere it messed up and set the upper ones to zero? idk
-// or maybe it was optimized properly
-
 
 void build_node_mesh_colors(
     const VoxelNode *node,
@@ -208,6 +259,10 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         zox_sys_o(MeshVertices, meshVertices)
         zox_sys_o(MeshColorRGBs, meshColorRGBs)
         if (chunkMeshDirty->value != chunk_dirty_state_update) {
+            continue;
+        }
+        if (!colorRGBs->length) {
+            zox_logw("vox has no colors");
             continue;
         }
         // removes mesh when 255

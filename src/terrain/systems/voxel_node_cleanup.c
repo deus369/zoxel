@@ -1,5 +1,6 @@
 // Break down our nodes, if they are the same type
 void VoxelNodeCleanupSystem(ecs_iter_t *it) {
+#ifndef zox_disable_closing_octree_nodes
     zox_sys_world();
     zox_sys_begin();
     zox_sys_in(VoxelNodeDirty)
@@ -12,6 +13,7 @@ void VoxelNodeCleanupSystem(ecs_iter_t *it) {
         if (voxelNodeDirty->value != zox_dirty_active || !nodeDepth->value) {
             continue;
         }
-        cleanup_nodes(world, node);
+        reduce_voxel_nodes(world, node);
     }
+#endif
 } zox_declare_system(VoxelNodeCleanupSystem)

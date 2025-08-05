@@ -13,14 +13,14 @@ void define_systems_terrain(ecs_world_t *world) {
     zox_define_system_state_event_1(RealmBlocks, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     zox_define_system_state_event_1(RealmTilemaps, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // generate terrain
-    zox_system(ChunkFlatlandSystem, EcsOnLoad,
+    zox_system(ChunkFlatlandSystem, zoxp_write_voxels,
             [in] chunks3.ChunkPosition,
             [out] chunks3.GenerateChunk,
             [out] chunks3.VoxelNode,
             [out] chunks3.NodeDepth,
             [none] TerrainChunk,
             [none] FlatlandChunk)
-    zox_system(GrassyPlainsSystem, EcsOnLoad,
+    zox_system(GrassyPlainsSystem, zoxp_write_voxels,
             [in] chunks3.ChunkPosition,
             [in] rendering.RenderLod,
             [in] rendering.RenderDistanceDirty,
@@ -31,7 +31,7 @@ void define_systems_terrain(ecs_world_t *world) {
             [out] chunks3.ChunkMeshDirty,
             [none] !FlatlandChunk,
             [none] TerrainChunk)
-    zox_system(VoxelNodeCleanupSystem, EcsOnLoad,
+    zox_system(VoxelNodeCleanupSystem, zoxp_write_voxels,
             [in] chunks3.VoxelNodeDirty,
             [in] chunks3.NodeDepth,
             [out] chunks3.VoxelNode,

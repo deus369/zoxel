@@ -4,3 +4,4 @@
 #include "io.c"
 #include "voronoi3.c"
 #include "spawned_block_vox.c"
+#include "ao.c"

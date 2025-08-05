@@ -9,6 +9,10 @@ ecs_entity_t spawn_frame_debugger_ui(
     const byte layer)
 {
     const byte plots_count = 2;
+    const color plot_colors[] = {
+        (color) { 33, 133, 133, 255 },
+        (color) { 133, 133, 133, 255 },
+    };
 
     const byte plot_layer = layer + 1;
     const byte header_layer = layer + 3;
@@ -68,36 +72,27 @@ ecs_entity_t spawn_frame_debugger_ui(
     }
     int2 plot_size = size;
     plot_size.y -= header_size.y;
-    children.value[is_header] = spawn_plot_graph(world,
-        canvas,
-        e,
-        position,
-        size,
-        prefab_layout2,
-        plot_layer,
-        plot_size,
-        record_frames_count,
-        0,
-        (color) { 33, 133, 133, 255 },
-        1,
-        0);
-    children.value[is_header + 1] = spawn_plot_graph(world,
-        canvas,
-        e,
-        position,
-        size,
-        prefab_layout2,
-        plot_layer + 1,
-        plot_size,
-        record_frames_count,
-        0,
-        (color) { 133, 33, 33, 255 },
-        1,
-        2);
-
-
+    for (int i = 0; i < plots_count; i++) {
+        children.value[is_header + i] = spawn_plot_graph(world,
+            canvas,
+            e,
+            position,
+            size,
+            prefab_layout2 + i,
+            plot_layer,
+            plot_size,
+            record_frames_count,
+            0,
+            plot_colors[i],
+            1,
+            i * 2);
+    }
+    // todo: seperate plot data from the graphs here
+        // - hotkey to switch them
+        // PlotLinks from our Profiler
     plot_time = children.value[1];
     plot_time_system = children.value[2];
+
     zox_set_ptr(e, Children, children);
     return e;
 }

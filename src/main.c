@@ -236,7 +236,7 @@ int main(int argc, char* argv[]) {
     zox_logv("Initializing ECS Settings");
     initialize_ecs_settings(world);                 // sets ecs threads
 
-    if (nosounds) {
+    if (!nosounds) {
         // sound file loading needs mixer
         zox_logv("Initializing Sounds");
         initialize_sounds(world);                       // starts sdl mixer etc
@@ -255,22 +255,27 @@ int main(int argc, char* argv[]) {
             dispose_zox(world);
             return EXIT_FAILURE;
         }
+
         zox_logv("Spawning SDL Window");
         app = spawn_window_opengl_with_icon(world);
+
         // inits glew on windows
         zox_logv("Initializing Rendering");
         initialize_rendering(world, render_backend);
+
         zox_logv("Initializing Glew");
         if (zox_init_glew() == EXIT_FAILURE) {
             zox_log_error("[initialize_rendering] failed");
             dispose_zox(world);
             return EXIT_FAILURE;
         }
+
         if (!app) {
             zox_log_error("[engine_spawn_window] failed");
             dispose_zox(world);
             return EXIT_FAILURE;
         }
+
         // black screen if no shaders btw
         zox_logv("Loading Shaders");
         load_files_shaders(world);          // this needs to use render gpu data atm (we append ubo on)

@@ -27,24 +27,30 @@ void module_dispose_core(ecs_world_t *world, void *ctx) {
     free_zems();
 }
 
-void process_arguments_core(ecs_world_t *world, char* args[], int count) {
+void process_arguments_core(
+    ecs_world_t *world,
+    char* args[],
+    int count
+) {
     (void) world;
     for (int i = 1; i < count; i++) {
         if (!strcmp(args[i], "--fps")) {
             target_fps = (byte) (atoi(args[i + 1]));
             i++;
+            zox_logi("Target FPS [%i]", target_fps);
         } else if (!strcmp(args[i], "--singlethread")) {
             is_multithreading = 0;
+            zox_logi("Threading Disabled");
         } else if (!strcmp(args[i], "-p") || !strcmp(args[i], "--profiler")) {
             profiler = 1;
+            zox_logi("Profiler Enabled");
         }
     }
 }
 
 // sets up resources path per platform - during preload stage
 byte initialize_pathing() {
-    zox_logv("Threads Support? %s", supports_threads() ? "YES" : "NO");
-    zox_logv("Begin Pathing")
+    zox_logi("Threads Support [%s]", supports_threads() ? "YES" : "NO");
     byte pathing_success = EXIT_FAILURE;
 #ifdef zox_android
     pathing_success = initialize_pathing_android();

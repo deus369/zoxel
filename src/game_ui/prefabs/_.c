@@ -13,10 +13,7 @@ ecs_entity_t prefab_menu_game_touch;
 ecs_entity_t zoxel_main_menu;
 ecs_entity_t prefab_crosshair;
 
-#include "menu_start.c"
-#include "menu_main.c"
-#include "options.c"
-#include "pause.c"
+#include "start.c"
 #include "fps_display.c"
 #include "quad_count_label.c"
 #include "game_debug_label.c"

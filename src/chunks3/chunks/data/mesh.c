@@ -1,3 +1,6 @@
+#define voxel_face_indicies_length 6
+#define voxel_face_vertices_length 4
+
 // left
 const float3 voxel_face_vertices_0[] = {
     { 0, 0, 0 },    //4
@@ -55,21 +58,44 @@ const float3* voxel_face_vertices_n[] = {
     voxel_face_vertices_5
 };
 
-const int voxel_face_indicies_length = 6;
-const int voxel_face_vertices_length = 4;
+const int voxel_face_indicies_n[] = {
+    // X
+    0, 1, 2, 2, 3, 0,   // normal
+    2, 1, 0, 0, 3, 2,   // reversed
+
+    // Y
+    2, 1, 0, 0, 3, 2,   // reversed
+    0, 1, 2, 2, 3, 0,   // normal
+
+    // Z
+    0, 1, 2, 2, 3, 0,   // normal
+    2, 1, 0, 0, 3, 2,   // reversed
+};
 
 const int voxel_face_indicies_p[] = {
     2, 1, 0, 0, 3, 2,   // reversed
     0, 1, 2, 2, 3, 0    // normal
 };
 
-const int* get_voxel_indices(byte is_positive) {
+static inline const int* get_voxel_indices(byte is_positive) {
     if (is_positive) {
         return &voxel_face_indicies_p[0];
     } else {
         return &voxel_face_indicies_p[6];
     }
 }
+
+// Face normals for dynamic lighting
+static const float3 face_normals[6] = {
+    { -1, 0, 0 }, // direction_left
+    { 1, 0, 0 },  // direction_right
+    { 0, -1, 0 }, // direction_down
+    { 0, 1, 0 },  // direction_up
+    { 0, 0, -1 }, // direction_back
+    { 0, 0, 1 }   // direction_front
+};
+
+
 
 #define get_voxel_indicies_1 &voxel_face_indicies_p[0]
 #define get_voxel_indicies_0 &voxel_face_indicies_p[6]

@@ -5,7 +5,7 @@ ecs_entity_t hierarchy;
 
 #include "hierarchy.c"
 #include "inspector.c"
-#include "frame_debugger.c"
+#include "profiler.c"
 
 void spawn_prefabs_editor(ecs_world_t *world) {
     prefab_hierarchy = spawn_prefab_hierarchy(world);

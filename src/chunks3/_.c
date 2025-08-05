@@ -9,6 +9,7 @@
  *
  * */
 
+#define zoxp_write_voxels EcsPreStore
 zox_component_entity(VoxLink)
 #include "chunks/_.c"
 #include "streaming/_.c"

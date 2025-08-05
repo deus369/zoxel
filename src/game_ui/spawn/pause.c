@@ -1,6 +1,7 @@
-ecs_entity_t spawn_menu_paused(ecs_world_t *world,
-    const ecs_entity_t player)
-{
+ecs_entity_t spawn_menu_paused(
+    ecs_world_t *world,
+    const ecs_entity_t player
+) {
     // getters
     zox_geter_value(player, CanvasLink, ecs_entity_t, canvas)
     // settings
