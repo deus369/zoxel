@@ -2,20 +2,19 @@ extern int zox_statistics_systems;
 extern int zox_statistics_components;
 extern int zox_statistics_modules;
 
-#include <stdio.h>
-#include <unistd.h>
-#include <termios.h>
-#include <fcntl.h>
-
+#ifdef zox_linux
+    #include <termios.h>
+#endif
 
 void enable_input() {
+#ifdef zox_linux
     struct termios t;
     tcgetattr(0, &t);
     t.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(0, TCSANOW, &t);
     fcntl(0, F_SETFL, O_NONBLOCK);
+#endif
 }
-
 
 void iterate_terminal(ecs_world_t* world) {
     if (!headless) {
@@ -35,7 +34,7 @@ void iterate_terminal(ecs_world_t* world) {
 
     char key;
     if (read(0, &key, 1) > 0) {
-        if (key == 'q') exit(0);
+        // if (key == 'q') exit(0);
         if (key == 'r') {
             zox_statistics_modules = 0;
             zox_statistics_systems = 0;
