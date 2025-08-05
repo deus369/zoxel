@@ -9,7 +9,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
     zox_sys_out(NodeDepth)
     zox_sys_out(ChunkSize)
     zox_sys_out(ColorRGBs)
-    zox_sys_out(ChunkMeshDirty)
+    zox_sys_out(VoxelNodeDirty)
     zox_sys_out(ChunkLod)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(CloneVoxLink, cloneVoxLink)
@@ -17,7 +17,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
         zox_sys_o(NodeDepth, nodeDepth)
         zox_sys_o(ColorRGBs, colorRGBs)
         zox_sys_o(ChunkSize, chunkSize)
-        zox_sys_o(ChunkMeshDirty, chunkMeshDirty)
+        zox_sys_o(VoxelNodeDirty, voxelNodeDirty)
         zox_sys_o(ChunkLod, chunkLod)
         zox_sys_o(CloneVox, cloneVox)
         const ecs_entity_t src = cloneVoxLink->value;
@@ -48,7 +48,7 @@ void CloneVoxSystem(ecs_iter_t *it) {
             initialize_ColorRGBs(colorRGBs, memory_length);
             memcpy(colorRGBs->value, colors_source->value, memory_length);
             cloneVox->value = 0;
-            chunkMeshDirty->value = chunk_dirty_state_trigger;
+            voxelNodeDirty->value = zox_dirty_trigger;
         }
     }
 } zox_declare_system(CloneVoxSystem)

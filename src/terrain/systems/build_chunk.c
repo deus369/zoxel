@@ -423,19 +423,18 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
     uint updated_count = 0;
     zox_sys_world()
     zox_sys_begin()
+    zox_sys_in(ChunkMeshDirty)
     zox_sys_in(VoxLink)
     zox_sys_in(VoxelNode)
     zox_sys_in(NodeDepth)
     zox_sys_in(RenderLod)
     zox_sys_in(ChunkNeighbors)
     zox_sys_in(VoxScale)
-    zox_sys_in(ChunkMeshDirty)
     zox_sys_out(MeshIndicies)
     zox_sys_out(MeshVertices)
     zox_sys_out(MeshUVs)
     zox_sys_out(MeshColorRGBs)
     zox_sys_out(MeshDirty)
-
     byte any_dirty = 0;
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(ChunkMeshDirty, chunkMeshDirty)

@@ -12,6 +12,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
     zox_sys_in(Color)
     zox_sys_in(VoxType)
     zox_sys_out(VoxelNode)
+    zox_sys_out(VoxelNodeDirty)
     zox_sys_out(NodeDepth)
     zox_sys_out(ColorRGBs)
     byte any_dirty = 0;
@@ -26,16 +27,16 @@ void VoxGenerationSystem(ecs_iter_t *it) {
         zox_ts_end(vox_generation, 3, zox_profile_system_vox_generation);
         return;
     }
-
     startwatch(time_vox_generation);
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(Color, color2)
         zox_sys_i(VoxType, voxType)
-        zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_i(GenerateVox, generateVox)
+        zox_sys_o(VoxelNode, node)
+        zox_sys_o(VoxelNodeDirty, nodeDirty)
         zox_sys_o(NodeDepth, nodeDepth)
         zox_sys_o(ColorRGBs, colors)
-        zox_sys_i(GenerateVox, generateVox)
         if (generateVox->value != zox_dirty_active) {
             continue;
         }
@@ -63,6 +64,8 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             vregions = zox_get_value(e, VRegions);
         }
 
+
+        write_lock_VoxelNode(node);
         // byte3 size = byte3_single(chunk_voxel_length);
         if (voxType->value == vox_type_soil) {
             // colors
@@ -71,7 +74,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             add_to_ColorRGBs(colors, dirt_dark_voxel);
             byte black_voxel_3 = colors->length;
 
-            build_vox_soil(voxelNode,
+            build_vox_soil(node,
                 node_depth,
                 voxel_range,
                 black_voxel_3,
@@ -101,7 +104,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             byte black_voxel_2 = colors->length;
 
             // put indexes here
-            build_vox_blended(voxelNode,
+            build_vox_blended(node,
                 node_depth,
                 black_voxel_2,
                 black_voxel_3,
@@ -122,7 +125,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
                 rubble_count = zox_get_value(e, RubbleCount)
             }
 
-            build_vox_rubble(voxelNode,
+            build_vox_rubble(node,
                 node_depth,
                 voxel_range,
                 rubble_count,
@@ -135,7 +138,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             add_to_ColorRGBs(colors, dirt_dark_voxel);
             byte black_voxel_3 = colors->length;
 
-            vnoise3(voxelNode,
+            vnoise3(node,
                 node_depth,
                 voxel_range,
                 black_voxel_3);
@@ -146,7 +149,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             add_to_ColorRGBs(colors, dirt_dark_voxel);
             byte black_voxel_3 = colors->length;
 
-            build_vox_bricks(voxelNode,
+            build_vox_bricks(node,
                              node_depth,
                              voxel_range,
                              black_voxel_3);
@@ -157,7 +160,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             add_to_ColorRGBs(colors, dirt_dark_voxel);
             byte black_voxel_3 = colors->length;
             build_vox_flower_patch(
-                voxelNode,
+                node,
                 node_depth,
                 (byte2) { voxel_range.x, voxel_range.y / 2 }, // (byte2) { 2, 6 },
                 (byte2) { voxel_range.y / 2, voxel_range.y }, // (byte2) { 1, 4 },
@@ -165,19 +168,17 @@ void VoxGenerationSystem(ecs_iter_t *it) {
 
         } else {
             zox_log_error("unknown vox type [%s]", zox_get_name(e));
+            write_unlock_VoxelNode(node);
             continue;
         }
         if (is_generate_vox_outlines) {
-            vox_outlines(voxelNode,
+            vox_outlines(node,
                 node_depth,
                 black_voxel);
         }
-#ifndef zox_disable_closing_octree_nodes
-        reduce_voxel_nodes(world, voxelNode);
-#endif
-        if (zox_has(e, ChunkMeshDirty)) {
-            zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
-        }
+        write_unlock_VoxelNode(node);
+        nodeDirty->value = zox_dirty_trigger;
+        zox_log_error("Generated Vox [%s]", zox_get_name(e));
         tapwatch(time_vox_generation, "generate vox");
     }
 

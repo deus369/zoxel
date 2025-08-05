@@ -13,7 +13,9 @@ void VoxelNodeCleanupSystem(ecs_iter_t *it) {
         if (voxelNodeDirty->value != zox_dirty_active || !nodeDepth->value) {
             continue;
         }
+        write_lock_VoxelNode(node);
         reduce_voxel_nodes(world, node);
+        write_unlock_VoxelNode(node);
     }
 #endif
 } zox_declare_system(VoxelNodeCleanupSystem)

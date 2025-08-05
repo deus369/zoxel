@@ -67,9 +67,7 @@ static inline byte is_closed_##name(const name *node) {\
 }\
 \
 static inline name* get_children_##name(const name *node) {\
-    /*read_lock_##name(node);*/\
     name* children = node ? (name*) node->ptr : NULL;\
-    /*read_unlock_##name(node);*/\
     return children;\
 }\
 \
@@ -97,7 +95,7 @@ void open_new_##name(name* node) { \
     write_unlock_##name(node); \
 }\
 \
-void destroy_node_children_##name(ecs_world_t *world, name *node) {\
+void internal_destroy_##name(ecs_world_t *world, name *node) {\
     name* kids = get_children_unlocked_##name(node);\
     for (byte i = 0; i < octree_length; i++) {\
         destroy_##name(world, &kids[i]);\
@@ -111,7 +109,7 @@ void destroy_##name(ecs_world_t *world, name* node) {\
     write_lock_##name(node);\
     if (!is_closed_##name(node)) {\
         if (has_children_##name(node)) {\
-            destroy_node_children_##name(world, node);\
+            internal_destroy_##name(world, node);\
         } else {\
             run_hook_on_destroyed_##name(world, node);\
         }\

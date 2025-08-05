@@ -68,17 +68,14 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     // for now while types are global
     // const byte target_depth = terrain_depth;
     const uint seed = global_seed;  // todo: use terrains seed
-    zox_sys_world()
+    // zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkPosition)
     zox_sys_in(RenderLod)
     zox_sys_in(RenderDistanceDirty)
-    zox_sys_in(ChunkNeighbors)
     zox_sys_out(VoxelNode)
     zox_sys_out(NodeDepth)
     zox_sys_out(VoxelNodeDirty)
-    zox_sys_out(ChunkMeshDirty)
-
     byte any_dirty = 0;
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
@@ -99,11 +96,9 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(ChunkPosition, chunkPosition)
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
-        zox_sys_i(ChunkNeighbors, neighbors)
         zox_sys_o(NodeDepth, nodeDepth)
         zox_sys_o(VoxelNode, voxelNode)
         zox_sys_o(VoxelNodeDirty, voxelNodeDirty)
-        zox_sys_o(ChunkMeshDirty, chunkMeshDirty)
         // todo: remember if has generated yet, keep a generated LOD state!
         //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
         if (renderDistanceDirty->value != zox_dirty_active) {
@@ -244,18 +239,17 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         tapwatch(time_grassy_plains, "mass set_voxels");
 
         voxelNodeDirty->value = zox_dirty_trigger;
-        chunkMeshDirty->value = chunk_dirty_state_trigger;
+        /*chunkMeshDirty->value = chunk_dirty_state_trigger;
         for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
             ecs_entity_t neighbor = neighbors->value[axis];
             if (zox_valid(neighbor)) {
                 zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
-        }
+        }*/
     }
     endwatch(time_grassy_plains, "grassy_plains");
     zox_ts_end(grassy_plains, 5, zox_profile_system_grassy_plains);
 } zox_declare_system(GrassyPlainsSystem)
-
 
 
 

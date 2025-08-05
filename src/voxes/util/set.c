@@ -1,9 +1,10 @@
 define_fun_stopwatch(time_set_vox, 0);
 
-void set_colors_from_vox_file(ecs_world_t *world,
+void set_colors_from_vox_file(
+    ecs_world_t *world,
     const ecs_entity_t e,
-    const vox_file *vox)
-{
+    const vox_file *vox
+) {
     if (!vox) {
         return;
     }
@@ -13,24 +14,27 @@ void set_colors_from_vox_file(ecs_world_t *world,
     memcpy(colorRGBs->value, vox->palette.values_rgb, colors_length * sizeof(color_rgb));
 }
 
-void set_as_debug_vox(ecs_world_t *world, const ecs_entity_t e) {
+void set_as_debug_vox(
+    ecs_world_t *world,
+    const ecs_entity_t e
+) {
     zox_muter(e, ColorRGBs, colorRGBs);
-    resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 1)
+    resize_memory_component(ColorRGBs, colorRGBs, color_rgb, 1);
     colorRGBs->value[0] = (color_rgb) { 223, 239, 2 };
-    zox_set(e, ChunkSize, { { 1, 1, 1 } })
-    VoxelNode *voxelNode = zox_get_mut(e, VoxelNode)
+    zox_set(e, ChunkSize, { { 1, 1, 1 } });
+    zox_muter(e, VoxelNode, voxelNode);
     fill_new_octree(voxelNode, 1, 1);
-    zox_modified(e, VoxelNode)
 }
 
 byte is_vox_valid(const vox_file *vox) {
     return (vox && vox->chunks);
 }
 
-void set_vox_file(ecs_world_t *world,
+void set_vox_file(
+    ecs_world_t *world,
     const ecs_entity_t e,
-    const vox_file* vox)
-{
+    const vox_file* vox
+) {
     if (!is_vox_valid(vox)) {
         set_as_debug_vox(world, e);
         return;
