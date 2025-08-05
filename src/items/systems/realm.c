@@ -6,24 +6,32 @@ ecs_entity_t meta_item_block_stone;
 ecs_entity_t meta_item_block_dungeon_core;
 
 ecs_entity_t spawn_block_item(ecs_world_t *world, const ecs_entity_t block) {
-    if (!zox_valid(block) || !zox_has(block, ZoxName) || !zox_has(block, TextureLinks)) {
+    if (!zox_valid(block) || !zox_has(block, ZoxName)) {
         zox_log_error(" ! problem with block components name? [%i]\n", zox_has(block, ZoxName))
         return 0;
     }
     // get block data
     zox_geter(block, ZoxName, voxel_name)
-    zox_geter(block, TextureLinks, textures)
     // spawn item
     const ecs_entity_t e = spawn_meta_item_zox_name(world, prefab_item, voxel_name);
     zox_name("block_item")
-    if (textures->length > 0) {
-        zox_set(e, TextureLink, { textures->value[0] })
-    } else {
+
+    ecs_entity_t t = 0;
+    if (zox_has(block, TextureLinks)) {
+        zox_geter(block, TextureLinks, textures);
+        if (textures->length > 0) {
+            t = textures->value[0];
+        }
+    }
+    if (!t && zox_has(block, TextureLink)) {
+        t = zox_get_value(block, TextureLink);
+    }
+    if (!t) {
         // zox_log("! warning: [todo] implement vox item textures [%s]", zox_get_name(block))
-        const ecs_entity_t blank = string_hashmap_get(files_hashmap_textures, new_string_data("blank"));
-        zox_set(e, TextureLink, { blank })
+        t = string_hashmap_get(files_hashmap_textures, new_string_data("blank"));
         // zox_log(" ! block [%s] had no textures [%i]\n",  convert_zext_to_text(voxel_name->value, voxel_name->length), textures->length)
     }
+    zox_set(e, TextureLink, { t })
     zox_add_tag(e, ItemBlock)
     zox_set(e, BlockLink, { block })
     // actually for grass we want to set itemLink differently

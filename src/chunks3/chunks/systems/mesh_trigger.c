@@ -10,8 +10,6 @@ void Chunk3MeshTriggerSystem(ecs_iter_t *it) {
         zox_sys_i(VoxelNodeDirty, voxelNodeDirty);
         zox_sys_o(ChunkMeshDirty, chunkMeshDirty);
         if (chunkMeshDirty->value == zox_dirty_none && voxelNodeDirty->value == zox_dirty_active) {
-            zox_sys_world()
-            zox_sys_e()
             chunkMeshDirty->value = chunk_dirty_state_trigger;
         }
     }

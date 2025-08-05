@@ -1,7 +1,6 @@
 void NoiseVoxelNodeSystem(ecs_iter_t *it) {
     // const byte max_depth = terrain_depth;
     zox_change_check()
-    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(NodeDepth)
     zox_sys_out(ChunkDirty)

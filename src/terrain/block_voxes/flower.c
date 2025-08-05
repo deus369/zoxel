@@ -22,5 +22,24 @@ ecs_entity_t spawn_block_flower(ecs_world_t *world, const byte index) {
     zox_set(prefab_block_vox2, InstanceLink, { spawn_data.vox })
     // our block!
     process_disabled_block_vox(world, &spawn_data, 0);
-    return spawn_block_vox_meta(world, &spawn_data);
+
+    ecs_entity_t e = spawn_block_vox_meta(world, &spawn_data);
+
+
+    // quick fix
+    // zox_set(spawn_data.vox, NodeDepth, { 4 });
+    zox_geter(spawn_data.vox, ModelLods, modelLods);
+    ecs_entity_t v = modelLods->value[0];
+    // link a texture to it
+    const ecs_entity_t t = spawn_texture(
+        world,
+        prefab_vox_texture,
+        voxel_texture_size
+    );
+    zox_set_name_e(t, "grass_texture");
+    zox_set(t, VoxLink, { v });
+    zox_set(t, VoxBakeSide, { direction_left }); // direction_front
+    zox_set(e, TextureLink, { t });
+
+    return e;
 }

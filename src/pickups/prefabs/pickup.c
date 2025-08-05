@@ -32,14 +32,19 @@ ecs_entity_t spawn_pickup_block(ecs_world_t *world,
 #else
     ecs_entity_t texture = 0;
 
-    if (zox_valid(block) && zox_has(block, TextureLinks)) {
-        zox_geter(block, TextureLinks, textures)
-        if (textures->length) {
-            if (textures->length == 1) {
-                texture = textures->value[0];
-            } else {
-                texture = textures->value[block_side_down];
+    if (zox_valid(block)) {
+        if (zox_has(block, TextureLinks)) {
+            zox_geter(block, TextureLinks, textures)
+            if (textures->length) {
+                if (textures->length == 1) {
+                    texture = textures->value[0];
+                } else {
+                    texture = textures->value[block_side_down];
+                }
             }
+        }
+        if (!texture && zox_has(block, TextureLink)) {
+            texture = zox_get_value(block, TextureLink);
         }
     }
 

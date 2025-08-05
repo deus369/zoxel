@@ -5,6 +5,10 @@ const byte get_sub_node_voxel(
     byte3 *position,
     const byte depth
 ) {
+    if ((uintptr_t) node < 0x100) {
+        zox_log_error("trash node detected [get_sub_node_voxel]");
+        return 0;
+    }
     if (!node) {
         return 0;
     }

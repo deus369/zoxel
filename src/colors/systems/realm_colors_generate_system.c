@@ -3,11 +3,11 @@ void generate_colors(long int seed, Colors *colors) {
     // dirt color - hsv - hue saturation value
     const float2 dirt_hue = (float2) { 0, 360 };
     const float2 dirt_value = (float2) { 28, 36 };
-    const float2 dirt_saturation = (float2) { 33, 43 };
-    float3 dirt_hsv = generate_hsv_v_s(dirt_hue, dirt_value, dirt_saturation);
+    const float2 dirt_saturation = (float2) { 23, 33 };
     const float2 grass_hue = (float2) { 0, 360 };
-    const float2 grass_value = (float2) { 22, 66 };         // { 44, 54 };
-    const float2 grass_saturation = (float2) { 12, 66 };    // { 38, 48 };
+    const float2 grass_value = (float2) { 42, 66 };         // { 44, 54 };
+    const float2 grass_saturation = (float2) { 44, 55 };    // { 38, 48 };
+    float3 dirt_hsv = generate_hsv_v_s(dirt_hue, dirt_value, dirt_saturation);
     float3 grass_hsv = generate_hsv_v_s(grass_hue, grass_value, grass_saturation);
     if (hsv_to_color(grass_hsv).r > hsv_to_color(dirt_hsv).r)
     {
@@ -16,12 +16,20 @@ void generate_colors(long int seed, Colors *colors) {
         grass_hsv.x = soil_hue;
     }
     const int sand_hue_shift = 40;
-    float3 sand_hsv = (float3) { dirt_hsv.x - sand_hue_shift + (rand() % sand_hue_shift * 2), dirt_hsv.y + 8 + rand() % 8, dirt_hsv.z + 8 + rand() % 8 };
+    float3 sand_hsv = (float3) {
+        dirt_hsv.x - sand_hue_shift + (rand() % sand_hue_shift * 2),
+        18 + rand() % 8,
+        54 + rand() % 16
+    };
     const float2 stone_hue = (float2) { 0, 360 };
-    const float2 stone_value = (float2) { 16, 24 };
-    const float2 stone_saturation = (float2) { 6, 12 };
+    const float2 stone_value = (float2) { 40, 60 };
+    const float2 stone_saturation = (float2) { 2, 6 };
     const float3 stone_hsv = generate_hsv_v_s(stone_hue, stone_value, stone_saturation);
-    float3 obsidian_hsv = (float3) { rand() % 360, 13, 13 };
+    float3 obsidian_hsv = (float3) {
+        rand() % 360,
+        8 + rand() % 8,
+        13
+    };
     if (obsidian_hsv.x + 180 >= dirt_hsv.x + 180 - 45 && obsidian_hsv.x + 180 <= dirt_hsv.x + 180 + 45) {
         obsidian_hsv.x += 180; // if close to dirt, move away the hue
     }

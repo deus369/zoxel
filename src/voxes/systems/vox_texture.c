@@ -1,6 +1,6 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
 byte is_debug_sides = block_side_none; // block_side_none | block_side_front
-const color air_vox_color = (color) { 15, 15, 35, 255 };
+const color air_vox_color = (color) { 15, 15, 25, 88 };
 
 void generate_vox_debug_texture(color *data, const int2 size, byte side) {
     if (is_debug_sides == block_side_none) {
@@ -27,7 +27,14 @@ void generate_vox_debug_texture(color *data, const int2 size, byte side) {
     }
 }
 
-void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, const color_rgb *colors, byte side, const byte max_depth) {
+void generate_vox_texture(
+    color *data,
+    const int2 size,
+    const VoxelNode *chunk,
+    const color_rgb *colors,
+    byte side,
+    const byte max_depth
+) {
     if (chunk == NULL) {
         return;
     }
@@ -140,8 +147,11 @@ void generate_vox_texture(color *data, const int2 size, const VoxelNode *chunk, 
                         }
                     }
                 }
-                if (voxel == 0) data[index] = air_vox_color;
-                else data[index] = color_rgb_to_color(colors[voxel - 1]);
+                if (voxel == 0) {
+                    data[index] = air_vox_color;
+                } else {
+                    data[index] = color_rgb_to_color(colors[voxel - 1]);
+                }
                 if (is_darken) {
                     color_multiply_float(&data[index], 0.8f);
                 }
@@ -162,25 +172,39 @@ void VoxTextureSystem(ecs_iter_t *it) {
     zox_sys_out(TextureData)
     zox_sys_out(TextureDirty)
     for (int i = 0; i < it->count; i++) {
-        zox_sys_o(GenerateTexture, generateTexture)
         zox_sys_i(VoxLink, voxLink)
         zox_sys_i(TextureSize, textureSize)
         zox_sys_i(VoxBakeSide, voxBakeSide)
+        zox_sys_o(GenerateTexture, generateTexture)
         zox_sys_o(TextureData, textureData)
         zox_sys_o(TextureDirty, textureDirty)
-        if (generateTexture->value != zox_generate_texture_generate) {
+        if (generateTexture->value != zox_generate_texture_generate ||
+            !zox_valid(voxLink->value) ||
+            !zox_has(voxLink->value, VoxelNode) ||
+            (zox_has(voxLink->value, GenerateVox) && zox_gett_value(voxLink->value, GenerateVox))) {
             continue;
         }
-        if (!voxLink->value || zox_gett_value(voxLink->value, GenerateVox)) {
-            continue;
-        }
-        const ColorRGBs *colorRGBs = zox_get(voxLink->value, ColorRGBs)
-        zox_geter(voxLink->value, VoxelNode, node)
-        zox_geter_value(voxLink->value, NodeDepth, byte, node_depth)
+        zox_geter(voxLink->value, ColorRGBs, colors);
+        zox_geter(voxLink->value, VoxelNode, node);
+        zox_geter_value(voxLink->value, NodeDepth, byte, node_depth);
+
         const int2 texture_size = textureSize->value;
-        resize_memory_component(TextureData, textureData, color, texture_size.x * texture_size.y)
-        generate_vox_texture(textureData->value, texture_size, node, colorRGBs->value, voxBakeSide->value, node_depth);
-        generate_vox_debug_texture(textureData->value, texture_size, voxBakeSide->value);
+        initialize_TextureData(textureData, texture_size.x * texture_size.y);
+
+        read_lock_VoxelNode(node);
+        generate_vox_texture(
+            textureData->value,
+            texture_size,
+            node,
+            colors->value,
+            voxBakeSide->value,
+            node_depth);
+        generate_vox_debug_texture(
+            textureData->value,
+            texture_size,
+            voxBakeSide->value);
+        read_unlock_VoxelNode(node);
+
         textureDirty->value = 1; // actually not using this for tilemap!
     }
 } zox_declare_system(VoxTextureSystem)
