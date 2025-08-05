@@ -13,10 +13,12 @@ void DungeonBlockSystem(ecs_iter_t *it) {
     zox_sys_begin()
     zox_sys_in(TimerState)
     zox_sys_in(ChunkLink)
+    zox_sys_in(DungeonWallType)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(ChunkLink, chunkLink)
         zox_sys_i(TimerState, timerState)
+        zox_sys_i(DungeonWallType, place)
         if (timerState->value == 0) {
             continue;
         }
@@ -31,7 +33,7 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         // byte3 position = (byte3) { rand() % size.x, rand() % size.y, rand() % size.z };
         byte place_type = 0;
         if (rand() % 100 >= 2) {
-            place_type = zox_block_dark;
+            place_type = place->value; // zox_block_dark;
         }
         // find next z position
         const byte radius = 3;
@@ -90,14 +92,14 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         //    .node = update_node,
         //    .position = position,
         //};
-        float3 real_position = voxel_position_to_real_position(voxel_position, int3_to_byte3(chunk_bounds), default_vox_scale);
+        float3 positionf = voxel_position_to_real_position(voxel_position, int3_to_byte3(chunk_bounds), default_vox_scale);
         place_block(world,
             chunkLink->value,
             update_node,
             int3_to_byte3(position),
             voxel_position,
             place_type,
-            real_position);
+            positionf);
         zox_mut_end(chunk, VoxelNode)
         // zox_log("+ Dungeon Block Placing: %s [%ix%ix%i]: %i", zox_get_name(e), position.x, position.y, position.z, place_type)
     }

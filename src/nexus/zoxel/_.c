@@ -9,11 +9,41 @@
 // #define zox_enable_log_ui
 // #define zox_enable_log_shader
 
+void zoxel_set_debug(ecs_world_t* world) {
+    // zox_profile_system_none
+    // zox_profile_system_grassy_plains
+    // zox_profile_system_vox_generation
+    // zox_profile_system_chunk_builder_c
+    // zox_profile_system_npc_spawns
+    profiler_state = zox_profile_system_npc_spawns;
+
+    // disable_block_voxes = 1;
+    // debug
+    disable_block_vox_generation = 0;
+    test_actions_skills = 0;
+    test_items_blocks = 1;
+    test_all_skills = 1;
+
+    // get_debug_label_app
+    set_prefab_debug_label(world, &debug_label_chunk_link);
+    // set_prefab_debug_label(world, &get_label_realm_colors);
+    // set_prefab_debug_label(world, &get_label_player_element_links);
+    // set_prefab_debug_label(world, &get_label_player_stats);
+    // set_prefab_debug_label(world, &get_label_player_items);
+    // set_prefab_debug_label(world, &get_label_player_skills);
+    // set_prefab_debug_label(world, &get_label_player_actions);
+    // set_prefab_debug_label(world, &get_label_player_quests);
+    // set_prefab_debug_label(world, &debug_label_lods);
+    // set_prefab_debug_label(world, &debug_label_collisions);
+    // set_prefab_debug_label(world, &debug_label_app);
+}
+
 void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
     disable_npcs = 0;
-    character_spawn_rate = 2;
+    character_spawn_rate_min = 0;
+    character_spawn_rate_max = 1;
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;
@@ -121,6 +151,8 @@ zox_begin_module(ZoxGame)
     // app settings
     // headless = 0;
     // nosounds = 0;
+    zoxel_set_debug(world);
+
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
     vsync = 1;
@@ -171,13 +203,7 @@ zox_begin_module(ZoxGame)
     character_depth = 5;
     vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
     // terrain_amplifier = powers_of_two[terrain_depth] * render_distance_y;
-    // debug
-    disable_block_vox_generation = 0;
-    // disable_block_voxes = 1;
     game_ui_has_taskbar = 1;
-    test_actions_skills = 0;
-    test_items_blocks = 1;
-    test_all_skills = 1;
 
     // zox_debug_id(Block)
     // zox_debug_print_modules();
@@ -197,18 +223,6 @@ zox_begin_module(ZoxGame)
         zox_prefab_set(prefab_character3_npc, VoxScale, { vox_model_scale })
     }*/
 
-    // get_debug_label_app
-    // set_prefab_debug_label(world, &get_label_realm_colors);
-    // set_prefab_debug_label(world, &get_label_player_element_links);
-    // set_prefab_debug_label(world, &get_label_player_stats);
-    // set_prefab_debug_label(world, &get_label_player_items);
-    // set_prefab_debug_label(world, &get_label_player_skills);
-    // set_prefab_debug_label(world, &get_label_player_actions);
-    // set_prefab_debug_label(world, &get_label_player_quests);
-    // set_prefab_debug_label(world, &debug_label_lods);
-    // set_prefab_debug_label(world, &debug_label_collisions);
-    set_prefab_debug_label(world, &debug_label_chunk_link);
-    // set_prefab_debug_label(world, &debug_label_app);
 zox_end_module(ZoxGame)
 
 #endif

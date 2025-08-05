@@ -112,7 +112,7 @@ void build_voxel_faces_c(
     }
 }
 
-void build_octree_chunk_colors_d(
+void build_voxel_mesh_c(
     const VoxelNode* root,
     const VoxelNode* parent_node,
     const VoxelNode* node,
@@ -166,7 +166,7 @@ void build_octree_chunk_colors_d(
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
             int3 child_position = int3_add(position, octree_positions[i]);
-            build_octree_chunk_colors_d(
+            build_voxel_mesh_c(
                 root,
                 node,
                 &kids[i],
@@ -200,7 +200,7 @@ void build_node_mesh_colors(
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
-    build_octree_chunk_colors_d(
+    build_voxel_mesh_c(
         node,
         NULL,
         node,
@@ -229,8 +229,10 @@ void build_node_mesh_colors(
 }
 
 
-// builds the character vox meshes
+// Builds Colored Vox Meshes
+//  Triggers: ChunkMeshDirty chunk_dirty_state_update
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
+    zox_ts_begin(build_chunk_colored);
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkMeshDirty)
@@ -262,7 +264,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             continue;
         }
         if (!colorRGBs->length) {
-            zox_logw("vox has no colors");
+            zox_logw("Vox has no colors.");
             continue;
         }
         // removes mesh when 255
@@ -291,6 +293,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
             const float3 total_mesh_offset = float3_scale(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
             const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
+            read_lock_VoxelNode(voxelNode);
             build_node_mesh_colors(
                 voxelNode,
                 colorRGBs,
@@ -302,7 +305,9 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
                 neighbor_lods,
                 total_mesh_offset,
                 voxScale->value);
+            read_unlock_VoxelNode(voxelNode);
         }
         meshDirty->value = mesh_state_trigger_slow;
     }
+    zox_ts_end(build_chunk_colored, 5, zox_profile_system_chunk_builder_c);
 } zox_declare_system(ChunkColorsBuildSystem)

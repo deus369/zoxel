@@ -1,5 +1,4 @@
 define_fun_stopwatch(time_vox_generation, 0);
-byte profile_vox_generation = 0;
 
 // todo: generate colors in another system
 // todo: split processes up to nodes
@@ -24,7 +23,7 @@ void VoxGenerationSystem(ecs_iter_t *it) {
         }
     }
     if (!any_dirty) {
-        zox_ts_end(vox_generation, 3, profile_vox_generation);
+        zox_ts_end(vox_generation, 3, zox_profile_system_vox_generation);
         return;
     }
 
@@ -183,5 +182,5 @@ void VoxGenerationSystem(ecs_iter_t *it) {
     }
 
     endwatch(time_vox_generation, "ending");
-    zox_ts_end(vox_generation, 3, profile_vox_generation);
+    zox_ts_end(vox_generation, 3, zox_profile_system_vox_generation);
 } zox_declare_system(VoxGenerationSystem)

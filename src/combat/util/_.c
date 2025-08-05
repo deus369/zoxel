@@ -1,14 +1,9 @@
-void spawn_prefabs_combat(ecs_world_t *world) {
-    // stats / death
-    zox_prefab_character_set(Dead, { 0 })
-    zox_prefab_character_set(DiedTime, { 0 })
-    zox_prefab_character_set(CombatState, { 0 })
-    zox_prefab_character_set(LastDamager, { 0 })
-    zox_prefab_character_set(LastCombatTime, { 0 })
-}
-
 // zox_current_time
-void combat_on_hit(ecs_world_t* world, ecs_entity_t e, ecs_entity_t e2) {
+void combat_on_hit(
+    ecs_world_t* world,
+    ecs_entity_t e,
+    ecs_entity_t e2
+) {
     if (!zox_valid(e)) {
         return;
     }

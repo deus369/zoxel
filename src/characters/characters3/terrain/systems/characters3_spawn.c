@@ -3,9 +3,10 @@ extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
 // we need to check if chunk has generated yet - is there a component for this?
 
 void Characters3SpawnSystem(ecs_iter_t *it) {
-    if (disable_npcs || !character_spawn_rate) {
+    if (disable_npcs || !character_spawn_rate_max) {
         return;
     }
+    zox_ts_begin(npc_spawns);
     // todo: dynamically check bounds
     const float3 bounds = (float3) { 0.22f, 0.44f, 0.22f };
     zox_sys_world()
@@ -71,7 +72,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         byte found_position = 0;
         float3 position;
 
-
+        const byte character_spawn_rate = character_spawn_rate_min + rand() % (character_spawn_rate_max - character_spawn_rate_min + 1);
         for (byte j = 0; j < character_spawn_rate; j++) {
 
             // 1) Find a npc to place
@@ -162,4 +163,5 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         charactersSpawned->value = 1;
         charactersEverSpawned->value = 1;
     }
+    zox_ts_end(npc_spawns, 3, zox_profile_system_npc_spawns);
 } zox_declare_system(Characters3SpawnSystem)

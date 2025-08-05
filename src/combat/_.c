@@ -7,6 +7,7 @@ zox_component_double(LastCombatTime)
 zox_component_byte(Dead)
 zox_component_double(DiedTime)
 #include "states/_.c"
+#include "prefabs/_.c"
 #include "systems/_.c"
 #include "util/_.c"
 

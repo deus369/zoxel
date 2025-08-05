@@ -1,5 +1,4 @@
 define_fun_stopwatch(time_grassy_plains, 0);
-byte profile_grassy_plains = 0; // add to profiler
 
 // FIXME(deus): This LOD+1 patch prevents chunk seems.
 byte optimize_generation_lods = 1;
@@ -89,7 +88,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         }
     }
     if (!any_dirty) {
-        zox_ts_end(grassy_plains, 5, profile_grassy_plains);
+        zox_ts_end(grassy_plains, 5, zox_profile_system_grassy_plains);
         return;
     }
 
@@ -254,7 +253,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         }
     }
     endwatch(time_grassy_plains, "grassy_plains");
-    zox_ts_end(grassy_plains, 5, profile_grassy_plains);
+    zox_ts_end(grassy_plains, 5, zox_profile_system_grassy_plains);
 } zox_declare_system(GrassyPlainsSystem)
 
 

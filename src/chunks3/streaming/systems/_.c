@@ -21,13 +21,12 @@ void define_systems_streaming(ecs_world_t *world) {
         [in] generic.Position3DBounds,
         [in] cameras.CameraPlanes,
         [none] cameras.Camera3D)
-    zox_system_ctx(ChunkFrustumSystem, EcsOnUpdate, filter_cameras,
+    zox_system_ctx(ChunkFrustumSystem, zoxp_read_voxels, filter_cameras,
         [in] transforms3.Position3D,
         [in] chunks3.ChunkSize,
         [in] blocks.VoxScale,
         [in] generic.EntityLinks,
         [in] chunks3.VoxelNode,
-        // [in] chunks3.NodeDepth,
         [out] rendering.RenderDisabled,
         [none] StreamedChunk)
     zox_filter(streamers2,

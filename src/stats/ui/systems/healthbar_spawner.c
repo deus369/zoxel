@@ -19,7 +19,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
                 remove_from_ElementLinks(elementLinks, healthbar);
                 zox_delete(healthbar)
             } else {
-                zox_log_error("failed to find healthbar..")
+                zox_logw("[%s] had no healthbar in combat", zox_get_name(e));
             }
             continue;
         }

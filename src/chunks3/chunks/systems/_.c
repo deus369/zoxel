@@ -31,7 +31,7 @@ void define_systems_chunks(ecs_world_t *world) {
         [out] chunks3.ChunkNeighbors,
         [none] ChunkTextured)
     // main thread
-    zox_system_1(ChunkDebugSystem, zox_pip_mainthread,
+    zox_system_1(ChunkDebugSystem, zoxp_read_voxels,
         [in] transforms3.Position3D,
         [in] chunks3.VoxelNode,
         [in] chunks3.NodeDepth,

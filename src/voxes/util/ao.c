@@ -1,6 +1,7 @@
 // #define DISABLE_AO
 #define AO_CORNER_DARKNESS 0.25f
 #define AO_EDGE_DARKNESS 0.5f
+#define AO_MULTIPLIER 1.6f // 2
 
 // Neighbor indices for each face and vertex: [vertex][0] = adjacent1, [vertex][1] = adjacent2
 static const byte neighbor_indices[6][voxel_face_vertices_length][2] = {
@@ -77,8 +78,11 @@ void add_voxel_face_colors_ao(
         byte neighbor2 = neighbors[neighbor_indices[direction][a][1]];
         float ao_factor = compute_ao_factor(neighbor1, neighbor2);
         color_rgb c = voxel_color;
+        c.r = c.r * ao_factor * AO_MULTIPLIER > 255 ? 255 : c.r * ao_factor * AO_MULTIPLIER;
+        c.g = c.g * ao_factor * AO_MULTIPLIER > 255 ? 255 : c.g * ao_factor * AO_MULTIPLIER;
+        c.b = c.b * ao_factor * AO_MULTIPLIER > 255 ? 255 : c.b * ao_factor * AO_MULTIPLIER;
         // color_rgb_multiply_float(&c, light_intensity * 2.0f);
-        color_rgb_multiply_float(&c, ao_factor * 2);
+        // color_rgb_multiply_float(&c, ao_factor * AO_MULTIPLIER);
         add_to_color_rgb_array_d(color_rgbs, c);
     }
 }

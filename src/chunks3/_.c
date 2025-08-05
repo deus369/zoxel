@@ -9,7 +9,9 @@
  *
  * */
 
-#define zoxp_write_voxels EcsPreStore
+#define zoxp_read_voxels EcsOnLoad
+#define zoxp_write_voxels EcsOnStore
+
 zox_component_entity(VoxLink)
 #include "chunks/_.c"
 #include "streaming/_.c"

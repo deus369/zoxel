@@ -10,6 +10,6 @@ float regen_rate = 0.5f; //  0.125f;
 // leveling
 float zox_experience_max_start = 10;
 float experience_max_multiplier = 1.4f;
-float experience_gain_base = 1;
+float experience_gain_base = 0;
 float experience_per_level_min = 1;
 float experience_per_level_max = 2;
