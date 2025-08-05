@@ -556,6 +556,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
             // const byte is_max_depth_chunk = renderLod->value == 0;
             const byte render_depth = terrain_lod_to_node_depth(renderLod->value, node_depth);
             const float scale = 2 * get_terrain_voxel_scale(node_depth);
+            read_lock_VoxelNode(voxelNode);
             build_chunk_terrain_mesh(
                 voxelNode,
                 tilemap_uvs,
@@ -572,6 +573,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
                 build_data.uvs,
                 scale
             );
+            read_unlock_VoxelNode(voxelNode);
         }
         meshDirty->value = mesh_state_trigger_slow;
         tapwatch(time_chunk3_build, "built mesh");
