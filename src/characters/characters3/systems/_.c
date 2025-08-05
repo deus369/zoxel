@@ -21,5 +21,4 @@ void define_systems_characters3(ecs_world_t *world) {
         [in] characters3.Character3Type,
         [out] colorz.Color,
         [none] Character3)
-
 }

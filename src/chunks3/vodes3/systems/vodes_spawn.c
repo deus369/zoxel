@@ -21,8 +21,8 @@ typedef struct {
 
 void spawn_vodes_dive(ecs_world_t *world,
     const UpdateBlockEntities *data,
-    NodeDelveData *delve_data)
-{
+    NodeDelveData *delve_data
+) {
     VoxelNode *node = delve_data->chunk;
     if (!node) {
         return;
@@ -59,13 +59,17 @@ void spawn_vodes_dive(ecs_world_t *world,
     // Remove and return if not a World Block
     const ecs_entity_t block_prefab = data->block_prefabs[block_index];
     if (!block_prefab) {
+        // we use remove system now
+        /*write_lock_VoxelNode(node);
         destroy_node_link_VoxelNode(world, node);
+        write_unlock_VoxelNode(node);*/
         return;
     }
 
     // + spawn block vox
     // if exists already, shouldn't we check if is the same block vox type?
     // if exists, and is same type, return!
+    // read lock here?
     if (is_linked_VoxelNode(node)) {
         return;
     }
@@ -106,7 +110,9 @@ void spawn_vodes_dive(ecs_world_t *world,
             .render_disabled = data->render_disabled,
             .render_lod = data->render_lod,
         };
+        write_lock_VoxelNode(node);
         run_hook_spawned_block(world, &spawned_data);
+        write_unlock_VoxelNode(node);
     }
 }
 

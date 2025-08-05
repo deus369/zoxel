@@ -253,23 +253,23 @@ void build_voxel_mesh_final(
         byte rdir = reverse_direction(dig.direction);
         // but this assume the adjacent node is rendering at max level!
         //  it checks for all sub nodes..!
-        // byte ddepth = adepth - dig.depth < 0 ? 0 : adepth - dig.depth;
-        byte ddepth = data.render_depth - dig.depth < 0 ? 0 : data.render_depth - dig.depth;
-
+        byte ddepth = adepth - dig.depth < 0 ? 0 : adepth - dig.depth;
+        // byte ddepth = data.render_depth - dig.depth < 0 ? 0 : data.render_depth - dig.depth;
         // Handle Chunk Seems
-        if (data.render_depth != adepth) {
+        /*if (data.render_depth != adepth) {
             if (adepth > data.render_depth) {
                 ddepth += 1;
             } else if (ddepth) {
                 ddepth -= 1;
             }
-        }
+        }*/
 
+        // we need to know how far to check, using anodes depth
         byte adjacent_solid = get_node_sides_all_solid(
             data.voxel_solidity,
             anode,
             rdir,
-            ddepth);
+            ddepth + 1);
         adjacent_solid = anode ? adjacent_solid : data.edge_voxel;
 
         if (!adjacent_solid) {
@@ -420,6 +420,7 @@ void fetch_neightbor_chunk_data(
 }
 
 void Chunk3BuildSystem(ecs_iter_t *it) {
+    zox_ts_begin(chunk3_builder);
     uint updated_count = 0;
     zox_sys_world()
     zox_sys_begin()
@@ -444,6 +445,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
         }
     }
     if (!any_dirty) {
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return;
     }
     startwatch(time_chunk3_build);
@@ -460,24 +462,29 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
         break;
     }
     if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_has(terrain, TilemapLink)) {
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return;
     } // if failed to find terrain parents
     const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
     if (!zox_valid(realm) || !zox_has(realm, VoxelLinks)) {
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return;
     }
     zox_geter(realm, VoxelLinks, voxelLinks)
     voxels_length = voxelLinks->length;
     if (voxels_length == 0) {
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return; // if failed to find terrain parents
     }
     const ecs_entity_t tilemap = zox_get_value(terrain, TilemapLink)
     if (!zox_valid(tilemap) || !zox_has(tilemap, TilemapUVs)) {
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return;
     }
     zox_geter(tilemap, TilemapUVs, tilemap_uvs)
     if (tilemap_uvs->value == NULL || tilemap_uvs->length == 0) {
         // zox_log(" ! tilemap troubles in chunk building: %lu %i\n", tilemap, tilemap_uvs->length)
+        zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
         return; // if tilemap generating still
     }
     ChunkTexturedBuildData build_data;
@@ -538,7 +545,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
             continue;
         }
         if (renderLod->value == render_lod_uninitialized)  {
-            zox_log(" ! render_depth_uninitialized...\n")
+            zox_log_error("render_depth_uninitialized")
             continue;
         }
         byte node_depth = nodeDepth->value;
@@ -552,8 +559,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
                 node_depth,
                 neighbors,
                 ndepths);
-            // const byte is_max_depth_chunk = renderLod->value == 0;
-            const byte render_depth = terrain_lod_to_node_depth(renderLod->value, node_depth);
+            const byte render_depth = terrain_lod_to_node_depth(renderLod->value, terrain_depth); // node_depth);
             const float scale = 2 * get_terrain_voxel_scale(node_depth);
             read_lock_VoxelNode(voxelNode);
             build_chunk_terrain_mesh(
@@ -563,7 +569,6 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
                 meshVertices,
                 meshUVs,
                 meshColorRGBs,
-                // is_max_depth_chunk,
                 render_depth,
                 neighbors,
                 ndepths,
@@ -582,4 +587,5 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
         zox_log_streaming(" - [%i] updated [%i]", ecs_run_count, updated_count)
     }
     endwatch(time_chunk3_build, "ending");
+    zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
 } zox_declare_system(Chunk3BuildSystem)

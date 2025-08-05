@@ -1,7 +1,5 @@
-
-
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
+/*void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
     if (!has_children_VoxelNode(node)) {
         return;
     }
@@ -33,42 +31,9 @@ void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
     if (all_solid || all_air) {
         destroy_VoxelNode(world, node);
     }
-}
+}*/
 
-// todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
-// doesn't close any block voxes
-void reduce_voxel_nodes(ecs_world_t *world, VoxelNode *node) {
-    if (!node) {
-        return;
-    }
-    if (!has_children_VoxelNode(node)) {
-        return;
-    }
-    VoxelNode* kids = get_children_VoxelNode(node);
-    for (byte i = 0; i < octree_length; i++) {
-        reduce_voxel_nodes(world, &kids[i]);
-    }
-    byte all_same = 1;
-    byte all_same_voxel = 255;
-    for (byte i = 0; i < octree_length; i++) {
-        VoxelNode* child = &kids[i];
-        if (is_opened_VoxelNode(child)) {
-            return; // if a child node is open, then don't close this node
-        }
-        const byte node_value = child->value;
-        if (all_same_voxel == 255) {
-            all_same_voxel = node_value;
-        } else if (all_same_voxel != node_value) {
-            all_same = 0;
-            break;
-        }
-    }
-    if (all_same) {
-        node->value = all_same_voxel;
-        destroy_VoxelNode(world, node);
-    }
-}
-
+// used just by vox files
 void optimize_solid_nodes(VoxelNode *node) {
     if (!has_children_VoxelNode(node)) {
         return;

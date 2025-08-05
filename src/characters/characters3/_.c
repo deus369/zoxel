@@ -1,5 +1,5 @@
-#ifndef zox_mod_characters3
-#define zox_mod_characters3
+#ifndef zoxm_characters3
+#define zoxm_characters3
 
 // todo: rename zox_declare_tag to zox_tag
 byte disable_npc_uis = 0;

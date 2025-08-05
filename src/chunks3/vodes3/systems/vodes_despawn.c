@@ -25,7 +25,7 @@ void VodesDespawnSystem(ecs_iter_t *it) {
         zox_sys_i(VoxelNodeDirty, voxelNodeDirty)
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
         zox_sys_i(RenderLod, renderLod)
-        zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_o(VoxelNode, node)
         zox_sys_o(BlocksSpawned, blocksSpawned)
         if (voxelNodeDirty->value != zox_dirty_active && !(blocksSpawned->value && renderDistanceDirty->value == zox_dirty_active)) {
             continue;
@@ -34,7 +34,9 @@ void VodesDespawnSystem(ecs_iter_t *it) {
         if (renderLod->value <= block_vox_render_at_lod) {
             continue;
         }
-        destroy_vodes(world, voxelNode);
+        write_lock_VoxelNode(node);
+        destroy_vodes(world, node);
+        write_unlock_VoxelNode(node);
         blocksSpawned->value = 0;
     }
 } zox_declare_system(VodesDespawnSystem)

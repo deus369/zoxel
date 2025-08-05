@@ -1,5 +1,5 @@
 // statbar3D
-int text3D_resolution = 8;  // 8 | 16 | 32
+int text3D_resolution = 16;  // 8 | 16 | 32
 int text3D_fill_thickness = 1;   // 4
 int text3D_outline_thickness = 0;
 const color statbar3D_font_color_fill = (color) { 33, 233, 233, 205 };

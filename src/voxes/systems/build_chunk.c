@@ -132,6 +132,10 @@ void build_voxel_mesh_c(
     if (node == NULL) {
         return;
     }
+    if ((uintptr_t) node < 0x100) {
+        zox_log_error("trash node detected.");
+        return;
+    }
     if (depth >= max_depth || is_closed_VoxelNode(node)) {
         const byte voxel = node->value;
         if (voxel) {
@@ -230,7 +234,7 @@ void build_node_mesh_colors(
 
 
 // Builds Colored Vox Meshes
-//  Triggers: ChunkMeshDirty chunk_dirty_state_update
+// When: ChunkMeshDirty is chunk_dirty_state_update
 void ChunkColorsBuildSystem(ecs_iter_t *it) {
     zox_ts_begin(build_chunk_colored);
     zox_sys_world()
@@ -269,44 +273,52 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         }
         // removes mesh when 255
         clear_mesh(meshIndicies, meshVertices, meshColorRGBs);
-        if (renderLod->value < 254) {
-            const byte max_depth = nodeDepth->value;
-            const VoxelNode *chunk_left = chunkNeighbors->value[0] == 0 ? NULL : zox_get(chunkNeighbors->value[0], VoxelNode)
-            const VoxelNode *chunk_right = chunkNeighbors->value[1] == 0 ? NULL : zox_get(chunkNeighbors->value[1], VoxelNode)
-            const VoxelNode *chunk_down = chunkNeighbors->value[2] == 0 ? NULL : zox_get(chunkNeighbors->value[2], VoxelNode)
-            const VoxelNode *chunk_up = chunkNeighbors->value[3] == 0 ? NULL : zox_get(chunkNeighbors->value[3], VoxelNode)
-            const VoxelNode *chunk_back = chunkNeighbors->value[4] == 0 ? NULL : zox_get(chunkNeighbors->value[4], VoxelNode)
-            const VoxelNode *chunk_front = chunkNeighbors->value[5] == 0 ? NULL : zox_get(chunkNeighbors->value[5], VoxelNode)
-            const VoxelNode *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
-            const byte chunk_left_max_distance = chunkNeighbors->value[0] == 0 ? 0 : zox_get_value(chunkNeighbors->value[0], RenderLod)
-            const byte chunk_right_max_distance = chunkNeighbors->value[1] == 0 ? 0 : zox_get_value(chunkNeighbors->value[1], RenderLod)
-            const byte chunk_down_max_distance = chunkNeighbors->value[2] == 0 ? 0 : zox_get_value(chunkNeighbors->value[2], RenderLod)
-            const byte chunk_up_max_distance = chunkNeighbors->value[3] == 0 ? 0 : zox_get_value(chunkNeighbors->value[3], RenderLod)
-            const byte chunk_back_max_distance = chunkNeighbors->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors->value[4], RenderLod)
-            const byte chunk_front_max_distance = chunkNeighbors->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors->value[5], RenderLod)
-            byte neighbor_lods[6];
-            neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance, max_depth);
-            neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance, max_depth);
-            neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance, max_depth);
-            neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, max_depth);
-            neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, max_depth);
-            neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
-            const float3 total_mesh_offset = float3_scale(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
-            const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
-            read_lock_VoxelNode(voxelNode);
-            build_node_mesh_colors(
-                voxelNode,
-                colorRGBs,
-                meshIndicies,
-                meshVertices,
-                meshColorRGBs,
-                chunk_depth,
-                neighbors,
-                neighbor_lods,
-                total_mesh_offset,
-                voxScale->value);
-            read_unlock_VoxelNode(voxelNode);
+        if (renderLod->value >= 254) {
+            meshDirty->value = mesh_state_trigger_slow;
+            continue;
         }
+        const byte max_depth = nodeDepth->value;
+        const VoxelNode *chunk_left = chunkNeighbors->value[0] == 0 ? NULL : zox_get(chunkNeighbors->value[0], VoxelNode)
+        const VoxelNode *chunk_right = chunkNeighbors->value[1] == 0 ? NULL : zox_get(chunkNeighbors->value[1], VoxelNode)
+        const VoxelNode *chunk_down = chunkNeighbors->value[2] == 0 ? NULL : zox_get(chunkNeighbors->value[2], VoxelNode)
+        const VoxelNode *chunk_up = chunkNeighbors->value[3] == 0 ? NULL : zox_get(chunkNeighbors->value[3], VoxelNode)
+        const VoxelNode *chunk_back = chunkNeighbors->value[4] == 0 ? NULL : zox_get(chunkNeighbors->value[4], VoxelNode)
+        const VoxelNode *chunk_front = chunkNeighbors->value[5] == 0 ? NULL : zox_get(chunkNeighbors->value[5], VoxelNode)
+        const VoxelNode *neighbors[] =  { chunk_left, chunk_right, chunk_down, chunk_up, chunk_back, chunk_front };
+        const byte chunk_left_max_distance = chunkNeighbors->value[0] == 0 ? 0 : zox_get_value(chunkNeighbors->value[0], RenderLod)
+        const byte chunk_right_max_distance = chunkNeighbors->value[1] == 0 ? 0 : zox_get_value(chunkNeighbors->value[1], RenderLod)
+        const byte chunk_down_max_distance = chunkNeighbors->value[2] == 0 ? 0 : zox_get_value(chunkNeighbors->value[2], RenderLod)
+        const byte chunk_up_max_distance = chunkNeighbors->value[3] == 0 ? 0 : zox_get_value(chunkNeighbors->value[3], RenderLod)
+        const byte chunk_back_max_distance = chunkNeighbors->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors->value[4], RenderLod)
+        const byte chunk_front_max_distance = chunkNeighbors->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors->value[5], RenderLod)
+        byte neighbor_lods[6];
+        neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance, max_depth);
+        neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance, max_depth);
+        neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance, max_depth);
+        neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, max_depth);
+        neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, max_depth);
+        neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
+        const float3 total_mesh_offset = float3_scale(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
+        const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
+
+        // read lock our node
+        read_lock_VoxelNode(voxelNode);
+
+        build_node_mesh_colors(
+            voxelNode,
+            colorRGBs,
+            meshIndicies,
+            meshVertices,
+            meshColorRGBs,
+            chunk_depth,
+            neighbors,
+            neighbor_lods,
+            total_mesh_offset,
+            voxScale->value);
+
+        // read unlock our node
+        read_unlock_VoxelNode(voxelNode);
+
         meshDirty->value = mesh_state_trigger_slow;
     }
     zox_ts_end(build_chunk_colored, 5, zox_profile_system_chunk_builder_c);

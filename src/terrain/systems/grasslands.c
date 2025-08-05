@@ -1,7 +1,6 @@
 define_fun_stopwatch(time_grassy_plains, 0);
 
 // FIXME(deus): This LOD+1 patch prevents chunk seems.
-byte optimize_generation_lods = 1;
 byte boost_generation_hack = 0; // 🔥 applied until truth is revealed
 
 byte disable_biomes = 1;
@@ -60,15 +59,15 @@ VoxelNode* set_voxelt(
 
 // generates our terrain voxels
 void GrassyPlainsSystem(ecs_iter_t *it) {
-    // zox_log_terrain_generation = 1;
-    // uint update_count = 0;
-    // int stage_id = get_thread_index();
-    // double time_start = get_time_ms();
     zox_ts_begin(grassy_plains);
     // for now while types are global
     // const byte target_depth = terrain_depth;
     const uint seed = global_seed;  // todo: use terrains seed
     // zox_sys_world()
+    // zox_log_terrain_generation = 1;
+    // uint update_count = 0;
+    // int stage_id = get_thread_index();
+    // double time_start = get_time_ms();
     zox_sys_begin()
     zox_sys_in(ChunkPosition)
     zox_sys_in(RenderLod)

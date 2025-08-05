@@ -1,4 +1,4 @@
-#if !defined(zox_mod_controllers) && defined(zox_mod_characters) && defined(zox_mod_inputs) && defined(zox_mod_physics)
+#if !defined(zox_mod_controllers) && defined(zoxm_characters) && defined(zox_mod_inputs) && defined(zox_mod_physics)
 #define zox_mod_controllers
 
 #include "data/settings.c"

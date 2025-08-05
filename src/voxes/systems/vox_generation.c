@@ -64,8 +64,9 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             vregions = zox_get_value(e, VRegions);
         }
 
-
+        // Write Locks node
         write_lock_VoxelNode(node);
+
         // byte3 size = byte3_single(chunk_voxel_length);
         if (voxType->value == vox_type_soil) {
             // colors
@@ -150,9 +151,9 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             byte black_voxel_3 = colors->length;
 
             build_vox_bricks(node,
-                             node_depth,
-                             voxel_range,
-                             black_voxel_3);
+                node_depth,
+                voxel_range,
+                black_voxel_3);
 
         } else if (voxType->value == vox_type_flowers) {
             color_rgb dirt_dark_voxel = color_to_color_rgb(color2->value);
@@ -176,9 +177,11 @@ void VoxGenerationSystem(ecs_iter_t *it) {
                 node_depth,
                 black_voxel);
         }
+
+        // Unlocks the node
         write_unlock_VoxelNode(node);
+
         nodeDirty->value = zox_dirty_trigger;
-        zox_log_error("Generated Vox [%s]", zox_get_name(e));
         tapwatch(time_vox_generation, "generate vox");
     }
 

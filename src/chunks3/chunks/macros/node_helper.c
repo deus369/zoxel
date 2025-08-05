@@ -63,7 +63,8 @@ void clone_at_depth_##name(\
     name* dst,\
     const name* src,\
     const byte target_depth,\
-    byte depth) {\
+    byte depth \
+) {\
     if (target_depth > 0 && depth == target_depth - 1) {\
         if (src->ptr) {\
             open_new_##name(dst);\
@@ -89,7 +90,8 @@ void clone_depth_##name(\
     name* dst,\
     const name* src,\
     const byte max_depth,\
-    byte depth) {\
+    byte depth \
+) {\
     dst->value = src->value;\
     dst->type = src->type;\
     depth++;\

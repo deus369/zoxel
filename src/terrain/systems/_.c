@@ -2,10 +2,8 @@
 #include "render.c"
 #include "flatlands.c"
 #include "grasslands.c"
-#include "voxel_node_cleanup.c"
 #include "realm.c"
 #include "chunk_bounds_debug_system.c"
-#include "chunk3_mesh_trigger.c"
 zox_declare_system_state_event(RealmBlocks, GenerateRealm, zox_generate_realm_blocks, spawn_realm_blocks)
 zox_declare_system_state_event(RealmTilemaps, GenerateRealm, zox_generate_realm_tilemaps, spawn_realm_tilemaps)
 
@@ -30,20 +28,6 @@ void define_systems_terrain(ecs_world_t *world) {
             [out] chunks3.VoxelNodeDirty,
             [none] !FlatlandChunk,
             [none] TerrainChunk)
-
-    // move to core
-    zox_system(Chunk3MeshTriggerSystem, EcsOnUpdate,
-            [in] chunks3.VoxelNodeDirty,
-            [out] chunks3.ChunkMeshDirty)
-    zox_system(Chunk3NeighborsMeshTriggerSystem, EcsOnUpdate,
-            [in] chunks3.VoxelNodeDirty,
-            [in] chunks3.ChunkNeighbors,
-            [out] chunks3.ChunkMeshDirty)
-    zox_system(VoxelNodeCleanupSystem, zoxp_write_voxels,
-            [in] chunks3.VoxelNodeDirty,
-            [in] chunks3.NodeDepth,
-            [out] chunks3.VoxelNode)
-
     if (!headless) {
         // move this into chunk3, for chunk3_textured
         zox_system(Chunk3BuildSystem, zoxp_read_voxels,

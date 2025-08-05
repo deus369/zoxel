@@ -16,12 +16,12 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
-        zox_geter(character, DisableMovement, disableMovement)
+        zox_geter(character, DisableMovement, disableMovement);
         if (disableMovement->value) {
             continue;
         }
-        zox_geter_value(character, CanJump, byte, can_jump)
-        if (!can_jump || can_jump == 255) {
+        zox_geter_value(character, CanJump, byte, can_jump);
+        if (!can_jump || can_jump == 255) { // 255 is reset flag
             continue;
         }
         byte is_jump_triggered = 0;
@@ -60,10 +60,10 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             continue;
         }
         if (!zox_gett_value(character, Jump)) {
-            zox_set(character, CanJump, { 255 })
-            zox_set(character, Jump, { jump_timing })
+            zox_set(character, JumpState, { zox_dirty_trigger });
+            zox_set(character, CanJump, { 255 });
 #ifdef zox_log_jumping
-            zox_log("+ %s jumping (%f)", zox_get_name(character), zox_current_time)
+            zox_log("+ %s jumping (%f)", zox_get_name(character), zox_current_time);
 #endif
         }
     }

@@ -48,10 +48,12 @@ ecs_entity_t spawn_prefab_character3(ecs_world_t *world,
     zox_prefab_set(e, Bounds3D, { (float3) { 0.25f, 0.5f, 0.25f } })
     zox_prefab_set(e, DisableMovement, { 0 })
     zox_prefab_set(e, Grounded, { 0 })
-    zox_prefab_set(e, CanJump, { 0 })
-    zox_prefab_set(e, Jump, { 0 })
     zox_prefab_set(e, Collision, { 0 })
     zox_prefab_set(e, CollisionDistance, { float3_zero })
+    // jump
+    zox_prefab_set(e, CanJump, { 0 })
+    zox_prefab_set(e, JumpState, { 0 })
+    zox_prefab_set(e, Jump, { 0 })
     // Debug
     prefab_add_cube_lines(world, e, color_white, 0);
     return e;

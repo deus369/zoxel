@@ -26,20 +26,20 @@ static inline byte is_linked_##name(const name *node) {\
 }\
 \
 void link_node_##name(name *node, const ecs_entity_t e) {\
-    write_lock_##name(node);\
+    /*write_lock_##name(node);*/\
     if (node->type == node_type_closed) {\
         node->type = node_type_instance;\
         node->ptr = malloc(sizeof(NodeLink));\
         *(NodeLink*) node->ptr = (NodeLink) { e };\
     }\
-    write_unlock_##name(node);\
+    /*write_unlock_##name(node);*/\
 }\
 \
 byte destroy_node_link_##name(ecs_world_t *world, name *node) {\
     if (!node || !is_linked_##name(node)) {\
         return 0;\
     }\
-    write_lock_##name(node);\
+    /*write_lock_##name(node);*/\
     byte did_destroy = 0;\
     if (is_linked_##name(node)) {\
         const ecs_entity_t e = get_node_entity_unlocked_##name(node);\
@@ -51,7 +51,7 @@ byte destroy_node_link_##name(ecs_world_t *world, name *node) {\
         node->ptr = NULL;\
         node->type = node_type_closed;\
     }\
-    write_unlock_##name(node);\
+    /*write_unlock_##name(node);*/\
     return did_destroy;\
 }\
 \

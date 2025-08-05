@@ -1,4 +1,4 @@
-#if !defined(zox_mod_space) && defined(zox_mod_characters)
+#if !defined(zox_mod_space) && defined(zoxm_characters)
 #define zox_mod_space
 /*  Space:
  *      - this is just unsorted things atm that need refactoring

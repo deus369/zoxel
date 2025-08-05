@@ -4,8 +4,10 @@
 #define zox_profile_system_vox_generation 2
 #define zox_profile_system_chunk_builder_c 3
 #define zox_profile_system_npc_spawns 4
+#define zox_profile_system_chunk3_builder 5
 
 byte profiler_state = zox_profile_system_none;
+byte profiler_logs = 0;
 
 // zox_profile_system_none
 // zox_profile_system_grassy_plains
@@ -33,7 +35,7 @@ void iterate_time_system(ecs_world_t *world) {
     double total_time_##N = get_time_ms() - system_start_##N; \
     if (profiler_state == profile_type && total_time_##N > zox_delta_time_system) {\
         zox_delta_time_system = total_time_##N;\
-        if (total_time_##N >= max_system_time) {\
+        if (profiler_logs && total_time_##N >= max_system_time) {\
             zox_log("- [%s]: %f", #N, total_time_##N); \
         }\
     }

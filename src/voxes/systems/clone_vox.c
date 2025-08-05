@@ -13,11 +13,11 @@ void CloneVoxSystem(ecs_iter_t *it) {
     zox_sys_out(ChunkLod)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(CloneVoxLink, cloneVoxLink)
-        zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_o(VoxelNode, node)
         zox_sys_o(NodeDepth, nodeDepth)
         zox_sys_o(ColorRGBs, colorRGBs)
         zox_sys_o(ChunkSize, chunkSize)
-        zox_sys_o(VoxelNodeDirty, voxelNodeDirty)
+        zox_sys_o(VoxelNodeDirty, nodeDirty)
         zox_sys_o(ChunkLod, chunkLod)
         zox_sys_o(CloneVox, cloneVox)
         const ecs_entity_t src = cloneVoxLink->value;
@@ -38,17 +38,28 @@ void CloneVoxSystem(ecs_iter_t *it) {
             chunkLod->value++;
         }
         nodeDepth->value = source_node_depth->value;
-        clone_at_depth_VoxelNode(voxelNode, source_node, chunkLod->value, 0);
+
+
+        // Write Locks node
+        write_lock_VoxelNode(node);
+
+        clone_at_depth_VoxelNode(node, source_node, chunkLod->value, 0);
+
+        // Write Locks node
+        write_unlock_VoxelNode(node);
+
+
         const byte target_depth = nodeDepth->value;
         if (chunkLod->value == target_depth) {
-            const int memory_length = sizeof(color_rgb) * colors_source->length;
             chunkSize->value = source_chunk_size->value;
             colorRGBs->length = colors_source->length;
 
+            const int memory_length = sizeof(color_rgb) * colors_source->length;
             initialize_ColorRGBs(colorRGBs, memory_length);
             memcpy(colorRGBs->value, colors_source->value, memory_length);
+
             cloneVox->value = 0;
-            voxelNodeDirty->value = zox_dirty_trigger;
+            nodeDirty->value = zox_dirty_trigger;
         }
     }
 } zox_declare_system(CloneVoxSystem)

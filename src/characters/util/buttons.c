@@ -3,9 +3,10 @@ static inline byte can_jump(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 void button_event_jump(ecs_world_t *world, const ClickEventData *event) {
-    const ecs_entity_t character = zox_get_value(event->clicker, CharacterLink)
-    if (character && can_jump(world, character)) {
-        zox_set(character, Jump, { jump_timing })
+    const ecs_entity_t e = zox_get_value(event->clicker, CharacterLink)
+    if (zox_valid(e) && can_jump(world, e)) {
+        zox_set(e, JumpState, { zox_dirty_trigger });
+        // zox_set(e, Jump, { jump_timing })
     }
 }
 

@@ -4,6 +4,7 @@ ecs_entity_t spawn_prefab_character3_npc(ecs_world_t *world, const ecs_entity_t 
     zox_add_tag(e, Npc)
     zox_add_tag(e, VoxMesh)
     zox_add_tag(e, Jumper)
+    zox_add_tag(e, SilentJumper);   //  dont have 3d sounds yet
     zox_prefab_set(e, Behaviour, { zox_behaviour_idle })
     zox_prefab_set(e, DefaultBehaviour, { zox_behaviour_wander })
     zox_prefab_set(e, MoveForwards, { 0 })

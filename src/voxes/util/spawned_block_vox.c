@@ -1,4 +1,7 @@
-void spawned_block_vox(ecs_world_t *world, spawned_block_data *data) {
+void spawned_block_vox(
+    ecs_world_t *world,
+    spawned_block_data *data
+) {
     if (!zox_has(data->block, BlockPrefabLink)) {
         return;
     }

@@ -1,13 +1,16 @@
+// hmm
+byte optimize_generation_lods = 1;
+byte zox_log_terrain_generation = 0;
+
+// voxes lods
+const byte max_vox_blocks = 16; // max spawned vox_blocks
+const byte max_lod_voxes = 0;
+
 const float end_game_delay = 0.8f;
 const float end_game_delay2 = 1.0f;
 const double start_game_delay_terrain = 1.5;
 const double start_game_delay_terrain2 = 2.5;
 const float end_game_delay_fade = 1;
-// others
-byte zox_log_terrain_generation = 0;
-// voxes lods
-const byte max_vox_blocks = 16; // max spawned vox_blocks
-const byte max_lod_voxes = 0;
 
 // const int max_chunks_build_per_frame = 32; // 16; // terrain chunks built per frame
 byte high_resolution_terain_lod = 1; // 2 | 1

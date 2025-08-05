@@ -15,7 +15,9 @@ void zoxel_set_debug(ecs_world_t* world) {
     // zox_profile_system_vox_generation
     // zox_profile_system_chunk_builder_c
     // zox_profile_system_npc_spawns
-    profiler_state = zox_profile_system_npc_spawns;
+    // zox_profile_system_chunk3_builder
+    profiler_state = zox_profile_system_chunk3_builder;
+    profiler_logs = 0;
 
     // disable_block_voxes = 1;
     // debug
@@ -64,7 +66,7 @@ void zoxel_settings_npcs() {
 void zoxel_settings_physics() {
     // physics
     // target_fps = 15;
-    friction3D = 12; // 560;
+    friction3D = 9; // 560;
     air_friction3D = 1; // 40;
     bounce_lost_force = 0.12f;
     // zox_default_gravity.y = -8;
@@ -141,7 +143,7 @@ void zoxel_debug_keys() {
 }
 
 void zox_set_terrain_settings() {
-    render_distance_y = 1;
+    render_distance_y = 3;
     // terrain_mode = terrain_mode_flatlands;
 }
 

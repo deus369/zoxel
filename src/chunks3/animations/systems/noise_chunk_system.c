@@ -16,9 +16,6 @@ void NoiseVoxelNodeSystem(ecs_iter_t *it) {
             continue;
         }
         random_fill_octree(voxelNode, 1, nodeDepth->value);
-#ifndef zox_disable_closing_octree_nodes
-        close_solid_nodes(world, voxelNode);
-#endif
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }

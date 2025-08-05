@@ -83,7 +83,7 @@ void create_##name(name* node) {\
 }\
 \
 void open_new_##name(name* node) { \
-    write_lock_##name(node); \
+    /*write_lock_##name(node);*/ \
     node->ptr = get_new_children_##name(); \
     if (node->ptr) { \
         node->type = node_type_children; \
@@ -92,7 +92,7 @@ void open_new_##name(name* node) { \
             create_##name(&kids[i]); \
         } \
     } \
-    write_unlock_##name(node); \
+    /*write_unlock_##name(node);*/ \
 }\
 \
 void internal_destroy_##name(ecs_world_t *world, name *node) {\
@@ -106,7 +106,7 @@ void internal_destroy_##name(ecs_world_t *world, name *node) {\
 }\
 \
 void destroy_##name(ecs_world_t *world, name* node) {\
-    write_lock_##name(node);\
+    /*write_lock_##name(node);*/\
     if (!is_closed_##name(node)) {\
         if (has_children_##name(node)) {\
             internal_destroy_##name(world, node);\
@@ -114,7 +114,7 @@ void destroy_##name(ecs_world_t *world, name* node) {\
             run_hook_on_destroyed_##name(world, node);\
         }\
     }\
-    write_unlock_##name(node);\
+    /*write_unlock_##name(node);*/\
     destroy_lock_##name(node);\
 }\
 \
@@ -151,11 +151,11 @@ ECS_COPY(name, dst, src, {\
 })\
 \
 ECS_MOVE(name, dst, src, {\
-    write_lock_##name(dst);\
+    /*write_lock_##name(dst);*/\
     dst->ptr = src->ptr;\
     dst->value = src->value;\
     dst->type = src->type;\
-    write_unlock_##name(dst);\
+    /*write_unlock_##name(dst);*/\
     src->ptr = NULL;\
     src->value = default_value;\
     src->type = 0;\

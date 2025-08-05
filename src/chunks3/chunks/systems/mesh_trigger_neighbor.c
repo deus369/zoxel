@@ -1,36 +1,16 @@
 // should i grab neighbor states instead, or should i create setters?
 //  probably grab them, its faster to write in my systems
-
-// used for any chunk
-void Chunk3MeshTriggerSystem(ecs_iter_t *it) {
-    zox_sys_begin();
-    zox_sys_in(VoxelNodeDirty);
-    zox_sys_out(ChunkMeshDirty);
-    for (int i = 0; i < it->count; i++) {
-        zox_sys_i(VoxelNodeDirty, voxelNodeDirty);
-        zox_sys_o(ChunkMeshDirty, chunkMeshDirty);
-        if (chunkMeshDirty->value == zox_dirty_none && voxelNodeDirty->value == zox_dirty_active) {
-            zox_sys_world()
-            zox_sys_e()
-            zox_log("+ [%s] is dirty", zox_get_name(e))
-            chunkMeshDirty->value = chunk_dirty_state_trigger;
-        }
-    }
-} zox_declare_system(Chunk3MeshTriggerSystem)
-
-// should i grab neighbor states instead, or should i create setters?
-//  probably grab them, its faster to write in my systems
 void Chunk3NeighborsMeshTriggerSystem(ecs_iter_t *it) {
     zox_sys_world();
     zox_sys_begin();
-    zox_sys_in(VoxelNodeDirty);
     zox_sys_in(ChunkNeighbors);
+    zox_sys_in(VoxelNodeDirty);
     zox_sys_out(ChunkMeshDirty);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_i(VoxelNodeDirty, voxelNodeDirty);
         zox_sys_i(ChunkNeighbors, neighbors);
+        zox_sys_i(VoxelNodeDirty, voxelNodeDirty);
         zox_sys_o(ChunkMeshDirty, chunkMeshDirty);
-        if (chunkMeshDirty->value != zox_dirty_none || voxelNodeDirty->value == zox_dirty_none) {
+        if (chunkMeshDirty->value != zox_dirty_none || voxelNodeDirty->value != zox_dirty_none) {
             continue;
         }
         byte neighbor_dirty = 0;
@@ -44,7 +24,7 @@ void Chunk3NeighborsMeshTriggerSystem(ecs_iter_t *it) {
                 neighbor_dirty = 1;
                 break;
             }
-            zox_set(n, ChunkMeshDirty, { chunk_dirty_state_trigger });
+            // zox_set(n, ChunkMeshDirty, { chunk_dirty_state_trigger });
         }
         if (neighbor_dirty) {
             chunkMeshDirty->value = chunk_dirty_state_trigger;
