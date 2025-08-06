@@ -14,7 +14,7 @@
     if (depth < max_depth && chunk_octree->value) {
         depth++;
         scale = scale * 0.5f;
-        open_new_VoxelNode(chunk_octree);
+        open_VoxelNode(chunk_octree);
         for (byte i = 0; i < octree_length; i++) {
             float3 node_position = float3_add(position, float3_scale(float3_from_int3(octree_positions[i]), scale));
             generate_terrain(world, &chunk_octree->nodes[i], depth, node_position, scale);

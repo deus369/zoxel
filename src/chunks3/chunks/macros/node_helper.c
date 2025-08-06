@@ -67,7 +67,7 @@ void clone_at_depth_##name(\
 ) {\
     if (target_depth > 0 && depth == target_depth - 1) {\
         if (src->ptr) {\
-            open_new_##name(dst);\
+            open_##name(dst);\
         }\
     }\
     if (depth == target_depth) {\
@@ -96,7 +96,7 @@ void clone_depth_##name(\
     dst->type = src->type;\
     depth++;\
     if (src->ptr && depth <= max_depth) {\
-        open_new_##name(dst);\
+        open_##name(dst);\
         name* kids_dst = get_children_##name(dst);\
         name* kids_src = get_children_##name(src);\
         for (byte i = 0; i < octree_length; i++) {\
@@ -112,8 +112,8 @@ void clone_depth_##name(\
 const name* get_##name(\
     const name* node,\
     int3 position,\
-    byte depth)\
-{\
+    byte depth \
+) {\
     if (!node || depth >= 8) { \
         zox_log_error("invalid node or depth: in get_# name"); \
         return NULL; \

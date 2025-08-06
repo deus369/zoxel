@@ -11,9 +11,6 @@ zox_hookr(on_destroyed_##name, byte, (ecs_world_t* world, name* node), (world, n
 \
 void destroy_##name(ecs_world_t *world, name* node);\
 \
-void release_children_##name(name *node) {\
-    free(node->ptr);\
-}\
 void* get_new_children_##name() {\
     return (void*) malloc(sizeof(name) * octree_length);\
 }\
@@ -82,7 +79,7 @@ void create_##name(name* node) {\
     create_lock_##name(node);\
 }\
 \
-void open_new_##name(name* node) { \
+void open_##name(name* node) { \
     /*write_lock_##name(node);*/ \
     node->ptr = get_new_children_##name(); \
     if (node->ptr) { \
@@ -95,26 +92,27 @@ void open_new_##name(name* node) { \
     /*write_unlock_##name(node);*/ \
 }\
 \
-void internal_destroy_##name(ecs_world_t *world, name *node) {\
-    name* kids = get_children_unlocked_##name(node);\
-    for (byte i = 0; i < octree_length; i++) {\
-        destroy_##name(world, &kids[i]);\
-    }\
-    release_children_##name(node->ptr);\
-    node->type = node_type_closed;\
-    node->ptr = NULL;\
+void close_##name(ecs_world_t *world, name *node) {\
+    if (!has_children_##name(node)) { \
+        return; \
+    } \
+    name* kids = get_children_unlocked_##name(node); \
+    for (byte i = 0; i < octree_length; i++) { \
+        destroy_##name(world, &kids[i]); \
+    } \
+    free(node->ptr); \
+    node->type = node_type_closed; \
+    node->ptr = NULL; \
 }\
 \
 void destroy_##name(ecs_world_t *world, name* node) {\
-    /*write_lock_##name(node);*/\
     if (!is_closed_##name(node)) {\
         if (has_children_##name(node)) {\
-            internal_destroy_##name(world, node);\
+            close_##name(world, node);\
         } else {\
             run_hook_on_destroyed_##name(world, node);\
         }\
     }\
-    /*write_unlock_##name(node);*/\
     destroy_lock_##name(node);\
 }\
 \
@@ -135,7 +133,7 @@ void clone_tree_##name(\
     if (src->type == node_type_instance) {\
         dst->ptr = src->ptr;\
     } else if (src->ptr) {\
-        open_new_##name(dst);\
+        open_##name(dst);\
         name* kids_dst = get_children_##name(dst);\
         name* kids_src = get_children_##name(src);\
         for (byte i = 0; i < octree_length; i++) {\

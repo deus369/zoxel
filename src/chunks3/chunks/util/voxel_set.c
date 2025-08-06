@@ -5,7 +5,7 @@ void fill_new_octree(VoxelNode* node, const byte voxel, byte depth) {
     node->value = voxel;
     if (depth) {
         depth--;
-        open_new_VoxelNode(node);
+        open_VoxelNode(node);
         if (!node) {
             zox_log_error("[fill_new_octree] node failed to open");
             return; // sometimes they fail
@@ -21,7 +21,7 @@ void random_fill_octree(VoxelNode* node, byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
-        open_new_VoxelNode(node);
+        open_VoxelNode(node);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (int i = 0; i < octree_length; i++) {
             random_fill_octree(&kids[i], voxel, depth);
@@ -41,7 +41,7 @@ void fill_octree(VoxelNode* node, const byte voxel, byte depth) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
-        open_new_VoxelNode(node);
+        open_VoxelNode(node);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
             fill_octree(&kids[i], voxel, depth);
@@ -53,7 +53,7 @@ void fill_octree(VoxelNode* node, const byte voxel, byte depth) {
 VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
     byte depth_reached = data.depth == datam.depth;
     if (datam.effect_nodes && !depth_reached && is_closed_VoxelNode(data.node)) {
-        open_new_VoxelNode(data.node);
+        open_VoxelNode(data.node);
         VoxelNode* kids = get_children_VoxelNode(data.node);
         for (byte i = 0; i < octree_length; i++) {
             kids[i].value = data.node->value;

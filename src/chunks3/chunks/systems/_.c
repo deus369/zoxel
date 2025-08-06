@@ -10,6 +10,8 @@ zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end + 1)
 #include "mesh_trigger.c"
 #include "mesh_trigger_neighbor.c"
 #include "debug.c"
+#include "chunk3_save.c"
+#include "chunk3_load.c"
 
 void define_systems_chunks(ecs_world_t *world) {
     zox_define_increment_system(ChunkDirty)
@@ -22,7 +24,7 @@ void define_systems_chunks(ecs_world_t *world) {
             [in] transforms3.Position3D,
             [out] chunks3.ChunkPosition,
             [out] chunks3.ChunkLink,
-            [none] LinkChunk)
+            [none] LinkChunk);
     zox_system(ChunkEntitiesLodSystem, EcsOnUpdate,
             [in] rendering.RenderDistanceDirty,
             [in] rendering.RenderDistance,
@@ -51,5 +53,16 @@ void define_systems_chunks(ecs_world_t *world) {
             [in] chunks3.NodeDepth,
             [in] rendering.RenderDistance,
             [in] chunks3.ChunkNeighbors,
-            [none] ChunkDebugger)
+            [none] ChunkDebugger);
+    zox_system(Chunk3SaveSystem, EcsOnUpdate,
+            [in] chunks3.VoxelNodeEdited,
+            [in] chunks3.VoxelNodeDirty,
+            [in] chunks3.VoxelNode,
+            [in] chunks3.ChunkPosition);
+    zox_system(Chunk3LoadSystem, EcsOnUpdate,
+            [in] rendering.RenderDistanceDirty,
+            [in] chunks3.ChunkPosition,
+            [out] chunks3.VoxelNodeDirty,
+            [out] chunks3.VoxelNodeEdited,
+            [out] chunks3.VoxelNode);
 }

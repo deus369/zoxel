@@ -1,37 +1,33 @@
-ecs_entity_t spawn_prefab_chunk_terrain(ecs_world_t *world,
+ecs_entity_t spawn_prefab_chunk_terrain(
+    ecs_world_t *world,
     const ecs_entity_t prefab,
-    const int3 size)
-{
-    zox_prefab_child(prefab)
+    const int3 size
+) {
+    zox_prefab_child(prefab);
     add_components_mesh_textured(world, e);
     // Terrain / Generation
-    zox_add_tag(e, StreamedChunk)
-    zox_add_tag(e, TerrainChunk)
-    zox_add_tag(e, ChunkTextured)
-    zox_prefab_set(e, Seed, { 666 })
-    zox_prefab_set(e, ChunkLodDirty, { 0 })
-    zox_prefab_set(e, GenerateChunk, { 0 }) // fails on samsung phone?
-    // links to sub chunk things - remember: these have to be set to NULL as not set in initialization
-    zox_prefab_set(e, EntityLinks, { 0, NULL })
-    // zox_prefab_set(e, EntityLinks, { 1, malloc(sizeof(ecs_entity_t)) })
-    zox_prefab_set(e, BlocksSpawned, { 0 })
-#ifdef zox_disable_frustum_culling
-    zox_set(e, RenderDisabled, { 0 })
-#else
-    zox_set(e, RenderDisabled, { 1 })
-#endif
-    zox_add_tag(e, ChunkDebugger)
-    zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } })
+    zox_add_tag(e, StreamedChunk);
+    zox_add_tag(e, TerrainChunk);
+    zox_add_tag(e, ChunkTextured);
+    zox_prefab_set(e, Seed, { 666 });
+    zox_prefab_set(e, ChunkLodDirty, { 0 });
+    zox_prefab_set(e, GenerateChunk, { 0 });
+    zox_prefab_set(e, EntityLinks, { 0, NULL });
+    zox_prefab_set(e, BlocksSpawned, { 0 });
+    zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } });
+    zox_add_tag(e, ChunkDebugger);
+    zox_set(e, RenderDisabled, { 1 });
     return e;
 }
 
-ecs_entity_t spawn_chunk_terrain(ecs_world_t *world,
+ecs_entity_t spawn_chunk_terrain(
+    ecs_world_t *world,
     const ecs_entity_t prefab,
     const ecs_entity_t terrain,
     const int3 camera_position,
     const int3 chunk_position,
-    const float real_chunk_scale)
-{
+    const float real_chunk_scale
+) {
     zox_instance(prefab)
     zox_name("chunk_terrain")
     if (terrain_mode == terrain_mode_flatlands) {

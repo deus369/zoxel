@@ -26,11 +26,14 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
 
 ecs_entity_t spawn_vox_file(ecs_world_t *world,
     const ecs_entity_t prefab,
-    const vox_file *data)
-{
+    const vox_file *data,
+    const char* filename
+) {
     // model_lod
     zox_neww(model)
-    zox_set_unique_name(model, "file_model");
+    char name[128];
+    sprintf(name, "vox_file_%s", filename);
+    zox_set_unique_name(model, name); // "file_model");
     ModelLods modelLods;
     for (int i = 0; i < max_vox_file_lods; i++) {
         zox_instance(prefab)

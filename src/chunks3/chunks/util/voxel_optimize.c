@@ -29,7 +29,7 @@
         }
     }
     if (all_solid || all_air) {
-        destroy_VoxelNode(world, node);
+        close_VoxelNode(world, node);
     }
 }*/
 

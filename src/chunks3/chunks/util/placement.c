@@ -18,8 +18,8 @@ void place_block(ecs_world_t *world,
     // assume we checked if get_voxel == place_voxel
     // need to delete before node updated
     // set node voxel data
-    const int3 chunk_size = zox_get_value(chunk, ChunkSize)
-    const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
+    // const int3 chunk_size = zox_get_value(chunk, ChunkSize)
+    // const byte3 chunk_size_b3 = int3_to_byte3(chunk_size);
     const SetVoxelTargetData datam = {
         .depth = node_depth,
         .voxel = voxel,
@@ -32,8 +32,10 @@ void place_block(ecs_world_t *world,
     node = set_voxel(datam, data2);
 
     // - Refresh Meshes
-    zox_set(chunk, VoxelNodeDirty, { zox_dirty_trigger })
-    zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
+    zox_set(chunk, VoxelNodeEdited, { 1 }); // now its edited!
+    zox_set(chunk, VoxelNodeDirty, { zox_dirty_trigger });
+
+    /*zox_set(chunk, ChunkLodDirty, { chunk_lod_state_vox_blocks_pre_spawn })
     zox_set(chunk, ChunkMeshDirty, { chunk_dirty_state_trigger })
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position_local, chunk_size_b3)) {
         zox_geter(chunk, ChunkNeighbors, chunk_neighbors)
@@ -43,7 +45,7 @@ void place_block(ecs_world_t *world,
                 zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
         }
-    }
+    }*/
 }
 
 void raycast_action(ecs_world_t *world,

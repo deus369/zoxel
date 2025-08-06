@@ -118,6 +118,7 @@ void zoxel_settings_uis(ecs_world_t* world) {
 }
 
 void zoxel_debug_keys() {
+    add_hook_key_down(test_load_chunk);
     add_hook_key_down(toggle_sound);
     add_hook_key_down(toggle_fps_viewer);
     add_hook_key_down(toggle_life_terrain);

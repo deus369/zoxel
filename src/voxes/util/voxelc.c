@@ -9,7 +9,7 @@ VoxelNode* set_voxelc(
 ) {
     byte depth_reached = depth == target_depth;
     if (!depth_reached && is_closed_VoxelNode(node)) {
-        open_new_VoxelNode(node);
+        open_VoxelNode(node);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
             kids[i].value = 0;

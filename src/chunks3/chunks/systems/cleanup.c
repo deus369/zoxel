@@ -32,7 +32,7 @@ void reduce_voxel_nodes(
     }
     if (all_same) {
         node->value = all_same_voxel;
-        destroy_VoxelNode(world, node);
+        close_VoxelNode(world, node);
     }
 }
 

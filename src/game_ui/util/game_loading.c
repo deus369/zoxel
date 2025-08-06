@@ -12,7 +12,10 @@ void destroy_player_main_menu(
     }
 }
 
-void button_event_continue_game(ecs_world_t *world, const ClickEventData *event) {
+void button_event_continue_game(
+    ecs_world_t *world,
+    const ClickEventData *event
+) {
     destroy_player_main_menu(world, event->clicker);
     const ecs_entity_t game = zox_get_value(event->clicker, GameLink)
     const ecs_entity_t realm = zox_get_value(game, RealmLink)

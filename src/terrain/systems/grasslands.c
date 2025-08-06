@@ -20,7 +20,7 @@ VoxelNode* set_voxelt(
 ) {
     byte depth_reached = depth == target_depth;
     if (!depth_reached && is_closed_VoxelNode(node)) {
-        open_new_VoxelNode(node);
+        open_VoxelNode(node);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
             kids[i].value = 0; // node->value;
@@ -92,12 +92,12 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
 
 
     for (int i = 0; i < it->count; i++) {
-        zox_sys_i(RenderLod, renderLod)
-        zox_sys_i(ChunkPosition, chunkPosition)
-        zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
-        zox_sys_o(NodeDepth, nodeDepth)
-        zox_sys_o(VoxelNode, voxelNode)
-        zox_sys_o(VoxelNodeDirty, voxelNodeDirty)
+        zox_sys_i(RenderLod, renderLod);
+        zox_sys_i(ChunkPosition, chunkPosition);
+        zox_sys_i(RenderDistanceDirty, renderDistanceDirty);
+        zox_sys_o(NodeDepth, nodeDepth);
+        zox_sys_o(VoxelNode, voxelNode);
+        zox_sys_o(VoxelNodeDirty, voxelNodeDirty);
         // todo: remember if has generated yet, keep a generated LOD state!
         //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
         if (renderDistanceDirty->value != zox_dirty_active) {

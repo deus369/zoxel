@@ -18,7 +18,11 @@ void load_files_voxes(ecs_world_t *world) {
             continue;
         }
         if (data.chunks) {
-            const ecs_entity_t e = spawn_vox_file(world, prefab, &data);
+            const ecs_entity_t e = spawn_vox_file(
+                world,
+                prefab,
+                &data,
+                filename);
             dispose_vox_file(&data);
             if (e) {
                 string_hashmap_add(files_hashmap_voxes, new_string_data_clone(filename), e);
