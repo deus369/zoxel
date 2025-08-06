@@ -102,7 +102,6 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_sys_o(VoxelNodeDirty, voxelNodeDirty);
         // todo: remember if has generated yet, keep a generated LOD state!
         //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
-        if (loaded->value) zox_log_error("LOADED ALREADY??");
         if (renderDistanceDirty->value != zox_dirty_active || loaded->value) {
             continue;
         }
