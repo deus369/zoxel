@@ -1,17 +1,15 @@
-#define statbar_float_position 0.32f
-#define statbar_float_height 0.048f
-
-void spawn_character_name_label(ecs_world_t *world,
-    spawned_character3D_data *data)
-{
+void spawn_character_name_label(
+    ecs_world_t *world,
+    spawned_character3D_data *data
+) {
     if (disable_npc_uis) {
         return;
     }
-    float ui_position = statbar_float_position + statbar_float_height;
+    float trail_offset = trailoffset + trailheight;
     const SpawnDataElement3D label3D_spawn_data = {
         .prefab = prefab_label3D,
         .ui_holder = data->e,
-        .position_y = ui_position,
+        .trail_offset = trail_offset,
         // .base_color = (color) { 5, 5, 5, 88 }, // background color
     };
 
@@ -34,7 +32,12 @@ void spawn_character_name_label(ecs_world_t *world,
         .fill_color = label3D_font_color_fill,
         .outline_color = label3D_font_color_outline
     };
-    const ecs_entity_t e = spawn_label3D(world, label3D_spawn_data, label3D_text_data, label3D_zigel_data);
+    const ecs_entity_t e = spawn_label3D(
+        world,
+        label3D_spawn_data,
+        label3D_text_data,
+        label3D_zigel_data
+    );
     add_to_ElementLinks(data->elementLinks, e);
     zox_set(e, ElementHolder, { data->e })
 }

@@ -1,5 +1,5 @@
 void HealthbarSpawnerSystem(ecs_iter_t *it) {
-    const float ui_position = statbar_float_position;
+    const float trail_offset = trailoffset;
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(CombatState)
@@ -38,7 +38,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
         SpawnDataElementbar3D spawn_data = {
             // .percentage = health.x / health.y,
             .ui_holder = e,
-            .position_y = ui_position,
+            .trail_offset = trail_offset,
             .backbar = {
                 .prefab = prefab_statbar3D
             },

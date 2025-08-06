@@ -1,5 +1,3 @@
-#ifdef zox_mod_actions
-
 // left click - destroy
 /*void VoxelActionASystem(ecs_iter_t *it) {
     zox_sys_world()
@@ -19,5 +17,3 @@
         triggerActionA->value = 0;
     }
 } zox_declare_system(VoxelActionASystem)*/
-
-#endif

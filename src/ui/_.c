@@ -6,6 +6,7 @@
 #include "texts/texts.c"
 #include "elements2D/elements2D.c"
 #include "elements3D/elements3D.c"
+#include "touch/_.c"
 
 zox_begin_module(Elements)
     zox_import_module(ElementsCore)
@@ -13,6 +14,7 @@ zox_begin_module(Elements)
     zox_import_module(Texts)
     zox_import_module(Elements2)
     zox_import_module(Elements3)
+    zox_import_module(Touch)
 zox_end_module(Elements)
 
 #endif

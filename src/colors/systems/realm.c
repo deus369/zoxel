@@ -1,9 +1,13 @@
+extern double terrain_frequency;
+
 void generate_colors(long int seed, Colors *colors) {
 
     srand((unsigned int) seed);
 
     // byte biome_type = rand() % zox_biome_end;
-    BiomeColors biome = get_biome_colors(pick_biome(seed));
+    BiomeData biome = pick_biome(seed);
+    terrain_frequency = biome.frequency;
+
     const float3 dirt_hsv = float6_rand_range(biome.dirt);
     const float3 grass_hsv = float6_rand_range(biome.grass);
     const float3 sand_hsv = float6_rand_range(biome.sand);

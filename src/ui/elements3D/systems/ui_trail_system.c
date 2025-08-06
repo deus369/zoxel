@@ -1,6 +1,6 @@
 #ifdef zox_debug_ui_trails
     float ui_trail_debug_thickness = 2.0f;
-    extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+    extern ecs_entity_t spawn_line3D(ecs_world_t*, float3, float3, float, double);
 #endif
 
 void UITrailSystem(ecs_iter_t *it) {
@@ -12,8 +12,8 @@ void UITrailSystem(ecs_iter_t *it) {
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(UIHolderLink, uiHolderLink)
-        zox_sys_i(UITrail, uiTrail)
-        zox_sys_o(Position3D, position3D)
+        zox_sys_i(UITrail, trail)
+        zox_sys_o(Position3D, position)
         if (!zox_valid(uiHolderLink->value)) {
             if (uiHolderLink->value) {
                 zox_sys_e()
@@ -22,11 +22,13 @@ void UITrailSystem(ecs_iter_t *it) {
             }
             continue;
         }
-        position3D->value = uiTrail->value;
-        const Position3D *target_position = zox_get(uiHolderLink->value, Position3D)
-        float3_add_float3_p(&position3D->value, target_position->value);
+        position->value = trail->value;
+        zox_geter_value(uiHolderLink->value, Position3D, float3, target_position);
+        zox_geter_value(uiHolderLink->value, Bounds3D, float3, bounds);
+        float3_add_float3_p(&position->value, target_position);
+        float3_add_float3_p(&position->value, (float3) { 0, bounds.y, 0 });
         if (zox_has(e, Children)) {
-            const Children *children = zox_get(e, Children)
+            zox_geter(e, Children, children)
             for (int j = 0; j < children->length; j++) {
                 const ecs_entity_t child = children->value[j];
                 zox_geter(child, LocalPosition3D, child_local_position3D)
@@ -35,7 +37,7 @@ void UITrailSystem(ecs_iter_t *it) {
             }
         }
 #ifdef zox_debug_ui_trails
-        spawn_line3D(world, target_position->value, position3D->value, ui_trail_debug_thickness, 1.0);
+        spawn_line3D(world, target_position, position3D->value, ui_trail_debug_thickness, 1.0);
 #endif
     }
 } zox_declare_system(UITrailSystem)

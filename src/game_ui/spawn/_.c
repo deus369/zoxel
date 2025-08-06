@@ -3,8 +3,6 @@
 #include "options.c"
 #include "pause.c"
 #include "taskbar.c"
-#include "joystick_handle.c"
-#include "joystick.c"
 #include "touch.c"
 #include "game.c"
 #include "start.c"

@@ -20,12 +20,13 @@ typedef struct {
     float6 obsidian;
     float6 sky;
     float chance;
-} BiomeColors;
+    float frequency;
+} BiomeData;
 
 
 // Biome Data
 
-const BiomeColors bcr_earthy = {
+const BiomeData bcr_earthy = {
     .name = "Earthy Forest",
     .dirt     = { 25, 35, 50, 70, 30, 50 },   // warm brown
     .grass    = { 90, 140, 60, 90, 50, 70 },  // natural green
@@ -34,9 +35,10 @@ const BiomeColors bcr_earthy = {
     .obsidian = { 0, 30, 20, 40, 10, 30 },    // deep root rock
     .sky      = { 200, 220, 20, 40, 80, 100 }, // peaceful blue
     .chance = 0.28f,
+    .frequency = 0.022216,
 };
 
-const BiomeColors bcr_martian = {
+const BiomeData bcr_martian = {
     .name = "Martian",
     .dirt     = { 10, 20, 60, 80, 40, 60 },   // dusty red
     .grass    = { 20, 40, 60, 80, 50, 70 },   // rustbrush
@@ -45,9 +47,10 @@ const BiomeColors bcr_martian = {
     .obsidian = { 0, 20, 30, 50, 10, 30 },    // volcanic plate
     .sky      = { 20, 40, 60, 80, 90, 100 },   // orange-pink smog
     .chance = 0.1f,
+    .frequency = 0.03125f,
 };
 
-const BiomeColors bcr_toxic_swamp = {
+const BiomeData bcr_toxic_swamp = {
     .name = "Toxic Swamp",
     .dirt     = { 100, 130, 70, 100, 30, 50 }, // neon dirt
     .grass    = { 60, 100, 90, 100, 50, 80 },  // acid moss
@@ -56,9 +59,10 @@ const BiomeColors bcr_toxic_swamp = {
     .obsidian = { 120, 150, 50, 80, 20, 40 },  // glowing toxic shards
     .sky      = { 80, 110, 70, 100, 50, 80 },   // putrid green clouds
     .chance = 0.1f,
+    .frequency = 0.015625f,
 };
 
-const BiomeColors bcr_fungal_alien = {
+const BiomeData bcr_fungal_alien = {
     .name = "Fungal Alien",
     .dirt     = { 280, 310, 20, 50, 15, 35 },  // purple-gray
     .grass    = { 290, 330, 40, 80, 30, 60 },  // glowing fungus
@@ -67,9 +71,10 @@ const BiomeColors bcr_fungal_alien = {
     .obsidian = { 270, 310, 40, 60, 20, 40 },  // violet fossil
     .sky      = { 300, 330, 20, 40, 60, 90 },   // fungal fog
     .chance = 0.05f,
+    .frequency = 0.017212f,
 };
 
-const BiomeColors bcr_volcanic = {
+const BiomeData bcr_volcanic = {
     .name = "Volcanic",
     .dirt     = { 0, 360, 0, 10, 5, 20 },      // ash
     .grass    = { 0, 30, 10, 20, 10, 30 },     // scorched roots
@@ -78,9 +83,10 @@ const BiomeColors bcr_volcanic = {
     .obsidian = { 240, 260, 10, 20, 5, 20 },   // blue-black cooled lava
     .sky      = { 10, 30, 80, 100, 70, 100 },   // hell glow
     .chance = 0.15f,
+    .frequency = 0.014832f,
 };
 
-const BiomeColors bcr_artic_tundra = {
+const BiomeData bcr_artic_tundra = {
     .name = "Arctic Tundra Soil",
     .dirt     = { 200, 220, 10, 30, 40, 60 },  // frozen soil
     .grass    = { 180, 220, 20, 40, 60, 80 },  // icy teal moss
@@ -89,9 +95,10 @@ const BiomeColors bcr_artic_tundra = {
     .obsidian = { 210, 240, 10, 20, 20, 40 },  // frozen obsidian
     .sky      = { 190, 230, 10, 30, 90, 100 },  // arctic chill
     .chance = 0.15f,
+    .frequency = 0.01125f,
 };
 
-const BiomeColors bcr_radioactive_wasteland = {
+const BiomeData bcr_radioactive_wasteland = {
     .name = "Radioactive Waste Zone",
     .dirt     = { 90, 110, 80, 100, 40, 60 },  // glowing green
     .grass    = { 70, 110, 90, 100, 70, 90 },  // mutagrass
@@ -100,9 +107,10 @@ const BiomeColors bcr_radioactive_wasteland = {
     .obsidian = { 100, 130, 60, 90, 30, 50 },  // nuclear glass
     .sky      = { 100, 140, 90, 100, 80, 100 }, // neon sky
     .chance = 0.04f,
+    .frequency = 0.018181f,
 };
 
-const BiomeColors bcr_voidy = {
+const BiomeData bcr_voidy = {
     .name = "The Void",
     .dirt     = { 0, 360, 0, 0, 0, 10 },       // black void
     .grass    = { 0, 360, 0, 0, 0, 10 },       // black void
@@ -111,9 +119,10 @@ const BiomeColors bcr_voidy = {
     .obsidian = { 0, 360, 0, 0, 0, 10 },       // black void
     .sky      = { 240, 260, 0, 0, 0, 5 },       // absolute dark
     .chance = 0.01f,
+    .frequency = 0.009999f,
 };
 
-const BiomeColors bcr_underground_mushroom = {
+const BiomeData bcr_underground_mushroom = {
     .name = "Underground Mushroom",
     .dirt     = { 280, 310, 10, 30, 20, 40 },  // dark spore mud
     .grass    = { 290, 310, 30, 60, 40, 60 },  // mycelium carpet
@@ -124,7 +133,7 @@ const BiomeColors bcr_underground_mushroom = {
     .chance = 0.05f,
 };
 
-const BiomeColors bcr_crystal_valley = {
+const BiomeData bcr_crystal_valley = {
     .name = "Crystal Valley",
     .dirt     = { 200, 220, 40, 60, 50, 70 },  // shining soil
     .grass    = { 160, 200, 70, 90, 70, 100 }, // emerald stems
@@ -135,7 +144,7 @@ const BiomeColors bcr_crystal_valley = {
     .chance = 0.07f,
 };
 
-const BiomeColors bcr_wind_scarred_cliffs = {
+const BiomeData bcr_wind_scarred_cliffs = {
     .name = "Wind-Scarred Cliffs",
     .dirt     = { 30, 50, 40, 60, 30, 50 },    // coarse brown
     .grass    = { 70, 90, 50, 70, 40, 60 },    // tough shrubs
@@ -146,7 +155,7 @@ const BiomeColors bcr_wind_scarred_cliffs = {
     .chance = 0.08f,
 };
 
-const BiomeColors bcr_neon_void = {
+const BiomeData bcr_neon_void = {
     .name = "Neon Void",
     .dirt     = { 300, 330, 90, 100, 80, 100 }, // glowing violet
     .grass    = { 0, 30, 90, 100, 90, 100 },    // burning red
@@ -158,7 +167,7 @@ const BiomeColors bcr_neon_void = {
 };
 
 
-static const BiomeColors zox_biomes[] = {
+static const BiomeData zox_biomes[] = {
     bcr_earthy,
     bcr_martian,
     bcr_toxic_swamp,
@@ -174,7 +183,7 @@ static const BiomeColors zox_biomes[] = {
 
 // Functions
 
-byte pick_biome(long int seed) {
+BiomeData pick_biome(long int seed) {
     srand((unsigned int) seed);
     // byte biome_type = rand() % zox_biome_end;
     float roll = (float)rand() / (float)RAND_MAX;
@@ -182,13 +191,9 @@ byte pick_biome(long int seed) {
     for (byte i = 0; i < zox_biome_end; i++) {
         sum += zox_biomes[i].chance;
         if (roll <= sum) {
-            return i;
+            return zox_biomes[i];
         }
     }
     // Fallback to last if float rounding fails
-    return zox_biome_end - 1;
-}
-
-BiomeColors get_biome_colors(byte biome) {
-    return zox_biomes[biome];
+    return zox_biomes[zox_biome_end - 1];
 }

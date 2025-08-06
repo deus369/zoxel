@@ -1,40 +1,11 @@
 extern void crosshair_set_type(ecs_world_t*, ecs_entity_t, byte);
 
 // using DDA for raycasting
-byte raycast_terrain_gizmo(
+byte create_raycast_gizmo(
     ecs_world_t *world,
-    const ecs_entity_t caster,
-    const ecs_entity_t camera,
-    const ecs_entity_t terrain,
-    RaycastVoxelData *data,
-    float range
+    const RaycastVoxelData *data
 ) {
-    if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) {
-        return ray_hit_type_none;
-    }
-    const byte depth = terrain_depth;
-    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
-    zox_geter(realm, VoxelLinks, voxels)
-    zox_geter(terrain, ChunkLinks, chunk_links)
-    const float3 ray_origin = zox_get_value(camera, RaycastOrigin)
-    const float3 ray_normal = zox_get_value(camera, RaycastNormal)
-    int3 chunk_position = (int3) { 255255, 255255, 255255 };
-    CharacterRaycast cr = { };
-    byte ray_hit = raycast_voxel_node(world,
-        caster,
-        voxels,
-        chunk_links,
-        chunk_position,
-        float3_zero,
-        chunk_dimensions,
-        0,
-        ray_origin,
-        ray_normal,
-        get_terrain_voxel_scale(depth),
-        range,
-        data,
-        cr);
+    byte ray_hit = data->result;
     if (ray_hit == ray_hit_type_terrain) {
         float3 voxel_position_real = data->position_real;
         float3 center_quad = float3_add(voxel_position_real, float3_scale(data->normal, data->voxel_scale * (0.501f)));
@@ -100,34 +71,12 @@ byte raycast_terrain_gizmo(
 }
 
 void RaycastGizmoSystem(ecs_iter_t *it) {
-    zox_sys_world()
-    zox_sys_begin()
-    zox_sys_in(CameraLink)
-    zox_sys_in(VoxLink)
-    zox_sys_in(RaycastRange)
-    zox_sys_out(RaycastVoxelData)
+    zox_sys_world();
+    zox_sys_begin();
+    zox_sys_in(RaycastVoxelData);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
-        zox_sys_i(CameraLink, cameraLink)
-        zox_sys_i(VoxLink, voxLink)
-        zox_sys_i(RaycastRange, raycastRange)
-        zox_sys_o(RaycastVoxelData, raycastVoxelData)
-        if (!zox_valid(cameraLink->value) || !zox_valid(voxLink->value)) {
-            continue;
-        }
-        if (!zox_has(cameraLink->value, CharacterLink)) {
-            zox_log_error("camera attached has no character link")
-            continue;
-        }
-        zox_geter_value(cameraLink->value, CharacterLink, ecs_entity_t, e2)
-        ecs_entity_t caster = e2 == e ? e : 0;
-        byte ray_hit = raycast_terrain_gizmo(world,
-            caster,
-            cameraLink->value,
-            voxLink->value,
-            raycastVoxelData,
-            raycastRange->value);
-        raycastVoxelData->result = ray_hit;
-        crosshair_set_type(world, local_crosshair, raycastVoxelData->result);
+        zox_sys_i(RaycastVoxelData, data);
+        crosshair_set_type(world, local_crosshair, data->result);
+        create_raycast_gizmo(world, data);
     }
 } zox_declare_system(RaycastGizmoSystem)

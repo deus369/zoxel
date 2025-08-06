@@ -1,10 +1,11 @@
-ecs_entity_t spawn_popup3_easy(ecs_world_t *world,
+ecs_entity_t spawn_popup3_easy(
+    ecs_world_t *world,
     const char *text,
     const color text_color,
     const float3 position,
     float scale,
-    float lifetime)
-{
+    float lifetime
+) {
     const SpawnDataElement3D popup_spawn_data = {
         .prefab = prefab_popup3D,
         .base_color = (color) { 5, 5, 5, 0 }, // background color

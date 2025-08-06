@@ -8,7 +8,7 @@ typedef struct {
 } Element3DData;
 
 typedef struct {
-    float position_y;
+    float trail_offset;
     ecs_entity_t ui_holder;
     ecs_entity_t prefab;
     byte render_disabled;

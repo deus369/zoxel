@@ -88,6 +88,9 @@ runv: dev
 gdb: dev
 	gdb -ex "set debuginfod enabled off" -ex run --args ./$(TARGET_DEV)
 
+gdbv: dev
+	gdb -ex "set debuginfod enabled off" -ex run --args ./$(TARGET_DEV) --verbose
+
 val: dev
 	valgrind ./$(TARGET_DEV)
 

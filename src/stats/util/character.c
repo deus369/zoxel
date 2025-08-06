@@ -1,9 +1,10 @@
 const int character_stats = 2;
-#define statbar_float_position 0.32f
+// #define statbar_float_position 0.32f
 
-void spawn_character_stats(ecs_world_t *world,
-    spawned_character3D_data *data)
-{
+void spawn_character_stats(
+    ecs_world_t *world,
+    spawned_character3D_data *data
+) {
     zox_geter(data->realm, StatLinks, realm_stats)
     ecs_entity_t realm_soul = 0;
     ecs_entity_t realm_health = 0;

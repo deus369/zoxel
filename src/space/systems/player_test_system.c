@@ -1,4 +1,4 @@
-void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t canvas) {
+/*void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs_entity_t canvas) {
     if (!local_brain) return;
     if (keyboard->_1.pressed_this_frame) {
         feed_brain_random_input(world, local_brain);
@@ -35,7 +35,7 @@ void brain_test_controls(ecs_world_t *world, const Keyboard *keyboard, const ecs
         save_brain_as_texture(world, local_brain);
         spawn_sound_from_file_index(world, prefab_sound, 0);
     }
-}
+}*/
 
 /*void test_sounds(ecs_world_t *world, const Keyboard *keyboard) {
     if (keyboard->_1.pressed_this_frame || keyboard->_2.pressed_this_frame || keyboard->_3.pressed_this_frame || keyboard->_4.pressed_this_frame || keyboard->_5.pressed_this_frame || keyboard->_6.pressed_this_frame || keyboard->_7.pressed_this_frame || keyboard->_8.pressed_this_frame) spawn_sound_from_file_index(world, prefab_sound, 0);
