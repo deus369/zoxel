@@ -8,8 +8,11 @@ void initialize_threads(ecs_world_t* world) {
     }
 }
 
-void initialize_ecs_settings(ecs_world_t *world) {
+void initialize_ecs_settings(
+    ecs_world_t *world,
+    float fps
+) {
     initialize_threads(world);
     initialize_flecs_profiler(world);
-    ecs_set_target_fps(world, target_fps);
+    ecs_set_target_fps(world, fps);
 }

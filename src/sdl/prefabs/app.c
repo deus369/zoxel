@@ -11,12 +11,13 @@ ecs_entity_t spawn_prefab_app_sdl(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_app_sdl(ecs_world_t *world,
+ecs_entity_t spawn_app_sdl(
+    ecs_world_t *world,
     const char* name,
     const byte fullscreen,
     const byte maximized,
-    const byte monitor)
-{
+    const byte monitor
+) {
     int2 screen_size = get_screen_size_monitor(monitor);
     int2 size_restore = int2_scalef(screen_size, 0.77f);
     int2 size = fullscreen ? screen_size : size_restore;

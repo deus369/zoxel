@@ -157,8 +157,11 @@ zox_begin_module(ZoxGame)
 
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
-    vsync = 1;
+    vsync = 0; // 1;
+    target_fps = 0;
+
     is_split_screen = 0;
+
     // world
     zox_set_terrain_settings();
 

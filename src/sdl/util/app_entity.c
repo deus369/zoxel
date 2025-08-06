@@ -53,12 +53,13 @@ void zox_set_app_maximized(ecs_world_t* world, ecs_entity_t e, byte maximized) {
 
 
 // todo: get position2 to work
-ecs_entity_t spawn_window_opengl(ecs_world_t *world,
+ecs_entity_t spawn_window_opengl(
+    ecs_world_t *world,
     const char* name,
     const byte fullscreen,
     const byte maximized,
-    const byte monitor)
-{
+    const byte monitor
+) {
     // const int2 position = get_window_position(window_size, screen_size);
     const ecs_entity_t e = spawn_app_sdl(world,
         name,

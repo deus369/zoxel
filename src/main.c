@@ -235,8 +235,8 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    zox_logv("Initializing ECS Settings");
-    initialize_ecs_settings(world);                 // sets ecs threads
+    zox_logv("Initializing ECS Settings: FPS [%i]", (int) target_fps);
+    initialize_ecs_settings(world, target_fps); // sets ecs threads
 
     if (!nosounds) {
         // sound file loading needs mixer
@@ -277,6 +277,8 @@ int main(int argc, char* argv[]) {
             dispose_zox(world);
             return EXIT_FAILURE;
         }
+
+        set_vsync(vsync);
 
         // black screen if no shaders btw
         zox_logv("Loading Shaders");

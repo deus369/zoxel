@@ -39,8 +39,8 @@ int2 get_maximized_size(ecs_world_t* world, ecs_entity_t e) {
 SDL_Window* create_sdl_window_basic_vulkan(
     const int2 position,
     const int2 size,
-    const char *name)
-{
+    const char *name
+) {
     int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 #ifdef zox_android
     flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE;
@@ -68,18 +68,28 @@ SDL_Window* create_sdl_window(
     const int2 position,
     const int2 size,
     const char *name,
-    byte flags)
-{
+    byte flags
+) {
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     SDL_Window *window = SDL_CreateWindow(name, position.x, position.y, size.x, size.y, flags);
     if (!window) {
-        zox_log_error(" CreateWindowError [%s]\n", SDL_GetError())
-    } else {
-        SDL_SetWindowResizable(window, window_resizeable);
-        SDL_GL_SwapWindow(window);
-        SDL_GL_SetSwapInterval(vsync);
+        zox_log_error(" CreateWindowError [%s]\n", SDL_GetError());
+        return NULL;
     }
+    SDL_SetWindowResizable(window, window_resizeable);
+    // SDL_GL_SwapWindow(window);
+    /*if (SDL_GL_SetSwapInterval(vsync)) {
+        zox_log_error("Unable to disable VSync: %s", SDL_GetError());
+    }*/
     return window;
+}
+
+void set_vsync(byte vsync) {
+    if (SDL_GL_SetSwapInterval(vsync)) {
+        zox_log_error("Unable to disable VSync: %s", SDL_GetError());
+    } else {
+        zox_logv("VSync [%s]", vsync ? "Enabled" : "Disabled");
+    }
 }
 
 /*if (screen_index == 1) {
