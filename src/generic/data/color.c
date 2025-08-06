@@ -40,6 +40,10 @@ static inline color color_grayscale(byte value) {
     return (color) { value, value, value, 255 };
 }
 
+static inline color color_grayscale_a(byte v, byte a) {
+    return (color) { v, v, v, a };
+}
+
 static inline color color_mutate(color c, byte m) {
     int dr = (int) c.r + (-m + rand() % (2 * m + 1));
     int dg = (int) c.g + (-m + rand() % (2 * m + 1));

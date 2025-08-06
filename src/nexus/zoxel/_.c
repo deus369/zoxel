@@ -91,8 +91,8 @@ void zoxel_settings_uis(ecs_world_t* world) {
     header_font_fill = color_grayscale(32);
     header_font_outline = color_grayscale(122);
     // window
-    window_fill = color_grayscale(10);
-    window_outline = color_grayscale(44);
+    window_fill = color_grayscale_a(10, window_fill.a);
+    window_outline = color_grayscale_a(44, window_outline.a);
     // buttons
     button_fill = color_grayscale(10);
     button_outline = color_grayscale(44);

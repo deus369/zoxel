@@ -1,4 +1,7 @@
 extern void crosshair_set_type(ecs_world_t*, ecs_entity_t, byte);
+color hit_terrain_color = (color) { 2, 145, 145, 55 };
+color hit_character_color = (color) { 155, 45, 45, 65 };
+color hit_block_vox_color = (color) { 55, 185, 145, 45 };
 
 // using DDA for raycasting
 byte create_raycast_gizmo(

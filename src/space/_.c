@@ -1,21 +1,26 @@
-#if !defined(zox_mod_space) && defined(zoxm_characters)
-#define zox_mod_space
-/*  Space:
- *      - this is just unsorted things atm that need refactoring
- *      - alot of functions to spawn the game things
- * */
+#ifndef zoxm_space
+#define zoxm_space
 
-#include "settings/_.c"
-#include "states/player_state.c"
-#include "prefabs/_.c"
+// one day we will actually make this abuot space
+
+// hmm
+char* player_vox_model = "tall_cube";
+#include "spawns/player.c"
 #include "util/_.c"
 #include "game/_.c"
-#include "systems/_.c"
 #include "debug/_.c"
+// raycasting
+#include "systems/chunk3_raycast.c"
+#include "systems/raycast_gizmo.c"
 
 zox_begin_module(Space)
-    define_systems_players2(world);
-    spawn_prefabs_players2(world);
+    zox_system(Chunk3RaycastSystem, EcsOnUpdate,
+            [in] cameras.CameraLink,
+            [in] chunks3.VoxLink,
+            [in] chunks3.RaycastRange,
+            [out] chunks3.RaycastVoxelData);
+    zox_system_1(RaycastGizmoSystem, EcsPreStore,
+            [in] chunks3.RaycastVoxelData);
     add_to_event_game_state((zox_game_event) { &players_game_state });
     add_hook_on_boot(on_boot_space);
 zox_end_module(Space)

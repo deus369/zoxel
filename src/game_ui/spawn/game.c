@@ -1,5 +1,5 @@
 // TODO: Refactor these modules onto the game ui
-extern void spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, const ecs_entity_t player, Children *children);
+extern ecs_entity_t spawn_menu_game_stats(ecs_world_t *world, const ecs_entity_t menu_game, const ecs_entity_t player, Children *children);
 
 ecs_entity_t spawn_menu_game(
     ecs_world_t *world,

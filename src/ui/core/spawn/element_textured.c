@@ -15,8 +15,8 @@ ecs_entity_t spawn_element_on_canvas(ecs_world_t *world,
     const ecs_entity_t canvas,
     const int2 pixel_position,
     const int2 pixel_size,
-    const float2 anchor)
-{
+    const float2 anchor
+) {
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
     ElementSpawn spawn_element_data = {
         .canvas = {
