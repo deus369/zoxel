@@ -83,7 +83,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
                             zox_geter(e, ElementLinks, elements);
                             // zox_log("+ character has element links [%i]", elements->length)
                             // find_child_with_tag(canvas, MenuActions, menu_actions)
-                            find_array_component_with_tag(elements, MenuActions, actionbar);
+                            find_array_element_with_tag(elements, MenuActions, actionbar);
                             if (zox_valid(actionbar)) {
                                 // zox_log("+ character has a actionbar")
                                 zox_geter(actionbar, Children, menu_actions_children)

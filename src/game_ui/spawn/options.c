@@ -116,7 +116,11 @@ ecs_entity_t spawn_menu_options(
         list_element_data,
         ui_list_data);
     add_to_Children(window_data.children, list);
-    zox_set_ptr(e, Children, children)
+    zox_set_ptr(e, Children, children);
+
+    zox_muter(player, ElementLinks, pelements);
+    add_to_ElementLinks(pelements, e);
+    zox_set(e, ElementHolder, { player });
 
     // return our window
     return e;

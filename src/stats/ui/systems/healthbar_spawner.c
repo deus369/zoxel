@@ -13,7 +13,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
         // remove old
         if (combat->value == zox_combat_leaving) {
             // destroy healthbar here
-            find_array_component_with_tag(elementLinks, Healthbar, healthbar)
+            find_array_element_with_tag(elementLinks, Healthbar, healthbar)
             if (zox_valid(healthbar)) {
                 // zox_log("destroying healthbar: %s", zox_get_name(healthbar))
                 remove_from_ElementLinks(elementLinks, healthbar);
@@ -28,7 +28,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
         if (combat->value != zox_combat_enter_battle) {
             continue;
         }
-        find_array_component_with_tag(stats, HealthStat, health)
+        find_array_element_with_tag(stats, HealthStat, health)
         if (!zox_valid(health)) {
             continue;
         }

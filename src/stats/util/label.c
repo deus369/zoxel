@@ -1,5 +1,5 @@
 uint add_label_stat_level(ecs_world_t *world, const ecs_entity_t character, const StatLinks *stats, const ecs_entity_t tag, char *buffer, const uint size, uint index) {
-    find_array_component_with_tag_id(stats, tag, stat)
+    find_array_element_with_tag_id(stats, tag, stat)
     if (!zox_valid(stat) || !zox_has(stat, StatValue)) {
         index += snprintf(buffer + index, size - index, "[%s] has no stat [%s]\n", zox_get_name(character), zox_get_name(tag));
         return index;
@@ -112,7 +112,7 @@ uint get_label_player_element_links(ecs_world_t *world, const ecs_entity_t playe
 /*int get_label_local_character_level(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
  *    if (!character) return buffer_index;
  *    const StatLinks *stats = zox_get(character, StatLinks)
- *    find_array_component_with_tag(stats, StatSoul, soul_stat)
+ *    find_array_element_with_tag(stats, StatSoul, soul_stat)
  *    if (!zox_has(soul_stat, StatValue)) return buffer_index;
  *    float level = zox_get_value(soul_stat, StatValue)
  *    float experience_value = zox_get_value(soul_stat, ExperienceValue)
@@ -135,7 +135,7 @@ uint get_label_player_element_links(ecs_world_t *world, const ecs_entity_t playe
  * int get_label_local_character_health(ecs_world_t *world, const ecs_entity_t character, char buffer[], int buffer_size, int buffer_index) {
  *    if (character) {
  *        const StatLinks *statLinks = zox_get(character, StatLinks)
- *        find_array_component_with_tag(statLinks, HealthStat, health_stat)
+ *        find_array_element_with_tag(statLinks, HealthStat, health_stat)
  *
  *        if (!zox_has(health_stat, StatValue)) return buffer_index;
  *

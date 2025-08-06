@@ -13,21 +13,22 @@ byte calculate_list_max_characters(const SpawnList data) {
 static inline int2 calculate_list_size(
     byte max_characters,
     byte font_size,
-    byte padding,
-    byte spacing,
-    byte list_count)
-{
+    byte2 padding,  // text padding
+    byte spacing,   // between list elements
+    byte2 margins,  // outside elements
+    byte list_count
+) {
     return (int2) {
-        max_characters * font_size + padding * 2 + spacing * 2,
-        (font_size + padding * 2 + spacing) * list_count + spacing
+        max_characters * font_size + padding.x * 2 + margins.x * 2,
+        (font_size + padding.y * 2 + spacing) * list_count - spacing + margins.y * 2
     };
 }
 
 static inline int2 calculate_header_size(
     byte length,
     byte font_size,
-    byte2 padding)
-{
+    byte2 padding
+) {
     return (int2) {
         length * font_size + padding.x * 2,
         font_size + padding.y * 2

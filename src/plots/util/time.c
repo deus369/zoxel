@@ -1,15 +1,16 @@
 extern ecs_entity_t plot_time;
 extern ecs_entity_t plot_time_system;
 
-void add_plot_data_double(ecs_world_t *world,
+void add_plot_data_double(
+    ecs_world_t *world,
     const ecs_entity_t e,
-    const double value)
-{
-    if (!zox_valid(e)) {
+    const double value
+) {
+    if (!zox_valid(e) || !zox_has(e, PlotDataDouble)) {
         return;
     }
-    zox_get_muter(e, PlotDataDouble, data)
-    if (data->length == 0) {
+    zox_get_muter(e, PlotDataDouble, data);
+    if (!data || !data->length || !data->value) {
         return;
     }
     for (int i = 0; i < data->length - 1; i++) {

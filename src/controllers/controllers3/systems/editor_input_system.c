@@ -17,7 +17,7 @@ void EditorInputSystem(ecs_iter_t *it) {
                 const Keyboard *keyboard = zox_get(device, Keyboard);
                 // toggle uis
                 if (keyboard->x.pressed_this_frame) {
-                    toggle_ui_with_tag(spawn_frame_debugger, FrameDebuggerWindow)
+                    toggle_ui_with_tag(spawn_profiler_canvas, Profiler)
                 }
                 if (keyboard->c.pressed_this_frame) {
                     toggle_ui_with_tag(spawn_game_debug_label, GameDebugLabel)

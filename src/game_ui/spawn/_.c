@@ -1,4 +1,5 @@
 #include "button.c"
+#include "new.c"
 #include "main.c"
 #include "options.c"
 #include "pause.c"

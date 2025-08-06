@@ -1,4 +1,4 @@
-#define color_null (color) { 0, 0, 0, 0}
+#define color_null (color) { 0, 0, 0, 0 }
 #define color_white (color) { 255, 255, 255, 255 }
 #define color_gray (color) { 125, 125, 125, 255 }
 #define color_gray_dark (color) { 55, 55, 55, 255 }

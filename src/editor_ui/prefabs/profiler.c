@@ -1,4 +1,4 @@
-ecs_entity_t spawn_frame_debugger_ui(
+ecs_entity_t spawn_profiler(
     ecs_world_t *world,
     const ecs_entity_t prefab,
     const char *header_label,
@@ -6,8 +6,8 @@ ecs_entity_t spawn_frame_debugger_ui(
     const int2 size,
     const float2 anchor,
     const ecs_entity_t canvas,
-    const byte layer)
-{
+    const byte layer
+) {
     const byte plots_count = 2;
     const color plot_colors[] = {
         (color) { 33, 133, 133, 255 },
@@ -36,8 +36,8 @@ ecs_entity_t spawn_frame_debugger_ui(
 
     // zox_log(" > line_spacing [%f] - size [%i]\n", line_spacing, pixel_size.x);
     zox_instance(prefab)
-    zox_name("frame_debugger_ui")
-    zox_add_tag(e, FrameDebuggerWindow)
+    zox_name("profiler")
+    zox_add_tag(e, Profiler)
     initialize_element(world,
         e,
         parent,
@@ -73,18 +73,19 @@ ecs_entity_t spawn_frame_debugger_ui(
     int2 plot_size = size;
     plot_size.y -= header_size.y;
     for (int i = 0; i < plots_count; i++) {
-        children.value[is_header + i] = spawn_plot_graph(world,
+        children.value[is_header + i] = spawn_plot_graph(
+            world,
             canvas,
             e,
             position,
             size,
-            prefab_layout2 + i,
+            prefab_layout2, //  + i
             plot_layer,
             plot_size,
             record_frames_count,
             0,
             plot_colors[i],
-            1,
+            1,   // labels
             i * 2);
     }
     // todo: seperate plot data from the graphs here
@@ -92,23 +93,32 @@ ecs_entity_t spawn_frame_debugger_ui(
         // PlotLinks from our Profiler
     plot_time = children.value[1];
     plot_time_system = children.value[2];
-
     zox_set_ptr(e, Children, children);
+
+    // set texture
+    zox_set(e, FrameCorner, { default_window_corner });
+    zox_set(e, Color, { window_fill });
+    zox_set(e, OutlineColor, { window_outline });
     return e;
 }
 
-ecs_entity_t spawn_frame_debugger(ecs_world_t *world, const ecs_entity_t canvas) {
+ecs_entity_t spawn_profiler_canvas(
+    ecs_world_t *world,
+    const ecs_entity_t canvas
+) {
     const byte layer = game_overlay_layer + 3; // 3;
     const int2 test_window_size = { 380, 380 };
     const int2 test_window_position = { - test_window_size.x / 2, test_window_size.y / 2 };
     const float2 test_window_anchor = { 1.0f, 0.0f };
     // zox_log(" > showing frame_debugger_window\n")
-    return spawn_frame_debugger_ui(world,
+    return spawn_profiler(
+        world,
         prefab_frame_debugger_ui,
-        "debugger",
+        "Profiler",
         test_window_position,
         test_window_size,
         test_window_anchor,
         canvas,
-        layer);
+        layer
+    );
 }

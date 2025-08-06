@@ -15,7 +15,7 @@ ecs_entity_t find_array_element_with_id(
     return 0;
 }
 
-#define find_array_component_with_tag2(value, length, tag, e)\
+#define find_array_element_with_tag2(value, length, tag, e)\
     ecs_entity_t e = 0;\
     for (int i = 0; i < length; i++) {\
         if (zox_has(value[i], tag)) {\
@@ -24,7 +24,7 @@ ecs_entity_t find_array_element_with_id(
         }\
     }
 
-#define find_array_component_with_tag(component, tag, e)\
+#define find_array_element_with_tag(component, tag, e)\
     ecs_entity_t e = 0;\
     for (int i = 0; i < component->length; i++) {\
         if (zox_has(component->value[i], tag)) {\
@@ -33,7 +33,7 @@ ecs_entity_t find_array_element_with_id(
         }\
     }
 
-#define find_array_component_with_tag_id(component, tag_id, name)\
+#define find_array_element_with_tag_id(component, tag_id, name)\
     ecs_entity_t name = 0;\
     for (int i = 0; i < component->length; i++) {\
         if (zox_has_id(component->value[i], tag_id)) {\

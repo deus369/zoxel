@@ -34,7 +34,7 @@ void DotsSystem(ecs_iter_t *it) {
 
         zox_geter(userLink->value, StatLinks, statLinks)
         // find health stat, maybe poison should target a stat type directly??
-        find_array_component_with_tag(statLinks, HealthStat, health_stat)
+        find_array_element_with_tag(statLinks, HealthStat, health_stat)
         if (!health_stat) {
             zox_log(" ! user had no health\n")
             continue;

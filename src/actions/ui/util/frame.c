@@ -7,7 +7,7 @@ void on_action_updated(
     ecs_entity_t meta
 ) {
     zox_geter(e, ElementLinks, elements);
-    find_array_component_with_tag(elements, MenuActions, ui);
+    find_array_element_with_tag(elements, MenuActions, ui);
     if (!zox_valid(ui)) {
         return;
     }
@@ -43,7 +43,7 @@ void on_action_updated_quantity(
         return;
     }
     zox_geter(character, ElementLinks, elements);
-    find_array_component_with_tag(elements, MenuActions, actionbar);
+    find_array_element_with_tag(elements, MenuActions, actionbar);
     if (actionbar) {
         zox_geter(actionbar, Children, menu_actions_children);
         const ecs_entity_t menu_actions_body = menu_actions_children->value[1];

@@ -20,8 +20,8 @@ void ExperienceSystem(ecs_iter_t *it) {
 
         // add experience to soul stat
         zox_geter(lastDamager->value, StatLinks, enemy_stats)
-        find_array_component_with_tag(stats, StatSoul, my_soul)
-        find_array_component_with_tag(enemy_stats, StatSoul, enemy_soul)
+        find_array_element_with_tag(stats, StatSoul, my_soul)
+        find_array_element_with_tag(enemy_stats, StatSoul, enemy_soul)
         // if either player has no soul, xp cannot be transferred
         if (!my_soul || !enemy_soul) {
             continue;

@@ -12,7 +12,7 @@ void set_player_action(
     spawn_sound_from_file_name(world, prefab_sound, "swap_action", 0, get_volume_sfx());
 
     zox_geter(character, ElementLinks, elements);
-    find_array_component_with_tag(elements, MenuActions, actionbar);
+    find_array_element_with_tag(elements, MenuActions, actionbar);
     if (!actionbar) {
         return;
     }
@@ -105,7 +105,7 @@ void button_event_switch_action(ecs_world_t *world, const ClickEventData *event)
         return 255;
     }
     zox_geter(e, ElementLinks, elements)
-    find_array_component_with_tag(elements, MenuActions, actionbar)
+    find_array_element_with_tag(elements, MenuActions, actionbar)
     if (!actionbar) {
         return 255;
     }

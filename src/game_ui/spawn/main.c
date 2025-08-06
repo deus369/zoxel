@@ -1,10 +1,14 @@
 // List Menus adjust to the menu size
-ecs_entity_t spawn_main_menu(ecs_world_t *world,
+ecs_entity_t spawn_main_menu(
+    ecs_world_t *world,
     const ecs_entity_t player,
     const ecs_entity_t canvas,
-    const char *header_label)
-{
+    const char *header_label
+) {
     const byte window_layer = 3;
+    const byte header_font_size = 72;
+    byte2 list_margins = (byte2) { 32, 18 };
+    byte list_font_size = 44;
 
     // # Window #
     // window_fill = color_grayscale(10);
@@ -26,7 +30,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     };
     SpawnWindow2 window_data = {
         .header_text = header_label,
-        .header_font_size = 80,
+        .header_font_size = header_font_size,
         .header_padding = (byte2) { 24, 8 },
         .is_scrollbar = 0,
     };
@@ -64,7 +68,7 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         .elements = elements,
         .count = elements_count,
         .visible_count = elements_count,
-        .font_size = 60,
+        .font_size = list_font_size,
         .fill = button_fill,
         .outline = button_outline,
         .padding = (byte2) { 18, 8 },
@@ -76,8 +80,9 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
     int2 list_size = calculate_list_size(
         calculate_list_max_characters(list_data),
         list_data.font_size,
-        list_data.padding.y,
+        list_data.padding,
         list_data.spacing,
+        list_margins,
         list_data.visible_count);
     // we use the bigger size out of list and header widths
     window_element_data.size = (int2) {
@@ -87,13 +92,14 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
 
     Children children = (Children) { };
     window_data.children = &children;
-    const ecs_entity_t e = spawn_window2(world,
+    const ecs_entity_t e = spawn_window2(
+        world,
         canvas_data,
         window_parent_data,
         &window_element_data,
         &window_data);
-    zox_name("main_menu")
-    zox_add_tag(e, MenuMain)
+    zox_name("main_menu");
+    zox_add_tag(e, MenuMain);
 
     // finish our list
     ParentSpawnData list_parent_data = {
@@ -121,7 +127,11 @@ ecs_entity_t spawn_main_menu(ecs_world_t *world,
         list_data);
     add_to_Children(window_data.children, list);
 
-    zox_set_ptr(e, Children, children)
+    zox_set_ptr(e, Children, children);
+
+    zox_muter(player, ElementLinks, pelements);
+    add_to_ElementLinks(pelements, e);
+    zox_set(e, ElementHolder, { player });
 
     return e;
 }

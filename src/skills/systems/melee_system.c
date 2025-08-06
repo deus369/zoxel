@@ -83,7 +83,7 @@ void MeleeSystem(ecs_iter_t *it) {
         }
         if (zox_has(hit, Character3)) {
             zox_geter(hit, StatLinks, hit_stats)
-            find_array_component_with_tag(hit_stats, HealthStat, health_stat)
+            find_array_element_with_tag(hit_stats, HealthStat, health_stat)
             if (!zox_valid(health_stat)) {
                 zox_log_error("hit user had no health")
                 continue;

@@ -2,7 +2,8 @@ ecs_entity_t plot_time;
 ecs_entity_t plot_time_system;
 const float plot_line_thickness = 1.0f;
 
-ecs_entity_t spawn_plot_graph(ecs_world_t* world,
+ecs_entity_t spawn_plot_graph(
+    ecs_world_t* world,
     ecs_entity_t canvas,
     ecs_entity_t parent,
     int2 parent_position,
@@ -40,6 +41,7 @@ ecs_entity_t spawn_plot_graph(ecs_world_t* world,
             layer,
             parent_position,
             parent_size);
+
     PlotDataDouble data = (PlotDataDouble) { };
     initialize_PlotDataDouble(&data, points_count);
     for (int i = 0; i < points_count; i++) {
@@ -81,7 +83,7 @@ ecs_entity_t spawn_plot_graph(ecs_world_t* world,
 
         const ecs_entity_t e2 = spawn_zext(world, &text_data);
         children.value[0] = e2;
-        zox_add_tag(e2, PlotLabel)
+        zox_add_tag(e2, PlotLabel);
     }
 
     // our plot here
