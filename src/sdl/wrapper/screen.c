@@ -34,9 +34,9 @@ void on_sdl_window_restored(ecs_world_t *world, ecs_entity_t e) {
         zox_log_error("invalid app [%lu]", e)
         return;
     }
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
-    zox_geter_value2(e, WindowSizeRestore, int2, size)
-    zox_geter_value2(e, WindowPositionRestore, int2, position)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, WindowSizeRestore, int2, size)
+    zox_geter_value_non_const(e, WindowPositionRestore, int2, position)
 
     if (size.x == 0 && size.y == 0) {
         int2 screen_size = get_screen_size();

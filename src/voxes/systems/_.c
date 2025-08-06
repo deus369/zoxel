@@ -18,10 +18,10 @@ void define_systems_voxes(ecs_world_t *world) {
             [in] rendering.TextureSize,
             [in] chunks3.VoxLink,
             [in] blocks.VoxBakeSide,
-            [out] texturez.GenerateTexture,
-            [out] texturez.TextureData,
+            [out] textures.GenerateTexture,
+            [out] textures.TextureData,
             [out] rendering.TextureDirty,
-            [none] texturez.VoxTexture)
+            [none] textures.VoxTexture)
     // NOTE: Writes to VoxelNode
     zox_system(VoxGenerationSystem, zoxp_write_voxels,
             [in] GenerateVox,
@@ -43,7 +43,7 @@ void define_systems_voxes(ecs_world_t *world) {
             [out] ChunkLod)
     zox_system(BakeVoxSystem, EcsOnUpdate,
             [in] rendering.ModelLink,
-            [in] texturez.TextureLinks)
+            [in] textures.TextureLinks)
     if (!headless) {
         zox_system(ChunkColorsBuildSystem, zoxp_read_voxels,
                 [in] chunks3.ChunkMeshDirty,

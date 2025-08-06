@@ -8,9 +8,6 @@ zox_component_byte(CanJump)
 zox_component_byte(JumpState)
 zox_component_double(Jump)
 zox_component_entity(CharacterLink)
-// todo: move these to inputs
-zox_component_byte(TriggerActionA)
-zox_component_byte(TriggerActionB)
 zox_memory_component(CharacterLinks, ecs_entity_t)
 #include "util/_.c"
 #include "jump/systems/_.c"
@@ -24,8 +21,6 @@ zox_begin_module(Characters)
     zox_define_component_byte(CanJump)
     zox_define_component_byte(JumpState)
     zox_define_component_double(Jump)
-    zox_define_component_byte(TriggerActionA)
-    zox_define_component_byte(TriggerActionB)
     zox_define_component_entity(CharacterLink)
     zox_define_memory_component(CharacterLinks)
     // hooks

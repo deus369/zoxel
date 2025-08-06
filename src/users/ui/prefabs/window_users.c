@@ -5,13 +5,20 @@ ecs_entity_t spawn_prefab_window_users(ecs_world_t *world, const ecs_entity_t pr
     return e;
 }
 
-ecs_entity_t spawn_window_users(ecs_world_t *world,
+// TODO: Rename/Refactor to WindowIcons
+ecs_entity_t spawn_window_users(
+    ecs_world_t *world,
     SpawnWindowUsers data,
-    FrameTextureData window_texture
+    FrameTextureData window_texture,
+    byte selected
 ) {
     const ecs_entity_t character = data.window.character;
+    if (!zox_valid(character) || !zox_has(character, ElementLinks)) {
+        zox_log_error("invalid character in spawn icons window.");
+        return 0;
+    }
     if (!zox_has_id(character, data.window.user_links_id)) {
-        zox_log(" ! character [%lu] has no [%s], cannot spawn ui", character, zox_get_name(data.window.user_links_id))
+        zox_log_error("Character [%lu] has no [%s], cannot spawn ui", character, zox_get_name(data.window.user_links_id))
         return 0;
     }
     // zox_log(" +  character [%lu] inventory has %i slots\n", character, inventory->length)
@@ -36,10 +43,10 @@ ecs_entity_t spawn_window_users(ecs_world_t *world,
     const int grid_elements_count = user_datas_count; // data.window.grid_size.x * data.window.grid_size.y
     const int children_length = 1 + is_header;
     // zox_get_muter(e, Children, children)
-    Children *children = &((Children) { 0, NULL });
-    initialize_Children(children, children_length);
-    if (children->length != children_length) {
-        zox_log(" ! failed to iniitalize children\n")
+    Children children = (Children) { 0, NULL };
+    initialize_Children(&children, children_length);
+    if (children.length != children_length) {
+        zox_log_error("Failed to iniitalize children.");
         return e;
     }
     int2 header_size = int2_zero;
@@ -67,7 +74,7 @@ ecs_entity_t spawn_window_users(ecs_world_t *world,
             .zext = data.header_zext,
             .header = data.header
         };
-        children->value[0] = spawn_header2(world, &spawnHeader);
+        children.value[0] = spawn_header2(world, &spawnHeader);
     }
 
     // todo:
@@ -94,19 +101,19 @@ ecs_entity_t spawn_window_users(ecs_world_t *world,
         .texture = window_texture,
     };
     const ecs_entity_t body = spawn_element(world, &spawn_body_data);
-    children->value[is_header] = body;
+    children.value[is_header] = body;
     // zox_get_muter(body, Children, body_children)
-    Children *body_children = &((Children) { 0, NULL });
-    initialize_Children(body_children, grid_elements_count);
+    Children body_children = (Children) { 0, NULL };
+    initialize_Children(&body_children, grid_elements_count);
     int item_index = 0;
     int array_index = 0;
     const byte active_states = zox_has(data.frame.prefab, ActiveState);
     for (int j = data.window.grid_size.y - 1; j >= 0; j--) {
-        if (array_index >= body_children->length) {
+        if (array_index >= body_children.length) {
             break;
         }
         for (int i = 0; i < data.window.grid_size.x; i++) {
-            if (array_index >= body_children->length) {
+            if (array_index >= body_children.length) {
                 break;
             }
             const int2 position = {
@@ -132,22 +139,24 @@ ecs_entity_t spawn_window_users(ecs_world_t *world,
             };
             spawnFrame.icon.index = array_index;
             const ecs_entity_t user_data_element = user_data->value[item_index];
-            body_children->value[array_index] = spawn_frame_user(world,
+            body_children.value[array_index] = spawn_frame_user(world,
                 spawnFrame,
                 user_data_element);
-            if (i == 0 && active_states) {
-                zox_set(body_children->value[array_index], ActiveState, { 1 }) // first one should be active
-            }
             array_index++;
             item_index++;
         }
     }
-    zox_set(body, Children, { body_children->length, body_children->value })
-    zox_set(e, Children, { children->length, children->value })
+    if (active_states) {
+        ecs_entity_t selected_frame = body_children.value[selected];
+        zox_set(selected_frame, ActiveState, { 1 });
+        zox_set(selected_frame, ActiveStateDirty, { zox_dirty_trigger });
+    }
+    zox_set_ptr(body, Children, body_children);
+    zox_set_ptr(e, Children, children);
     // add to characters element links and link to character
-    zox_get_muter(character, ElementLinks, elementLinks)
+    zox_get_muter(character, ElementLinks, elementLinks);
     add_to_ElementLinks(elementLinks, e);
-    zox_set(e, ElementHolder, { character })
+    zox_set(e, ElementHolder, { character });
     return e;
 }
 
@@ -155,8 +164,8 @@ SpawnWindowUsers get_default_spawn_window_users_data(ecs_world_t *world,
     const ecs_entity_t prefab,
     const ecs_entity_t character,
     const ecs_entity_t canvas,
-    const int2 canvas_size)
-{
+    const int2 canvas_size
+) {
     const byte header_font_size = 26 * zox_ui_scale;
     const byte header_margins = 6 * zox_ui_scale;
     const byte header_height = header_font_size + header_margins * 2;

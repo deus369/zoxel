@@ -8,7 +8,6 @@ zox_component_int2(WindowPosition)
 zox_component_int2(WindowSizeRestore)
 zox_component_int2(WindowPositionRestore)
 zox_component_entity(AppLink)
-zox_increment_system_with_reset(WindowSizeDirty, zox_dirty_end)
 
 void define_components_apps(ecs_world_t *world) {
     zox_define_tag(App)
@@ -24,5 +23,4 @@ void define_components_apps(ecs_world_t *world) {
 #ifdef zox_vulkan
     zox_define_component(VulkanSurface)
 #endif
-    zox_define_increment_system(WindowSizeDirty, [none] App)
 }

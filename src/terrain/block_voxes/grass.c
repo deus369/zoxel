@@ -1,4 +1,5 @@
-ecs_entity_t spawn_block_grass(ecs_world_t *world,
+ecs_entity_t spawn_block_grass(
+    ecs_world_t *world,
     const byte index,
     const color block_color,
     const ecs_entity_t model

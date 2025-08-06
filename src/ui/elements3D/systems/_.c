@@ -38,7 +38,7 @@ void define_systems_elements3D(ecs_world_t *world) {
             //[in] elements.core.CanvasLink,
             [out] elements.core.InitializeElement,
             [out] rendering.MeshDirty,
-            // [out] texturez.GenerateTexture,
+            // [out] textures.GenerateTexture,
             [out] rendering.MeshGPULink,
             [out] rendering.UvsGPULink,
             [out] rendering.ColorsGPULink,

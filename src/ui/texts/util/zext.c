@@ -67,7 +67,12 @@ byte is_zext_updating(ecs_world_t *world, const Children *children) {
 }
 
 
-void set_entity_label_with_zext(ecs_world_t *world, const ecs_entity_t parent, byte *value, int length) {
+void set_entity_label_with_zext(
+    ecs_world_t *world,
+    const ecs_entity_t parent,
+    byte *value,
+    int length
+) {
     const Children *name_label_children = zox_get(parent, Children)
     ecs_entity_t e = name_label_children->value[0];
     zox_get_muter(e, TextData, textData)
@@ -105,14 +110,20 @@ byte set_entity_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* t
     return 1;
 }
 
-byte set_entity_label_with_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    const Children *children = zox_get(e, Children)
-    if (children->length == 0) return 0;
+byte set_entity_label_with_text(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const char* text
+) {
+    zox_geter(e, Children, children);
+    if (children->length == 0) {
+        return 0;
+    }
     return set_entity_text(world, children->value[0], text);
 }
 
 void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {
-    zox_set_zext_component(e, ZoxName, text)
+    zox_set_zext_component(e, ZoxName, text);
 }
 
 

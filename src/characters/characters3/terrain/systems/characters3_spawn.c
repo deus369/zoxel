@@ -93,7 +93,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 zox_log_error("failed to find a spawn character_meta")
                 continue;
             }
-            zox_geter_value2(meta, ModelLink, ecs_entity_t, model)
+            zox_geter_value_non_const(meta, ModelLink, ecs_entity_t, model)
             zox_geter_value(meta, Character3PrefabLink, ecs_entity_t, prefab_character)
             if (!model || !prefab_character) {
                 zox_log_error("failed to find a spawn character_meta")

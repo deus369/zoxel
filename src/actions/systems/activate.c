@@ -1,46 +1,36 @@
-#ifdef zox_mod_actions
-
-// const float block_place_range = 2;
-
 // right click = place
 // todo: use a state and implement results inside respective systems
 // todo: move item activate to a seperate item system
+// todo: action index should be based on character not player ui... omg
 void ActionActivateSystem(ecs_iter_t *it) {
-    zox_sys_world()
-    zox_sys_begin()
-    zox_sys_in(RaycastRange)
-    zox_sys_in(RaycastVoxelData)
-    zox_sys_out(ActionLinks)
-    zox_sys_out(TriggerActionB)
+    zox_sys_world();
+    zox_sys_begin();
+    zox_sys_in(TriggerActionB);
+    zox_sys_in(ActionIndex);
+    zox_sys_in(RaycastRange);
+    zox_sys_in(RaycastVoxelData);
+    zox_sys_out(ActionLinks);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
-        zox_sys_i(RaycastRange, raycastRange)
-        zox_sys_i(RaycastVoxelData, raycastVoxelData)
-        zox_sys_o(ActionLinks, actions)
-        zox_sys_o(TriggerActionB, triggerActionB)
-        if (!triggerActionB->value) {
+        zox_sys_e();
+        zox_sys_i(TriggerActionB, triggerActionB);
+        zox_sys_i(ActionIndex, actionIndex);
+        zox_sys_i(RaycastRange, raycastRange);
+        zox_sys_i(RaycastVoxelData, raycastVoxelData);
+        zox_sys_o(ActionLinks, actions);
+        if (triggerActionB->value != zox_dirty_active) {
             continue;
         }
-
-        // todo: action index should be based on character not player ui... omg
-        /*const ecs_entity_t player = zox_get_value(e, PlayerLink)
-        if (!zox_valid(player)) {
-            continue;
-        }*/
-        const byte action_selected = get_character_action_index(world, e);
+        /*const byte action_selected = get_character_action_index(world, e);
         if (action_selected == 255) {
-            triggerActionB->value = 0;
             continue; // no actionbar
-        }
-        if (action_selected >= actions->length) {
+        }*/
+        if (actionIndex->value >= actions->length) {
             zox_log(" > action selected is out of bounds\n")
-            triggerActionB->value = 0;
             continue;
         }
-        const ecs_entity_t action = actions->value[action_selected];
+        const ecs_entity_t action = actions->value[actionIndex->value];
         // no action assigned
         if (!zox_valid(action)) {
-            triggerActionB->value = 0;
             continue;
         }
         if (zox_has(action, Skill)) {
@@ -81,19 +71,19 @@ void ActionActivateSystem(ecs_iter_t *it) {
 
                     if (quantity > 0) {
                         zox_set(action, Quantity, { quantity })
-                        on_set_quantity(world, e, action_selected, quantity);
+                        on_action_updated_quantity(world, e, actionIndex->value, quantity);
                     } else {
                         // set action to nullptr
                         // destroy entity
                         zox_delete(action)
-                        actions->value[action_selected] = 0;
+                        actions->value[actionIndex->value] = 0;
                         // now set ui
                         // now to effect ui!
                         if (zox_has(e, ElementLinks)) {
-                            zox_geter(e, ElementLinks, elements)
+                            zox_geter(e, ElementLinks, elements);
                             // zox_log("+ character has element links [%i]", elements->length)
                             // find_child_with_tag(canvas, MenuActions, menu_actions)
-                            find_array_component_with_tag(elements, MenuActions, actionbar)
+                            find_array_component_with_tag(elements, MenuActions, actionbar);
                             if (zox_valid(actionbar)) {
                                 // zox_log("+ character has a actionbar")
                                 zox_geter(actionbar, Children, menu_actions_children)
@@ -105,7 +95,7 @@ void ActionActivateSystem(ecs_iter_t *it) {
                                     }
                                     zox_geter(menu_actions_body, Children, menu_actions_body_children)
 
-                                    const ecs_entity_t frame_action = menu_actions_body_children->value[action_selected];
+                                    const ecs_entity_t frame_action = menu_actions_body_children->value[actionIndex->value];
                                     if (!zox_valid(frame_action)) {
                                         zox_log_error("invalid frame_action")
                                         continue;
@@ -140,7 +130,5 @@ void ActionActivateSystem(ecs_iter_t *it) {
         } else {
             zox_log_error("action is not a block item [%s]", zox_get_name(action))
         }
-        triggerActionB->value = 0;
     }
 } zox_declare_system(ActionActivateSystem)
-#endif

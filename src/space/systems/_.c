@@ -1,4 +1,3 @@
-#include "player_pause_system.c"
 #include "virtual_joystick_system.c"
 #include "editor_input_system.c"
 #include "qol_shortcuts_system.c"
@@ -7,21 +6,13 @@
 #include "player_test_system.c"
 #include "raycast_gizmo_system.c"
 #include "voxel_action_system.c"
-#include "action_activate_system.c"
 #include "actions_shortcut_system.c"
 
 void define_systems_players2(ecs_world_t *world) {
     zox_system(QolShortcutsSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [none] players.Player)
-    /*zox_system(PlayerShortcutsSystem, EcsOnUpdate,
-            [in] inputs.DeviceLinks,
-            [in] games.GameLink,
-            [none] players.Player)*/
     // zox_pipelines_pre_render
-    zox_system_1(PlayerPauseSystem, EcsPreStore,
-            [in] inputs.DeviceLinks,
-            [none] players.Player)
     zox_system_1(VirtualJoystickSystem, EcsPreStore,
             [in] inputs.DeviceLink,
             [in] raycasts.RaycasterResult,
@@ -46,16 +37,7 @@ void define_systems_players2(ecs_world_t *world) {
             [in] chunks3.RaycastRange,
             [in] chunks3.RaycastVoxelData,
             [out] characters.TriggerActionA)*/
-    zox_system_1(ActionActivateSystem, EcsOnLoad,
-            [in] chunks3.RaycastRange,
-            [in] chunks3.RaycastVoxelData,
-            [out] actions.ActionLinks,
-            [out] characters.TriggerActionB)
 #endif
-    /*zox_system_1(PlayerTestSystem, EcsPreStore,
-            [in] inputs.DeviceLinks,
-            [in] elements.core.CanvasLink,
-            [none] players.Player)*/
     zox_system_1(RaycastGizmoSystem, EcsPreStore,
             [in] cameras.CameraLink,
             [in] chunks3.VoxLink,

@@ -27,12 +27,13 @@ void add_taskbar_button(const hook_taskbar data) {
 void taskbar_set_icons(
     ecs_world_t *world,
     const ecs_entity_t canvas,
-    const ecs_entity_t frame,
+    const ecs_entity_t e,
     const int i
 ) {
     hook_taskbar hook = hook_taskbars->data[i];
     if_has_child_with_id(canvas, hook.component_id) {
-        zox_set(frame, ActiveState, { 1 })
+        zox_set(e, ActiveState, { 1 });
+        zox_set(e, ActiveStateDirty, { zox_dirty_trigger });
     }
 }
 
@@ -53,7 +54,8 @@ void taskbar_button_click_event(
         return;
     }
     byte window_state = zox_valid(window_ui);
-    zox_set(frame, ActiveState, { window_state })
+    zox_set(frame, ActiveState, { window_state });
+    zox_set(frame, ActiveStateDirty, { zox_dirty_trigger });
 }
 
 

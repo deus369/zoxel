@@ -13,7 +13,16 @@ zox_component_color_rgb(FogColor)
 zox_memory_component(Colors, color)
 zox_memory_component(ColorRGBs, color_rgb)
 #include "util/_.c"
+#include "data/_.c"
 #include "systems/_.c"
+
+/*#define zox_biome_grassland 0
+#define zox_biome_desert 1
+#define zox_biome_savanna 2
+#define zox_biome_forest 3
+#define zox_biome_swamp 4
+#define zox_biome_mountain 5
+#define zox_biome_end 6*/
 
 // hmm figure this out later
 extern void set_prefab_debug_label(ecs_world_t *world, DebugLabelEvent value);

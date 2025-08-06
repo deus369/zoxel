@@ -3,6 +3,7 @@
 #include "player3D_trigger_system.c"
 #include "player3_respawn_system.c"
 #include "player3D_jump_system.c"
+#include "player_pause_system.c"
 // ai
 #include "random_jumping.c"
 
@@ -32,6 +33,9 @@ void define_systems_controllers3D(ecs_world_t *world) {
             [out] players.PlayerState,
             [out] players.PlayerRespawn,
             [out] characters.CharacterLink);
+    zox_system_1(PlayerPauseSystem, EcsOnUpdate,
+             [in] inputs.DeviceLinks,
+             [none] players.Player);
 
     // Move to AI
     zox_system(RandomJump3DSystem, zox_pip_physics,

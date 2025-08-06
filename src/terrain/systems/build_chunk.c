@@ -508,7 +508,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
         }
         // uvs
         if (!zox_has(block, TextureLinks)) {
-            continue;    // no texturez...!
+            continue;    // no textures...!
         }
         const byte block_textures_length = zox_gett(block, TextureLinks)->length;
         int voxel_uv_indexes_index = j * 6;

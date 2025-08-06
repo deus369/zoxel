@@ -47,7 +47,7 @@ void define_systems_texts(ecs_world_t *world) {
             [in] elements.core.CanvasLink,
             [out] layouts2.PixelSize,
             [out] rendering.TextureSize,
-            [out] texturez.GenerateTexture,
+            [out] textures.GenerateTexture,
             [out] rendering.MeshVertices2D,
             [out] rendering.MeshDirty,
             [none] Zext)

@@ -84,7 +84,11 @@ color hsv_to_color(const float3 hsv) {
     return (color) { (byte) r, (byte) g, (byte) b, 255 };
 }
 
-float3 generate_hsv_v_s(const float2 hue_limits, const float2 value_limits, const float2 saturation_limits) {
+float3 generate_hsv_v_s(
+    const float2 hue_limits,
+    const float2 value_limits,
+    const float2 saturation_limits
+) {
     return (float3) {
         hue_limits.x + (hue_limits.y - hue_limits.x) * (rand() % 100) * 0.01f,
         saturation_limits.x + (saturation_limits.y - saturation_limits.x) * (rand() % 100) * 0.01f,

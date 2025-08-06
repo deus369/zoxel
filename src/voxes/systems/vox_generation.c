@@ -6,6 +6,7 @@ define_fun_stopwatch(time_vox_generation, 0);
 void VoxGenerationSystem(ecs_iter_t *it) {
     zox_ts_begin(vox_generation);
     const byte unique_colors = 16;
+    const float2 color_r = (float2) { 0.8f, 1.2f };
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(GenerateVox)
@@ -53,7 +54,9 @@ void VoxGenerationSystem(ecs_iter_t *it) {
         // generates random colors based on primary color
         for (int j = 0; j < unique_colors; j++) {
             colors->value[j] = color_rgb_2;
-            color_rgb_multiply_float(&colors->value[j], 0.7f + 0.6f * (rand() % 100) * 0.01f);
+            const float m = randf_range(color_r.x, color_r.y);
+            // 0.7f + 0.6f * (rand() % 100) * 0.01f;
+            color_rgb_multiply_float(&colors->value[j], m);
         }
         if (is_generate_vox_outlines) {
             colors->value[unique_colors] = (color_rgb) { 0, 0, 0 };
@@ -75,7 +78,8 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             add_to_ColorRGBs(colors, dirt_dark_voxel);
             byte black_voxel_3 = colors->length;
 
-            build_vox_soil(node,
+            build_vox_soil(
+                node,
                 node_depth,
                 voxel_range,
                 black_voxel_3,
@@ -88,7 +92,8 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             // generates random colors based on secondary color
             for (int j = colors_count; j < colors_count + unique_colors; j++) {
                 color_rgb new_color = color_to_color_rgb(under_color);
-                color_rgb_multiply_float(&new_color, 0.7f + 0.6f * (rand() % 100) * 0.01f);
+                const float m = randf_range(color_r.x, color_r.y);
+                color_rgb_multiply_float(&new_color, m);
                 add_to_ColorRGBs(colors, new_color);
             }
             const byte2 voxel_range_2 = (byte2) { colors_count + 1, colors_count + unique_colors };
@@ -105,7 +110,8 @@ void VoxGenerationSystem(ecs_iter_t *it) {
             byte black_voxel_2 = colors->length;
 
             // put indexes here
-            build_vox_blended(node,
+            build_vox_blended(
+                node,
                 node_depth,
                 black_voxel_2,
                 black_voxel_3,

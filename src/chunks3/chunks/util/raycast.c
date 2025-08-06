@@ -250,7 +250,7 @@ byte raycast_voxel_node(
             ecs_entity_t block_spawn = get_node_entity_VoxelNode(node_voxel);
             if (block_spawn && zox_has(block_spawn, Position3D)) {
                 // positioning
-                zox_geter_value2(block_spawn, Position3D, float3, block_position)
+                zox_geter_value_non_const(block_spawn, Position3D, float3, block_position)
                 float3 ray_point = float3_add(ray_origin, float3_scale(ray_normal, ray_distance * voxel_scale));
                 // remember: assuming centred, so make cornered position!
                 // offset to corner, half block back! voxel_scale * 0.5

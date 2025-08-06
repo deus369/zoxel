@@ -22,7 +22,7 @@
 #define zox_geter_value(e, component_type, type, name)\
     const type name = zox_get_value(e, component_type)
 
-#define zox_geter_value2(e, component_type, type, name)\
+#define zox_geter_value_non_const(e, component_type, type, name)\
     type name = zox_get_value(e, component_type)
 
 #define zox_geter_value_safe(e, component_type, type, name)\

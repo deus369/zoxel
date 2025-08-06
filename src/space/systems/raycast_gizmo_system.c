@@ -1,13 +1,14 @@
-extern void crosshair_set_type(ecs_world_t* world, byte new);
+extern void crosshair_set_type(ecs_world_t*, ecs_entity_t, byte);
 
 // using DDA for raycasting
-byte raycast_terrain_gizmo(ecs_world_t *world,
+byte raycast_terrain_gizmo(
+    ecs_world_t *world,
     const ecs_entity_t caster,
     const ecs_entity_t camera,
     const ecs_entity_t terrain,
     RaycastVoxelData *data,
-    float range)
-{
+    float range
+) {
     if (!zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_valid(camera) || !zox_has(camera, RaycastOrigin)) {
         return ray_hit_type_none;
     }
@@ -127,6 +128,6 @@ void RaycastGizmoSystem(ecs_iter_t *it) {
             raycastVoxelData,
             raycastRange->value);
         raycastVoxelData->result = ray_hit;
-        crosshair_set_type(world, raycastVoxelData->result);
+        crosshair_set_type(world, local_crosshair, raycastVoxelData->result);
     }
 } zox_declare_system(RaycastGizmoSystem)

@@ -3,7 +3,7 @@ void zox_sdl_window_size( SDL_Window* sdl_window, int2 size) {
 }
 
 void zox_app_set_size(ecs_world_t *world, ecs_entity_t e, int2 size) {
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
     zox_sdl_window_size(sdl_window, size);
     if (!int2_equals(size, zox_gett_value(e, WindowSize))) {
         zox_set(e, WindowSize, { size })
@@ -12,13 +12,13 @@ void zox_app_set_size(ecs_world_t *world, ecs_entity_t e, int2 size) {
 }
 
 void zox_app_set_position(ecs_world_t *world, ecs_entity_t e, int2 position) {
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
     SDL_SetWindowPosition(sdl_window, position.x, position.y);
     zox_set(e, WindowPosition, { position })
 }
 
 int get_sdl_window_header_size(ecs_world_t* world, ecs_entity_t e) {
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
     int top, left, bottom, right;
     if (!SDL_GetWindowBordersSize(sdl_window, &top, &left, &bottom, &right)) {
         return top;

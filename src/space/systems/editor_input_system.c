@@ -1,13 +1,12 @@
-
 // todo: move to add key event
 void EditorInputSystem(ecs_iter_t *it) {
-    zox_sys_world()
-    zox_sys_begin()
-    zox_sys_in(DeviceLinks)
-    zox_sys_in(CanvasLink)
+    zox_sys_world();
+    zox_sys_begin();
+    zox_sys_in(DeviceLinks);
+    zox_sys_in(CanvasLink);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_i(DeviceLinks, deviceLinks)
-        zox_sys_i(CanvasLink, canvasLink)
+        zox_sys_i(DeviceLinks, deviceLinks);
+        zox_sys_i(CanvasLink, canvasLink);
         const ecs_entity_t canvas = canvasLink->value;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];

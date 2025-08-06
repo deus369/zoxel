@@ -7,7 +7,7 @@ zox_component_entity(SpawnerLink)
 zox_component_byte(Quantity)
 zox_entities_component(UserLinks)
 #include "util/user_data.c"
-#include "ui/ui.c"
+#include "ui/_.c"
 
 zox_begin_module(Users)
     zox_define_component_entity(UserLink)

@@ -2,7 +2,7 @@ byte zox_app_get_monitor(ecs_world_t *world, ecs_entity_t e) {
     if (!zox_valid(e) || !zox_has(e, SDLWindow)) {
         return 0;
     }
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
     return SDL_GetWindowDisplayIndex(sdl_window);
 }
 
@@ -56,7 +56,7 @@ byte zox_app_set_monitor(SDL_Window *window, byte index, byte center_window) {
 }
 
 void zox_app_set_monitor_e(ecs_world_t *world, ecs_entity_t e, byte monitor) {
-    zox_geter_value2(e, SDLWindow, SDL_Window*, sdl_window)
+    zox_geter_value_non_const(e, SDLWindow, SDL_Window*, sdl_window)
     zox_app_set_monitor(sdl_window, monitor, 1);
     zox_set(e, WindowMonitor, { monitor })
 }

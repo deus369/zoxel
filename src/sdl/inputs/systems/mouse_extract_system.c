@@ -8,7 +8,7 @@
 void MouseExtractSystem(ecs_iter_t *it) {
     zox_sys_world()
     // remember: sdl doesn't do multiple mouses
-    zox_geter_value2(main_app, WindowSize, int2, screen_size)
+    zox_geter_value_non_const(main_app, WindowSize, int2, screen_size)
     // zox_log("screen_size.y: %i", screen_size.y)
     if (screen_size.x % 2 != 0) {
         screen_size.x--;

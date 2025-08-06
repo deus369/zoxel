@@ -31,6 +31,7 @@
 #include "timing/_.c"
 #include "transforms/_.c"
 #include "networking/_.c"
+#include "triggers/_.c"
 #include "inputs/_.c"
 #include "apps/_.c"
 #include "sdl/_.c"
@@ -86,16 +87,16 @@
 #include "stats/_.c"
 #include "items/_.c"
 #include "skills/_.c"
-#include "actions/_.c"
+#include "lores/_.c"
+#include "achievements/_.c"
 #include "dialogues/_.c"
-#include "quests/_.c"
+// more user stuff
+#include "actions/_.c"
 #include "classes/_.c"
 #include "jobs/_.c"
 #include "races/_.c"
 #include "clans/_.c"
-#include "lores/_.c"
-#include "achievements/_.c"
-#include "users/util/post_users.c"
+#include "quests/_.c"
 // gameplay
 #include "pickups/_.c"
 #include "crafting/_.c"
@@ -132,6 +133,7 @@ zox_begin_module(Zox)
     zox_import_module(Realms)
     zox_import_module(Games)
     zox_import_module(Players)
+    zox_import_module(Triggers)
     zox_import_module(Nodes)
     zox_import_module(Colorz)
 
@@ -142,7 +144,7 @@ zox_begin_module(Zox)
     zox_import_module(Raycasts)
     zox_import_module(Lines)
 
-    zox_import_module(Texturez)
+    zox_import_module(Textures)
     zox_import_module(Musics)
     zox_import_module(Animations)
     zox_import_module(Bones)

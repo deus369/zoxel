@@ -9,12 +9,12 @@
 #include "util/sdl_textures.c"
 #include "io/textures_io.c"
 
-// todo: rename Textures as TextureLinks, and Texturez to Textures again
-zox_begin_module(Texturez)
+// todo: rename Textures as TextureLinks, and Textures to Textures again
+zox_begin_module(Textures)
     define_components_textures(world);
     define_systems_textures(world);
     spawn_prefabs_textures_core(world);
     zox_import_module(TexturesIO)
-zox_end_module(Texturez)
+zox_end_module(Textures)
 
 #endif

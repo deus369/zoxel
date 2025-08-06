@@ -1,8 +1,8 @@
-void crosshair_set_type(ecs_world_t* world, byte new) {
-    if (!zox_valid(local_crosshair)) {
+void crosshair_set_type(ecs_world_t* world, ecs_entity_t e, byte new) {
+    if (!zox_valid(e) || !zox_has(e, HitType)) {
         return;
     }
-    zox_geter_value(local_crosshair, HitType, byte, old)
+    zox_geter_value(e, HitType, byte, old)
     if (old == new) {
         return;
     }

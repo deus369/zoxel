@@ -103,7 +103,8 @@ ecs_entity_t spawn_taskbar(
 
         // Active State
         if (i == 0) {
-            zox_set(frame, ActiveState, { 1 })
+            zox_set(frame, ActiveState, { 1 });
+            zox_set(frame, ActiveStateDirty, { zox_dirty_trigger });
         }
         children.value[i] = frame;
     }

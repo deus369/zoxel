@@ -1,7 +1,10 @@
-const color default_fill_color_frame = (color) { 6, 55, 55, 122 };
+// frames
 const color default_outline_color_frame = (color) { 0, 0, 0, 200 };
-const color default_fill_color_icon = (color) { 88, 144, 200, 200 };
 const color default_outline_color_icon = (color) { 0, 0, 0, 144 };
+// nothing uses these? wait taskbar?
+const color default_fill_color_frame = (color) { 6, 55, 55, 122 };
+const color default_fill_color_icon = (color) { 88, 144, 200, 200 };
+
 const int default_frame_size = 96;
 const int default_icon_size = 64; // 64; // 48;
 const float default_icon_radius = 0.369f; // 16 outt  of 48 originally

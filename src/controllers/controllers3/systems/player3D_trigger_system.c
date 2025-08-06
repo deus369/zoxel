@@ -17,29 +17,33 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
             continue;
         }
         byte is_triggered_a = 0;
-        // byte is_triggered_b = 0;
+        byte is_triggered_b = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
-            if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
+            if (!zox_valid(device) || !zox_has(device, DeviceDisabled) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Mouse)) {
-                zox_geter(device, Children, zevices)
+                zox_geter(device, Children, zevices);
                 for (int k = 0; k < zevices->length; k++) {
                     const ecs_entity_t zevice = zevices->value[k];
                     if (zox_has(zevice, ZevicePointer)) {
-                        const byte click = zox_get_value(zevice, ZevicePointer)
-                        if (devices_get_pressed_this_frame(click)) is_triggered_a = 1;
+                        zox_geter_value(zevice, ZevicePointer, byte, click);
+                        if (devices_get_pressed_this_frame(click)) {
+                            is_triggered_a = 1;
+                        }
                     }
-                    /*if (zox_has(zevice, ZevicePointerRight)) {
-                        const byte click = zox_get_value(zevice, ZevicePointerRight)
-                        if (devices_get_pressed_this_frame(click)) is_triggered_b = 1;
-                    }*/
+                    if (zox_has(zevice, ZevicePointerRight)) {
+                        zox_geter_value(zevice, ZevicePointerRight, byte, click);
+                        if (devices_get_pressed_this_frame(click)) {
+                            is_triggered_b = 1;
+                        }
+                    }
                 }
             } else if (deviceMode->value == zox_device_mode_gamepad && zox_has(device, Gamepad)) {
-                const Children *zevices = zox_get(device, Children)
-                for (int k = 0; k < zevices->length; k++) {
-                    ecs_entity_t zevice = zevices->value[k];
+                zox_geter(device, Children, children)
+                for (int k = 0; k < children->length; k++) {
+                    ecs_entity_t zevice = children->value[k];
                     if (zox_has(zevice, ZeviceButton)) {
                         const DeviceButtonType *deviceButtonType = zox_get(zevice, DeviceButtonType)
                         if (deviceButtonType->value == zox_device_button_x || deviceButtonType->value == zox_device_button_rt) {
@@ -50,7 +54,6 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                             const ZeviceButton *zeviceButton = zox_get(zevice, ZeviceButton)
                             if (devices_get_pressed_this_frame(zeviceButton->value)){
                                 is_triggered_a = 1;
-                                // zox_log(" x pressed\n")
                             }
                         } else if (deviceButtonType->value == zox_device_button_y || deviceButtonType->value == zox_device_button_lt) {
                             const ZeviceDisabled *zeviceDisabled = zox_get(zevice, ZeviceDisabled)
@@ -59,15 +62,18 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
                             }
                             const ZeviceButton *zeviceButton = zox_get(zevice, ZeviceButton)
                             if (devices_get_pressed_this_frame(zeviceButton->value)) {
-                                 // is_triggered_b = 1;
-                                 // zox_log(" y pressed\n")
+                                 is_triggered_b = 1;
                             }
                         }
                     }
                 }
             }
         }
-        if (is_triggered_a) zox_set(character, TriggerActionB, { 1 })
-        // if (is_triggered_b) zox_set(character, TriggerActionA, { 1 })
+        if (is_triggered_a) {
+            zox_set(character, TriggerActionB, { zox_dirty_trigger });
+        }
+        if (is_triggered_b) {
+            zox_set(character, TriggerActionA, { zox_dirty_trigger });
+        }
     }
 } zox_declare_system(Player3DTriggerSystem)
