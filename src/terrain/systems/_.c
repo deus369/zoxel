@@ -23,6 +23,7 @@ void define_systems_terrain(ecs_world_t *world) {
             [in] chunks3.ChunkPosition,
             [in] rendering.RenderLod,
             [in] rendering.RenderDistanceDirty,
+            [in] chunks3.VoxelNodeLoaded,
             [out] chunks3.VoxelNode,
             [out] chunks3.NodeDepth,
             [out] chunks3.VoxelNodeDirty,

@@ -21,11 +21,11 @@ byte load_##name(const char *game, const char *filename, Name *data) {\
     get_save_filepath(game, filename, path, sizeof(path));\
     FILE *file = fopen(path, "rb");\
     if (file == NULL) {\
-        perror("Error opening file for reading");\
+        zox_log_error("Error opening file for reading");\
         return 0;\
     }\
     size_t filesize = fread(data, sizeof(Name), 1, file);\
     fclose(file);\
-    /*zox_log(" > loaded from [%s]\n", path)*/\
+    zox_logv("Loaded from [%s]", path);\
     return filesize > 0;\
 }

@@ -4,7 +4,7 @@ struct name {\
     base value;\
     byte type;\
     void* ptr;\
-    pthread_rwlock_t lock;\
+    zox_lock lock;\
 }; zox_custom_component(name)\
 \
 zox_hookr(on_destroyed_##name, byte, (ecs_world_t* world, name* node), (world, node));\
@@ -15,39 +15,39 @@ void* get_new_children_##name() {\
     return (void*) malloc(sizeof(name) * octree_length);\
 }\
 \
-static inline void write_lock_##name(const name *node) {\
-    if (nodes_w_safety_locks) {\
-        pthread_rwlock_wrlock((pthread_rwlock_t*) &node->lock);\
-    }\
-}\
-\
-static inline void write_unlock_##name(const name *node) {\
-    if (nodes_w_safety_locks) {\
-        pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
-    }\
-}\
-\
-static inline void read_lock_##name(const name *node) {\
-    if (nodes_r_safety_locks) {\
-        pthread_rwlock_rdlock((pthread_rwlock_t*) &node->lock);\
-    }\
-}\
-\
-static inline void read_unlock_##name(const name *node) {\
-    if (nodes_r_safety_locks) {\
-        pthread_rwlock_unlock((pthread_rwlock_t*) &node->lock);\
-    }\
-}\
-\
 static inline void create_lock_##name(name *node) {\
     if (nodes_w_safety_locks || nodes_r_safety_locks) {\
-        pthread_rwlock_init(&node->lock, NULL);\
+        zox_lock_init(&node->lock);\
     }\
 }\
 \
 static inline void destroy_lock_##name(name *node) {\
     if (nodes_w_safety_locks || nodes_r_safety_locks) {\
-        pthread_rwlock_destroy(&node->lock);\
+        zox_lock_destroy(&node->lock);\
+    }\
+}\
+\
+static inline void write_lock_##name(const name *node) {\
+    if (nodes_w_safety_locks) {\
+        zox_lock_write(&node->lock);\
+    }\
+}\
+\
+static inline void write_unlock_##name(const name *node) {\
+    if (nodes_w_safety_locks) {\
+        zox_unlock_write(&node->lock);\
+    }\
+}\
+\
+static inline void read_lock_##name(const name *node) {\
+    if (nodes_r_safety_locks) {\
+        zox_lock_read(&node->lock);\
+    }\
+}\
+\
+static inline void read_unlock_##name(const name *node) {\
+    if (nodes_r_safety_locks) {\
+        zox_unlock_read(&node->lock);\
     }\
 }\
 \

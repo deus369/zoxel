@@ -12,37 +12,42 @@ struct name##_pair {\
 typedef struct {\
     hash_type size;\
     name##_pair **data;\
-    pthread_rwlock_t lock;\
+    zox_lock lock;\
 } name;\
 \
-\
-static inline void write_lock_##name(const name *component) {\
+static inline void create_lock_##name(name *ptr) {\
     if (hashmap_safety_locks) {\
-        pthread_rwlock_wrlock((pthread_rwlock_t*) &component->lock);\
+        zox_lock_init(&ptr->lock);\
     }\
 }\
 \
-static inline void read_lock_##name(const name *component) {\
+static inline void destroy_lock_##name(name *ptr) {\
     if (hashmap_safety_locks) {\
-        pthread_rwlock_rdlock((pthread_rwlock_t*) &component->lock);\
+        zox_lock_destroy(&ptr->lock);\
     }\
 }\
 \
-static inline void lock_unlock_##name(const name *component) {\
+static inline void write_lock_##name(const name *ptr) {\
     if (hashmap_safety_locks) {\
-        pthread_rwlock_unlock((pthread_rwlock_t*) &component->lock);\
+        zox_lock_write(&ptr->lock);\
     }\
 }\
 \
-static inline void destroy_lock_##name(name *component) {\
+static inline void write_unlock_##name(const name *ptr) {\
     if (hashmap_safety_locks) {\
-        pthread_rwlock_destroy(&component->lock);\
+        zox_unlock_write(&ptr->lock);\
     }\
 }\
 \
-static inline void create_lock_##name(name *component) {\
+static inline void read_lock_##name(const name *ptr) {\
     if (hashmap_safety_locks) {\
-        pthread_rwlock_init(&component->lock, NULL);\
+        zox_lock_read(&ptr->lock);\
+    }\
+}\
+\
+static inline void read_unlock_##name(const name *ptr) {\
+    if (hashmap_safety_locks) {\
+        zox_unlock_read(&ptr->lock);\
     }\
 }\
 \
@@ -83,7 +88,7 @@ void name##_add(name* map, key_type key_raw, type value) {\
     pair->value = value;\
     pair->next = map->data[index];\
     map->data[index] = pair;\
-    lock_unlock_##name(map);\
+    write_unlock_##name(map);\
 }\
 \
 type name##_get(name* map, key_type key_raw) {\
@@ -104,7 +109,7 @@ type name##_get(name* map, key_type key_raw) {\
         pair = pair->next;\
         checks++;\
     }\
-    lock_unlock_##name(map);\
+    read_unlock_##name(map);\
     return value;\
 }\
 \
@@ -119,13 +124,13 @@ byte name##_has(name* map, key_type key_raw) {\
     uint checks = 0;\
     while (pair != NULL && checks < max_safety_checks_hashmap) {\
         if (pair->key == key) {\
-            lock_unlock_##name(map);\
+            read_unlock_##name(map);\
             return 1;\
         }\
         pair = pair->next;\
         checks++;\
     }\
-    lock_unlock_##name(map);\
+    read_unlock_##name(map);\
     return 0;\
 }\
 \
@@ -153,7 +158,7 @@ void name##_remove(name* map, key_type key_raw) {\
         pair = pair->next;\
         checks++;\
     }\
-    lock_unlock_##name(map);\
+    write_unlock_##name(map);\
 }\
 \
 void name##_dispose(name* map) {\
@@ -172,7 +177,7 @@ void name##_dispose(name* map) {\
         }\
     }\
     free(map->data);\
-    lock_unlock_##name(map);\
+    write_unlock_##name(map);\
     destroy_lock_##name(map);\
     free(map);\
 }\
@@ -193,6 +198,6 @@ int count_##name(name* map) {\
             checks++;\
         }\
     }\
-    lock_unlock_##name(map);\
+    read_unlock_##name(map);\
     return count;\
 }

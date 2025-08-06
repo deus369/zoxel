@@ -166,34 +166,35 @@ const BiomeData bcr_neon_void = {
     .chance = 0.02f,
 };
 
-
-static const BiomeData zox_biomes[] = {
-    bcr_earthy,
-    bcr_martian,
-    bcr_toxic_swamp,
-    bcr_fungal_alien,
-    bcr_volcanic,
-    bcr_artic_tundra,
-    bcr_radioactive_wasteland,
-    bcr_underground_mushroom,
-    bcr_crystal_valley,
-    bcr_wind_scarred_cliffs,
-    bcr_neon_void,
-};
-
 // Functions
 
 BiomeData pick_biome(long int seed) {
+    static const BiomeData zox_biomes[] = {
+        bcr_earthy,
+        bcr_martian,
+        bcr_toxic_swamp,
+        bcr_fungal_alien,
+        bcr_volcanic,
+        bcr_artic_tundra,
+        bcr_radioactive_wasteland,
+        bcr_underground_mushroom,
+        bcr_crystal_valley,
+        bcr_wind_scarred_cliffs,
+        bcr_neon_void,
+    };
+
     srand((unsigned int) seed);
     // byte biome_type = rand() % zox_biome_end;
     float roll = (float)rand() / (float)RAND_MAX;
     float sum = 0.0f;
     for (byte i = 0; i < zox_biome_end; i++) {
-        sum += zox_biomes[i].chance;
+        BiomeData biome = zox_biomes[i];
+        sum += biome.chance;
         if (roll <= sum) {
-            return zox_biomes[i];
+            return biome;
         }
     }
+
     // Fallback to last if float rounding fails
     return zox_biomes[zox_biome_end - 1];
 }

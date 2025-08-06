@@ -68,13 +68,14 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     // uint update_count = 0;
     // int stage_id = get_thread_index();
     // double time_start = get_time_ms();
-    zox_sys_begin()
-    zox_sys_in(ChunkPosition)
-    zox_sys_in(RenderLod)
-    zox_sys_in(RenderDistanceDirty)
-    zox_sys_out(VoxelNode)
-    zox_sys_out(NodeDepth)
-    zox_sys_out(VoxelNodeDirty)
+    zox_sys_begin();
+    zox_sys_in(ChunkPosition);
+    zox_sys_in(RenderLod);
+    zox_sys_in(RenderDistanceDirty);
+    zox_sys_in(VoxelNodeLoaded);
+    zox_sys_out(VoxelNode);
+    zox_sys_out(NodeDepth);
+    zox_sys_out(VoxelNodeDirty);
     byte any_dirty = 0;
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
@@ -95,12 +96,14 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_sys_i(RenderLod, renderLod);
         zox_sys_i(ChunkPosition, chunkPosition);
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty);
+        zox_sys_i(VoxelNodeLoaded, loaded);
         zox_sys_o(NodeDepth, nodeDepth);
         zox_sys_o(VoxelNode, voxelNode);
         zox_sys_o(VoxelNodeDirty, voxelNodeDirty);
         // todo: remember if has generated yet, keep a generated LOD state!
         //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
-        if (renderDistanceDirty->value != zox_dirty_active) {
+        if (loaded->value) zox_log_error("LOADED ALREADY??");
+        if (renderDistanceDirty->value != zox_dirty_active || loaded->value) {
             continue;
         }
 

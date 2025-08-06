@@ -70,9 +70,9 @@ byte raycast_voxel_node(
 {
     // setup voxel data
     const byte raycasting_terrain = voxels && voxels->length && chunk_links;
-    const VoxelNode* node_chunk;
-    VoxelNode* node_voxel;
-    byte chunk_depth;
+    const VoxelNode* node_chunk = NULL;
+    VoxelNode* node_voxel = NULL;
+    byte chunk_depth = 0;
     byte ray_hit = 0;
     float ray_distance = 0;
     int3 hit_normal = int3_zero;

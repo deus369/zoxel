@@ -97,7 +97,7 @@ void define_systems_elements_core(ecs_world_t *world) {
     zox_system(ElementActiveSystem, EcsOnUpdate,
         [in] elements.core.ActiveState,
         [in] elements.core.ActiveStateDirty,
-        [out] colorz.Color,
+        // [out] colorz.Color,
         [out] textures.OutlineColor,
         [out] rendering.Brightness,
         [out] textures.GenerateTexture,

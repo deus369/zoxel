@@ -10,6 +10,11 @@ zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end + 1)
 #include "mesh_trigger.c"
 #include "mesh_trigger_neighbor.c"
 #include "debug.c"
+
+void get_chunk_filename(char* out, const int3 position) {
+        sprintf(out, "chunk_%i_%i_%i.dat", position.x, position.y, position.z);
+}
+
 #include "chunk3_save.c"
 #include "chunk3_load.c"
 
@@ -64,5 +69,7 @@ void define_systems_chunks(ecs_world_t *world) {
             [in] chunks3.ChunkPosition,
             [out] chunks3.VoxelNodeDirty,
             [out] chunks3.VoxelNodeEdited,
-            [out] chunks3.VoxelNode);
+            [out] chunks3.VoxelNodeLoaded,
+            [out] chunks3.VoxelNode,
+            [out] chunks3.NodeDepth);
 }

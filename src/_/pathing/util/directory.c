@@ -84,8 +84,11 @@ void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
     }
     const int len = strlen(filepath) + 1;
     char* filepath2 = malloc(len * sizeof(char)); //) strdup(filepath);
-    strncpy(filepath2, filepath, len - 1);
-    filepath2[len - 1] = '\0';
+    // strncpy(filepath2, filepath, len - 1);
+    // snprintf(filepath2, sizeof(filepath2), "%s", filepath);
+    snprintf(filepath2, 256, "%s", filepath);
+
+    // filepath2[len - 1] = '\0';
     fileList->files[fileList->count] = filepath2;
 
     // zox_log(" + filepath: %s\n", filepath)
