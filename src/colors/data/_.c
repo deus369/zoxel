@@ -165,7 +165,7 @@ BiomeData pick_biome(long int seed) {
         .sky      = { 280, 310, 90, 100, 100, 100 }, // neon fog
         .chance = 0.02f,
     };
-    static const BiomeData zox_biomes[] = {
+    const BiomeData zox_biomes[] = {
         bcr_earthy,
         bcr_martian,
         bcr_toxic_swamp,
