@@ -9,8 +9,8 @@
  *      - refactor keyboard as a list of keys
  *
  * */
-#ifndef zox_mod_inputs
-#define zox_mod_inputs
+#ifndef zoxm_inputs
+#define zoxm_inputs
 
 #include "data/_.c"
 #include "components/_.c"

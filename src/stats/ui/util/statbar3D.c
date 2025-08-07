@@ -32,7 +32,7 @@
         .fill_color = statbar3D_font_color_fill,
         .outline_color = statbar3D_font_color_outline
     };
-    const ecs_entity_2 e = spawn_elementbar3(world, &spawn_data, statbar_text_data, statbar_zigel_data);
+    const entity2 e = spawn_elementbar3(world, &spawn_data, statbar_text_data, statbar_zigel_data);
 
     zox_set(e.x, StatLink, { data->health })
     zox_set(e.y, StatLink, { data->health })

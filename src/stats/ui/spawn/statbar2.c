@@ -3,7 +3,7 @@ ecs_entity_t spawn_statbar2(
     const ecs_entity_t canvas,
     const ecs_entity_t parent,
     const ecs_entity_t player,
-    const ecs_entity_2 character_group,
+    const entity2 character_group,
     const color_rgb c,
     const byte layer,
     const float2 anchor,
@@ -24,7 +24,7 @@ ecs_entity_t spawn_statbar2(
     color front_color = (color) { c.r, c.g, c.b, back_bar_color.a };
 
     const int2 canvas_size = zox_get_value(canvas, PixelSize)
-    const ecs_entity_2 e2 = spawn_elementbar2D(world,
+    const entity2 e2 = spawn_elementbar2D(world,
         prefab_statbar2D,
         canvas,
         parent,

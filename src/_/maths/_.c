@@ -5,8 +5,8 @@
  *      - pure util functions
  *      - todo: put data and fun into util sub folder
  * */
-#ifndef zox_mod_maths
-#define zox_mod_maths
+#ifndef zoxm_maths
+#define zoxm_maths
 
 #include "data/constants.c"
 #include "util/float_util.c"

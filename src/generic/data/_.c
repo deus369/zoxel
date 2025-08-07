@@ -2,5 +2,6 @@
 #include "color_rgb.c"
 #include "octree_helper.c"
 #include "text_group.c"
-#include "ecs_entity_2.c"
+#include "entity2.c"
+#include "entity3.c"
 #include "debug_label_event.c"

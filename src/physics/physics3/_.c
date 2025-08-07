@@ -1,5 +1,5 @@
-#if !defined(zox_mod_physics3) && defined(zox_mod_transforms3)
-#define zox_mod_physics3
+#if !defined(zoxm_physics3) && defined(zoxm_transforms3)
+#define zoxm_physics3
 
 #include "settings/_.c"
 #include "components/_.c"

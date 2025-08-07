@@ -5,8 +5,8 @@
  *
  *  also macros for other data types
  */
-#ifndef zox_mod_collections
-#define zox_mod_collections
+#ifndef zoxm_collections
+#define zoxm_collections
 
 #include "data/types.c"
 #include "../memory/_.c"    // uses types: uint

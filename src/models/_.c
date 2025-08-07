@@ -1,5 +1,5 @@
-#ifndef zox_mod_models
-#define zox_mod_models
+#ifndef zoxm_models
+#define zoxm_models
 
 zox_declare_tag(Model)
 zox_declare_tag(ModelCharacter)

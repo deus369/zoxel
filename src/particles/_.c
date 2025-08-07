@@ -2,8 +2,8 @@
 #define zox_particles
 
 zox_component(ParticleEmitRate, int)
-#include "particles2D/particles2D.c"
-#include "particles3D/particles3D.c"
+#include "particles2D/_.c"
+#include "particles3D/_.c"
 
 zox_begin_module(Particles)
     zox_define_component(ParticleEmitRate)

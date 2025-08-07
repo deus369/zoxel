@@ -1,5 +1,5 @@
-#ifndef zox_mod_ui_skills
-#define zox_mod_ui_skills
+#ifndef zoxm_ui_skills
+#define zoxm_ui_skills
 
 zox_declare_tag(MenuSkills)
 zox_declare_tag(IconSkill)

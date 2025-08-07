@@ -18,14 +18,16 @@ static inline void float2_multiply_float2_p(float2 *input, const float2 mul) {
     input->y *= mul.y;
 }
 
-static inline void float2_divide_float2(float2 *input, const float2 div) {
-    input->x /= div.x;
-    input->y /= div.y;
+static inline void float2_divide_float2(float2 *v, const float2 d) {
+    if (d.x != 0) v->x /= d.x;
+    if (d.y != 0) v->y /= d.y;
 }
 
-static inline void float2_divide_p(float2 *input, const float div) {
-    input->x /= div;
-    input->y /= div;
+static inline void float2_divide_p(float2 *v, const float d) {
+    if (d != 0) {
+        v->x /= d;
+        v->y /= d;
+    }
 }
 
 static inline void float2_add_float2_p(float2 *input, const float2 add) {

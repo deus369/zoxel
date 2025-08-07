@@ -1,7 +1,6 @@
 #include "label.c"
 
-extern ecs_entity_t get_linked_terrain(ecs_world_t* world, ecs_entity_t e);
-
+extern ecs_entity_t get_linked_terrain(ecs_world_t*, ecs_entity_t);
 
 
 void test_load_chunk(ecs_world_t *world, int32_t keycode) {

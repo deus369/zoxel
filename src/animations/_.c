@@ -1,5 +1,5 @@
-#ifndef zox_mod_animations
-#define zox_mod_animations
+#ifndef zoxm_animations
+#define zoxm_animations
 
 // todo: lerp position from A to B entities
 // currently we are animating components by hand

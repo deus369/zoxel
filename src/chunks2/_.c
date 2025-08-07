@@ -1,5 +1,5 @@
-#ifndef zox_mod_tiles
-#define zox_mod_tiles
+#ifndef zoxm_tiles
+#define zoxm_tiles
 
 zox_begin_module(Tiles)
 zox_end_module(Tiles)

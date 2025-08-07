@@ -1,8 +1,11 @@
-void player_end_game3D(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+void player_end_game3(
+    ecs *world,
+    const ecs_entity_t player
+) {
+    zox_geter_value(player, GameLink, ecs_entity_t, game);
+    zox_geter_value(game, RealmLink, ecs_entity_t, realm);
+    zox_geter_value(player, CanvasLink, ecs_entity_t, canvas);
+    zox_geter_value(player, CameraLink, ecs_entity_t, camera);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     set_camera_transform_to_main_menu(&camera_position, &camera_rotation, terrain_depth);

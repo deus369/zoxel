@@ -1,5 +1,5 @@
-#ifndef zox_mod_cubes
-#define zox_mod_cubes
+#ifndef zoxm_cubes
+#define zoxm_cubes
 
 #include "data/_.c"
 #include "prefabs/_.c"

@@ -1,6 +1,6 @@
 // Vodes3 are our Voxel Entities in the World!
-#ifndef zox_mod_vodes3
-#define zox_mod_vodes3
+#ifndef zoxm_vodes3
+#define zoxm_vodes3
 
 byte block_vox_render_at_lod = 0;
 #include "hooks/_.c"

@@ -1,5 +1,5 @@
-#ifndef zox_mod_raycasts
-#define zox_mod_raycasts
+#ifndef zoxm_raycasts
+#define zoxm_raycasts
 
 // #define zox_debug_camera_rays // used to verify raycast line is straight
 // todo later: fix rays for coop, viewport distortion effects rays

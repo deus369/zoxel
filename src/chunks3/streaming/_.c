@@ -1,5 +1,5 @@
-#ifndef zox_mod_streaming
-#define zox_mod_streaming
+#ifndef zoxm_streaming
+#define zoxm_streaming
 
 #include "settings/_.c"
 #include "components/_.c"

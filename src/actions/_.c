@@ -1,5 +1,5 @@
-#if !defined(zox_mod_actions) && defined(zox_mod_users) && defined(zox_mod_items) && defined(zox_mod_skills)
-#define zox_mod_actions
+#if !defined(zoxm_actions) && defined(zoxm_users) && defined(zoxm_items) && defined(zoxm_skills)
+#define zoxm_actions
 
 byte test_actions_blocks = 0;
 byte test_actions_skills = 0;

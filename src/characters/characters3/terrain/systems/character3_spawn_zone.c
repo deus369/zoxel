@@ -1,4 +1,4 @@
-void Characters3SpawnZoneSystem(ecs_iter_t *it) {
+void Characters3SpawnZoneSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)
     zox_sys_in(RenderDistance)

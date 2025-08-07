@@ -1,4 +1,4 @@
-#ifdef zox_mod_actions
+#ifdef zoxm_actions
 
 void ActionsShortcutSystem(ecs_iter_t *it) {
     zox_sys_world()

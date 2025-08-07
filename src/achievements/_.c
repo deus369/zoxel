@@ -1,5 +1,5 @@
-#if !defined(zox_mod_achievements) && defined(zox_mod_users)
-#define zox_mod_achievements
+#if !defined(zoxm_achievements) && defined(zoxm_users)
+#define zoxm_achievements
 
 zox_declare_user_data(Achievement)
 // Realm Contains all Achievements

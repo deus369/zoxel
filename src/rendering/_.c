@@ -1,5 +1,5 @@
-#ifndef zox_mod_rendering
-#define zox_mod_rendering
+#ifndef zoxm_rendering
+#define zoxm_rendering
 
 #include "components/_.c"
 #include "data/_.c"
@@ -61,7 +61,7 @@ zox_begin_module(Rendering)
 
     zox_import_module(Shaders)
     zox_import_module(Rendering2)
-#ifdef zox_mod_rendering_basics3D
+#ifdef zoxm_rendering_basics3D
     zox_import_module(Rendering3)
 #endif
     zox_import_module(RenderingCameras)

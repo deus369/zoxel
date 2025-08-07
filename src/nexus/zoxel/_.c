@@ -1,5 +1,5 @@
-#if !defined(zox_mod_game) // && defined(zox_mod_players)
-#define zox_mod_game
+#if !defined(zoxm_game) // && defined(zoxm_players)
+#define zoxm_game
 
 // todo: spawn_prefab_hook -> spawn after settings are set here in GameModule
 
@@ -124,11 +124,12 @@ void zoxel_debug_keys() {
     add_hook_key_down(toggle_life_terrain);
     add_hook_key_down(toggle_player_death);
     add_hook_key_down(spawn_tilemap_ui);
-    add_hook_key_down(toggle_editor);
     add_hook_key_down(key_down_toggle_debug_chunks);
     add_hook_key_down(key_down_toggle_debug_character_bounds);
     add_hook_key_down(key_down_toggle_debug_voxes_bounds);
     add_hook_key_down(key_down_toggle_streaming);
+    add_hook_key_down(toggle_inspector);
+    add_hook_key_down(toggle_hierarchy);
     // add_hook_key_down(key_down_test_aura);
     // add_hook_key_down(keydown_test_cubes);
     // add_hook_key_down(keydown_test_popup3);

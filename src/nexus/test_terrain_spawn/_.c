@@ -1,5 +1,5 @@
-#if !defined(zox_mod_game) // && defined(zox_mod_players)
-#define zox_mod_game
+#if !defined(zoxm_game) // && defined(zoxm_players)
+#define zoxm_game
 
 // #define zox_is_flatlands
 // todo: spawn stream point and move around

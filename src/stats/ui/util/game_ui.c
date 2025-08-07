@@ -71,7 +71,7 @@ ecs_entity_t spawn_menu_game_stats(
                 canvas,
                 panel,
                 player,
-                (ecs_entity_2) {
+                (entity2) {
                     character, stat
                 },
                 cvalue,
@@ -95,7 +95,7 @@ ecs_entity_t spawn_menu_game_stats(
                 canvas,
                 parent,
                 player,
-                (ecs_entity_2) {
+                (entity2) {
                     character,
                     stat
                 },

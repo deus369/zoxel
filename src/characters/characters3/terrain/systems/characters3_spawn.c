@@ -1,8 +1,8 @@
 
-extern void on_spawned_character3_npc(ecs_world_t*, const ecs_entity_t);
+extern void on_spawned_character3_npc(ecs*, const entity);
 // we need to check if chunk has generated yet - is there a component for this?
 
-void Characters3SpawnSystem(ecs_iter_t *it) {
+void Characters3SpawnSystem(iter *it) {
     if (disable_npcs || !character_spawn_rate_max) {
         return;
     }
@@ -56,11 +56,11 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
         }
 
         // getters
-        ecs_entity_t terrain = voxLink->value;
-        zox_geter_value(terrain, RealmLink, ecs_entity_t, realm)
+        entity terrain = voxLink->value;
+        zox_geter_value(terrain, RealmLink, entity, realm)
         zox_geter(realm, CharacterLinks, characters)
         zox_geter_value(realm, CharactersChanceMax, byte, max_chance)
-        const ecs_entity_t chunk_above = chunkNeighbors->value[direction_up];
+        const entity chunk_above = chunkNeighbors->value[direction_up];
         const VoxelNode* voxel_node_above = zox_valid(chunk_above) ? zox_gett(chunk_above, VoxelNode) : NULL;
 
         // calcs
@@ -79,9 +79,9 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             // find random from realm characters
             byte chance_current = 0;
             byte chance_rolled = rand() % max_chance;
-            ecs_entity_t meta = 0;
+            entity meta = 0;
             for (byte k = 0; k < characters->length; k++) {
-                ecs_entity_t e2 = characters->value[k];
+                entity e2 = characters->value[k];
                 zox_geter_value(e2, SpawnChance, byte, chance)
                 chance_current += chance;
                 if (chance_rolled <= chance_current) {
@@ -93,8 +93,8 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 zox_log_error("failed to find a spawn character_meta")
                 continue;
             }
-            zox_geter_value_non_const(meta, ModelLink, ecs_entity_t, model)
-            zox_geter_value(meta, Character3PrefabLink, ecs_entity_t, prefab_character)
+            zox_geter_value_non_const(meta, ModelLink, entity, model)
+            zox_geter_value(meta, Character3PrefabLink, entity, prefab_character)
             if (!model || !prefab_character) {
                 zox_log_error("failed to find a spawn character_meta")
                 continue;
@@ -135,7 +135,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
             float4 rotation = quaternion_from_euler( (float3) { 0, (rand() % 361) * degreesToRadians, 0 });
 
             // 3) Finally we spawn and link
-            // ecs_entity_t prefab_character = is_characters_instanced ? prefab_character3_instanced_npc : prefab_character3_npc;
+            // entity prefab_character = is_characters_instanced ? prefab_character3_instanced_npc : prefab_character3_npc;
             spawn_character3D_data spawn_data = {
                 .prefab = prefab_character,
                 .terrain = voxLink->value,
@@ -148,7 +148,7 @@ void Characters3SpawnSystem(ecs_iter_t *it) {
                 .model = model,
                 .scale = vox_model_scale,
             };
-            const ecs_entity_t character = spawn_character3(world, spawn_data);
+            const entity character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);
             add_to_EntityLinks(entityLinks, character);
 

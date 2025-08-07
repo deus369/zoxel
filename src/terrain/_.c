@@ -8,8 +8,8 @@
   *      - todo: delay BlockVoxSpawnSystem to main thread pipeline like character spawning, use same trigger? rest on load? make a resetsystem 2 for this - just  make reset defines use the pipeline
  *
  * */
-#if !defined(zox_mod_terrain) && defined(zox_mod_chunks3)
-#define zox_mod_terrain
+#if !defined(zoxm_terrain) && defined(zoxm_chunks3)
+#define zoxm_terrain
 
 #include "settings/_.c"
 #include "components/_.c"
@@ -20,6 +20,7 @@
 #include "util/_.c"
 #include "systems/_.c"
 #include "game/_.c"
+#include "debug/_.c"
 
 void module_dispose_terrain(ecs_world_t *world, void *ctx) {
     dispose_hook_spawn_blocks();

@@ -2,7 +2,7 @@
 float4 main_menu_rotation_speed;
 
 // spawns game camera and ui camera on top
-ecs_entity_2 spawn_player_camera(ecs_world_t *world,
+entity2 spawn_player_camera(ecs_world_t *world,
     const ecs_entity_t player,
     const float3 camera_position,
     const float4 camera_rotation,
@@ -29,5 +29,5 @@ ecs_entity_2 spawn_player_camera(ecs_world_t *world,
         canvas_size,
         screen_to_canvas);
     zox_debug_spawn(world, e2, "camera_game_ui", "instance");
-    return (ecs_entity_2) { e, e2 };
+    return (entity2) { e, e2 };
 }

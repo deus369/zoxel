@@ -1,5 +1,5 @@
-#if !defined(zox_mod_stats) && defined(zox_mod_users)
-#define zox_mod_stats
+#if !defined(zoxm_stats) && defined(zoxm_users)
+#define zoxm_stats
 
 #include "settings/_.c"
 #include "data/_.c"

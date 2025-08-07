@@ -1,4 +1,4 @@
-void Characters3DespawnSystem(ecs_iter_t *it) {
+void Characters3DespawnSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)

@@ -1,5 +1,5 @@
-#ifndef zox_mod_game
-#define zox_mod_game
+#ifndef zoxm_game
+#define zoxm_game
 
 zox_begin_module(ZoxGame)
     game_name = "zixel";

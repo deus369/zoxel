@@ -1,5 +1,5 @@
-#if !defined(zox_mod_physics2) && defined(zox_mod_transforms2)
-#define zox_mod_physics2
+#if !defined(zoxm_physics2) && defined(zoxm_transforms2)
+#define zoxm_physics2
 
 zox_component(Velocity2D, float2)     //! Velocity movement of a 2D Entity.
 zox_component(Acceleration2D, float2) //! Accelaration movement of a 2D Entity.

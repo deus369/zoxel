@@ -1,5 +1,5 @@
-#ifndef zox_mod_musics
-#define zox_mod_musics
+#ifndef zoxm_musics
+#define zoxm_musics
 
 // todo: make sub modules:
 //      - notes

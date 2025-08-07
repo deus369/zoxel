@@ -1,5 +1,5 @@
-#ifndef zox_mod_generic
-#define zox_mod_generic
+#ifndef zoxm_generic
+#define zoxm_generic
 
 #include "components/_.c"
 #include "data/_.c"

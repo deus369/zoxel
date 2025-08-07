@@ -1,5 +1,5 @@
-#if !defined(zox_mod_cameras2) && defined(zox_mod_transforms2)
-#define zox_mod_cameras2
+#if !defined(zoxm_cameras2) && defined(zoxm_transforms2)
+#define zoxm_cameras2
 
 zox_declare_tag(CameraFollower2)
 #include "prefabs/camera2.c"

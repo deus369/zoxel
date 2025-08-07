@@ -1,5 +1,5 @@
-#ifndef zox_mod_realms
-#define zox_mod_realms
+#ifndef zoxm_realms
+#define zoxm_realms
 
 // todo: we really should fadeoout first before generating realm!
 #include "data/generate_realm.c"

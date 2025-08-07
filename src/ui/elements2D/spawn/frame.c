@@ -1,4 +1,4 @@
-ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame data) {
+entity3 spawn_frame(ecs_world_t *world, SpawnFrame data) {
     zox_instance(data.element.prefab)
     zox_name("frame")
     set_element_spawn_data(world, e, data.canvas, data.parent, &data.element);
@@ -53,5 +53,5 @@ ecs_entity_3 spawn_frame(ecs_world_t *world, SpawnFrame data) {
         zox_set_unique_name(zext, "icon_text")
     }
     zox_set(e, Children, { children->length, children->value })
-    return (ecs_entity_3) { e, icon, zext };
+    return (entity3) { e, icon, zext };
 }

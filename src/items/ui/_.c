@@ -1,5 +1,5 @@
-#ifndef zox_mod_items_ui
-#define zox_mod_items_ui
+#ifndef zoxm_items_ui
+#define zoxm_items_ui
 
 zox_declare_tag(MenuItems)
 zox_declare_tag(IconItem)

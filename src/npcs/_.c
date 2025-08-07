@@ -1,5 +1,5 @@
-#if !defined(zox_mod_ai) && defined(zoxm_characters)
-#define zox_mod_ai
+#if !defined(zoxm_ai) && defined(zoxm_characters)
+#define zoxm_ai
 
 // todo: a threat level - if you are higher level than npc they should have higher chance to flee!
 

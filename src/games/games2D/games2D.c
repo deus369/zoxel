@@ -1,1 +1,0 @@
-ecs_entity_t prefab_start_game2D_player;

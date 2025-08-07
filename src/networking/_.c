@@ -1,5 +1,5 @@
-#ifndef zox_mod_networking
-#define zox_mod_networking
+#ifndef zoxm_networking
+#define zoxm_networking
 
 byte zox_log_network_errors = 0;
 #include "settings/_.c"

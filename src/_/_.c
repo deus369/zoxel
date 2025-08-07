@@ -5,8 +5,8 @@
  *
  *  The Lowest of the Lows
  */
-#ifndef zox_mod_core
-#define zox_mod_core
+#ifndef zoxm_core
+#define zoxm_core
 
 #include "platforms/defines.c"
 #include "platforms/_.c"

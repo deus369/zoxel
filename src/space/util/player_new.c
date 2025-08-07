@@ -1,8 +1,11 @@
-TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t terrain) {
+TerrainPlace find_position_in_terrain(
+    ecs *world,
+    const entity terrain
+) {
     const float3 bounds = (float3) { 0.5f, 1.0, 0.5f };
     // zox_geter(terrain, VoxScale, voxScale)
     zox_geter(terrain, ChunkLinks, chunk_links)
-    ecs_entity_t chunk = 0;
+    entity chunk = 0;
     int3 chunk_position = int3_zero;
     byte3 local_position = byte3_zero;
     const VoxelNode *voxel_node_above = NULL;
@@ -46,12 +49,15 @@ TerrainPlace find_position_in_terrain(ecs_world_t *world, const ecs_entity_t ter
     };
 }
 
-void game_start_player_new_positioner(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t game = zox_get_value(player, GameLink)
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
-    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
-    const ecs_entity_t character = zox_get_value(player, CharacterLink)
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+void game_start_player_new_positioner(
+    ecs *world,
+    const entity player
+) {
+    const entity game = zox_get_value(player, GameLink)
+    const entity realm = zox_get_value(game, RealmLink)
+    const entity terrain = zox_get_value(realm, TerrainLink)
+    const entity character = zox_get_value(player, CharacterLink)
+    const entity camera = zox_get_value(player, CameraLink)
     TerrainPlace spawn_place = find_position_in_terrain(world, terrain);
     if (!zox_valid(spawn_place.chunk)) {
         zox_log_error("+ placement failure: player character placed into [%ix%ix%i]", spawn_place.chunk_position.x, spawn_place.chunk_position.y, spawn_place.chunk_position.z)
@@ -61,26 +67,27 @@ void game_start_player_new_positioner(ecs_world_t *world, const ecs_entity_t pla
     }
 }
 
-ecs_entity_t game_start_player_new(ecs_world_t *world,
-    const ecs_entity_t player)
-{
-    const ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
+entity game_start_player_new(
+    ecs *world,
+    const entity player
+) {
+    const entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!model) {
         zox_log_error("[tall_cube] not found on player")
     }
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    const entity camera = zox_get_value(player, CameraLink)
     if (!camera) {
         return 0;
     }
-    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const entity game = zox_get_value(player, GameLink)
     if (!game) {
         return 0;
     }
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    const entity realm = zox_get_value(game, RealmLink)
     if (!realm) {
         return 0;
     }
-    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    const entity terrain = zox_get_value(realm, TerrainLink)
     if (!terrain) {
         return 0;
     }
@@ -89,7 +96,7 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
     byte did_add = 0;
     for (int i = -render_distance_y; i <= render_distance_y * 2; i++) {
         int3 chunk_position = (int3) { 0, i, 0 };
-        ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
+        entity chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
         if (!zox_valid(chunk)) {
             chunk = spawn_chunk_terrain(world,
                     prefab_chunk_height,
@@ -122,7 +129,7 @@ ecs_entity_t game_start_player_new(ecs_world_t *world,
         // .chunk_position = chunk_position,
         // .terrain_chunk = spawn_place.chunk,
     };
-    const ecs_entity_t e = spawn_character3_player(world, spawn_data);
+    const entity e = spawn_character3_player(world, spawn_data);
     delay_event(world, &game_start_player_new_positioner, player, 0.5);
     delay_event(world, &spawn_player_game_ui, player, 0.5);
     return e;

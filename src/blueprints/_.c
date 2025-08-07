@@ -1,5 +1,5 @@
-#if !defined(zox_mod_blueprints) && defined(zox_mod_nodes)
-#define zox_mod_blueprints
+#if !defined(zoxm_blueprints) && defined(zoxm_nodes)
+#define zoxm_blueprints
 
 // first we spawn a texture blueprint
 // we want one input, one output, one action node

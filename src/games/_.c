@@ -1,16 +1,18 @@
-#ifndef zox_mod_games
-#define zox_mod_games
+#ifndef zoxm_games
+#define zoxm_games
 
 const char *game_name = "zox";
 zox_declare_tag(Game)
 zox_component_byte(GameState)
 zox_component_byte(GameStateTarget)
 zox_component_entity(GameLink)
-#include "data/data.c"
-#include "prefabs/prefabs.c"
+#include "data/_.c"
+#include "prefabs/_.c"
 #include "util/game_events.c"
 #include "systems/_.c"
-#include "games2D/games2D.c"
+#include "games2/_.c"
+#include "games2/_.c"
+#include "debug/_.c"
 
 static inline ecs_entity_t get_player_game(ecs_world_t *world, const ecs_entity_t player) {
     return zox_get_value(player, GameLink)

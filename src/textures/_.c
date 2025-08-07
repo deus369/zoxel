@@ -1,5 +1,5 @@
-#ifndef zox_mod_textures
-#define zox_mod_textures
+#ifndef zoxm_textures
+#define zoxm_textures
 
 #include "data/_.c"
 #include "generation/_.c"
@@ -7,7 +7,8 @@
 #include "systems/_.c"
 #include "tests/test_texture.c"
 #include "util/sdl_textures.c"
-#include "io/textures_io.c"
+#include "io/_.c"
+#include "debug/_.c"
 
 // todo: rename Textures as TextureLinks, and Textures to Textures again
 zox_begin_module(Textures)

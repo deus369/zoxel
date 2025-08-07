@@ -1,5 +1,5 @@
-#ifndef zox_editor_ui
-#define zox_editor_ui
+#ifndef zoxm_editor
+#define zoxm_editor
 
 // todo: make basic structs just to read out generic component data
 
@@ -11,6 +11,7 @@ zox_component_byte(HierarchyUIDirty)
 #include "prefabs/_.c"
 #include "util/_.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(EditorUI)
     zox_define_tag(EditorElement)

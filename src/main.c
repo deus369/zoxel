@@ -195,13 +195,13 @@ zox_begin_module(Zox)
     zox_import_module(Npcs)
     zox_import_module(EditorUI)
     // space
-#if defined(zox_mod_players)
+#if defined(zoxm_players)
     if (!headless) {
         zox_import_module(Controllers)
         zox_import_module(Space)
     }
 #endif
-    #if defined(zox_mod_debug)
+    #if defined(zoxm_debug)
         zox_import_module(Debug)
     #endif
 zox_end_module(Zox)
@@ -209,8 +209,8 @@ zox_end_module(Zox)
 #include zox_nexus_game
 
 int main(int argc, char* argv[]) {
-#ifndef zox_mod_game
-    zox_log_error("[zox_mod_game] not defined: game cannot load");
+#ifndef zoxm_game
+    zox_log_error("[zoxm_game] not defined: game cannot load");
     return EXIT_FAILURE;
 #endif
     fetch_pc_info();    // gets our cpu core count

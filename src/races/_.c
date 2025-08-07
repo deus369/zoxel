@@ -1,5 +1,5 @@
-#if !defined(zox_mod_races) && defined(zox_mod_users)
-#define zox_mod_races
+#if !defined(zoxm_races) && defined(zoxm_users)
+#define zoxm_races
 
 zox_begin_module(Races)
 zox_end_module(Races)

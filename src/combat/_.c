@@ -1,5 +1,5 @@
-#if !defined(zox_mod_combat) && defined(zox_mod_users)
-#define zox_mod_combat
+#if !defined(zoxm_combat) && defined(zoxm_users)
+#define zoxm_combat
 
 zox_component_byte(CombatState)
 zox_component_entity(LastDamager)

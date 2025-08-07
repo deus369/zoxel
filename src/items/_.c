@@ -1,5 +1,5 @@
-#if !defined(zox_mod_items) && defined(zox_mod_users)
-#define zox_mod_items
+#if !defined(zoxm_items) && defined(zoxm_users)
+#define zoxm_items
 
 byte test_items_blocks = 0;
 zox_declare_tag(ItemBlock)

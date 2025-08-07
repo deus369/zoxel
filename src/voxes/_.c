@@ -1,5 +1,5 @@
-#ifndef zox_mod_voxes
-#define zox_mod_voxes
+#ifndef zoxm_voxes
+#define zoxm_voxes
 /**
  *  Zox Voxes
  *

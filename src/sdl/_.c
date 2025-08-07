@@ -1,5 +1,5 @@
-#ifndef zox_mod_sdl
-#define zox_mod_sdl
+#ifndef zoxm_sdl
+#define zoxm_sdl
 
 #include "components/_.c"
 #include "data/_.c"

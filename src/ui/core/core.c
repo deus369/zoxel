@@ -1,5 +1,5 @@
-#ifndef zox_mod_ui_core
-#define zox_mod_ui_core
+#ifndef zoxm_ui_core
+#define zoxm_ui_core
 
 // todo: move PixelPosition etc to Transforms/Grid2D - idk what to call it
 #include "settings/_.c"

@@ -14,6 +14,11 @@ zox_memory_component(CharacterLinks, ecs_entity_t)
 #include "characters2/_.c"
 #include "characters3/_.c"
 #include "util/buttons.c"
+#include "debug/_.c"
+
+ecs_entity_t get_linked_character(ecs_world_t* world, const ecs_entity_t e) {
+    return zox_valid(e) && zox_has(e, CharacterLink) ? zox_gett_value(e, CharacterLink) : 0;
+}
 
 zox_begin_module(Characters)
     zox_define_tag(Character)

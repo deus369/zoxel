@@ -1,5 +1,5 @@
-#ifndef zox_mod_users_ui
-#define zox_mod_users_ui
+#ifndef zoxm_users_ui
+#define zoxm_users_ui
 
 zox_declare_tag(UserIcon)
 zox_declare_tag(UserIconWindow)

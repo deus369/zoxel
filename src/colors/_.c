@@ -1,5 +1,5 @@
-#ifndef zox_mod_colors
-#define zox_mod_colors
+#ifndef zoxm_colors
+#define zoxm_colors
 
 // globals for now...
 byte grayscale_mode = 0;

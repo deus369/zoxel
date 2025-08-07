@@ -1,5 +1,5 @@
-#ifndef zox_mod_zexts
-#define zox_mod_zexts
+#ifndef zoxm_zexts
+#define zoxm_zexts
 
 // todo: move labels to here as prefab
 #include "data/_.c"

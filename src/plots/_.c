@@ -1,6 +1,6 @@
 // this is used for visually representing data
-#if !defined(zox_mod_plots) && defined(zox_mod_lines2D)
-#define zox_mod_plots
+#if !defined(zoxm_plots) && defined(zoxm_lines2D)
+#define zoxm_plots
 
 zox_declare_tag(Plot)
 zox_declare_tag(PlotLine)

@@ -1,5 +1,5 @@
-#ifndef zox_mod_actions_ui
-#define zox_mod_actions_ui
+#ifndef zoxm_actions_ui
+#define zoxm_actions_ui
 
 zox_declare_tag(MenuActions)
 zox_declare_tag(IconAction)

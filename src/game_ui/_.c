@@ -1,6 +1,6 @@
 // todo: find a way to add game modules onto game menu - add stats ui on etc
-#ifndef zox_mod_game_ui
-#define zox_mod_game_ui
+#ifndef zoxm_game_ui
+#define zoxm_game_ui
 
 // todo: use a byte index instead for menu type
 #include "settings/_.c"

@@ -1,6 +1,6 @@
 // relies on players and cameras
-#if !defined(zox_mod_free_roam) && defined(zox_mod_cameras) && defined(zox_mod_players)
-#define zox_mod_free_roam
+#if !defined(zoxm_free_roam) && defined(zoxm_cameras) && defined(zoxm_players)
+#define zoxm_free_roam
 
 #include "data/settings.c"
 #include "systems/free_camera_move_system.c"

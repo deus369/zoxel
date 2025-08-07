@@ -1,5 +1,5 @@
-#ifndef zox_mod_lines
-#define zox_mod_lines
+#ifndef zoxm_lines
+#define zoxm_lines
 
 // todo: lines_ui should be seperate
 // todo: add a purely lines2D that doesn't rely on UI transforms

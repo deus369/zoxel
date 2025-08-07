@@ -1,5 +1,5 @@
-#if !defined(zox_mod_dialogues) && defined(zox_mod_users)
-#define zox_mod_dialogues
+#if !defined(zoxm_dialogues) && defined(zoxm_users)
+#define zoxm_dialogues
 
 // zoxel_system_includes
 

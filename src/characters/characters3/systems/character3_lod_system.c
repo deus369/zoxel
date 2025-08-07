@@ -1,4 +1,4 @@
-void Character3LodSystem(ecs_iter_t *it) {
+void Character3LodSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(RenderLodDirty)
     // zox_sys_in(RenderLod)

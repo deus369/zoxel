@@ -1,6 +1,6 @@
 // Anchor/Grid Aware Positioning for our UIs and 2D Games!
-#if !defined(zox_mod_layouts2) && defined(zox_mod_transforms2)
-#define zox_mod_layouts2
+#if !defined(zoxm_layouts2) && defined(zoxm_transforms2)
+#define zoxm_layouts2
 
 zox_component_int2(PixelPosition)
 zox_component_int2(PixelSize)

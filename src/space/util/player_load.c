@@ -1,27 +1,28 @@
 // NOTE: WE NOW NEED TO SPAWN TERRAIN CHUNK HERE IF IT DOESN"T EXIST!
 //      - streaming breaks if all chunks die..
 
-ecs_entity_t game_start_player_load(ecs_world_t *world,
-    const ecs_entity_t player)
-{
-    const ecs_entity_t model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
+entity game_start_player_load(
+    ecs *world,
+    const entity player
+) {
+    const entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!model) {
         zox_log_error("[tall_cube] not found on player")
         return 0;
     }
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+    const entity camera = zox_get_value(player, CameraLink)
     if (!camera) {
         return 0;
     }
-    const ecs_entity_t game = zox_get_value(player, GameLink)
+    const entity game = zox_get_value(player, GameLink)
     if (!game) {
         return 0;
     }
-    const ecs_entity_t realm = zox_get_value(game, RealmLink)
+    const entity realm = zox_get_value(game, RealmLink)
     if (!realm) {
         return 0;
     }
-    const ecs_entity_t terrain = zox_get_value(realm, TerrainLink)
+    const entity terrain = zox_get_value(realm, TerrainLink)
     if (!terrain) {
         return 0;
     }
@@ -71,7 +72,7 @@ ecs_entity_t game_start_player_load(ecs_world_t *world,
         .player = player,
     };
     zox_set(camera, Position3D, { spawn_place.position }) // reposition camera too
-    const ecs_entity_t e = spawn_character3_player(world, spawn_data);
+    const entity e = spawn_character3_player(world, spawn_data);
     // assuming we just spawned it
     if (spawned_first_chunk) {
         EntityLinks entities = (EntityLinks) { };

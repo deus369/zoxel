@@ -1,4 +1,4 @@
-void Character3TypeDebugSystem(ecs_iter_t *it) {
+void Character3TypeDebugSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(DebugCubeLines)
     zox_sys_in(Character3Type)

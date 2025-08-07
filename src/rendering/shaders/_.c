@@ -1,5 +1,5 @@
-#ifndef zox_mod_shaders
-#define zox_mod_shaders
+#ifndef zoxm_shaders
+#define zoxm_shaders
 
 byte is_log_shaders = 0;
 #define directory_shaders "shaders"

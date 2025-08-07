@@ -1,5 +1,5 @@
-#if !defined(zox_mod_pickups) && defined(zox_mod_cubes)
-#define zox_mod_pickups
+#if !defined(zoxm_pickups) && defined(zoxm_cubes)
+#define zoxm_pickups
 
 // #define zox_prefabs_non_textured
 #define pickup_rotaion_speed 40

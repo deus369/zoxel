@@ -1,5 +1,8 @@
-void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t camera = zox_get_value(player, CameraLink)
+void resume_player_delayed(
+    ecs *world,
+    const entity player
+) {
+    const entity camera = zox_get_value(player, CameraLink)
     const byte can_roam = zox_get_value(camera, CanRoam)
     if (can_roam == 0 || can_roam == 2) {
         if (local_mouse) {
@@ -7,7 +10,7 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
         }
     }
     // return to regular ui
-    const ecs_entity_t character = zox_get_value(player, CharacterLink)
+    const entity character = zox_get_value(player, CharacterLink)
     if (!zox_alive(character)) {
         return;
     }
@@ -17,9 +20,12 @@ void resume_player_delayed(ecs_world_t *world, const ecs_entity_t player) {
     spawn_in_game_ui(world, player);
 }
 
-void resume_player(ecs_world_t *world, const ecs_entity_t player) {
-    const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
-    find_child_with_tag(canvas, MenuPaused, menu_paused)
+void resume_player(
+    ecs *world,
+    const entity player
+) {
+    zox_geter_value(player, CanvasLink, entity, canvas);
+    find_child_with_tag(canvas, MenuPaused, menu_paused);
     if (menu_paused) {
         zox_delete(menu_paused)
     }
@@ -27,10 +33,26 @@ void resume_player(ecs_world_t *world, const ecs_entity_t player) {
     if (taskbar) {
         zox_delete(taskbar)
     }
-    disable_inputs_until_release(world, player, zox_device_mode_none, 1);
-    trigger_canvas_half_fade(world, canvas, pause_fade_time, pause_fade_alpha, 0);
-    const ecs_entity_t pause_event = delay_event(world, &resume_player_delayed, player, pause_fade_time);
-    ecs_entity_t previous_event = zox_get_value(player, PlayerPauseEvent)
+    disable_inputs_until_release(
+        world,
+        player,
+        zox_device_mode_none,
+        1
+    );
+    trigger_canvas_half_fade(
+        world,
+        canvas,
+        pause_fade_time,
+        pause_fade_alpha,
+        0
+    );
+    const ecs_entity_t pause_event = delay_event(
+        world,
+        &resume_player_delayed,
+        player,
+        pause_fade_time
+    );
+    zox_geter_value(player, PlayerPauseEvent, entity, previous_event);
     if (zox_valid(previous_event)) {
         zox_delete(previous_event)
     }

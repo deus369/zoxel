@@ -1,5 +1,5 @@
-#if !defined(zox_mod_clans) && defined(zox_mod_users)
-#define zox_mod_clans
+#if !defined(zoxm_clans) && defined(zoxm_users)
+#define zoxm_clans
 
 zox_begin_module(Clans)
 zox_end_module(Clans)

@@ -1,5 +1,5 @@
-#ifndef zox_mod_controllers2D
-#define zox_mod_controllers2D
+#ifndef zoxm_controllers2D
+#define zoxm_controllers2D
 
 // todo: movement should be done in one system, and we can use a Move float2 in our character - Movement2 and Movement3 - should be a float -1 to 1, and determine intention to move
 #include "data/settings.c"

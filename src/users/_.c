@@ -1,5 +1,5 @@
-#ifndef zox_mod_users
-#define zox_mod_users
+#ifndef zoxm_users
+#define zoxm_users
 
 zox_component_entity(UserLink)
 zox_component_entity(UserDataLink)

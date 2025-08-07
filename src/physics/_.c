@@ -1,5 +1,5 @@
-#ifndef zox_mod_physics
-#define zox_mod_physics
+#ifndef zoxm_physics
+#define zoxm_physics
 
 #define zox_pip_physics EcsOnUpdate
 zox_declare_tag(Frictioned)

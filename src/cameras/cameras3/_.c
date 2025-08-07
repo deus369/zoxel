@@ -1,5 +1,5 @@
-#if !defined(zox_mod_cameras3) && defined(zox_mod_transforms3)
-#define zox_mod_cameras3
+#if !defined(zoxm_cameras3) && defined(zoxm_transforms3)
+#define zoxm_cameras3
 
 #include "prefabs/camera3.c"
 #include "systems/_.c"

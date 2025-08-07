@@ -1,6 +1,6 @@
 // generic nodes, used by blueprints and neurals and quests etc
-#ifndef zox_mod_nodes
-#define zox_mod_nodes
+#ifndef zoxm_nodes
+#define zoxm_nodes
 
 zox_declare_tag(Node)
 zox_declare_tag(Nodelink)

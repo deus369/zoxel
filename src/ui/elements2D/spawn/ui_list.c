@@ -210,7 +210,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
                 .value = 0.5f,
                 .bounds = (float2) { 0, 1 },    // todo: pass this in from setting
             };
-            const ecs_entity_2 e2 = spawn_slider(world,
+            const entity2 e2 = spawn_slider(world,
                 spawnButton.canvas,
                 spawnButton.parent,
                 spawn_slider_data,

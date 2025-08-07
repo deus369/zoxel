@@ -1,4 +1,7 @@
+// HMMmm
+char* player_vox_model = "tall_cube";
 const double respawn_time = 15;
+
 // shit remove this atm, it doubles up for coop
 double run_speed = 1.8;
 double run_accceleration = 2.2;

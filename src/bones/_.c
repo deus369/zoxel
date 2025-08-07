@@ -1,5 +1,5 @@
-#if !defined(zox_mod_bones) && defined(zox_mod_transforms)
-#define zox_mod_bones
+#if !defined(zoxm_bones) && defined(zoxm_transforms)
+#define zoxm_bones
 
 // #define zox_debug_bones
 // #define zox_transparent_skeletons

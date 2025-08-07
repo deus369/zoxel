@@ -110,18 +110,6 @@ BiomeData pick_biome(long int seed) {
         .frequency = 0.018181f,
     };
 
-    const BiomeData bcr_voidy = {
-        .name = "The Void",
-        .dirt     = { 0, 360, 0, 0, 0, 10 },       // black void
-        .grass    = { 0, 360, 0, 0, 0, 10 },       // black void
-        .stone    = { 0, 360, 0, 0, 0, 10 },       // black void
-        .sand     = { 0, 360, 0, 0, 0, 10 },       // black void
-        .obsidian = { 0, 360, 0, 0, 0, 10 },       // black void
-        .sky      = { 240, 260, 0, 0, 0, 5 },       // absolute dark
-        .chance = 0.01f,
-        .frequency = 0.009999f,
-    };
-
     const BiomeData bcr_underground_mushroom = {
         .name = "Underground Mushroom",
         .dirt     = { 280, 310, 10, 30, 20, 40 },  // dark spore mud
@@ -165,6 +153,19 @@ BiomeData pick_biome(long int seed) {
         .sky      = { 280, 310, 90, 100, 100, 100 }, // neon fog
         .chance = 0.02f,
     };
+
+    const BiomeData bcr_voidy = {
+        .name = "The Void",
+        .dirt     = { 0, 360, 0, 0, 0, 10 },       // black void
+        .grass    = { 0, 360, 0, 0, 0, 10 },       // black void
+        .stone    = { 0, 360, 0, 0, 0, 10 },       // black void
+        .sand     = { 0, 360, 0, 0, 0, 10 },       // black void
+        .obsidian = { 0, 360, 0, 0, 0, 10 },       // black void
+        .sky      = { 240, 260, 0, 0, 0, 5 },       // absolute dark
+        .chance = 0.01f,
+        .frequency = 0.009999f,
+    };
+
     const BiomeData zox_biomes[] = {
         bcr_earthy,
         bcr_martian,
@@ -177,6 +178,7 @@ BiomeData pick_biome(long int seed) {
         bcr_crystal_valley,
         bcr_wind_scarred_cliffs,
         bcr_neon_void,
+        bcr_voidy,
     };
 
     srand((unsigned int) seed);

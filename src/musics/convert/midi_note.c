@@ -1,5 +1,5 @@
-#ifndef zox_mod_musics_midi_note
-#define zox_mod_musics_midi_note
+#ifndef zoxm_musics_midi_note
+#define zoxm_musics_midi_note
 #define MAX_NOTES 128
 
 typedef struct {

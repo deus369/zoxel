@@ -1,5 +1,5 @@
-#ifndef zox_mod_time
-#define zox_mod_time
+#ifndef zoxm_time
+#define zoxm_time
 
 #include "data/settings.c"
 zox_component_double(DestroyInTime)

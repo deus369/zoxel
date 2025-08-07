@@ -88,7 +88,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
                 .bounds = child_data.value_bounds,
                 .handle_width = 32,
             };
-            const ecs_entity_2 e2 = spawn_slider(world,
+            const entity2 e2 = spawn_slider(world,
                 canvas_data,
                 child_parent_data,
                 child_element_data,

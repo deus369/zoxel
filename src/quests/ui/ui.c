@@ -1,5 +1,5 @@
-#ifndef zox_mod_ui_quests
-#define zox_mod_ui_quests
+#ifndef zoxm_ui_quests
+#define zoxm_ui_quests
 
 zox_declare_tag(MenuQuests)
 #include "prefabs/prefabs.c"

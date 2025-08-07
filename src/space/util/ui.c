@@ -1,15 +1,16 @@
 // #define zox_log_camera_spawning
 
 // todo: spawn unique canvas per viewport, viewports per player
-#ifdef zox_mod_ui
+#ifdef zoxm_ui
 
-ecs_entity_t spawn_default_ui(ecs_world_t *world,
-    const ecs_entity_t ui_camera,
+entity spawn_default_ui(
+    ecs *world,
+    const entity ui_camera,
     const int2 dimensions,
     const float4 screen_to_canvas,
-    const ecs_entity_t app)
-{
-    const ecs_entity_t canvas = spawn_canvas(world,
+    const entity app
+) {
+    const entity canvas = spawn_canvas(world,
         prefab_canvas,
         ui_camera,
         dimensions,
@@ -18,17 +19,17 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
     spawn_canvas_overlay(world, prefab_canvas_overlay, canvas, dimensions);
     spawn_tooltip(world, prefab_tooltip, canvas);
     // custom cursor
-    ecs_entity_t zevice_follow = 0;
+    entity zevice_follow = 0;
     if (local_mouse) {
         zox_geter(local_mouse, Children, zevices)
         zevice_follow = zevices->value[0];
     }
     // SDL_ShowCursor(SDL_DISABLE);
-    const ecs_entity_t texture_source = string_hashmap_get(files_hashmap_textures, new_string_data("cursor_01"));
+    const entity texture_source = string_hashmap_get(files_hashmap_textures, new_string_data("cursor_01"));
     if (!texture_source) {
         zox_log_error("[cursor_01] mouse texture not found")
     }
-    const ecs_entity_t fake_mouse = spawn_icon_mouse_follow_canvas(world,
+    const entity fake_mouse = spawn_icon_mouse_follow_canvas(world,
         prefab_icon_mouse_follow,
         canvas, dimensions,
         max_layers2D - 2,
@@ -59,15 +60,16 @@ ecs_entity_t spawn_default_ui(ecs_world_t *world,
 #endif
 
 // move to game ui?
-void spawn_players_cameras_canvases(ecs_world_t *world,
+void spawn_players_cameras_canvases(
+    ecs *world,
     int players_playing,
-    const ecs_entity_t app)
-{
+    const entity app
+) {
     if (!app) {
         zox_logv("No spawning Cameras and Canvases.");
         return;
     }
-#if defined(zox_mod_players) && defined(zox_mod_ui)
+#if defined(zoxm_players) && defined(zoxm_ui)
     set_camera_mode_pre_defined(world, vox_model_scale);
     set_main_cameras((int) players_playing);
     float3 camera_position = float3_zero;
@@ -75,13 +77,13 @@ void spawn_players_cameras_canvases(ecs_world_t *world,
     zox_geter_value(app, WindowSize, int2, screen_size)
     CameraLinks cameras = { };
     for (int i = 0; i < players_playing; i++) {
-        const ecs_entity_t player = zox_players[i];
+        const entity player = zox_players[i];
         set_camera_transform_to_main_menu(&camera_position, &camera_rotation, terrain_depth);
         const float4 screen_to_canvas = (float4) { 1 / (float) players_playing, 1, i / (float) players_playing, 0 };
         const int2 viewport_size = screen_to_canvas_size(screen_size, screen_to_canvas);
         const int2 viewport_position = screen_to_canvas_position(screen_size, screen_to_canvas);
         const int2 game_viewport_size = scale_viewport(viewport_size);
-        const ecs_entity_2 spawned_cameras = spawn_player_camera(world,
+        const entity2 spawned_cameras = spawn_player_camera(world,
             player,
             camera_position,
             camera_rotation,
@@ -91,7 +93,7 @@ void spawn_players_cameras_canvases(ecs_world_t *world,
             viewport_size);
         add_to_CameraLinks(&cameras, spawned_cameras.x);
         add_to_CameraLinks(&cameras, spawned_cameras.y);
-        const ecs_entity_t canvas = spawn_default_ui(world,
+        const entity canvas = spawn_default_ui(world,
             spawned_cameras.y,
             viewport_size,
             screen_to_canvas,
@@ -113,9 +115,4 @@ void spawn_players_cameras_canvases(ecs_world_t *world,
     }
     zox_set_ptr(app, CameraLinks, cameras)
 #endif
-}
-void on_boot_space(ecs_world_t* world, ecs_entity_t app) {
-    // zox_geter_value(app, GameLink, ecs_entity_t, game);
-    spawn_players_cameras_canvases(world, players_playing, app);
-    spawn_players_start_ui(world);
 }

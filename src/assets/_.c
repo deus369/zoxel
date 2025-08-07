@@ -5,8 +5,8 @@
  *      - todo: remove sdl use and just make my own functions
  *
  * */
-#ifndef zox_mod_assets
-#define zox_mod_assets
+#ifndef zoxm_assets
+#define zoxm_assets
 
 // used for file io functions
 zox_declare_tag(Asset)

@@ -1,5 +1,5 @@
-#ifndef zox_mod_transforms2
-#define zox_mod_transforms2
+#ifndef zoxm_transforms2
+#define zoxm_transforms2
 
 zox_component_float2(Position2D)
 zox_component_float(Rotation2D)

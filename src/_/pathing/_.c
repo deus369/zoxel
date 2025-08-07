@@ -1,5 +1,5 @@
-#ifndef zox_mod_pathing
-#define zox_mod_pathing
+#ifndef zoxm_pathing
+#define zoxm_pathing
 
 #include "settings/_.c"
 #include "data/_.c"

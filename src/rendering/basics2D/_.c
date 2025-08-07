@@ -1,5 +1,5 @@
-#ifndef zox_mod_rendering_basics2D
-#define zox_mod_rendering_basics2D
+#ifndef zoxm_rendering_basics2D
+#define zoxm_rendering_basics2D
 
 #include "settings/_.c"
 #include "materials/_.c"

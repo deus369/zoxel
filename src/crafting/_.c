@@ -1,5 +1,5 @@
-#if !defined(zox_mod_crafting) && defined(zox_mod_items)
-#define zox_mod_crafting
+#if !defined(zoxm_crafting) && defined(zoxm_items)
+#define zoxm_crafting
 
 zox_begin_module(Crafting)
 zox_end_module(Crafting)

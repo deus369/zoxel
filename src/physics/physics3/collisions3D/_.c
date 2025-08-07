@@ -1,5 +1,5 @@
-#ifndef zox_mod_collisions3D
-#define zox_mod_collisions3D
+#ifndef zoxm_collisions3D
+#define zoxm_collisions3D
 
 // todo: add AABB (then detailed voxel) to Sphere [overlap] events for pickups
 // remember: no line detection for boxes, if velocity exceeds clipping it will fall through map!

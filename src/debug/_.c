@@ -1,5 +1,5 @@
-#if !defined(zox_mod_debug) && defined(zox_mod_players)
-#define zox_mod_debug
+#if !defined(zoxm_debug) && defined(zoxm_players)
+#define zoxm_debug
 
 #include "data/settings.c"
 #include "util/amd.c"

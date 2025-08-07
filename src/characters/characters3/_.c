@@ -32,7 +32,7 @@ zox_begin_module(Characters3)
     add_hook_spawned_character3D(&spawn_character_name_label);
     spawn_prefabs_characters3D(world);
     // sub modules
-    zox_import_module(Characters3DTerrain)
+    zox_import_module(Characters3Terrain)
 zox_end_module(Characters3)
 
 #endif

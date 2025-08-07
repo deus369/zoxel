@@ -57,7 +57,7 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
             .fill_color = statbar3D_font_color_fill,
             .outline_color = statbar3D_font_color_outline
         };
-        const ecs_entity_2 healthbar = spawn_elementbar3(world, &spawn_data, statbar_text_data, statbar_zigel_data);
+        const entity2 healthbar = spawn_elementbar3(world, &spawn_data, statbar_text_data, statbar_zigel_data);
 
         zox_set(healthbar.x, StatLink, { health })
         zox_set(healthbar.y, StatLink, { health })

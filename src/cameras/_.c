@@ -1,5 +1,5 @@
-#if !defined(zox_mod_cameras) && defined(zox_mod_transforms)
-#define zox_mod_cameras
+#if !defined(zoxm_cameras) && defined(zoxm_transforms)
+#define zoxm_cameras
 
 #include "data/_.c"
 #include "settings/_.c"

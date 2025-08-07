@@ -1,5 +1,5 @@
-#if !defined(zox_mod_quests) && defined(zox_mod_users)
-#define zox_mod_quests
+#if !defined(zoxm_quests) && defined(zoxm_users)
+#define zoxm_quests
 
 zox_declare_user_data(Quest)
 zox_create_user_data_prefabs(Quest, quest, "quest")

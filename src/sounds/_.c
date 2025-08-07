@@ -1,5 +1,5 @@
-#ifndef zox_mod_sounds
-#define zox_mod_sounds
+#ifndef zoxm_sounds
+#define zoxm_sounds
 
 #include "settings/_.c"
 #include "data/_.c"

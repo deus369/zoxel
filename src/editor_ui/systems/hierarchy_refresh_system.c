@@ -19,7 +19,7 @@ void add_all_prefabs(ecs_world_t *world,
     // add game entities
     add_entity_to_labels(world, realm, labels, entities, 0);
     add_to_labels_voxel_links(world, realm, labels, entities, 0);
-#ifdef zox_mod_stats
+#ifdef zoxm_stats
     add_to_labels_stat_links(world, realm, labels, entities, 0);
 #endif
     add_entity_to_labels(world, local_music, labels, entities, 0);

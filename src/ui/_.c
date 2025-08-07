@@ -1,5 +1,5 @@
-#ifndef zox_mod_ui
-#define zox_mod_ui
+#ifndef zoxm_ui
+#define zoxm_ui
 
 #include "core/core.c"
 #include "zigels/zigels.c"

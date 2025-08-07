@@ -22,7 +22,7 @@ ecs_entity_t spawn_prefab_character3_player(ecs_world_t *world,
     zox_add_tag(e, SaveCharacter)
     zox_prefab_set(e, CharacterSaveHash, { 0 })
     // Pickups
-#ifdef zox_mod_pickups
+#ifdef zoxm_pickups
     const float pickup_radius = 0.3f; // 0.16f
     zox_add_tag(e, PickUpperer)
     zox_add_tag(e, SphereCollider)

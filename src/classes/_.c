@@ -1,5 +1,5 @@
-#if !defined(zox_mod_classes) && defined(zox_mod_users)
-#define zox_mod_classes
+#if !defined(zoxm_classes) && defined(zoxm_users)
+#define zoxm_classes
 
 zox_declare_user_data(Class)
 

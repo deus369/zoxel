@@ -1,4 +1,4 @@
-ecs_entity_2 spawn_slider(ecs_world_t *world,
+entity2 spawn_slider(ecs_world_t *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data,
@@ -65,5 +65,5 @@ ecs_entity_2 spawn_slider(ecs_world_t *world,
     zox_set(e, Children, { children->length, children->value })
     // todo: with text label!
     // return, include the handle
-    return (ecs_entity_2) { e, handle };
+    return (entity2) { e, handle };
 }

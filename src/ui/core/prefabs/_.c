@@ -34,7 +34,7 @@ void prefabs_add_ui_to_raycaster(ecs_world_t *world, const ecs_entity_t e) {
 
 void spawn_prefabs_ui_core(ecs_world_t *world) {
     prefab_canvas = spawn_prefab_canvas(world);
-#if defined(zox_mod_players)
+#if defined(zoxm_players)
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })
 #endif
     // just has transform and layouts2D

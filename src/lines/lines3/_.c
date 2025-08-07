@@ -1,5 +1,5 @@
-#ifndef zox_mod_lines3D
-#define zox_mod_lines3D
+#ifndef zoxm_lines3D
+#define zoxm_lines3D
 
 // should live for .1 seconds
 const float line_frame_timing = 1 / 30.0f;

@@ -1,5 +1,5 @@
-#ifndef zox_mod_voxels_chunks
-#define zox_mod_voxels_chunks
+#ifndef zoxm_voxels_chunks
+#define zoxm_voxels_chunks
 
 #include "macros/_.c"
 #include "settings/_.c"

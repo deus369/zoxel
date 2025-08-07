@@ -5,7 +5,10 @@ ecs_entity_t spawn_prefab_inspector(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_inspector(ecs_world_t *world, const ecs_entity_t canvas) {
+ecs_entity_t spawn_inspector(
+    ecs_world_t *world,
+    const ecs_entity_t canvas
+) {
     const int max_elements = 16;    // make this dynamic based on window size
     const ecs_entity_t player = 0; // zox_players[0];
     const byte layer = 12;

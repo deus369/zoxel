@@ -1,5 +1,5 @@
-#ifndef zox_mod_zigels
-#define zox_mod_zigels
+#ifndef zoxm_zigels
+#define zoxm_zigels
 
 #include "settings/_.c"
 #include "components/_.c"

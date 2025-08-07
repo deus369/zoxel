@@ -26,3 +26,4 @@ byte terrain_size = 0;
 const int2 chunk_texture_size = { terrain_texture_resolution, terrain_texture_resolution };
 
 #include "grassy_plains.c"
+#include "resolution.c"

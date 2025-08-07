@@ -1,5 +1,5 @@
-#if !defined(zox_mod_game) // && defined(zox_mod_players)
-#define zox_mod_game
+#if !defined(zoxm_game) // && defined(zoxm_players)
+#define zoxm_game
 
 zox_begin_module(ZoxGame)
     game_name = "Z:x";

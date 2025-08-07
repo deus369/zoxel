@@ -1,4 +1,4 @@
-ecs_entity_2 spawn_elementbar2D(ecs_world_t *world,
+entity2 spawn_elementbar2D(ecs_world_t *world,
     const ecs_entity_t prefab,
     const ecs_entity_t canvas,
     const ecs_entity_t parent,
@@ -85,5 +85,5 @@ ecs_entity_2 spawn_elementbar2D(ecs_world_t *world,
     zox_set_unique_name(text, "element2D_text")
     // finish
     zox_set(e, Children, { children->length, children->value })
-    return (ecs_entity_2) { e, text };
+    return (entity2) { e, text };
 }

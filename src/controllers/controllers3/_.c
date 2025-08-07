@@ -1,5 +1,5 @@
-#ifndef zox_mod_controllers3D
-#define zox_mod_controllers3D
+#ifndef zoxm_controllers3D
+#define zoxm_controllers3D
 
 #include "settings/_.c"
 #include "components/_.c"
@@ -7,6 +7,7 @@
 #include "util/_.c"
 #include "spawn/_.c"
 #include "systems/_.c"
+#include "debug/_.c"
 
 zox_begin_module(Controllers3)
     define_components_controllers3D(world);

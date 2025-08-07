@@ -1,5 +1,5 @@
-#if !defined(zox_mod_controllers) && defined(zoxm_characters) && defined(zox_mod_inputs) && defined(zox_mod_physics)
-#define zox_mod_controllers
+#if !defined(zoxm_controllers) && defined(zoxm_characters) && defined(zoxm_inputs) && defined(zoxm_physics)
+#define zoxm_controllers
 
 #include "data/settings.c"
 #include "controllers2/_.c"
