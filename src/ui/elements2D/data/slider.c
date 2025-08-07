@@ -4,7 +4,7 @@
 typedef struct {
     const char* name;
     byte type;
-    ecs_entity_t prefab_handle;
+    entity prefab_handle;
     float value;
     float2 bounds;
     byte handle_width;

@@ -1,11 +1,11 @@
-void FontTextureSystem(ecs_iter_t *it) {
+void FontTextureSystem(iter *it) {
     const color air_color = (color) { 0, 0, 0, 0 };
     const float2 point_padding = font_point_padding;
     // const byte default_font_outline = 1; // 4
     zox_change_check()
     zox_sys_world()
     // todo: link each zigel to fontstyle's font
-    ecs_entity_t zox_font_style = get_font_style_using();
+    entity zox_font_style = get_font_style_using();
     if (!zox_font_style || !zox_has(zox_font_style, Children)) {
         return;
     }
@@ -39,7 +39,7 @@ void FontTextureSystem(ecs_iter_t *it) {
             continue;
         }
         // get font based on zigel index
-        const ecs_entity_t font = font_style_children->value[zigelIndex->value];
+        const entity font = font_style_children->value[zigelIndex->value];
         int length = textureSize->value.x * textureSize->value.y;
         if (length <= 0 || fontThickness->value == 0 || !zox_valid(font)) {
             if (length <= 0) {

@@ -14,11 +14,11 @@ byte terrain_lod_near_max = 3;
 float settings_terrain_lod_start = 0.25f;
 byte terrain_lod_far_max = 24;  // options, min + percentage*max
 
-extern int get_characters_count(ecs_world_t *world);
-extern int count_entities_npc(ecs_world_t *world);
+extern int get_characters_count(ecs *world);
+extern int count_entities_npc(ecs *world);
 
-uint debug_label_lods(ecs_world_t *world,
-    const ecs_entity_t player,
+uint debug_label_lods(ecs *world,
+    const entity player,
     char *buffer,
     const uint size, uint index)
 {

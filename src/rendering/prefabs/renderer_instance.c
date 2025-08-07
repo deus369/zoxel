@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_renderer_instance(ecs_world_t *world) {
+entity spawn_prefab_renderer_instance(ecs *world) {
     zox_prefab()
     zox_prefab_name("renderer_instance")
     zox_add_tag(e, RendererInstance)

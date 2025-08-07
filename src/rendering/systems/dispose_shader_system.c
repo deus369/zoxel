@@ -1,4 +1,4 @@
-void ShaderDisposeSystem(ecs_iter_t *it) {
+void ShaderDisposeSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ShaderGPULink)
     for (int i = 0; i < it->count; i++) {

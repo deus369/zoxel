@@ -5,11 +5,11 @@ const float fudge_frustum_extents = 2.0f;
 // note: I may need to thread lock/unlock EntityLinks when reading
 
 // block spawn delve function
-void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const VoxelNode *node, const byte state) {
+void set_chunk_block_spawns_render_disabled(ecs *world, const VoxelNode *node, const byte state) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
-        const ecs_entity_t e = get_entity_VoxelNode(node);
+        const entity e = get_entity_VoxelNode(node);
         if (zox_valid(e)) {
             zox_set(e, RenderDisabled, { state })
         }
@@ -22,7 +22,7 @@ void set_chunk_block_spawns_render_disabled(ecs_world_t *world, const VoxelNode 
 }
 
 // this sets RenderDisabled for chunks and their children
-void ChunkFrustumSystem(ecs_iter_t *it) {
+void ChunkFrustumSystem(iter *it) {
     zox_sys_query()
     zox_sys_world()
     zox_sys_begin()
@@ -75,7 +75,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
             }
             // -=- -=- -=- -=- -=- -=-
             for (int j = 0; j < entityLinks->length; j++) {
-                const ecs_entity_t e2 = entityLinks->value[j];
+                const entity e2 = entityLinks->value[j];
                 if (!zox_valid(e2)) {
                     continue;
                 }
@@ -85,7 +85,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                 }
                 zox_geter(e2, ElementLinks, entity_elements)
                 for (int k = 0; k < entity_elements->length; k++) {
-                    const ecs_entity_t e3 = entity_elements->value[k];
+                    const entity e3 = entity_elements->value[k];
                     if (!zox_valid(e3)) {
                         continue;
                     }
@@ -95,7 +95,7 @@ void ChunkFrustumSystem(ecs_iter_t *it) {
                     }
                     zox_geter(e3, Children, element_children)
                     for (int l = 0; l < element_children->length; l++) {
-                        const ecs_entity_t e4 = element_children->value[l];
+                        const entity e4 = element_children->value[l];
                         zox_set(e4, RenderDisabled, { renderDisabled->value })
                     }
                 }

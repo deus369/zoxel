@@ -1,4 +1,4 @@
-void Element3DMeshSystem(ecs_iter_t *it) {
+void Element3DMeshSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(InitializeElement)
     zox_sys_out(MeshDirty)

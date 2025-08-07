@@ -1,5 +1,5 @@
 // doesn't check for edge chunks
-void ChunkFindNeighborSystem(ecs_iter_t *it) {
+void ChunkFindNeighborSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkPosition)
@@ -32,7 +32,7 @@ void ChunkFindNeighborSystem(ecs_iter_t *it) {
                 continue;
             }
             const int3 neighbor_position = int3_add(chunkPosition->value, int3_directions[j]);
-            const ecs_entity_t neighbor = int3_hashmap_get(chunkLinks->value, neighbor_position);
+            const entity neighbor = int3_hashmap_get(chunkLinks->value, neighbor_position);
             if (zox_valid(neighbor)) {
                 chunkNeighbors->value[j] = neighbor;
             }

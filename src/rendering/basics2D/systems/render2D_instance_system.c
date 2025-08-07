@@ -1,4 +1,4 @@
-void InstanceRender2DSystem(ecs_iter_t *it) {
+void InstanceRender2DSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Position2D)
     zox_sys_in(Rotation2D)

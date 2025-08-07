@@ -1,5 +1,5 @@
 //! Bounds, because everyone needs limits! Used atm to keep player within the start area.
-void Bounds2DSystem(ecs_iter_t *it) {
+void Bounds2DSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Bounds2D)
     zox_sys_out(Position2D)

@@ -1,4 +1,4 @@
-void ZeviceClickSystem(ecs_iter_t *it) {
+void ZeviceClickSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DeviceLink)
@@ -15,7 +15,7 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         zox_sys_o(RaycasterResult, raycasterResult)
         zox_sys_o(ClickingEntity, clickingEntity)
         zox_sys_o(WindowTarget, windowTarget)
-        const ecs_entity_t device = deviceLink->value;
+        const entity device = deviceLink->value;
         if (!zox_valid(device)) {
             zox_log_error(" device null from zevice [%lu]", it->entities[i])
             continue;
@@ -23,13 +23,13 @@ void ZeviceClickSystem(ecs_iter_t *it) {
         if (zox_gett_value(device, DeviceDisabled)) {
             continue;
         }
-        const ecs_entity_t player = zox_get_value(device, PlayerLink)
+        const entity player = zox_get_value(device, PlayerLink)
         if (!player) {
             // zox_log(" ! device has null player [%lu]\n", device)
             continue;
         }
         const byte device_mode = zox_get_value(player, DeviceMode)
-        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+        const entity canvas = zox_get_value(player, CanvasLink)
         unsigned click_type = 0;
         if (zox_has(e, ZevicePointer)) {
             const byte click_value = zox_get_value(e, ZevicePointer)

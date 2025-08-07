@@ -1,4 +1,4 @@
-void Dissipation3System(ecs_iter_t *it) {
+void Dissipation3System(iter *it) {
     const float dissipation_rate = 2.0f; // tweak for stronger or weaker drag
     init_delta_time()
     zox_sys_begin()
@@ -20,7 +20,7 @@ if (!grounded->value) {
     friction_power = air_friction3D;
 }
 float3_add_float3_p(&acceleration3D->value, float3_scale(velocity3D->value, - friction_power * delta_time));*/
-/*void Dissipation3System(ecs_iter_t *it) {
+/*void Dissipation3System(iter *it) {
     init_delta_time()
     zox_sys_begin()
     zox_sys_out(Omega3D)

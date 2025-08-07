@@ -1,5 +1,5 @@
-ecs_entity_t shader_textured2D = 0;
-ecs_entity_t material_textured2D = 0;
+entity shader_textured2D = 0;
+entity material_textured2D = 0;
 
 typedef struct {
     GLint vertex_position;
@@ -27,13 +27,13 @@ MaterialTextured2D create_MaterialTextured2D(const uint material) {
         glGetUniformLocation(material, "alpha") };
 }
 
-ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
+entity spawn_shader_textured2D(ecs *world) {
     const byte shader_index = get_new_shader_source_index();
     char* vert = get_shader_source(world, "textured2D.vert");
     char* frag = get_shader_source(world, "textured2D.frag");
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
-    const ecs_entity_t e = spawn_shader(world, shader_index);
+    const entity e = spawn_shader(world, shader_index);
     if (!e) {
         zox_log_error("[textured2D] failed to spawn")
         return 0;
@@ -42,13 +42,13 @@ ecs_entity_t spawn_shader_textured2D(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_material_textured2D(ecs_world_t *world) {
-    const ecs_entity_t shader = spawn_shader_textured2D(world);
+entity spawn_material_textured2D(ecs *world) {
+    const entity shader = spawn_shader_textured2D(world);
     if (!shader) {
         return 0;
     }
     uint material;
-    const ecs_entity_t e = spawn_material(world, shader, &material);
+    const entity e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialTextured2D attributes = create_MaterialTextured2D(material);
     zox_set_data(e, MaterialTextured2D, attributes)

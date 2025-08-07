@@ -1,5 +1,5 @@
 // System responsible for device switching for a DeviceUser
-void DeviceModeSystem(ecs_iter_t *it) {
+void DeviceModeSystem(iter *it) {
     zox_sys_world()
     if (!auto_switch_device) {
         return;
@@ -15,7 +15,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         // first check if currently using selected inputs
         byte using_current_inputs = 0;
         for (int j = 0; j < deviceLinks2->length; j++) {
-            const ecs_entity_t device = deviceLinks2->value[j];
+            const entity device = deviceLinks2->value[j];
             if (!device) {
                 continue;
             }
@@ -56,7 +56,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         }
         const byte old_device_mode = deviceMode->value;
         for (int j = 0; j < deviceLinks2->length; j++) {
-            const ecs_entity_t device = deviceLinks2->value[j];
+            const entity device = deviceLinks2->value[j];
             if (!device) {
                 continue;
             }
@@ -104,7 +104,7 @@ void DeviceModeSystem(ecs_iter_t *it) {
         }
         // set player links here if dirty
         for (int j = 0; j < deviceLinks2->length; j++) {
-            const ecs_entity_t device = deviceLinks2->value[j];
+            const entity device = deviceLinks2->value[j];
             if (!zox_valid(device)) {
                 continue;
             }

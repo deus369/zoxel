@@ -2,12 +2,12 @@ color hit_terrain_color = (color) { 2, 145, 145, 55 };
 color hit_character_color = (color) { 155, 45, 45, 65 };
 color hit_block_vox_color = (color) { 55, 185, 145, 45 };
 
-extern ecs_entity_t local_crosshair;
-extern void crosshair_set_type(ecs_world_t*, ecs_entity_t, byte);
+extern entity local_crosshair;
+extern void crosshair_set_type(ecs*, entity, byte);
 
 // using DDA for raycasting
 byte create_raycast_gizmo(
-    ecs_world_t *world,
+    ecs *world,
     const RaycastVoxelData *data
 ) {
     byte ray_hit = data->result;
@@ -75,7 +75,7 @@ byte create_raycast_gizmo(
     return ray_hit;
 }
 
-void RaycastGizmoSystem(ecs_iter_t *it) {
+void RaycastGizmoSystem(iter *it) {
     zox_sys_world();
     zox_sys_begin();
     zox_sys_in(RaycastVoxelData);

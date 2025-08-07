@@ -1,6 +1,6 @@
 // todo: refactor this extern
-extern int2 get_line_element_mid_point(ecs_world_t *world, ecs_entity_t e);
-extern void set_line_element_real_position2D(ecs_world_t *world, ecs_entity_t e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
+extern int2 get_line_element_mid_point(ecs *world, entity e);
+extern void set_line_element_real_position2D(ecs *world, entity e, float2 real_position2D, int2 canvas_size, int2 pixel_position);
 
 void anchor_element_position2D_with_header(int2 *position, const float2 position_anchor, const int2 window_size, const float header_height) {
     position->x += (window_size.x / 2.0f) - window_size.x * position_anchor.x;
@@ -23,8 +23,8 @@ void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_si
     // zox_log("+ new size [%ix%i] from parent [%ix%i] anchor [%fx%f]", size->x, size->y, parent_size.x, parent_size.y, anchor.x, anchor.y)
 }
 
-void set_element_position(ecs_world_t *world,
-    const ecs_entity_t e,
+void set_element_position(ecs *world,
+    const entity e,
     const int2 parent_position,
     const int2 parent_size,
     const int2 canvas_size)
@@ -64,7 +64,7 @@ void set_element_position(ecs_world_t *world,
         const Children *children = zox_get(e, Children)
         if (!children->value) return;
         for (int i = 0; i < children->length; i++) {
-            const ecs_entity_t child = children->value[i];
+            const entity child = children->value[i];
             set_element_position(world, child, position_in_canvas, size, canvas_size);
         }
     }

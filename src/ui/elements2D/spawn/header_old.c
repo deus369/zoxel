@@ -1,7 +1,7 @@
-ecs_entity_t spawn_header(
-    ecs_world_t *world,
-    const ecs_entity_t parent,
-    const ecs_entity_t canvas,
+entity spawn_header(
+    ecs *world,
+    const entity parent,
+    const entity canvas,
     const int2 pixel_position,
     const int2 pixel_size,
     const float2 anchor,
@@ -71,7 +71,7 @@ ecs_entity_t spawn_header(
     };
     Children children = (Children) { 0, NULL };
 
-    const ecs_entity_t text = spawn_zext(world, &zext_spawn_data);
+    const entity text = spawn_zext(world, &zext_spawn_data);
     add_to_Children(&children, text);
 
     if (is_close_button) {
@@ -95,7 +95,7 @@ ecs_entity_t spawn_header(
     return e;
 }
 
-ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
+entity spawn_header2(ecs *world, SpawnHeader *data) {
     const int string_length = strlen(data->zext.text);
     int2 zext_position = (int2) { ((data->zext.font_size * string_length) / 2) + data->header.margins, 0 };
     float2 zext_anchor = (float2) { 0, 0.5f };
@@ -128,7 +128,7 @@ ecs_entity_t spawn_header2(ecs_world_t *world, SpawnHeader *data) {
         .zext = data->zext
     };
     Children *children = &((Children) { 0, NULL });
-    const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
+    const entity header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
     if (data->header.is_close_button) {
         const int2 close_button_position = (int2) { - (data->zext.font_size / 2) - data->header.margins, 0 };

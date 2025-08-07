@@ -1,4 +1,4 @@
-void DeviceModeDirtySystem(ecs_iter_t *it) {
+void DeviceModeDirtySystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_out(DeviceMode)

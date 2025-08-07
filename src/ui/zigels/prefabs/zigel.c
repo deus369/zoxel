@@ -1,4 +1,4 @@
-ecs_entity_t spawn_zigel_prefab(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_zigel_prefab(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("zigel")
     // zigel
@@ -17,7 +17,7 @@ ecs_entity_t spawn_zigel_prefab(ecs_world_t *world, const ecs_entity_t prefab) {
     return e;
 }
 
-ecs_entity_t spawn_zigel(ecs_world_t *world, const SpawnZigel *data) {
+entity spawn_zigel(ecs *world, const SpawnZigel *data) {
     const int2 global_position = get_element_pixel_position_global(data->parent.position, data->parent.size, data->element.position, data->element.anchor);
     const float2 position = get_element_position(global_position, data->canvas.size);
     zox_instance(prefab_zigel)

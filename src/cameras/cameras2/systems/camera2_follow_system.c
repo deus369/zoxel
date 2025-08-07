@@ -1,4 +1,4 @@
-void Camera2FollowSystem(ecs_iter_t *it) {
+void Camera2FollowSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(CanRoam)

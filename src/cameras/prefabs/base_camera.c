@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
+entity spawn_prefab_camera(ecs *world) {
     zox_prefab()
     zox_prefab_name("camera")
     zox_add_tag(e, Camera)
@@ -27,8 +27,8 @@ ecs_entity_t spawn_prefab_camera(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_camera_base(ecs_world_t *world,
-    const ecs_entity_t prefab,
+entity spawn_camera_base(ecs *world,
+    const entity prefab,
     const float3 position,
     const float4 rotation,
     const float fov,

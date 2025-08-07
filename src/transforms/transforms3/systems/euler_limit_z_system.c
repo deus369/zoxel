@@ -1,4 +1,4 @@
-void EulerLimitZSystem(ecs_iter_t *it) {
+void EulerLimitZSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(EulerLimitZ)
     zox_sys_out(Euler)

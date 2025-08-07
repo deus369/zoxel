@@ -7,7 +7,7 @@
 //#include "camera_draw_frustum_system.c"
 //#include "camera_planes_draw_system.c"
 
-void define_systems_cameras(ecs_world_t *world) {
+void define_systems_cameras(ecs *world) {
     zox_system(ViewMatrixSystem, zox_camera_stage,
         [in] transforms3.TransformMatrix,
         [in] ProjectionMatrix,

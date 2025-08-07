@@ -1,4 +1,4 @@
-void remove_vodes(ecs_world_t *world, VoxelNode *node) {
+void remove_vodes(ecs *world, VoxelNode *node) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
@@ -16,7 +16,7 @@ void remove_vodes(ecs_world_t *world, VoxelNode *node) {
 }
 
 // cleans up vodes attached to air
-void VodesRemoveSystem(ecs_iter_t *it) {
+void VodesRemoveSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxelNodeDirty)

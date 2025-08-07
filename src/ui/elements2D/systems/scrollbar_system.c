@@ -1,6 +1,6 @@
 // when scroll_front_drags, get window, move elements by amount
 //      > e->parent->parent->children[2+] for list elements - if vertical scrollbar
-void ScrollbarSystem(ecs_iter_t *it) {
+void ScrollbarSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DraggableState)
@@ -15,10 +15,10 @@ void ScrollbarSystem(ecs_iter_t *it) {
         if (!draggableState->value) {
             continue;
         }
-        const ecs_entity_t scrollbar = parentLink->value;
+        const entity scrollbar = parentLink->value;
         const PixelSize *scrollbar_size = zox_get(scrollbar, PixelSize)
         if (scrollbar_size->value.y == pixelSize->value.y) continue;
-        ecs_entity_t list_ui = zox_get_value(scrollbar, ParentLink)
+        entity list_ui = zox_get_value(scrollbar, ParentLink)
         const ElementFontSize *elementFontSize = zox_get(list_ui, ElementFontSize)
         int scaled_font_size = elementFontSize->value * zox_ui_scale;
         int scrollbar_offset = scrollbar_size->value.y - pixelSize->value.y;
@@ -40,7 +40,7 @@ void ScrollbarSystem(ecs_iter_t *it) {
         for (int j = list_start; j < list_elements->length; j++) {
             int normal_j = j - list_start;
             // set list position to scrollview_index_offset
-            const ecs_entity_t list_element = list_elements->value[j];
+            const entity list_element = list_elements->value[j];
             int k = normal_j - scrollview_index_offset;
 
             int2 position = (int2) {

@@ -11,7 +11,7 @@ zox_component_color(FontOutlineColor)
 zox_component_entity(FontLink)
 zox_memory_component(FontData, byte2) // line points used for generating a font texture
 
-void define_components_zigels(ecs_world_t *world) {
+void define_components_zigels(ecs *world) {
     zox_define_tag(FontStyle)
     zox_define_tag(TTFFontStyle)
     zox_define_tag(Font)

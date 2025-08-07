@@ -20,7 +20,7 @@ zox_increment_system_with_reset(MeshDirty, mesh_state_end)
 zox_increment_system_with_reset(RenderLodDirty, zox_dirty_end)
 zox_increment_system_with_reset(RenderDistanceDirty, zox_dirty_end)
 
-void define_systems_rendering(ecs_world_t *world) {
+void define_systems_rendering(ecs *world) {
     zox_define_increment_system(MeshDirty)
     zox_define_increment_system(RenderLodDirty)
     zox_define_increment_system(RenderDistanceDirty)

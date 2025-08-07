@@ -1,4 +1,4 @@
-void RenderTextureRestoreSystem(ecs_iter_t *it) {
+void RenderTextureRestoreSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(TextureGPULink)
@@ -8,7 +8,7 @@ void RenderTextureRestoreSystem(ecs_iter_t *it) {
         zox_sys_i(TextureGPULink, textureGPULink)
         zox_sys_i(TextureSize, textureSize)
         zox_sys_i(CameraLink, cameraLink)
-        ecs_entity_t camera = cameraLink->value;
+        entity camera = cameraLink->value;
         if (zox_has(camera, FrameBufferLink)) {
             // Refresh Render Camera
             uint fbo = spawn_frame_buffer_object(world, camera);

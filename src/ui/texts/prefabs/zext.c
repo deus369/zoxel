@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_zext(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_zext(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("zext")
     // hierarchy
@@ -20,7 +20,7 @@ ecs_entity_t spawn_prefab_zext(ecs_world_t *world, const ecs_entity_t prefab) {
     return e;
 }
 
-ecs_entity_t spawn_zext(ecs_world_t *world, const SpawnZext *data) {
+entity spawn_zext(ecs *world, const SpawnZext *data) {
     int2 texture_size;
     byte font_resolution;
     if (data->zext.font_resolution) {

@@ -1,4 +1,4 @@
-void clear_animation_sequence(ecs_world_t *world, const ecs_entity_t e) {
+void clear_animation_sequence(ecs *world, const entity e) {
     zox_get_muter(e, AnimationSequence, animationSequence)
     if (animationSequence->value) {
         clear_memory_component(AnimationSequence, animationSequence)
@@ -11,7 +11,7 @@ void clear_animation_sequence(ecs_world_t *world, const ecs_entity_t e) {
 }
 
 // initial from game start
-void trigger_canvas_fade_out(ecs_world_t *world, const ecs_entity_t e) {
+void trigger_canvas_fade_out(ecs *world, const entity e) {
     zox_set(e, AnimationStart, { zox_current_time })
     zox_set(e, AnimationState, { zox_animate_alpha })
     zox_set(e, AnimationDelay, { 1.5f })
@@ -20,7 +20,7 @@ void trigger_canvas_fade_out(ecs_world_t *world, const ecs_entity_t e) {
     zox_set(e, AnimateTargetFloat, { 0 })
 }
 
-void trigger_canvas_fade_in(ecs_world_t *world, const ecs_entity_t canvas) {
+void trigger_canvas_fade_in(ecs *world, const entity canvas) {
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) {
         zox_log(" ! failed to find canvas_overlay on canvas\n")
@@ -36,7 +36,7 @@ void trigger_canvas_fade_in(ecs_world_t *world, const ecs_entity_t canvas) {
     zox_set(e, RenderDisabled, { 0 })
 }
 
-void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canvas, const double fade_time, const double delay_time) {
+void trigger_canvas_fade_transition(ecs *world, const entity canvas, const double fade_time, const double delay_time) {
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) {
         zox_log(" ! failed to find canvas_overlay on canvas\n")
@@ -68,7 +68,7 @@ void trigger_canvas_fade_transition(ecs_world_t *world, const ecs_entity_t canva
     animationTargets->value[2] = 0;
 }
 
-void trigger_canvas_half_fade(ecs_world_t *world, const ecs_entity_t canvas, const float time_length, const float alpha, const byte direction) {
+void trigger_canvas_half_fade(ecs *world, const entity canvas, const float time_length, const float alpha, const byte direction) {
     const float canvas_fade_delay = 0.02f;
     find_child_with_tag(canvas, CanvasOverlay, e)
     if (!e) {

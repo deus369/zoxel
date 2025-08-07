@@ -6,10 +6,10 @@ typedef struct {
 } NodeDelveData;
 
 typedef struct {
-    const ecs_entity_t chunk;
-    const ecs_entity_t *blocks;
-    const ecs_entity_t *models;
-    const ecs_entity_t *block_prefabs;
+    const entity chunk;
+    const entity *blocks;
+    const entity *models;
+    const entity *block_prefabs;
     const byte *block_vox_offsets;
     const byte blocks_length;
     const float3 chunk_position_real;
@@ -19,7 +19,7 @@ typedef struct {
     const byte render_lod;
 } UpdateBlockEntities;
 
-void spawn_vodes_dive(ecs_world_t *world,
+void spawn_vodes_dive(ecs *world,
     const UpdateBlockEntities *data,
     NodeDelveData *delve_data
 ) {
@@ -57,7 +57,7 @@ void spawn_vodes_dive(ecs_world_t *world,
     }
 
     // Remove and return if not a World Block
-    const ecs_entity_t block_prefab = data->block_prefabs[block_index];
+    const entity block_prefab = data->block_prefabs[block_index];
     if (!block_prefab) {
         // we use remove system now
         /*write_lock_VoxelNode(node);
@@ -97,7 +97,7 @@ void spawn_vodes_dive(ecs_world_t *world,
             zox_log_error("voxel [%i] is out of range [%i]", block_index, data->blocks_length)
             return;
         }
-        const ecs_entity_t block = data->blocks[block_index];
+        const entity block = data->blocks[block_index];
         spawned_block_data spawned_data = (spawned_block_data) {
             .chunk = data->chunk,
             .node = node,
@@ -118,9 +118,9 @@ void spawn_vodes_dive(ecs_world_t *world,
 
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
-void spawn_vodes(ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t terrain,
+void spawn_vodes(ecs *world,
+    const entity e,
+    const entity terrain,
     const ChunkPosition *chunkPosition,
     const byte vox_lod,
     const RenderDisabled *renderDisabled,
@@ -130,21 +130,21 @@ void spawn_vodes(ecs_world_t *world,
     const float vox_scale = get_terrain_voxel_scale(max_depth);
     const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     // const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
-    const ecs_entity_t realm = zox_get_value(terrain, RealmLink)
+    const entity realm = zox_get_value(terrain, RealmLink)
     zox_geter(realm, VoxelLinks, blocks)
     const byte blocks_length = blocks->length;
     if (blocks_length == 0) {
         return;
     }
-    ecs_entity_t blocksarr[blocks_length];
-    ecs_entity_t models[blocks_length];
-    ecs_entity_t block_prefabs[blocks_length];
+    entity blocksarr[blocks_length];
+    entity models[blocks_length];
+    entity block_prefabs[blocks_length];
     byte block_vox_offsets[blocks_length];
-    zero_memory(models, blocks_length, ecs_entity_t)
-    zero_memory(block_prefabs, blocks_length, ecs_entity_t)
+    zero_memory(models, blocks_length, entity)
+    zero_memory(block_prefabs, blocks_length, entity)
     zero_memory(block_vox_offsets, blocks_length, byte)
     for (int j = 0; j < blocks_length; j++) {
-        const ecs_entity_t block = blocks->value[j];
+        const entity block = blocks->value[j];
         if (!zox_valid(block)) {
             continue;
         }
@@ -182,7 +182,7 @@ void spawn_vodes(ecs_world_t *world,
 }
 
 // Uses voxelNodeDirty to trigger
-void VodesSpawnSystem(ecs_iter_t *it) {
+void VodesSpawnSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxelNodeDirty)

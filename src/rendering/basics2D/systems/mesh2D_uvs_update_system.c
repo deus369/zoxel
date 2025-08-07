@@ -14,7 +14,7 @@ void opengl_upload_shader2D_textured(uint2 mesh_buffer, uint uv_buffer, const in
 #endif
 }
 
-void Mesh2DUvsUpdateSystem(ecs_iter_t *it) {
+void Mesh2DUvsUpdateSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(MeshIndicies)
     zox_sys_in(MeshVertices2D)

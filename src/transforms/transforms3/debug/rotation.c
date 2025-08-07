@@ -1,6 +1,6 @@
 // #define zoxel_tests_rotate_by_keys
 
-void test_rotation(ecs_world_t *world, const ecs_entity_t character, const keyboard *keyboard) {
+void test_rotation(ecs *world, const entity character, const keyboard *keyboard) {
     /*if (keyboard->r.is_pressed) {
         float3 euler = (float3) { 0, 90 * degreesToRadians, 0 * degreesToRadians };
         //float4 quaternion = (float4) { 0, debug_rotation_speed, 0, 1 };

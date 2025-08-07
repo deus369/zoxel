@@ -1,5 +1,5 @@
 // animation system
-void ElementActiveSystem(ecs_iter_t *it) {
+void ElementActiveSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ActiveState);
     zox_sys_in(ActiveStateDirty);

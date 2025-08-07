@@ -37,18 +37,18 @@
     zox_define_entity_parent_component2(name, [out] name)
 
 #define component_id_list(name)\
-    ecs_entity_t_array_d* component_ids##_##name;\
+    entity_array_d* component_ids##_##name;\
     \
     void initialize_component_ids##_##name() {\
-        component_ids##_##name = create_ecs_entity_t_array_d(initial_dynamic_array_size);\
+        component_ids##_##name = create_entity_array_d(initial_dynamic_array_size);\
     }\
     \
     void dispose_component_ids##_##name() {\
-        dispose_ecs_entity_t_array_d(component_ids##_##name);\
+        dispose_entity_array_d(component_ids##_##name);\
     }\
     \
     byte is_component_type##_##name(ecs_entity_t id) {\
-        return is_in_ecs_entity_t_array_d(component_ids##_##name, id);\
+        return is_in_entity_array_d(component_ids##_##name, id);\
     }
 
 #define zox_debug_component(name)\

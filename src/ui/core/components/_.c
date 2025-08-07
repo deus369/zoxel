@@ -58,11 +58,11 @@ zox_component_byte(ActiveStateDirty)
 #include "tooltip_event.c"
 #include "slide_event.c"
 
-ecs_entity_t get_linked_canvas(ecs_world_t* world, ecs_entity_t e) {
+entity get_linked_canvas(ecs* world, entity e) {
     return zox_valid(e) && zox_has(e, CanvasLink) ? zox_gett_value(e, CanvasLink) : 0;
 }
 
-void define_components_elements_core(ecs_world_t *world) {
+void define_components_elements_core(ecs *world) {
     zox_define_tag(Element)
     zox_define_tag(Element2D)
     zox_define_tag(Canvas)

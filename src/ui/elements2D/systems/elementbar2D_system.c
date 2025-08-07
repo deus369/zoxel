@@ -1,6 +1,6 @@
-extern void on_element_pixels_resized(ecs_world_t *world, ecs_entity_t e, const int2 size, byte mesh_alignment);
+extern void on_element_pixels_resized(ecs *world, entity e, const int2 size, byte mesh_alignment);
 
-void Elementbar2DSystem(ecs_iter_t *it) {
+void Elementbar2DSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ElementBar)
@@ -15,7 +15,7 @@ void Elementbar2DSystem(ecs_iter_t *it) {
         if (!children->length) {
             continue;
         }
-        const ecs_entity_t front_bar = children->value[0];
+        const entity front_bar = children->value[0];
         if (!zox_valid(front_bar)) {
             continue;
         }

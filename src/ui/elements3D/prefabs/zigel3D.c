@@ -1,6 +1,6 @@
 typedef struct {
-    ecs_entity_t prefab;
-    ecs_entity_t parent;
+    entity prefab;
+    entity parent;
     byte zigel_index; // zox character code
     color fill_color;
     color outline_color;
@@ -13,8 +13,8 @@ typedef struct {
     float scale;
 } Zigel3DData;
 
-ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_zigel3D(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     zox_prefab_name("zigel3")
@@ -30,7 +30,7 @@ ecs_entity_t spawn_prefab_zigel3D(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_zigel3(ecs_world_t *world,
+entity spawn_zigel3(ecs *world,
     const Zigel3DData data)
 {
     if (!zox_valid(data.prefab)) {

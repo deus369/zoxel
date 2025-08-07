@@ -1,6 +1,6 @@
 // for only the button
 typedef struct {
-    ecs_entity_t prefab_zext;
+    entity prefab_zext;
     byte is_close_button;
     byte margins;
     color color;

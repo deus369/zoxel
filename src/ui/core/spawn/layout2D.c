@@ -1,7 +1,7 @@
-ecs_entity_t spawn_layout2(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
-    const ecs_entity_t parent,
+entity spawn_layout2(ecs *world,
+    const entity prefab,
+    const entity canvas,
+    const entity parent,
     int2 position,
     const int2 size,
     const float2 anchor,
@@ -32,9 +32,9 @@ ecs_entity_t spawn_layout2(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_layout2_on_canvas(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
+entity spawn_layout2_on_canvas(ecs *world,
+    const entity prefab,
+    const entity canvas,
     const int2 pixel_position,
     const int2 pixel_size,
     const float2 anchor)

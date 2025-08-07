@@ -1,5 +1,5 @@
 //! Closes all solid nodes, as well as air nodes, after terrain system generates it.
-/*void close_solid_nodes(ecs_world_t *world, VoxelNode *node) {
+/*void close_solid_nodes(ecs *world, VoxelNode *node) {
     if (!has_children_VoxelNode(node)) {
         return;
     }

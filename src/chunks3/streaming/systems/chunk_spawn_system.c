@@ -1,6 +1,6 @@
-extern ecs_entity_t spawn_chunk_terrain(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
+extern entity spawn_chunk_terrain(ecs *world, const entity prefab, const entity terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
 
-void ChunkSpawnSystem(ecs_iter_t *it) {
+void ChunkSpawnSystem(iter *it) {
     zox_sys_query()
     zox_sys_world()
     const byte log_individuals = 0;
@@ -50,7 +50,7 @@ void ChunkSpawnSystem(ecs_iter_t *it) {
         const byte stream_zone = renderDistance->value < terrain_lod_far;
         if (stream_zone) {
             for (byte j = 0; j < 6; j++) {
-                ecs_entity_t neighbor = chunkNeighbors->value[j];
+                entity neighbor = chunkNeighbors->value[j];
                 // no need to spawn if neighbor exists
                 if (zox_valid(neighbor)) {
                     continue;

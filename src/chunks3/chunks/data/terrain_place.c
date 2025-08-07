@@ -1,5 +1,5 @@
 typedef struct {
-    ecs_entity_t chunk;
+    entity chunk;
     float3 position;
     float4 rotation;
     float3 euler;

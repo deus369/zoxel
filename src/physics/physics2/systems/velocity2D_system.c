@@ -1,4 +1,4 @@
-void Velocity2DSystem(ecs_iter_t *it) { // Veloco Rapters!
+void Velocity2DSystem(iter *it) { // Veloco Rapters!
     init_delta_time()
     zox_sys_begin()
     zox_sys_in(Velocity2D)

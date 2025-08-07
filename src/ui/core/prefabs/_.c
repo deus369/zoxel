@@ -4,15 +4,15 @@
 #include "element_textured.c"
 #include "canvas_overlay.c"
 #include "render_texture.c"
-ecs_entity_t prefab_canvas;
-ecs_entity_t prefab_layout2;           // a non textured element
-ecs_entity_t prefab_element_shell;      // has a texture and renderer, good for setting
-ecs_entity_t prefab_element_ready;      // ready for generating textures
-ecs_entity_t prefab_element_textured;   // rename to textured_frame
-ecs_entity_t prefab_render_texture;     // a child of prefab_element_basic
-ecs_entity_t prefab_canvas_overlay;
+entity prefab_canvas;
+entity prefab_layout2;           // a non textured element
+entity prefab_element_shell;      // has a texture and renderer, good for setting
+entity prefab_element_ready;      // ready for generating textures
+entity prefab_element_textured;   // rename to textured_frame
+entity prefab_render_texture;     // a child of prefab_element_basic
+entity prefab_canvas_overlay;
 
-void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
+void prefabs_add_ui_to_player(ecs *world, const entity e) {
     // Player -> Devices (move this to device module)
     zox_prefab_set(e, DeviceMode, { 0 })
     zox_prefab_set(e, DeviceModeDirty, { 0 })
@@ -25,14 +25,14 @@ void prefabs_add_ui_to_player(ecs_world_t *world, const ecs_entity_t e) {
     zox_prefab_set(e, NavigatorTimer, { 0 })
 }
 
-void prefabs_add_ui_to_raycaster(ecs_world_t *world, const ecs_entity_t e) {
+void prefabs_add_ui_to_raycaster(ecs *world, const entity e) {
     zox_prefab_set(e, WindowRaycasted, { 0 })
     zox_prefab_set(e, WindowTarget, { 0 })
     zox_prefab_set(e, ClickingEntity, { 0 })
 
 }
 
-void spawn_prefabs_ui_core(ecs_world_t *world) {
+void spawn_prefabs_ui_core(ecs *world) {
     prefab_canvas = spawn_prefab_canvas(world);
 #if defined(zoxm_players)
     zox_prefab_set(prefab_canvas, PlayerLink, { 0 })

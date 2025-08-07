@@ -7,7 +7,7 @@
 #include "transform_matrix_scale_system.c"
 #include "camera_transform_matrix_system.c"
 
-void zox_define_systems_transforms3D(ecs_world_t *world) {
+void zox_define_systems_transforms3D(ecs *world) {
     zox_system(EulerLimitXSystem, EcsOnUpdate,
         [in] EulerLimitX,
         [out] Euler)

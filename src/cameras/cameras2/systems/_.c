@@ -1,6 +1,6 @@
 #include "camera2_follow_system.c"
 
-void define_systems_cameras2(ecs_world_t *world) {
+void define_systems_cameras2(ecs *world) {
     zox_system(Camera2FollowSystem, EcsPostUpdate,
         [in] cameras.CanRoam,
         [in] cameras.CameraTarget,

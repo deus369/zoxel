@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_elementbar2D_front(ecs_world_t *world) {
+entity spawn_prefab_elementbar2D_front(ecs *world) {
     zox_prefab()
     zox_prefab_name("elementbar2D_front")
     zox_add_tag(e, FillTexture)

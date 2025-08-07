@@ -9,7 +9,7 @@
     #include "vox_instance_render_system.c"
 #endif
 
-void define_systems_basics3D(ecs_world_t *world) {
+void define_systems_basics3D(ecs *world) {
     // skybox
     zox_render3D_plus_system(Render3DSystem,
         [in] transforms3.TransformMatrix,

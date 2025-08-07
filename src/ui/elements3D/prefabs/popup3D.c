@@ -1,5 +1,5 @@
-ecs_entity_t spawn_prefab_popup3(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_popup3(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     zox_prefab_name("popup3D")
@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_popup3(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_popup3(ecs_world_t *world,
+entity spawn_popup3(ecs *world,
     const SpawnDataElement3D data,
     Text3DData text_data,
     Zigel3DData zigel_data,
@@ -36,7 +36,7 @@ ecs_entity_t spawn_popup3(ecs_world_t *world,
     text_data.parent = e;
     zigel_data.position = depth_position;
     zigel_data.scale = popup_data.scale; // 2;
-    const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);
+    const entity text = spawn_text3D(world, text_data, zigel_data);
     // zox_set(text, Scale1D, { 4 })
     add_to_Children(&children, text);
     zox_set_ptr(e, Children, children);

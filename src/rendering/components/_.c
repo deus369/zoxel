@@ -20,7 +20,7 @@ zox_component_int2(TextureSize)
 zox_component_byte(ShaderSourceIndex)
 zox_component_entity(ShaderLink) // links to a shader entity
 zox_component_entity(InstanceLink) // links to a instance parent
-// zox_component_array(InstanceLinks, ecs_entity_t, 8)
+// zox_component_array(InstanceLinks, entity, 8)
 zox_memory_component(MeshIndicies, int)
 zox_memory_component(MeshVertices, float3)
 zox_memory_component(MeshVertices2D, float2)
@@ -38,13 +38,13 @@ zox_memory_component(MeshColorRGBs, color_rgb)
 // Models
 zox_entities_component(ModelLinks)  // realm links to models
 zox_component_entity(ModelLink)     // a render instance links to model
-zox_component_array(ModelLods, ecs_entity_t, 6) // a model has multiple models per LOD
+zox_component_array(ModelLods, entity, 6) // a model has multiple models per LOD
 
-static inline int2 get_texture_size(ecs_world_t* world, ecs_entity_t e) {
+static inline int2 get_texture_size(ecs* world, entity e) {
     return zox_get_value(e, TextureSize)
 }
 
-void define_components_rendering(ecs_world_t *world) {
+void define_components_rendering(ecs *world) {
     zox_define_tag(Mesh)
     zox_define_tag(Shader)
     zox_define_tag(Material)

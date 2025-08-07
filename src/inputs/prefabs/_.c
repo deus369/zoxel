@@ -6,19 +6,19 @@
 #define zox_device_stick_right 1
 const byte fingers_count = 2;
 // prefeabs
-ecs_entity_t prefab_zevice_button;
-ecs_entity_t prefab_zevice_stick;
-ecs_entity_t prefab_zevice_pointer;
-ecs_entity_t prefab_device;
-ecs_entity_t prefab_touchscreen;
-ecs_entity_t prefab_keyboard;
-ecs_entity_t prefab_mouse;
-ecs_entity_t prefab_gamepad;
+entity prefab_zevice_button;
+entity prefab_zevice_stick;
+entity prefab_zevice_pointer;
+entity prefab_device;
+entity prefab_touchscreen;
+entity prefab_keyboard;
+entity prefab_mouse;
+entity prefab_gamepad;
 
-ecs_entity_t local_touchscreen;
-ecs_entity_t local_keyboard;
-ecs_entity_t gamepad_entity;
-ecs_entity_t local_mouse;
+entity local_touchscreen;
+entity local_keyboard;
+entity gamepad_entity;
+entity local_mouse;
 
 #include "zevice_button.c"
 #include "zevice_stick.c"
@@ -30,7 +30,7 @@ ecs_entity_t local_mouse;
 #include "touchscreen.c"
 
 int prefabs_count_devices = 0;
-ecs_entity_t prefabs_devices[32];
+entity prefabs_devices[32];
 
 // setters for higher modules to add to characters
 #define zox_prefab_set_device(T, ...) {\
@@ -39,7 +39,7 @@ ecs_entity_t prefabs_devices[32];
     }\
 }
 
-void spawn_prefabs_inputs(ecs_world_t *world) {
+void spawn_prefabs_inputs(ecs *world) {
     prefab_zevice_button = spawn_prefab_device_button(world);
     prefab_zevice_stick = spawn_prefab_device_stick(world);
     prefab_zevice_pointer = spawn_prefab_zevice_pointer(world);

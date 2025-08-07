@@ -1,4 +1,4 @@
-void ZeviceButtonEnableSystem(ecs_iter_t *it) {
+void ZeviceButtonEnableSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ZeviceButton)
     zox_sys_out(ZeviceDisabled)

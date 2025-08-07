@@ -1,13 +1,13 @@
 typedef struct
 {
-    ecs_entity_t mesh;
+    entity mesh;
     float4x4_array_d* transforms;
 } InstanceRenderCommand;
 zoxel_dynamic_array(InstanceRenderCommand)
 
 byte has_mesh(
     InstanceRenderCommand_array_d* commands,
-    ecs_entity_t mesh, int *index)
+    entity mesh, int *index)
 {
     for (size_t i = 0; i < commands->size; i++) {
         if (commands->data[i].mesh == mesh) {

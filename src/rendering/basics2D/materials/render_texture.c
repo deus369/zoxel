@@ -1,5 +1,5 @@
-ecs_entity_t shader_render_texture;
-ecs_entity_t material_render_texture;
+entity shader_render_texture;
+entity material_render_texture;
 
 
 //! Links to locations inside a base material->
@@ -21,13 +21,13 @@ MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const uin
         .texture = glGetUniformLocation(material, "texture") };
 }
 
-ecs_entity_t spawn_shader_render_texture(ecs_world_t *world) {
+entity spawn_shader_render_texture(ecs *world) {
     const byte shader_index = get_new_shader_source_index();
     char* vert = get_shader_source(world, "render_texture.vert");
     char* frag = get_shader_source(world, "render_texture.frag");
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
-    const ecs_entity_t e = spawn_shader(world, shader_index);
+    const entity e = spawn_shader(world, shader_index);
     if (!e) {
         zox_log_error("[shader_render_texture] failed to spawn")
         return 0;
@@ -36,11 +36,11 @@ ecs_entity_t spawn_shader_render_texture(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_material_render_texture(ecs_world_t *world) {
-    const ecs_entity_t shader = spawn_shader_render_texture(world);
+entity spawn_material_render_texture(ecs *world) {
+    const entity shader = spawn_shader_render_texture(world);
     if (!shader) return 0;
     uint material;
-    const ecs_entity_t e = spawn_material(world, shader, &material);
+    const entity e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     const MaterialAttributesRenderTexture attributes = create_MaterialAttributesRenderTexture(material);
     zox_set_data(e, MaterialAttributesRenderTexture, attributes)

@@ -1,5 +1,5 @@
 //! Bounds, because everyone needs limits! Used atm to keep player within the start area.
-void Position3DBoundsSystem(ecs_iter_t *it) {
+void Position3DBoundsSystem(iter *it) {
     const float teleport_force = 0.2f;
     zox_sys_begin()
     zox_sys_in(Position3DBounds)

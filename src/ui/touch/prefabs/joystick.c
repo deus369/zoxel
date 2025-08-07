@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_virtual_joystick(ecs_world_t *world) {
+entity spawn_prefab_virtual_joystick(ecs *world) {
     zox_prefab()
     zox_prefab_name("virtual_joystick")
     zox_add_tag(e, JoystickUI)

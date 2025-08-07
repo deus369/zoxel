@@ -1,12 +1,12 @@
-static inline ecs_entity_t get_player_character(ecs_world_t*, ecs_entity_t);
-static inline byte get_character_can_jump(ecs_world_t*, ecs_entity_t);
+static inline entity get_player_character(ecs*, entity);
+static inline byte get_character_can_jump(ecs*, entity);
 
-uint debug_label_collisions(ecs_world_t *world,
-    const ecs_entity_t player,
+uint debug_label_collisions(ecs *world,
+    const entity player,
     char *buffer,
     const uint size, uint index)
 {
-    const ecs_entity_t character = get_player_character(world, player);
+    const entity character = get_player_character(world, player);
     if (!zox_valid(character)) {
         index += snprintf(buffer + index, size - index, "[%s] has no character\n", zox_get_name(player));
         return index;

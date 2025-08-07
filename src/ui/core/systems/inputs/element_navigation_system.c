@@ -1,9 +1,9 @@
-extern void canvas_select_first_button(ecs_world_t *world, const ecs_entity_t raycaster, const ecs_entity_t canvas);
+extern void canvas_select_first_button(ecs *world, const entity raycaster, const entity canvas);
 
 // #define zox_debug_navigation
 
 // todo: fix this, RaycasterTarget moved to zevices
-void ElementNavigationSystem(ecs_iter_t *it) {
+void ElementNavigationSystem(iter *it) {
     init_delta_time()
     zox_sys_world()
     zox_sys_begin()
@@ -31,13 +31,13 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             continue;
         } else if (device_mode == zox_device_mode_gamepad && !raycasterTarget->value) {
             zox_sys_e()
-            const ecs_entity_t canvas = zox_get_value(e, CanvasLink)
+            const entity canvas = zox_get_value(e, CanvasLink)
             canvas_select_first_button(world, e, canvas);
         }
         if (!raycasterTarget->value || !zox_alive(raycasterTarget->value)) continue;
         float2 left_stick = float2_zero;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device = deviceLinks->value[j];
+            const entity device = deviceLinks->value[j];
             if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
@@ -55,7 +55,7 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             } else if (zox_has(device, Gamepad)) {
                 zox_geter(device, Children, zevices)
                 for (int k = 0; k < zevices->length; k++) {
-                    const ecs_entity_t zevice = zevices->value[k];
+                    const entity zevice = zevices->value[k];
                     if (zox_has(zevice, ZeviceStick)) {
                         zox_geter(zevice, ZeviceDisabled, zeviceDisabled)
                         if (zeviceDisabled->value) continue;
@@ -84,11 +84,11 @@ void ElementNavigationSystem(ecs_iter_t *it) {
             continue;
         }
         // using selected window, we navigation elements of that... this could be done better
-        const ecs_entity_t parent = zox_get_value(raycasterTarget->value, ParentLink)
+        const entity parent = zox_get_value(raycasterTarget->value, ParentLink)
         zox_geter(parent, Children, children)
         unsigned did_find = 0;
         for (int k = 0; k < children->length; k++) {
-            const ecs_entity_t child = children->value[k];
+            const entity child = children->value[k];
             if (zox_has(child, Selectable) && child == raycasterTarget->value) {
                 did_find = 1;
                 if (left_stick.y >= ui_navigation_joystick_cutoff && k > 1) {

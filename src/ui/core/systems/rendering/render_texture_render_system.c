@@ -1,7 +1,7 @@
-extern ecs_entity_t get_root_canvas_camera(ecs_world_t *world, const ecs_entity_t e);
+extern entity get_root_canvas_camera(ecs *world, const entity e);
 
 // this is more like a non blend pass!
-void RenderTextureRenderSystem(ecs_iter_t *it) {
+void RenderTextureRenderSystem(iter *it) {
     zox_sys_world()
     if (!material_render_texture) {
         return;

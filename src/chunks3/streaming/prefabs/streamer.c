@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_streamer(ecs_world_t *world) {
+entity spawn_prefab_streamer(ecs *world) {
     zox_prefab()
     zox_add_tag(e, Streamer)
     zox_prefab_set(e, StreamPoint, { int3_zero })
@@ -6,8 +6,8 @@ ecs_entity_t spawn_prefab_streamer(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_streamer(ecs_world_t *world,
-    const ecs_entity_t prefab,
+entity spawn_streamer(ecs *world,
+    const entity prefab,
     const int3 point)
 {
     zox_instance(prefab)

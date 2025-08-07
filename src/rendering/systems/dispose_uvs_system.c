@@ -1,4 +1,4 @@
-void MeshUvsGPUDisposeSystem(ecs_iter_t *it) {
+void MeshUvsGPUDisposeSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(UvsGPULink)
     for (int i = 0; i < it->count; i++) {

@@ -1,12 +1,12 @@
 #include "label.c"
 
-extern ecs_entity_t get_linked_terrain(ecs_world_t*, ecs_entity_t);
+extern entity get_linked_terrain(ecs*, entity);
 
 
-void test_load_chunk(ecs_world_t *world, int32_t keycode) {
+void test_load_chunk(ecs *world, int32_t keycode) {
     if (keycode == SDLK_l) {
         zox_log("Testing Load Chunks");
-        ecs_entity_t terrain = get_linked_terrain(world, local_realm);
+        entity terrain = get_linked_terrain(world, local_realm);
         if (!zox_valid(terrain)) {
             zox_log("No Terrain.");
             return;
@@ -16,7 +16,7 @@ void test_load_chunk(ecs_world_t *world, int32_t keycode) {
             int3_hashmap_pair* pair = chunks->value->data[i];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
-                ecs_entity_t chunk = pair->value;
+                entity chunk = pair->value;
                 if (zox_valid(chunk)) {
                     zox_geter_value(chunk, ChunkPosition, int3, position);
                     zox_get_muter(chunk, VoxelNode, node);

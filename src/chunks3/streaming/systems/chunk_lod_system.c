@@ -2,7 +2,7 @@
 // each chunk will calculate distance to nearest camera and based LOD off this distance
 const byte disable_chunk_loding = 0;
 
-void ChunkLodSystem(ecs_iter_t *it) {
+void ChunkLodSystem(iter *it) {
     if (zox_cameras_disable_streaming) {
         return;
     }

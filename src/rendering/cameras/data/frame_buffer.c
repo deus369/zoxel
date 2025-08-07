@@ -20,7 +20,7 @@ uint gpu_spawn_frame_buffer_object() {
     return buffer;
 }
 // Function to spawn and attach a frame buffer object to an entity
-uint spawn_frame_buffer_object(ecs_world_t *world, const ecs_entity_t e) {
+uint spawn_frame_buffer_object(ecs *world, const entity e) {
     if (headless) {
         return 0;
     }

@@ -1,12 +1,12 @@
 zox_component(UboGPULink, uint)
 
-void add_gpu_ubo(ecs_world_t *world, ecs_entity_t e) {
+void add_gpu_ubo(ecs *world, entity e) {
     if (!headless) {
         zox_prefab_set(e, UboGPULink, { 0 })
     }
 }
 
-void spawn_gpu_ubo(ecs_world_t *world, ecs_entity_t e) {
+void spawn_gpu_ubo(ecs *world, entity e) {
     if (!headless) {
         zox_set(e, UboGPULink, { spawn_gpu_generic_buffer() })
     }

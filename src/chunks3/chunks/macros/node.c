@@ -7,9 +7,9 @@ struct name {\
     zox_lock lock;\
 }; zox_custom_component(name)\
 \
-zox_hookr(on_destroyed_##name, byte, (ecs_world_t* world, name* node), (world, node));\
+zox_hookr(on_destroyed_##name, byte, (ecs* world, name* node), (world, node));\
 \
-void destroy_##name(ecs_world_t *world, name* node);\
+void destroy_##name(ecs *world, name* node);\
 \
 void* get_new_children_##name() {\
     return (void*) malloc(sizeof(name) * octree_length);\
@@ -92,7 +92,7 @@ void open_##name(name* node) { \
     /*write_unlock_##name(node);*/ \
 }\
 \
-void close_##name(ecs_world_t *world, name *node) {\
+void close_##name(ecs *world, name *node) {\
     if (!has_children_##name(node)) { \
         return; \
     } \
@@ -105,7 +105,7 @@ void close_##name(ecs_world_t *world, name *node) {\
     node->ptr = NULL; \
 }\
 \
-void destroy_##name(ecs_world_t *world, name* node) {\
+void destroy_##name(ecs *world, name* node) {\
     if (!is_closed_##name(node)) {\
         if (has_children_##name(node)) {\
             close_##name(world, node);\
@@ -159,7 +159,7 @@ ECS_MOVE(name, dst, src, {\
     src->type = 0;\
 })\
 \
-void dispose_system_##name(ecs_iter_t *it) {\
+void dispose_system_##name(iter *it) {\
     zox_sys_world()\
     zox_sys_begin()\
     zox_sys_out(name)\

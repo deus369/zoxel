@@ -1,4 +1,4 @@
-void Gravity3DSystem(ecs_iter_t *it) {
+void Gravity3DSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Gravity3D)
     zox_sys_in(DisableGravity)

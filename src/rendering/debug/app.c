@@ -1,8 +1,8 @@
-extern ecs_entity_t zox_canvases[16];
-static inline int2 get_texture_size(ecs_world_t*, ecs_entity_t);
+extern entity zox_canvases[16];
+static inline int2 get_texture_size(ecs*, entity);
 
-uint debug_label_app(ecs_world_t *world,
-    const ecs_entity_t player,
+uint debug_label_app(ecs *world,
+    const entity player,
     char *buffer,
     const uint size, uint index)
 {
@@ -15,7 +15,7 @@ uint debug_label_app(ecs_world_t *world,
 
 
     for (int i = 0; i < cameras->length; i++) {
-        const ecs_entity_t camera = cameras->value[i];
+        const entity camera = cameras->value[i];
         zox_geter_value(camera, ScreenDimensions, int2, camera_size)
         zox_geter_value(camera, ScreenPosition, int2, screen_position)
         zox_geter_value(camera, ScreenToCanvas, float4, screen_ratio)
@@ -28,8 +28,8 @@ uint debug_label_app(ecs_world_t *world,
     // canvas
     // render texture size
     //zox_geter(local_realm, PlayerLinks, players)
-    //zox_geter_value(players->value[0], CanvasLink, ecs_entity_t, canvas)
-    ecs_entity_t canvas = zox_canvases[0];
+    //zox_geter_value(players->value[0], CanvasLink, entity, canvas)
+    entity canvas = zox_canvases[0];
     zox_geter_value(canvas, PixelSize, int2, canvas_size)
     zox_geter_value(canvas, ScreenToCanvas, float4, canvas_ratio)
     zox_geter(canvas, Children, canvas_children)
@@ -39,7 +39,7 @@ uint debug_label_app(ecs_world_t *world,
     index += snprintf(buffer + index, size - index, "   - children [%i]:\n", canvas_children->length);
 
     for (int i = 0; i < canvas_children->length; i++) {
-        const ecs_entity_t element = canvas_children->value[i];
+        const entity element = canvas_children->value[i];
         if (!zox_has(element, RenderTexture)) {
             continue;
         }

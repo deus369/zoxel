@@ -1,5 +1,5 @@
 // Streamer components added to cameras
-void StreamPointSystem(ecs_iter_t *it) {
+void StreamPointSystem(iter *it) {
     if (zox_cameras_disable_streaming) {
         return;
     }

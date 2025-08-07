@@ -1,4 +1,4 @@
-void Friction3DSystem(ecs_iter_t *it) {
+void Friction3DSystem(iter *it) {
     init_delta_time()
     zox_sys_begin()
     zox_sys_in(Grounded)

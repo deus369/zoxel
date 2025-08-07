@@ -7,7 +7,7 @@ void rendering_dispose_basic_shaders2D() {
 }
 
 // spawns after, when opengl loads
-void spawn_shaders_basics2D(ecs_world_t *world) {
+void spawn_shaders_basics2D(ecs *world) {
     spawn_material_textured2D(world);
     spawn_material_render_texture(world);
     initialize_square_mesh_textured();

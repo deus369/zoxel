@@ -1,6 +1,6 @@
 // should i grab neighbor states instead, or should i create setters?
 //  probably grab them, its faster to write in my systems
-void Chunk3NeighborsMeshTriggerSystem(ecs_iter_t *it) {
+void Chunk3NeighborsMeshTriggerSystem(iter *it) {
     zox_sys_world();
     zox_sys_begin();
     zox_sys_in(ChunkNeighbors);
@@ -15,7 +15,7 @@ void Chunk3NeighborsMeshTriggerSystem(ecs_iter_t *it) {
         }
         byte neighbor_dirty = 0;
         for (byte j = 0; j < chunk_neighbors_length; j++) {
-            ecs_entity_t n = neighbors->value[j];
+            entity n = neighbors->value[j];
             if (!zox_valid(n) || !zox_has(n, VoxelNodeDirty)) {
                 continue;
             }

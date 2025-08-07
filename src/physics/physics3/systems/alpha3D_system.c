@@ -1,4 +1,4 @@
-void Alpha3System(ecs_iter_t *it) {
+void Alpha3System(iter *it) {
     init_delta_time()
     zox_sys_begin()
     zox_sys_out(Alpha3D)

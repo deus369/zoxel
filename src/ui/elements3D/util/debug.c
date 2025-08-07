@@ -1,8 +1,8 @@
-ecs_entity_t debug_entity_text3D;
+entity debug_entity_text3D;
 
-void key_down_update_text3D(ecs_world_t *world, int32_t keycode) {
+void key_down_update_text3D(ecs *world, int32_t keycode) {
     if (keycode == SDLK_g) {
-        const ecs_entity_t e = debug_entity_text3D;
+        const entity e = debug_entity_text3D;
         if (!e) {
             return;
         }

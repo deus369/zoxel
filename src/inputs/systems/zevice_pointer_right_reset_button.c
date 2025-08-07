@@ -1,4 +1,4 @@
-void ZevicePointerRightResetSystem(ecs_iter_t *it) {
+void ZevicePointerRightResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(ZevicePointerRight)
     for (int i = 0; i < it->count; i++) {

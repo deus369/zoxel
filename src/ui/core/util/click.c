@@ -1,7 +1,7 @@
 void on_element_clicked(
-    ecs_world_t *world,
-    const ecs_entity_t player,
-    const ecs_entity_t ui
+    ecs *world,
+    const entity player,
+    const entity ui
 ) {
     if (ui && zox_has(ui, Clickable)) {
         zox_set(ui, ClickState, { zox_click_state_trigger_clicked })
@@ -10,9 +10,9 @@ void on_element_clicked(
 }
 
 void on_element_released(
-    ecs_world_t *world,
-    const ecs_entity_t player,
-    const ecs_entity_t ui
+    ecs *world,
+    const entity player,
+    const entity ui
 ) {
     if (ui && zox_has(ui, Clickable)) {
         zox_set(ui, ClickState, { zox_click_state_trigger_released })
@@ -21,15 +21,15 @@ void on_element_released(
 }
 
 void set_raycast_target_children(
-    ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t target
+    ecs *world,
+    const entity e,
+    const entity target
 ) {
     if (!zox_valid(e)) {
         return;
     }
     if (zox_has(e, RaycasterTarget)) {
-        const ecs_entity_t last_target = zox_get_value(e, RaycasterTarget)
+        const entity last_target = zox_get_value(e, RaycasterTarget)
         if (zox_valid(last_target)) {
             zox_set(last_target, SelectState, { zox_select_state_trigger_deselect })
         }
@@ -41,7 +41,7 @@ void set_raycast_target_children(
     if (zox_has(e, Children)) {
         zox_geter(e, Children, children)
         for (int i = 0; i < children->length; i++) {
-            const ecs_entity_t child = children->value[i];
+            const entity child = children->value[i];
             if (!zox_valid(child)) {
                 continue;
             }
@@ -51,7 +51,7 @@ void set_raycast_target_children(
     if (zox_has(e, DeviceLinks)) {
         zox_geter(e, DeviceLinks, children)
         for (int i = 0; i < children->length; i++) {
-            const ecs_entity_t child = children->value[i];
+            const entity child = children->value[i];
             if (!zox_valid(child)) {
                 continue;
             }
@@ -61,9 +61,9 @@ void set_raycast_target_children(
 }
 
 void raycaster_select_window_children(
-    ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t window
+    ecs *world,
+    const entity e,
+    const entity window
 ) {
     if (zox_has(e, WindowRaycasted)) {
         zox_set(e, WindowRaycasted, { window })
@@ -71,7 +71,7 @@ void raycaster_select_window_children(
     if (zox_has(e, Children)) {
         zox_geter(e, Children, children)
         for (int i = 0; i < children->length; i++) {
-            const ecs_entity_t child = children->value[i];
+            const entity child = children->value[i];
             if (!child) continue;
             raycaster_select_window_children(world, child, window);
         }
@@ -79,7 +79,7 @@ void raycaster_select_window_children(
     if (zox_has(e, DeviceLinks)) {
         zox_geter(e, DeviceLinks, children)
         for (int i = 0; i < children->length; i++) {
-            const ecs_entity_t child = children->value[i];
+            const entity child = children->value[i];
             if (!child) continue;
             raycaster_select_window_children(world, child, window);
         }
@@ -89,17 +89,17 @@ void raycaster_select_window_children(
 // here we pass down selected components to children
 
 void raycaster_select_element(
-    ecs_world_t *world,
-    const ecs_entity_t raycaster,
-    const ecs_entity_t element
+    ecs *world,
+    const entity raycaster,
+    const entity element
 ) {
     set_raycast_target_children(world, raycaster, element);
 }
 
 void raycaster_select_window(
-    ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t window
+    ecs *world,
+    const entity e,
+    const entity window
 ) {
     raycaster_select_window_children(world, e, window);
 }

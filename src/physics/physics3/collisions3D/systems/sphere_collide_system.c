@@ -1,4 +1,4 @@
-void SphereCollideSystem(ecs_iter_t *it) {
+void SphereCollideSystem(iter *it) {
     zox_sys_query()
     zox_sys_world()
     zox_sys_begin()
@@ -27,7 +27,7 @@ void SphereCollideSystem(ecs_iter_t *it) {
                 if (collisionDisabled2->value) {
                     continue;
                 }
-                const ecs_entity_t e2 = it2.entities[j];
+                const entity e2 = it2.entities[j];
                 if (e == e2) {
                     continue;
                 }

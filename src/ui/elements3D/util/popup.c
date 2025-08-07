@@ -1,5 +1,5 @@
-ecs_entity_t spawn_popup3_easy(
-    ecs_world_t *world,
+entity spawn_popup3_easy(
+    ecs *world,
     const char *text,
     const color text_color,
     const float3 position,
@@ -26,7 +26,7 @@ ecs_entity_t spawn_popup3_easy(
         scale = scale,
         lifetime = lifetime,
     };
-    const ecs_entity_t e = spawn_popup3(world,
+    const entity e = spawn_popup3(world,
         popup_spawn_data,
         popup_text_data,
         popup_zigel_data,

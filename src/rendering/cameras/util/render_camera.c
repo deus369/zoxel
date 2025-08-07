@@ -1,5 +1,5 @@
-void create_camera_rbo_and_fbo(ecs_world_t *world,
-    const ecs_entity_t e,
+void create_camera_rbo_and_fbo(ecs *world,
+    const entity e,
     const int2 size)
 {
 #ifndef zox_disable_post_processing

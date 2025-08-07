@@ -1,9 +1,9 @@
 #ifdef zox_debug_ui_trails
     float ui_trail_debug_thickness = 2.0f;
-    extern ecs_entity_t spawn_line3D(ecs_world_t*, float3, float3, float, double);
+    extern entity spawn_line3D(ecs*, float3, float3, float, double);
 #endif
 
-void UITrailSystem(ecs_iter_t *it) {
+void UITrailSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(UIHolderLink)
@@ -30,7 +30,7 @@ void UITrailSystem(ecs_iter_t *it) {
         if (zox_has(e, Children)) {
             zox_geter(e, Children, children)
             for (int j = 0; j < children->length; j++) {
-                const ecs_entity_t child = children->value[j];
+                const entity child = children->value[j];
                 zox_geter(child, LocalPosition3D, child_local_position3D)
                 zox_get_muter(child, Position3D, child_position3D)
                 set_position_from_parents(world, e, &child_position3D->value, child_local_position3D->value);

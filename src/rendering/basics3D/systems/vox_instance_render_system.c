@@ -9,7 +9,7 @@
 //      - transform list
 // extern string_hashmap *files_hashmap_voxes;
 
-void VoxInstanceRenderSystem(ecs_iter_t *it) {
+void VoxInstanceRenderSystem(iter *it) {
     const uint max_meshes = 16;
     const uint max_transforms = 1024; // 128;
     if (!material_vox_instance) {
@@ -72,7 +72,7 @@ void VoxInstanceRenderSystem(ecs_iter_t *it) {
         if (!command.transforms) {
             continue;
         }
-        const ecs_entity_t mesh = command.mesh;
+        const entity mesh = command.mesh;
         if (!zox_has(mesh, MeshGPULink)) {
             zox_log_error("Invalid Instance Mesh [%s]", zox_get_name(mesh))
             continue;

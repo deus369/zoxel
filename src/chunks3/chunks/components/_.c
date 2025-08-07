@@ -12,7 +12,7 @@ zox_component_byte(GenerateChunk);
 zox_component_int3(ChunkPosition);
 zox_component_int3(ChunkSize);
 zox_component_byte(BlocksSpawned);
-zox_component_link(ChunkLink, ecs_entity_t, EntityLinks);
+zox_component_link(ChunkLink, entity, EntityLinks);
 zox_component_byte(NodeDepth);
 zox_component_node(VoxelNode, byte, 0);
 zox_node_add_link(VoxelNode);
@@ -24,7 +24,7 @@ zox_component_float(RaycastRange);
 #include "neighbors.c"
 #include "chunk_links.c"
 
-void define_components_chunks(ecs_world_t *world) {
+void define_components_chunks(ecs *world) {
     zox_define_tag(Chunk);
     zox_define_tag(NoiseChunk);
     zox_define_tag(ColorChunk);

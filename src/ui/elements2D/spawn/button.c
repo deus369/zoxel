@@ -1,4 +1,4 @@
-ecs_entity_t spawn_button(ecs_world_t *world,
+entity spawn_button(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data,
@@ -41,7 +41,7 @@ ecs_entity_t spawn_button(ecs_world_t *world,
         },
         .zext = zext_data,
     };
-    const ecs_entity_t zext = spawn_zext(world, &spawnZext);
+    const entity zext = spawn_zext(world, &spawnZext);
     add_to_Children(&children, zext);
 
     zox_set_ptr(e, Children, children);

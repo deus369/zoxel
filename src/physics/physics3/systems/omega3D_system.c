@@ -1,4 +1,4 @@
-void Omega3System(ecs_iter_t *it) {
+void Omega3System(iter *it) {
     init_delta_time()
     zox_sys_begin()
     zox_sys_in(Omega3D)

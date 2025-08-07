@@ -3,16 +3,16 @@
 byte raycast_locks = 0;
 
 typedef struct {
-    ecs_entity_t e;
+    entity e;
     float distance;
     float3 point;
     float3 normal;
 } CharacterRaycast;
 
-CharacterRaycast raycast_character(ecs_world_t *world,
+CharacterRaycast raycast_character(ecs *world,
     const float3 ray_origin,
     const float3 ray_normal,
-    const ecs_entity_t caster,
+    const entity caster,
     const EntityLinks* entities)
 {
     CharacterRaycast ray = {
@@ -23,7 +23,7 @@ CharacterRaycast raycast_character(ecs_world_t *world,
         return ray;
     }
     for (int i = 0; i < entities->length; i++) {
-        const ecs_entity_t e = entities->value[i];
+        const entity e = entities->value[i];
         if (!zox_valid(e) || caster == e || !zox_has(e, Position3D) || !zox_has(e, Bounds3D)) {
             continue;
         }
@@ -53,14 +53,14 @@ CharacterRaycast raycast_character(ecs_world_t *world,
 }
 
 byte raycast_voxel_node(
-    ecs_world_t *world,
-    const ecs_entity_t caster,
+    ecs *world,
+    const entity caster,
     const VoxelLinks *voxels,
     const ChunkLinks *chunk_links,
     int3 chunk_position,
     const float3 chunk_position_real,
     const int3 chunk_size,
-    ecs_entity_t chunk,
+    entity chunk,
     const float3 ray_origin,
     const float3 ray_normal,
     const float voxel_scale,
@@ -101,7 +101,7 @@ byte raycast_voxel_node(
     byte3 voxel_position_local_last;
     int3 position_global_last;
     float3 position_real_last;
-    ecs_entity_t chunk_last = chunk;
+    entity chunk_last = chunk;
     VoxelNode *node_last = NULL;
     // zero for terrain raycasting
     float3 local_ray_origin = float3_subtract(ray_origin, chunk_position_real);
@@ -230,7 +230,7 @@ byte raycast_voxel_node(
                 }
                 return ray_hit_type_none;
             }
-            ecs_entity_t hit_block = voxels->value[hit_voxel - 1];
+            entity hit_block = voxels->value[hit_voxel - 1];
             if (raycasting_terrain) {
                 data->hit_block = hit_block;
             }
@@ -247,7 +247,7 @@ byte raycast_voxel_node(
                 break;
             }
             // is minivox!
-            ecs_entity_t block_spawn = get_node_entity_VoxelNode(node_voxel);
+            entity block_spawn = get_node_entity_VoxelNode(node_voxel);
             if (block_spawn && zox_has(block_spawn, Position3D)) {
                 // positioning
                 zox_geter_value_non_const(block_spawn, Position3D, float3, block_position)
@@ -256,7 +256,7 @@ byte raycast_voxel_node(
                 // offset to corner, half block back! voxel_scale * 0.5
                 float3_subtract_float3_p(&block_position, float3_single(voxel_scale * 0.5f));
                 // model itself
-                ecs_entity_t vox;
+                entity vox;
                 // if Instanced mesh, use meta, otherwise use world block spawn!
                 if (zox_has(block_spawn, InstanceLink)) {
                     vox = zox_get_value(block_spawn, InstanceLink)

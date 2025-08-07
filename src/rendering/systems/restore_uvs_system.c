@@ -1,4 +1,4 @@
-void UvsGPULinkRestoreSystem(ecs_iter_t *it) {
+void UvsGPULinkRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(UvsGPULink)
     for (int i = 0; i < it->count; i++) {

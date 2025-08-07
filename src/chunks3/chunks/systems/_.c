@@ -18,7 +18,7 @@ void get_chunk_filename(char* out, const int3 position) {
 #include "chunk3_save.c"
 #include "chunk3_load.c"
 
-void define_systems_chunks(ecs_world_t *world) {
+void define_systems_chunks(ecs *world) {
     zox_define_increment_system(ChunkDirty)
     zox_define_increment_system(ChunkMeshDirty)
     zox_define_increment_system(GenerateChunk)

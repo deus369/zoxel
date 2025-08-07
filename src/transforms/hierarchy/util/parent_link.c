@@ -1,5 +1,5 @@
 // todo: macro on_destroyed_ParentLink, make Children and ParentLink declaration one thing
-/*void on_destroyed_ParentLink(ecs_iter_t *it) {
+/*void on_destroyed_ParentLink(iter *it) {
     zox_field_world()
     zox_field_in(ParentLink, parentLinks, 1)
     for (int i = 0; i < it->count; i++) {

@@ -1,9 +1,9 @@
 // #define zox_debug_chunk_link_system
-static inline byte can_have_characters(ecs_world_t*, ecs_entity_t);
+static inline byte can_have_characters(ecs*, entity);
 
-void zox_log_chunk_removed(ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t e2)
+void zox_log_chunk_removed(ecs *world,
+    const entity e,
+    const entity e2)
 {
 #ifdef zox_debug_chunk_link_system
     const int3 chunk_position = zox_get_value(e, ChunkPosition)
@@ -11,9 +11,9 @@ void zox_log_chunk_removed(ecs_world_t *world,
 #endif
 }
 
-void zox_log_chunk_added(ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t e2)
+void zox_log_chunk_added(ecs *world,
+    const entity e,
+    const entity e2)
 {
 #ifdef zox_debug_chunk_link_system
     const int3 chunk_position = zox_get_value(e, ChunkPosition)
@@ -21,12 +21,12 @@ void zox_log_chunk_added(ecs_world_t *world,
 #endif
 }
 
-byte set_entity_chunk(ecs_world_t *world,
-    const ecs_entity_t e,
+byte set_entity_chunk(ecs *world,
+    const entity e,
     ChunkLink *chunkLink,
-    const ecs_entity_t new_chunk)
+    const entity new_chunk)
 {
-    ecs_entity_t old_chunk = chunkLink->value;
+    entity old_chunk = chunkLink->value;
     if (!zox_valid(new_chunk) || old_chunk == new_chunk || !can_have_characters(world, new_chunk)) {
         return 0;
     }
@@ -67,7 +67,7 @@ byte set_entity_chunk(ecs_world_t *world,
     return 1;
 }
 
-void ChunkLinkSystem(ecs_iter_t *it) {
+void ChunkLinkSystem(iter *it) {
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
     zox_sys_world()
@@ -90,7 +90,7 @@ void ChunkLinkSystem(ecs_iter_t *it) {
         byte is_set = !chunkLink->value || (!int3_equals(new_chunk_position, chunkPosition->value));
         if (is_set) {
             zox_geter(voxLink->value, ChunkLinks, chunkLinks)
-            const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, new_chunk_position);
+            const entity chunk = int3_hashmap_get(chunkLinks->value, new_chunk_position);
             if (set_entity_chunk(world, e, chunkLink, chunk)) {
                 chunkPosition->value = new_chunk_position;
             }

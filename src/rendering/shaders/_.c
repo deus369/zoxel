@@ -4,15 +4,15 @@
 byte is_log_shaders = 0;
 #define directory_shaders "shaders"
 int files_count_shaders = 0;
-ecs_entity_t *files_shaders;
+entity *files_shaders;
 string_hashmap *files_hashmap_shaders;
-ecs_entity_t prefab_file_shader;
+entity prefab_file_shader;
 // zox_declare_tag(Shader)
 zox_memory_component(ShaderSource, char)
 #include "prefabs/file_shader.c"
 #include "util/_.c"
 
-void dispose_shaders(ecs_world_t *world, void *ctx) {
+void dispose_shaders(ecs *world, void *ctx) {
     dispose_files_shaders();
 }
 

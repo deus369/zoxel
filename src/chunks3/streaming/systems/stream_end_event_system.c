@@ -1,5 +1,5 @@
 // A state checker for stream loading
-void StreamEndEventSystem(ecs_iter_t *it) {
+void StreamEndEventSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(EventInput)
@@ -21,7 +21,7 @@ void StreamEndEventSystem(ecs_iter_t *it) {
             int3_hashmap_pair* pair = chunkLinks->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
-                const ecs_entity_t chunk = pair->value;
+                const entity chunk = pair->value;
                 if (!zox_valid(chunk) || !zox_has(chunk, GenerateChunk) || !zox_has(chunk, ChunkMeshDirty) || !zox_has(chunk, ChunkLodDirty)) {
                     if (!zox_valid(chunk)) {
                         zox_log_error("chunk invalid in stream end system [%lu]", chunk)

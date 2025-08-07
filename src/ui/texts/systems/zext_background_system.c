@@ -1,5 +1,5 @@
 // this needs textData with Mesh in one entity
-void ZextBackgroundSystem(ecs_iter_t *it) {
+void ZextBackgroundSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ZextDirty)

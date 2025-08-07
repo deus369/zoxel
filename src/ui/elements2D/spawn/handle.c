@@ -1,4 +1,4 @@
-ecs_entity_t spawn_handle(ecs_world_t *world,
+entity spawn_handle(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data)

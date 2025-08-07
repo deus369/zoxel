@@ -1,4 +1,4 @@
-ecs_entity_t spawn_header3(ecs_world_t *world,
+entity spawn_header3(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data,
@@ -40,7 +40,7 @@ ecs_entity_t spawn_header3(ecs_world_t *world,
         },
         .zext = zext
     };
-    const ecs_entity_t header_zext = spawn_zext(world, &zextSpawnData);
+    const entity header_zext = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, header_zext);
 
     // # Header Close Button #

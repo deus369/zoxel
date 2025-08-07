@@ -4,7 +4,7 @@
 #include "zext_parent_background_system.c"
 zox_increment_system_with_reset(ZextDirty, zext_update_end)
 
-void define_systems_texts(ecs_world_t *world) {
+void define_systems_texts(ecs *world) {
     zox_define_increment_system(ZextDirty, [none] Zext)
     zox_system(AnimateTextSystem, zox_pipelines_zext_textures,
         [out] AnimateZext,

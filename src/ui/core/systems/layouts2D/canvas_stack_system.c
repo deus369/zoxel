@@ -1,10 +1,10 @@
 // #define zox_debug_canvas_stack
 
-byte2 count_windows_in_stack(ecs_world_t *world, const Children *children) {
+byte2 count_windows_in_stack(ecs *world, const Children *children) {
     byte windows_count = 0;
     byte layers_per_window = 1;
     for (int j = 0; j < children->length; j++) {
-        const ecs_entity_t child = children->value[j];
+        const entity child = children->value[j];
         if (!zox_valid(child) || !zox_has(child, Window) || zox_has(child, IgnoreWindowLayering)) {
             continue;
         }
@@ -18,7 +18,7 @@ byte2 count_windows_in_stack(ecs_world_t *world, const Children *children) {
 }
 
 // Reorders windows on a stack, moves all previous ones down?
-void CanvasStackSystem(ecs_iter_t *it) {
+void CanvasStackSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(Children)
@@ -72,7 +72,7 @@ void CanvasStackSystem(ecs_iter_t *it) {
 #endif
 
         for (int j = 0; j < children->length; j++) {
-            const ecs_entity_t child = children->value[j];
+            const entity child = children->value[j];
             if (!zox_valid(child) || !zox_has(child, Window)) {
                 continue;
             }

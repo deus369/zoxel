@@ -1,4 +1,4 @@
-void TextureRestoreSystem(ecs_iter_t *it) {
+void TextureRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(TextureGPULink)
     for (int i = 0; i < it->count; i++) {
@@ -7,7 +7,7 @@ void TextureRestoreSystem(ecs_iter_t *it) {
     }
 } zox_declare_system(TextureRestoreSystem)
 
-void TextureDirtyRestoreSystem(ecs_iter_t *it) {
+void TextureDirtyRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(TextureDirty)
     for (int i = 0; i < it->count; i++) {

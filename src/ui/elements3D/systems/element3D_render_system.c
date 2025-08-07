@@ -1,7 +1,7 @@
-extern byte can_render_ui(ecs_world_t *world, ecs_entity_t e);
+extern byte can_render_ui(ecs *world, entity e);
 // #define zox_time_render3D_textured_system
 
-void Element3DRenderSystem(ecs_iter_t *it) {
+void Element3DRenderSystem(iter *it) {
     if (!material_textured3D) {
         return;
     }

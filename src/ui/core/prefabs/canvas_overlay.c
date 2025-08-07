@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_canvas_overlay(ecs_world_t *world, ecs_entity_t prefab) {
+entity spawn_prefab_canvas_overlay(ecs *world, entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("canvas_overlay")
     zox_add_tag(e, CanvasOverlay)

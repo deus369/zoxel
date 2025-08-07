@@ -12,7 +12,7 @@ void update_shader3D_textured(const uint2 mesh_buffer, const uint uv_buffer, con
 #endif
 }
 
-void Mesh3DTexturedUploadSystem(ecs_iter_t *it) {
+void Mesh3DTexturedUploadSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(MeshIndicies)

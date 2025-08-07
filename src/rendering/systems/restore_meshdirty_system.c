@@ -1,4 +1,4 @@
-void MeshDirtyRestoreSystem(ecs_iter_t *it) {
+void MeshDirtyRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(MeshDirty)
     for (int i = 0; i < it->count; i++) {

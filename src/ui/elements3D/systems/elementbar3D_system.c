@@ -1,4 +1,4 @@
-void Elementbar3DSystem(ecs_iter_t *it) {
+void Elementbar3DSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ElementBar)
@@ -11,8 +11,8 @@ void Elementbar3DSystem(ecs_iter_t *it) {
         if (!children->length) {
             continue;
         }
-        // ecs_entity_t front_bar = 0; // go through list to find frontbar
-        const ecs_entity_t front_bar = children->value[0];
+        // entity front_bar = 0; // go through list to find frontbar
+        const entity front_bar = children->value[0];
         if (!zox_valid(front_bar)) {
             continue;
         }

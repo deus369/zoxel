@@ -1,5 +1,5 @@
 // boom!
-void RenderTextureBeginSystem(ecs_iter_t *it) {
+void RenderTextureBeginSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(InitializeElement)
@@ -22,7 +22,7 @@ void RenderTextureBeginSystem(ecs_iter_t *it) {
             zox_log_error("render_texture failed: camera_invalid [%s]", zox_get_name(cameraLink->value))
             continue;
         }
-        ecs_entity_t camera = cameraLink->value;
+        entity camera = cameraLink->value;
         if (zox_has(camera, FrameBufferLink)) {
             zox_geter_value(camera, FrameBufferLink, uint, fbo)
             zox_geter_value(camera, RenderBufferLink, uint, rbo)

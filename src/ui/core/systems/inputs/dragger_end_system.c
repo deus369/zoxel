@@ -1,4 +1,4 @@
-void DraggerEndSystem(ecs_iter_t *it) {
+void DraggerEndSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_out(DraggableState)
@@ -11,17 +11,17 @@ void DraggerEndSystem(ecs_iter_t *it) {
         if (draggerLink->value == 0 || dragableState->value == 0) {
             continue;
         }
-        const ecs_entity_t player_entity = draggerLink->value;
+        const entity player_entity = draggerLink->value;
         const DeviceLinks *deviceLinks = zox_get(player_entity, DeviceLinks)
         byte did_drag_end = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
-            const ecs_entity_t device = deviceLinks->value[j];
+            const entity device = deviceLinks->value[j];
             if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
                 continue;
             }
             zox_geter(device, Children, zevices)
             for (int k = 0; k < zevices->length; k++) {
-                const ecs_entity_t zevice = zevices->value[k];
+                const entity zevice = zevices->value[k];
                 if (!zevice) {
                     continue;
                 }
@@ -42,7 +42,7 @@ void DraggerEndSystem(ecs_iter_t *it) {
             } else if (dragableState->value == zox_drag_mode_finger && zox_has(device, Touchscreen)) {
                 const Children *zevices = zox_get(device, Children)
                 for (int k = 0; k < zevices->length; k++) {
-                    ecs_entity_t zevice_entity = zevices->value[k];
+                    entity zevice_entity = zevices->value[k];
                     if (zox_has(zevice_entity, ZevicePointer)) {
                         const ZevicePointer *zevicePointer = zox_get(zevice_entity, ZevicePointer)
                         if (devices_get_released_this_frame(zevicePointer->value)) did_drag_end = 1;

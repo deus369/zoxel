@@ -18,7 +18,7 @@
 #include "prefabs/_.c"
 #include "systems/_.c"
 
-void module_dispose_inputs(ecs_world_t *world, void *ctx) {
+void module_dispose_inputs(ecs *world, void *ctx) {
     dispose_hook_key_down();
 }
 

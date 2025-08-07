@@ -1,4 +1,4 @@
-ecs_entity_t spawn_window2(ecs_world_t *world,
+entity spawn_window2(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData* element_data,
@@ -46,7 +46,7 @@ ecs_entity_t spawn_window2(ecs_world_t *world,
     };
     // n/a
     SpawnButtonData close_button_data = { };
-    const ecs_entity_t header = spawn_header3(world,
+    const entity header = spawn_header3(world,
         canvas_data,
         e_parent_data,
         header_element_data,

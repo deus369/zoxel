@@ -1,5 +1,5 @@
-static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
-    const ecs_entity_t prefab,
+static inline entity spawn_file_shader_at_path(ecs *world,
+    const entity prefab,
     const char* path)
 {
     char* source = zox_read_shader(path);
@@ -36,18 +36,18 @@ static inline ecs_entity_t spawn_file_shader_at_path(ecs_world_t *world,
     return spawn_file_shader(world, prefab, processed_source);
 }
 
-void load_files_shaders(ecs_world_t *world) {
+void load_files_shaders(ecs *world) {
     char* load_directory = concat_file_path(resources_path, directory_shaders);
     zox_logv("  - Loading Files Shaders [%s]", load_directory);
     FileList files = get_files(load_directory, 1);
-    files_shaders = malloc(sizeof(ecs_entity_t) * files.count);
+    files_shaders = malloc(sizeof(entity) * files.count);
     files_hashmap_shaders = create_string_hashmap(files.count);
     zox_log_io(" + io loaded [shaders] [%i]", files.count)
     for (int i = 0; i < files.count; i++) {
         char* filepath = files.files[i];
         char* filename = files.filenames[i];
         zox_log_io("   - [%i] [shader] [%s]", i, filepath)
-        const ecs_entity_t e = spawn_file_shader_at_path(world, prefab_file_shader, filepath);
+        const entity e = spawn_file_shader_at_path(world, prefab_file_shader, filepath);
         if (e) {
             string_hashmap_add(files_hashmap_shaders, new_string_data_clone(filename), e);
         }

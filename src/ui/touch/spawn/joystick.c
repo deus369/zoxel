@@ -1,9 +1,9 @@
-ecs_entity_t spawn_virtual_joystick(
-    ecs_world_t *world,
-    const ecs_entity_t canvas,
+entity spawn_virtual_joystick(
+    ecs *world,
+    const entity canvas,
     const int2 pixel_position,
-    const ecs_entity_t finger,
-    const ecs_entity_t virtual_joystick,
+    const entity finger,
+    const entity virtual_joystick,
     const byte button_type
 ) {
     const float2 anchor = float2_zero;
@@ -14,12 +14,12 @@ ecs_entity_t spawn_virtual_joystick(
     int2 pixel_size = virtual_joystick_size;
     zox_instance(prefab_virtual_joystick)
     zox_name("virtual_joystick")
-    ecs_entity_t parent = canvas;
+    entity parent = canvas;
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     // zox_get_muter(e, Children, children)
 
     Children children = (Children) { };
-    ecs_entity_t joystick = spawn_virtual_joystick_pointer(world,
+    entity joystick = spawn_virtual_joystick_pointer(world,
         canvas,
         e,
         (layer + 1),

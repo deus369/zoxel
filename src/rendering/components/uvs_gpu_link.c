@@ -1,10 +1,10 @@
 zox_component(UvsGPULink, uint)
 
-void add_gpu_uvs(ecs_world_t *world, ecs_entity_t e) {
+void add_gpu_uvs(ecs *world, entity e) {
     if (!headless) zox_prefab_set(e, UvsGPULink, { 0 })
 }
 
-void spawn_gpu_uvs(ecs_world_t *world, ecs_entity_t e) {
+void spawn_gpu_uvs(ecs *world, entity e) {
     if (!headless) zox_set(e, UvsGPULink, { spawn_gpu_generic_buffer() })
 }
 

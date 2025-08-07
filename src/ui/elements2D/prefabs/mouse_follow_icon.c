@@ -1,7 +1,7 @@
-ecs_entity_t icon_mouse_follow;
+entity icon_mouse_follow;
 
-ecs_entity_t spawn_prefab_icon_mouse_follow(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_icon_mouse_follow(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     zox_add_tag(e, Icon)

@@ -1,17 +1,17 @@
-ecs_entity_t spawn_icon_mouse_follow(ecs_world_t *world, SpawnIcon *data) {
-    const ecs_entity_t e = spawn_icon(world, data);
+entity spawn_icon_mouse_follow(ecs *world, SpawnIcon *data) {
+    const entity e = spawn_icon(world, data);
     icon_mouse_follow = e;
     return e;
 }
 
-ecs_entity_t spawn_icon_mouse_follow_canvas(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
+entity spawn_icon_mouse_follow_canvas(ecs *world,
+    const entity prefab,
+    const entity canvas,
     const int2 canvas_size,
     const byte layer,
     const float2 anchor,
     const float icon_size,
-    const ecs_entity_t zevice)
+    const entity zevice)
 {
     SpawnIcon spawnIcon = {
         .canvas = {
@@ -34,7 +34,7 @@ ecs_entity_t spawn_icon_mouse_follow_canvas(ecs_world_t *world,
             .outline_color = default_outline_color_icon
         }
     };
-    const ecs_entity_t e = spawn_icon(world, &spawnIcon);
+    const entity e = spawn_icon(world, &spawnIcon);
     if (zevice) {
         zox_set(e, ZeviceLink, { zevice })
     }

@@ -1,6 +1,6 @@
 // todo: reuse parts of ZeviceClickSystem in this
 // this is now from zevice
-void DeviceClickSystem(ecs_iter_t *it) {
+void DeviceClickSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DeviceDisabled)
@@ -18,17 +18,17 @@ void DeviceClickSystem(ecs_iter_t *it) {
         zox_sys_i(Children, children)
         zox_sys_o(ClickingEntity, clickingEntity)
         zox_sys_o(WindowTarget, windowTarget)
-        const ecs_entity_t player = playerLink->value;
+        const entity player = playerLink->value;
         if (deviceDisabled->value) {
             continue;
         }
         if (!player) continue;
         if (!player || !zox_has(player, CanvasLink)) continue;
-        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+        const entity canvas = zox_get_value(player, CanvasLink)
         if (!canvas) continue;
         byte click_type = 0;
         for (int j = 0; j < children->length; j++) {
-            const ecs_entity_t zevice = children->value[j];
+            const entity zevice = children->value[j];
             if (!zevice) continue;
             if (!zox_has(zevice, ZeviceButton)) continue;
             if (!zox_has(zevice, DeviceButtonType)) continue;

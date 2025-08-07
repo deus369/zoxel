@@ -1,4 +1,4 @@
-void disable_element_rendering(ecs_world_t *world, const ecs_entity_t e, const byte disabled) {
+void disable_element_rendering(ecs *world, const entity e, const byte disabled) {
     if (!zox_has(e, RenderDisabled)) return;
     RenderDisabled *renderDisabled = zox_get_mut(e, RenderDisabled)
     renderDisabled->value = disabled;

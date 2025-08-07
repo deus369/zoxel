@@ -35,7 +35,7 @@ byte save_voxel_node(FILE* out, const VoxelNode* node) {
     return result;
 }
 
-void Chunk3SaveSystem(ecs_iter_t *it) {
+void Chunk3SaveSystem(iter *it) {
     zox_sys_begin();
     zox_sys_in(VoxelNodeEdited);
     zox_sys_in(VoxelNodeDirty);

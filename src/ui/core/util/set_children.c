@@ -1,7 +1,7 @@
 // set all to disabled for example, or enabled -> useful for toggling
-void set_children_component_byte(ecs_world_t* world,
-    ecs_entity_t e,
-    ecs_entity_t id,
+void set_children_component_byte(ecs* world,
+    entity e,
+    entity id,
     const byte value)
 {
     if (zox_has_id(e, id)) {

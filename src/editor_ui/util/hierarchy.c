@@ -5,8 +5,8 @@ unsigned is_first_hierarchy_spawn = 1;
 #endif
 const int hierarchy_max_line_characters = 64;
 ecs_entity_t editor_selected;
-extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
-extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level);
+extern void add_to_labels_voxel_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, entity_array_d* entities, int tree_level);
+extern void add_to_labels_stat_links(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, entity_array_d* entities, int tree_level);
 extern ecs_entity_t prefab_app;
 extern ecs_entity_t prefab_window;
 extern ecs_entity_t prefab_button;
@@ -19,7 +19,7 @@ extern ecs_entity_t prefab_texture;
 void add_entity_to_labels(ecs_world_t *world,
     const ecs_entity_t e,
     text_group_dynamic_array_d* labels,
-    ecs_entity_t_array_d* entities,
+    entity_array_d* entities,
     const int tree_level)
 {
     if (!zox_valid(e)) {
@@ -49,7 +49,7 @@ void add_entity_to_labels(ecs_world_t *world,
     }
     // zox_log("%s made label [%s]", zox_get_name(e), text)
     add_to_text_group_dynamic_array_d(labels, (text_group_dynamic) { text = text });
-    add_to_ecs_entity_t_array_d(entities, e);
+    add_to_entity_array_d(entities, e);
 }
 
 int get_max_characters_d(
@@ -73,7 +73,7 @@ int get_max_characters_d(
 void add_entity_children_to_labels(ecs_world_t *world,
     ecs_entity_t e,
     text_group_dynamic_array_d* labels,
-    ecs_entity_t_array_d* entities,
+    entity_array_d* entities,
     int tree_level)
 {
     if (!zox_valid(e)) {
@@ -178,7 +178,7 @@ void set_ui_list_hierarchy(ecs_world_t *world,
     const ecs_entity_t canvas,
     const int elements_visible,
     text_group_dynamic_array_d* labels,
-    ecs_entity_t_array_d* entities,
+    entity_array_d* entities,
     int labels_count,
     const ClickEvent click_event,
     const byte button_layer,

@@ -1,6 +1,6 @@
-zox_hook(load_shader, (ecs_world_t* world), (world))
+zox_hook(load_shader, (ecs* world), (world))
 
-void process_shaders(ecs_world_t *world) {
+void process_shaders(ecs *world) {
     if (!rendering_initialized) {
         zox_log(" ! rendering is not initialized.\n")
         exit(1);

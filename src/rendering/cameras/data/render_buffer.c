@@ -27,13 +27,13 @@ uint gpu_spawn_render_buffer(const int2 size) {
     return rbo;
 }
 
-void prefab_add_render_buffer(ecs_world_t *world, const ecs_entity_t e) {
+void prefab_add_render_buffer(ecs *world, const entity e) {
     if (!headless) {
         zox_prefab_set(e, RenderBufferLink, { 0 })
     }
 }
 
-uint spawn_render_buffer(ecs_world_t *world, const ecs_entity_t e, const int2 size) {
+uint spawn_render_buffer(ecs *world, const entity e, const int2 size) {
     if (headless) {
         return 0;
     }

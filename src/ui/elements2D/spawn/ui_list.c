@@ -24,9 +24,9 @@ int get_max_width(
 }
 
 // todo: use struct inputs SpawnUIList
-ecs_entity_t spawn_ui_list(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
+entity spawn_ui_list(ecs *world,
+    const entity prefab,
+    const entity canvas,
     const char *header_label,
     const int elements_count,
     const int max_elements,
@@ -41,9 +41,9 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     byte font_size,
     const byte layer,
     const byte is_scrollbar,
-    const ecs_entity_t player)
+    const entity player)
 {
-    const ecs_entity_t parent = canvas;
+    const entity parent = canvas;
     const byte is_header = 1;
     const byte list_start = is_header + is_scrollbar;
     const int children_length = (list_start + elements_count);
@@ -113,7 +113,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
     }
     set_window_bounds_to_canvas(world, e, canvas_size, pixel_size, anchor);
     if (is_scrollbar) {
-        const ecs_entity_t scrollbar = spawn_scrollbar(
+        const entity scrollbar = spawn_scrollbar(
             world,
             e,
             canvas,
@@ -184,7 +184,7 @@ ecs_entity_t spawn_ui_list(ecs_world_t *world,
             if (labels) {
                 spawnButton.zext.text = labels[i].text;
             }
-            const ecs_entity_t e2 = spawn_button(world,
+            const entity e2 = spawn_button(world,
                 spawnButton.canvas,
                 spawnButton.parent,
                 spawnButton.element,

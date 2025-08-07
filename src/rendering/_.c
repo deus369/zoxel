@@ -17,7 +17,7 @@
 #include "cameras/_.c"
 #include "debug/_.c"
 
-byte initialize_rendering(ecs_world_t *world, byte render_backend) {
+byte initialize_rendering(ecs *world, byte render_backend) {
     if (render_backend == zox_render_backend_headless) {
         return EXIT_SUCCESS;
     } else if (render_backend == zox_render_backend_opengl) {
@@ -33,14 +33,14 @@ byte initialize_rendering(ecs_world_t *world, byte render_backend) {
     }
 }
 
-void dispose_rendering(ecs_world_t *world, void *ctx) {
+void dispose_rendering(ecs *world, void *ctx) {
     if (headless) {
         return;
     }
     dispose_vulkan(world);
 }
 
-void viewport_clear(ecs_world_t *world) {
+void viewport_clear(ecs *world) {
     opengl_clear(color_rgb_to_float3(viewport_clear_color));
 }
 

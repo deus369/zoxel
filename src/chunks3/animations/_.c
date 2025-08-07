@@ -6,9 +6,9 @@ zox_component_double(AnimateChunk)
 #include "prefabs/animating_chunk.c"
 #include "systems/animate_chunk_system.c"
 #include "systems/noise_chunk_system.c"
-ecs_entity_t prefab_chunk_animating;
+entity prefab_chunk_animating;
 
-void spawn_prefabs_voxel_animations(ecs_world_t *world) {
+void spawn_prefabs_voxel_animations(ecs *world) {
     prefab_chunk_animating = spawn_prefab_animating_chunk(world, prefab_chunk);
 }
 

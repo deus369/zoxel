@@ -1,4 +1,4 @@
-void RenderMaterial2DSystem(ecs_iter_t *it) {
+void RenderMaterial2DSystem(iter *it) {
     if (!squareTexturedMesh.x || !squareTexturedMesh.y) {
         if (!squareTexturedMesh.x) {
             zox_log_error("squareTexturedMesh.x 0")

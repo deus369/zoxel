@@ -1,6 +1,6 @@
 // for only the button
 typedef struct {
-    ecs_entity_t prefab;
+    entity prefab;
     FrameTextureData texture;
 } FrameData;
 

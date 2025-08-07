@@ -1,4 +1,4 @@
-void Friction2DSystem(ecs_iter_t *it) {
+void Friction2DSystem(iter *it) {
     const float frictionValue = 8.0f;  // 0.002
     zox_sys_begin()
     zox_sys_in(Velocity2D)

@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
+entity spawn_prefab_device_stick(ecs *world) {
     zox_prefab()
     zox_prefab_name("zevice_stick")
     zox_add_tag(e, Zevice)
@@ -10,7 +10,7 @@ ecs_entity_t spawn_prefab_device_stick(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_zevice_stick(ecs_world_t *world, const ecs_entity_t device, const byte type, const byte index) {
+entity spawn_zevice_stick(ecs *world, const entity device, const byte type, const byte index) {
     zox_instance(prefab_zevice_stick)
     zox_name("zevice_stick")
     zox_set(e, DeviceLink, { device })

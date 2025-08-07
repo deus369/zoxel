@@ -1,4 +1,4 @@
-void TextureGPUDisposeSystem(ecs_iter_t *it) {
+void TextureGPUDisposeSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(TextureGPULink)
     for (int i = 0; i < it->count; i++) {

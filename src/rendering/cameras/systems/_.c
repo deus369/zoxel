@@ -4,7 +4,7 @@
 #include "camera_render3D_system.c"
 #include "camera_render_ui_system.c"
 
-void define_systems_rendering_cameras(ecs_world_t *world) {
+void define_systems_rendering_cameras(ecs *world) {
     // rendering
     zox_system_1(CameraRender3DSystem, zox_pipelines_rendering,
         [in] cameras.ViewMatrix,

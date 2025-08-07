@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_canvas(ecs_world_t *world) {
+entity spawn_prefab_canvas(ecs *world) {
     zox_prefab()
     zox_prefab_name("canvas")
     zox_add_tag(e, Canvas)

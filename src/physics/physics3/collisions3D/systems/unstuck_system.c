@@ -1,6 +1,6 @@
 // if character falls through map, push up
 // todo: draw lines on this to test why it suddenly detects..!
-void UnstuckSystem(ecs_iter_t *it) {
+void UnstuckSystem(iter *it) {
     const byte depth = terrain_depth;
     const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
     const float3 unstuck_push = (float3) { 0,  0.5f, 0 };
@@ -25,7 +25,7 @@ void UnstuckSystem(ecs_iter_t *it) {
         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
         float3 point = float3_add(position3->value, (float3) { 0, bounds3->value.y / 2.0f, 0 });
         const int3 chunk_position = real_position_to_chunk_position(point, chunk_dimensions, depth);
-        const ecs_entity_t chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
+        const entity chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
         if (!zox_valid(chunk)) {
             continue;
         }

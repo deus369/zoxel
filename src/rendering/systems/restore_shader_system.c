@@ -1,4 +1,4 @@
-void ShaderRestoreSystem(ecs_iter_t *it) {
+void ShaderRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ShaderSourceIndex)
     zox_sys_out(ShaderGPULink)

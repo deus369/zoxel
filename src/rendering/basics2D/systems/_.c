@@ -3,7 +3,7 @@
 #include "render2D_instance_system.c"
 #include "render2D_system.c"
 
-void define_systems_basics2D(ecs_world_t *world) {
+void define_systems_basics2D(ecs *world) {
     zox_render3D_system(RenderMaterial2DSystem,
         [in] transforms2.Position2D,
         [in] transforms2.Rotation2D,

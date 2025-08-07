@@ -1,6 +1,6 @@
 // responding
 // draw line for collided voxels
-extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
+extern void render_line3D(ecs *world, const float3 a, const float3 b, const color_rgb line_color);
 
 // uses last position to get new position
 #define respond_collision(d)\
@@ -35,7 +35,7 @@ extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, co
     respond_collision(z)
 
 
-void CollisionResponseSystem(ecs_iter_t *it) {
+void CollisionResponseSystem(iter *it) {
     const byte max_depth = terrain_depth;   // todo: use chunk max depths here
     zox_sys_world()
     zox_sys_begin()

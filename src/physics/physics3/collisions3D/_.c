@@ -11,7 +11,7 @@ zox_component_byte(Grounded) // use for friction - todo: use bit operations to c
 zox_component_float3(CollisionDistance)
 zox_component_float(BasicCollider)
 zox_component_float(SphereRadius)
-zox_function_component(OverlapEvent, void, ecs_world_t*, ecs_entity_t, ecs_entity_t)
+zox_function_component(OverlapEvent, void, ecs*, entity, entity)
 #include "util/_.c"
 #include "systems/_.c"
 

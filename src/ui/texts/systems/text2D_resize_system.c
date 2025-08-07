@@ -2,7 +2,7 @@
 // #define zoxel_debug_zext_updates
 
 void spawn_text2D_zigels(
-    ecs_world_t* world,
+    ecs* world,
     SpawnZigel* data,
     Children* children,
     const TextData* textData
@@ -17,15 +17,15 @@ void spawn_text2D_zigels(
         zox_log("    - zext remained the same [%i]", textData->length)
     }
 #endif
-    ecs_entity_t *old_children = children->value;
-    ecs_entity_t *new_children = NULL;
+    entity *old_children = children->value;
+    entity *new_children = NULL;
     if (new_children_length > 0) {
-        new_children = zalloc(new_children_length * sizeof(ecs_entity_t));
+        new_children = zalloc(new_children_length * sizeof(entity));
     }
     // old children needs new
     //  - set old positions, as we are resizing
     for (int i = 0; i < reuse_count; i++) {
-        const ecs_entity_t e = old_children[i];
+        const entity e = old_children[i];
         const int data_index = calculate_zigel_data_index(textData->value, textData->length, i);
         set_zigel_position(world, textData, e, data_index, data->element.size.y, data->zext.text_alignment, data->zext.text_padding, data->element.anchor, new_children_length, data->parent.position, data->parent.size, data->canvas.size);
         new_children[i] = e;
@@ -40,7 +40,7 @@ void spawn_text2D_zigels(
             const int data_index = calculate_zigel_data_index(textData->value, textData->length, i);
             data->zigel.zigel_index = zigel_index;
             data->zigel.data_index = data_index;
-            const ecs_entity_t zigel = spawn_zext_zigel(world, textData, data);
+            const entity zigel = spawn_zext_zigel(world, textData, data);
             zox_set(zigel, RenderDisabled, { data->element.render_disabled })
             new_children[i] = zigel;
         }
@@ -62,7 +62,7 @@ void spawn_text2D_zigels(
 }
 
 //! When ui text updates, spawn/destroy font entities
-void Text2DResizeSystem(ecs_iter_t *it) {
+void Text2DResizeSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(TextData)
@@ -100,7 +100,7 @@ void Text2DResizeSystem(ecs_iter_t *it) {
         if (zextDirty->value != zext_update_update) {
             continue;
         }
-        const ecs_entity_t canvas = get_root_canvas(world, e);
+        const entity canvas = get_root_canvas(world, e);
         if (!zox_valid(canvas)) {
             zox_log_error("no canvas found on text")
             continue;

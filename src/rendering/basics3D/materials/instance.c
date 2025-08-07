@@ -1,7 +1,7 @@
 // todo: Different meshes, linking, and then use a stack
 //  also LODing support
-ecs_entity_t shader_vox_instance = 0;
-ecs_entity_t material_vox_instance = 0;
+entity shader_vox_instance = 0;
+entity material_vox_instance = 0;
 
 typedef struct {
     GLint vertex_position;
@@ -35,7 +35,7 @@ uint generate_ubo(GLint binding_point) {
     return ubo;
 }
 
-/*uint spawn_ubo(ecs_world_t *world, const ecs_entity_t material) {
+/*uint spawn_ubo(ecs *world, const entity material) {
     zox_geter(material, MaterialVoxInstance, materialVoxInstance)
     const GLint binding_point = materialVoxInstance->matrices;
     if (binding_point == GL_INVALID_INDEX) {
@@ -44,19 +44,19 @@ uint generate_ubo(GLint binding_point) {
     return generate_ubo(binding_point);
 }*/
 
-ecs_entity_t spawn_material_vox_instance(ecs_world_t *world) {
+entity spawn_material_vox_instance(ecs *world) {
     const byte shader_index = get_new_shader_source_index();
     char* vert = get_shader_source(world, "vox_instance.vert");
     char* frag = get_shader_source(world, "vox_instance.frag");
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
-    const ecs_entity_t shader = spawn_shader(world, shader_index);
+    const entity shader = spawn_shader(world, shader_index);
     if (!shader) {
         zox_log_error("[shader_vox_instance] failed to spawn")
         return 0;
     }
     uint material;
-    const ecs_entity_t e = spawn_material(world, shader, &material);
+    const entity e = spawn_material(world, shader, &material);
     zox_set(e, ShaderLink, { shader })
     if (!material) {
         zox_log_error("vox instance material failed to initialize")

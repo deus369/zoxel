@@ -1,7 +1,7 @@
 // if pixel position moves, update real position
 // if it updates, also update any childrens positions too
 // has to also move children and their children
-void ElementDragSystem(ecs_iter_t *it) {
+void ElementDragSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DraggableState)
@@ -16,7 +16,7 @@ void ElementDragSystem(ecs_iter_t *it) {
             continue;
         }
         if (draggingDelta->value.x != 0 || draggingDelta->value.y != 0) {
-            ecs_entity_t dragged_entity = draggedLink->value;
+            entity dragged_entity = draggedLink->value;
             if (!dragged_entity) {
                 dragged_entity = e;
             }

@@ -1,4 +1,4 @@
-void EulerOverrideSystem(ecs_iter_t *it) {
+void EulerOverrideSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Euler)
     zox_sys_out(Rotation3D)

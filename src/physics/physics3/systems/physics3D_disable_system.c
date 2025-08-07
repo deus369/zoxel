@@ -1,6 +1,6 @@
 const byte physics_disable_frames = 8;
 
-void Physics3DDisableSystem(ecs_iter_t *it) {
+void Physics3DDisableSystem(iter *it) {
 #ifdef zoxel_disable_velocity
     return;
 #endif

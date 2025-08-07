@@ -1,4 +1,4 @@
-void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
+void add_ui_mesh(ecs *world, const entity e) {
     // this is more mesh stuff
     zox_add_tag(e, ElementRender)
     zox_prefab_set(e, RenderDisabled, { 0 })
@@ -18,7 +18,7 @@ void add_ui_mesh(ecs_world_t *world, const ecs_entity_t e) {
     }
 }
 
-void add_ui_plus_components(ecs_world_t *world, const ecs_entity_t e) {
+void add_ui_plus_components(ecs *world, const entity e) {
     // layout2D
     zox_prefab_set(e, Position2D, { float2_zero })
     zox_prefab_set(e, Rotation2D, { 0 })

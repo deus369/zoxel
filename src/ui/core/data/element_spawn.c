@@ -1,6 +1,6 @@
 // data used when spawning any element
 typedef struct {
-    ecs_entity_t prefab;
+    entity prefab;
     // layout2
     int2 position;
     int2 size;

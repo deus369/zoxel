@@ -1,5 +1,5 @@
 // reset each zevice in a system, on EcsOnLoad
-void ZeviceButtonResetSystem(ecs_iter_t *it) {
+void ZeviceButtonResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(ZeviceButton)
     for (int i = 0; i < it->count; i++) {

@@ -20,7 +20,7 @@ zox_component_entity(VoxLink)
 #include "vodes3/_.c"
 #include "vrays/_.c"
 
-void module_dispose_chunks3(ecs_world_t *world, void *ctx) {
+void module_dispose_chunks3(ecs *world, void *ctx) {
     dispose_hook_on_destroyed_VoxelNode();
 }
 

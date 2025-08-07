@@ -2,8 +2,8 @@
 //      should take in event for future voxels
 // note: it only supports placing and removing, not swapping
 void place_block(
-    ecs_world_t *world,
-    const ecs_entity_t chunk,
+    ecs *world,
+    const entity chunk,
     VoxelNode *node,
     const byte3 position_local,
     int3 position_global,
@@ -41,7 +41,7 @@ void place_block(
     if (zox_has(chunk, ChunkNeighbors) && byte3_on_edge(position_local, chunk_size_b3)) {
         zox_geter(chunk, ChunkNeighbors, chunk_neighbors)
         for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
-            ecs_entity_t neighbor = chunk_neighbors->value[axis];
+            entity neighbor = chunk_neighbors->value[axis];
             if (byte3_on_edge_axis(position_local, chunk_size_b3, axis) && zox_valid(neighbor)) {
                 zox_set(neighbor, ChunkMeshDirty, { chunk_dirty_state_trigger })
             }
@@ -49,7 +49,7 @@ void place_block(
     }*/
 }
 
-void raycast_action(ecs_world_t *world,
+void raycast_action(ecs *world,
     const RaycastVoxelData *data,
     const byte voxel,
     byte hit_type)
@@ -57,7 +57,7 @@ void raycast_action(ecs_world_t *world,
     byte3 position_local;
     int3 position_global;
     float3 position_real;
-    ecs_entity_t chunk;
+    entity chunk;
     VoxelNode* node;
     if (hit_type == 2) {
         // zox_log("placing air!\n")

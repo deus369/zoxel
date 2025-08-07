@@ -2,7 +2,7 @@
 #define directory_fonts "fonts"
 
 // todo: save properly
-byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_directory, char *filename) {
+byte save_font_style(ecs *world, const entity e, char *resources_directory, char *filename) {
     if (!e) {
         zox_log_error("error saving entity [%lu] invalid children [%s]", e, filename)
         return 0;
@@ -38,7 +38,7 @@ byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_d
     zox_log("   - font style children [%i]", children->length)
 #endif
     for (int i = 0; i < children->length; i++) {
-        const ecs_entity_t child = children->value[i];
+        const entity child = children->value[i];
         if (child == 0) {
 #ifdef zox_log_font_io
             zox_log(" > font [%i]", i)
@@ -59,16 +59,16 @@ byte save_font_style(ecs_world_t *world, const ecs_entity_t e, char *resources_d
     return 1; // success
 }
 
-ecs_entity_t spawn_font_style_save_data(ecs_world_t *world, const ecs_entity_t prefab, const SaveDataFontStyle *data) {
+entity spawn_font_style_save_data(ecs *world, const entity prefab, const SaveDataFontStyle *data) {
 #ifdef zox_log_font_io
     zox_log(" > spawn_font_style_save_data fonts [%i]", data->length)
 #endif
-    const ecs_entity_t prefab_font = zox_get_value(prefab, FontLink)
+    const entity prefab_font = zox_get_value(prefab, FontLink)
     zox_instance(prefab)
     zox_name("font_style_io")
     zox_add_tag(e, TTFFontStyle)
     zox_get_muter(e, Children, children)
-    resize_memory_component(Children, children, ecs_entity_t, data->length)
+    resize_memory_component(Children, children, entity, data->length)
     for (int i = 0; i < data->length; i++) {
         if (data->fonts[i].length != 0) {
             children->value[i] = spawn_font(world, prefab_font, data->fonts[i].points, data->fonts[i].length);
@@ -87,7 +87,7 @@ ecs_entity_t spawn_font_style_save_data(ecs_world_t *world, const ecs_entity_t p
     return e;
 }
 
-ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
+entity load_font_style(ecs *world, char *filename) {
     // spawn font style and spawn fonts based on data
     char* directory = concat_file_path(resources_path, directory_fonts);
     char* directory_slash = concat_file_path(directory, character_slash);
@@ -111,7 +111,7 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
 #ifdef zox_log_font_io
     zox_log("   + success opening file\n")
 #endif
-    ecs_entity_t font_style = 0;
+    entity font_style = 0;
     SaveDataFontStyle data;
     size_t filesize = fread(&data, sizeof(SaveDataFontStyle), 1, file);
     if (filesize > 0) {
@@ -125,7 +125,7 @@ ecs_entity_t load_font_style(ecs_world_t *world, char *filename) {
     return font_style;
 }
 
-void load_files_fonts(ecs_world_t *world) {
+void load_files_fonts(ecs *world) {
     zox_font_style_default = spawn_font_style(world, prefab_font_style);
     // for now save
     // zox_font_style_monocraft is set in ttf initialization

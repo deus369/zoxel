@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_gamepad(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("gamepad")
     zox_add_tag(e, Gamepad)
@@ -6,12 +6,12 @@ ecs_entity_t spawn_prefab_gamepad(ecs_world_t *world, const ecs_entity_t prefab)
     return e;
 }
 
-ecs_entity_t spawn_gamepad(ecs_world_t *world, const byte gamepad_type) {
+entity spawn_gamepad(ecs *world, const byte gamepad_type) {
     zox_instance(prefab_gamepad)
     zox_name("gamepad")
     zox_set(e, DeviceLayout, { gamepad_type })
     Children *children = zox_get_mut(e, Children)
-    resize_memory_component(Children, children, ecs_entity_t, 20)
+    resize_memory_component(Children, children, entity, 20)
     // spawns zevice_button at 0 to 13
     for (byte i = 0; i < 14; i++) {
         // use gamepad layout

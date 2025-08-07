@@ -1,6 +1,6 @@
 byte is_log_dragging = 0;
 
-void drag_element(ecs_world_t *world, const ecs_entity_t e, const int2 drag_value) {
+void drag_element(ecs *world, const entity e, const int2 drag_value) {
     if (!zox_valid(e)) {
         return;
     }

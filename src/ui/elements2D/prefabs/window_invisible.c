@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_window_invisible(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_window_invisible(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("window_invisible")
     zox_add_tag(e, Window)

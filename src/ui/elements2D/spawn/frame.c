@@ -1,4 +1,4 @@
-entity3 spawn_frame(ecs_world_t *world, SpawnFrame data) {
+entity3 spawn_frame(ecs *world, SpawnFrame data) {
     zox_instance(data.element.prefab)
     zox_name("frame")
     set_element_spawn_data(world, e, data.canvas, data.parent, &data.element);
@@ -24,9 +24,9 @@ entity3 spawn_frame(ecs_world_t *world, SpawnFrame data) {
         .texture_size = data.icon.texture_size
     };
     Children *children = &((Children) { 0, NULL });
-    const ecs_entity_t icon = spawn_icon(world, &spawnIcon);
+    const entity icon = spawn_icon(world, &spawnIcon);
     add_to_Children(children, icon);
-    ecs_entity_t zext = 0;
+    entity zext = 0;
     if (zox_has(data.element.prefab, IconLabel)) {
         const int font_size = 12;
         SpawnZext spawnZext = {

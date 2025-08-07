@@ -1,6 +1,6 @@
-ecs_entity_t spawn_scrollbar(ecs_world_t *world,
-    ecs_entity_t parent,
-    ecs_entity_t canvas,
+entity spawn_scrollbar(ecs *world,
+    entity parent,
+    entity canvas,
     int2 pixel_position,
     byte layer,
     int2 parent_pixel_position_global,
@@ -26,7 +26,7 @@ ecs_entity_t spawn_scrollbar(ecs_world_t *world,
     float2 position2D = get_element_position(pixel_position_global, canvas_size);
     initialize_element(world, e, parent, canvas, pixel_position, pixel_size, pixel_size, anchor, layer, position2D, pixel_position_global);
     zox_muter(e, Children, children)
-    const ecs_entity_t scrollbar_handle = spawn_scrollbar_front(world,
+    const entity scrollbar_handle = spawn_scrollbar_front(world,
         e,
         canvas,
         (int2) { 0, (parent_pixel_size.y - height) / 2 },   // put at top of scroll

@@ -1,8 +1,8 @@
-extern ecs_entity_t spawn_cube_lines(ecs_world_t *world, const float3 center, const float3 extents, const float thickness, const double life_time, const color_rgb line_color);
-extern ecs_entity_t spawn_line3D_colored(ecs_world_t *world, const float3 pointA, const float3 pointB, const float thickness, const double life_time, const color_rgb line_color);
-extern void render_line3D(ecs_world_t *world, const float3 a, const float3 b, const color_rgb line_color);
+extern entity spawn_cube_lines(ecs *world, const float3 center, const float3 extents, const float thickness, const double life_time, const color_rgb line_color);
+extern entity spawn_line3D_colored(ecs *world, const float3 pointA, const float3 pointB, const float thickness, const double life_time, const color_rgb line_color);
+extern void render_line3D(ecs *world, const float3 a, const float3 b, const color_rgb line_color);
 
-/*void debug_transform(ecs_world_t *world, const float4x4 mat) {
+/*void debug_transform(ecs *world, const float4x4 mat) {
     // Draw lines to represent the view matrix
     const float line_length = 12;
     const double spawn_life_time = 0.05;
@@ -30,7 +30,7 @@ void visualize_frustum(const float4x4 mat, const plane *planes) {
     }
 }*/
 
-void CameraDebugSystem(ecs_iter_t *it) {
+void CameraDebugSystem(iter *it) {
     // const float line_length = 1024;
     double spawn_life_time = 1.05;
     const color_rgb hit_color = { 0, 255, 0 };

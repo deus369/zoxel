@@ -1,4 +1,4 @@
-ecs_entity_t spawn_list(ecs_world_t *world,
+entity spawn_list(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data,
@@ -41,7 +41,7 @@ ecs_entity_t spawn_list(ecs_world_t *world,
             child_element_data.position.x -= (scrollbar_width + scrollbar_margins * 2) / 2;
         }*/
         // BUTTONS
-        ecs_entity_t child = 0;
+        entity child = 0;
         if (child_data.type == 0) {
             position_y -= element_height + list_data.spacing;
             child_element_data.position.y = position_y;

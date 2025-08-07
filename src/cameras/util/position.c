@@ -1,6 +1,6 @@
 // finds closest camera to a position
-ecs_entity_t find_closest_camera(ecs_world_t *world, const float3 position) {
-    ecs_entity_t camera = 0;
+entity find_closest_camera(ecs *world, const float3 position) {
+    entity camera = 0;
     float closest_distance = 100000;
     for (int j = 0; j < main_cameras_count; j++) {
         const float3 camera_position = zox_get_value(main_cameras[j], Position3D)

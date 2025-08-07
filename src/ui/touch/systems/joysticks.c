@@ -3,10 +3,10 @@
 int virtual_joysticks_spawn_count = 0;
 unsigned first_joystick_type = zox_device_stick_left;
 
-void handle_touch_drag(ecs_world_t *world,
-                       const ecs_entity_t canvas,
-                       const ecs_entity_t finger,
-                       const ecs_entity_t virtual_joystick,
+void handle_touch_drag(ecs *world,
+                       const entity canvas,
+                       const entity finger,
+                       const entity virtual_joystick,
                        const byte is_game_state_playing)
 {
     if (!zox_valid(finger) || !zox_has(finger, ZevicePointer) || !zox_has(finger, ZevicePointerPosition)) {
@@ -18,7 +18,7 @@ void handle_touch_drag(ecs_world_t *world,
         zox_geter(finger, ZevicePointerPosition, zevicePointerPosition)
         if (is_game_state_playing) {
             byte button_type = zox_device_stick_left;
-            zox_geter_value(finger, DeviceLink, ecs_entity_t, touchscreen)
+            zox_geter_value(finger, DeviceLink, entity, touchscreen)
             if (!zox_valid(touchscreen) || !zox_has(touchscreen, ScreenDimensions)) {
                 zox_log_error("touchscreen invalid")
                 return;
@@ -35,7 +35,7 @@ void handle_touch_drag(ecs_world_t *world,
         if (!zox_has(virtual_joystick, ElementLink)) {
             return;
         }
-        const ecs_entity_t joystick_element = zox_get_value(virtual_joystick, ElementLink)
+        const entity joystick_element = zox_get_value(virtual_joystick, ElementLink)
         if (!zox_valid(joystick_element)) {
             return;
         }
@@ -52,7 +52,7 @@ void handle_touch_drag(ecs_world_t *world,
             zox_geter(joystick_element, PixelPosition, virtual_joystick_position)
             zox_geter(joystick_element, Children, ui_children)
             zox_geter(joystick_element, PixelSize, virtual_joystick_size)
-            const ecs_entity_t joystick_pointer = ui_children->value[0];
+            const entity joystick_pointer = ui_children->value[0];
             if (!zox_valid(joystick_pointer)) {
                 zox_log_error("invalid joystick_pointer, parent [%s]", zox_get_name(joystick_element))
                 return;
@@ -79,7 +79,7 @@ void handle_touch_drag(ecs_world_t *world,
     }
 }
 
-void VirtualJoystickSystem(ecs_iter_t *it) {
+void VirtualJoystickSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(DeviceLink)
@@ -97,24 +97,24 @@ void VirtualJoystickSystem(ecs_iter_t *it) {
         }
         // if (raycasterResult->value) continue;   // if raycasted ui, don't process
         // todo: use a DeviceMode for logic flow
-        const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        const entity player = zox_get_value(deviceLink->value, PlayerLink)
         if (!zox_valid(player)) {
             continue;
         }
         // const byte device_mode = zox_get_value(player, DeviceMode)
-        const ecs_entity_t game = zox_get_value(player, GameLink)
+        const entity game = zox_get_value(player, GameLink)
         if (!zox_valid(game)) {
             return;
         }
         const byte game_state = zox_get_value(game, GameState)
         const byte is_game_state_playing = game_state == zox_game_playing;
-        const ecs_entity_t canvas = zox_get_value(player, CanvasLink)
+        const entity canvas = zox_get_value(player, CanvasLink)
         // if going to spawn a new one, continue
         const byte click_value = zevicePointer->value;
         if (devices_get_pressed_this_frame(click_value) && raycasterResult->value) {
             continue;
         }
-        const ecs_entity_t virtual_joystick = virtualZeviceLink->value;
+        const entity virtual_joystick = virtualZeviceLink->value;
         handle_touch_drag(world, canvas, e, virtual_joystick, is_game_state_playing);
     }
 } zox_declare_system(VirtualJoystickSystem)

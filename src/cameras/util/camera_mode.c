@@ -22,9 +22,9 @@ CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale)
     return data;
 }
 
-void set_camera_transform(ecs_world_t *world,
-    const ecs_entity_t camera,
-    const ecs_entity_t character,
+void set_camera_transform(ecs *world,
+    const entity camera,
+    const entity character,
     const byte camera_mode,
     const float vox_model_scale)
 {
@@ -55,7 +55,7 @@ byte get_camera_mode_fov(const byte camera_mode) {
     return get_camera_preset(camera_mode, 0).fov;
 }
 
-void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_model_scale) {
+void set_camera_mode(ecs *world, byte new_camera_mode, const float vox_model_scale) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) {
         new_camera_mode = zox_camera_mode_first_person;
@@ -68,14 +68,14 @@ void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_m
     const byte camera_fov = get_camera_mode_fov(camera_mode);
     camera_follow_mode = get_camera_preset(camera_mode, vox_model_scale).follow_mode;
     for (int i = 0; i < main_cameras_count; i++) {
-        const ecs_entity_t camera = main_cameras[i];
+        const entity camera = main_cameras[i];
         if (camera == 0 || !zox_valid(camera)) {
             continue;
         }
         zox_set(camera, CameraMode, { camera_mode })
         zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
-        ecs_entity_t character = 0;
+        entity character = 0;
         if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(camera, ParentLink)
         else character = zox_get_value(camera, CameraFollowLink)
         if (old_camera_follow_mode != camera_follow_mode) {
@@ -98,7 +98,7 @@ void set_camera_mode(ecs_world_t *world, byte new_camera_mode, const float vox_m
     }
 }
 
-void toggle_camera_mode(ecs_world_t *world, const float vox_model_scale) {
+void toggle_camera_mode(ecs *world, const float vox_model_scale) {
     byte new_camera_mode = camera_mode + 1;
     if (new_camera_mode> zox_camera_mode_topdown) {
         new_camera_mode = 0;
@@ -106,27 +106,27 @@ void toggle_camera_mode(ecs_world_t *world, const float vox_model_scale) {
     set_camera_mode(world, new_camera_mode, vox_model_scale);
 }
 
-void set_camera_mode_first_person(ecs_world_t *world, const float vox_model_scale) {
+void set_camera_mode_first_person(ecs *world, const float vox_model_scale) {
     set_camera_mode(world, zox_camera_mode_first_person, vox_model_scale);
 }
 
-void set_camera_mode_third_person(ecs_world_t *world) {
+void set_camera_mode_third_person(ecs *world) {
     set_camera_mode(world, zox_camera_mode_third_person, 0);
 }
 
-void set_camera_mode_ortho(ecs_world_t *world) {
+void set_camera_mode_ortho(ecs *world) {
     set_camera_mode(world, zox_camera_mode_ortho, 0);
 }
 
-void set_camera_mode_topdown(ecs_world_t *world) {
+void set_camera_mode_topdown(ecs *world) {
     set_camera_mode(world, zox_camera_mode_topdown, 0);
 }
 
-void set_camera_mode_2D(ecs_world_t *world) {
+void set_camera_mode_2D(ecs *world) {
     set_camera_mode(world, zox_camera_mode_2D, 0);
 }
 
-void set_camera_mode_pre_defined(ecs_world_t *world,
+void set_camera_mode_pre_defined(ecs *world,
     const float vox_model_scale)
 {
     if (zox_game_camera_mode == zox_camera_mode_2D) {

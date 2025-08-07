@@ -1,9 +1,9 @@
 // #define zox_debug_billboard_system
 #ifdef zox_debug_billboard_system
-extern ecs_entity_t spawn_line3D(ecs_world_t *world, float3 pointA, float3 pointB, float thickness, double life_time);
+extern entity spawn_line3D(ecs *world, float3 pointA, float3 pointB, float thickness, double life_time);
 #endif
 
-void BillboardSystem(ecs_iter_t *it) {
+void BillboardSystem(iter *it) {
     if (main_cameras_count == 0) return;
     zox_sys_world()
     zox_sys_begin()
@@ -13,14 +13,14 @@ void BillboardSystem(ecs_iter_t *it) {
         zox_sys_e()
         zox_sys_i(Position3D, position3D)
         zox_sys_o(Rotation3D, rotation3D)
-        const ecs_entity_t camera = find_closest_camera(world, position3D->value);
+        const entity camera = find_closest_camera(world, position3D->value);
         if (!camera || !zox_has(camera, Rotation3D)) continue;
         const float4 target_rotation = zox_get_value(camera, Rotation3D)
         rotation3D->value = target_rotation;
         if (zox_has(e, Children)) {
             const Children *children = zox_get(e, Children)
             for (int j = 0; j < children->length; j++) {
-                ecs_entity_t child = children->value[j];
+                entity child = children->value[j];
                 if (!zox_has(child, LocalRotation3D)) {
                     // zox_log("! billboard child [%i:%s] doesn't have [LocalRotation3D]\n", j, zox_get_name(child))
                     continue;

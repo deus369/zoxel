@@ -125,7 +125,7 @@ int2 calculate_zigel_position(const byte *data, const int length, const int data
 }
 
 // For reusing a zigel, set all positions again to position entire text
-void set_zigel_position(ecs_world_t *world, const TextData *textData, const ecs_entity_t e, const int data_index, const int font_size, const byte text_alignment, const byte2 text_padding, float2 anchor, const byte zigels_count, const int2 parent_position, const int2 parent_size, const int2 canvas_size) {
+void set_zigel_position(ecs *world, const TextData *textData, const entity e, const int data_index, const int font_size, const byte text_alignment, const byte2 text_padding, float2 anchor, const byte zigels_count, const int2 parent_position, const int2 parent_size, const int2 canvas_size) {
     const int2 pixel_position = calculate_zigel_position(textData->value, textData->length, data_index, font_size, text_alignment, text_padding, default_line_padding);
     const int2 global_position = get_element_pixel_position_global(parent_position, parent_size, pixel_position, anchor);
     const float2 real_position = get_element_position(global_position, canvas_size);
@@ -135,7 +135,7 @@ void set_zigel_position(ecs_world_t *world, const TextData *textData, const ecs_
 }
 
 // spawns a text character in a place
-ecs_entity_t spawn_zext_zigel(ecs_world_t *world, const TextData *textData, SpawnZigel *data) {
+entity spawn_zext_zigel(ecs *world, const TextData *textData, SpawnZigel *data) {
     data->element.position = calculate_zigel_position(textData->value, textData->length, data->zigel.data_index, data->element.size.x, data->zext.text_alignment, data->zext.text_padding, default_line_padding);
     data->element.anchor = float2_half;
     return spawn_zigel(world, data);

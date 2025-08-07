@@ -1,4 +1,4 @@
-void set_position_from_parents(ecs_world_t *world, const ecs_entity_t parent, float3 *position3D, const float3 local_position3D) {
+void set_position_from_parents(ecs *world, const entity parent, float3 *position3D, const float3 local_position3D) {
     if (!parent || !zox_has(parent, Position3D) || !zox_has(parent, Rotation3D)) {
         return;
     }
@@ -9,7 +9,7 @@ void set_position_from_parents(ecs_world_t *world, const ecs_entity_t parent, fl
     float3_add_float3_p(position3D, parent_position);
 }
 
-void set_rotation_from_parents(ecs_world_t *world, const ecs_entity_t parent, float4 *rotation3D, const float4 local_rotation3D) {
+void set_rotation_from_parents(ecs *world, const entity parent, float4 *rotation3D, const float4 local_rotation3D) {
     if (!parent || !zox_has(parent, Rotation3D)) {
         return;
     }

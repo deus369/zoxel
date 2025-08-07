@@ -1,6 +1,6 @@
 const float ui_camera_fov = 53.22f;  // fudged this to get ui right... works for now
 
-ecs_entity_t spawn_prefab_camera_ui(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_camera_ui(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("ui_camera")
     zox_add_tag(e, CameraUI)
@@ -14,8 +14,8 @@ ecs_entity_t spawn_prefab_camera_ui(ecs_world_t *world, const ecs_entity_t prefa
 }
 
 
-ecs_entity_t spawn_camera_ui(ecs_world_t *world,
-    const ecs_entity_t prefab,
+entity spawn_camera_ui(ecs *world,
+    const entity prefab,
     const int2 position,
     const int2 dimensions,
     const float4 screen_to_canvas)

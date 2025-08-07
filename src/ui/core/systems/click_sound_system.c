@@ -1,4 +1,4 @@
-void ClickSoundSystem(ecs_iter_t *it) {
+void ClickSoundSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ClickState)

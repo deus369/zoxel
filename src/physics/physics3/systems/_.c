@@ -7,7 +7,7 @@
 #include "physics3D_disable_system.c"
 #include "position3D_bounds_system.c" //  move to transforms
 
-void define_systems_physics3(ecs_world_t *world) {
+void define_systems_physics3(ecs *world) {
     // core
     zox_system(Velocity3System, zox_pip_physics,
         [in] physics3.Velocity3D,

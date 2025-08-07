@@ -1,5 +1,5 @@
 // chunk_lod_state_characters_update :: when terrain lod updates, update character lods
-void ChunkEntitiesLodSystem(ecs_iter_t *it) {
+void ChunkEntitiesLodSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)
@@ -14,7 +14,7 @@ void ChunkEntitiesLodSystem(ecs_iter_t *it) {
         }
         const byte new_lod = distance_to_lod_npc(renderDistance->value);
         for (int j = 0; j < entityLinks->length; j++) {
-            const ecs_entity_t e2 = entityLinks->value[j];
+            const entity e2 = entityLinks->value[j];
             if (!(e2 && zox_valid(e2) && zox_has(e2, RenderLod))) {
                 continue;
             }

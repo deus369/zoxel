@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_camera3D(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_camera3D(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("camera3D")
     zox_add_tag(e, Camera3D)

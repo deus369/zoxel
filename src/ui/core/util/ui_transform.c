@@ -1,7 +1,7 @@
 // only used be lines atm
-extern void resize_ui_line2D(ecs_world_t *world, ecs_entity_t e, int2 canvas_size);
+extern void resize_ui_line2D(ecs *world, entity e, int2 canvas_size);
 
-float2 get_ui_real_position2D(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const int2 local_pixel_position, const float2 anchor, const int2 canvas_size) {
+float2 get_ui_real_position2D(ecs *world, const entity e, const entity parent, const int2 local_pixel_position, const float2 anchor, const int2 canvas_size) {
     const float2 canvasSizef = { (float) canvas_size.x, (float) canvas_size.y };
     const float aspect_ratio = canvasSizef.x / canvasSizef.y;
     float2 position2D;
@@ -72,7 +72,7 @@ float2 get_element_position(const int2 pixel_position_global, const int2 canvas_
     return position;
 }
 
-void on_element_parent_updated(ecs_world_t *world, const ecs_entity_t e, const int2 local_pixel_position, const float2 anchor, const float2 parent_position, const int2 parent_pixel_size, const float2 canvas_size_f) {
+void on_element_parent_updated(ecs *world, const entity e, const int2 local_pixel_position, const float2 anchor, const float2 parent_position, const int2 parent_pixel_size, const float2 canvas_size_f) {
     const float aspect_ratio = canvas_size_f.x / canvas_size_f.y;
     const float2 position2D = get_ui_real_position2D_parent(local_pixel_position, anchor, parent_position, parent_pixel_size, canvas_size_f, aspect_ratio);
     const int2 global_pixel_position = (int2) { ceil(((position2D.x / aspect_ratio) + 0.5f) * canvas_size_f.x), ((position2D.y + 0.5f) * canvas_size_f.y) };
@@ -80,7 +80,7 @@ void on_element_parent_updated(ecs_world_t *world, const ecs_entity_t e, const i
     zox_set(e, CanvasPosition, { global_pixel_position })
 }
 
-void set_window_bounds_to_canvas(ecs_world_t *world, const ecs_entity_t e, const int2 canvas_size, const int2 window_size, const float2 anchor) {
+void set_window_bounds_to_canvas(ecs *world, const entity e, const int2 canvas_size, const int2 window_size, const float2 anchor) {
     // note: can't actually use components in frame we spawn them
     const float2 anchor_reverse = (float2) { 1 - anchor.x, 1 - anchor.y };
     int4 drag_limits = (int4) {
@@ -107,7 +107,7 @@ void limited_element(PixelPosition *pixel_position, const int4 drag_bounds) {
     }
 }
 
-void limit_element(ecs_world_t *world, const ecs_entity_t e) {
+void limit_element(ecs *world, const entity e) {
     if (!zox_valid(e) || !zox_has(e, PixelPosition) || !zox_has(e, DraggableLimits)) {
         return;
     }
@@ -120,9 +120,9 @@ extern void anchor_element_position2D(int2 *position, const float2 position_anch
 extern void anchor_element_size2D(int2 *size, const float2 anchor, const int2 parent_size);
 
 // called by CanvasResizeSystem
-void set_ui_transform(ecs_world_t *world,
-    const ecs_entity_t parent,
-    const ecs_entity_t e,
+void set_ui_transform(ecs *world,
+    const entity parent,
+    const entity e,
     const int2 canvas_size,
     const int2 parent_position,
     const int2 parent_size)
@@ -145,7 +145,7 @@ void set_ui_transform(ecs_world_t *world,
         const int2 scaled_size = scale_viewport(pixel_size); // pixel_size
         zox_set(e, TextureSize, { scaled_size })
         set_render_texture_gpu(zox_gett_value(e, TextureGPULink), scaled_size);
-        zox_geter_value(e, CameraLink, ecs_entity_t, camera)
+        zox_geter_value(e, CameraLink, entity, camera)
         set_render_buffer_size(zox_gett_value(camera, RenderBufferLink), scaled_size);
     }
     // set scale of mesh again
@@ -186,10 +186,10 @@ void set_ui_transform(ecs_world_t *world,
     }
 }
 
-void initialize_element_invisible(ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t parent,
-    const ecs_entity_t canvas,
+void initialize_element_invisible(ecs *world,
+    const entity e,
+    const entity parent,
+    const entity canvas,
     const int2 pixel_position,
     const int2 pixel_size,
     const float2 anchor,
@@ -211,10 +211,10 @@ void initialize_element_invisible(ecs_world_t *world,
     }
 }
 
-void initialize_element(ecs_world_t *world,
-    const ecs_entity_t e,
-    const ecs_entity_t parent,
-    const ecs_entity_t canvas,
+void initialize_element(ecs *world,
+    const entity e,
+    const entity parent,
+    const entity canvas,
     const int2 pixel_position,
     const int2 pixel_size,
     const int2 texture_size,
@@ -227,8 +227,8 @@ void initialize_element(ecs_world_t *world,
     zox_set(e, TextureSize, { texture_size })
 }
 
-void set_element_spawn_data(ecs_world_t *world,
-    const ecs_entity_t e,
+void set_element_spawn_data(ecs *world,
+    const entity e,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData *element_data)

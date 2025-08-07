@@ -1,4 +1,4 @@
-void ZevicePointerResetSystem(ecs_iter_t *it) {
+void ZevicePointerResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(ZevicePointer)
     zox_sys_out(ZevicePointerOld)

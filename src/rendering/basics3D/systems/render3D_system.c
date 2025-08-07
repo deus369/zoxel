@@ -1,4 +1,4 @@
-void Render3DSystem(ecs_iter_t *it) {
+void Render3DSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(TransformMatrix)
     zox_sys_in(Brightness)

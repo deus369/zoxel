@@ -1,5 +1,5 @@
 // data only
-ecs_entity_t spawn_prefab_chunk_base(ecs_world_t *world) {
+entity spawn_prefab_chunk_base(ecs *world) {
     const byte max_length = 32; // todo: Calculate this from max resolution!
     const int3 size = (int3) { max_length, max_length, max_length };
     zox_prefab();

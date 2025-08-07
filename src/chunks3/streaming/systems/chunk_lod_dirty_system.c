@@ -1,4 +1,4 @@
-void ChunkLodDirtySystem(ecs_iter_t *it) {
+void ChunkLodDirtySystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ChunkLodDirty)
     // zox_sys_in(RenderLod)

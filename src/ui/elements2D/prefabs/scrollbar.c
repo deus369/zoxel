@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_scrollbar(ecs_world_t *world) {
+entity spawn_prefab_scrollbar(ecs *world) {
     zox_prefab()
     zox_prefab_name("scrollbar")
     add_ui_plus_components(world, e);

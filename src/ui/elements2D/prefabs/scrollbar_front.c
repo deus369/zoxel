@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_scrollbar_front(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_scrollbar_front(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("scrollbar_front")
     zox_add_tag(e, Scrollbar)

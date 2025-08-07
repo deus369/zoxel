@@ -1,7 +1,7 @@
 // just a draggable button left and right only
 // just a panel with a label and a bar
 // the bar can be clicked to reposition the handle as well
-ecs_entity_t spawn_prefab_handle(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_handle(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("handle")
     // transforms

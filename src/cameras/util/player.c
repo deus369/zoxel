@@ -2,8 +2,8 @@
 float4 main_menu_rotation_speed;
 
 // spawns game camera and ui camera on top
-entity2 spawn_player_camera(ecs_world_t *world,
-    const ecs_entity_t player,
+entity2 spawn_player_camera(ecs *world,
+    const entity player,
     const float3 camera_position,
     const float4 camera_rotation,
     const float4 screen_to_canvas,
@@ -13,7 +13,7 @@ entity2 spawn_player_camera(ecs_world_t *world,
 {
     main_menu_rotation_speed = quaternion_from_euler( (float3) { 0, -main_camera_rotation_speed * degreesToRadians, 0 });
     float fov = get_camera_mode_fov(camera_mode);
-    const ecs_entity_t e = spawn_camera_base(world,
+    const entity e = spawn_camera_base(world,
         prefab_camera_game,
         camera_position,
         camera_rotation,
@@ -23,7 +23,7 @@ entity2 spawn_player_camera(ecs_world_t *world,
         screen_to_canvas);
     zox_name("camera_game")
     zox_set(player, CameraLink, { e })
-    const ecs_entity_t e2 = spawn_camera_ui(world,
+    const entity e2 = spawn_camera_ui(world,
         prefab_camera_ui,
         viewport_position,
         canvas_size,

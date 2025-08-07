@@ -1,6 +1,6 @@
 // element will follow mouse position
 //  -> linked to MouseTextureSystem
-void MouseElementSystem(ecs_iter_t *it) {
+void MouseElementSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ZeviceLink)
@@ -15,7 +15,7 @@ void MouseElementSystem(ecs_iter_t *it) {
         if (!canvasLink->value || !zeviceLink->value) {
             continue;
         }
-        zox_geter_value(zeviceLink->value, DeviceLink, ecs_entity_t, device);
+        zox_geter_value(zeviceLink->value, DeviceLink, entity, device);
         if (!zox_valid(device) || zox_gett_value(device, DeviceDisabled)) {
             continue;
         }

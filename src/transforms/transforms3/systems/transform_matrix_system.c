@@ -1,5 +1,5 @@
 // todo: why i have to reverse  rotation?? for npcs, fix this shit!
-void TransformMatrixSystem(ecs_iter_t *it) {
+void TransformMatrixSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Position3D)
     zox_sys_in(Rotation3D)

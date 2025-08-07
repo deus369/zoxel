@@ -1,4 +1,4 @@
-void set_element_properties(ecs_world_t *world, const ecs_entity_t e, const ecs_entity_t parent, const ecs_entity_t canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
+void set_element_properties(ecs *world, const entity e, const entity parent, const entity canvas, const int2 pixel_position, const int2 pixel_size, const float2 anchor, const byte layer, const float2 position2D, const int2 pixel_position_global) {
     zox_set(e, Anchor, { anchor })
     zox_set(e, Layer2D, { layer })
     zox_set(e, PixelSize, { pixel_size })
@@ -22,17 +22,17 @@ void set_element_properties(ecs_world_t *world, const ecs_entity_t e, const ecs_
 #include "popup3D.c"
 #include "elementbar3D_front.c"
 #include "elementbar3D.c"
-ecs_entity_t prefab_element3D;
-ecs_entity_t prefab_element3D_child;
-ecs_entity_t prefab_element3D_invisible;
-ecs_entity_t prefab_elementbar3D;
-ecs_entity_t prefab_elementbar3D_front;
-ecs_entity_t prefab_text3D;
-ecs_entity_t prefab_zigel3D;
-ecs_entity_t prefab_label3D;
-ecs_entity_t prefab_popup3D;
+entity prefab_element3D;
+entity prefab_element3D_child;
+entity prefab_element3D_invisible;
+entity prefab_elementbar3D;
+entity prefab_elementbar3D_front;
+entity prefab_text3D;
+entity prefab_zigel3D;
+entity prefab_label3D;
+entity prefab_popup3D;
 
-void spawn_prefabs_elements3D(ecs_world_t *world) {
+void spawn_prefabs_elements3D(ecs *world) {
     prefab_element3D = spawn_prefab_element3D(world);
     prefab_element3D_child = spawn_prefab_element3D_child(world);
     prefab_element3D_invisible = spawn_prefab_element3D_invisible(world);

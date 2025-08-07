@@ -1,4 +1,4 @@
-void Torque2DSystem(ecs_iter_t *it) {
+void Torque2DSystem(iter *it) {
     init_delta_time()
     zox_sys_begin()
     zox_sys_out(Rotation2D)

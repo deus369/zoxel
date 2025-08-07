@@ -1,4 +1,4 @@
-void ZevicePointerDeltaResetSystem(ecs_iter_t *it) {
+void ZevicePointerDeltaResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(ZevicePointerDelta)
     for (int i = 0; i < it->count; i++) {

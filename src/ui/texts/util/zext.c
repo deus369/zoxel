@@ -45,7 +45,7 @@ void set_zext(TextData *textData, const char* text) {
     }
 }
 
-void print_entity_zext(ecs_world_t *world, const ecs_entity_t e) {
+void print_entity_zext(ecs *world, const entity e) {
     if (!zox_has(e, TextData)) {
         return;
     }
@@ -55,9 +55,9 @@ void print_entity_zext(ecs_world_t *world, const ecs_entity_t e) {
     free(debug_text);
 }
 
-byte is_zext_updating(ecs_world_t *world, const Children *children) {
+byte is_zext_updating(ecs *world, const Children *children) {
     for (int i = 0; i < children->length; i++) { // update the reused ones
-        const ecs_entity_t zigel = children->value[i];
+        const entity zigel = children->value[i];
         const byte generate_texture = zox_get_value(zigel, GenerateTexture)
         if (generate_texture) {
             return 1;
@@ -68,13 +68,13 @@ byte is_zext_updating(ecs_world_t *world, const Children *children) {
 
 
 void set_entity_label_with_zext(
-    ecs_world_t *world,
-    const ecs_entity_t parent,
+    ecs *world,
+    const entity parent,
     byte *value,
     int length
 ) {
     const Children *name_label_children = zox_get(parent, Children)
-    ecs_entity_t e = name_label_children->value[0];
+    entity e = name_label_children->value[0];
     zox_get_muter(e, TextData, textData)
     if (textData->value) {
         dispose_TextData(textData);
@@ -86,7 +86,7 @@ void set_entity_label_with_zext(
     zox_set(e, ZextDirty, { zext_update_start })
 }
 
-byte set_entity_text(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+byte set_entity_text(ecs *world, const entity e, const char* text) {
     if (!zox_valid(e) || !zox_has(e, TextData) || !zox_has(e, ZextDirty)) {
         zox_log_error("invalid zext in [set_entity_text]")
         return 0;
@@ -102,7 +102,7 @@ byte set_entity_text(ecs_world_t *world, const ecs_entity_t e, const char* text)
     }
 }
 
-byte set_entity_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+byte set_entity_text_raw(ecs *world, const entity e, const char* text) {
     TextData *textData = &((TextData) { 0, NULL });
     set_zext(textData, text);
     zox_set(e, TextData, { textData->length, textData->value })
@@ -111,8 +111,8 @@ byte set_entity_text_raw(ecs_world_t *world, const ecs_entity_t e, const char* t
 }
 
 byte set_entity_label_with_text(
-    ecs_world_t *world,
-    const ecs_entity_t e,
+    ecs *world,
+    const entity e,
     const char* text
 ) {
     zox_geter(e, Children, children);
@@ -122,11 +122,11 @@ byte set_entity_label_with_text(
     return set_entity_text(world, children->value[0], text);
 }
 
-void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text) {
+void set_new_zox_name(ecs *world, const entity e, const char* text) {
     zox_set_zext_component(e, ZoxName, text);
 }
 
 
-int get_zexts_count(ecs_world_t *world) {
+int get_zexts_count(ecs *world) {
     return zox_count_types(Zext)
 }

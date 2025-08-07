@@ -1,8 +1,8 @@
-void test_action_bar(ecs_world_t *world, ecs_entity_t canvas) {
+void test_action_bar(ecs *world, entity canvas) {
     int2 actionbar_size4 = (int2) { 420, 54 };
     int2 testSize2 = (int2) { 48, 48 };
     // actionbar - anchor actionbar to bottom
-    ecs_entity_t action_bar = spawn_element_on_canvas(world, canvas, (int2) { 0, 10 + actionbar_size4.y / 2 }, actionbar_size4, (float2) { 0.5f, 0 });
+    entity action_bar = spawn_element_on_canvas(world, canvas, (int2) { 0, 10 + actionbar_size4.y / 2 }, actionbar_size4, (float2) { 0.5f, 0 });
     for (int i = 0; i < 5; i++)
     {
         // spawn element as child
@@ -15,7 +15,7 @@ void test_action_bar(ecs_world_t *world, ecs_entity_t canvas) {
 }
 
 // used for testing the canvas scaling
-void spawn_corner_uis(ecs_world_t *world) {
+void spawn_corner_uis(ecs *world) {
     const int2 testSize = { 32, 32 };
     spawn_element_on_canvas(world, canvas, (int2) { testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 0, 0 });             // bottom left
     spawn_element_on_canvas(world, canvas, (int2) { - testSize.x / 2, testSize.y / 2 }, testSize, (float2) { 1.0f, 0.0 });      // bottom right
@@ -24,7 +24,7 @@ void spawn_corner_uis(ecs_world_t *world) {
     zox_log("Spawned 4 corner ui elements.\n")    // top right
 }
 
-void spawn_test_uis(ecs_world_t *world) {
+void spawn_test_uis(ecs *world) {
     spawn_corner_uis(world);
     // crosshair
     // spawn_element_on_canvas(world, canvas, (int2) { 0, 0 }, (int2) { 32, 32 }, (float2) { 0.5f, 0.5f });
@@ -36,7 +36,7 @@ void spawn_test_uis(ecs_world_t *world) {
     // spawn_zext(world, (int2) { 0, actionbar_size4.y + 48}, (float2) { 0.5f, 0.0f }, "greetings minion");
 }
 
-void test_ui_pixel_positions(ecs_world_t *world) {
+void test_ui_pixel_positions(ecs *world) {
     zox_geter_value(main_app, WindowSize, int2, screen_size)
     // test horizontal by spawning one per bar
     int width_division = 2; // 16;

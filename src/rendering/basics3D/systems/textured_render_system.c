@@ -1,4 +1,4 @@
-void TexturedRenderSystem(ecs_iter_t *it) {
+void TexturedRenderSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(TransformMatrix)
     zox_sys_in(MeshGPULink)

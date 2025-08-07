@@ -27,7 +27,7 @@ void initialize_mesh(uint material) {
 #endif
 }
 
-int load_instance2D_material(ecs_world_t *world) {
+int load_instance2D_material(ecs *world) {
     char* vert = get_shader_source(world, "basic2D.vert");
     char* frag = get_shader_source(world, "basic2D.frag");
     shader2D_basic = zox_gpu_compile_shader(vert, frag);

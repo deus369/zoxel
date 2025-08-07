@@ -5,7 +5,7 @@
 #include "text_update_system.c"
 #include "text3D_resize_system.c"
 
-void define_systems_elements3D(ecs_world_t *world) {
+void define_systems_elements3D(ecs *world) {
     zox_system(UITrailSystem, zox_transforms_stage,
         [in] elements.core.UIHolderLink,
         [in] UITrail,

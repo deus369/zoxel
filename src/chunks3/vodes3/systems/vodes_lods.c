@@ -1,8 +1,8 @@
-void set_vode_lods(ecs_world_t *world, const VoxelNode *node, byte lod) {
+void set_vode_lods(ecs *world, const VoxelNode *node, byte lod) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
-        const ecs_entity_t e = get_entity_VoxelNode(node);
+        const entity e = get_entity_VoxelNode(node);
         if (zox_valid(e) && zox_has(e, RenderLod)) {
             zox_set(e, RenderLod, { lod })
             zox_set(e, RenderLodDirty, { zox_dirty_trigger })
@@ -15,7 +15,7 @@ void set_vode_lods(ecs_world_t *world, const VoxelNode *node, byte lod) {
     }
 }
 
-void VodesLodSystem(ecs_iter_t *it) {
+void VodesLodSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)

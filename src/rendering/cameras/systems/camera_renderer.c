@@ -1,4 +1,4 @@
-void camera_render_update(ecs_iter_t *it, const byte is_camera2D) {
+void camera_render_update(iter *it, const byte is_camera2D) {
     byte do_renders = !headless && rendering;
     if (!do_renders) {
         return;

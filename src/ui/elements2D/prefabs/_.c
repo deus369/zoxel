@@ -18,31 +18,31 @@
 #include "elementbar2D.c"
 #include "mouse_follow_icon.c"
 
-ecs_entity_t prefab_label;
-ecs_entity_t prefab_button;
-ecs_entity_t prefab_close_button;
-ecs_entity_t prefab_icon;
-ecs_entity_t prefab_frame;
-ecs_entity_t prefab_label_background;
-ecs_entity_t prefab_scrollbar_front;
-ecs_entity_t prefab_scrollbar;
-ecs_entity_t prefab_list;
-ecs_entity_t prefab_ui_list;
-ecs_entity_t prefab_header;
-ecs_entity_t prefab_body;
-ecs_entity_t prefab_window_invisible;
-ecs_entity_t prefab_window;
-ecs_entity_t prefab_elementbar2D;
-ecs_entity_t prefab_elementbar2D_front;
-ecs_entity_t prefab_icon_mouse_follow;
-ecs_entity_t prefab_icon_overlay;
-ecs_entity_t prefab_handle;
-ecs_entity_t prefab_slider;
+entity prefab_label;
+entity prefab_button;
+entity prefab_close_button;
+entity prefab_icon;
+entity prefab_frame;
+entity prefab_label_background;
+entity prefab_scrollbar_front;
+entity prefab_scrollbar;
+entity prefab_list;
+entity prefab_ui_list;
+entity prefab_header;
+entity prefab_body;
+entity prefab_window_invisible;
+entity prefab_window;
+entity prefab_elementbar2D;
+entity prefab_elementbar2D_front;
+entity prefab_icon_mouse_follow;
+entity prefab_icon_overlay;
+entity prefab_handle;
+entity prefab_slider;
 
 // todo: make a more advanced 'element' prefab, alott of these still use prefab_element
 //  - element_selectable, element_clickable, element_draggable
 
-void spawn_prefabs_elements(ecs_world_t *world) {
+void spawn_prefabs_elements(ecs *world) {
     // elements
     prefab_label = spawn_prefab_label(world, prefab_zext);
     prefab_label_background = spawn_prefab_label_background(world, prefab_zext);

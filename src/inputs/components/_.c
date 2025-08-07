@@ -24,11 +24,11 @@ zox_component_entity(DeviceLink)
 zox_component_entity(MouseLink)
 zox_component_entity(ZeviceLink)
 zox_component_entity(VirtualZeviceLink)
-zox_memory_component(DeviceButtonLinks, ecs_entity_t)
-zox_entities_component(DeviceLinks) // , ecs_entity_t)
+zox_memory_component(DeviceButtonLinks, entity)
+zox_entities_component(DeviceLinks) // , entity)
 #include "keyboard.c"
 
-void define_components_inputs(ecs_world_t *world) {
+void define_components_inputs(ecs *world) {
     zox_define_tag(Device)
     zox_define_tag(Zevice)
     zox_define_tag(Gamepad)

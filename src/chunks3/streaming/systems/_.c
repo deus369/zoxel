@@ -9,7 +9,7 @@ zox_increment_system_with_reset(StreamDirty, zox_general_state_end)
 #include "chunk_spawn_system.c"
 #include "chunk_die_system.c"
 
-void define_systems_streaming(ecs_world_t *world) {
+void define_systems_streaming(ecs *world) {
     zox_define_increment_system(StreamDirty)
     zox_system(StreamPointSystem, EcsOnUpdate,
         [in] transforms3.Position3D,

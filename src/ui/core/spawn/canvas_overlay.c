@@ -1,15 +1,15 @@
 
 
 // todo: stretch to parent size!
-ecs_entity_t spawn_canvas_overlay(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
+entity spawn_canvas_overlay(ecs *world,
+    const entity prefab,
+    const entity canvas,
     const int2 canvas_size)
 {
     #ifdef zox_disable_canvas_overlay
     return 0;
     #endif
-    const ecs_entity_t parent = canvas;
+    const entity parent = canvas;
     const byte layer = game_overlay_layer;
     const int2 pixel_position = int2_zero;
     const float2 anchor = float2_half;

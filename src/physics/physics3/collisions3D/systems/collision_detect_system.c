@@ -27,7 +27,7 @@
  */
 
 // Function for 3-dimensional collision detection
-void collide_with_chunk_d3(ecs_world_t *world,
+void collide_with_chunk_d3(ecs *world,
     const ChunkLinks *chunk_links,
     const byte max_depth,
     const byte *block_collisions,
@@ -82,7 +82,7 @@ void collide_with_chunk_d3(ecs_world_t *world,
     int3_set_d(&voxel_position, axis_d3, position_vox_d3);
     // Convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_dimensions);
-    const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    const entity chunk = int3_hashmap_get(chunk_links->value, chunk_position);
     if (!zox_valid(chunk))  {
         return;
     }
@@ -117,7 +117,7 @@ void collide_with_chunk_d3(ecs_world_t *world,
 }
 
 // expand previous function by second dimension
-void collide_with_chunk_d2(ecs_world_t *world,
+void collide_with_chunk_d2(ecs *world,
     const ChunkLinks *chunk_links,
     const byte max_depth,
     const byte *block_collisions,
@@ -157,7 +157,7 @@ void collide_with_chunk_d2(ecs_world_t *world,
     int3_set_d(&voxel_position, axis_d1, position_vox_d1);
     int3_set_d(&voxel_position, axis_d2, position_vox_d2);
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_dimensions);
-    const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    const entity chunk = int3_hashmap_get(chunk_links->value, chunk_position);
     if (!zox_valid(chunk)) {
         return;
     }
@@ -186,7 +186,7 @@ void collide_with_chunk_d2(ecs_world_t *world,
     }
 }
 
-void collide_with_chunk(ecs_world_t *world,
+void collide_with_chunk(ecs *world,
     const ChunkLinks *chunk_links,
     const byte max_depth,
     const byte *block_collisions,
@@ -217,7 +217,7 @@ void collide_with_chunk(ecs_world_t *world,
     int3_set_d(&voxel_position, axis_d, position_vox_d);
     // next convert real to voxel grid space and check voxel
     const int3 chunk_position = voxel_position_to_chunk_position(voxel_position, chunk_dimensions);
-    const ecs_entity_t chunk = int3_hashmap_get(chunk_links->value, chunk_position);
+    const entity chunk = int3_hashmap_get(chunk_links->value, chunk_position);
     if (!zox_valid(chunk)) {
         return;
     }
@@ -284,7 +284,7 @@ collide_with_chunk_d3(world, chunkLinks, max_depth, block_collisions, real_posit
     handle_collision_axis_d3(x, y, z, offset_right.x, offset_right.y, offset_right.z, 0, 0, 0)
 
 
-void CollisionDetectSystem(ecs_iter_t *it) {
+void CollisionDetectSystem(iter *it) {
     const byte max_depth = terrain_depth;   // todo: use chunk max depths here
     zox_sys_world()
     zox_sys_begin()

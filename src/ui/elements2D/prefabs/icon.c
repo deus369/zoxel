@@ -1,6 +1,6 @@
 // a small square frame ui with an icon in it
 // used for game - action/skill/stat - uis
-ecs_entity_t spawn_prefab_icon(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_icon(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("icon")
     zox_add_tag(e, Selectable)

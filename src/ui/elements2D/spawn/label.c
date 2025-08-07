@@ -1,7 +1,7 @@
-ecs_entity_t spawn_label_background(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t parent,
-    const ecs_entity_t canvas,
+entity spawn_label_background(ecs *world,
+    const entity prefab,
+    const entity parent,
+    const entity canvas,
     int2 pixel_position,
     const float2 anchor,
     const byte2 padding,
@@ -45,7 +45,7 @@ ecs_entity_t spawn_label_background(ecs_world_t *world,
             .font_outline_color = label_font_outline_color
         }
     };
-    const ecs_entity_t e = spawn_zext(world, &zextSpawnData);
+    const entity e = spawn_zext(world, &zextSpawnData);
     zox_name("label_background")
     return e;
 }

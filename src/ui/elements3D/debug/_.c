@@ -1,4 +1,4 @@
-void keydown_test_popup3(ecs_world_t *world, int32_t keycode) {
+void keydown_test_popup3(ecs *world, int32_t keycode) {
     if (keycode == SDLK_q) {
         zox_log("> spawning a popup3")
         spawn_popup3_easy(world,

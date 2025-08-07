@@ -2,7 +2,7 @@
 extern ecs_entity_t local_realm;
 
 void add_all_prefabs(ecs_world_t *world,
-    ecs_entity_t_array_d* entities,
+    entity_array_d* entities,
     text_group_dynamic_array_d* labels,
     const ecs_entity_t canvas)
 {
@@ -92,7 +92,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
         const int button_inner_margins = (int) (font_size * 0.5f);
         // our label data
-        ecs_entity_t_array_d* entities = create_ecs_entity_t_array_d(32);
+        entity_array_d* entities = create_entity_array_d(32);
         text_group_dynamic_array_d* labels = create_text_group_dynamic_array_d(32);
         add_all_prefabs(world, entities, labels, canvas);
         // resize window
@@ -150,7 +150,7 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
             free(labels->data[j].text);
         }
         dispose_text_group_dynamic_array_d(labels);
-        dispose_ecs_entity_t_array_d(entities);
+        dispose_entity_array_d(entities);
         hierarchyUIDirty->value = 0;
     }
 } zox_declare_system(HierarchyRefreshSystem)

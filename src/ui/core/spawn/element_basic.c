@@ -1,8 +1,8 @@
-ecs_entity_t spawn_element_basic(
-    ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t canvas,
-    const ecs_entity_t parent,
+entity spawn_element_basic(
+    ecs *world,
+    const entity prefab,
+    const entity canvas,
+    const entity parent,
     int2 position,
     const int2 pixel_size,
     const int2 texture_size,
@@ -21,9 +21,9 @@ ecs_entity_t spawn_element_basic(
     return e;
 }
 
-ecs_entity_t spawn_element_basic_on_canvas(
-    ecs_world_t *world,
-    const ecs_entity_t canvas,
+entity spawn_element_basic_on_canvas(
+    ecs *world,
+    const entity canvas,
     const int2 position,
     const int2 pixel_size,
     const int2 texture_size,
@@ -33,10 +33,10 @@ ecs_entity_t spawn_element_basic_on_canvas(
     return spawn_element_basic(world, prefab_element_shell, canvas, canvas, position, pixel_size, texture_size, anchor, 0, int2_half(canvas_size), canvas_size);
 }
 
-ecs_entity_t spawn_element_texture(
-    ecs_world_t *world,
-    const ecs_entity_t canvas,
-    const ecs_entity_t source_texture,
+entity spawn_element_texture(
+    ecs *world,
+    const entity canvas,
+    const entity source_texture,
     const int2 position,
     const int2 size
 ) {
@@ -46,7 +46,7 @@ ecs_entity_t spawn_element_texture(
     }
     const int2 source_size = zox_get_value(source_texture, TextureSize)
     const TextureData *source_data = zox_get(source_texture, TextureData)
-    const ecs_entity_t e = spawn_element_basic_on_canvas(world, canvas, position, size, source_size, float2_zero);
+    const entity e = spawn_element_basic_on_canvas(world, canvas, position, size, source_size, float2_zero);
     zox_set(e, TextureData, { source_data->length, source_data->value })
     zox_set(e, TextureDirty, { 1 })
     return e;

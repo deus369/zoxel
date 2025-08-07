@@ -61,7 +61,7 @@ void reset_keyboard(Keyboard *keyboard) {
     reset_keyboard_key(_0)
 }
 
-void KeyboardResetSystem(ecs_iter_t *it) {
+void KeyboardResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_out(Keyboard)
     for (int i = 0; i < it->count; i++) {

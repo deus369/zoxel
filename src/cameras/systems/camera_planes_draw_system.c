@@ -1,6 +1,6 @@
-extern void draw_planes(ecs_world_t *world, const plane *planes, const int plane_count)
+extern void draw_planes(ecs *world, const plane *planes, const int plane_count)
 
-void CameraPlanesDrawSystem(ecs_iter_t *it) {
+void CameraPlanesDrawSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(CameraPlanes)

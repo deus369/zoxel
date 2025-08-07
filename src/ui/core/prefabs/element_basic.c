@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_element_shell(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_element_shell(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("element_basic")
     // texture
@@ -29,7 +29,7 @@ ecs_entity_t spawn_prefab_element_shell(ecs_world_t *world, const ecs_entity_t p
     return e;
 }
 
-ecs_entity_t spawn_prefab_element_ready(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_element_ready(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("element_ready")
     zox_prefab_set(e, TextureDirty, { 0 })

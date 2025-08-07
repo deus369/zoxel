@@ -1,6 +1,6 @@
-extern void draw_frustum(ecs_world_t *world, float3 *frustum, const color_rgb debug_color);
+extern void draw_frustum(ecs *world, float3 *frustum, const color_rgb debug_color);
 
-void CameraFrustumSystem(ecs_iter_t *it) {
+void CameraFrustumSystem(iter *it) {
     if (zox_cameras_disable_streaming) {
         return;
     }

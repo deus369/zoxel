@@ -35,8 +35,8 @@ const float camera_limit_x = 1.25f;
 byte camera_mode = 0; // zox_camera_mode_first_person;
 byte camera_fov = 0; // camera_fov_first_person;
 byte camera_follow_mode = 0; // zox_camera_follow_mode_attach;
-ecs_entity_t main_cameras[max_cameras];
-ecs_entity_t ui_cameras[max_cameras];
+entity main_cameras[max_cameras];
+entity ui_cameras[max_cameras];
 #ifdef zox_disable_streaming
     byte zox_cameras_disable_streaming = 1;
 #else

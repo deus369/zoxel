@@ -1,4 +1,4 @@
-ecs_entity_t spawn_element(ecs_world_t *world, ElementSpawn *data) {
+entity spawn_element(ecs *world, ElementSpawn *data) {
     int2 position = data->element.position;
     data->element.position_in_canvas = get_element_pixel_position_global(data->parent.position, data->parent.size, position, data->element.anchor);
     const float2 real_position = get_element_position(data->element.position_in_canvas, data->canvas.size);
@@ -11,8 +11,8 @@ ecs_entity_t spawn_element(ecs_world_t *world, ElementSpawn *data) {
     return e;
 }
 
-ecs_entity_t spawn_element_on_canvas(ecs_world_t *world,
-    const ecs_entity_t canvas,
+entity spawn_element_on_canvas(ecs *world,
+    const entity canvas,
     const int2 pixel_position,
     const int2 pixel_size,
     const float2 anchor

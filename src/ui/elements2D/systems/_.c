@@ -4,7 +4,7 @@
 #include "tooltip_system.c"
 #include "slide_event_system.c"
 
-void define_systems_elements2D(ecs_world_t *world) {
+void define_systems_elements2D(ecs *world) {
     zox_system(ElementDragSystem, EcsPostLoad,
         [in] elements.core.DraggableState,
         [in] elements.core.DraggingDelta,

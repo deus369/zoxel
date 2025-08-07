@@ -3,7 +3,7 @@
 #include "vodes_spawn.c"
 #include "vodes_lods.c"
 
-void define_systems_vodes3(ecs_world_t* world) {
+void define_systems_vodes3(ecs* world) {
 // NOTE: Writes to VoxelNode
     zox_system(VodesDespawnSystem, zoxp_write_voxels,
             [in] chunks3.VoxelNodeDirty,

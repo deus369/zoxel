@@ -1,6 +1,6 @@
 void prefab_set_mesh_indicies(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const int* indicies,
     int length
 ) {
@@ -18,8 +18,8 @@ void prefab_set_mesh_indicies(
 }
 
 void prefab_set_mesh2D_vertices(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const float2 *vertices,
     int length
 ) {
@@ -33,8 +33,8 @@ void prefab_set_mesh2D_vertices(
 }
 
 void prefab_set_mesh3D_vertices(
-    ecs_world_t *world,
-    const ecs_entity_t e,
+    ecs *world,
+    const entity e,
     const float2* vertices,
     const int length,
     const float2 scale
@@ -59,8 +59,8 @@ void prefab_set_mesh3D_vertices(
 }
 
 void prefab_set_mesh_colors_rgb(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     color_rgb color,
     int length
 ) {
@@ -74,8 +74,8 @@ void prefab_set_mesh_colors_rgb(
 }
 
 void prefab_set_mesh_vertices_float(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const float* vertices,
     int length
 ) {
@@ -89,8 +89,8 @@ void prefab_set_mesh_vertices_float(
 }
 
 void prefab_set_mesh_vertices_float3(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const float3* vertices,
     int length
 ) {
@@ -119,8 +119,8 @@ void set_mesh_vertices_scale2D(
 }
 
 void prefab_set_mesh_uvs_float(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const float* uvs,
     int length
 ) {
@@ -134,8 +134,8 @@ void prefab_set_mesh_uvs_float(
 }
 
 void prefab_set_mesh_uvs_float2(
-    ecs_world_t *world,
-    ecs_entity_t e,
+    ecs *world,
+    entity e,
     const float2* uvs,
     int length
 ) {

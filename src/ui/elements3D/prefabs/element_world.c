@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
+entity spawn_prefab_element3D(ecs *world) {
     zox_prefab()
     zox_prefab_name("element3D")
     zox_add_tag(e, Element3D)
@@ -15,9 +15,9 @@ ecs_entity_t spawn_prefab_element3D(ecs_world_t *world) {
     return e;
 }
 
-// , ecs_entity_t camera, float3 offset
-ecs_entity_t spawn_element3D(ecs_world_t *world, const ecs_entity_t prefab, const ecs_entity_t ui_holder, const ecs_entity_t canvas) {
-    // const ecs_entity_t camera = main_cameras[0]; // zox_get_value(ui_holder, CameraLink)
+// , entity camera, float3 offset
+entity spawn_element3D(ecs *world, const entity prefab, const entity ui_holder, const entity canvas) {
+    // const entity camera = main_cameras[0]; // zox_get_value(ui_holder, CameraLink)
     const int2 pixel_size = (int2) { 32, 8 };
     zox_instance(prefab)
     zox_name("element3D")

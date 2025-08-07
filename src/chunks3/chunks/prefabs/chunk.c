@@ -1,6 +1,6 @@
-ecs_entity_t spawn_prefab_chunk(
-    ecs_world_t *world,
-    ecs_entity_t prefab
+entity spawn_prefab_chunk(
+    ecs *world,
+    entity prefab
 ) {
     zox_prefab_child(prefab);
     zox_prefab_name("chunk");

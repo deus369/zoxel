@@ -10,7 +10,7 @@
 #include "zevice_finger_reset_button.c"
 #include "device_mode_system.c"
 
-void define_systems_input(ecs_world_t* world) {
+void define_systems_input(ecs* world) {
     // resets
     zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset,
             [out] ZevicePointer,

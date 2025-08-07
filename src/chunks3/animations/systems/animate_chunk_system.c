@@ -1,4 +1,4 @@
-void AnimateChunkSystem(ecs_iter_t *it) {
+void AnimateChunkSystem(iter *it) {
     return;
     double current_time = zox_current_time;
     AnimateChunk *animateChunks = ecs_field(it, AnimateChunk, 1);

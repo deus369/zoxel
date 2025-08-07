@@ -1,4 +1,4 @@
-void ElementRenderSystem(ecs_iter_t *it) {
+void ElementRenderSystem(iter *it) {
     zox_sys_world()
     if (!zox_valid(material_textured2D)) {
         return;

@@ -4,7 +4,7 @@ void catch_basic3D_errors(char* function_name) {
 #endif
 }
 
-void spawn_shaders_basics3D(ecs_world_t *world) {
+void spawn_shaders_basics3D(ecs *world) {
     spawn_material_basic3D(world);
     spawn_material_colored3D(world);
     spawn_material_textured3D(world);

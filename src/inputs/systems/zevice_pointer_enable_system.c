@@ -1,4 +1,4 @@
-void ZevicePointerEnableSystem(ecs_iter_t *it) {
+void ZevicePointerEnableSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ZevicePointer)
     zox_sys_out(ZeviceDisabled)

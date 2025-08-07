@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_font_style(ecs_world_t *world, const ecs_entity_t prefab_font) {
+entity spawn_prefab_font_style(ecs *world, const entity prefab_font) {
     zox_prefab()
     zox_prefab_name("font_style")
     zox_add_tag(e, FontStyle)
@@ -7,12 +7,12 @@ ecs_entity_t spawn_prefab_font_style(ecs_world_t *world, const ecs_entity_t pref
     return e;
 }
 
-ecs_entity_t spawn_font_style(ecs_world_t *world, const ecs_entity_t prefab) {
-    const ecs_entity_t prefab_font = zox_get_value(prefab, FontLink)
+entity spawn_font_style(ecs *world, const entity prefab) {
+    const entity prefab_font = zox_get_value(prefab, FontLink)
     zox_instance(prefab)
     zox_name("font_style")
     zox_get_muter(e, Children, children)
-    resize_memory_component(Children, children, ecs_entity_t, font_styles_length)
+    resize_memory_component(Children, children, entity, font_styles_length)
     for (int i = 0; i < font_styles_length; i++) children->value[i] = 0;
     // lower case
     children->value[1] = spawn_font(world, prefab_font, font_lower_a, font_lower_a_length);

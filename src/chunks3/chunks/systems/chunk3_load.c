@@ -3,7 +3,7 @@ bool file_exists(const char *path) {
     return stat(path, &buffer) == 0;
 }
 
-byte load_voxel_node(ecs_world_t* world, FILE* in, VoxelNode* node) {
+byte load_voxel_node(ecs* world, FILE* in, VoxelNode* node) {
     if (fread(&node->value, sizeof(byte), 1, in) != 1) {
         zox_log("[load_voxel_node:1] read error.");
         return 0;
@@ -33,7 +33,7 @@ byte load_voxel_node(ecs_world_t* world, FILE* in, VoxelNode* node) {
 
 // returns 1 if loaded
 byte load_chunk(
-    ecs_world_t *world,
+    ecs *world,
     const int3 position,
     VoxelNode* node
 ) {
@@ -61,7 +61,7 @@ byte load_chunk(
     return success;
 }
 
-void Chunk3LoadSystem(ecs_iter_t *it) {
+void Chunk3LoadSystem(iter *it) {
     zox_sys_world();    // used when closing possible nodes
     zox_sys_begin();
     zox_sys_in(RenderDistanceDirty);

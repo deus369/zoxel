@@ -1,6 +1,6 @@
 // uses resizes the mesh
-void on_resized_element(ecs_world_t *world,
-    const ecs_entity_t e,
+void on_resized_element(ecs *world,
+    const entity e,
     const int2 pixel_size,
     const float2 canvas_size)
 {
@@ -17,7 +17,7 @@ void on_resized_element(ecs_world_t *world,
         }
         if (zox_has(e, Window)) {
             zox_geter(e, Children, children)
-            const ecs_entity_t header = children->value[0];
+            const entity header = children->value[0];
             zox_geter_value(e, PixelSize, int2, header_size)
             const int2 new_header_size = (int2) {
                 pixel_size.x,
@@ -29,7 +29,7 @@ void on_resized_element(ecs_world_t *world,
             zox_geter(header, Children, header_children)
             if (header_children->length > 1) {
                 zox_geter_value(header, Position2D, float2, header_position)
-                const ecs_entity_t close_button = header_children->value[1];
+                const entity close_button = header_children->value[1];
                 const int2 close_button_position = zox_get_value(close_button, PixelPosition)
                 zox_geter_value(close_button, Anchor, float2, close_button_anchor)
                 on_element_parent_updated(world,
@@ -41,14 +41,14 @@ void on_resized_element(ecs_world_t *world,
                     canvas_size);
             }
             // scrollbar
-            const ecs_entity_t scrollbar = children->length > 1 ? children->value[1] : 0;
+            const entity scrollbar = children->length > 1 ? children->value[1] : 0;
             if (scrollbar && zox_has(scrollbar, Scrollbar)) {
                 const int2 scrollbar_size = (int2) { zox_gett_value(scrollbar, PixelSize).x, pixel_size.y };
                 zox_set(scrollbar, PixelSize, { scrollbar_size })
                 zox_set(scrollbar, TextureSize, { scrollbar_size })
                 on_resized_element(world, scrollbar, scrollbar_size, canvas_size);
                 zox_geter(scrollbar, Children, scrollbar_children)
-                const ecs_entity_t scrollbar_front = scrollbar_children->value[0];
+                const entity scrollbar_front = scrollbar_children->value[0];
                 const int bounds_y = (scrollbar_size.y / 2) - scrollbar_size.x / 2;
                 zox_set(scrollbar_front, DraggableLimits, { (int4) { 0, 0, -bounds_y, bounds_y } })
             }

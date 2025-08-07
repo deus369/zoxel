@@ -1,5 +1,5 @@
 // Calculates our camera to world matrix
-void ViewMatrixSystem(ecs_iter_t *it) {
+void ViewMatrixSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(TransformMatrix)
     zox_sys_in(ProjectionMatrix)

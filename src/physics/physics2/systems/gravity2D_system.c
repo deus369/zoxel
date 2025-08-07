@@ -1,5 +1,5 @@
 //! Each entity will impact all other entities.
-void Gravity2DSystem(ecs_iter_t *it) {
+void Gravity2DSystem(iter *it) {
     // NearbyEntities component instead of everything.
     /*double delta_time = (double) it->delta_time;
     Position2D *position2Ds = ecs_field(it, Position2D, 1);

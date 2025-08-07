@@ -1,4 +1,4 @@
-void ZeviceFingerResetSystem(ecs_iter_t *it) {
+void ZeviceFingerResetSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ZevicePointerOld)
     zox_sys_out(ZevicePointerPosition)

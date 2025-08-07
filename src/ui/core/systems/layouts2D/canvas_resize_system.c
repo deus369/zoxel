@@ -1,5 +1,5 @@
 // todo: get dimensions off app using AppLink from Canvas, check it's dimensions
-void CanvasResizeSystem(ecs_iter_t *it) {
+void CanvasResizeSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(CameraLink)
@@ -25,7 +25,7 @@ void CanvasResizeSystem(ecs_iter_t *it) {
         // zox_log("canvas resized [%ix%i]", pixel_size.x, pixel_size.y)
         pixelSize->value = pixel_size;
         for (int j = 0; j < children->length; j++) {
-            const ecs_entity_t child = children->value[j];
+            const entity child = children->value[j];
             if (!zox_valid(child)) {
                 continue;
             }

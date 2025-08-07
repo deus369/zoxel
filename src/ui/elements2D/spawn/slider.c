@@ -1,4 +1,4 @@
-entity2 spawn_slider(ecs_world_t *world,
+entity2 spawn_slider(ecs *world,
     const CanvasSpawnData canvas_data,
     const ParentSpawnData parent_data,
     ElementSpawnData element_data,
@@ -18,7 +18,7 @@ entity2 spawn_slider(ecs_world_t *world,
 
     // spawn handle
     int layout_x = -element_data.size.x / 2 + (int) (element_data.size.x * slider_data.value);
-    ecs_entity_t handle = spawn_handle(world,
+    entity handle = spawn_handle(world,
         canvas_data,
         new_parent_data,
         (ElementSpawnData) {
@@ -58,7 +58,7 @@ entity2 spawn_slider(ecs_world_t *world,
             .font_outline_color = (color) { 255, 0, 0, 88 },
         }
     };
-    const ecs_entity_t text = spawn_zext(world, &zextSpawnData);
+    const entity text = spawn_zext(world, &zextSpawnData);
     add_to_Children(children, text);
 
     // finish up

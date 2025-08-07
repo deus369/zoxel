@@ -1,4 +1,4 @@
-uint get_label_chunk_link(ecs_world_t *world, const ecs_entity_t character, char *buffer, const uint size, uint index) {
+uint get_label_chunk_link(ecs *world, const entity character, char *buffer, const uint size, uint index) {
     index += snprintf(buffer + index, size - index, "char [%s]\n", zox_get_name(character));
 
     // terrain
@@ -18,7 +18,7 @@ uint get_label_chunk_link(ecs_world_t *world, const ecs_entity_t character, char
     index += snprintf(buffer + index, size - index, " - in [%ix%ix%i]\n", chunk_position.x, chunk_position.y, chunk_position.z);
 
     // chunk
-    zox_geter_value(character, ChunkLink, ecs_entity_t, chunk)
+    zox_geter_value(character, ChunkLink, entity, chunk)
     if (!zox_valid(chunk)) {
         index += snprintf(buffer + index, size - index, "linked chunk [none]\n");
     } else {
@@ -27,7 +27,7 @@ uint get_label_chunk_link(ecs_world_t *world, const ecs_entity_t character, char
         index += snprintf(buffer + index, size - index, " - at [%ix%ix%i]\n", chunk_chunk_position.x, chunk_chunk_position.y, chunk_chunk_position.z);
     }
 
-    zox_geter_value(character, CameraLink, ecs_entity_t, camera)
+    zox_geter_value(character, CameraLink, entity, camera)
     if (zox_valid(camera)) {
         index += snprintf(buffer + index, size - index, "cam [%s]\n", zox_get_name(camera));
         zox_geter_value(camera, Position3D, float3, camera_position)

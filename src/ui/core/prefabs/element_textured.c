@@ -1,5 +1,5 @@
-ecs_entity_t spawn_prefab_element_textured(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_element_textured(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     zox_prefab_name("element_textured")

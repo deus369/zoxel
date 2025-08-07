@@ -1,1 +1,1 @@
-ecs_entity_t testChunkEntity;
+entity testChunkEntity;

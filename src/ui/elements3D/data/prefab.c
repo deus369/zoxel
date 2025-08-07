@@ -1,3 +1,3 @@
 typedef struct {
-    ecs_entity_t e;
+    entity e;
 } PrefabData;

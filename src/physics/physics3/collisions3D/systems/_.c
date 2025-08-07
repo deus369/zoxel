@@ -5,7 +5,7 @@
 #include "unstuck_system.c"
 #include "friction3D_system.c"
 
-void define_systems_collisions3D(ecs_world_t *world) {
+void define_systems_collisions3D(ecs *world) {
     zox_filter(sphere_colliders,
         [in] transforms3.Position3D,
         [in] SphereRadius,

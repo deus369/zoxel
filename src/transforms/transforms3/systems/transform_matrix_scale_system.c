@@ -1,4 +1,4 @@
-void TransformMatrixScaleSystem(ecs_iter_t *it) {
+void TransformMatrixScaleSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(Position3D)
     zox_sys_in(Rotation3D)

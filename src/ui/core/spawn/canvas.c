@@ -1,9 +1,9 @@
-ecs_entity_t spawn_canvas(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const ecs_entity_t camera,
+entity spawn_canvas(ecs *world,
+    const entity prefab,
+    const entity camera,
     const int2 size,
     const float4 screen_to_canvas,
-    const ecs_entity_t app)
+    const entity app)
 {
     zox_instance(prefab)
     zox_name("canvas")

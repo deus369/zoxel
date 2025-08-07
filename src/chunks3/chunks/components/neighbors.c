@@ -1,2 +1,2 @@
 #define chunk_neighbors_length 6
-zox_component_array(ChunkNeighbors, ecs_entity_t, chunk_neighbors_length);
+zox_component_array(ChunkNeighbors, entity, chunk_neighbors_length);

@@ -1,5 +1,5 @@
 // restore render buffer for camera
-void RenderBufferRestoreSystem(ecs_iter_t *it) {
+void RenderBufferRestoreSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(ScreenDimensions)
     zox_sys_out(FrameBufferLink)

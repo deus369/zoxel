@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_device_button(ecs_world_t *world) {
+entity spawn_prefab_device_button(ecs *world) {
     zox_prefab()
     zox_prefab_name("zevice_button")
     zox_add_tag(e, Zevice)
@@ -9,7 +9,7 @@ ecs_entity_t spawn_prefab_device_button(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_device_button(ecs_world_t *world, const byte type, const byte index) {
+entity spawn_device_button(ecs *world, const byte type, const byte index) {
     zox_instance(prefab_zevice_button)
     zox_name("zevice_button")
     zox_set(e, DeviceButtonType, { type })

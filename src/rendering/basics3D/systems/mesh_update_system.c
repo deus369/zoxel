@@ -10,7 +10,7 @@ void opengl_upload_mesh(uint2 mesh, uint material, const int *indicies, int indi
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void MeshUpdateSystem(ecs_iter_t *it) {
+void MeshUpdateSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(MeshDirty)
     zox_sys_in(MeshIndicies)

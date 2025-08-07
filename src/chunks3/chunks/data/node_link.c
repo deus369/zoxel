@@ -9,7 +9,7 @@
 } VoxelNodeBasic;
 
 typedef struct {
-    ecs_entity_t value;
+    entity value;
 } VoxelNodeLink;
 
 typedef struct VoxelNode VoxelNode;

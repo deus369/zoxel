@@ -19,20 +19,20 @@ void add_to_gpu_restore_systems(long int id) {
     add_to_int_array_d(gpu_restore_systems, id);
 }
 
-void run_gpu_dispose_systems(ecs_world_t *world) {
+void run_gpu_dispose_systems(ecs *world) {
     for (size_t i = 0; i < gpu_dispose_systems->size; i++) {
         ecs_run(world, gpu_dispose_systems->data[i], 0, NULL);
     }
 }
 
-void run_gpu_restore_systems(ecs_world_t *world) {
+void run_gpu_restore_systems(ecs *world) {
     for (size_t i = 0; i < gpu_restore_systems->size; i++) {
         ecs_run(world, gpu_restore_systems->data[i], 0, NULL);
     }
 }
 
 byte did_dispose_resources = 0;
-void opengl_dispose_resources(ecs_world_t *world) {
+void opengl_dispose_resources(ecs *world) {
     if (render_backend != zox_render_backend_opengl) {
         return;
     }
@@ -46,7 +46,7 @@ void opengl_dispose_resources(ecs_world_t *world) {
     }
 }
 
-void opengl_restore_resources(ecs_world_t *world) {
+void opengl_restore_resources(ecs *world) {
     if (render_backend != zox_render_backend_opengl) {
         return;
     }

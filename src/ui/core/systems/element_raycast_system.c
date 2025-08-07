@@ -1,4 +1,4 @@
-void ElementRaycastSystem(ecs_iter_t *it) {
+void ElementRaycastSystem(iter *it) {
     zox_sys_query()
     zox_sys_world()
     zox_sys_begin()
@@ -18,7 +18,7 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         if (zox_gett_value(deviceLink->value, DeviceDisabled)) {
             continue;
         }
-        const ecs_entity_t player = zox_get_value(deviceLink->value, PlayerLink)
+        const entity player = zox_get_value(deviceLink->value, PlayerLink)
         if (!player) {
             continue;
         }
@@ -26,13 +26,13 @@ void ElementRaycastSystem(ecs_iter_t *it) {
         if (device_mode != zox_device_mode_keyboardmouse && device_mode != zox_device_mode_touchscreen) {
             continue;
         }
-        const ecs_entity_t player_canvas = zox_get_value(player, CanvasLink)
-        const ecs_entity_t player_camera_ui = zox_get_value(player_canvas, CameraLink)
+        const entity player_canvas = zox_get_value(player, CanvasLink)
+        const entity player_camera_ui = zox_get_value(player_canvas, CameraLink)
         const int2 position = raycaster->value;
         int ui_layer = -1;
-        ecs_entity_t ui_selected = 0;
+        entity ui_selected = 0;
         int window_layer = -1;
-        ecs_entity_t window_selected = 0;
+        entity window_selected = 0;
         zox_sys_query_begin()
         while (zox_sys_query_loop()) {
             zox_sys_begin_2()
@@ -52,8 +52,8 @@ void ElementRaycastSystem(ecs_iter_t *it) {
                 if (renderDisabled->value) {
                     continue;
                 }
-                const ecs_entity_t e2 = it2.entities[j];
-                const ecs_entity_t camera = get_root_canvas_camera(world, e2);
+                const entity e2 = it2.entities[j];
+                const entity camera = get_root_canvas_camera(world, e2);
                 if (!camera) {
                     continue;
                 }

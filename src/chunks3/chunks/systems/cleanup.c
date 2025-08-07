@@ -1,7 +1,7 @@
 // todo: make sure we only close blocks that can be grouped together here (we shouldn't group grass etc)
 // doesn't close any block voxes
 void reduce_voxel_nodes(
-    ecs_world_t *world,
+    ecs *world,
     VoxelNode *node
 ) {
     if (!node) {
@@ -38,7 +38,7 @@ void reduce_voxel_nodes(
 
 // Break down our nodes, if they are the same type
 // When VoxelNodeDirty is zox_dirty_active
-void VoxelNodeCleanupSystem(ecs_iter_t *it) {
+void VoxelNodeCleanupSystem(iter *it) {
     zox_sys_world();
     zox_sys_begin();
     zox_sys_in(VoxelNodeDirty)

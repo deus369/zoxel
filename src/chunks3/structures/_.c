@@ -9,7 +9,7 @@
 
 zox_declare_tag(VoxStructure)
 
-void spawn_prefabs_voxels_structures(ecs_world_t *world) {
+void spawn_prefabs_voxels_structures(ecs *world) {
 
 }
 

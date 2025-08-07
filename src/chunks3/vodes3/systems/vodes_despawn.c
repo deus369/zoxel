@@ -1,4 +1,4 @@
-void destroy_vodes(ecs_world_t *world, VoxelNode *node) {
+void destroy_vodes(ecs *world, VoxelNode *node) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
@@ -13,7 +13,7 @@ void destroy_vodes(ecs_world_t *world, VoxelNode *node) {
     }
 }
 
-void VodesDespawnSystem(ecs_iter_t *it) {
+void VodesDespawnSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxelNodeDirty)

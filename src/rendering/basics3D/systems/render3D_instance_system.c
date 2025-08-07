@@ -7,7 +7,7 @@ void render_entity_3D(float3 position, float4 rotation, float scale1D, float bri
     zox_gpu_render(6);*/
 }
 
-void InstanceRender3DSystem(ecs_iter_t *it) {
+void InstanceRender3DSystem(iter *it) {
     /*zox_log("render instances %i\n", it->count);
     zox_field_in(Position3D, position3Ds, 2)
     zox_field_in(Rotation3D, rotation3Ds, 3)

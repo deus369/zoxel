@@ -1,6 +1,6 @@
-extern void add_entity_to_labels(ecs_world_t *world, const ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, const int tree_level);
+extern void add_entity_to_labels(ecs_world_t *world, const ecs_entity_t e, text_group_dynamic_array_d* labels, entity_array_d* entities, const int tree_level);
 
-void add_to_labels_textures(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, ecs_entity_t_array_d* entities, int tree_level) {
+void add_to_labels_textures(ecs_world_t *world, ecs_entity_t e, text_group_dynamic_array_d* labels, entity_array_d* entities, int tree_level) {
     if (!(zox_valid(e) && zox_has(e, TextureLinks))) {
         return;
     }

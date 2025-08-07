@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_label3D(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_label3D(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("label3D")
     zox_add_tag(e, FillTexture)
@@ -11,8 +11,8 @@ ecs_entity_t spawn_prefab_label3D(ecs_world_t *world, const ecs_entity_t prefab)
     return e;
 }
 
-ecs_entity_t spawn_label3D(
-    ecs_world_t *world,
+entity spawn_label3D(
+    ecs *world,
     const SpawnDataElement3D data,
     Text3DData text_data,
     Zigel3DData zigel_data
@@ -34,7 +34,7 @@ ecs_entity_t spawn_label3D(
     text_data.position = (float3) { 0, 0, element3D_depth_difference };
     zigel_data.position = text_data.position;
     text_data.parent = e;
-    const ecs_entity_t text = spawn_text3D(world, text_data, zigel_data);
+    const entity text = spawn_text3D(world, text_data, zigel_data);
     Children *children = &((Children) { 0, NULL });
     add_to_Children(children, text);
     zox_set(e, Children, { children->length, children->value })

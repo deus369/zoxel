@@ -17,7 +17,7 @@ zox_component_entity(FramePrefabLink)
 zox_component_float2(SlideBounds)
 zox_component(SliderLabel, const char*)
 
-void define_components_elements2D(ecs_world_t *world) {
+void define_components_elements2D(ecs *world) {
     zox_define_tag(Label)
     zox_define_tag(Button)
     zox_define_tag(Icon)

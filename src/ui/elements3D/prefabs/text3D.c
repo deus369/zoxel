@@ -1,13 +1,13 @@
 typedef struct {
-    ecs_entity_t prefab;
-    ecs_entity_t parent;
+    entity prefab;
+    entity parent;
     float3 position;
     byte alignment;         // mesh_alignment
     byte2 padding;          // around zigels
     const char* text;
 } Text3DData;
 
-ecs_entity_t spawn_prefab_text3D(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_text3D(ecs *world, const entity prefab) {
     zox_prefab_child(prefab);
     zox_prefab_name("text3D");
     zox_add_tag(e, Zext);
@@ -40,7 +40,7 @@ float3 calculate_zigel3D_position(const float2 zigel3D_size, const int data_inde
     return position;
 }
 
-ecs_entity_t spawn_text3D(ecs_world_t *world,
+entity spawn_text3D(ecs *world,
     const Text3DData data,
     Zigel3DData zigel_data)
 {
@@ -83,7 +83,7 @@ ecs_entity_t spawn_text3D(ecs_world_t *world,
             data_index,
             zigels_count,
             zigel_data.scale);
-        const ecs_entity_t zigel3 = spawn_zigel3(world, zigel_data);
+        const entity zigel3 = spawn_zigel3(world, zigel_data);
         children.value[i] = zigel3;
     }
     zox_set_ptr(e, Children, children);
