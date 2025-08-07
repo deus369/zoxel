@@ -21,10 +21,12 @@ CC      	:= gcc
 
 # 🧱 Release build — for speed and glory
 # 03 breaks my sounds for now
-CFLAGS      	:= -fPIC -O3 -march=native -flto=auto -DNDEBUG # 03
+CFLAGS      	:= -fPIC -O3 -march=native -flto=auto -DNDEBUG -Dzox_debug
 
 # 🐛 Debug build — for truth and stacktraces
-CFLAGS_DEV 	:= -fPIC -O0 -g -Wall -ggdb3 -Dzox_debug # -Wextra
+CFLAGS_DEV 	:= -fPIC -O0 -g -Wall -ggdb3 -Dzox_debug \
+			-Wextra -Wpedantic # -Werror
+
 CFLAGS_DEV2  	:= -Dzox_debug -O0 -fPIC -g3 -Wall -Wextra -Werror \
 			-fno-omit-frame-pointer -fdiagnostics-color=always \
 			-std=c99 -D_POSIX_C_SOURCE=200809L

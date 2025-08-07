@@ -8,7 +8,7 @@ zox_component_int(RubbleCount)
 zox_component_byte(VRegions)
 zox_component_entity(CloneVoxLink)
 
-void define_components_voxes(ecs_world_t *world) {
+void define_components_voxes(ecs *world) {
     zox_define_tag(Vox)
     zox_define_component_byte(VoxType)
     zox_define_component_byte(RubbleHeight)

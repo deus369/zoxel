@@ -17,6 +17,7 @@ void Chunk3RaycastSystem(iter *it) {
         if (!zox_valid(camera) || !zox_valid(terrain) || !zox_has(terrain, RealmLink) || !zox_has(camera, RaycastOrigin)) {
             continue;
         }
+        zox_geter_value(voxLink->value, VoxScale, float, scale);
         entity caster = get_linked_character(world, camera);
         // TODO: Get Depth off terrain
         const byte depth = terrain_depth;
@@ -39,7 +40,7 @@ void Chunk3RaycastSystem(iter *it) {
             0,
             ray_origin,
             ray_normal,
-            get_terrain_voxel_scale(depth),
+            scale, // get_terrain_voxel_scale(depth),
             raycastRange->value,
             data,
             character_raycast);

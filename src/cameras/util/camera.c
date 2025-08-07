@@ -1,4 +1,12 @@
-void calculate_perspective_projection_matrix2(float4x4 *matrix, float left, float right, float bottom, float top, float znear, float zfar) {
+void calculate_perspective_projection_matrix2(
+    float4x4 *matrix,
+    float left,
+    float right,
+    float bottom,
+    float top,
+    float znear,
+    float zfar
+) {
     float temp, temp2, temp3, temp4;
     temp = 2.0 * znear;
     temp2 = right - left;
@@ -22,7 +30,13 @@ void calculate_perspective_projection_matrix2(float4x4 *matrix, float left, floa
     matrix->w.w = 0.0;
 }
 
-void calculate_perspective_projection_matrix(float4x4 *matrix, const float aspect_ratio, const float camera_near_distance, const float camera_far_distance, const float fov) {
+void calculate_perspective_projection_matrix(
+    float4x4 *matrix,
+    const float aspect_ratio,
+    const float camera_near_distance,
+    const float camera_far_distance,
+    const float fov
+) {
     const float znear = camera_near_distance;
     const float zfar = camera_far_distance;
     const float ymax = znear * tanf(fov * M_PI / 360.0);
@@ -30,7 +44,15 @@ void calculate_perspective_projection_matrix(float4x4 *matrix, const float aspec
     calculate_perspective_projection_matrix2(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
 }
 
-void calculate_orthographic_projection_matrix(float4x4 *matrix, float left, float right, float bottom, float top, float znear, float zfar) {
+void calculate_orthographic_projection_matrix(
+    float4x4 *matrix,
+    float left,
+    float right,
+    float bottom,
+    float top,
+    float znear,
+    float zfar
+) {
     matrix->x.x = 2.0 / (right - left);
     matrix->x.y = 0.0;
     matrix->x.z = 0.0;

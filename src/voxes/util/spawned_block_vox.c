@@ -1,5 +1,5 @@
 void spawned_block_vox(
-    ecs_world_t *world,
+    ecs *world,
     spawned_block_data *data
 ) {
     if (!zox_has(data->block, BlockPrefabLink)) {
@@ -10,8 +10,8 @@ void spawned_block_vox(
         return;
     }
     // gett block data
-    zox_geter_value(data->block, BlockPrefabLink, ecs_entity_t, prefab)
-    zox_geter_value_safe(data->block, ModelLink, ecs_entity_t, vox)
+    zox_geter_value(data->block, BlockPrefabLink, entity, prefab)
+    zox_geter_value_safe(data->block, ModelLink, entity, vox)
     SpawnBlockVox spawn_data = {
         .prefab = prefab,
         .vox = vox,
@@ -27,7 +27,7 @@ void spawned_block_vox(
     /*if (zox_has(data->block, BlockVoxOffset) && zox_gett_value(data->block, BlockVoxOffset)) {
         float3_add_float3_p(&spawn_data.position_real, (float3) { 0, data->scale * -0.25f, 0 });
     }*/
-    ecs_entity_t e2;
+    entity e2;
     if (zox_has(prefab, BlockVox)) {
         e2 = spawn_block_vox(world, &spawn_data);
     } else if (zox_has(prefab, RendererInstance)) {

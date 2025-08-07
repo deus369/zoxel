@@ -1,4 +1,4 @@
-extern entity spawn_chunk_terrain(ecs *world, const entity prefab, const entity terrain, const int3 camera_position, const int3 chunk_position, const float real_chunk_scale);
+extern entity spawn_chunk_terrain(ecs*, const entity, const entity, const int3, const int3, const byte, const float);
 
 void ChunkSpawnSystem(iter *it) {
     zox_sys_query()
@@ -47,6 +47,7 @@ void ChunkSpawnSystem(iter *it) {
         }
         // const int3 stream_point2 = find_closest_point(stream_points, stream_points_length, chunkPosition->value);
         // const byte camera_distance = get_camera_chunk_distance_xz(stream_point2, chunkPosition->value);
+        zox_geter_value(voxLink->value, VoxScale, float, terrain_scale);
         const byte stream_zone = renderDistance->value < terrain_lod_far;
         if (stream_zone) {
             for (byte j = 0; j < 6; j++) {
@@ -73,7 +74,8 @@ void ChunkSpawnSystem(iter *it) {
                             voxLink->value,
                             stream_point,
                             neighbor_position,
-                            real_chunk_scale);
+                            terrain_depth,
+                            terrain_scale);
                         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
                         // zox_get_muter(voxLink->value, ChunkLinks, chunkLinks)
                         int3_hashmap_add(chunkLinks->value, neighbor_position, neighbor);

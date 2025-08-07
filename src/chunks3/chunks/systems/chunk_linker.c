@@ -68,8 +68,8 @@ byte set_entity_chunk(ecs *world,
 }
 
 void ChunkLinkSystem(iter *it) {
-    const byte depth = terrain_depth;
-    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
+    // const byte depth = terrain_depth;
+    // const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxLink)
@@ -79,14 +79,19 @@ void ChunkLinkSystem(iter *it) {
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(VoxLink, voxLink)
-        zox_sys_i(Position3D, position3D)
+        zox_sys_i(Position3D, position)
         zox_sys_o(ChunkPosition, chunkPosition)
         zox_sys_o(ChunkLink, chunkLink)
         if (!zox_valid(voxLink->value)) {
             continue; // these shouldn't be here
         }
-        const float3 real_position = position3D->value;
-        const int3 new_chunk_position = real_position_to_chunk_position(real_position, chunk_dimensions, depth);
+        zox_geter_value(voxLink->value, VoxScale, float, terrain_scale);
+        zox_geter_value(voxLink->value, NodeDepth, byte, node_depth);
+        // const float3 real_position = position3D->value;
+        const int3 new_chunk_position = real_position_to_chunk_position(
+            position->value,
+            powers_of_two[node_depth],
+            terrain_scale);
         byte is_set = !chunkLink->value || (!int3_equals(new_chunk_position, chunkPosition->value));
         if (is_set) {
             zox_geter(voxLink->value, ChunkLinks, chunkLinks)

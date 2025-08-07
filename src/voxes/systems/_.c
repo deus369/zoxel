@@ -6,7 +6,7 @@
 #include "bake_vox.c"
 zox_increment_system_with_reset(GenerateVox, zox_dirty_end);
 
-void define_systems_voxes(ecs_world_t *world) {
+void define_systems_voxes(ecs *world) {
     zox_define_increment_system(GenerateVox);
     // remember: timing specific, fucks up if changes position
     zox_system(Bounds3GrowSystem, EcsOnUpdate,
@@ -37,6 +37,7 @@ void define_systems_voxes(ecs_world_t *world) {
             [out] CloneVox,
             [out] chunks3.VoxelNode,
             [out] chunks3.NodeDepth,
+            [out] blocks.VoxScale,
             [out] chunks3.ChunkSize,
             [out] colorz.ColorRGBs,
             [out] chunks3.VoxelNodeDirty,

@@ -1,6 +1,6 @@
 // TransformMatrix, RenderDisabled, InstanceLink
-ecs_entity_t spawn_prefab_vox_instanced(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_vox_instanced(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     zox_prefab_name("vox_instanced")
@@ -15,8 +15,8 @@ ecs_entity_t spawn_prefab_vox_instanced(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_vox_instanced(ecs_world_t *world,
-    const ecs_entity_t prefab,
+entity spawn_vox_instanced(ecs *world,
+    const entity prefab,
     const float3 position,
     const byte render_disabled,
     const byte render_lod,

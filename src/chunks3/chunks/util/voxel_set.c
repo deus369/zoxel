@@ -37,7 +37,11 @@ void random_fill_octree(VoxelNode* node, byte voxel, byte depth) {
     }
 }
 
-void fill_octree(VoxelNode* node, const byte voxel, byte depth) {
+void fill_octree(
+    VoxelNode* node,
+    const byte voxel,
+    byte depth
+) {
     node->value = voxel;
     if (depth > 0) {
         depth--;
@@ -50,7 +54,10 @@ void fill_octree(VoxelNode* node, const byte voxel, byte depth) {
 }
 
 // recursive set_voxel
-VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
+VoxelNode* set_voxel(
+    const SetVoxelTargetData datam,
+    SetVoxelData data
+) {
     byte depth_reached = data.depth == datam.depth;
     if (datam.effect_nodes && !depth_reached && is_closed_VoxelNode(data.node)) {
         open_VoxelNode(data.node);
@@ -67,6 +74,9 @@ VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
         return data.node;
     }
     const byte dividor = powers_of_two_byte[datam.depth - data.depth - 1]; // difference LoD
+    if (dividor == 0) {
+        return data.node;
+    }
     byte3 node_position = (byte3) {
         data.position.x / dividor,
         data.position.y / dividor,
@@ -79,7 +89,12 @@ VoxelNode* set_voxel(const SetVoxelTargetData datam, SetVoxelData data) {
     return set_voxel(datam, data);
 }
 
-void set_octree_voxel(VoxelNode *node, byte3 *position, const byte2 *set_octree_data, byte depth) {
+void set_octree_voxel(
+    VoxelNode *node,
+    byte3 *position,
+    const byte2 *set_octree_data,
+    byte depth
+) {
     const SetVoxelTargetData datam = { .depth = set_octree_data->y, .voxel = set_octree_data->x };
     SetVoxelData data = { .node = node, .position = *position, .depth = depth };
     set_voxel(datam, data);

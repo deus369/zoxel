@@ -13,12 +13,12 @@ byte disable_grass_placements = 0;
 // t for terrain
 VoxelNode* set_voxelt(
     VoxelNode* node,
-    byte target_depth,
+    byte target,
     byte3 position,
     byte value,
     byte depth
 ) {
-    byte depth_reached = depth == target_depth;
+    byte depth_reached = depth == target;
     if (!depth_reached && is_closed_VoxelNode(node)) {
         open_VoxelNode(node);
         VoxelNode* kids = get_children_VoxelNode(node);
@@ -34,8 +34,10 @@ VoxelNode* set_voxelt(
         return node;
     }
     VoxelNode* kids = get_children_VoxelNode(node);
-
-    const byte dividor = powers_of_two_byte[target_depth - depth - 1];
+    const byte dividor = powers_of_two_byte[target - depth - 1];
+    if (dividor == 0) {
+        return node; // no need to dive then, we just set voxel anyway
+    }
     //const byte3 node_position = position;
     //byte3_modulus_byte(&node_position, dividor);
     byte3 node_position = (byte3) {
@@ -51,7 +53,7 @@ VoxelNode* set_voxelt(
 
     return set_voxelt(
         node,
-        target_depth,
+        target,
         position,
         value,
         depth);

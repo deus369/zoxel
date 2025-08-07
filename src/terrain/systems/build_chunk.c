@@ -13,7 +13,7 @@ define_fun_stopwatch(time_chunk3_build, 0);
 // static data
 typedef struct {
     // vox data
-    const float scale; // overall scale
+    // const float scale; // overall scale
     byte edge_voxel;
     // voxels
     const TilemapUVs *tilemap_uvs;
@@ -62,7 +62,7 @@ void zox_build_voxel_face(
     const float2* voxel_face_uvs,
     const byte direction,
     const float3 offset,
-    const float vert_scale
+    const float scale
 ) {
     // indicies
     expand_capacity_int_array_d(mesh_data->indicies, voxel_face_indicies_length);
@@ -75,7 +75,7 @@ void zox_build_voxel_face(
     for (byte i = 0; i < 4; i++) {
         float3 vertex_position = voxel_face_vertices[i];
         float3_add_float3_p(&vertex_position, offset);
-        float3_scale_p(&vertex_position, vert_scale);
+        float3_scale_p(&vertex_position, scale);
         mesh_data->vertices->data[mesh_data->vertices->size + i] = vertex_position;
     }
     mesh_data->vertices->size += voxel_face_vertices_length;
@@ -134,7 +134,7 @@ void build_voxel_mesh_final(
     }*/
     byte is_regular_build = 1;
     // Splits Node Quad up!
-    byte is_maxxed = data.render_depth == dig.depth;
+    /*byte is_maxxed = data.render_depth == dig.depth;
     if (!zox_disable_node_face_subdivision && !is_maxxed) {
         // so far just increasing face draw resolution for up faces
         int depth_difference = data.render_depth - dig.depth;
@@ -172,7 +172,15 @@ void build_voxel_mesh_final(
                         ) {
                             continue;
                         }
-                        zox_build_voxel_face(data.mesh_data, dig.voxel, face.indicies, face.vertices, face.uvs, dig.direction, float3_from_int3(global_octree_position), data.scale);
+                        zox_build_voxel_face(
+                            data.mesh_data,
+                            dig.voxel,
+                            face.indicies,
+                            face.vertices,
+                            face.uvs,
+                            dig.direction,
+                            float3_from_int3(global_octree_position),
+                            data.scale);
                     }
                 }
             } else if (dig.direction == direction_left || dig.direction == direction_right) { // x
@@ -231,7 +239,7 @@ void build_voxel_mesh_final(
                 }
             }
         }
-    }
+    }*/
 
     if (is_regular_build) {
         // data.render_depth | dig.depth | adepth
@@ -281,7 +289,7 @@ void build_voxel_mesh_final(
                 face.uvs,
                 dig.direction,
                 dig.offset,
-                dig.scale * data.scale);
+                dig.scale);
         }
     }
 }
@@ -295,7 +303,7 @@ void zox_terrain_building_dig(
         if (dig.node->value && data.voxel_solidity[dig.node->value - 1]) {
             dig.voxel = dig.node->value;
             dig.offset = float3_from_int3(dig.position);
-            dig.scale =  real_chunk_scale * octree_scales3[dig.depth];
+            // dig.scale = octree_scales3[dig.depth];
             dig.local_position = octree_positions_b[dig.index];
             const int voxel_uvs_index = (dig.voxel - 1) * 6;
             for (byte i = 0; i < 6; i++) {
@@ -306,32 +314,40 @@ void zox_terrain_building_dig(
                 dig.direction = i;
                 int uv_index = data.voxel_uv_indexes[voxel_uvs_index + i];
                 octree_face_data face = {
-                    .indicies = get_voxel_indices(is_positive),
+                    //.indicies = get_voxel_indices(is_positive),
+                    //.vertices = voxel_face_vertices_n[i],
+                    .indicies = voxel_face_indicies_n + i * voxel_face_indicies_length,
                     .vertices = voxel_face_vertices_n[i],
                     .uvs = &data.tilemap_uvs->value[uv_index],
                 };
+
                 build_voxel_mesh_final(data, dig, face);
             }
         }
     } else {
         // keep digging
+        byte child_depth = dig.depth + 1;
+        float child_scale = dig.scale * 0.5f;
+        // zox_log_error("At [%i] Halved scale: %f", child_depth, child_scale);
         int3 position = dig.position;
         int3_multiply_int_p(&position, 2);
         // only dig for solid child nodes
         VoxelNode* kids = get_children_VoxelNode(dig.node);
         for (byte i = 0; i < 8; i++) {
-            if (kids[i].value) {
-                octree_dig_data child = {
-                    .parent = dig.node,
-                    .depth = dig.depth + 1,
-                    .scale = dig.scale * 0.5f,
-                    // unique
-                    .node = &kids[i],
-                    .index = i,
-                    .position = int3_add(position, octree_positions[i])
-                };
-                zox_terrain_building_dig(data, child);
+            if (!kids[i].value) {
+                continue;
             }
+            int3 child_position = int3_add(position, octree_positions[i]);
+            octree_dig_data child = {
+                .parent = dig.node,
+                .depth = child_depth,
+                .scale = child_scale,
+                // unique
+                .node = &kids[i],
+                .index = i,
+                .position = child_position
+            };
+            zox_terrain_building_dig(data, child);
         }
     }
 }
@@ -347,7 +363,6 @@ void build_chunk_terrain_mesh(
     const byte render_depth,
     const VoxelNode **neighbors,
     const byte* ndepths,
-    const float vert_scale,
     const byte *voxel_solidity,
     const int *voxel_uv_indexes,
     const float scale
@@ -365,7 +380,6 @@ void build_chunk_terrain_mesh(
         .voxel_solidity = voxel_solidity,
         .voxel_uv_indexes = voxel_uv_indexes,
         .mesh_data = &mesh_data,
-        .scale = vert_scale,
         // neighbor data
         .neighbors = neighbors,
         .ndepths = ndepths,
@@ -530,6 +544,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
 
 
     for (int i = 0; i < it->count; i++) {
+        zox_sys_i(VoxLink, voxLink)
         zox_sys_i(ChunkMeshDirty, chunkMeshDirty)
         zox_sys_i(ChunkNeighbors, chunkNeighbors)
         zox_sys_i(NodeDepth, nodeDepth)
@@ -548,41 +563,56 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
             zox_log_error("render_depth_uninitialized")
             continue;
         }
-        byte node_depth = nodeDepth->value;
         clear_mesh_uvs(meshIndicies, meshVertices, meshColorRGBs, meshUVs);
-        if (renderLod->value != render_lod_invisible) {
-            const VoxelNode *neighbors[6];
-            byte ndepths[6];
-            fetch_neightbor_chunk_data(
-                world,
-                chunkNeighbors,
-                node_depth,
-                neighbors,
-                ndepths);
-            const byte render_depth = terrain_lod_to_node_depth(renderLod->value, terrain_depth); // node_depth);
-            const float scale = 2 * get_terrain_voxel_scale(node_depth);
-            read_lock_VoxelNode(voxelNode);
-            build_chunk_terrain_mesh(
-                voxelNode,
-                tilemap_uvs,
-                meshIndicies,
-                meshVertices,
-                meshUVs,
-                meshColorRGBs,
-                render_depth,
-                neighbors,
-                ndepths,
-                voxScale->value,
-                build_data.solidity,
-                build_data.uvs,
-                scale
-            );
-            read_unlock_VoxelNode(voxelNode);
+        if (renderLod->value == render_lod_invisible) {
+            meshDirty->value = mesh_state_trigger_slow;
+            continue;
         }
+
+        // zox_geter_value(voxLink->value, VoxScale, float, scale);
+        zox_geter_value(voxLink->value, NodeDepth, byte, terrain_depth);
+        const byte render_depth = terrain_lod_to_node_depth(
+            renderLod->value,
+            terrain_depth);
+        byte node_depth = nodeDepth->value;
+        byte terrain_length = powers_of_two[terrain_depth];
+        // TODO: grab voxScale from terrain instead
+        const float chunk_scale = ((float) terrain_length) * voxScale->value;
+        // zox_log_error("At Len [%i] Start scale: %f", terrain_length, voxScale->value);
+        // const float start_scale =  voxScale->value / ((float) length);
+        // zox_log("building: chunk_scale [%f] voxscale [%f] terrain_length [%i]", chunk_scale, voxScale->value, terrain_length);
+
+        const VoxelNode *neighbors[6];
+        byte ndepths[6];
+        fetch_neightbor_chunk_data(
+            world,
+            chunkNeighbors,
+            node_depth,
+            neighbors,
+            ndepths);
+
+        // const float scale = 2 * get_terrain_voxel_scale(node_depth);
+        read_lock_VoxelNode(voxelNode);
+        build_chunk_terrain_mesh(
+            voxelNode,
+            tilemap_uvs,
+            meshIndicies,
+            meshVertices,
+            meshUVs,
+            meshColorRGBs,
+            render_depth,
+            neighbors,
+            ndepths,
+            build_data.solidity,
+            build_data.uvs,
+            chunk_scale
+        );
+        read_unlock_VoxelNode(voxelNode);
         meshDirty->value = mesh_state_trigger_slow;
         tapwatch(time_chunk3_build, "built mesh");
         updated_count++;
     }
+
     if (updated_count > 0) {
         zox_log_streaming(" - [%i] updated [%i]", ecs_run_count, updated_count)
     }

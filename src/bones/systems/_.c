@@ -3,7 +3,7 @@
 #include "bone_index_upload_system.c"
 #include "bone_paint_system.c"
 
-void define_systems_bones(ecs_world_t *world) {
+void define_systems_bones(ecs *world) {
     // generating bone indexes here
     if (!headless) {
         zox_render3D_plus_system(Skeleton3RenderSystem,

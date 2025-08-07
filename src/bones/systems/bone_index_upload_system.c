@@ -1,5 +1,8 @@
 // uploads bon indexes to shader
-void BoneIndexUploadSystem(ecs_iter_t *it) {
+void BoneIndexUploadSystem(iter *it) {
+    if (disable_bone_rendering) {
+        return;
+    }
     zox_sys_begin()
     zox_sys_in(MeshDirty)
     zox_sys_in(BoneIndexes)
@@ -24,8 +27,5 @@ void BoneIndexUploadSystem(ecs_iter_t *it) {
         glBindBuffer(GL_ARRAY_BUFFER, boneIndexGPULink->value);
         glBufferData(GL_ARRAY_BUFFER, boneIndexes->length * sizeof(byte), boneIndexes->value, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef zoxel_catch_opengl_errors
-        check_opengl_error("BoneIndexUploadSystem");
-#endif
     }
 } zox_declare_system(BoneIndexUploadSystem)

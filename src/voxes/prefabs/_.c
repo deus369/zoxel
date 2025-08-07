@@ -7,16 +7,16 @@
 #include "block_vox.c"
 #include "block_vox_instanced.c"
 
-ecs_entity_t prefab_vox_texture;
-ecs_entity_t prefab_block_vox_meta;
-ecs_entity_t prefab_vox;
-ecs_entity_t prefab_vox_instanced;
-ecs_entity_t prefab_vox_generated;
-ecs_entity_t prefab_vox_file;
-ecs_entity_t prefab_block_vox;
-ecs_entity_t prefab_block_vox_instanced;
+entity prefab_vox_texture;
+entity prefab_block_vox_meta;
+entity prefab_vox;
+entity prefab_vox_instanced;
+entity prefab_vox_generated;
+entity prefab_vox_file;
+entity prefab_block_vox;
+entity prefab_block_vox_instanced;
 
-void zox_define_prefabs_voxes(ecs_world_t *world) {
+void zox_define_prefabs_voxes(ecs *world) {
     prefab_vox_texture = spawn_prefab_vox_texture(world, prefab_texture);
     prefab_block_vox_meta = spawn_prefab_block_vox_meta(
         world,

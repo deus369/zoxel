@@ -190,7 +190,7 @@ zox_begin_module(ZoxGame)
     // zox_log_terrain_generation = 1;
 
     // scaling
-    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32 etc
+    // real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32 etc
     terrain_depth = 4;
 
     // render distance

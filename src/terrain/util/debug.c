@@ -17,7 +17,16 @@ void test_spawn_chunk_terrain(ecs_world_t *world, int32_t keycode) {
             int3 chunk_position = int3_zero;
             const ecs_entity_t terrain = zox_get_value(local_realm, TerrainLink)
             if (!terrain) return;
-            test_chunk_terrain = spawn_chunk_terrain(world, prefab_chunk_height, terrain, chunk_position, int3_zero, real_chunk_scale);
+            zox_geter_value(terrain, VoxScale, float, terrain_scale);
+            test_chunk_terrain = spawn_chunk_terrain(
+                world,
+                prefab_chunk_height,
+                terrain,
+                chunk_position,
+                int3_zero,
+                terrain_depth,
+                terrain_scale
+            );
         }
     }
 }

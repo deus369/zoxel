@@ -1,4 +1,4 @@
-ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_block_vox(ecs *world, const entity prefab) {
     zox_prefab_child(prefab)
     zox_prefab_name("block_vox")
     zox_add_tag(e, BlockVox)
@@ -18,24 +18,25 @@ ecs_entity_t spawn_prefab_block_vox(ecs_world_t *world, const ecs_entity_t prefa
     return e;
 }
 
-ecs_entity_t spawn_block_vox(ecs_world_t *world,
-    const SpawnBlockVox *data)
-{
-    zox_instance(data->prefab)
-    zox_name("block_vox")
+entity spawn_block_vox(
+    ecs *world,
+    const SpawnBlockVox *data
+) {
+    zox_instance(data->prefab);
+    zox_name("block_vox");
     // transforms
-    zox_set(e, Position3D, { data->position_real })
+    zox_set(e, Position3D, { data->position_real });
     // zox_set(e, Scale1D, { data->scale })
-    zox_set(e, VoxScale, { vox_model_scale }) // data->scale })
+    zox_set(e, VoxScale, { data->scale * 0.5f });
     // zox_set(e, TransformMatrix, { float4x4_position(data->position_real) })
     // zox_set(e, TransformMatrix, { float4x4_transform_scale(data->position_real, quaternion_identity, data->scale) })
     // rendering
-    zox_set(e, RenderLod, { data->render_lod })
-    zox_set(e, RenderDisabled, { data->render_disabled })
+    zox_set(e, RenderLod, { data->render_lod });
+    zox_set(e, RenderDisabled, { data->render_disabled });
     // voxels
-    zox_set(e, BlockIndex, { data->block_index })
-    zox_set(e, CloneVox, { 1 })
-    zox_set(e, CloneVoxLink, { data->vox })
+    zox_set(e, BlockIndex, { data->block_index });
+    zox_set(e, CloneVox, { 1 });
+    zox_set(e, CloneVoxLink, { data->vox });
     if (!headless) {
         spawn_gpu_mesh(world, e);
         spawn_gpu_colors(world, e);

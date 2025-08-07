@@ -1,5 +1,5 @@
 // HMMmm
-char* player_vox_model = "tall_cube";
+char* player_vox_model = "playerer"; // playerer player grazor slime mrpenguin
 const double respawn_time = 15;
 
 // shit remove this atm, it doubles up for coop
@@ -8,7 +8,6 @@ double run_accceleration = 2.2;
 float backwards_multiplier = 0.8f;
 float2 player_movement_power = { 17, 19 };
 float2 max_velocity3D = { 1.24f, 1.4f };
-
 
 const byte zox_players_reverse_x = 0;
 const byte zox_players_reverse_y = 0;

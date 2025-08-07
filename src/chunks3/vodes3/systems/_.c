@@ -24,12 +24,14 @@ void define_systems_vodes3(ecs* world) {
     zox_system_1(VodesSpawnSystem, zoxp_write_voxels,
             [in] chunks3.VoxelNodeDirty,
             [in] rendering.RenderDistanceDirty,
-            [in] chunks3.ChunkPosition,
+            // [in] chunks3.ChunkPosition,
             [in] chunks3.VoxLink,
             [in] chunks3.NodeDepth,
             [in] rendering.RenderDisabled,
             [in] rendering.RenderLod,
             [in] rendering.RenderDistance,
+            [in] transforms3.Position3D,
+            [in] blocks.VoxScale,
             [out] chunks3.VoxelNode,
             [out] chunks3.BlocksSpawned)
 }

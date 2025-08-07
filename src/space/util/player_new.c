@@ -73,7 +73,7 @@ entity game_start_player_new(
 ) {
     const entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!model) {
-        zox_log_error("[tall_cube] not found on player")
+        zox_log_error("File [%s] Not Found.", player_vox_model);
     }
     const entity camera = zox_get_value(player, CameraLink)
     if (!camera) {
@@ -91,6 +91,7 @@ entity game_start_player_new(
     if (!terrain) {
         return 0;
     }
+    zox_geter_value(terrain, VoxScale, float, terrain_scale);
     // spawn a column of chunks for new player:
     zox_mut_begin(terrain, ChunkLinks, chunkLinks)
     byte did_add = 0;
@@ -103,7 +104,8 @@ entity game_start_player_new(
                     terrain,
                     chunk_position,
                     chunk_position,
-                    real_chunk_scale);
+                    terrain_depth,
+                    terrain_scale);
             if (zox_valid(chunk)) {
                 int3_hashmap_add(
                     chunkLinks->value,

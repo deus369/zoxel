@@ -6,7 +6,12 @@ void destroy_terrain_grid(ecs_world_t *world) {
     }
 }
 
-void spawn_terrain_grid(ecs_world_t *world, const float real_chunk_scale, byte terrain_spawn_distance, byte terrain_vertical) {
+void spawn_terrain_grid(
+    ecs_world_t *world,
+    const float real_chunk_scale,
+    byte terrain_spawn_distance,
+    byte terrain_vertical
+) {
     const color_rgb grid_color = (color_rgb) { 0, 0, 0 };
     const float spacing = real_chunk_scale;
     const float thickness = 2.0f;

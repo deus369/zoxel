@@ -1,9 +1,6 @@
 // if character falls through map, push up
 // todo: draw lines on this to test why it suddenly detects..!
 void UnstuckSystem(iter *it) {
-    const byte depth = terrain_depth;
-    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    const float3 unstuck_push = (float3) { 0,  0.5f, 0 };
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(VoxLink)
@@ -23,8 +20,18 @@ void UnstuckSystem(iter *it) {
         zox_sys_o(LastUnstuck3, lastUnstuck3)
         zox_sys_o(Position3D, position3)
         zox_geter(voxLink->value, ChunkLinks, chunkLinks)
+        zox_geter_value(voxLink->value, VoxScale, float, terrain_scale);
+        zox_geter_value(voxLink->value, NodeDepth, byte, terrain_depth);
+        const float3 unstuck_push = (float3) { 0, terrain_scale, 0 };
+
         float3 point = float3_add(position3->value, (float3) { 0, bounds3->value.y / 2.0f, 0 });
-        const int3 chunk_position = real_position_to_chunk_position(point, chunk_dimensions, depth);
+
+        // const float chunk_scale = terrain_scale * ((float) powers_of_two[terrain_depth]);
+        const int3 chunk_position = real_position_to_chunk_position(
+            point,
+            powers_of_two[terrain_depth],
+            terrain_scale);
+
         const entity chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
         if (!zox_valid(chunk)) {
             continue;
@@ -35,12 +42,15 @@ void UnstuckSystem(iter *it) {
         }
         zox_geter(chunk, VoxelNode, node);
         zox_geter_value(chunk, NodeDepth, byte, node_depth);
-        const byte3 chunk_dimensions_b3 = int3_to_byte3(chunk_dimensions);
+        const byte3 chunk_dimensions_b3 = byte3_single(powers_of_two[node_depth]);
         // positions
-        const int3 voxel_position = real_position_to_voxel_position(point, node_depth);
+        const int3 voxel_position = real_position_to_voxel_position2(point, terrain_scale);
         byte3 voxel_position_local = get_local_position_byte3(voxel_position, chunk_dimensions_b3);
         // voxel
-        const byte voxel = get_sub_node_voxel_locked(node, &voxel_position_local, node_depth);
+        const byte voxel = get_sub_node_voxel_locked(
+            node,
+            &voxel_position_local,
+            node_depth);
         if (!voxel || !colliders[voxel]) {
             lastUnstuck3->value = position3->value;
             continue;

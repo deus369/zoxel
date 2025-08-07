@@ -4,6 +4,7 @@
 #include "sphere_collider_draw_system.c"
 #include "unstuck_system.c"
 #include "friction3D_system.c"
+#include "collision_debug.c"
 
 void define_systems_collisions3D(ecs *world) {
     zox_filter(sphere_colliders,
@@ -11,21 +12,11 @@ void define_systems_collisions3D(ecs *world) {
         [in] SphereRadius,
         [in] physics.CollisionDisabled,
         [none] SphereCollider)
-    // todo: break this up between ResponseSystem and Detection
-    //      - needs to be main thread for the events
     zox_system_ctx_1(SphereCollideSystem, zox_pip_physics, sphere_colliders,
         [in] transforms3.Position3D,
         [in] SphereRadius,
         [in] physics.CollisionDisabled,
         [none] SphereCollider)
-    /*zox_system(CollisionDetectSystem, zox_pip_physics,
-        [in] chunks3.VoxLink,
-        [in] generic.Bounds3D,
-        [out] transforms3.Position3D,
-        [out] physics3.Velocity3D,
-        [out] physics3.LastPosition3D,
-        [out] collisions3.Collision,
-        [out] collisions3.CollisionDistance)*/
     zox_system(CollisionDetectSystem, zox_pip_physics,
         [in] chunks3.VoxLink,
         [in] generic.Bounds3D,
@@ -34,15 +25,21 @@ void define_systems_collisions3D(ecs *world) {
         [in] physics3.LastPosition3D,
         [out] collisions3.Collision,
         [out] collisions3.CollisionDistance)
+    zox_system_1(CollisionDebugSystem, zox_pip_physics,
+        [in] chunks3.VoxLink,
+        [in] collisions3.CollisionDistance,
+        [in] transforms3.Position3D,
+        [in] physics3.LastPosition3D,
+        [in] collisions3.Collision,
+    );
     zox_system(CollisionResponseSystem, zox_pip_physics,
-        // [in] chunks3.VoxLink,
-        // [in] generic.Bounds3D,
+        [in] chunks3.VoxLink,
         [in] collisions3.CollisionDistance,
         [out] transforms3.Position3D,
         [out] physics3.Velocity3D,
         [out] physics3.LastPosition3D,
         [out] collisions3.Collision,
-        [out] collisions3.Grounded)
+        [out] collisions3.Grounded);
     zox_system(UnstuckSystem, zox_pip_physics,
         [in] chunks3.VoxLink,
         [in] generic.Bounds3D,

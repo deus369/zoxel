@@ -53,6 +53,7 @@ void define_systems_chunks(ecs *world) {
             [out] chunks3.VoxelNode)
     // main thread
     zox_system_1(ChunkDebugSystem, zoxp_read_voxels,
+            [in] blocks.VoxScale,
             [in] transforms3.Position3D,
             [in] chunks3.VoxelNode,
             [in] chunks3.NodeDepth,

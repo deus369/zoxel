@@ -2,3 +2,5 @@
 #include "mode.c"
 #include "follow_mode.c"
 #include "camera.c"
+#include "first_person.c"
+#include "third_person.c"

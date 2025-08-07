@@ -1,7 +1,7 @@
-
-
-// todo: base this off prefab_chunk
-ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab) {
+entity spawn_prefab_vox_file(
+    ecs *world,
+    const entity prefab
+) {
     zox_prefab_child(prefab)
     zox_prefab_name("vox_file")
     zox_add_tag(e, Vox)
@@ -22,27 +22,4 @@ ecs_entity_t spawn_prefab_vox_file(ecs_world_t *world, const ecs_entity_t prefab
     prefab_add_mesh_basic(world, e);
     add_components_mesh_colored(world, e);
     return e;
-}
-
-ecs_entity_t spawn_vox_file(ecs_world_t *world,
-    const ecs_entity_t prefab,
-    const vox_file *data,
-    const char* filename
-) {
-    // model_lod
-    zox_neww(model)
-    char name[128];
-    sprintf(name, "vox_file_%s", filename);
-    zox_set_unique_name(model, name); // "file_model");
-    ModelLods modelLods;
-    for (int i = 0; i < max_vox_file_lods; i++) {
-        zox_instance(prefab)
-        zox_set(e, RenderLod, { i })
-        zox_set(e, VoxScale, { vox_model_scale }) // this needs setting again
-        zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger })
-        set_vox_file(world, e, data);
-        modelLods.value[i] = e;
-    }
-    zox_set_ptr(model, ModelLods, modelLods)
-    return model;
 }

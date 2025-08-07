@@ -5,10 +5,10 @@ zox_declare_tag(HeadBone)
 zox_component_float3(BonePosition)
 zox_component_float3(BoneSize)
 zox_memory_component(BoneIndexes, byte)
-zox_memory_component(BoneLinks, ecs_entity_t)
+zox_memory_component(BoneLinks, entity)
 #include "bone_index.c"
 
-void define_components_bones(ecs_world_t *world) {
+void define_components_bones(ecs *world) {
     zox_define_tag(Bone)
     zox_define_tag(Skeleton)
     zox_define_tag(PaintedSkeleton)

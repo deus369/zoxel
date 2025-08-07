@@ -30,7 +30,8 @@ void add_voxel_face(
     int_array_d *indicies,
     float3_array_d* vertices,
     const float3 offset,
-    const float voxel_scale,
+    const float3 bounds_offset,
+    const float scale,
     const int* indiciesf,
     const float3* verticesf
 ) {
@@ -43,8 +44,9 @@ void add_voxel_face(
     expand_capacity_float3_array_d(vertices, voxel_face_vertices_length);
     for (int i = 0, j = vertices->size; i < voxel_face_vertices_length; i++, j++) {
         vertices->data[j] = verticesf[i];
-        float3_scale_p(&vertices->data[j], voxel_scale);
         float3_add_float3_p(&vertices->data[j], offset);
+        float3_scale_p(&vertices->data[j], scale);
+        float3_add_float3_p(&vertices->data[j], bounds_offset);
     }
     vertices->size += voxel_face_vertices_length;
 }
@@ -59,6 +61,7 @@ void build_voxel_faces_c(
     const color_rgb voxel_color,
     const float scale,
     const float3 offset,
+    const float3 bounds_offset,
     byte depth,
     int3 position
 ) {
@@ -86,6 +89,7 @@ void build_voxel_faces_c(
                 indicies,
                 vertices,
                 offset,
+                bounds_offset,
                 scale,
                 indiciesf,
                 verticesf
@@ -122,12 +126,12 @@ void build_voxel_mesh_c(
     int_array_d *indicies,
     float3_array_d* vertices,
     color_rgb_array_d* color_rgbs,
-    const byte max_depth,
+    const byte node_depth,
     byte depth,
     int3 position,
     const byte node_index,
-    const float3 total_mesh_offset,
-    const float vox_scale
+    const float3 bounds_offset,
+    float scale
 ) {
     if (node == NULL) {
         return;
@@ -136,7 +140,7 @@ void build_voxel_mesh_c(
         zox_log_error("trash node detected.");
         return;
     }
-    if (depth >= max_depth || is_closed_VoxelNode(node)) {
+    if (depth >= node_depth || is_closed_VoxelNode(node)) {
         const byte voxel = node->value;
         if (voxel) {
             const byte voxel_index = voxel - 1;
@@ -145,10 +149,7 @@ void build_voxel_mesh_c(
                 return;
             }
             const color_rgb voxel_color = colorRGBs->value[voxel_index];
-            const float voxel_scale = real_chunk_scale * octree_scales3[depth] * vox_scale;
             float3 offset = float3_from_int3(position);
-            float3_scale_p(&offset, voxel_scale);
-            float3_add_float3_p(&offset, total_mesh_offset);
 
             build_voxel_faces_c(
                 root,
@@ -158,17 +159,23 @@ void build_voxel_mesh_c(
                 vertices,
                 color_rgbs,
                 voxel_color,
-                voxel_scale,
+                scale,
                 offset,
+                bounds_offset,
                 depth,
                 position
             );
         }
     } else {
         depth++;
+        scale *= 0.5f;
         int3_multiply_int_p(&position, 2);
         VoxelNode* kids = get_children_VoxelNode(node);
         for (byte i = 0; i < octree_length; i++) {
+            // Models dont have these set??
+            if (!kids[i].value) {
+                // continue;
+            }
             int3 child_position = int3_add(position, octree_positions[i]);
             build_voxel_mesh_c(
                 root,
@@ -180,12 +187,12 @@ void build_voxel_mesh_c(
                 indicies,
                 vertices,
                 color_rgbs,
-                max_depth,
+                node_depth,
                 depth,
                 child_position,
                 i,
-                total_mesh_offset,
-                vox_scale);
+                bounds_offset,
+                scale);
         }
     }
 }
@@ -199,8 +206,9 @@ void build_node_mesh_colors(
     const byte chunk_depth,
     const VoxelNode *neighbors[],
     const byte neighbor_lods[],
-    const float3 total_mesh_offset,
-    const float vox_scale) {
+    const float3 bounds_offset,
+    const float scale
+) {
     int_array_d* indicies = create_int_array_d(initial_dynamic_array_size);
     float3_array_d* vertices = create_float3_array_d(initial_dynamic_array_size);
     color_rgb_array_d* color_rgbs = create_color_rgb_array_d(initial_dynamic_array_size);
@@ -218,8 +226,8 @@ void build_node_mesh_colors(
         0,
         int3_zero,
         0,
-        total_mesh_offset,
-        vox_scale);
+        bounds_offset,
+        scale);
     clear_mesh(
         meshIndicies,
         meshVertices,
@@ -235,7 +243,7 @@ void build_node_mesh_colors(
 
 // Builds Colored Vox Meshes
 // When: ChunkMeshDirty is chunk_dirty_state_update
-void ChunkColorsBuildSystem(ecs_iter_t *it) {
+void ChunkColorsBuildSystem(iter *it) {
     zox_ts_begin(build_chunk_colored);
     zox_sys_world()
     zox_sys_begin()
@@ -268,7 +276,8 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             continue;
         }
         if (!colorRGBs->length) {
-            zox_logw("Vox has no colors.");
+            zox_sys_e();
+            zox_logw("Vox has no colors [%s]", zox_get_name(e));
             continue;
         }
         // removes mesh when 255
@@ -277,7 +286,7 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             meshDirty->value = mesh_state_trigger_slow;
             continue;
         }
-        const byte max_depth = nodeDepth->value;
+        const byte node_depth = nodeDepth->value;
         const VoxelNode *chunk_left = chunkNeighbors->value[0] == 0 ? NULL : zox_get(chunkNeighbors->value[0], VoxelNode)
         const VoxelNode *chunk_right = chunkNeighbors->value[1] == 0 ? NULL : zox_get(chunkNeighbors->value[1], VoxelNode)
         const VoxelNode *chunk_down = chunkNeighbors->value[2] == 0 ? NULL : zox_get(chunkNeighbors->value[2], VoxelNode)
@@ -292,14 +301,26 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
         const byte chunk_back_max_distance = chunkNeighbors->value[4] == 0 ? 0 : zox_get_value(chunkNeighbors->value[4], RenderLod)
         const byte chunk_front_max_distance = chunkNeighbors->value[5] == 0 ? 0 : zox_get_value(chunkNeighbors->value[5], RenderLod)
         byte neighbor_lods[6];
-        neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance, max_depth);
-        neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance, max_depth);
-        neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance, max_depth);
-        neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, max_depth);
-        neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, max_depth);
-        neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, max_depth);
-        const float3 total_mesh_offset = float3_scale(calculate_vox_bounds(chunkSize->value, voxScale->value), -1);
-        const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, max_depth);
+        neighbor_lods[0] = get_chunk_division_from_lod(chunk_left_max_distance, node_depth);
+        neighbor_lods[1] = get_chunk_division_from_lod(chunk_right_max_distance, node_depth);
+        neighbor_lods[2] = get_chunk_division_from_lod(chunk_down_max_distance, node_depth);
+        neighbor_lods[3] = get_chunk_division_from_lod(chunk_up_max_distance, node_depth);
+        neighbor_lods[4] = get_chunk_division_from_lod(chunk_back_max_distance, node_depth);
+        neighbor_lods[5] = get_chunk_division_from_lod(chunk_front_max_distance, node_depth);
+
+        const float3 b = calculate_vox_bounds(
+            chunkSize->value,
+            voxScale->value);
+        const float3 offset = float3_scale(b, -1);
+        const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, node_depth);
+        byte chunk_length = powers_of_two[nodeDepth->value];
+        const float chunk_scale = voxScale->value * chunk_length;
+
+        /*zox_log("- building: vox voxscale:");
+        zox_log("   chunk_scale [%f]", chunk_scale);
+        zox_log("   VoxScale [%f]", voxScale->value);
+        zox_log("   chunk_length [%i]", chunk_length);
+        zox_log("   offset [%fx%fx%f]", offset.x, offset.y, offset.z);*/
 
         // read lock our node
         read_lock_VoxelNode(voxelNode);
@@ -313,8 +334,8 @@ void ChunkColorsBuildSystem(ecs_iter_t *it) {
             chunk_depth,
             neighbors,
             neighbor_lods,
-            total_mesh_offset,
-            voxScale->value);
+            offset,
+            chunk_scale);
 
         // read unlock our node
         read_unlock_VoxelNode(voxelNode);

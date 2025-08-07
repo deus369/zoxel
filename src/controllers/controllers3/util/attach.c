@@ -1,7 +1,8 @@
-void set_camera_locked(ecs_world_t *world,
+void set_camera_locked(
+    ecs_world_t *world,
     const ecs_entity_t camera,
-    const ecs_entity_t target)
-{
+    const ecs_entity_t target
+) {
     zox_add_tag(camera, FirstPersonCamera)
     zox_set(camera, CanRoam, { 0 })
     if (camera_follow_mode == zox_camera_follow_mode_attach) {
@@ -14,10 +15,11 @@ void set_camera_locked(ecs_world_t *world,
     set_camera_transform(world, camera, target, camera_mode, vox_model_scale);
 }
 
-void attach_camera_to_character(ecs_world_t *world,
+void attach_camera_to_character(
+    ecs_world_t *world,
     const ecs_entity_t camera,
-    const ecs_entity_t character)
-{
+    const ecs_entity_t character
+) {
     if (!zox_valid(character)) {
         zox_log_error("character invalid in attach_camera_to_character")
         return;

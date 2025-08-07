@@ -1,4 +1,4 @@
-/*void TransformDebugSystem(ecs_iter_t *it) {
+/*void TransformDebugSystem(iter *it) {
     zox_field_world()
     zox_field_in(Position3D, position3Ds, 1)
     for (int i = 0; i < it->count; i++) {

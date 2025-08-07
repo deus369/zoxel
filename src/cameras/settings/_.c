@@ -28,7 +28,7 @@ float4x4 debug_camera_transform = float4x4_zero;
 //      WAIT the precision issue also effects frustum
 // todo 2: use double4x4 matrix for view matrix??....
 // we know from testing smaller far distance it stops the precision errors
-float camera_near_distance = 0.06f;
+float camera_near_distance = 0.003f;
 float camera_far_distance = 1024;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;

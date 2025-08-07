@@ -1,5 +1,5 @@
-ecs_entity_t shader_bone;
-ecs_entity_t material_bone;
+entity shader_bone;
+entity material_bone;
 
 typedef struct {
     GLint vertex_position;
@@ -28,13 +28,13 @@ MaterialBone create_MaterialBone(const uint material) {
     };
 }
 
-ecs_entity_t spawn_shader_bone(ecs_world_t *world) {
+entity spawn_shader_bone(ecs *world) {
     const byte shader_index = get_new_shader_source_index();
     char* vert = get_shader_source(world, "bone.vert");
     char* frag = get_shader_source(world, "bone.frag");
     shader_verts[shader_index] = vert;
     shader_frags[shader_index] = frag;
-    const ecs_entity_t e = spawn_shader(world, shader_index);
+    const entity e = spawn_shader(world, shader_index);
     if (!e) {
         zox_log_error("[shader_bone] failed to spawn")
         return 0;
@@ -43,15 +43,15 @@ ecs_entity_t spawn_shader_bone(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_material_bone(ecs_world_t *world) {
-    const ecs_entity_t shader = spawn_shader_bone(world);
+entity spawn_material_bone(ecs *world) {
+    const entity shader = spawn_shader_bone(world);
     if (!shader) {
         zox_log(" ! failed spawning bone shader")
         return 0;
     }
     shader_bone = shader;
     uint material; // link to gpu
-    const ecs_entity_t e = spawn_material(world, shader, &material);
+    const entity e = spawn_material(world, shader, &material);
     if (!e) {
         zox_log(" ! failed spawning bone material")
         return 0;

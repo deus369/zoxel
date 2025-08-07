@@ -11,10 +11,9 @@ void on_spawned_terrain(ecs *world, const entity player) {
 // this connects to terrain end stream event and triggers streaming
 void link_camera_to_terrain(ecs *world, const entity player) {
     const byte depth = terrain_depth;
-    const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
+    // const int3 chunk_dimensions = (int3) { powers_of_two[depth], powers_of_two[depth], powers_of_two[depth] };
     const entity camera = zox_get_value(player, CameraLink)
     const float3 position = zox_get_value(camera, Position3D)
-    int3 terrain_position = real_position_to_chunk_position(position, chunk_dimensions, terrain_depth);
     const entity game = zox_get_value(player, GameLink)
     if (!game || !zox_has(game, RealmLink)) {
         return;
@@ -27,6 +26,11 @@ void link_camera_to_terrain(ecs *world, const entity player) {
     if (!terrain) {
         return;
     }
+    zox_geter_value(terrain, VoxScale, float, terrain_scale);
+    int3 terrain_position = real_position_to_chunk_position(
+        position,
+        powers_of_two[depth],
+        terrain_scale);
 
     // if character
     if (game_rule_attach_to_character) {

@@ -2,7 +2,10 @@ void set_main_cameras(int new_count) {
     main_cameras_count = new_count;
 }
 
-CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale) {
+CameraSpawnData get_camera_preset(
+    const byte camera_mode,
+    float vox_model_scale
+) {
     CameraSpawnData data = { };
     if (camera_mode == zox_camera_mode_topdown) {
         data = camera_preset_top_down;
@@ -10,10 +13,6 @@ CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale)
         data = camera_preset_ortho;
     } else if (camera_mode == zox_camera_mode_first_person) {
         data = camera_preset_first_person;
-        // convert position with scale
-        data.position.x *= vox_model_scale;
-        data.position.y *= vox_model_scale;
-        data.position.z *= vox_model_scale;
     } else if (camera_mode == zox_camera_mode_third_person) {
         data = camera_preset_third_person;
     } else if (camera_mode == zox_camera_mode_2D) {
@@ -22,12 +21,14 @@ CameraSpawnData get_camera_preset(const byte camera_mode, float vox_model_scale)
     return data;
 }
 
-void set_camera_transform(ecs *world,
+// our main camera transformer
+void set_camera_transform(
+    ecs *world,
     const entity camera,
     const entity character,
     const byte camera_mode,
-    const float vox_model_scale)
-{
+    const float vox_model_scale
+) {
     if (!zox_valid(camera) || !zox_valid(character)) {
         zox_log_error("! cannot [set_camera_transform] camera/character issue.")
         return;
@@ -48,14 +49,20 @@ void set_camera_transform(ecs *world,
     if (camera_follow_mode == zox_camera_follow_mode_attach) {
         zox_set(camera, LocalRotation3D, { camera_rotation })
         zox_set(camera, Euler, { euler })
-    } else zox_set(camera, Rotation3D, { camera_rotation })
+    } else {
+        zox_set(camera, Rotation3D, { camera_rotation })
+    }
 }
 
 byte get_camera_mode_fov(const byte camera_mode) {
     return get_camera_preset(camera_mode, 0).fov;
 }
 
-void set_camera_mode(ecs *world, byte new_camera_mode, const float vox_model_scale) {
+void set_camera_mode(
+    ecs *world,
+    byte new_camera_mode,
+    const float vox_model_scale
+) {
     // remove 2 camera modes for now
     if (new_camera_mode == zox_camera_mode_free) {
         new_camera_mode = zox_camera_mode_first_person;
@@ -66,7 +73,9 @@ void set_camera_mode(ecs *world, byte new_camera_mode, const float vox_model_sca
     camera_mode = new_camera_mode;
     const byte old_camera_follow_mode = camera_follow_mode;
     const byte camera_fov = get_camera_mode_fov(camera_mode);
+
     camera_follow_mode = get_camera_preset(camera_mode, vox_model_scale).follow_mode;
+
     for (int i = 0; i < main_cameras_count; i++) {
         const entity camera = main_cameras[i];
         if (camera == 0 || !zox_valid(camera)) {
@@ -76,8 +85,11 @@ void set_camera_mode(ecs *world, byte new_camera_mode, const float vox_model_sca
         zox_set(camera, FieldOfView, { camera_fov })
         // camera_follow_mode is more complicated, involves how camera is attached to character
         entity character = 0;
-        if (old_camera_follow_mode == zox_camera_follow_mode_attach) character = zox_get_value(camera, ParentLink)
-        else character = zox_get_value(camera, CameraFollowLink)
+        if (old_camera_follow_mode == zox_camera_follow_mode_attach) {
+            character = zox_get_value(camera, ParentLink)
+        } else {
+            character = zox_get_value(camera, CameraFollowLink)
+        }
         if (old_camera_follow_mode != camera_follow_mode) {
             // remove old link
             if (old_camera_follow_mode == zox_camera_follow_mode_attach) {
@@ -146,8 +158,8 @@ void set_camera_mode_pre_defined(ecs *world,
 void set_camera_transform_to_main_menu(
     float3 *camera_position,
     float4 *camera_rotation,
-    const byte terrain_depth)
-{
+    const byte terrain_depth
+) {
     const float overall_voxel_scale = powers_of_two[terrain_depth]; //  32.0f;
     camera_position->x = 0.25f * overall_voxel_scale;
     camera_position->y = 0.1f * overall_voxel_scale;

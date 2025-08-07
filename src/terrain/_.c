@@ -18,6 +18,7 @@
 #include "voxels/_.c"
 #include "block_voxes/_.c"
 #include "util/_.c"
+#include "spawn/_.c"
 #include "systems/_.c"
 #include "game/_.c"
 #include "debug/_.c"

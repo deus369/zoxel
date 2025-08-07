@@ -3,7 +3,7 @@ define_fun_stopwatch(time_vox_generation, 0);
 // todo: generate colors in another system
 // todo: split processes up to nodes
 // todo: add unique colors as a property too
-void VoxGenerationSystem(ecs_iter_t *it) {
+void VoxGenerationSystem(iter *it) {
     zox_ts_begin(vox_generation);
     const byte unique_colors = 16;
     const float2 color_r = (float2) { 0.8f, 1.2f };

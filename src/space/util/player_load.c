@@ -7,8 +7,7 @@ entity game_start_player_load(
 ) {
     const entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(player_vox_model));
     if (!model) {
-        zox_log_error("[tall_cube] not found on player")
-        return 0;
+        zox_log_error("File [%s] Not Found.", player_vox_model);
     }
     const entity camera = zox_get_value(player, CameraLink)
     if (!camera) {
@@ -26,6 +25,7 @@ entity game_start_player_load(
     if (!terrain) {
         return 0;
     }
+    zox_geter_value(terrain, VoxScale, float, terrain_scale);
     TerrainPlace spawn_place;
     spawn_place.chunk = 0;
     load_character_p(
@@ -35,19 +35,26 @@ entity game_start_player_load(
 
     // if character not in chunk, spawn one here
     const byte depth = terrain_depth;
-    const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
-    const int3 chunk_position = real_position_to_chunk_position(spawn_place.position, chunk_dimensions, depth);
+    // const int3 chunk_dimensions = int3_single(powers_of_two[depth]);
+    const int3 chunk_position = real_position_to_chunk_position(
+        spawn_place.position,
+        powers_of_two[depth],
+        terrain_scale);
+
     zox_mut_begin(terrain, ChunkLinks, chunkLinks)
     spawn_place.chunk = int3_hashmap_get(chunkLinks->value, chunk_position);
     // check if exists first
     byte spawned_first_chunk = 0;
     if (!zox_valid(spawn_place.chunk)) {
-        spawn_place.chunk = spawn_chunk_terrain(world,
+        spawn_place.chunk = spawn_chunk_terrain(
+            world,
             prefab_chunk_height,
             terrain,
             chunk_position,
             chunk_position,
-            real_chunk_scale);
+            terrain_depth,
+            terrain_scale
+        );
         spawned_first_chunk = 1;
         if (zox_valid(spawn_place.chunk)) {
             int3_hashmap_add(chunkLinks->value,

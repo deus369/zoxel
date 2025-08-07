@@ -1,4 +1,4 @@
-void Skeleton3RenderSystem(ecs_iter_t *it) {
+void Skeleton3RenderSystem(iter *it) {
     if (!material_bone) {
         return;
     }
@@ -44,7 +44,7 @@ void Skeleton3RenderSystem(ecs_iter_t *it) {
         float4x4 bones[boneLinks->length];
         float3 bone_positions[boneLinks->length];
         for (int j = 0; j < boneLinks->length; j++) {
-            const ecs_entity_t bone = boneLinks->value[j];
+            const entity bone = boneLinks->value[j];
             zox_geter_value(bone, TransformMatrix, float4x4, bone_matrix)
             bones[j] = float4x4_multiply(bone_matrix, inverse);
             bone_positions[j] = zox_get_value(bone, BonePosition)
@@ -57,7 +57,7 @@ void Skeleton3RenderSystem(ecs_iter_t *it) {
         opengl_enable_color_buffer(material_attributes->vertex_color, colorsGPULink->value);
         zox_gpu_float4x4(material_attributes->transform_matrix, transformMatrix->value);
         zox_gpu_render(meshIndicies->length);
-#ifdef zoxel_catch_opengl_errors
+#ifdef zox_catch_opengl_errors
         if (check_opengl_error_unlogged() != 0) {
             zox_log(" > could not render character [%i]: indicies [%i] - [%ix%i:%i]\n", rendered_count, meshIndicies->length, meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value)
             break;

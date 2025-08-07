@@ -52,7 +52,15 @@ char* get_filename(const char* filepath, const byte keep_extension) {
     return result;
 }
 
-void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
+void add_file(
+    FileList *fileList,
+    const char *filepath,
+    byte keep_extension
+) {
+    if (fileList == NULL || filepath == NULL || !*filepath) {
+        zox_log_error("[add_file] invalid input: fileList=%p, filepath=%s", fileList, filepath ? filepath : "NULL");
+        return;
+    }
     // zox_log(" + adding filepath: %s\n", filepath)
     // static int capacity = 10;
     if (fileList->count == 0) {
@@ -82,11 +90,10 @@ void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
         fileList->files = temp;
         fileList->filenames = temp2;
     }
+
     const int len = strlen(filepath) + 1;
-    char* filepath2 = malloc(len * sizeof(char)); //) strdup(filepath);
-    // strncpy(filepath2, filepath, len - 1);
-    // snprintf(filepath2, sizeof(filepath2), "%s", filepath);
-    snprintf(filepath2, 256, "%s", filepath);
+    char* filepath2 = malloc(len * sizeof(char));
+    snprintf(filepath2, len, "%s", filepath);
 
     // filepath2[len - 1] = '\0';
     fileList->files[fileList->count] = filepath2;
@@ -96,7 +103,9 @@ void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
         perror("strdup failed");
         return;
     }
+
     fileList->filenames[fileList->count] = get_filename(fileList->files[fileList->count], keep_extension);
+
     if (fileList->filenames[fileList->count] == NULL) {
         perror("get_filename failed");
         return;
@@ -105,36 +114,57 @@ void add_file(FileList *fileList, const char *filepath, byte keep_extension) {
 }
 
 void traverse_directory(
-    FileList *fileList,
-    const char *directory,
-    byte keep_extension)
-{
-    if (directory == NULL) {
-        zox_log_error("[traverse_directory] null directory")
+    FileList* fileList,
+    const char* directory,
+    byte keep_extension
+) {
+
+    if (directory == NULL || !*directory) {
+        zox_log_error("[traverse_directory] invalid directory");
         return;
     }
-    DIR *dp;
-    struct dirent *entry;
-    struct stat statbuf;
+
     // zox_log(" ! opening directory [%s]\n", directory)
-    dp = opendir(directory);
+    DIR* dp = opendir(directory);
     if (dp == NULL) {
         zox_log_error("[traverse_directory] null opendir dp [%s]", directory)
         perror("        - ");
         return;
     }
-    // zox_log(" > traversing directory [%s]\n", directory)
+
+    zox_logv("Traversing [%s]", directory)
+    struct dirent *entry;
     while ((entry = readdir(dp)) != NULL) {
-        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
+        const char *name = entry->d_name;
+        if (!name || name[0] == '\0') continue;
+        if (!strcmp(name, ".") || !strcmp(name, "..")) {
             continue;
         }
-        char *name = entry->d_name;
-        char path[1024];
-        snprintf(path, sizeof(path), "%s"character_slash"%s", directory, name);
+
+        size_t path_len = strlen(directory) + strlen(name) + 2;
+        if (path_len >= 512) {
+            zox_log_error("[traverse_directory] path too long: [%s/%s]", directory, name);
+            continue;
+        }
+
+        char path[512] = {0};
+        int written = snprintf(path, sizeof(path), "%s"character_slash"%s", directory, name);
+
+        if (written < 0 || (size_t)written >= sizeof(path)) {
+            zox_log_error("[traverse_directory] snprintf failed or truncated path: [%s/%s]", directory, name);
+            continue;
+        }
+
+        struct stat statbuf = {0};
         if (stat(path, &statbuf) == -1) {
             perror("Unable to stat file");
             continue;
         }
+
+        if (S_ISLNK(statbuf.st_mode)) {
+            continue;
+        }
+
         if (S_ISDIR(statbuf.st_mode)) {
             traverse_directory(fileList, path, keep_extension);
         } else {

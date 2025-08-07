@@ -19,7 +19,8 @@ typedef struct {
     const byte render_lod;
 } UpdateBlockEntities;
 
-void spawn_vodes_dive(ecs *world,
+void spawn_vodes_dive(
+    ecs *world,
     const UpdateBlockEntities *data,
     NodeDelveData *delve_data
 ) {
@@ -89,9 +90,6 @@ void spawn_vodes_dive(ecs *world,
         int3 chunk_voxel_position = get_chunk_voxel_position(chunkPosition->value, chunk_dimensions);
         int3 position_global = int3_add(voxel_position, chunk_voxel_position);
         // spawn node entity here!
-        /*zox_geter(data->chunk, VoxLink, voxLink)
-        zox_geter(voxLink->value, RealmLink, realmLink)
-        zox_geter(realmLink->value, VoxelLinks, voxels)*/
         const byte block_index = node->value - 1;
         if (block_index >= data->blocks_length) {
             zox_log_error("voxel [%i] is out of range [%i]", block_index, data->blocks_length)
@@ -118,17 +116,19 @@ void spawn_vodes_dive(ecs *world,
 
 
 // updates during ChunkLodDirty and ChunkMeshDirty events
-void spawn_vodes(ecs *world,
+void spawn_vodes(
+    ecs *world,
     const entity e,
     const entity terrain,
-    const ChunkPosition *chunkPosition,
     const byte vox_lod,
     const RenderDisabled *renderDisabled,
     VoxelNode *chunk,
-    const byte max_depth)
-{
-    const float vox_scale = get_terrain_voxel_scale(max_depth);
-    const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
+    const byte max_depth,
+    float3 positionf,
+    const float scale
+) {
+    // const float vox_scale = get_terrain_voxel_scale(max_depth);
+    // const float chunk_scale = vox_scale * powers_of_two[max_depth]; // 16.0f
     // const float chunk_scale2 = 0.5f * vox_scale * (float) powers_of_two[max_depth];
     const entity realm = zox_get_value(terrain, RealmLink)
     zox_geter(realm, VoxelLinks, blocks)
@@ -159,17 +159,20 @@ void spawn_vodes(ecs *world,
             block_prefabs[j] = zox_get_value(block, BlockPrefabLink)
         }
     }
+    positionf = float3_add(positionf, float3_single(scale));
     // convert chunk position to real
-    const float3 chunk_position_real = float3_add((float3) { vox_scale, vox_scale, vox_scale }, float3_scale(int3_to_float3(chunkPosition->value), chunk_scale));
+    /*const float3 chunk_positionf = float3_add(
+        float3_single(vox_scale),
+        float3_scale(int3_to_float3(chunkPosition->value), chunk_scale));*/
     UpdateBlockEntities data = {
-        .scale = vox_scale,
+        .scale = scale,
         .chunk = e,
         .blocks_length = blocks_length,
         .blocks = blocksarr, // metas
         .block_prefabs = block_prefabs,
         .models = models,
         .block_vox_offsets = block_vox_offsets,
-        .chunk_position_real = chunk_position_real,
+        .chunk_position_real = positionf,
         .render_lod = vox_lod,
         .render_disabled = renderDisabled->value,
     };
@@ -187,24 +190,28 @@ void VodesSpawnSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(VoxelNodeDirty)
     zox_sys_in(RenderDistanceDirty)
-    zox_sys_in(ChunkPosition)
+    // zox_sys_in(ChunkPosition)
     zox_sys_in(VoxLink)
     zox_sys_in(NodeDepth)
     zox_sys_in(RenderDisabled)
     zox_sys_in(RenderLod)
     zox_sys_in(RenderDistance)
+    zox_sys_in(Position3D)
+    zox_sys_in(VoxScale)
     zox_sys_out(VoxelNode)
     zox_sys_out(BlocksSpawned)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(VoxelNodeDirty, voxelNodeDirty)
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
-        zox_sys_i(ChunkPosition, chunkPosition)
+        // zox_sys_i(ChunkPosition, chunkPosition)
         zox_sys_i(VoxLink, voxLink)
         zox_sys_i(NodeDepth, nodeDepth)
         zox_sys_i(RenderDisabled, renderDisabled)
         zox_sys_i(RenderLod, renderLod)
         zox_sys_i(RenderDistance, renderDistance)
+        zox_sys_i(Position3D, position)
+        zox_sys_i(VoxScale, scale)
         zox_sys_o(VoxelNode, voxelNode)
         zox_sys_o(BlocksSpawned, blocksSpawned)
         // either voxel node is dirty, or we are spawning for first time based on distance changes
@@ -222,12 +229,12 @@ void VodesSpawnSystem(iter *it) {
         spawn_vodes(world,
             e,
             voxLink->value,
-            chunkPosition,
             vox_lod,
             renderDisabled,
             voxelNode,
-            nodeDepth->value);
-        // reduce_voxel_nodes(world, voxelNode);
+            nodeDepth->value,
+            position->value,
+            scale->value);
         blocksSpawned->value = 1;
     }
 } zox_declare_system(VodesSpawnSystem)

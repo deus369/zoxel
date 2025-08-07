@@ -30,7 +30,9 @@ void spawn_realm_characters(ecs *world, entity e) {
     int count = 5; // count of below array
     char* vox_names[] = { "slime", "chicken", "mrpenguin", "bob", "bigmrpenguin" };
     byte chances[] = { 30, 30, 8, 8, 3 };
+
     entity prefab_character = is_characters_instanced ? prefab_character3_instanced_npc : prefab_character3_npc;
+
     for (int i = 0; i < count; i++) {
         entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(vox_names[i]));
         if (zox_valid(model)) {
@@ -69,7 +71,8 @@ void spawn_realm_characters(ecs *world, entity e) {
     // add our skeleton prefab
     {
         byte chance = 5;
-        entity model = string_hashmap_get(files_hashmap_voxes, new_string_data("tall_cube"));
+        char* svox_name = "grazor";
+        entity model = string_hashmap_get(files_hashmap_voxes, new_string_data(svox_name));
         const entity e2 = spawn_character3_meta(world,
             prefab_character3_meta,
             prefab_character3_skeleton_npc,

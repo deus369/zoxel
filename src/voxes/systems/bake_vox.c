@@ -1,4 +1,4 @@
-void BakeVoxSystem(ecs_iter_t *it) {
+void BakeVoxSystem(iter *it) {
     zox_sys_world();
     zox_sys_begin();
     zox_sys_in(ModelLink);
@@ -12,7 +12,7 @@ void BakeVoxSystem(ecs_iter_t *it) {
         zox_geter_value(model->value, GenerateVox, byte, state);
         if (state == zox_dirty_active) {
             for (int j = 0; j < textures->length; j++) {
-                const ecs_entity_t texture = textures->value[j];
+                const entity texture = textures->value[j];
                 if (zox_valid(texture)) {
                     zox_set(textures->value[j], GenerateTexture, { zox_dirty_trigger });
                 }

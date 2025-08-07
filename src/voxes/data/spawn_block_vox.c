@@ -1,6 +1,6 @@
 typedef struct {
-    ecs_entity_t prefab;
-    ecs_entity_t vox;
+    entity prefab;
+    entity vox;
     byte block_index;
     byte render_lod;
     byte render_disabled;

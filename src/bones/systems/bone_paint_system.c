@@ -1,4 +1,4 @@
-void BonePaintSystem(ecs_iter_t *it) {
+void BonePaintSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(MeshDirty)
     zox_sys_in(BoneIndexes)

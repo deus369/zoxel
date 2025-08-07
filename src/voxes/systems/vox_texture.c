@@ -162,7 +162,7 @@ void generate_vox_texture(
     }
 }
 
-void VoxTextureSystem(ecs_iter_t *it) {
+void VoxTextureSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(TextureSize)

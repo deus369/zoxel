@@ -1,5 +1,5 @@
-ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world,
-    const ecs_entity_t prefab)
+entity spawn_prefab_block_vox_instanced(ecs *world,
+    const entity prefab)
 {
     zox_prefab_child(prefab)
     // add block stuff onto our vox instanced
@@ -16,7 +16,7 @@ ecs_entity_t spawn_prefab_block_vox_instanced(ecs_world_t *world,
     return e;
 }
 
-ecs_entity_t spawn_block_vox_instanced(ecs_world_t *world,
+entity spawn_block_vox_instanced(ecs *world,
     const SpawnBlockVox *data)
 {
     zox_instance(data->prefab)
@@ -35,7 +35,7 @@ ecs_entity_t spawn_block_vox_instanced(ecs_world_t *world,
             if (models->length) {
                 // srand - pick the model randomly, off our position in world
                 srand(data->position_real.x * data->position_real.z * data->position_real.y);
-                const ecs_entity_t model = models->value[rand() % (models->length)];
+                const entity model = models->value[rand() % (models->length)];
                 zox_set(e, ModelLink, { model })
                 // zox_log("   + picked [%s]", zox_get_name(model))
             }

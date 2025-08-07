@@ -9,14 +9,14 @@
 
 #include "data/_.c"
 #include "components/_.c"
-#include "util/set.c"
 #include "prefabs/_.c"
+#include "spawn/_.c"
 #include "util/_.c"
 #include "generation/_.c"
 #include "io/_.c"
 #include "systems/_.c"
 
-void dispose_voxes(ecs_world_t *world, void *ctx) {
+void dispose_voxes(ecs *world, void *ctx) {
     dispose_files_voxes(world);
 }
 

@@ -1,6 +1,7 @@
-ecs_entity_t spawn_character3(ecs_world_t *world,
-    const spawn_character3D_data data)
-{
+ecs_entity_t spawn_character3(
+    ecs_world_t *world,
+    const spawn_character3D_data data
+) {
     zox_geter_value(data.prefab, Character3Type, byte, type)
     zox_instance(data.prefab)
     zox_name("character3")
@@ -19,9 +20,9 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
     if (!data.render_disabled) {
         zox_set(e, RenderDisabled, { data.render_disabled })
     }
-    if (data.scale) {
+    /*if (data.scale) {
         zox_set(e, VoxScale, { data.scale })
-    }
+    }*/
     // voxels
     if (data.terrain) {
         zox_set(e, VoxLink, { data.terrain })
@@ -46,8 +47,11 @@ ecs_entity_t spawn_character3(ecs_world_t *world,
         if (zox_has(vox, VoxScale)) {
             zox_geter_value(vox, VoxScale, float, meta_vox_scale)
             zox_geter_value(vox, ChunkSize, int3, meta_chunk_size)
-            float3 meta_bounds = calculate_vox_bounds(meta_chunk_size, meta_vox_scale);
-            zox_set(e, Bounds3D, { meta_bounds })
+            float3 meta_bounds = calculate_vox_bounds(
+                meta_chunk_size,
+                meta_vox_scale);
+            zox_set(e, VoxScale, { meta_vox_scale });
+            zox_set(e, Bounds3D, { meta_bounds });
             // zox_log("vox_model_scale: %f - %f", vox_model_scale, meta_vox_scale)
         } else {
             zox_log_error("vox has no VoxScale [%s]", zox_get_name(vox))

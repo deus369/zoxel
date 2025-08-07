@@ -1,7 +1,7 @@
 // todo: Shapes on bones used for setting verts, spheres of influence
 // todo: use SphereRadius float per bone for a simple radius
 
-void BoneIndexGenerateSystem(ecs_iter_t *it) {
+void BoneIndexGenerateSystem(iter *it) {
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(MeshDirty)
@@ -23,7 +23,7 @@ void BoneIndexGenerateSystem(ecs_iter_t *it) {
         float3 bones_bounds_lower[boneLinks->length];
         float3 bones_bounds_upper[boneLinks->length];
         for (int j = 0; j < boneLinks->length; j++) {
-            const ecs_entity_t bone = boneLinks->value[j];
+            const entity bone = boneLinks->value[j];
             bone_positions[j] = zox_get_value(bone, BonePosition)
             bone_sizes[j] = zox_get_value(bone, BoneSize)
             const float3 half_size = bone_sizes[j]; // float3_scale(bone_sizes[j], 0.5f);

@@ -3,6 +3,7 @@
 
 // #define zox_debug_bones
 // #define zox_transparent_skeletons
+byte disable_bone_rendering = 0;
 #include "shaders/_.c"
 #include "components/_.c"
 #include "prefabs/_.c"

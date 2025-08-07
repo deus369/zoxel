@@ -1,5 +1,5 @@
 // todo: use iterative instance function: prefab_children
-/*void prefab_make_skeleton(ecs_world_t *world, const ecs_entity_t e) {
+/*void prefab_make_skeleton(ecs *world, const entity e) {
     zox_add_tag(e, Skeleton)
     zox_add_tag(e, SkeletonMesher)
     zox_prefab_set(e, Children, { 0, NULL });
@@ -13,7 +13,7 @@
 #endif
 }*/
 // will this effect other children though?
-void spawn_skeleton_bones(ecs_world_t *world, const ecs_entity_t e, float head_move_y) {
+void spawn_skeleton_bones(ecs *world, const entity e, float head_move_y) {
     // prefab_make_skeleton(world, e);
 
     // todo: apply voxel scale to skeleton spawning
@@ -31,13 +31,13 @@ void spawn_skeleton_bones(ecs_world_t *world, const ecs_entity_t e, float head_m
     BoneLinks bones = (BoneLinks) { 0, NULL };
 
     // = Body Bone =
-    const ecs_entity_t bone_body = spawn_bone(world, prefab_bone, float3_zero, float3_zero, test_bone_size_body);
+    const entity bone_body = spawn_bone(world, prefab_bone, float3_zero, float3_zero, test_bone_size_body);
     zox_set(bone_body, ParentLink, { e })
     add_to_Children(&children, bone_body);
     add_to_BoneLinks(&bones, bone_body);
 
     Children bone_children = (Children) { 0, NULL };
-    const ecs_entity_t bone_child = spawn_bone(world, prefab_bone, bone_head_position, bone_head_position, test_bone_head_size);
+    const entity bone_child = spawn_bone(world, prefab_bone, bone_head_position, bone_head_position, test_bone_head_size);
     zox_set(bone_child, ParentLink, { bone_body })
     zox_add_tag(bone_child, HeadBone)
     // add osccilation to head bone

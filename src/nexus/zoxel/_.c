@@ -43,9 +43,8 @@ void zoxel_set_debug(ecs_world_t* world) {
 void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
-    disable_npcs = 0;
     character_spawn_rate_min = 0;
-    character_spawn_rate_max = 1;
+    character_spawn_rate_max = 3;
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;
@@ -151,6 +150,12 @@ void zox_set_terrain_settings() {
 
 zox_begin_module(ZoxGame)
     game_name = "Zoxel";
+
+    // disable_bone_rendering = 1;
+    // disable_block_voxes = 1;
+    // disable_npcs = 1;
+    // is_debug_collisions = 1;
+
     // global_music_speed = 1;
     // app settings
     // headless = 0;
@@ -159,7 +164,7 @@ zox_begin_module(ZoxGame)
 
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
-    vsync = 0; // 1;
+    vsync = 1;
     target_fps = 0;
 
     is_split_screen = 0;
@@ -204,11 +209,11 @@ zox_begin_module(ZoxGame)
     fog_density = 0.034f;
     // scaling
     terrain_lod_near = 3;
-    real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
+    // real_chunk_scale = 8.0f; // 4 | 8 | 16 | 32
     terrain_depth = 4;
     block_vox_depth = 5;
     character_depth = 5;
-    vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
+    // vox_model_scale = 1 / ((float) powers_of_two[character_depth]);
     // terrain_amplifier = powers_of_two[terrain_depth] * render_distance_y;
     game_ui_has_taskbar = 1;
 
@@ -220,9 +225,9 @@ zox_begin_module(ZoxGame)
     // is_log_sounds = 1;
 
     // fix prefabs
-    if (prefab_vox) {
+    /*if (prefab_vox) {
         zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
-    }
+    }*/
     /*if (prefab_character3) {
         zox_prefab_set(prefab_character3, VoxScale, { vox_model_scale })
     }
