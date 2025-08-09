@@ -12,37 +12,37 @@
 
 void define_systems_input(ecs* world) {
     // resets
-    zox_system(ZevicePointerResetSystem, zox_pipelines_devices_reset,
+    zox_system(ZevicePointerResetSystem, zoxp_inputs_reset,
             [out] ZevicePointer,
             [out] ZevicePointerOld)
-    zox_system(ZeviceButtonResetSystem, zox_pipelines_devices_reset,
+    zox_system(ZeviceButtonResetSystem, zoxp_inputs_reset,
             [out] ZeviceButton)
-    zox_system(ZeviceFingerResetSystem, zox_pipelines_devices_reset,
+    zox_system(ZeviceFingerResetSystem, zoxp_inputs_reset,
             [in] ZevicePointerOld,
             [out] ZevicePointerPosition,
             [out] ZevicePointerDelta,
             [none] Finger)
-    zox_system(ZevicePointerRightResetSystem, zox_pipelines_devices_reset,
+    zox_system(ZevicePointerRightResetSystem, zoxp_inputs_reset,
             [out] ZevicePointerRight)
-    zox_system(ZevicePointerDeltaResetSystem, zox_pipelines_devices_reset,
+    zox_system(ZevicePointerDeltaResetSystem, zoxp_inputs_reset,
             [out] ZevicePointerDelta)
     zox_system(KeyboardResetSystem, EcsOnStore,
             [out] Keyboard)
     // state changes
-    zox_system(DeviceModeSystem, zox_pip_raycasting,
+    zox_system(DeviceModeSystem, zoxp_inputs_update,
             [in] DeviceLinks,
             [in] DeviceMode,
             [out] DeviceModeDirty)
-    zox_system(DeviceModeDirtySystem, zox_pipelines_devices_enables,
+    zox_system(DeviceModeDirtySystem, zoxp_inputs_enable,
             [out] DeviceMode,
             [out] DeviceModeDirty)
-    zox_system(ZeviceButtonEnableSystem, zox_pipelines_devices_enables,
+    zox_system(ZeviceButtonEnableSystem, zoxp_inputs_enable,
             [in] ZeviceButton,
             [out] ZeviceDisabled)
-    zox_system(ZeviceStickEnableSystem, zox_pipelines_devices_enables,
+    zox_system(ZeviceStickEnableSystem, zoxp_inputs_enable,
             [in] ZeviceStick,
             [out] ZeviceDisabled)
-    zox_system(ZevicePointerEnableSystem, zox_pipelines_devices_enables,
+    zox_system(ZevicePointerEnableSystem, zoxp_inputs_enable,
             [in] ZevicePointer,
             [out] ZeviceDisabled)
 }

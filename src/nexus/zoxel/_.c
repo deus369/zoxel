@@ -27,7 +27,7 @@ void zoxel_set_debug(ecs_world_t* world) {
     test_all_skills = 1;
 
     // get_debug_label_app
-    set_prefab_debug_label(world, &debug_label_chunk_link);
+    // set_prefab_debug_label(world, &debug_label_chunk_link);
     // set_prefab_debug_label(world, &get_label_realm_colors);
     // set_prefab_debug_label(world, &get_label_player_element_links);
     // set_prefab_debug_label(world, &get_label_player_stats);
@@ -101,6 +101,9 @@ void zoxel_settings_uis() {
     button_font_thickness_outline = 2;
     button_font_fill = color_grayscale(44);
     button_font_outline = color_grayscale(122);
+
+    default_fill_color = header_fill;
+    default_outline_color = header_outline;
     // set them again for now
     /*zox_set(prefab_ui_list, Color, { window_fill })
     zox_set(prefab_ui_list, OutlineColor, { window_outline })
@@ -153,11 +156,12 @@ zox_begin_module(ZoxGame)
 
     game_name = "Zoxel";
     vsync = 0;
+    // disable_npcs = 1;
+    // disable_frustum_culling = 1;
     // auto_player = 1;
     // disable_bone_rendering = 1;
     // disable_block_voxes = 1;
     // is_debug_collisions = 1;
-    // disable_npcs = 1;
 
     // global_music_speed = 1;
     // app settings

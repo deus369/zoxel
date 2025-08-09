@@ -1,4 +1,3 @@
-#define zox_pip_zigels EcsOnUpdate
 const float point_font_margins = 0.01f;
 const int font_texture_mul = 4;
 const color default_font_outline_color = (color) { 55, 125, 125, 255 };

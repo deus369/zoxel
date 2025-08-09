@@ -9,9 +9,6 @@
  *
  * */
 
-#define zoxp_voxels_write EcsOnLoad
-#define zoxp_voxels_read EcsOnUpdate
-
 zoxc_entity(VoxLink);
 zoxc_entities(ChunkEntities)
 #include "chunks/_.c"

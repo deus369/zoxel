@@ -8,16 +8,16 @@
 //#include "camera_planes_draw_system.c"
 
 void define_systems_cameras(ecs *world) {
-    zox_system(ViewMatrixSystem, zox_camera_stage,
+    zox_system(ViewMatrixSystem, zoxp_cameras,
         [in] transforms3.TransformMatrix,
         [in] ProjectionMatrix,
         [out] ViewMatrix)
-    zox_system(ProjectionMatrixSystem, zox_camera_stage,
+    zox_system(ProjectionMatrixSystem, zoxp_cameras,
         [in] generic.ScreenDimensions,
         [in] FieldOfView,
         [in] CameraNearDistance,
         [out] ProjectionMatrix)
-    zox_system(CameraFrustumSystem, zox_camera_stage,
+    zox_system(CameraFrustumSystem, zoxp_cameras,
         [in] ViewMatrix,
         [out] FrustumCorners,
         [out] generic.Position3DBounds,

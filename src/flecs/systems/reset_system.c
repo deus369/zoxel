@@ -1,4 +1,3 @@
-#define zox_pip_resets EcsPostUpdate
 // general states
 #define zox_general_state_none 0
 #define zox_general_state_trigger 1
@@ -15,14 +14,17 @@ void system_name(ecs_iter_t *it) {\
     }\
 } zoxd_system(system_name)
 
-#define zox_reset_system(component_name) zox_set_system(component_name##ResetSystem, component_name, 1, 0)
+#define zox_reset_system(component_name) \
+    zox_set_system(component_name##ResetSystem, component_name, 1, 0)
 
 // This needs to update before EcsPreStore as that's when chunks terrain spawn
-#define zox_define_reset_system_pip(component_name, pip) zox_system(component_name##ResetSystem, pip, [out] component_name)
+#define zox_define_reset_system_pip(component_name, pip)    zox_system(component_name##ResetSystem, pip, [out] component_name)
 
-#define zox_define_reset_system(component_name) zox_define_reset_system_pip(component_name, zox_pip_resets)
+#define zox_define_reset_system(component_name) \
+    zox_define_reset_system_pip(component_name, zoxp_state_reset)
 
-#define zox_define_reset_system_pip2(system_name, component_name, pip) zox_system(system_name, pip, [out] component_name)
+#define zox_define_reset_system_pip2(system_name, component_name, pip) \
+    zox_system(system_name, pip, [out] component_name)
 
 
 // create systems that call function when state hits
@@ -35,15 +37,15 @@ void system_name(ecs_iter_t *it) {\
     zox_system_1(system_name##StateEventSystem, pip, [in] component, __VA_ARGS__)
 
 #define zox_declare_system_state_event(system_name, component, target, function)\
-void system_name##StateEventSystem(ecs_iter_t *it) {\
-    zox_sys_world()\
-    zox_sys_begin()\
-    zox_sys_in(component)\
-    for (int i = 0; i < it->count; i++) {\
-        zox_sys_e()\
-        zox_sys_i(component, comp)\
-        if (comp->value == target) {\
-            function(world, e);\
+    void system_name##StateEventSystem(ecs_iter_t *it) {\
+        zox_sys_world()\
+        zox_sys_begin()\
+        zox_sys_in(component)\
+        for (int i = 0; i < it->count; i++) {\
+            zox_sys_e()\
+            zox_sys_i(component, comp)\
+            if (comp->value == target) {\
+                function(world, e);\
+            }\
         }\
-    }\
-} zoxd_system(system_name##StateEventSystem)
+    } zoxd_system(system_name##StateEventSystem)

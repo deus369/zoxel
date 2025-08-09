@@ -12,9 +12,6 @@
 #include "editor_input_system.c"
 #include "actions_shortcut_system.c"
 
-// ai
-#include "random_jumping.c"
-
 void define_systems_controllers3D(ecs_world_t *world) {
 
     zox_system(Player3DMoveSystem, EcsOnUpdate,
@@ -70,10 +67,4 @@ void define_systems_controllers3D(ecs_world_t *world) {
     zox_system_1(ActionsShortcutSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [none] players.Player);
-
-    // Move to AI
-    zox_system(RandomJump3DSystem, zoxp_physics,
-            [in] characters.CanJump,
-            [out] characters.JumpState,
-            [none] npcs.Jumper);
 }

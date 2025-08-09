@@ -25,12 +25,12 @@ zox_begin_module(Raycasts)
     zox_define_component_entity(RaycasterTarget);
     zox_define_component_float3(RaycastOrigin);
     zox_define_component_float3(RaycastNormal);
-    // zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] inputs.DeviceLinks, [in] inputs.DeviceMode, [out] raycasts.Raycaster)
-    zox_system(ZeviceRaycasterSystem, zox_pip_raycasting,
+    // zox_system(MouseRaycasterSystem, zoxp_inputs_update, [in] inputs.DeviceLinks, [in] inputs.DeviceMode, [out] raycasts.Raycaster)
+    zox_system(ZeviceRaycasterSystem, zoxp_inputs_update,
             [in] inputs.ZevicePointerPosition,
             [out] raycasts.Raycaster)
 #ifndef zox_debug_camera_rays
-    zox_system(CameraRaySystem, zox_pip_raycasting,
+    zox_system(CameraRaySystem, zoxp_inputs_update,
             [out] raycasts.RaycastOrigin,
             [out] raycasts.RaycastNormal)
 #else

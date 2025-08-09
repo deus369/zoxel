@@ -52,9 +52,10 @@ ecs_entity_t spawn_prefab_character3(
     zox_prefab_set(e, Collision, { 0 });
     zox_prefab_set(e, CollisionDistance, { float3_zero });
     // jump
-    zox_prefab_set(e, CanJump, { 0 })
-    zox_prefab_set(e, JumpState, { 0 })
-    zox_prefab_set(e, Jump, { 0 })
+    zox_prefab_set(e, CanJump, { 0 });
+    zox_prefab_set(e, JumpState, { 0 });
+    zox_prefab_set(e, LandState, { 0 });
+    zox_prefab_set(e, Jump, { 0 });
     // Debug
     prefab_add_cube_lines(world, e, color_white, 0);
     return e;

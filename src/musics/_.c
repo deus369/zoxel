@@ -38,8 +38,7 @@ zoxc_byte(PlaylistMode);
 #include "convert/midi_load.c"
 #include "prefabs/_.c"
 #include "util/_.c"
-#include "systems/music_play_system.c"
-#include "systems/music_generate_system.c"
+#include "systems/_.c"
 
 void process_arguments_musics(ecs_world_t *world, char* args[], int count) {
     (void) world;
@@ -83,17 +82,9 @@ zox_begin_module(Musics)
     zox_define_component_byte(PlaylistMode);
     zox_define_entities_component(PlaylistLinks);
     zox_define_component_entity(PlaylistLink);
-    zox_system_1(MusicGenerateSystem, zoxp_mainthread,
-        [out] GenerateMusic,
-        [out] NoteLinks,
-        [none] Music);
-    zox_system_1(MusicPlaySystem, zoxp_mainthread,
-        [in] MusicEnabled,
-        [in] NoteLinks,
-        [in] MusicSpeed,
-        [out] MusicNote,
-        [out] MusicTime,
-        [none] Music);
+
+    define_systems_music(world);
+
     add_hook_on_boot(on_boot_musics);;
     add_hook_terminal_command(process_arguments_musics);
     add_hook_spawn_prefabs(spawn_prefabs_musics);

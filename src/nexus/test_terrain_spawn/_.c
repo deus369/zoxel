@@ -244,7 +244,6 @@ zox_begin_module(ZoxGame)
     #define zox_is_flatlands
     #define zox_disable_npcs
     #define zox_disable_block_voxes
-    #define zox_disable_frustum_culling
     #define zox_disable_player_ui
     #define zox_disable_player_character
 #endif

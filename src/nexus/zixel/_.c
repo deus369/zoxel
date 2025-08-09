@@ -9,7 +9,7 @@ zox_begin_module(ZoxGame)
     menu_sky_bottom_color = (color_rgb) { 33, 33, 166 };
     game_sky_color = (color_rgb) { 22, 177, 33 };
     game_sky_bottom_color = (color_rgb) { 22, 177, 33 };
-    set_prefab_debug_label(world, &get_label_character2_player);
+    // set_prefab_debug_label(world, &get_label_character2_player);
     zox_game_camera_mode = zox_camera_mode_2D;
 zox_end_module(ZoxGame)
 

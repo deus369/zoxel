@@ -47,6 +47,7 @@ void MusicPlaySystem(ecs_iter_t *it) {
             if (note_instrument == instrument_piano_file) {
                 // spawn sound_file_note(world, prefab_sound_file_note)
                 spawn_sound_from_file_name(world, prefab_sound, "piano", frequency, volume);
+                zox_log("playing note.");
             } else {
                 spawn_sound_generated(world,
                     prefab_sound_generated,

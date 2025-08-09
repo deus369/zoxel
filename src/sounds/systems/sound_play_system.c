@@ -3,7 +3,7 @@ void SoundPlaySystem(ecs_iter_t *it) {
     if (!audio_enabled || channel < 0 || nosounds) {
         return;
     }
-    if (zox_current_time <= 3) {
+    if (zox_current_time <= 1) {
         // zox_log("waiting: %f", zox_current_time);
         return;
     }

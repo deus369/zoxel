@@ -49,7 +49,7 @@ TerrainPlace find_position_in_terrain(
     };
 }
 
-void game_start_player_new_positioner(
+void game_start_player_new_delay(
     ecs *world,
     const entity player
 ) {
@@ -65,6 +65,9 @@ void game_start_player_new_positioner(
         zox_set(character, Position3D, { spawn_place.position })
         zox_set(camera, Position3D, { spawn_place.position })
     }
+    spawn_player_game_ui(world, player);
+    zox_set(character, DisableGravity, { 0 });
+    zox_set(character, DisableMovement, { 0 });
 }
 
 entity game_start_player_new(
@@ -132,7 +135,6 @@ entity game_start_player_new(
         // .terrain_chunk = spawn_place.chunk,
     };
     const entity e = spawn_character3_player(world, spawn_data);
-    delay_event(world, &game_start_player_new_positioner, player, 0.5);
-    delay_event(world, &spawn_player_game_ui, player, 0.5);
+    delay_event(world, &game_start_player_new_delay, player, 0.5);
     return e;
 }

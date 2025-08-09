@@ -1,7 +1,6 @@
 #ifndef zoxm_physics
 #define zoxm_physics
 
-#define zoxp_physics EcsPostUpdate // EcsOnUpdate
 zox_tag(Frictioned);
 zoxc_byte(DisableMovement);
 zoxc_byte(DisableGravity);

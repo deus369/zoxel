@@ -16,6 +16,7 @@ byte is_debug_attack = 0;
 #include "target_set_system.c"
 #include "attack_system.c"
 #include "stay_upright_system.c"
+#include "random_jumping.c"
 
 void define_systems_npcs(ecs_world_t *world) {
     zox_system(BehaviourSystem, EcsOnUpdate,
@@ -74,4 +75,9 @@ void define_systems_npcs(ecs_world_t *world) {
         [in] physics3.Omega3D,
         [out] physics3.Alpha3D,
         [none] npcs.Npc)*/
+
+    zox_system(RandomJump3DSystem, zoxp_physics,
+            [in] jumps.CanJump,
+            [out] jumps.JumpState,
+            [none] npcs.Jumper);
 }

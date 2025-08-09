@@ -9,25 +9,33 @@ void MusicGenerateSystem(ecs_iter_t *it) {
     const byte lowest_note = 12;
     const byte highest_note = 36;
     const byte note_verse_difference = 6;
-    zox_sys_world()
-    zox_sys_begin()
-    zox_sys_out(GenerateMusic)
-    zox_sys_out(NoteLinks)
+    zox_sys_world();
+    zox_sys_begin();
+    zox_sys_in(Seed);
+    zox_sys_in(InstrumentType);
+    zox_sys_out(GenerateMusic);
+    zox_sys_out(NoteLinks);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_o(GenerateMusic, generateMusic)
-        zox_sys_o(NoteLinks, noteLinks)
+        zox_sys_i(Seed, seed);
+        zox_sys_i(InstrumentType, instrument);
+        zox_sys_o(GenerateMusic, generateMusic);
+        zox_sys_o(NoteLinks, noteLinks);
         if (!generateMusic->value) {
             continue;
         }
+        zox_logv("Generating music with Seed [%lu]", seed->value);
+        srand(seed->value);
+
         int sounds_per_verse = 8;
         int verses = 6;
-        resize_memory_component(NoteLinks, noteLinks, ecs_entity_t, verses * sounds_per_verse)
+        initialize_NoteLinks(noteLinks, verses * sounds_per_verse);
         int sound_index = 0;
         int palete_type = 0;
         palete_type = rand() % music_palette_end;
         int first_note = lowest_note + rand() % (highest_note - lowest_note + 1 - note_verse_difference);
         // music_palette_names[palete_type], instrumentType->value,
-        zox_log_notes("+ generating music\n - Palette [%i]\n - Instrument: -\n    - First Note [%i]", palete_type, first_note)
+        zox_log_notes("+ generating music\n - Palette [%i]\n - Instrument: -\n    - First Note [%i]", palete_type, first_note);
+
         for (int j = 0; j < verses; j++) {
             first_note += - note_verse_difference + rand() % (note_verse_difference * 2 + 1);
             if (first_note < lowest_note) {
@@ -64,21 +72,24 @@ void MusicGenerateSystem(ecs_iter_t *it) {
                 } else {
                     music_note += -2 + rand() % 3;
                 }
-                byte music_instrument = instrument_piano;
+
+                // hmm we should do this better
+                /*byte music_instrument = instrument_piano;
                 if (rand() % 100 >= 50) {
                     music_instrument = instrument_organ;
-                }
+                }*/
+
                 const float note_length = 0.8f + 0.6f * (rand() % 100 * 0.01f);
                 const float note_volume = 0.6f + 0.4f * (rand() % 100 * 0.01f);
                 const ecs_entity_t note = spawn_note(world,
                     prefab_note,
                     music_note,
-                    music_instrument,
+                    instrument->value,
                     note_length,
                     note_volume);
                 noteLinks->value[sound_index] = note;
                 sound_index++;
-                zox_log_notes("+ note [%lu:%s] at [%i] is: (%i:%i) [volume[%f]]", note, zox_get_name(note), sound_index, music_note, music_instrument, note_volume)
+                zox_logv("  + note [%lu:%s] at [%i] is: (%i:%i) [volume[%f]]", note, zox_get_name(note), sound_index, music_note, instrument->value, note_volume)
             }
         }
         generateMusic->value = 0;

@@ -19,6 +19,11 @@ void PlayerFlySystem(ecs_iter_t *it) {
             continue;
         }
 
+        zox_geter_value(character, FlyMode, byte, flying);
+        if (!flying) {
+            continue;
+        }
+
         float input = 0;
 
         for (int j = 0; j < deviceLinks->length; j++) {

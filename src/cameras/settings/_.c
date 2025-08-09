@@ -16,13 +16,11 @@ static inline int2 scale_viewport(int2 v) {
 // #define zox_test_camera_frustum
 // #define zox_test_frustum2 // realtime
 // #define zox_test_frustum
-// #define zox_disable_frustum_planes
 float3 debug_plane_rotation = { 0, 180, 0 };
 float3 debug_plane_position = { -64, 16, -64 };
 float debug_plane_distance = 128;
 float4x4 debug_camera_transform = float4x4_zero;
 
-#define zox_camera_stage EcsPreStore // EcsPreStore | EcsPostUpdate
 #define max_cameras 16
 // todo: I for raycasting, create a second frustum + second matrix
 //      WAIT the precision issue also effects frustum

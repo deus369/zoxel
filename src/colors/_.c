@@ -25,7 +25,7 @@ zoxc_arrayd(ColorRGBs, color_rgb)
 #define zox_biome_end 6*/
 
 // hmm figure this out later
-extern void set_prefab_debug_label(ecs_world_t *world, DebugLabelEvent value);
+// extern void set_prefab_debug_label(ecs_world_t *world, DebugLabelEvent value);
 
 void spawn_prefabs_colors(ecs* world) {
     if (prefab_realm) {

@@ -46,7 +46,7 @@ void ChunkFrustumSystem(iter *it) {
             voxScale->value * 0.5f);
         float3_scale_p(&chunk_bounds.extents, fudge_frustum_extents);
         zox_sys_query_begin()
-        byte is_viewed = 0;
+        byte is_viewed = disable_frustum_culling;
         while (zox_sys_query_loop()) {
             if (is_viewed) {
                 continue;

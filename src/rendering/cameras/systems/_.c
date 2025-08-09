@@ -6,14 +6,14 @@
 
 void define_systems_rendering_cameras(ecs *world) {
     // rendering
-    zox_system_1(CameraRender3DSystem, zox_pipelines_rendering,
+    zox_system_1(CameraRender3DSystem, zoxp_rendering,
         [in] cameras.ViewMatrix,
         [in] cameras.FieldOfView,
         [in] cameras.ScreenPosition,
         [in] generic.ScreenDimensions,
         [in] colorz.FogColor,
         [none] !cameras.CameraUI)
-    zox_system_1(CameraRenderUISystem, zox_pipelines_rendering,
+    zox_system_1(CameraRenderUISystem, zoxp_rendering,
         [in] cameras.ViewMatrix,
         [in] cameras.FieldOfView,
         [in] cameras.ScreenPosition,

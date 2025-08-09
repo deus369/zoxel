@@ -14,7 +14,7 @@ zox_begin_module(Zigels)
     zox_filter(fonts,
         [none] FontTexture,
         [out] textures.GenerateTexture)
-    zox_system_ctx(FontTextureSystem, zox_pip_zigels, fonts,
+    zox_system_ctx(FontTextureSystem, zoxp_text, fonts,
         [in] ZigelIndex,
         [in] colorz.Color,
         [in] colorz.SecondaryColor,

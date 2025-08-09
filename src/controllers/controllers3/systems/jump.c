@@ -12,19 +12,27 @@ void Player3DJumpSystem(ecs_iter_t *it) {
         zox_sys_i(CharacterLink, characterLink)
         zox_sys_i(DeviceMode, deviceMode)
         zox_sys_i(DeviceLinks, deviceLinks)
+
         const ecs_entity_t character = characterLink->value;
         if (!zox_valid(character) || !zox_has(character, Character3)) {
             continue;
         }
+
         zox_geter(character, DisableMovement, disableMovement);
         if (disableMovement->value) {
             continue;
         }
+
         zox_geter_value(character, JumpState, byte, jump_state);
-        zox_geter_value(character, CanJump, byte, can_jump);
-        if (jump_state != zox_dirty_none || !can_jump || can_jump >= jump_cooldown_state) {
+        if (jump_state != zox_dirty_none) {
             continue;
         }
+
+        zox_geter_value(character, CanJump, byte, can_jump);
+        if (!can_jump) { // || can_jump >= jump_cooldown_state) {
+            continue;
+        }
+
         byte is_jump_triggered = 0;
         for (int j = 0; j < deviceLinks->length; j++) {
             const ecs_entity_t device = deviceLinks->value[j];
@@ -61,9 +69,7 @@ void Player3DJumpSystem(ecs_iter_t *it) {
             continue;
         }
         if (!zox_gett_value(character, Jump)) {
-            // zox_log("Player Jump");
             zox_set(character, JumpState, { zox_dirty_trigger });
-            zox_set(character, CanJump, { jump_cooldown_state });
 #ifdef zox_log_jumping
             zox_log("+ %s jumping (%f)", zox_get_name(character), zox_current_time);
 #endif
