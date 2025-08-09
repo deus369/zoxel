@@ -27,14 +27,14 @@ void SoundProcessSystem(ecs_iter_t *it) {
         const float frequency_scale = frequency / default_frequency;
         float new_data[soundData->length];
         byte out_of_bounds = 0;
-        for (int j = 0; j < soundData->length; j++) {
+        for (uint j = 0; j < soundData->length; j++) {
             if (out_of_bounds) {
                 new_data[j] = 0.0f;
                 continue;
             }
             const float source_index = j / frequency_scale;
             int index1 = (int) source_index;
-            int index2 = index1 + 1;
+            uint index2 = index1 + 1;
             // Ensure indices are within bounds
             if (index2 >= soundData->length) {
                 out_of_bounds = 1;
@@ -50,4 +50,4 @@ void SoundProcessSystem(ecs_iter_t *it) {
         triggerSound->value = zox_sound_play_trigger;
         zox_log_sounds("  -> updated sound frequency to [%f]", frequency_scale);
     }
-} zox_declare_system(SoundProcessSystem)
+} zoxd_system(SoundProcessSystem)

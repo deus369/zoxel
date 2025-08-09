@@ -55,7 +55,6 @@ byte check_texture(
 
 void generate_texture_frame(
     color* data,
-    const int length,
     const int2 size,
     const color fill_color,
     const color outline_color,

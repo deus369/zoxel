@@ -17,4 +17,4 @@ void TextureUpdateSystem(ecs_iter_t *it) {
         glBindTexture(GL_TEXTURE_2D, 0);
         textureDirty->value = 0;
     }
-} zox_declare_system(TextureUpdateSystem)
+} zoxd_system(TextureUpdateSystem)

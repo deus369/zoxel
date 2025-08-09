@@ -9,9 +9,9 @@ entity spawn_prefab_camera(ecs *world) {
     zox_prefab_set(e, LocalPosition3D, { float3_zero })
     zox_prefab_set(e, LocalRotation3D, { quaternion_identity })
     zox_prefab_set(e, Euler, { (float3) { 0, 180 * degreesToRadians, 0 } })
-    zox_prefab_set(e, ProjectionMatrix, { float4x4_identity() })
-    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
-    zox_prefab_set(e, ViewMatrix, { float4x4_identity() })
+    zox_prefab_set(e, ProjectionMatrix, { float4x4_identity })
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity })
+    zox_prefab_set(e, ViewMatrix, { float4x4_identity })
     zox_prefab_set(e, ScreenPosition, { int2_zero })
     zox_prefab_set(e, ScreenDimensions, { int2_zero })
     zox_prefab_set(e, FieldOfView, { 0 })
@@ -31,6 +31,7 @@ entity spawn_camera_base(ecs *world,
     const entity prefab,
     const float3 position,
     const float4 rotation,
+    const byte mode,
     const float fov,
     const int2 screen_position,
     const int2 size,
@@ -40,7 +41,7 @@ entity spawn_camera_base(ecs *world,
     zox_name("base_camera")
     zox_set(e, Position3D, { position })
     zox_set(e, Rotation3D, { rotation })
-    zox_set(e, CameraMode, { camera_mode })
+    zox_set(e, CameraMode, { mode })
     zox_set(e, FieldOfView, { fov })
     zox_set(e, ScreenPosition, { screen_position })
     zox_set(e, ScreenDimensions, { size })

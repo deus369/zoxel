@@ -17,8 +17,8 @@ static inline int2 scale_viewport(int2 v) {
 // #define zox_test_frustum2 // realtime
 // #define zox_test_frustum
 // #define zox_disable_frustum_planes
-float3 debug_plane_rotation = (float3) { 0, 180, 0 };
-float3 debug_plane_position = (float3) { -64, 16, -64 };
+float3 debug_plane_rotation = { 0, 180, 0 };
+float3 debug_plane_position = { -64, 16, -64 };
 float debug_plane_distance = 128;
 float4x4 debug_camera_transform = float4x4_zero;
 
@@ -32,7 +32,7 @@ float camera_near_distance = 0.003f;
 float camera_far_distance = 1024;
 int main_cameras_count = 1;
 const float camera_limit_x = 1.25f;
-byte camera_mode = 0; // zox_camera_mode_first_person;
+// byte camera_mode = 0; // zox_camera_mode_first_person;
 byte camera_fov = 0; // camera_fov_first_person;
 byte camera_follow_mode = 0; // zox_camera_follow_mode_attach;
 entity main_cameras[max_cameras];

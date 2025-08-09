@@ -46,7 +46,7 @@ void WanderSystem(ecs_iter_t *it) {
             debug_linec(world, start, target->value, color_rgb_cyan);
         }
     }
-} zox_declare_system(WanderSystem)
+} zoxd_system(WanderSystem)
 
 
 
@@ -98,5 +98,5 @@ void WanderSystem(ecs_iter_t *it) {
             quaternion_rotate_quaternion_p(&alpha3D->value, float2_to_rotation(euler));
         }
     }
-} zox_declare_system(WanderSystem)*/
+} zoxd_system(WanderSystem)*/
 

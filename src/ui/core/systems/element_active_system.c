@@ -22,4 +22,4 @@ void ElementActiveSystem(iter *it) {
         outline->value = activeState->value ? color_purple : default_outline_color_frame;
         generateTexture->value = zox_generate_texture_trigger;
     }
-} zox_declare_system(ElementActiveSystem)
+} zoxd_system(ElementActiveSystem)

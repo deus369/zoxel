@@ -18,4 +18,4 @@ void ShrinkSystem(ecs_iter_t *it) {
         else if (animation_time > 1) animation_time = 1;
         scale1D->value = float_lerp(1, 0, animation_time);
     }
-} zox_declare_system(ShrinkSystem)
+} zoxd_system(ShrinkSystem)

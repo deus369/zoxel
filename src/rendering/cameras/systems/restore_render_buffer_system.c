@@ -14,4 +14,4 @@ void RenderBufferRestoreSystem(iter *it) {
             connect_render_buffer_to_fbo(frameBufferLink->value, renderBufferLink->value);
         }
     }
-} zox_declare_system(RenderBufferRestoreSystem)
+} zoxd_system(RenderBufferRestoreSystem)

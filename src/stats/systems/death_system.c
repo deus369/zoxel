@@ -19,4 +19,4 @@ void DeathSystem(ecs_iter_t *it) {
         zox_muter(userLink->value, Dead, dead)
         dead->value = zox_dirty_trigger;
     }
-} zox_declare_system(DeathSystem)
+} zoxd_system(DeathSystem)

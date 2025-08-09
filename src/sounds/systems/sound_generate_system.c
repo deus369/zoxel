@@ -23,6 +23,10 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         if (generateSound->value != zox_sound_generate_run) {
             continue;
         }
+        if (!soundData->value) {
+            zox_log_error("Failed Generation: No sound data");
+            continue;
+        }
         const float volume = soundVolume->value;
         const double sound_time_length = soundLength->value;
         const float frequency = soundFrequency->value;
@@ -35,7 +39,7 @@ void SoundGenerateSystem(ecs_iter_t *it) {
 
         // initialize_SoundData(soundData, data_length);
         float value = 0;
-        for (int j = 0; j < soundData->length; j++) {
+        for (uint j = 0; j < soundData->length; j++) {
             const float time = (float) (j / sample_rate_f);
             if (instrument_type == instrument_piano) {
                 value = piano_sound(time, frequency);
@@ -71,4 +75,4 @@ void SoundGenerateSystem(ecs_iter_t *it) {
         triggerSound->value = zox_sound_play_trigger;
         zox_log_sounds("+ generated [%s] (%f)", zox_sys_e_name, volume)
     }
-} zox_declare_system(SoundGenerateSystem)
+} zoxd_system(SoundGenerateSystem)

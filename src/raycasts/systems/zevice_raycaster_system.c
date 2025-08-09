@@ -15,4 +15,4 @@ void ZeviceRaycasterSystem(ecs_iter_t *it) {
         }*/
         raycaster->value = zevicePointerPosition->value;
     }
-} zox_declare_system(ZeviceRaycasterSystem)
+} zoxd_system(ZeviceRaycasterSystem)

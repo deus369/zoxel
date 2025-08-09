@@ -16,4 +16,4 @@ void Particle3DEmitSystem(ecs_iter_t *it) {
         emit_particle3Ds_slow(world, position3D->value, bounds->value, particleEmitRate->value, colorr->value);
 #endif
     }
-} zox_declare_system(Particle3DEmitSystem)
+} zoxd_system(Particle3DEmitSystem)

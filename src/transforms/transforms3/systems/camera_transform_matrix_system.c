@@ -10,4 +10,4 @@
         zox_field_o(TransformMatrix, transformMatrixs, transformMatrix)
         transformMatrix->value = float4x4_transform_camera(position3D->value, rotation3D->value);
     }
-} zox_declare_system(CameraTransformMatrixSystem)*/
+} zoxd_system(CameraTransformMatrixSystem)*/

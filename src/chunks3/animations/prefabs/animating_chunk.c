@@ -13,7 +13,7 @@ entity spawn_prefab_animating_chunk(
     zox_prefab_set(e, ChunkMeshDirty, { chunk_dirty_state_none });
     zox_prefab_set(e, MeshDirty, { 0 });
     // testing: set colors
-    ColorRGBs colors = (ColorRGBs) { };
+    ColorRGBs colors = (ColorRGBs) { 0 };
     initialize_ColorRGBs(&colors, 8);
     for (int i = 0; i < 8; i++) {
         colors.value[i] = (color_rgb) {

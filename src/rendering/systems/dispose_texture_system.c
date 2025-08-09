@@ -7,4 +7,4 @@ void TextureGPUDisposeSystem(iter *it) {
             glDeleteTextures(1, &textureGPULink->value);
         }
     }
-} zox_declare_system(TextureGPUDisposeSystem)
+} zoxd_system(TextureGPUDisposeSystem)

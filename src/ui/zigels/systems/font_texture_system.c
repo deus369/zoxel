@@ -61,4 +61,4 @@ void FontTextureSystem(iter *it) {
         zox_log("     > zigel font is updating [%lu]\n", it->entities[i])
 #endif
     }
-} zox_declare_system(FontTextureSystem)
+} zoxd_system(FontTextureSystem)

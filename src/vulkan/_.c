@@ -7,13 +7,13 @@
     #include "util/vulkan_setup.c"
 #endif
 
-void dispose_vulkan(ecs_world_t *world) {
+void dispose_vulkan() {
 #ifdef zox_vulkan
     dispose_vulkan_globals();
 #endif
 }
 
-byte initialize_vulkan(ecs_world_t *world) {
+byte initialize_vulkan() {
     // load shaders, vulkan load shader
     return EXIT_SUCCESS;
 }

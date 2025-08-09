@@ -27,10 +27,10 @@ zox_increment_system_with_reset_extra(SelectState, zox_select_state_trigger_sele
 
 
 void define_systems_elements_core(ecs *world) {
-    zox_define_increment_system_pip(InitializeElement, EcsOnStore);
-    zox_define_increment_system(ActiveStateDirty);
-    zox_define_increment_system(ClickState);
-    zox_define_increment_system(SelectState);
+    zoxd_system_increment_pip(InitializeElement, EcsOnStore);
+    zoxd_system_increment(ActiveStateDirty);
+    zoxd_system_increment(ClickState);
+    zoxd_system_increment(SelectState);
     zox_filter(raycast_query,
         [in] elements.core.CanvasPosition,
         [in] layouts2.PixelSize,
@@ -146,16 +146,16 @@ void define_systems_elements_core(ecs *world) {
         [none] ElementRender,
         [none] !cameras.RenderTexture);
     // healthbars
-    zox_system_1(ClickSoundSystem, zox_pip_mainthread,
+    zox_system_1(ClickSoundSystem, zoxp_mainthread,
         [in] elements.core.ClickState,
         [none] ClickMakeSound);
-    zox_system_1(ButtonClickEventSystem, zox_pip_mainthread,
+    zox_system_1(ButtonClickEventSystem, zoxp_mainthread,
         [in] ClickEvent,
         [in] elements.core.ClickState,
         [out] Clicker,
         [none] Element);
     if (!headless) {
-        // EcsOnLoad - zox_pip_mainthread
+        // EcsOnLoad - zoxp_mainthread
         zox_system_1(ElementBeginSystem, EcsPostLoad,
             [in] elements.core.InitializeElement,
             [in] layouts2.PixelSize,

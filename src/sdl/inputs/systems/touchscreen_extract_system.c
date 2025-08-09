@@ -13,4 +13,4 @@ void TouchscreenExtractSystem(ecs_iter_t *it) {
         screenDimensions->value = screen_size;
         sdl_extract_touchscreen(world, children, screen_size);
     }
-} zox_declare_system(TouchscreenExtractSystem)
+} zoxd_system(TouchscreenExtractSystem)

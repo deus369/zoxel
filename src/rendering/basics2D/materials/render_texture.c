@@ -10,7 +10,7 @@ typedef struct {
     uint transform_matrix;
     uint texture;
 } MaterialAttributesRenderTexture;
-zox_custom_component(MaterialAttributesRenderTexture)
+zoxc_custom(MaterialAttributesRenderTexture);
 
 MaterialAttributesRenderTexture create_MaterialAttributesRenderTexture(const uint material) {
     return (MaterialAttributesRenderTexture) {

@@ -1,8 +1,8 @@
 ecs_entity_t spawn_realm_block_noisey(ecs_world_t *world, const byte index, char* name, const color block_color) {
     // vox
     const ecs_entity_t vox = spawn_vox_generated_invisible(world, prefab_vox_generated, block_color);
-    zox_set_unique_name(vox, "dirt_pile")
-    zox_set(vox, VoxType, { vox_type_noisey })
+    zox_set_unique_name(vox, "dirt_pile");
+    zox_set(vox, VoxType, { vox_type_noisey });
     // block
     SpawnBlock data = {
         .prefab = prefab_block_vox_meta,

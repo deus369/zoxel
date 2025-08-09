@@ -27,4 +27,4 @@ void Render3DSystem(iter *it) {
         opengl_unset_mesh();
         zox_disable_material();
     }
-} zox_declare_system(Render3DSystem)
+} zoxd_system(Render3DSystem)

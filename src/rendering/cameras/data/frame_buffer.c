@@ -1,5 +1,5 @@
 // Define the FrameBufferLink component
-zox_component(FrameBufferLink, uint)
+zoxc(FrameBufferLink, uint);
 
 // Destructor for FrameBufferLink component
 ECS_DTOR(FrameBufferLink, ptr, {

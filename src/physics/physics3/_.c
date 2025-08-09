@@ -5,7 +5,7 @@
 #include "components/_.c"
 #include "util/_.c"
 #include "systems/_.c"
-#include "collisions3D/_.c"
+#include "collisions3/_.c"
 
 zox_begin_module(Physics3)
     zox_define_components_physics3(world);

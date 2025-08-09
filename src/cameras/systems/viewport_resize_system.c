@@ -30,4 +30,4 @@ void ViewportResizeSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ViewportResizeSystem)
+} zoxd_system(ViewportResizeSystem)

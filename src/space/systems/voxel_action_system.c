@@ -16,4 +16,4 @@
         }
         triggerActionA->value = 0;
     }
-} zox_declare_system(VoxelActionASystem)*/
+} zoxd_system(VoxelActionASystem)*/

@@ -32,4 +32,4 @@ void VodesLodSystem(iter *it) {
             set_vode_lods(world, voxelNode, vox_lod);
         }
     }
-} zox_declare_system(VodesLodSystem)
+} zoxd_system(VodesLodSystem)

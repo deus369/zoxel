@@ -8,7 +8,7 @@ ecs_entity_t spawn_grid2D(ecs_world_t *world) {
     const color_rgb grid_color = (color_rgb) { 25, 15, 15 };
     zox_new()
     // zox_prefab_add(e, Children)
-    Children children = { }; // 0
+    Children children = { 0 }; // 0
     float2 position;
     for (position.x = -size; position.x <= size; position.x += grid_size) {
         for (position.y = -size; position.y <= size; position.y += grid_size) {

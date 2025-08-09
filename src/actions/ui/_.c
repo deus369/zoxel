@@ -1,15 +1,15 @@
 #ifndef zoxm_actions_ui
 #define zoxm_actions_ui
 
-zox_declare_tag(MenuActions)
-zox_declare_tag(IconAction)
+zox_tag(MenuActions);
+zox_tag(IconAction);
 #include "prefabs/_.c"
 #include "util/_.c"
 
 zox_begin_module(ActionsUI)
-    zox_define_tag(MenuActions)
-    zox_define_tag(IconAction)
-    spawn_prefabs_actions_ui(world);
+    zox_define_tag(MenuActions);
+    zox_define_tag(IconAction);
+    add_hook_spawn_prefabs(spawn_prefabs_ui_actions);
     add_taskbar_button((hook_taskbar) {
         .spawn = &spawn_player_menu_actions,
         .component_id = MenuActions,

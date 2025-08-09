@@ -14,8 +14,8 @@ zox_begin_module(Blocks)
         [out] textures.GenerateTexture,
         [out] textures.TilemapSize,
         [out] textures.TextureLinks,
-        [none] textures.Tilemap)
-    spawn_prefabs_blocks(world);
+        [none] textures.Tilemap);
+    add_hook_spawn_prefabs(spawn_prefabs_blocks);
 zox_end_module(Blocks)
 
 #endif

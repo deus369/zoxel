@@ -62,4 +62,4 @@ void CloneVoxSystem(iter *it) {
             nodeDirty->value = zox_dirty_trigger;
         }
     }
-} zox_declare_system(CloneVoxSystem)
+} zoxd_system(CloneVoxSystem)

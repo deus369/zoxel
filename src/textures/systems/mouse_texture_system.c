@@ -13,4 +13,4 @@ void MouseTextureSystem(ecs_iter_t *it) {
             zox_set(textureLink->value, RenderDisabled, { render_disabled })
         }
     }
-} zox_declare_system(MouseTextureSystem)
+} zoxd_system(MouseTextureSystem)

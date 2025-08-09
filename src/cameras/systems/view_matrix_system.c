@@ -11,4 +11,4 @@ void ViewMatrixSystem(iter *it) {
         const float4x4 view_matrix = float4x4_inverse(transformMatrix->value);
         viewMatrix->value = float4x4_multiply(view_matrix, projectionMatrix->value);
     }
-} zox_declare_system(ViewMatrixSystem)
+} zoxd_system(ViewMatrixSystem)

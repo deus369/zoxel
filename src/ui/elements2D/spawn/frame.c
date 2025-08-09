@@ -50,7 +50,7 @@ entity3 spawn_frame(ecs *world, SpawnFrame data) {
         };
         zext = spawn_zext(world, &spawnZext);
         add_to_Children(children, zext);
-        zox_set_unique_name(zext, "icon_text")
+        zox_set_unique_name(zext, "icon_text");
     }
     zox_set(e, Children, { children->length, children->value })
     return (entity3) { e, icon, zext };

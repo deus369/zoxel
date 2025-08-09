@@ -5,4 +5,4 @@ void MeshDirtyRestoreSystem(iter *it) {
         zox_sys_o(MeshDirty, meshDirty)
         meshDirty->value = mesh_state_trigger;
     }
-} zox_declare_system(MeshDirtyRestoreSystem)
+} zoxd_system(MeshDirtyRestoreSystem)

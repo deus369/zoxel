@@ -7,15 +7,15 @@
 // todo: debug system will render bounds of structures around map (based on LODs)
 // todo: spawn tree structures out of grass voxels, the structure bounding boxes exist to limit their growths
 
-zox_declare_tag(VoxStructure)
+zox_tag(VoxStructure);
 
-void spawn_prefabs_voxels_structures(ecs *world) {
-
+void spawn_prefabs_structures(ecs *world) {
+    (void) world;
 }
 
 zox_begin_module(Structures)
-    zox_define_tag(VoxStructure)
-    spawn_prefabs_voxels_structures(world);
+    zox_define_tag(VoxStructure);
+    add_hook_spawn_prefabs(spawn_prefabs_structures);
 zox_end_module(Structures)
 
 #endif

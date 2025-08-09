@@ -38,4 +38,4 @@ void FreeCameraRotateSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(FreeCameraRotateSystem)
+} zoxd_system(FreeCameraRotateSystem)

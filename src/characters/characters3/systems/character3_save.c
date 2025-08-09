@@ -44,4 +44,4 @@ void CharacterSaveSystem(iter *it) {
         save_camera(game_name, "camera.dat", &data2);
         // zox_log("+ new hash detected at [%fx%fx%f] - %lu", position->value.x, position->value.y, position->value.z, hash)
     }
-} zox_declare_system(CharacterSaveSystem)
+} zoxd_system(CharacterSaveSystem)

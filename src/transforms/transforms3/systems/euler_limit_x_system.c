@@ -11,4 +11,4 @@ void EulerLimitXSystem(iter *it) {
             euler->value.x = eulerLimitX->value.y;
         }
     }
-} zox_declare_system(EulerLimitXSystem)
+} zoxd_system(EulerLimitXSystem)

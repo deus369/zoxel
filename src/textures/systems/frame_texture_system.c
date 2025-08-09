@@ -45,7 +45,6 @@ void FrameTextureSystem(ecs_iter_t *it) {
         } else {
             generate_texture_frame(
                 textureData->value,
-                textureData->length,
                 textureSize->value,
                 fill_color,
                 outline_color,
@@ -57,4 +56,4 @@ void FrameTextureSystem(ecs_iter_t *it) {
         textureDirty->value = 1;
         //  voronoi2D(textureData->value, textureSize->value, color_gray, color_gray_dark, 0.7f);
     }
-} zox_declare_system(FrameTextureSystem)
+} zoxd_system(FrameTextureSystem)

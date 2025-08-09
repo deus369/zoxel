@@ -12,4 +12,4 @@ void NeuronFeedForwardSystem(ecs_iter_t *it) {
             signal->value = 0;
         }
     }
-} zox_declare_system(NeuronFeedForwardSystem)
+} zoxd_system(NeuronFeedForwardSystem)

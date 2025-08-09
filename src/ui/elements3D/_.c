@@ -1,0 +1,25 @@
+#ifndef zox_elements3D
+#define zox_elements3D
+
+zox_tag(Element3D);
+zox_tag(Text3D);
+zoxc_float3(UITrail);
+zoxc_float(Text3DScale);
+#include "data/_.c"
+#include "settings/_.c"
+#include "util/_.c"
+#include "prefabs/_.c"
+#include "util/popup.c"
+#include "systems/_.c"
+#include "debug/_.c"
+
+zox_begin_module(Elements3)
+    zox_define_tag(Element3D);
+    zox_define_tag(Text3D);
+    zox_define_component(UITrail);
+    zox_define_component_float(Text3DScale);
+    define_systems_elements3D(world);
+    add_hook_spawn_prefabs(spawn_prefabs_elements3D);
+zox_end_module(Elements3)
+
+#endif

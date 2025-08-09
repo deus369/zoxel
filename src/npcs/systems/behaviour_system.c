@@ -1,5 +1,4 @@
 void BehaviourSystem(ecs_iter_t *it) {
-    // init_delta_time()
     zox_sys_world()
     zox_sys_begin()
     zox_sys_in(CombatState)
@@ -45,4 +44,4 @@ void BehaviourSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(BehaviourSystem)
+} zoxd_system(BehaviourSystem)

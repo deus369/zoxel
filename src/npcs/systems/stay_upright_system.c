@@ -56,5 +56,5 @@
         alpha->value = quaternion_rotate(alpha->value, torque_quat_z);
 
     }
-} zox_declare_system(StayUprightSystem)
+} zoxd_system(StayUprightSystem)
 */

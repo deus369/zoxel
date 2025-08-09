@@ -13,4 +13,4 @@ void ZeviceStickEnableSystem(iter *it) {
             zeviceDisabled->value = 0;
         }
     }
-} zox_declare_system(ZeviceStickEnableSystem)
+} zoxd_system(ZeviceStickEnableSystem)

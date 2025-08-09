@@ -25,4 +25,4 @@ void ChunkFlatlandSystem(ecs_iter_t *it) {
             fill_new_octree(voxelNode, 0, 0);
         }
     }
-} zox_declare_system(ChunkFlatlandSystem)
+} zoxd_system(ChunkFlatlandSystem)

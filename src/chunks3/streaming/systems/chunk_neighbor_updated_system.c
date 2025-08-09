@@ -1,7 +1,7 @@
 // refresh mesh if neighbor updates
 // is this still used
-void ChunkNeighborUpdatedSystem(iter *it) {
-    /*zox_sys_world()
+/*void ChunkNeighborUpdatedSystem(iter *it) {
+    zox_sys_world()
     zox_sys_begin()
     zox_sys_in(ChunkNeighbors)
     zox_sys_out(ChunkMeshDirty)
@@ -19,5 +19,5 @@ void ChunkNeighborUpdatedSystem(iter *it) {
                 break;
             }
         }
-    }*/
-} zox_declare_system(ChunkNeighborUpdatedSystem)
+    }
+} zoxd_system(ChunkNeighborUpdatedSystem)*/

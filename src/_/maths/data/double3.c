@@ -1,6 +1,3 @@
-// new: , float4x4_multiply_double4, double3_divide_double
-// for higher precision maths
-
 #define double3_zero (double3) { 0, 0, 0 }
 
 static inline double double_abs(const double input) {

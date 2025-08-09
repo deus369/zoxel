@@ -13,7 +13,7 @@ void Dissipation3System(iter *it) {
         drag = clampf(drag, 0.0f, 1.0f); // Safety clamp
         omega->value = float3_scale(omega->value, drag);
     }
-} zox_declare_system(Dissipation3System)
+} zoxd_system(Dissipation3System)
 
 /*float friction_power = friction3D;
 if (!grounded->value) {
@@ -48,7 +48,7 @@ float3_add_float3_p(&acceleration3D->value, float3_scale(velocity3D->value, - fr
 
 
     }
-} zox_declare_system(Dissipation3System)*/
+} zoxd_system(Dissipation3System)*/
 
 
         /*float magnitude = sqrt(omega3D->value.x * omega3D->value.x + omega3D->value.y * omega3D->value.y + omega3D->value.z * omega3D->value.z + omega3D->value.w * omega3D->value.w);

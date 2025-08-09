@@ -12,4 +12,4 @@ void Characters3SpawnZoneSystem(iter *it) {
             characterSpawnZone->value = renderDistance->value <= terrain_lod_near;
         }
     }
-} zox_declare_system(Characters3SpawnZoneSystem)
+} zoxd_system(Characters3SpawnZoneSystem)

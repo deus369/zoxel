@@ -44,7 +44,7 @@ void zoxel_settings_npcs() {
     // issue: npcs can walk outside the bounds of the spawn zone atm, thus making them not be destroyed properly when moving away
     // debug
     character_spawn_rate_min = 0;
-    character_spawn_rate_max = 3;
+    character_spawn_rate_max = 1;
     is_characters_instanced = 1;
     disable_npc_hooks = 0;
     disable_npc_uis = 0;
@@ -78,7 +78,7 @@ void zoxel_settings_physics() {
     run_speed = 0.3;
 }
 
-void zoxel_settings_uis(ecs_world_t* world) {
+void zoxel_settings_uis() {
     // main menu
     // header
     header_fill = color_grayscale(4);
@@ -102,14 +102,14 @@ void zoxel_settings_uis(ecs_world_t* world) {
     button_font_fill = color_grayscale(44);
     button_font_outline = color_grayscale(122);
     // set them again for now
-    zox_set(prefab_ui_list, Color, { window_fill })
+    /*zox_set(prefab_ui_list, Color, { window_fill })
     zox_set(prefab_ui_list, OutlineColor, { window_outline })
     zox_set(prefab_header, Color, { header_fill })
     zox_set(prefab_header, OutlineColor, { header_outline })
     zox_set(prefab_slider, Color, { header_fill })
     zox_set(prefab_slider, OutlineColor, { header_outline })
     zox_set(prefab_handle, Color, { button_font_fill })
-    zox_set(prefab_handle, OutlineColor, { button_font_outline })
+    zox_set(prefab_handle, OutlineColor, { button_font_outline })*/
     // nothing_font_color = debug_color; // debug font texture
     // fades
     is_start_game_delays = 1;
@@ -129,6 +129,7 @@ void zoxel_debug_keys() {
     add_hook_key_down(key_down_toggle_streaming);
     add_hook_key_down(toggle_inspector);
     add_hook_key_down(toggle_hierarchy);
+    add_hook_key_down(toggle_flymode);
     // add_hook_key_down(key_down_test_aura);
     // add_hook_key_down(keydown_test_cubes);
     // add_hook_key_down(keydown_test_popup3);
@@ -149,12 +150,14 @@ void zox_set_terrain_settings() {
 }
 
 zox_begin_module(ZoxGame)
-    game_name = "Zoxel";
 
+    game_name = "Zoxel";
+    vsync = 0;
+    // auto_player = 1;
     // disable_bone_rendering = 1;
     // disable_block_voxes = 1;
-    // disable_npcs = 1;
     // is_debug_collisions = 1;
+    // disable_npcs = 1;
 
     // global_music_speed = 1;
     // app settings
@@ -164,7 +167,6 @@ zox_begin_module(ZoxGame)
 
     const float sub_resolution = 4;
     viewport_scale = 1 / sub_resolution;
-    vsync = 1;
     target_fps = 0;
 
     is_split_screen = 0;
@@ -186,7 +188,7 @@ zox_begin_module(ZoxGame)
 
     zoxel_settings_npcs();
     zoxel_settings_physics();
-    zoxel_settings_uis(world);
+    zoxel_settings_uis();
     zoxel_debug_keys();
 
     // graphs
@@ -223,17 +225,6 @@ zox_begin_module(ZoxGame)
     // zox_debug_print_components();
     // is_log_io = 1;
     // is_log_sounds = 1;
-
-    // fix prefabs
-    /*if (prefab_vox) {
-        zox_prefab_set(prefab_vox, VoxScale, { vox_model_scale })
-    }*/
-    /*if (prefab_character3) {
-        zox_prefab_set(prefab_character3, VoxScale, { vox_model_scale })
-    }
-    if (prefab_character3_npc) {
-        zox_prefab_set(prefab_character3_npc, VoxScale, { vox_model_scale })
-    }*/
 
 zox_end_module(ZoxGame)
 

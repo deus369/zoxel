@@ -24,6 +24,8 @@
 #include "debug/_.c"
 
 void module_dispose_terrain(ecs_world_t *world, void *ctx) {
+    (void) world;
+    (void) ctx;
     dispose_hook_spawn_blocks();
 }
 
@@ -35,7 +37,7 @@ zox_begin_module(Terrain)
     zox_module_dispose(module_dispose_terrain);
     add_hook_terminal_command(process_arguments_terrain);
     add_to_event_game_state((zox_game_event) { &game_state_terrain });
-    spawn_prefabs_terrain(world);
+    add_hook_spawn_prefabs(spawn_prefabs_terrain);
 zox_end_module(Terrain)
 
 #endif

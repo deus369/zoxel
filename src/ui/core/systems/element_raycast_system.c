@@ -105,4 +105,4 @@ void ElementRaycastSystem(iter *it) {
             raycaster_select_window(world, e, window_selected);
         }
     }
-} zox_declare_system(ElementRaycastSystem)
+} zoxd_system(ElementRaycastSystem)

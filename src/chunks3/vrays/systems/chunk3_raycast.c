@@ -29,7 +29,7 @@ void Chunk3RaycastSystem(iter *it) {
         zox_geter_value(camera, RaycastOrigin, float3, ray_origin);
         zox_geter_value(camera, RaycastNormal, float3, ray_normal);
 
-        CharacterRaycast character_raycast = { };
+        CharacterRaycast character_raycast = { 0 };
         data->result = raycast_voxel_node(world,
             caster,
             voxels,
@@ -45,4 +45,4 @@ void Chunk3RaycastSystem(iter *it) {
             data,
             character_raycast);
     }
-} zox_declare_system(Chunk3RaycastSystem)
+} zoxd_system(Chunk3RaycastSystem)

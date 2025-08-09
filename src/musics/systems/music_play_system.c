@@ -69,4 +69,4 @@ void MusicPlaySystem(ecs_iter_t *it) {
             // zox_log_notes(" > music note played [%i : %i] frequency [%f] instrument [%i]", musicNote->value, music_note, frequency, instrumentType->value)
         }
     }
-} zox_declare_system(MusicPlaySystem)
+} zoxd_system(MusicPlaySystem)

@@ -9,4 +9,4 @@ void Alpha3System(iter *it) {
         omega->value = float3_add(omega->value, float3_scale(alpha->value, delta_time));
         float3_make_zero(&alpha->value);
     }
-} zox_declare_system(Alpha3System)
+} zoxd_system(Alpha3System)

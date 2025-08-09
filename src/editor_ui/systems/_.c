@@ -6,7 +6,7 @@ void zox_define_systems_editor(ecs_world_t *world) {
         [in] generic.EntityTarget,
         [in] generic.ComponentTarget,
         [none] InspectorLabel)
-    zox_system_1(HierarchyRefreshSystem, main_thread_pipeline,
+    zox_system_1(HierarchyRefreshSystem, zoxp_mainthread,
         [in] transforms2.Position2D,
         [in] elements.core.CanvasPosition,
         [in] elements.core.Layer2D,

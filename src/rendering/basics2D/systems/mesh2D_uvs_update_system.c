@@ -40,4 +40,4 @@ void Mesh2DUvsUpdateSystem(iter *it) {
         }
         opengl_upload_shader2D_textured(meshGPULink->value, uvsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices2D->value, meshUVs->value, meshVertices2D->length);
     }
-} zox_declare_system(Mesh2DUvsUpdateSystem)
+} zoxd_system(Mesh2DUvsUpdateSystem)

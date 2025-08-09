@@ -1,25 +1,22 @@
 const byte max_position_checks = 255;
 
 // scale 1/16.0f
-int real_position_to_voxel_position_dim(
+// return (int) floor(positionf * scale);
+static inline int positionf_to_voxel_position1(
     const float positionf,
-    // const byte depth,
     const float scale
 ) {
-    //const byte length = powers_of_two[depth];
-    //float multiplier = length * scale;
-    // zox_log("pos %f scale %f", positionf, scale);
-    return (int) floor(positionf * scale);
+    return (int) floor(positionf / scale);
 }
 
-int3 real_position_to_voxel_position2(
+static inline int3 positionf_to_positionv(
     const float3 positionf,
     const float scale
 ) {
     return (int3) {
-        (int) floor(positionf.x / scale),
-        (int) floor(positionf.y / scale),
-        (int) floor(positionf.z / scale)
+        positionf_to_voxel_position1(positionf.x, scale),
+        positionf_to_voxel_position1(positionf.y, scale),
+        positionf_to_voxel_position1(positionf.z, scale)
     };
 }
 
@@ -69,7 +66,7 @@ int3 real_position_to_chunk_position(
     byte chunk_length,
     const float scale   // vox_scale
 ) {
-    int3 voxel_position = real_position_to_voxel_position2(positionf, scale);
+    int3 voxel_position = positionf_to_positionv(positionf, scale);
     if (positionf.x < 0) voxel_position.x += 1;
     if (positionf.y < 0) voxel_position.y += 1;
     if (positionf.z < 0) voxel_position.z += 1;

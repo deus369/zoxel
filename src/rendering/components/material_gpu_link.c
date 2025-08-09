@@ -1,7 +1,7 @@
 extern uint spawn_gpu_material_program(const uint2 shader);
 
-zox_component(MaterialGPULink, uint)
-zox_component(MaterialInstancedGPULink, uint)
+zoxc(MaterialGPULink, uint);
+zoxc(MaterialInstancedGPULink, uint);
 
 void add_gpu_material(ecs *world, const entity e) {
     if (!headless) {
@@ -35,25 +35,3 @@ ECS_DTOR(MaterialGPULink, ptr, {
         glDeleteProgram(ptr->value);
     }
 })
-
-/*uint get_material_value(ecs *world, entity material) /{
-    return zox_get_value(material, MaterialGPULink)
-}*/
-
-/*
-ECS_CTOR(MaterialGPULink, ptr,
-{
-    // printf("ECS_CTOR MaterialGPULink!\n");
-    ptr->value = 0;
-})
-
-ECS_MOVE(MaterialGPULink, dst, src,
-{
-    // printf("ECS_MOVE MaterialGPULink [%i] - [%i].\n", dst->value, src->value);
-    if (dst->value)
-    {
-        glDeleteProgram(dst->value);
-    }
-    dst->value = src->value;
-    src->value = 0;
-})*/

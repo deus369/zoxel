@@ -1,9 +1,10 @@
 // controller
-#include "player3D_move_system.c"
-#include "player3D_rotate_system.c"
+#include "movement.c"
+#include "rotation.c"
+#include "jump.c"
 #include "player3D_trigger_system.c"
-#include "player3_respawn_system.c"
-#include "player3D_jump_system.c"
+#include "respawn.c"
+#include "flying.c"
 // TODO: shortcuts - move to hotkeys or something
 #include "player_pause_system.c"
 #include "player_toggle_camera_system.c"
@@ -15,11 +16,18 @@
 #include "random_jumping.c"
 
 void define_systems_controllers3D(ecs_world_t *world) {
+
     zox_system(Player3DMoveSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [in] inputs.DeviceMode,
             [in] characters.CharacterLink,
             [none] players.Player);
+    zox_system(PlayerFlySystem, EcsOnUpdate,
+            [in] inputs.DeviceLinks,
+            [in] inputs.DeviceMode,
+            [in] characters.CharacterLink,
+            [none] players.Player);
+
     zox_system(Player3RotateSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
             [in] inputs.DeviceMode,
@@ -48,7 +56,9 @@ void define_systems_controllers3D(ecs_world_t *world) {
             [in] inputs.DeviceLinks,
             [in] games.GameLink,
             [in] characters.CharacterLink,
+            [in] cameras.CameraLink,
             [none] players.Player);
+
     // more shortcuts
     zox_system(QolShortcutsSystem, EcsOnUpdate,
             [in] inputs.DeviceLinks,
@@ -62,7 +72,7 @@ void define_systems_controllers3D(ecs_world_t *world) {
             [none] players.Player);
 
     // Move to AI
-    zox_system(RandomJump3DSystem, zox_pip_physics,
+    zox_system(RandomJump3DSystem, zoxp_physics,
             [in] characters.CanJump,
             [out] characters.JumpState,
             [none] npcs.Jumper);

@@ -4,4 +4,4 @@ typedef struct  {
     entity data;
     entity triggered;
 } TooltipEventData;
-zox_function_component(TooltipEvent, byte, ecs*, const TooltipEventData*)
+zoxc_function(TooltipEvent, byte, ecs*, const TooltipEventData*);

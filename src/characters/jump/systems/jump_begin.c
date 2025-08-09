@@ -6,7 +6,8 @@ void JumpBeginSystem(ecs_iter_t *it) {
         zox_sys_i(JumpState, jumpState);
         zox_sys_o(Jump, jump);
         if (jumpState->value == zox_dirty_active) {
+            // zox_log("Jump Begin Truly.");
             jump->value = jump_timing;
         }
     }
-} zox_declare_system(JumpBeginSystem)
+} zoxd_system(JumpBeginSystem)

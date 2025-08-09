@@ -49,4 +49,4 @@ void PacketSendSystem(ecs_iter_t *it) {
         }
         free(send_buffer_2);
     }
-} zox_declare_system(PacketSendSystem)
+} zoxd_system(PacketSendSystem)

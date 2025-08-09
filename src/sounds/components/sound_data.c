@@ -27,7 +27,7 @@ typedef struct {
     uint length;
     float* value;   // point to our sound pool
 } SoundData;
-zox_custom_component(SoundData);
+zoxc_custom(SoundData);
 
 ECS_DTOR(SoundData, ptr, {
     if (ptr->value) {
@@ -35,5 +35,5 @@ ECS_DTOR(SoundData, ptr, {
     }
 })
 
-// zox_component_array_l(SoundData, float, max_sound_data);
+// zoxc_array_l(SoundData, float, max_sound_data);
 

@@ -5,4 +5,4 @@ void UvsGPULinkRestoreSystem(iter *it) {
         zox_sys_o(UvsGPULink, uvsGPULink)
         uvsGPULink->value = spawn_gpu_generic_buffer();
     }
-} zox_declare_system(UvsGPULinkRestoreSystem)
+} zoxd_system(UvsGPULinkRestoreSystem)

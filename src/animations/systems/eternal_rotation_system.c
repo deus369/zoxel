@@ -12,4 +12,4 @@ void EternalRotationSystem(ecs_iter_t *it) {
         rotation3D->value = quaternion_rotate(rotate_speed, rotation3D->value);
         // zox_log("   - eternally rotating: %s\n", zox_get_name(it->entities[i]))
     }
-} zox_declare_system(EternalRotationSystem)
+} zoxd_system(EternalRotationSystem)

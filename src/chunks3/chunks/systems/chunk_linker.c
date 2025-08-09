@@ -32,14 +32,14 @@ byte set_entity_chunk(ecs *world,
     }
     // remove entity from old chunk
     if (zox_valid(old_chunk)) {
-        zox_get_muter(old_chunk, EntityLinks, entityLinks)
-        remove_from_EntityLinks(entityLinks, e);
+        zox_get_muter(old_chunk, ChunkEntities, entityLinks)
+        remove_from_ChunkEntities(entityLinks, e);
         zox_log_chunk_removed(world, old_chunk, e);
     }
     // add entity to new chunk
-    zox_mut_begin(new_chunk, EntityLinks, entityLinks)
-    if (add_to_EntityLinks(entityLinks, e)) {
-        zox_mut_end(new_chunk, EntityLinks)
+    zox_mut_begin(new_chunk, ChunkEntities, entityLinks)
+    if (add_to_ChunkEntities(entityLinks, e)) {
+        zox_mut_end(new_chunk, ChunkEntities)
         zox_log_chunk_added(world, new_chunk, e);
     } else {
         zox_log_error("failed to add npc to chunk")
@@ -101,4 +101,4 @@ void ChunkLinkSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkLinkSystem)
+} zoxd_system(ChunkLinkSystem)

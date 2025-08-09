@@ -4,11 +4,11 @@ void ChunkEntitiesLodSystem(iter *it) {
     zox_sys_begin()
     zox_sys_in(RenderDistanceDirty)
     zox_sys_in(RenderDistance)
-    zox_sys_in(EntityLinks)
+    zox_sys_in(ChunkEntities)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
         zox_sys_i(RenderDistance, renderDistance)
-        zox_sys_i(EntityLinks, entityLinks)
+        zox_sys_i(ChunkEntities, entityLinks)
         if (renderDistanceDirty->value != zox_dirty_active) {
             continue;
         }
@@ -26,4 +26,4 @@ void ChunkEntitiesLodSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkEntitiesLodSystem)
+} zoxd_system(ChunkEntitiesLodSystem)

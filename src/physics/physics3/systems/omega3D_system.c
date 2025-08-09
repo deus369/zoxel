@@ -40,4 +40,4 @@ void Omega3System(iter *it) {
         rotation->value.w *= invLen;
 
     }
-} zox_declare_system(Omega3System)
+} zoxd_system(Omega3System)

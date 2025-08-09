@@ -32,9 +32,9 @@ int3 move_position(int3 position, byte dir) {
     return position;
 }
 
-#define zox_component_node_helper(name, base)\
+#define zoxc_node_helper(name, base)\
 \
-const base find_node_value_##name(\
+base find_node_value_##name(\
     const name* node,\
     int3 position,\
     byte depth)\
@@ -222,7 +222,7 @@ const name* get_root_adjacent_##name(\
 \
 const name* get_adjacentn_##name(\
     const name** neighbors, \
-    const byte* ndepths, \
+    /*const byte* ndepths,*/ \
     const name* node,\
     int3 position, \
     byte depth, \
@@ -251,7 +251,7 @@ const name* get_adjacentn_##name(\
     );\
 }\
 \
-const byte get_adjacent_depth_##name(\
+byte get_adjacent_depth_##name(\
     const name** neighbors, \
     const byte* ndepths, \
     int3 position,\

@@ -189,4 +189,4 @@ void CanvasStackSystem(iter *it) {
         int_hashmap_dispose(windows);
         windowToTop->value = 0;
     }
-} zox_declare_system(CanvasStackSystem)
+} zoxd_system(CanvasStackSystem)

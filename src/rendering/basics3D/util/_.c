@@ -1,6 +1,8 @@
 void catch_basic3D_errors(char* function_name) {
 #ifdef is_catch_basic3D_errors
     check_opengl_error(function_name);
+#else
+    (void) function_name;
 #endif
 }
 

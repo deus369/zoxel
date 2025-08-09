@@ -11,6 +11,7 @@ const float fracture_dark_multiplier = 0.6f; // 0.13f
 const float grass_blend_dark_multiplier = 0.8f; // 0.13f
 
 void process_arguments_voxes(ecs *world, char* args[], int count) {
+    (void) world;
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "--disableoutlines") == 0) {
             is_generate_vox_outlines = 0;

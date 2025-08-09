@@ -1,11 +1,11 @@
 // Dynamic Arrays
-#define zox_memory_component(T, type) \
+#define zoxc_arrayd(T, type) \
 typedef struct { \
     int length; \
     type *value; \
     SpinLock lock; \
 } T; \
-zox_custom_component(T) \
+zoxc_custom(T); \
 \
 ECS_CTOR(T, ptr, { \
     /*zox_log_error("   - ECS_CTOR %s", #T);*/ \
@@ -145,7 +145,7 @@ byte remove_at_##T(T *ptr, int index) {\
     zox_define_hooks(T);
 
 // equals function required here
-#define zox_memory_component_removes(T, type) \
+#define zoxc_arrayd_removes(T, type) \
 byte remove_from_##T(T* ptr, const type data) { \
     spin_lock(&ptr->lock); \
     int index = -1; \

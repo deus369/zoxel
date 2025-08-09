@@ -35,7 +35,7 @@ void EditorInputSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(EditorInputSystem)
+} zoxd_system(EditorInputSystem)
 
 // particle test
 /*else if (keyboard->v.pressed_this_frame) {

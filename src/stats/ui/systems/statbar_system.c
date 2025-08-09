@@ -24,4 +24,4 @@ void StatbarSystem(ecs_iter_t *it) {
             elementBar->value = new_value;
         }
     }
-} zox_declare_system(StatbarSystem)
+} zoxd_system(StatbarSystem)

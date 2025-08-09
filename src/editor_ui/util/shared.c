@@ -42,7 +42,7 @@ ecs_entity_t spawn_button_old(ecs_world_t *world,
     zox_set(e, Color, { button_fill })
     zox_set(e, OutlineColor, { button_outline })
     zox_set(e, RenderDisabled, { render_disabled })
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
     SpawnZext spawnZext = {
         .canvas = {
             .e = canvas,

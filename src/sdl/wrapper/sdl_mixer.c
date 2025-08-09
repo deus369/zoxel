@@ -88,7 +88,7 @@ byte sdl_play_sound(const SoundData *soundData, int channels, float volume) {
 }
 
 SoundData process_mix_chunk(Mix_Chunk *mix_chunk) {
-    return (SoundData) { }; // .value = NULL, .length = 0
+    return (SoundData) { 0 }; // .value = NULL, .length = 0
 }
 
 void spawn_mixer_pool(int max_buffers, int buffer_size) { }

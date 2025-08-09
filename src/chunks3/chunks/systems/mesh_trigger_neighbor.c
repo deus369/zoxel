@@ -30,4 +30,4 @@ void Chunk3NeighborsMeshTriggerSystem(iter *it) {
             chunkMeshDirty->value = chunk_dirty_state_trigger;
         }
     }
-} zox_declare_system(Chunk3NeighborsMeshTriggerSystem)
+} zoxd_system(Chunk3NeighborsMeshTriggerSystem)

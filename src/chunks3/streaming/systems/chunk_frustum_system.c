@@ -2,7 +2,7 @@ const float fudge_frustum_extents = 2.0f;
 
 // Note: uses zox_set here for children setting
 
-// note: I may need to thread lock/unlock EntityLinks when reading
+// note: I may need to thread lock/unlock ChunkEntities when reading
 
 // block spawn delve function
 void set_chunk_block_spawns_render_disabled(ecs *world, const VoxelNode *node, const byte state) {
@@ -29,7 +29,7 @@ void ChunkFrustumSystem(iter *it) {
     zox_sys_in(Position3D)
     zox_sys_in(ChunkSize)
     zox_sys_in(VoxScale)
-    zox_sys_in(EntityLinks)
+    zox_sys_in(ChunkEntities)
     zox_sys_in(VoxelNode)
     zox_sys_out(RenderDisabled)
     for (int i = 0; i < it->count; i++) {
@@ -37,7 +37,7 @@ void ChunkFrustumSystem(iter *it) {
         zox_sys_i(Position3D, position3D)
         zox_sys_i(ChunkSize, chunkSize)
         zox_sys_i(VoxScale, voxScale)
-        zox_sys_i(EntityLinks, entityLinks)
+        zox_sys_i(ChunkEntities, entityLinks)
         zox_sys_i(VoxelNode, voxelNode)
         zox_sys_o(RenderDisabled, renderDisabled)
         bounds chunk_bounds = calculate_chunk_bounds(
@@ -102,4 +102,4 @@ void ChunkFrustumSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkFrustumSystem)
+} zoxd_system(ChunkFrustumSystem)

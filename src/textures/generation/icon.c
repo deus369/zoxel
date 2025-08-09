@@ -1,4 +1,13 @@
-void generate_texture_icon(color *data, const int length, const int2 size, const color fill_color, const color outline_color, const byte frame_thickness, const byte radius, const byte is_noise) {
+void generate_texture_icon(
+    color *data,
+    const int length,
+    const int2 size,
+    const color fill_color,
+    const color outline_color,
+    const byte frame_thickness,
+    const byte radius,
+    const byte is_noise
+) {
     int index = 0;
     const byte is_odd = radius % 2 != 0;
     int2 mid_position = int2_half(size);

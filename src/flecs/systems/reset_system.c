@@ -13,7 +13,7 @@ void system_name(ecs_iter_t *it) {\
         zox_sys_o(component_name, component)\
         if (component->value == t) component->value = v;\
     }\
-} zox_declare_system(system_name)
+} zoxd_system(system_name)
 
 #define zox_reset_system(component_name) zox_set_system(component_name##ResetSystem, component_name, 1, 0)
 
@@ -46,4 +46,4 @@ void system_name##StateEventSystem(ecs_iter_t *it) {\
             function(world, e);\
         }\
     }\
-} zox_declare_system(system_name##StateEventSystem)
+} zoxd_system(system_name##StateEventSystem)

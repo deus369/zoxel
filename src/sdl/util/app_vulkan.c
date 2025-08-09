@@ -1,8 +1,10 @@
-ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world,
-    int2 position, int2 size,
+ecs_entity_t spawn_main_window_vulkan(
+    ecs_world_t *world,
+    int2 position,
+    int2 size,
     const byte fullscreen,
-    const char *name)
-{
+    const char *name
+) {
 #ifdef zox_vulkan
     if (fullscreen) {
         size = screen_dimensions;
@@ -21,7 +23,12 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world,
     }
     return spawn_main_window_vulkan(world, sdl_window);
 #else
-    zox_log("! vulkan wasn't included in build\n")
+    (void) world;
+    (void) position;
+    (void) size;
+    (void) fullscreen;
+    (void) name;
+    zox_logw("Vulkan wasn't included in build");
     return 0;
 #endif
 }

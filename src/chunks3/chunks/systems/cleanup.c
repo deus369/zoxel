@@ -4,24 +4,25 @@ void reduce_voxel_nodes(
     ecs *world,
     VoxelNode *node
 ) {
-    if (!node) {
+    if (!node || !has_children_VoxelNode(node)) {
         return;
     }
-    if (!has_children_VoxelNode(node)) {
-        return;
-    }
+
     VoxelNode* kids = get_children_VoxelNode(node);
     for (byte i = 0; i < octree_length; i++) {
         reduce_voxel_nodes(world, &kids[i]);
     }
+
     byte all_same = 1;
     byte all_same_voxel = 255;
-    VoxelNode* kids2 = get_children_VoxelNode(node);
+
     for (byte i = 0; i < octree_length; i++) {
-        VoxelNode* child = &kids2[i];
+        VoxelNode* child = &kids[i];
+
         if (is_opened_VoxelNode(child)) {
             return; // if a child node is open, then don't close this node
         }
+
         const byte node_value = child->value;
         if (all_same_voxel == 255) {
             all_same_voxel = node_value;
@@ -30,6 +31,7 @@ void reduce_voxel_nodes(
             break;
         }
     }
+
     if (all_same) {
         node->value = all_same_voxel;
         close_VoxelNode(world, node);
@@ -38,6 +40,7 @@ void reduce_voxel_nodes(
 
 // Break down our nodes, if they are the same type
 // When VoxelNodeDirty is zox_dirty_active
+// TODO: make a flag for Blocks that can group or not - for this
 void VoxelNodeCleanupSystem(iter *it) {
     zox_sys_world();
     zox_sys_begin();
@@ -55,4 +58,4 @@ void VoxelNodeCleanupSystem(iter *it) {
         reduce_voxel_nodes(world, node);
         write_unlock_VoxelNode(node);
     }
-} zox_declare_system(VoxelNodeCleanupSystem)
+} zoxd_system(VoxelNodeCleanupSystem)

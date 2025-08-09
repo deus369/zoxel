@@ -13,4 +13,4 @@ void ParentPositionSystem(iter *it) {
         }
         set_position_from_parents(world, parentLink->value, &position3D->value, localPosition3D->value);
     }
-} zox_declare_system(ParentPositionSystem)
+} zoxd_system(ParentPositionSystem)

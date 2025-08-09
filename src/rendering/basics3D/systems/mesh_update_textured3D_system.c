@@ -45,4 +45,4 @@ void Mesh3DTexturedUploadSystem(iter *it) {
         }
         update_shader3D_textured(meshGPULink->value, uvsGPULink->value, colorsGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length, meshUVs->value, meshColorRGBs->value);
     }
-} zox_declare_system(Mesh3DTexturedUploadSystem)
+} zoxd_system(Mesh3DTexturedUploadSystem)

@@ -55,4 +55,4 @@ void AnimationSequenceSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(AnimationSequenceSystem)
+} zoxd_system(AnimationSequenceSystem)

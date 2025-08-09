@@ -46,7 +46,7 @@ entity2 spawn_elementbar3(
         text_data.parent = e;
         const entity text = spawn_text3D(world, text_data, zigel_data);
         add_to_Children(children, text);
-        zox_set_unique_name(text, "elementbar3D_text")
+        zox_set_unique_name(text, "elementbar3D_text");
         output.y = text;
     }
     zox_set(e, Children, { children->length, children->value })

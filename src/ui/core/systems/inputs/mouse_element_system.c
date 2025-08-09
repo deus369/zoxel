@@ -29,4 +29,4 @@ void MouseElementSystem(iter *it) {
         pixelPosition->value.x -= anchor->value.x * canvas_size.x;
         pixelPosition->value.y -= anchor->value.y * canvas_size.y;
     }
-} zox_declare_system(MouseElementSystem)
+} zoxd_system(MouseElementSystem)

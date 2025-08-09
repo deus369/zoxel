@@ -4,6 +4,7 @@ void toggle_cameras_updates() {
 }
 
 void key_down_toggle_streaming(ecs *world, int32_t keycode) {
+    (void) world;
     if (keycode == SDLK_F3) {
         toggle_cameras_updates();
         // spawn_sound_from_file_index(world, prefab_sound, 0);

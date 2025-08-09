@@ -24,4 +24,4 @@ void Camera3FollowSystem(iter *it) {
         }
         float3_add_float3_p(&position->value, localPosition3D->value);
     }
-} zox_declare_system(Camera3FollowSystem)
+} zoxd_system(Camera3FollowSystem)

@@ -130,4 +130,4 @@ void DeviceModeSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(DeviceModeSystem)
+} zoxd_system(DeviceModeSystem)

@@ -59,4 +59,4 @@ void ScrollbarSystem(iter *it) {
             disable_element_rendering(world, list_element, !render_enabled);
         }
     }
-} zox_declare_system(ScrollbarSystem)
+} zoxd_system(ScrollbarSystem)

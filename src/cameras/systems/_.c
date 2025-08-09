@@ -36,10 +36,10 @@ void define_systems_cameras(ecs *world) {
             [none] apps.App);
     }
     #ifdef zox_draw_frustum
-    //zox_system_1(CameraPlanesDrawSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera3D)
-    //zox_system_1(FrustumDrawSystem, zox_pip_mainthread, [in] FrustumCorners, [none] Camera3D)
+    //zox_system_1(CameraPlanesDrawSystem, zoxp_mainthread, [in] CameraPlanes, [none] Camera3D)
+    //zox_system_1(FrustumDrawSystem, zoxp_mainthread, [in] FrustumCorners, [none] Camera3D)
     #endif
     #ifdef zox_debug_camera_frustum
-    // zox_system_1(CameraDebugSystem, zox_pip_mainthread, [in] CameraPlanes, [none] Camera)
+    // zox_system_1(CameraDebugSystem, zoxp_mainthread, [in] CameraPlanes, [none] Camera)
     #endif
 }

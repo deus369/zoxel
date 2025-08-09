@@ -70,4 +70,4 @@ void Element3DRenderSystem(iter *it) {
         opengl_unset_mesh();
         zox_disable_material();
     }
-} zox_declare_system(Element3DRenderSystem)
+} zoxd_system(Element3DRenderSystem)

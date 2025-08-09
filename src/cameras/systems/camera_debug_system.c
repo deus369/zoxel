@@ -71,7 +71,7 @@ void CameraDebugSystem(iter *it) {
             spawn_cube_lines(world, test_bounds[j].center, test_bounds[j].extents, 12, spawn_life_time, cube_color);
         }
     }
-} zox_declare_system(CameraDebugSystem)
+} zoxd_system(CameraDebugSystem)
 
 // spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { 0, -line_length, 0 }), float3_add(test_bounds.center, (float3) { 0, line_length, 0 }), 0.5f, 0.03, cube_color);
 // spawn_line3D_colored(world, float3_add(test_bounds.center, (float3) { -line_length, 0, 0 }), float3_add(test_bounds.center, (float3) { line_length, 0, 0 }), 0.5f, 0.03, cube_color);

@@ -14,8 +14,8 @@
 zox_begin_module(Textures)
     define_components_textures(world);
     define_systems_textures(world);
-    spawn_prefabs_textures_core(world);
-    zox_import_module(TexturesIO)
+    add_hook_spawn_prefabs(spawn_prefabs_textures_core);
+    zox_import_module(TexturesIO);
 zox_end_module(Textures)
 
 #endif

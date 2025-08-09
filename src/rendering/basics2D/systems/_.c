@@ -12,15 +12,15 @@ void define_systems_basics2D(ecs *world) {
         [in] rendering.MaterialGPULink,
         [in] rendering.TextureGPULink,
         [none] !rendering.MeshGPULink)
-    zox_system_1(Mesh2DUpdateSystem, zox_pip_mainthread,
+    zox_system_1(Mesh2DUpdateSystem, zoxp_mainthread,
         [out] rendering.MeshDirty,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshVertices2D,
         [in] rendering.MeshGPULink,
-        [in] rendering.MaterialGPULink,
+        // [in] rendering.MaterialGPULink,
         [none] !rendering.MeshUVs,
         [none] !rendering.MeshColorRGBs)
-    zox_system_1(Mesh2DUvsUpdateSystem, zox_pip_mainthread,
+    zox_system_1(Mesh2DUvsUpdateSystem, zoxp_mainthread,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshVertices2D,
         [in] rendering.MeshUVs,

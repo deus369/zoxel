@@ -6,12 +6,12 @@
 // #define zox_debug_rays
 #include "data/ray.c"
 // 2D
-zox_component_byte(RaycasterResult)
-zox_component_entity(RaycasterTarget)       //! A target entity for the Raycaster
-zox_component_int2(Raycaster)               //! Contains the raycast mouse position
+zoxc_byte(RaycasterResult);
+zoxc_entity(RaycasterTarget);       //! A target entity for the Raycaster
+zoxc_int2(Raycaster);               //! Contains the raycast mouse position
 // 3D
-zox_component_float3(RaycastOrigin)
-zox_component_float3(RaycastNormal)
+zoxc_float3(RaycastOrigin);
+zoxc_float3(RaycastNormal);
 #include "util/camera.c"
 #include "util/prefab.c"
 #include "systems/mouse_raycaster_system.c"
@@ -20,11 +20,11 @@ zox_component_float3(RaycastNormal)
 #include "systems/ray_debug_system.c"
 
 zox_begin_module(Raycasts)
-    zox_define_component_int2(Raycaster)
-    zox_define_component_byte(RaycasterResult)
-    zox_define_component_entity(RaycasterTarget)
-    zox_define_component_float3(RaycastOrigin)
-    zox_define_component_float3(RaycastNormal)
+    zox_define_component_int2(Raycaster);
+    zox_define_component_byte(RaycasterResult);
+    zox_define_component_entity(RaycasterTarget);
+    zox_define_component_float3(RaycastOrigin);
+    zox_define_component_float3(RaycastNormal);
     // zox_system(MouseRaycasterSystem, zox_pip_raycasting, [in] inputs.DeviceLinks, [in] inputs.DeviceMode, [out] raycasts.Raycaster)
     zox_system(ZeviceRaycasterSystem, zox_pip_raycasting,
             [in] inputs.ZevicePointerPosition,
@@ -34,16 +34,16 @@ zox_begin_module(Raycasts)
             [out] raycasts.RaycastOrigin,
             [out] raycasts.RaycastNormal)
 #else
-    zox_system_1(CameraRaySystem, zox_pip_mainthread,
+    zox_system_1(CameraRaySystem, zoxp_mainthread,
             [out] raycasts.RaycastOrigin,
             [out] raycasts.RaycastNormal)
 #endif
 #ifdef zox_debug_rays
-    zox_system_1(RayDebugSystem, zox_pip_mainthread,
+    zox_system_1(RayDebugSystem, zoxp_mainthread,
             [in] raycasts.RaycastOrigin,
             [in] raycasts.RaycastNormal)
 #endif
-    prefab_set_game_prefabs(world);
+    add_hook_spawn_prefabs(prefab_set_game_prefabs);
 zox_end_module(Raycasts)
 
 #endif

@@ -1,4 +1,4 @@
-int initialize_sdl_video(ecs_world_t *world) {
+int initialize_sdl_video() {
     if (SDL_VideoInit(NULL)) {
         zox_log_error("failed to initialize sdl [%s]", SDL_GetError())
         return EXIT_FAILURE;

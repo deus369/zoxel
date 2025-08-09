@@ -27,4 +27,4 @@ void QolShortcutsSystem(ecs_iter_t *it) {
     if (toggle_maximized) {
         zox_toggle_maximized(world);
     }
-} zox_declare_system(QolShortcutsSystem)
+} zoxd_system(QolShortcutsSystem)

@@ -13,7 +13,7 @@ entity spawn_window2(ecs *world,
     // start children
     Children* children = window_data->children;
     // zox_muter(e, Children, children)
-    // Children children = (Children) { };
+    // Children children = (Children) { 0 };
 
     const ParentSpawnData e_parent_data = {
         .e = e,
@@ -45,7 +45,7 @@ entity spawn_window2(ecs *world,
         .padding = window_data->header_padding,
     };
     // n/a
-    SpawnButtonData close_button_data = { };
+    SpawnButtonData close_button_data = { 0 };
     const entity header = spawn_header3(world,
         canvas_data,
         e_parent_data,

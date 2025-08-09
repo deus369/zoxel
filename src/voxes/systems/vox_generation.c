@@ -193,4 +193,4 @@ void VoxGenerationSystem(iter *it) {
 
     endwatch(time_vox_generation, "ending");
     zox_ts_end(vox_generation, 3, zox_profile_system_vox_generation);
-} zox_declare_system(VoxGenerationSystem)
+} zoxd_system(VoxGenerationSystem)

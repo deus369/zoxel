@@ -5,7 +5,7 @@ void TextureRestoreSystem(iter *it) {
         zox_sys_o(TextureGPULink, textureGPULink)
         textureGPULink->value = spawn_gpu_texture_buffer();
     }
-} zox_declare_system(TextureRestoreSystem)
+} zoxd_system(TextureRestoreSystem)
 
 void TextureDirtyRestoreSystem(iter *it) {
     zox_sys_begin()
@@ -14,4 +14,4 @@ void TextureDirtyRestoreSystem(iter *it) {
         zox_sys_o(TextureDirty, textureDirty)
         textureDirty->value = 1;
     }
-} zox_declare_system(TextureDirtyRestoreSystem)
+} zoxd_system(TextureDirtyRestoreSystem)

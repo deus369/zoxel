@@ -107,4 +107,4 @@ void CubeLineRenderSystem(ecs_iter_t *it) {
     }
     zox_gpu_disable_buffer(line3D_position_location);
     zox_disable_material();
-} zox_declare_system(CubeLineRenderSystem)
+} zoxd_system(CubeLineRenderSystem)

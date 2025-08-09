@@ -43,4 +43,4 @@ void CameraRaySystem(ecs_iter_t *it) {
         render_line3D(world, ray.origin, float3_add(ray.origin, float3_scale(ray.normal, 8)), color_rgb_white);
 #endif
     }
-} zox_declare_system(CameraRaySystem)
+} zoxd_system(CameraRaySystem)

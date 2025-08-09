@@ -6,7 +6,7 @@
 #include "debug/_.c"
 
 zox_begin_module(Cubes)
-    spawn_prefabs_cubes(world);
+    add_hook_spawn_prefabs(spawn_prefabs_cubes);
 zox_end_module(Cubes)
 
 #endif

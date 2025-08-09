@@ -9,4 +9,4 @@ void Acceleration3System(iter *it) {
         velocity->value = float3_add(velocity->value, float3_scale(acceleration->value, delta_time));
         float3_make_zero(&acceleration->value);
     }
-} zox_declare_system(Acceleration3System)
+} zoxd_system(Acceleration3System)

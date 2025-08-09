@@ -142,4 +142,4 @@ void Text2DResizeSystem(iter *it) {
         };
         spawn_text2D_zigels(world, &spawn_data, children, textData);
     }
-} zox_declare_system(Text2DResizeSystem)
+} zoxd_system(Text2DResizeSystem)

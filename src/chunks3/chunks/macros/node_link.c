@@ -11,7 +11,7 @@ static inline byte is_linked_unlocked_##name(const name *node) {\
     return node->type == node_type_instance;\
 }\
 \
-const entity get_node_entity_unlocked_##name(const name *node) {\
+entity get_node_entity_unlocked_##name(const name *node) {\
     return is_linked_unlocked_##name(node) ? ((NodeLink*) node->ptr)->value : 0;\
 }\
 \
@@ -55,7 +55,7 @@ byte destroy_node_link_##name(ecs *world, name *node) {\
     return did_destroy;\
 }\
 \
-const entity get_node_entity_##name(const name *node) {\
+entity get_node_entity_##name(const name *node) {\
     const entity e = is_linked_unlocked_##name(node) ? ((NodeLink*) node->ptr)->value : 0;\
     return e;\
 }

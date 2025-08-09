@@ -7,4 +7,4 @@ void GenericEventDebugSystem(ecs_iter_t *it) {
         zox_sys_i(GenericEvent, genericEvent)
         zox_log("     > event occurs [%lu] [%i]\n", e, genericEvent->value);
     }
-} zox_declare_system(GenericEventDebugSystem)
+} zoxd_system(GenericEventDebugSystem)

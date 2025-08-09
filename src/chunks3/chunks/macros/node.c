@@ -1,19 +1,16 @@
-#define zox_component_node(name, base, default_value)\
+#define zoxc_node(name, base, default_value)\
+\
 typedef struct name name;\
+\
 struct name {\
     base value;\
     byte type;\
     void* ptr;\
     zox_lock lock;\
-}; zox_custom_component(name)\
+};\
+zoxc_custom(name);\
 \
-zox_hookr(on_destroyed_##name, byte, (ecs* world, name* node), (world, node));\
-\
-void destroy_##name(ecs *world, name* node);\
-\
-void* get_new_children_##name() {\
-    return (void*) malloc(sizeof(name) * octree_length);\
-}\
+zox_hookr(on_destroyed_##name, byte, (ecs* world, name* node), (world, node))\
 \
 static inline void create_lock_##name(name *node) {\
     if (nodes_w_safety_locks || nodes_r_safety_locks) {\
@@ -80,8 +77,7 @@ void create_##name(name* node) {\
 }\
 \
 void open_##name(name* node) { \
-    /*write_lock_##name(node);*/ \
-    node->ptr = get_new_children_##name(); \
+    node->ptr = (void*) malloc(sizeof(name) * octree_length);\
     if (node->ptr) { \
         node->type = node_type_children; \
         name* kids = get_children_unlocked_##name(node); \
@@ -89,8 +85,9 @@ void open_##name(name* node) { \
             create_##name(&kids[i]); \
         } \
     } \
-    /*write_unlock_##name(node);*/ \
 }\
+\
+void destroy_##name(ecs *world, name* node);\
 \
 void close_##name(ecs *world, name *node) {\
     if (!has_children_##name(node)) { \
@@ -100,8 +97,8 @@ void close_##name(ecs *world, name *node) {\
     for (byte i = 0; i < octree_length; i++) { \
         destroy_##name(world, &kids[i]); \
     } \
-    free(node->ptr); \
     node->type = node_type_closed; \
+    free(node->ptr); \
     node->ptr = NULL; \
 }\
 \
@@ -124,7 +121,7 @@ ECS_CTOR(name, ptr, {\
     create_##name(ptr);\
 })\
 \
-void clone_tree_##name(\
+void clone_##name(\
     name* dst,\
     const name* src)\
 {\
@@ -137,7 +134,7 @@ void clone_tree_##name(\
         name* kids_dst = get_children_##name(dst);\
         name* kids_src = get_children_##name(src);\
         for (byte i = 0; i < octree_length; i++) {\
-            clone_tree_##name(&kids_dst[i], &kids_src[i]);\
+            clone_##name(&kids_dst[i], &kids_src[i]);\
         }\
     } else {\
         dst->ptr = NULL;\
@@ -145,15 +142,13 @@ void clone_tree_##name(\
 }\
 \
 ECS_COPY(name, dst, src, {\
-    clone_tree_##name(dst, src);\
+    clone_##name(dst, src);\
 })\
 \
 ECS_MOVE(name, dst, src, {\
-    /*write_lock_##name(dst);*/\
     dst->ptr = src->ptr;\
     dst->value = src->value;\
     dst->type = src->type;\
-    /*write_unlock_##name(dst);*/\
     src->ptr = NULL;\
     src->value = default_value;\
     src->type = 0;\

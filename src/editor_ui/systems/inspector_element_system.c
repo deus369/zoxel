@@ -15,4 +15,4 @@ void InspectorElementSystem(ecs_iter_t *it) {
         get_component_label(world, entityTarget->value, componentTarget->value, buffer);
         set_entity_label_with_text(world, e, buffer);
     }
-} zox_declare_system(InspectorElementSystem)
+} zoxd_system(InspectorElementSystem)

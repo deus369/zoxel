@@ -2,7 +2,6 @@ ecs_entity_t spawn_statbar2(
     ecs_world_t *world,
     const ecs_entity_t canvas,
     const ecs_entity_t parent,
-    const ecs_entity_t player,
     const entity2 character_group,
     const color_rgb c,
     const byte layer,

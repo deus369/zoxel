@@ -70,4 +70,4 @@ void RotateTowardsSystem(ecs_iter_t *it) {
         }
 
     }
-} zox_declare_system(RotateTowardsSystem)
+} zoxd_system(RotateTowardsSystem)

@@ -15,4 +15,4 @@
         // transfer->value += delta_time * 0.2f;
         // neuron_enable_signals(world, e);
     }
-} zox_declare_system(NeuronInputSystem)*/
+} zoxd_system(NeuronInputSystem)*/

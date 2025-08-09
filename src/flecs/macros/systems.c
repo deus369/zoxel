@@ -1,5 +1,9 @@
-#define zox_declare_system(name)\
+#define zoxd_system(name)\
     ECS_SYSTEM_DECLARE(name);
+
+// until i replace old
+#define zoxd_system2(name)\
+    ECS_SYSTEM_DECLARE(name)
 
 #if defined(zox_enable_log_new_system) && !defined(zox_disable_logs)
     #define zox_log_new_system(msg, ...) zox_log(msg, ##__VA_ARGS__)

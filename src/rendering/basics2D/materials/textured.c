@@ -12,7 +12,7 @@ typedef struct {
     uint brightness;
     uint alpha;
 } MaterialTextured2D;
-zox_custom_component(MaterialTextured2D)
+zoxc_custom(MaterialTextured2D);
 
 MaterialTextured2D create_MaterialTextured2D(const uint material) {
     return (MaterialTextured2D) {

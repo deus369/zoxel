@@ -37,5 +37,5 @@ void UserIconTooltipSystem(ecs_iter_t *it) {
         (*tooltipEvent->value)(world, &data);
         // zox_log(" > icon [%lu] selected at %f\n", it->entities[i], zox_current_time)
     }
-} zox_declare_system(UserIconTooltipSystem)
+} zoxd_system(UserIconTooltipSystem)
 

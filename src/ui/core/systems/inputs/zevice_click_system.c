@@ -81,4 +81,4 @@ void ZeviceClickSystem(iter *it) {
             clickingEntity->value = 0;
         }
     }
-} zox_declare_system(ZeviceClickSystem)
+} zoxd_system(ZeviceClickSystem)

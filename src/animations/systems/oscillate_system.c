@@ -16,4 +16,4 @@ void OscillateSystem(ecs_iter_t *it) {
         localPosition->value.y = oscillateStartPosition3D->value.y + oscillateDeltaPosition3D->value.y * sin(animation_time * speed);
         localPosition->value.z = oscillateStartPosition3D->value.z + oscillateDeltaPosition3D->value.z * sin(animation_time * speed);
     }
-} zox_declare_system(OscillateSystem)
+} zoxd_system(OscillateSystem)

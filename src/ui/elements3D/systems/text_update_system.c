@@ -44,4 +44,4 @@ void TextUpdateSystem(iter *it) {
         // zox_sys_e()
         // zox_log("+ updating text [%s]", zox_get_name(e))
     }
-} zox_declare_system(TextUpdateSystem)
+} zoxd_system(TextUpdateSystem)

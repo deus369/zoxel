@@ -30,7 +30,7 @@ void GameStateSystem(ecs_iter_t *it) {
             trigger_event_game(world, e, old_state, gameStateTarget->value);
         }
     }
-} zox_declare_system(GameStateSystem)
+} zoxd_system(GameStateSystem)
 
 // when state changes, we can do events here
 //      game has children which includes all players

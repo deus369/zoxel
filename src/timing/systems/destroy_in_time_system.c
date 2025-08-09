@@ -19,4 +19,4 @@ void DestroyInTimeSystem(ecs_iter_t *it) {
             zox_delete(e);
         }
     }
-} zox_declare_system(DestroyInTimeSystem)
+} zoxd_system(DestroyInTimeSystem)

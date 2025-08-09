@@ -4,12 +4,12 @@ void Characters3DespawnSystem(iter *it) {
     zox_sys_in(RenderDistanceDirty)
     zox_sys_in(CharacterSpawnZone)
     zox_sys_out(CharactersSpawned)
-    zox_sys_out(EntityLinks)
+    zox_sys_out(ChunkEntities)
     for (int i = 0; i < it->count; i++) {
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
         zox_sys_i(CharacterSpawnZone, characterSpawnZone)
         zox_sys_o(CharactersSpawned, charactersSpawned)
-        zox_sys_o(EntityLinks, entityLinks)
+        zox_sys_o(ChunkEntities, entityLinks)
         if (renderDistanceDirty->value != zox_dirty_active) {
             continue;
         }
@@ -32,8 +32,8 @@ void Characters3DespawnSystem(iter *it) {
                 zox_delete(entityLinks->value[j])
             }
             zox_stats_characters -= entityLinks->length;
-            clear_memory_component(EntityLinks, entityLinks)
+            clear_memory_component(ChunkEntities, entityLinks)
             charactersSpawned->value = 0;
         }
     }
-} zox_declare_system(Characters3DespawnSystem)
+} zoxd_system(Characters3DespawnSystem)

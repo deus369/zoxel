@@ -40,4 +40,4 @@ void UITrailSystem(iter *it) {
         spawn_line3D(world, target_position, position3D->value, ui_trail_debug_thickness, 1.0);
 #endif
     }
-} zox_declare_system(UITrailSystem)
+} zoxd_system(UITrailSystem)

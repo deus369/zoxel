@@ -61,4 +61,4 @@ void DraggerEndSystem(iter *it) {
 #endif
         }
     }
-} zox_declare_system(DraggerEndSystem)
+} zoxd_system(DraggerEndSystem)

@@ -72,7 +72,7 @@ void build_voxel_faces_c(
             NULL,
             edge,
             cneighbors,
-            cneighbor_lods,
+            // cneighbor_lods,
             root,
             position,
             i,          // direction
@@ -313,7 +313,7 @@ void ChunkColorsBuildSystem(iter *it) {
             voxScale->value);
         const float3 offset = float3_scale(b, -1);
         const byte chunk_depth = get_chunk_division_from_lod(renderLod->value, node_depth);
-        byte chunk_length = powers_of_two[nodeDepth->value];
+        byte chunk_length = powers_of_two[node_depth];
         const float chunk_scale = voxScale->value * chunk_length;
 
         /*zox_log("- building: vox voxscale:");
@@ -343,4 +343,4 @@ void ChunkColorsBuildSystem(iter *it) {
         meshDirty->value = mesh_state_trigger_slow;
     }
     zox_ts_end(build_chunk_colored, 5, zox_profile_system_chunk_builder_c);
-} zox_declare_system(ChunkColorsBuildSystem)
+} zoxd_system(ChunkColorsBuildSystem)

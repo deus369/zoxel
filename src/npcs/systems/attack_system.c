@@ -14,4 +14,4 @@ void AttackSystem(ecs_iter_t *it) {
         }
         target->value = threat->value;
     }
-} zox_declare_system(AttackSystem)
+} zoxd_system(AttackSystem)

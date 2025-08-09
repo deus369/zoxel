@@ -76,4 +76,4 @@ void Skeleton3RenderSystem(iter *it) {
         glEnable(GL_CULL_FACE);
 #endif
     }
-} zox_declare_system(Skeleton3RenderSystem)
+} zoxd_system(Skeleton3RenderSystem)

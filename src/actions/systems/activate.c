@@ -131,4 +131,4 @@ void ActionActivateSystem(ecs_iter_t *it) {
             zox_log_error("action is not a block item [%s]", zox_get_name(action))
         }
     }
-} zox_declare_system(ActionActivateSystem)
+} zoxd_system(ActionActivateSystem)

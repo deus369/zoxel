@@ -12,7 +12,7 @@ ecs_entity_t spawn_prefab_chunk_terrain(
     zox_prefab_set(e, Seed, { 666 });
     zox_prefab_set(e, ChunkLodDirty, { 0 });
     zox_prefab_set(e, GenerateChunk, { 0 });
-    zox_prefab_set(e, EntityLinks, { 0, NULL });
+    zox_prefab_set(e, ChunkEntities, { 0, NULL });
     zox_prefab_set(e, BlocksSpawned, { 0 });
     zox_prefab_set(e, ChunkNeighbors, { { 0, 0, 0, 0, 0, 0 } });
     zox_add_tag(e, ChunkDebugger);

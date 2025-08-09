@@ -52,4 +52,4 @@ void DotsSystem(ecs_iter_t *it) {
         // zox_set(userLink->value, LastDamager, { spawnerLink->value })
         combat_on_hit(world, userLink->value,spawnerLink->value);
     }
-} zox_declare_system(DotsSystem)
+} zoxd_system(DotsSystem)

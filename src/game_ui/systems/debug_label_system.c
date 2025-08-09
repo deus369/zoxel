@@ -45,4 +45,4 @@ void DebugLabelSystem(ecs_iter_t *it) {
             zextDirty->value = 1;
         }
     }
-} zox_declare_system(DebugLabelSystem)
+} zoxd_system(DebugLabelSystem)

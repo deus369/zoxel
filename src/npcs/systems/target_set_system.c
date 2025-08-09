@@ -15,4 +15,4 @@ void ThreatPositionSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(ThreatPositionSystem)
+} zoxd_system(ThreatPositionSystem)

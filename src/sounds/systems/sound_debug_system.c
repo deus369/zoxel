@@ -36,4 +36,4 @@ void SoundDebugSystem(ecs_iter_t *it) {
         }
     }
 //#endif
-} zox_declare_system(SoundDebugSystem)
+} zoxd_system(SoundDebugSystem)

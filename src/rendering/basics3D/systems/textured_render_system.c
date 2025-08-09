@@ -46,4 +46,4 @@ void TexturedRenderSystem(iter *it) {
         // zox_log("texture rendering [%i]\n", i)
         catch_basic3D_errors("! TexturedRenderSystem");
     }
-} zox_declare_system(TexturedRenderSystem)
+} zoxd_system(TexturedRenderSystem)

@@ -18,7 +18,7 @@ void trigger_event_game(ecs_world_t* world,
     const byte old_game_state,
     const byte new_game_state)
 {
-    for (int i = 0; i < game_state_event->size; i++) {
+    for (size_t i = 0; i < game_state_event->size; i++) {
         if (game_state_event->data[i].value) (*game_state_event->data[i].value)(world, game, old_game_state, new_game_state);
     }
 }

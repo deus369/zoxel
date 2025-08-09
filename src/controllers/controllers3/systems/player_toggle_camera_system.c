@@ -5,13 +5,15 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
     zox_sys_in(DeviceLinks)
     zox_sys_in(GameLink)
     zox_sys_in(CharacterLink)
+    zox_sys_in(CameraLink)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(PlayerState, playerState)
         zox_sys_i(DeviceLinks, deviceLinks)
         zox_sys_i(GameLink, gameLink)
         zox_sys_i(CharacterLink, characterLink)
-        if (!zox_valid(gameLink->value)) {
+        zox_sys_i(CameraLink, cameraLink)
+        if (!zox_valid(gameLink->value) || !zox_valid(cameraLink->value)) {
             continue;
         }
         zox_geter_value(gameLink->value, GameState, byte, game_state)
@@ -56,8 +58,9 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
         if (is_toggle_camera && zox_valid(characterLink->value)) {
             if (playerState->value == zox_player_state_playing) {
                 // hack to disable crosshair for different camera modes
-                toggle_camera_mode(world, vox_model_scale);
-                byte is_first_person = camera_mode == zox_camera_mode_first_person;
+                byte mode = toggle_camera_mode(world, cameraLink->value);
+
+                byte is_first_person = mode == zox_camera_mode_first_person;
                 zox_set(local_crosshair, RenderDisabled, { !is_first_person })
                 // zox_log("> crosshair [%s]", is_crosshair_shown ? "visible" : "invisible")
             }
@@ -69,4 +72,4 @@ void PlayerToggleCameraSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(PlayerToggleCameraSystem)
+} zoxd_system(PlayerToggleCameraSystem)

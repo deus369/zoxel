@@ -10,7 +10,7 @@ void define_systems_skills(ecs_world_t *world) {
             [in] transforms3.Position3D,
             [out] hierarchys.Children,
             [out] stats.DotLinks)
-    zox_system_ctx_1(DamageAuraSystem, zox_pip_mainthread, characters,
+    zox_system_ctx_1(DamageAuraSystem, zoxp_mainthread, characters,
             [in] users.UserLink,
             [in] SkillActive,
             [in] SkillDamage,
@@ -28,7 +28,7 @@ void define_systems_skills(ecs_world_t *world) {
             [none] Poison)
     zox_define_system_state_event_1(RealmSkills, EcsOnLoad, realms.GenerateRealm, [none] realms.Realm)
     // todo: make a state system for SkillActive
-    zox_system_1(MeleeSystem, zox_pip_mainthread,
+    zox_system_1(MeleeSystem, zoxp_mainthread,
             [in] users.UserLink,
             [in] SkillDamage,
             [in] SkillDamageMax,

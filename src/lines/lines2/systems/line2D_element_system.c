@@ -39,4 +39,4 @@ void Line2DElementSystem(ecs_iter_t *it) {
             canvas_size_f,
             aspect_ratio);
     }
-} zox_declare_system(Line2DElementSystem)
+} zoxd_system(Line2DElementSystem)

@@ -95,4 +95,4 @@ void Text3DResizeSystem(iter *it) {
         zigel_data.scale = text3DScale->value;
         resize_text3D(world, children, textData, zigel_data);
     }
-} zox_declare_system(Text3DResizeSystem)
+} zoxd_system(Text3DResizeSystem)

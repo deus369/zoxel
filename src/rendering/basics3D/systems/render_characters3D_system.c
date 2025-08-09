@@ -61,4 +61,4 @@ void Characters3RenderSystem(iter *it) {
         glEnable(GL_CULL_FACE);
 #endif
     }
-} zox_declare_system(Characters3RenderSystem)
+} zoxd_system(Characters3RenderSystem)

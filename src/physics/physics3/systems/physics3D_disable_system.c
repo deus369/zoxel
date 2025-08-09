@@ -21,5 +21,5 @@ void Physics3DDisableSystem(iter *it) {
             float3_make_zero(&velocity3D->value);
         }
     }
-} zox_declare_system(Physics3DDisableSystem)
+} zoxd_system(Physics3DDisableSystem)
 

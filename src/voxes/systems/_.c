@@ -7,7 +7,7 @@
 zox_increment_system_with_reset(GenerateVox, zox_dirty_end);
 
 void define_systems_voxes(ecs *world) {
-    zox_define_increment_system(GenerateVox);
+    zoxd_system_increment(GenerateVox);
     // remember: timing specific, fucks up if changes position
     zox_system(Bounds3GrowSystem, EcsOnUpdate,
             [in] rendering.MeshDirty,
@@ -23,7 +23,7 @@ void define_systems_voxes(ecs *world) {
             [out] rendering.TextureDirty,
             [none] textures.VoxTexture)
     // NOTE: Writes to VoxelNode
-    zox_system(VoxGenerationSystem, zoxp_write_voxels,
+    zox_system(VoxGenerationSystem, zoxp_voxels_write,
             [in] GenerateVox,
             [in] colorz.Color,
             [in] VoxType,
@@ -32,7 +32,7 @@ void define_systems_voxes(ecs *world) {
             [out] chunks3.NodeDepth,
             [out] colorz.ColorRGBs)
     // NOTE: Writes to VoxelNode
-    zox_system(CloneVoxSystem, zoxp_write_voxels,
+    zox_system(CloneVoxSystem, zoxp_voxels_write,
             [in] CloneVoxLink,
             [out] CloneVox,
             [out] chunks3.VoxelNode,
@@ -46,7 +46,7 @@ void define_systems_voxes(ecs *world) {
             [in] rendering.ModelLink,
             [in] textures.TextureLinks)
     if (!headless) {
-        zox_system(ChunkColorsBuildSystem, zoxp_read_voxels,
+        zox_system(ChunkColorsBuildSystem, zoxp_voxels_read,
                 [in] chunks3.ChunkMeshDirty,
                 [in] chunks3.VoxelNode,
                 [in] chunks3.NodeDepth,

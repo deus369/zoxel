@@ -5,4 +5,4 @@
         zox_field_i(Position3D, position3Ds, position3D)
 
     }
-} zox_declare_system(TransformDebugSystem)*/
+} zoxd_system(TransformDebugSystem)*/

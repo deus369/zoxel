@@ -64,7 +64,7 @@ typedef struct {
     PhysicalButton f11;
     PhysicalButton f12;
 } Keyboard;
-zox_custom_component(Keyboard)
+zoxc_custom(Keyboard);
 
 byte keyboard_is_any_input(const Keyboard *keyboard) {
     return (keyboard->enter.is_pressed || keyboard->backspace.is_pressed || keyboard->space.is_pressed ||

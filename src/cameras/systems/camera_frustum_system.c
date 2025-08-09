@@ -18,4 +18,4 @@ void CameraFrustumSystem(iter *it) {
         calculate_frustum_bounds_d3(frustumCorners->value, &position3DBounds->value);
         calculate_planes_from_frustum_d3(frustumCorners->value, cameraPlanes->value);
     }
-} zox_declare_system(CameraFrustumSystem)
+} zoxd_system(CameraFrustumSystem)

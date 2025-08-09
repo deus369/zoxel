@@ -1,39 +1,39 @@
-zox_declare_tag(Label)
-zox_declare_tag(Button)
-zox_declare_tag(CloseButton)
-zox_declare_tag(Icon)
-zox_declare_tag(Frame)
-zox_declare_tag(IconLabel)
-zox_declare_tag(IconOverlay)
-zox_declare_tag(Header)
-zox_declare_tag(Body)
-zox_declare_tag(Scrollbar)
-zox_declare_tag(ScrollbarButton)
-zox_declare_tag(Elementbar2D)
-zox_component_byte(IconType)
-zox_component_byte(ListUIMax)
-zox_component_byte(IconIndex)
-zox_component_entity(FramePrefabLink)
-zox_component_float2(SlideBounds)
-zox_component(SliderLabel, const char*)
+zox_tag(Label);
+zox_tag(Button);
+zox_tag(CloseButton);
+zox_tag(Icon);
+zox_tag(Frame);
+zox_tag(IconLabel);
+zox_tag(IconOverlay);
+zox_tag(Header);
+zox_tag(Body);
+zox_tag(Scrollbar);
+zox_tag(ScrollbarButton);
+zox_tag(Elementbar2D);
+zoxc_byte(IconType);
+zoxc_byte(ListUIMax);
+zoxc_byte(IconIndex);
+zoxc_entity(FramePrefabLink);
+zoxc_float2(SlideBounds);
+zoxc(SliderLabel, const char*);
 
 void define_components_elements2D(ecs *world) {
-    zox_define_tag(Label)
-    zox_define_tag(Button)
-    zox_define_tag(Icon)
-    zox_define_tag(Frame)
-    zox_define_tag(IconLabel)
-    zox_define_tag(IconOverlay)
-    zox_define_tag(Header)
-    zox_define_tag(Body)
-    zox_define_tag(CloseButton)
-    zox_define_tag(Scrollbar)
-    zox_define_tag(ScrollbarButton)
-    zox_define_tag(Elementbar2D)
-    zox_define_component_byte(IconType)
-    zox_define_component_byte(ListUIMax)
-    zox_define_component_byte(IconIndex)
-    zox_define_component_entity(FramePrefabLink)
-    zox_define_component_float2(SlideBounds)
-    zox_define_component(SliderLabel)
+    zox_define_tag(Label);
+    zox_define_tag(Button);
+    zox_define_tag(Icon);
+    zox_define_tag(Frame);
+    zox_define_tag(IconLabel);
+    zox_define_tag(IconOverlay);
+    zox_define_tag(Header);
+    zox_define_tag(Body);
+    zox_define_tag(CloseButton);
+    zox_define_tag(Scrollbar);
+    zox_define_tag(ScrollbarButton);
+    zox_define_tag(Elementbar2D);
+    zox_define_component_byte(IconType);
+    zox_define_component_byte(ListUIMax);
+    zox_define_component_byte(IconIndex);
+    zox_define_component_entity(FramePrefabLink);
+    zox_define_component_float2(SlideBounds);
+    zox_define_component(SliderLabel);
 }

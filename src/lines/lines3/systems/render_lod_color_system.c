@@ -58,4 +58,4 @@ void RenderLodColorSystem(ecs_iter_t *it) {
         }
         colorr->value = color_rgb_to_color(output);
     }
-} zox_declare_system(RenderLodColorSystem)
+} zoxd_system(RenderLodColorSystem)

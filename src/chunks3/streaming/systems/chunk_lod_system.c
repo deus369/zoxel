@@ -67,4 +67,4 @@ void ChunkLodSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkLodSystem)
+} zoxd_system(ChunkLodSystem)

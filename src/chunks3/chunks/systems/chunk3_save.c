@@ -69,4 +69,4 @@ void Chunk3SaveSystem(iter *it) {
             zox_log_error("Failed to close file: %s", path);
         }
     }
-} zox_declare_system(Chunk3SaveSystem)
+} zoxd_system(Chunk3SaveSystem)

@@ -12,4 +12,4 @@ void RandomJump3DSystem(ecs_iter_t *it) {
             }
         }
     } 
-} zox_declare_system(RandomJump3DSystem)
+} zoxd_system(RandomJump3DSystem)

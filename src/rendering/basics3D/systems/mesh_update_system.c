@@ -28,4 +28,4 @@ void MeshUpdateSystem(iter *it) {
         }
         opengl_upload_mesh(meshGPULink->value, materialGPULink->value, meshIndicies->value, meshIndicies->length, meshVertices->value, meshVertices->length);
     }
-} zox_declare_system(MeshUpdateSystem)
+} zoxd_system(MeshUpdateSystem)

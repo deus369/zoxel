@@ -33,4 +33,4 @@ void CanvasResizeSystem(iter *it) {
             set_ui_transform(world, e, child, pixel_size, int2_half(pixel_size), pixel_size);
         }
     }
-} zox_declare_system(CanvasResizeSystem)
+} zoxd_system(CanvasResizeSystem)

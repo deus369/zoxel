@@ -103,4 +103,4 @@ void DungeonBlockSystem(ecs_iter_t *it) {
         zox_mut_end(chunk, VoxelNode)
         // zox_log("+ Dungeon Block Placing: %s [%ix%ix%i]: %i", zox_get_name(e), position.x, position.y, position.z, place_type)
     }
-} zox_declare_system(DungeonBlockSystem)
+} zoxd_system(DungeonBlockSystem)

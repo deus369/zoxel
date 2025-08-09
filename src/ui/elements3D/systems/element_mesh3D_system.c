@@ -26,4 +26,4 @@ void Element3DMeshSystem(iter *it) {
         initializeElement->value = 0;
         zox_log_elements3D("+ updated mesh for element3D [%lu]", it->entities[i])
     }
-} zox_declare_system(Element3DMeshSystem)
+} zoxd_system(Element3DMeshSystem)

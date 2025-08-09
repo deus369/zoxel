@@ -9,10 +9,11 @@
  *
  * */
 
-#define zoxp_read_voxels EcsOnLoad
-#define zoxp_write_voxels EcsOnStore
+#define zoxp_voxels_write EcsOnLoad
+#define zoxp_voxels_read EcsOnUpdate
 
-zox_component_entity(VoxLink)
+zoxc_entity(VoxLink);
+zoxc_entities(ChunkEntities)
 #include "chunks/_.c"
 #include "streaming/_.c"
 #include "structures/_.c"
@@ -21,22 +22,25 @@ zox_component_entity(VoxLink)
 #include "vrays/_.c"
 
 void module_dispose_chunks3(ecs *world, void *ctx) {
+    (void) world;
+    (void) ctx;
     dispose_hook_on_destroyed_VoxelNode();
 }
 
 zox_begin_module(Chunks3)
-    zox_define_component_entity(VoxLink)
+    zox_define_component_entity(VoxLink);
+    zox_define_entities_component(ChunkEntities);
     define_components_chunks(world);
     define_systems_chunks(world);
-    spawn_prefabs_chunks(world);
+    add_hook_spawn_prefabs(spawn_prefabs_chunks);
+    zox_module_dispose(module_dispose_chunks3);
+    initialize_hook_on_destroyed_VoxelNode();
+    add_hook_on_destroyed_VoxelNode(destroy_node_link_VoxelNode);
     zox_import_module(Streaming)
     zox_import_module(Structures)
     zox_import_module(VoxelsAnimations)
     zox_import_module(Vodes3)
     zox_import_module(Vrays)
-    zox_module_dispose(module_dispose_chunks3);
-    initialize_hook_on_destroyed_VoxelNode();
-    add_hook_on_destroyed_VoxelNode(destroy_node_link_VoxelNode);
 zox_end_module(Chunks3)
 
 #endif

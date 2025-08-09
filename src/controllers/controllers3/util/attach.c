@@ -3,6 +3,7 @@ void set_camera_locked(
     const ecs_entity_t camera,
     const ecs_entity_t target
 ) {
+    zox_set(camera, CameraMode, { zox_camera_mode_first_person });
     zox_add_tag(camera, FirstPersonCamera)
     zox_set(camera, CanRoam, { 0 })
     if (camera_follow_mode == zox_camera_follow_mode_attach) {
@@ -11,8 +12,12 @@ void set_camera_locked(
         zox_set(camera, CameraFollowLink, { target })
     }
     // zox_set(camera, EternalRotation, { quaternion_identity })
-    zox_remove(camera, EulerOverride)
-    set_camera_transform(world, camera, target, camera_mode, vox_model_scale);
+    zox_remove(camera, EulerOverride);
+    set_camera_transform(
+        world,
+        camera,
+        target,
+        zox_camera_mode_first_person);
 }
 
 void attach_camera_to_character(
@@ -25,7 +30,7 @@ void attach_camera_to_character(
         return;
     }
     // character
-    zox_set(character, DisableMovement, { 0 })
+    // zox_set(character, DisableMovement, { 0 })
     // linking
     zox_set(camera, CharacterLink, { character })
     // camera
@@ -48,7 +53,7 @@ void toggle_free_roam_camera(ecs_world_t *world, const ecs_entity_t e) {
             attach_camera_to_character(world, camera, character);
         } else {
             zox_set(e, PlayerState, { zox_player_state_free_roam })
-            detatch_camera_from_character(world, camera, character, 1);
+            detatch_camera_from_character(world, camera, 1);
         }
     }
 }

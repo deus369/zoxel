@@ -3,7 +3,7 @@
 
 // #define zox_debug_vulkan_core
 // make VULKAN=1 && make run-vulkan
-zox_component(VulkanSurface, VkSurfaceKHR*) // goes onto the sdl app
+zoxc(VulkanSurface, VkSurfaceKHR*) // goes onto the sdl app
 
 // from vulkan module:
 extern VkSurfaceKHR create_vulkan_surface( SDL_Window* window, VkInstance instance);
@@ -82,7 +82,7 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
     zox_log_vulkan(" > vulkan instance extensions [%i]\n", extensionCount)
     for (unsigned int i = 0; i < extensionCount; i++) zox_log_vulkan("     [%i]: %s\n", i, extensions[i])
 
-    VkInstanceCreateInfo instanceCreateInfo = { };
+    VkInstanceCreateInfo instanceCreateInfo = { 0 };
     instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     instanceCreateInfo.enabledExtensionCount = extensionCount;
     instanceCreateInfo.ppEnabledExtensionNames = extensions;
@@ -119,7 +119,7 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
     return e;
 }
 
-// zox_component(VulkanInstance, VkInstance*)
+// zoxc(VulkanInstance, VkInstance*)
 // ECS_DTOR(VulkanSurface, ptr, { if (ptr->value != 0) vkDestroySurfaceKHR(*vk_instance, *ptr->value, NULL); })
 
 /*uint find_present_queue_family_index(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
@@ -147,7 +147,7 @@ ecs_entity_t spawn_main_window_vulkan(ecs_world_t *world, SDL_Window* window) {
 
 #endif
 
-// VkInstanceCreateInfo instanceCreateInfo = { };
+// VkInstanceCreateInfo instanceCreateInfo = { 0 };
 // instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 
     // Initialize Wayland display

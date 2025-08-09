@@ -31,4 +31,4 @@
             }
         }
     }
-} zox_declare_system(PlayerShortcutsSystem)*/
+} zoxd_system(PlayerShortcutsSystem)*/

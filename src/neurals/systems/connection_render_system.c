@@ -50,4 +50,4 @@ void ConnectionRenderSystem(ecs_iter_t *it) {
         // spawn_line2D_square(world, signal_position, (float2) { square_size, square_size }, 0.5f, animate_time);
         // zox_log(" + transfer->value [%f] at pos [%f]\n", transfer->value, signal_position.x)
     }
-} zox_declare_system(ConnectionRenderSystem)
+} zoxd_system(ConnectionRenderSystem)

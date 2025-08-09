@@ -1,5 +1,5 @@
 // 24 unique vertices (4 per face)
-const float3 cube3_vertices[] = {
+static const float3 cube3_vertices[] = {
     // Left
     {-default_cube_size, -default_cube_size,  default_cube_size },
     {-default_cube_size,  default_cube_size,  default_cube_size },
@@ -37,7 +37,7 @@ const float3 cube3_vertices[] = {
     {-default_cube_size,  default_cube_size,  default_cube_size }
 };
 
-const int cube3_indicies[] = {
+static const int cube3_indicies[] = {
     0, 1, 2, 2, 3, 0,         // Left
     4, 7, 6, 6, 5, 4,         // Right (reversed order)
     10, 11, 8, 8, 9, 10,       // Bottom (reversed order)

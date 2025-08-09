@@ -45,4 +45,4 @@ void DeviceModeUISystem(ecs_iter_t *it) {
         spawn_device_gizmo(world, canvas, deviceModeDirty->value);
         menu_start_triggered(world, e, canvas);
     }
-} zox_declare_system(DeviceModeUISystem)
+} zoxd_system(DeviceModeUISystem)

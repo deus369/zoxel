@@ -10,4 +10,4 @@ void MeshGPUDisposeSystem(iter *it) {
             glDeleteBuffers(1, &meshGPULink->value.y);
         }
     }
-} zox_declare_system(MeshGPUDisposeSystem)
+} zoxd_system(MeshGPUDisposeSystem)

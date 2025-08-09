@@ -37,4 +37,4 @@ void ElementBeginSystem(iter *it) {
         }
         meshDirty->value = mesh_state_trigger; // mesh_state_upload;
     }
-} zox_declare_system(ElementBeginSystem)
+} zoxd_system(ElementBeginSystem)

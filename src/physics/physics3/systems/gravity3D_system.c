@@ -11,4 +11,4 @@ void Gravity3DSystem(iter *it) {
             float3_add_float3_p(&acceleration3D->value, gravity3D->value);
         }
     }
-} zox_declare_system(Gravity3DSystem)
+} zoxd_system(Gravity3DSystem)

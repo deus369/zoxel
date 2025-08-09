@@ -17,4 +17,4 @@ void AnimateChunkSystem(iter *it) {
     }
     if (!changed) zox_skip()
 }
-zox_declare_system(AnimateChunkSystem)
+zoxd_system(AnimateChunkSystem)

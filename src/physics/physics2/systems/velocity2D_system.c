@@ -9,4 +9,4 @@ void Velocity2DSystem(iter *it) { // Veloco Rapters!
         position2D->value.x += velocity2D->value.x * delta_time;
         position2D->value.y += velocity2D->value.y * delta_time;
     }
-} zox_declare_system(Velocity2DSystem)
+} zoxd_system(Velocity2DSystem)

@@ -49,7 +49,7 @@ void define_systems_basics3D(ecs *world) {
         [none] rendering.RendererInstance)
 #endif
     // upload gpu
-    zox_system_1(MeshUpdateSystem, zox_pip_mainthread,
+    zox_system_1(MeshUpdateSystem, zoxp_mainthread,
         [in] rendering.MeshDirty,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshVertices,
@@ -57,7 +57,7 @@ void define_systems_basics3D(ecs *world) {
         [in] rendering.MaterialGPULink,
         [none] !rendering.MeshUVs,
         [none] !rendering.MeshColorRGBs)
-    zox_system_1(Mesh3DTexturedUploadSystem, zox_pip_mainthread,
+    zox_system_1(Mesh3DTexturedUploadSystem, zoxp_mainthread,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshVertices,
         [in] rendering.MeshUVs,
@@ -66,7 +66,7 @@ void define_systems_basics3D(ecs *world) {
         [in] rendering.UvsGPULink,
         [in] rendering.ColorsGPULink,
         [in] rendering.MeshDirty)
-    zox_system_1(MeshUpdateCharacters3DSystem, zox_pip_mainthread,
+    zox_system_1(MeshUpdateCharacters3DSystem, zoxp_mainthread,
         [in] rendering.MeshIndicies,
         [in] rendering.MeshVertices,
         [in] rendering.MeshColorRGBs,

@@ -51,4 +51,4 @@
             }
         }
     }
-} zox_declare_system(PlayerTestSystem)*/
+} zoxd_system(PlayerTestSystem)*/

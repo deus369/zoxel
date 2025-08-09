@@ -41,4 +41,4 @@ void FreeCameraToggleSystem(ecs_iter_t *it) {
             // zox_log(" > camera state [%s]\n", new_value ? "roaming" : "locked")
         }
     }
-} zox_declare_system(FreeCameraToggleSystem)
+} zoxd_system(FreeCameraToggleSystem)

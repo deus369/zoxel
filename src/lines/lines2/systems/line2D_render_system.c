@@ -7,7 +7,7 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
     float4x4 render_matrix;
     if (is_element_line) {
         glUniform1f(line2D_depth_location, ((int) renderer_layer) * shader_depth_multiplier);
-        const float4x4 identity = float4x4_identity();
+        const float4x4 identity = float4x4_identity;
         render_matrix = identity;
     } else {
         render_matrix = render_camera_matrix;
@@ -54,8 +54,8 @@ void line2D_render_iteration(ecs_iter_t *it, const byte is_element_line) {
 
 void Line2DRenderSystem(ecs_iter_t *it) {
     line2D_render_iteration(it, 0);
-} zox_declare_system(Line2DRenderSystem)
+} zoxd_system(Line2DRenderSystem)
 
 void ElementLine2DRenderSystem(ecs_iter_t *it) {
     line2D_render_iteration(it, 1);
-} zox_declare_system(ElementLine2DRenderSystem)
+} zoxd_system(ElementLine2DRenderSystem)

@@ -103,4 +103,4 @@ void Controller2MoveSystem(ecs_iter_t *it) {
         }
         // zox_log("movement: %fx%f", movement.x, movement.y)
     }
-} zox_declare_system(Controller2MoveSystem)
+} zoxd_system(Controller2MoveSystem)

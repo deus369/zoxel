@@ -9,7 +9,6 @@
 #define zoxm_maths
 
 #include "data/constants.c"
-#include "util/float_util.c"
 #include "data/_.c"
 #include "util/_.c"
 #include "tests/test_quadrants.c"

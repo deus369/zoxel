@@ -1,5 +1,5 @@
 
-zox_increment_system_with_reset(StreamDirty, zox_general_state_end)
+zox_increment_system_with_reset(StreamDirty, zox_general_state_end);
 #include "stream_point_system.c"
 #include "chunk_lod_dirty_system.c"
 #include "chunk_lod_system.c"
@@ -10,7 +10,7 @@ zox_increment_system_with_reset(StreamDirty, zox_general_state_end)
 #include "chunk_die_system.c"
 
 void define_systems_streaming(ecs *world) {
-    zox_define_increment_system(StreamDirty)
+    zoxd_system_increment(StreamDirty);
     zox_system(StreamPointSystem, EcsOnUpdate,
         [in] transforms3.Position3D,
         [in] chunks3.VoxLink,
@@ -21,11 +21,11 @@ void define_systems_streaming(ecs *world) {
         [in] generic.Position3DBounds,
         [in] cameras.CameraPlanes,
         [none] cameras.Camera3D)
-    zox_system_ctx(ChunkFrustumSystem, zoxp_read_voxels, filter_cameras,
+    zox_system_ctx(ChunkFrustumSystem, zoxp_voxels_read, filter_cameras,
         [in] transforms3.Position3D,
         [in] chunks3.ChunkSize,
         [in] blocks.VoxScale,
-        [in] generic.EntityLinks,
+        [in] chunks3.ChunkEntities,
         [in] chunks3.VoxelNode,
         [out] rendering.RenderDisabled,
         [none] StreamedChunk)
@@ -43,10 +43,10 @@ void define_systems_streaming(ecs *world) {
         [in] chunks3.ChunkLodDirty,
         [out] chunks3.GenerateChunk,
         [none] StreamedChunk)
-    zox_system(ChunkNeighborUpdatedSystem, EcsPostUpdate,
+    /*zox_system(ChunkNeighborUpdatedSystem, EcsPostUpdate,
         [in] chunks3.ChunkNeighbors,
         [out] chunks3.ChunkMeshDirty,
-        [none] StreamedChunk)
+        [none] StreamedChunk)*/
     // streams
     zox_system(ChunkDieSystem, EcsOnStore,
         [in] chunks3.VoxLink,

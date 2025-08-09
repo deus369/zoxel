@@ -62,16 +62,16 @@ void camera_render_update(iter *it, const byte is_camera2D) {
         // else { set vulkan viewport; }
         #endif
         if (!is_camera2D) {
-            for (int j = 0; j < render3D_systems->size; j++) {
+            for (size_t j = 0; j < render3D_systems->size; j++) {
                 ecs_run(world, render3D_systems->data[j], 0, NULL);
             }
-            for (int j = 0; j < render3D_plus_systems->size; j++) {
+            for (size_t j = 0; j < render3D_plus_systems->size; j++) {
                 ecs_run(world, render3D_plus_systems->data[j], 0, NULL);
             }
             // zox_log("+ [%s] rendering with: [%ix%i]", zox_get_name(e), screenDimensions->value.x, screenDimensions->value.y)
         } else {
             for (renderer_layer = 0; renderer_layer < max_layers2D; renderer_layer++) { // ui rendered in layers
-                for (int j = 0; j < render2D_systems->size; j++) {
+                for (size_t j = 0; j < render2D_systems->size; j++) {
                     ecs_run(world, render2D_systems->data[j], 0, NULL);
                 }
             }

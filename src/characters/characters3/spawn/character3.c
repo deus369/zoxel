@@ -45,8 +45,8 @@ ecs_entity_t spawn_character3(
         // zox_has(data.prefab, InstanceLink)) {
         zox_set(e, InstanceLink, { vox })
         if (zox_has(vox, VoxScale)) {
-            zox_geter_value(vox, VoxScale, float, meta_vox_scale)
-            zox_geter_value(vox, ChunkSize, int3, meta_chunk_size)
+            zox_geter_value(vox, VoxScale, float, meta_vox_scale);
+            zox_geter_value(vox, ChunkSize, int3, meta_chunk_size);
             float3 meta_bounds = calculate_vox_bounds(
                 meta_chunk_size,
                 meta_vox_scale);

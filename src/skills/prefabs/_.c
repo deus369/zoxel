@@ -1,7 +1,7 @@
 ecs_entity_t prefab_skill_melee;
 ecs_entity_t prefab_skill_aura;
 ecs_entity_t prefab_debuff;
-zox_create_user_data_prefabs(Skill, skill, "skill")
+zoxf_user_prefabs(Skill, skill, "skill")
 // for poison aura?
 ecs_entity_t prefab_aura_poison;
 ecs_entity_t prefab_poison;

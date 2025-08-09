@@ -32,7 +32,7 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
     // todo: set different heights
     {
         zox_neww(e2)
-        zox_set_unique_name(e2, "model_group_grass")
+        zox_set_unique_name(e2, "model_group_grass");
 
         ModelLinks variants = (ModelLinks) { 0, NULL };
         for (int i = 0; i < grass_variants; i++) {
@@ -47,7 +47,7 @@ void spawn_realm_models(ecs_world_t *world, const ecs_entity_t e) {
     // spawn slime like npc
     {
         zox_neww(e2)
-        zox_set_unique_name(e2, "model_group_slem")
+        zox_set_unique_name(e2, "model_group_slem");
         zox_add_tag(e2, ModelCharacter)
 
         ModelLinks variants = (ModelLinks) { 0, NULL };

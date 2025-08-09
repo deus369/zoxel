@@ -1,4 +1,4 @@
-zox_component(RenderBufferLink, uint)
+zoxc(RenderBufferLink, uint);
 
 // Destructor for RenderBufferLink component
 ECS_DTOR(RenderBufferLink, ptr, {

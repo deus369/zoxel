@@ -8,4 +8,4 @@ void ZevicePointerResetSystem(iter *it) {
         zevicePointerOld->value = zevicePointer->value;
         zevicePointer->value = reset_button_state(zevicePointer->value);
     }
-} zox_declare_system(ZevicePointerResetSystem)
+} zoxd_system(ZevicePointerResetSystem)

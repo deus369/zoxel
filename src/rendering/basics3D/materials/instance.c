@@ -11,7 +11,7 @@ typedef struct {
     uint brightness;
     uint fog_data;
 } MaterialVoxInstance;
-zox_custom_component(MaterialVoxInstance)
+zoxc_custom(MaterialVoxInstance);
 
 MaterialVoxInstance create_MaterialVoxInstance(const uint material) {
     return (MaterialVoxInstance) {

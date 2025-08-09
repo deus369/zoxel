@@ -84,4 +84,4 @@
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
-} zox_declare_system(Particle3DSpawnSystem)*/
+} zoxd_system(Particle3DSpawnSystem)*/

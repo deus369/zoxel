@@ -78,4 +78,4 @@ void ChunkDebugSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkDebugSystem)
+} zoxd_system(ChunkDebugSystem)

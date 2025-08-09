@@ -30,4 +30,4 @@ void RenderTextureRestoreSystem(iter *it) {
             zox_log_error("camera does not have frame buffer link: %lu", cameraLink->value)
         }
     }
-} zox_declare_system(RenderTextureRestoreSystem)
+} zoxd_system(RenderTextureRestoreSystem)

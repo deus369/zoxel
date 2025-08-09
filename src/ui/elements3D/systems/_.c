@@ -33,7 +33,7 @@ void define_systems_elements3D(ecs *world) {
         [none] texts.Zext,
         [none] Text3D)
     if (!headless) {
-        zox_system_1(Element3DMeshSystem, zox_pip_mainthread,
+        zox_system_1(Element3DMeshSystem, zoxp_mainthread,
             //[in] layouts2.PixelSize,
             //[in] elements.core.CanvasLink,
             [out] elements.core.InitializeElement,

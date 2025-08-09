@@ -23,6 +23,7 @@ ecs_entity_t spawn_model_grass(
         const ecs_entity_t e2 = spawn_vox_basic(
             world,
             prefab_vox,
+            block_vox_depth,
             node_depth);
         zox_set_unique_name(e2, "model_lod_grass");
         // default

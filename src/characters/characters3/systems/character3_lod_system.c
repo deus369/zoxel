@@ -14,4 +14,4 @@ void Character3LodSystem(iter *it) {
             // if instance link
         }
     }
-} zox_declare_system(Character3LodSystem)
+} zoxd_system(Character3LodSystem)

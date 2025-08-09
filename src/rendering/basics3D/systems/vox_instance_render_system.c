@@ -67,7 +67,7 @@ void VoxInstanceRenderSystem(iter *it) {
     zox_gpu_float4(material_attributes->fog_data, get_fog_value());
     zox_gpu_float(material_attributes->brightness, 1);
     // Instance Rendering!
-    for (int i = 0; i < commands->size; i++) {
+    for (size_t i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
         if (!command.transforms) {
             continue;
@@ -112,11 +112,11 @@ void VoxInstanceRenderSystem(iter *it) {
         opengl_unset_mesh();
     }
     // cleanup
-    for (int i = 0; i < commands->size; i++) {
+    for (size_t i = 0; i < commands->size; i++) {
         const InstanceRenderCommand command = commands->data[i];
         dispose_float4x4_array_d(command.transforms);
     }
     dispose_InstanceRenderCommand_array_d(commands);
     zox_disable_material();
     catch_basic3D_errors("VoxInstanceRenderSystem");
-} zox_declare_system(VoxInstanceRenderSystem)
+} zoxd_system(VoxInstanceRenderSystem)

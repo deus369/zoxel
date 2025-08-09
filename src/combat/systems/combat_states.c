@@ -22,4 +22,4 @@ void CombatStateSystem(ecs_iter_t *it) {
             combat->value = zox_combat_peace;
         }
     }
-} zox_declare_system(CombatStateSystem)
+} zoxd_system(CombatStateSystem)

@@ -17,4 +17,4 @@ typedef struct {
     entity chunk_last;
     VoxelNode *node_last;
 } RaycastVoxelData;
-zox_custom_component(RaycastVoxelData)
+zoxc_custom(RaycastVoxelData);

@@ -29,4 +29,4 @@ void SoundPlaySystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(SoundPlaySystem)
+} zoxd_system(SoundPlaySystem)

@@ -43,4 +43,4 @@ void TerrainTextureSetSystem(ecs_iter_t *it) {
         generateTexture->value = zox_generate_texture_trigger;
         // zox_log("tilemap count [%i] length [%i]", textureLinks->length, tilemap_length)
     }
-} zox_declare_system(TerrainTextureSetSystem)
+} zoxd_system(TerrainTextureSetSystem)

@@ -90,4 +90,4 @@ void Chunk3LoadSystem(iter *it) {
         }
 
     }
-} zox_declare_system(Chunk3LoadSystem)
+} zoxd_system(Chunk3LoadSystem)

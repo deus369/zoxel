@@ -71,7 +71,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
         zox_geter(terrain, ChunkLinks, chunkLinks);
         byte any_chunks_generating = 0;
         int chunk_count = count_int3_hashmap(chunkLinks->value);
-        for (int j = 0; j < chunkLinks->value->size; j++) {
+        for (size_t j = 0; j < chunkLinks->value->size; j++) {
             int3_hashmap_pair* pair = chunkLinks->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
@@ -131,7 +131,7 @@ byte test_terrain_spawn(ecs_world_t *world) {
         zox_geter(terrain, ChunkLinks, chunkLinks);
         byte any_chunks_generating = 0;
         int chunk_count = count_int3_hashmap(chunkLinks->value);
-        for (int j = 0; j < chunkLinks->value->size; j++) {
+        for (size_t j = 0; j < chunkLinks->value->size; j++) {
             int3_hashmap_pair* pair = chunkLinks->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {

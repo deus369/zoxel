@@ -126,10 +126,11 @@ entity load_font_style(ecs *world, char *filename) {
 }
 
 void load_files_fonts(ecs *world) {
-    zox_font_style_default = spawn_font_style(world, prefab_font_style);
+    const entity prefab = prefab_font_style;
+    zox_font_style_default = spawn_font_style(world, prefab);
     // for now save
     // zox_font_style_monocraft is set in ttf initialization
-    const byte loaded_ttf = initialize_ttf(world, prefab_font_style); // load in monocraft
+    const byte loaded_ttf = initialize_ttf(world, prefab); // load in monocraft
     if (loaded_ttf) {
         // save for now, testing
 #if defined(zox_lib_ttf) && defined(convert_fonts)

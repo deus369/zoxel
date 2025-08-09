@@ -1,8 +1,8 @@
-zox_increment_system_with_reset(ChunkDirty, chunk_dirty_state_end)
-zox_increment_system_with_reset(ChunkMeshDirty, chunk_dirty_state_end)
-zox_increment_system_with_reset(GenerateChunk, chunk_generate_state_end)
-zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end)
-zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end + 1)
+zox_increment_system_with_reset(ChunkDirty, chunk_dirty_state_end);
+zox_increment_system_with_reset(ChunkMeshDirty, chunk_dirty_state_end);
+zox_increment_system_with_reset(GenerateChunk, chunk_generate_state_end);
+zox_increment_system_with_reset(ChunkLodDirty, chunk_lod_state_end);
+zox_increment_system_with_reset(VoxelNodeDirty, zox_dirty_end + 1);
 #include "chunk_linker.c"
 #include "entities_lod.c"
 #include "find_neighbor.c"
@@ -19,11 +19,11 @@ void get_chunk_filename(char* out, const int3 position) {
 #include "chunk3_load.c"
 
 void define_systems_chunks(ecs *world) {
-    zox_define_increment_system(ChunkDirty)
-    zox_define_increment_system(ChunkMeshDirty)
-    zox_define_increment_system(GenerateChunk)
-    zox_define_increment_system(ChunkLodDirty)
-    zox_define_increment_system(VoxelNodeDirty)
+    zoxd_system_increment(ChunkDirty);
+    zoxd_system_increment(ChunkMeshDirty);
+    zoxd_system_increment(GenerateChunk);
+    zoxd_system_increment(ChunkLodDirty);
+    zoxd_system_increment(VoxelNodeDirty);
     zox_system(ChunkLinkSystem, EcsOnUpdate,
             [in] chunks3.VoxLink,
             [in] transforms3.Position3D,
@@ -33,7 +33,7 @@ void define_systems_chunks(ecs *world) {
     zox_system(ChunkEntitiesLodSystem, EcsOnUpdate,
             [in] rendering.RenderDistanceDirty,
             [in] rendering.RenderDistance,
-            [in] generic.EntityLinks)
+            [in] chunks3.ChunkEntities)
     zox_system(ChunkFindNeighborSystem, EcsOnLoad,
             [in] chunks3.ChunkPosition,
             [in] chunks3.VoxLink,
@@ -47,12 +47,12 @@ void define_systems_chunks(ecs *world) {
             [in] chunks3.ChunkNeighbors,
             [in] chunks3.VoxelNodeDirty,
             [out] chunks3.ChunkMeshDirty)
-    zox_system(VoxelNodeCleanupSystem, zoxp_write_voxels,
+    zox_system(VoxelNodeCleanupSystem, zoxp_voxels_write,
             [in] chunks3.VoxelNodeDirty,
             [in] chunks3.NodeDepth,
             [out] chunks3.VoxelNode)
     // main thread
-    zox_system_1(ChunkDebugSystem, zoxp_read_voxels,
+    zox_system_1(ChunkDebugSystem, zoxp_voxels_read,
             [in] blocks.VoxScale,
             [in] transforms3.Position3D,
             [in] chunks3.VoxelNode,

@@ -15,7 +15,7 @@ void resume_player_delayed(
         return;
     }
     if (can_roam == 0) { // not roaming, return character movement
-        zox_set(character, DisableMovement, { 0 })
+        zox_set(character, DisableMovement, { 0 });
     }
     spawn_in_game_ui(world, player);
 }

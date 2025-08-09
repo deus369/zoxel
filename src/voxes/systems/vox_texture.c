@@ -1,6 +1,6 @@
 // using an axis and VoxLink, generates a texture by grabbing the first voxel on a given side
 byte is_debug_sides = block_side_none; // block_side_none | block_side_front
-const color air_vox_color = (color) { 15, 15, 25, 88 };
+const color air_vox_color = { 15, 15, 25, 88 };
 
 void generate_vox_debug_texture(color *data, const int2 size, byte side) {
     if (is_debug_sides == block_side_none) {
@@ -207,4 +207,4 @@ void VoxTextureSystem(iter *it) {
 
         textureDirty->value = 1; // actually not using this for tilemap!
     }
-} zox_declare_system(VoxTextureSystem)
+} zoxd_system(VoxTextureSystem)

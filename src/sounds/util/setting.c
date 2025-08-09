@@ -1,15 +1,18 @@
 // for our settings
 void set_master_volume(ecs_world_t* world, void* value) {
+    (void) world;
     master_volume = *(float*)value;
     // zox_log("> master volume set to %f", master_volume)
 }
 
 void set_volume_sfx(ecs_world_t* world, void* value) {
+    (void) world;
     volume_sfx = *(float*)value;
     // zox_log("> sfx volume set to %f", volume_sfx)
 }
 
 void set_volume_music(ecs_world_t* world, void* value) {
+    (void) world;
     volume_music = *(float*)value;
     // zox_log("> master volume set to %f", volume_music)
 }

@@ -2,7 +2,7 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t p
     const int2 texture_size = int2_zero; // { 16, 16 };
     // zox_prefab_child(prefab)
     zox_clone(prefab)
-    zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    zox_prefab_set(e, TransformMatrix, { float4x4_identity })
     zox_prefab_set(e, RenderDisabled, { 0 })
     zox_prefab_set(e, Brightness, { 1 })
     zox_prefab_set(e, Color, { color_red })
@@ -18,9 +18,9 @@ ecs_entity_t spawn_prefab_cube_textured(ecs_world_t *world, const ecs_entity_t p
     }
     zox_remove_tag(e, MeshBasic3D)
     zox_add_tag(e, TexturedMesh3D)
-    zox_prefab_set(e, MaterialTextured3D, { })
+    zox_prefab_set(e, MaterialTextured3D, { 0 })
     zox_prefab_set(e, UvsGPULink, { 0 })
-    zox_prefab_set(e, MeshGPULink, { })
+    zox_prefab_set(e, MeshGPULink, { 0 })
     zox_prefab_set(e, MaterialGPULink, { 0 })
     zox_prefab_set(e, ColorsGPULink, { 0 })
     zox_prefab_add(e, MeshColorRGBs)

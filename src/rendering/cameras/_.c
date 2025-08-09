@@ -7,8 +7,8 @@
 #include "systems/_.c"
 
 zox_begin_module(RenderingCameras)
-    zox_define_component_w_dest(RenderBufferLink)
-    zox_define_component_w_dest(FrameBufferLink)
+    zox_define_component_w_dest(RenderBufferLink);
+    zox_define_component_w_dest(FrameBufferLink);
     define_systems_rendering_cameras(world);
 zox_end_module(RenderingCameras)
 

@@ -10,4 +10,4 @@ void MaterialDisposeSystem(iter *it) {
             glDeleteProgram(materialGPULink->value);
         }
     }
-} zox_declare_system(MaterialDisposeSystem)
+} zoxd_system(MaterialDisposeSystem)

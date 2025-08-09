@@ -12,7 +12,7 @@ typedef struct {
     uint brightness;
     uint fog_data;
 } MaterialBone;
-zox_custom_component(MaterialBone)
+zoxc_custom(MaterialBone);
 
 MaterialBone create_MaterialBone(const uint material) {
     return (MaterialBone) {

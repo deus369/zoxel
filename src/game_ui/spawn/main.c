@@ -90,7 +90,7 @@ ecs_entity_t spawn_main_menu(
         list_size.y + header_height
     };
 
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
     window_data.children = &children;
     const ecs_entity_t e = spawn_window2(
         world,

@@ -21,7 +21,7 @@ void Characters3SpawnSystem(iter *it) {
     zox_sys_in(ChunkNeighbors)
     zox_sys_out(CharactersSpawned)
     zox_sys_out(CharactersEverSpawned)
-    zox_sys_out(EntityLinks)
+    zox_sys_out(ChunkEntities)
     for (int i = 0; i < it->count; i++) {
         zox_sys_e()
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty)
@@ -34,7 +34,7 @@ void Characters3SpawnSystem(iter *it) {
         zox_sys_i(ChunkNeighbors, chunkNeighbors)
         zox_sys_o(CharactersSpawned, charactersSpawned)
         zox_sys_o(CharactersEverSpawned, charactersEverSpawned)
-        zox_sys_o(EntityLinks, entityLinks)
+        zox_sys_o(ChunkEntities, entityLinks)
 
         const byte is_in_spawn_range = renderDistance->value <= terrain_lod_near;
         const byte is_first_spawn = is_in_spawn_range && !charactersEverSpawned->value;
@@ -150,7 +150,7 @@ void Characters3SpawnSystem(iter *it) {
             };
             const entity character = spawn_character3(world, spawn_data);
             on_spawned_character3_npc(world, character);
-            add_to_EntityLinks(entityLinks, character);
+            add_to_ChunkEntities(entityLinks, character);
 
             zox_log_spawning("+ npc: %s at [%fx%fx%f] [%i of %i]",  zox_get_name(character), position.x, position.y, position.z, (j + 1), (character_spawn_rate))
             zox_stats_characters++;
@@ -164,4 +164,4 @@ void Characters3SpawnSystem(iter *it) {
         charactersEverSpawned->value = 1;
     }
     zox_ts_end(npc_spawns, 3, zox_profile_system_npc_spawns);
-} zox_declare_system(Characters3SpawnSystem)
+} zoxd_system(Characters3SpawnSystem)

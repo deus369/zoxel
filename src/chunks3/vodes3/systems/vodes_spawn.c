@@ -76,12 +76,15 @@ void spawn_vodes_dive(
     }
     byte3 position_local = int3_to_byte3(delve_data->octree_position);
     int3 voxel_position = delve_data->octree_position;
-    const float scale = data->scale; // terrain scale
+
+    const float scale = data->scale; // chunk voxel scale
+    // zox_log("scale: %f", scale);
     float3 position_real = float3_from_int3(voxel_position);
     float3_scale_p(&position_real, scale);
     float3_add_float3_p(&position_real, data->chunk_position_real);
     // offset by half
     float3_add_float3_p(&position_real, float3_single(-scale * 0.5f));
+
     if (node->value && !is_linked_VoxelNode(node)) {
         zox_geter(data->chunk, ChunkPosition, chunkPosition)
         zox_geter_value(data->chunk, NodeDepth, byte, node_depth)
@@ -108,9 +111,7 @@ void spawn_vodes_dive(
             .render_disabled = data->render_disabled,
             .render_lod = data->render_lod,
         };
-        write_lock_VoxelNode(node);
         run_hook_spawned_block(world, &spawned_data);
-        write_unlock_VoxelNode(node);
     }
 }
 
@@ -212,7 +213,7 @@ void VodesSpawnSystem(iter *it) {
         zox_sys_i(RenderDistance, renderDistance)
         zox_sys_i(Position3D, position)
         zox_sys_i(VoxScale, scale)
-        zox_sys_o(VoxelNode, voxelNode)
+        zox_sys_o(VoxelNode, node)
         zox_sys_o(BlocksSpawned, blocksSpawned)
         // either voxel node is dirty, or we are spawning for first time based on distance changes
         byte is_first_time = voxelNodeDirty->value == zox_dirty_active;
@@ -226,15 +227,17 @@ void VodesSpawnSystem(iter *it) {
         }
         // zox_log("+ spawning block voxes at [%ix%ix%i]", chunkPosition->value.x, chunkPosition->value.y, chunkPosition->value.z)
         const byte vox_lod = distance_to_lod_vox_block(renderDistance->value);
+        write_lock_VoxelNode(node);
         spawn_vodes(world,
             e,
             voxLink->value,
             vox_lod,
             renderDisabled,
-            voxelNode,
+            node,
             nodeDepth->value,
             position->value,
             scale->value);
+        write_unlock_VoxelNode(node);
         blocksSpawned->value = 1;
     }
-} zox_declare_system(VodesSpawnSystem)
+} zoxd_system(VodesSpawnSystem)

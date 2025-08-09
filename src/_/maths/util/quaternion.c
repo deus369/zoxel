@@ -89,10 +89,11 @@ static inline void correct_euler_quadrant(float3* euler) {
 }
 
 static inline float3 quaternion_to_euler(float4 q) {
-    float3 euler = { };
-    euler.x = quaternion_to_euler_x(q); // roll (x-axis rotation)
-    euler.y = quaternion_to_euler_y(q); // pitch (y-axis rotation)
-    euler.z = quaternion_to_euler_z(q); // yaw (z-axis rotation)
+    float3 euler = {
+        .x = quaternion_to_euler_x(q),
+        .y = quaternion_to_euler_y(q),
+        .z = quaternion_to_euler_z(q)
+    };
     correct_euler_quadrant(&euler);
     return euler;
 }

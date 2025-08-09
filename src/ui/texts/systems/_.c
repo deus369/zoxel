@@ -2,10 +2,10 @@
 #include "animate_text_system.c"
 #include "zext_background_system.c"
 #include "zext_parent_background_system.c"
-zox_increment_system_with_reset(ZextDirty, zext_update_end)
+zox_increment_system_with_reset(ZextDirty, zext_update_end);
 
 void define_systems_texts(ecs *world) {
-    zox_define_increment_system(ZextDirty, [none] Zext)
+    zoxd_system_increment(ZextDirty, [none] Zext);
     zox_system(AnimateTextSystem, zox_pipelines_zext_textures,
         [out] AnimateZext,
         [out] texts.ZextDirty,

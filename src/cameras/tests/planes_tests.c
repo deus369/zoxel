@@ -143,8 +143,8 @@ void fake_plane_data(plane *planes) {
     planes[5].distance = 1000;
 }
 
-void run_test_frustum(char *label, const float3 camera_position, const float3 camera_euler) {
-    /*zox_log(" > test [%s]\n", label)
+/*void run_test_frustum(char *label, const float3 camera_position, const float3 camera_euler) {
+    zox_log(" > test [%s]\n", label)
     // camera
     float4 camera_rotation = quaternion_from_euler(float3_scale(camera_euler, degreesToRadians));
 
@@ -183,8 +183,8 @@ void run_test_frustum(char *label, const float3 camera_position, const float3 ca
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_c ? "Inside Frustum" : "Outside Frustum", bounds_c.center.x, bounds_c.center.y, bounds_c.center.z)
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_d ? "Inside Frustum" : "Outside Frustum", bounds_d.center.x, bounds_d.center.y, bounds_d.center.z)
     zox_log("   - result: %s - bounds [%f %f %f]\n", result_e ? "Inside Frustum" : "Outside Frustum", bounds_e.center.x, bounds_e.center.y, bounds_e.center.z)
-    zox_log("   - result: %s - bounds [%f %f %f]\n", result_f ? "Inside Frustum" : "Outside Frustum", bounds_f.center.x, bounds_f.center.y, bounds_f.center.z)*/
-}
+    zox_log("   - result: %s - bounds [%f %f %f]\n", result_f ? "Inside Frustum" : "Outside Frustum", bounds_f.center.x, bounds_f.center.y, bounds_f.center.z)
+}*/
 
 // test function for is_in_frustum
 void test_is_in_frustum(char *label) {
@@ -249,19 +249,19 @@ void test_float4x4_inverse() {
     */
 }
 
-void test_corners() {
-    /*plane planes[6];
+/*void test_corners() {
+    plane planes[6];
     fake_plane_data(planes);
     float3 *corners = find_plane_corners(planes);
     printf("Plane corners:\n");
     for (int i = 0; i < 8; ++i) {
         printf("(%f, %f, %f)\n", corners[i].x, corners[i].y, corners[i].z);
     }
-    free(corners);*/
-}
+    free(corners);
+}*/
 
 // assume initially facing negative direction
-void test_frustum_check() {
+/*void test_frustum_check() {
     test_is_in_frustum("Aa");
     run_test_frustum("A", float3_zero, (float3) { 0, 180, 0 });
     run_test_frustum("B", float3_zero, float3_zero);
@@ -269,9 +269,9 @@ void test_frustum_check() {
     run_test_frustum("C", (float3) { 0, 0, -32 }, float3_zero);
     run_test_frustum("D", (float3) { 0, 0, 32 }, float3_zero);
 
-    /*run_test_frustum("c", (float3) { 0, 0, -32 }, float3_zero);
-    run_test_frustum("d", (float3) { 0, 0, -6666 }, float3_zero);*/
-}
+    run_test_frustum("c", (float3) { 0, 0, -32 }, float3_zero);
+    run_test_frustum("d", (float3) { 0, 0, -6666 }, float3_zero);
+}*/
 
 
 /*

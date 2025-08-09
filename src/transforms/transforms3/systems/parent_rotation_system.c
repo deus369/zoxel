@@ -13,4 +13,4 @@ void ParentRotationSystem(iter *it) {
         }
         set_rotation_from_parents(world, parentLink->value, &rotation3D->value, localRotation3D->value);
     }
-} zox_declare_system(ParentRotationSystem)
+} zoxd_system(ParentRotationSystem)

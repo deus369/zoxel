@@ -66,4 +66,4 @@ void PacketRecieveSystem(ecs_iter_t *it) {
         }
     }
     // zox_log(" === finished attempting to get packets ===\n");
-} zox_declare_system(PacketRecieveSystem)
+} zoxd_system(PacketRecieveSystem)

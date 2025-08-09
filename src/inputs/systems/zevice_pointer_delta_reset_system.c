@@ -5,4 +5,4 @@ void ZevicePointerDeltaResetSystem(iter *it) {
         zox_sys_o(ZevicePointerDelta, zevicePointerDelta)
         zevicePointerDelta->value = int2_zero;
     }
-} zox_declare_system(ZevicePointerDeltaResetSystem)
+} zoxd_system(ZevicePointerDeltaResetSystem)

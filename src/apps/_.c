@@ -11,11 +11,11 @@ zox_increment_system_with_reset(WindowSizeDirty, zox_dirty_end);
 
 zox_begin_module(Apps)
     define_components_apps(world);
-    zox_define_increment_system(WindowSizeDirty, [none] App);
+    zoxd_system_increment(WindowSizeDirty, [none] App);
     add_hook_terminal_command(process_arguments_apps);
     initialize_settings_apps(world);
     add_hook_files_load(load_files_settings);
-    spawn_prefabs_apps(world);
+    add_hook_spawn_prefabs(spawn_prefabs_apps);
 zox_end_module(Apps)
 
 #endif

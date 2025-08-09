@@ -241,18 +241,21 @@ int main(int argc, char* argv[]) {
     if (!nosounds) {
         // sound file loading needs mixer
         zox_logv("Initializing Sounds");
-        initialize_sounds(world);                       // starts sdl mixer etc
+        initialize_sounds();                       // starts sdl mixer etc
     }
 
+    zox_logv("Spawning All Prefabs");
+    run_hook_spawn_prefabs(world);
+
     // loads all our files
-    zox_logv("Loading Files All");
+    zox_logv("Loading All Files");
     run_hook_files_load(world);
 
     // spawn app (creates our opengl context too)
     ecs_entity_t app = 0;
     if (!headless) {
         zox_logv("Initializing SDL Video");
-        if (initialize_sdl_video(world) == EXIT_FAILURE) {
+        if (initialize_sdl_video() == EXIT_FAILURE) {
             zox_log_error("[initialize_sdl_video] failed");
             dispose_zox(world);
             return EXIT_FAILURE;
@@ -263,7 +266,7 @@ int main(int argc, char* argv[]) {
 
         // inits glew on windows
         zox_logv("Initializing Rendering");
-        initialize_rendering(world, render_backend);
+        initialize_rendering(render_backend);
 
         zox_logv("Initializing Glew");
         if (zox_init_glew() == EXIT_FAILURE) {

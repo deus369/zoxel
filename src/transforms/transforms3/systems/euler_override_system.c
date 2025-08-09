@@ -7,4 +7,4 @@ void EulerOverrideSystem(iter *it) {
         zox_sys_o(Rotation3D, rotation)
         rotation->value = quaternion_from_euler(euler->value);
     }
-} zox_declare_system(EulerOverrideSystem)
+} zoxd_system(EulerOverrideSystem)

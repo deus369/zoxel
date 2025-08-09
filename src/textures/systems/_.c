@@ -6,10 +6,10 @@
 #include "frame_texture_system.c"
 #include "tilemap_generation_system.c"
 #include "mouse_texture_system.c"
-zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_end)
+zox_increment_system_with_reset(GenerateTexture, zox_generate_texture_end);
 
 void define_systems_textures(ecs_world_t *world) {
-    zox_define_increment_system(GenerateTexture, [none] Texture)
+    zoxd_system_increment(GenerateTexture, [none] Texture)
     zox_system(MouseTextureSystem, EcsOnUpdate,
             [in] inputs.MouseLock,
             [in] textures.TextureLink,
@@ -24,7 +24,7 @@ void define_systems_textures(ecs_world_t *world) {
 
 
     zox_filter(fill_texture_query, [none] FillTexture, [out] textures.GenerateTexture)
-    zox_system_ctx(FillTextureSystem, zox_pip_textures, fill_texture_query,
+    zox_system_ctx(FillTextureSystem, zoxp_textures, fill_texture_query,
             [in] rendering.TextureSize,
             [in] colorz.Color,
             [out] textures.TextureData,

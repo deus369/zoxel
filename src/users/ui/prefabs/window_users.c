@@ -33,9 +33,9 @@ ecs_entity_t spawn_window_users(
     const int2 canvas_position = get_element_pixel_position_global(data.parent.position, data.element.size, position, data.element.anchor);
     const float2 real_position = get_element_position(canvas_position, data.canvas.size);
     anchor_element_position2D(&position, data.element.anchor, data.element.size);
-    zox_instance(data.element.prefab)
-    zox_set_name(e, data.header_zext.text)
-    // zox_set_unique_name(e, data.header_zext.text)
+
+    zox_instance(data.element.prefab);
+    zox_set_name(e, data.header_zext.text);
     initialize_element(world, e, data.parent.e, data.canvas.e, position, data.element.size, data.element.size, data.element.anchor, data.element.layer, real_position, canvas_position);
     set_window_bounds_to_canvas(world, e, data.canvas.size, data.element.size, data.element.anchor);
     const UserLinks *user_data = zox_get_id(character, data.window.user_links_id);

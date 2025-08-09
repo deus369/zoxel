@@ -1,7 +1,7 @@
 // todo: add raycaster onto each pointer zevice (for multiple fingers) - refactor from player entity and add Raycaster onto each zevice_pointer! This way we can click buttons while using joystick on the other finger
-
+/*
 void MouseRaycasterSystem(ecs_iter_t *it) {
-    /*zox_field_world()
+    zox_field_world()
     zox_field_in(DeviceLinks, deviceLinks, 1)
     zox_field_in(DeviceMode, deviceModes, 2)
     zox_field_out(Raycaster, raycasters, 3)
@@ -38,5 +38,6 @@ void MouseRaycasterSystem(ecs_iter_t *it) {
                 }
             }
         }
-    }*/
-} zox_declare_system(MouseRaycasterSystem)
+    }
+} zoxd_system(MouseRaycasterSystem)
+*/

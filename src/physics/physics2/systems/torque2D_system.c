@@ -9,4 +9,4 @@ void Torque2DSystem(iter *it) {
         rotation2D->value += torque2D->value * delta_time;
         if (rotation2D->value > 2 * M_PI) rotation2D->value -= 2 * M_PI;
     }
-} zox_declare_system(Torque2DSystem)
+} zoxd_system(Torque2DSystem)

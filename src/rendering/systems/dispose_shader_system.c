@@ -13,4 +13,4 @@ void ShaderDisposeSystem(iter *it) {
             glDeleteShader(shaderGPULink->value.y);
         }
     }
-} zox_declare_system(ShaderDisposeSystem)
+} zoxd_system(ShaderDisposeSystem)

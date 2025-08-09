@@ -6,4 +6,4 @@ void MeshGPURestoreSystem(iter *it) {
         meshGPULink->value.x = spawn_gpu_generic_buffer();
         meshGPULink->value.y = spawn_gpu_generic_buffer();
     }
-} zox_declare_system(MeshGPURestoreSystem)
+} zoxd_system(MeshGPURestoreSystem)

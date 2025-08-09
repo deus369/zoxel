@@ -11,29 +11,29 @@
 #define playlist_mode_loop 0    // stick on same track
 #define playlist_mode_cycle 1   // play through list sequentially
 #define playlist_mode shuffle 2 // random non repeating track each time
-zox_declare_tag(Note)
-zox_declare_tag(Music)
-zox_declare_tag(Looping)
-zox_component_byte(MusicNote)
-zox_component_byte(GenerateMusic)
-zox_component_byte(MusicEnabled)
-zox_component_double(MusicLength)
-zox_component_double(MusicTime)
-zox_component_double(MusicSpeed)
-zox_entities_component(NoteLinks)
+zox_tag(Note);
+zox_tag(Music);
+zox_tag(Looping);
+zoxc_byte(MusicNote);
+zoxc_byte(GenerateMusic);
+zoxc_byte(MusicEnabled);
+zoxc_double(MusicLength);
+zoxc_double(MusicTime);
+zoxc_double(MusicSpeed);
+zoxc_entities(NoteLinks)
 // playlist
-zox_declare_tag(Playlist)
-zox_component_byte(PlaylistEnabled)
-zox_component_byte(MusicPlaying)
-zox_entities_component(MusicLinks)
+zox_tag(Playlist);
+zoxc_byte(PlaylistEnabled);
+zoxc_byte(MusicPlaying);
+zoxc_entities(MusicLinks)
 // realm
-zox_component_byte(PlaylistPlaying)
-zox_entities_component(PlaylistLinks)
-zox_component_entity(PlaylistLink)
+zoxc_byte(PlaylistPlaying);
+zoxc_entities(PlaylistLinks)
+zoxc_entity(PlaylistLink);
 // playlist mode
-zox_component_byte(PlaylistMode)
+zoxc_byte(PlaylistMode);
 
-// zox_memory_component(MusicData, int)
+// zoxc_arrayd(MusicData, int);
 #include "data/music_palette.c"
 #include "convert/midi_load.c"
 #include "prefabs/_.c"
@@ -42,10 +42,11 @@ zox_component_byte(PlaylistMode)
 #include "systems/music_generate_system.c"
 
 void process_arguments_musics(ecs_world_t *world, char* args[], int count) {
+    (void) world;
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "--nomusic") == 0) {
             nomusic = 1;
-            zox_log("+ setting enabled [nomusic]")
+            zox_log("+ setting enabled [nomusic]");
         }
     }
 }
@@ -61,41 +62,41 @@ void on_boot_musics(ecs_world_t* world, ecs_entity_t app) {
 
 zox_begin_module(Musics)
     // Notes
-    zox_define_tag(Note)
-    zox_define_tag(Music)
-    zox_define_tag(Looping)
+    zox_define_tag(Note);
+    zox_define_tag(Music);
+    zox_define_tag(Looping);
     // Music
-    zox_define_component_byte(MusicNote)
-    zox_define_component_byte(GenerateMusic)
-    zox_define_component_byte(MusicEnabled)
-    zox_define_component_double(MusicTime)
-    zox_define_component_double(MusicSpeed)
-    zox_define_component_double(MusicLength)
-    zox_define_entities_component(NoteLinks)
+    zox_define_component_byte(MusicNote);
+    zox_define_component_byte(GenerateMusic);
+    zox_define_component_byte(MusicEnabled);
+    zox_define_component_double(MusicTime);
+    zox_define_component_double(MusicSpeed);
+    zox_define_component_double(MusicLength);
+    zox_define_entities_component(NoteLinks);
     // playlist
-    zox_define_tag(Playlist)
-    zox_define_component_byte(PlaylistEnabled)
-    zox_define_component_byte(MusicPlaying)
-    zox_define_entities_component(MusicLinks)
+    zox_define_tag(Playlist);
+    zox_define_component_byte(PlaylistEnabled);
+    zox_define_component_byte(MusicPlaying);
+    zox_define_entities_component(MusicLinks);
     // realm
-    zox_define_component_byte(PlaylistPlaying)
-    zox_define_component_byte(PlaylistMode)
-    zox_define_entities_component(PlaylistLinks)
-    zox_define_component_entity(PlaylistLink)
-    zox_system_1(MusicGenerateSystem, zox_pip_mainthread,
+    zox_define_component_byte(PlaylistPlaying);
+    zox_define_component_byte(PlaylistMode);
+    zox_define_entities_component(PlaylistLinks);
+    zox_define_component_entity(PlaylistLink);
+    zox_system_1(MusicGenerateSystem, zoxp_mainthread,
         [out] GenerateMusic,
         [out] NoteLinks,
-        [none] Music)
-    zox_system_1(MusicPlaySystem, zox_pip_mainthread,
+        [none] Music);
+    zox_system_1(MusicPlaySystem, zoxp_mainthread,
         [in] MusicEnabled,
         [in] NoteLinks,
         [in] MusicSpeed,
         [out] MusicNote,
         [out] MusicTime,
-        [none] Music)
-    add_hook_on_boot(on_boot_musics);
+        [none] Music);
+    add_hook_on_boot(on_boot_musics);;
     add_hook_terminal_command(process_arguments_musics);
-    spawn_prefabs_musics(world);
+    add_hook_spawn_prefabs(spawn_prefabs_musics);
 zox_end_module(Musics)
 
 #endif

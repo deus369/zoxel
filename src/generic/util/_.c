@@ -4,3 +4,5 @@
 #include "names.c"
 #include "name_generation.c"
 #include "delays.c"
+#include "color.c"
+#include "color_rgb.c"

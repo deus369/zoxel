@@ -1,11 +1,11 @@
 #ifndef zoxm_ui
 #define zoxm_ui
 
-#include "core/core.c"
-#include "zigels/zigels.c"
-#include "texts/texts.c"
-#include "elements2D/elements2D.c"
-#include "elements3D/elements3D.c"
+#include "core/_.c"
+#include "zigels/_.c"
+#include "texts/_.c"
+#include "elements2D/_.c"
+#include "elements3D/_.c"
 #include "touch/_.c"
 
 zox_begin_module(Elements)

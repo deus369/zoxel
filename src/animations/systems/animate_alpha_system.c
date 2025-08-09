@@ -29,4 +29,4 @@ void AnimateAlphaSystem(ecs_iter_t *it) {
         }
         alpha->value = float_lerp(animateSourceFloat->value, animateTargetFloat->value, animation_time);
     }
-} zox_declare_system(AnimateAlphaSystem)
+} zoxd_system(AnimateAlphaSystem)

@@ -13,7 +13,7 @@ CharacterRaycast raycast_character(ecs *world,
     const float3 ray_origin,
     const float3 ray_normal,
     const entity caster,
-    const EntityLinks* entities)
+    const ChunkEntities* entities)
 {
     CharacterRaycast ray = {
         .e = 0,
@@ -76,7 +76,7 @@ byte raycast_voxel_node(
     byte ray_hit = 0;
     float ray_distance = 0;
     int3 hit_normal = int3_zero;
-    // CharacterRaycast character_raycast = { };
+    // CharacterRaycast character_raycast = { 0 };
     byte was_hitting = 0;
     uint checks = 0;
     if (zox_valid(chunk)) {
@@ -86,7 +86,7 @@ byte raycast_voxel_node(
         }
         chunk_depth = zox_get_value(chunk, NodeDepth);
         if (raycasting_terrain) {
-            zox_geter(chunk, EntityLinks, entities)
+            zox_geter(chunk, ChunkEntities, entities)
             character_raycast = raycast_character(world,
                 ray_origin,
                 ray_normal,
@@ -105,7 +105,7 @@ byte raycast_voxel_node(
     VoxelNode *node_last = NULL;
     // zero for terrain raycasting
     float3 local_ray_origin = float3_subtract(ray_origin, chunk_position_real);
-    position_global = real_position_to_voxel_position2(local_ray_origin, voxel_scale);
+    position_global = positionf_to_positionv(local_ray_origin, voxel_scale);
     const float3 ray_origin_scaled = float3_scale(local_ray_origin, 1.0f / voxel_scale); // get float voxel position
     // ray
     const int3 step_direction = float3_to_int3(float3_sign(ray_normal));
@@ -151,7 +151,7 @@ byte raycast_voxel_node(
                 chunk_position = new_chunk_position;
                 // only do this once when hitting a new chunk
                 if (!character_raycast.e) {
-                    zox_geter(chunk, EntityLinks, entities)
+                    zox_geter(chunk, ChunkEntities, entities)
                     character_raycast = raycast_character(world,
                         ray_origin,
                         ray_normal,

@@ -20,4 +20,4 @@ void DeathAnimationSystem(ecs_iter_t *it) {
         animationState->value = zox_animation_shrink;
         animationStart->value = zox_current_time;
     }
-} zox_declare_system(DeathAnimationSystem)
+} zoxd_system(DeathAnimationSystem)

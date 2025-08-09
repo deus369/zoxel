@@ -46,4 +46,4 @@ void ExperienceSystem(ecs_iter_t *it) {
         const color popup_color = (color) { 255, 255, 0, 255 };
         spawn_popup3_easy(world, popup_text, popup_color, popup_position, 5, 7 + rand() % 3);
     }
-} zox_declare_system(ExperienceSystem)
+} zoxd_system(ExperienceSystem)

@@ -24,6 +24,7 @@ void module_dispose_core(ecs_world_t *world, void *ctx) {
     dispose_game_store();
     dispose_hook_files_load();
     dispose_hook_on_boot();
+    dispose_hook_spawn_prefabs();
     free_zems();
 }
 
@@ -68,6 +69,7 @@ zox_begin_module(Core)
     initialize_post_update_loop();
     initialize_hook_terminal_command();
     initialize_hook_files_load();
+    initialize_hook_spawn_prefabs();
     initialize_hook_on_boot();
     // hooks
     add_hook_terminal_command(process_arguments_core);

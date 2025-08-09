@@ -23,4 +23,4 @@
 #ifndef zox_windows
     //if (!system_updated) zox_skip()   // skip changes if isn't has_set
 #endif
-} zox_declare_system(QuadsLabelSystem)*/
+} zoxd_system(QuadsLabelSystem)*/

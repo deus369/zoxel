@@ -17,7 +17,7 @@ byte zox_init_glew() {
     return EXIT_SUCCESS;
 }
 
-void initialize_opengl(ecs_world_t *world) {
+void initialize_opengl() {
     check_frame_buffer();
     check_compute();
     // check_geometry();

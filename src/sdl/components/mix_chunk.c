@@ -1,4 +1,4 @@
-zox_component(SDLMixChunk, Mix_Chunk*);
+zoxc(SDLMixChunk, Mix_Chunk*);
 
 ECS_DTOR(SDLMixChunk, ptr, {
     if (ptr->value) {

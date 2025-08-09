@@ -13,4 +13,4 @@ void ZeviceButtonEnableSystem(iter *it) {
             zeviceDisabled->value = 0;
         }
     }
-} zox_declare_system(ZeviceButtonEnableSystem)
+} zoxd_system(ZeviceButtonEnableSystem)

@@ -9,4 +9,4 @@ void Friction2DSystem(iter *it) {
         acceleration2D->value.x -= velocity2D->value.x * frictionValue;
         acceleration2D->value.y -= velocity2D->value.y * frictionValue;
     }
-} zox_declare_system(Friction2DSystem)
+} zoxd_system(Friction2DSystem)

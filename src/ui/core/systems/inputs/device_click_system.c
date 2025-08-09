@@ -71,4 +71,4 @@ void DeviceClickSystem(iter *it) {
             clickingEntity->value = 0;
         }
     }
-} zox_declare_system(DeviceClickSystem)
+} zoxd_system(DeviceClickSystem)

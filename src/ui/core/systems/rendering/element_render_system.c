@@ -65,4 +65,4 @@ void ElementRenderSystem(iter *it) {
         opengl_disable_texture(1);
         zox_disable_material();
     }
-} zox_declare_system(ElementRenderSystem)
+} zoxd_system(ElementRenderSystem)

@@ -1,11 +1,14 @@
 extern entity zox_canvases[16];
 static inline int2 get_texture_size(ecs*, entity);
 
-uint debug_label_app(ecs *world,
+uint debug_label_app(
+    ecs *world,
     const entity player,
     char *buffer,
-    const uint size, uint index)
-{
+    const uint size, uint index
+) {
+    (void) player;
+
     zox_geter(main_app, CameraLinks, cameras)
     zox_geter_value(main_app, WindowSize, int2, viewport_size)
 

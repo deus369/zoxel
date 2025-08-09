@@ -21,7 +21,7 @@ entity spawn_list(ecs *world,
     zox_set(e, Color, { list_data.fill })
     zox_set(e, OutlineColor, { list_data.outline })
     // zox_muter(e, Children, children)
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
 
     // now spawn elements to fit our window
     ParentSpawnData child_parent_data = {

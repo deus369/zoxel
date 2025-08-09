@@ -1,8 +1,9 @@
 const int inspector_component_size_buffer = 128;
 
-void button_event_clicked_inspepctor(ecs_world_t *world,
-    const ecs_entity_t trigger_entity)
-{
+void button_event_clicked_inspepctor(
+    ecs_world_t *world,
+    const ecs_entity_t trigger_entity
+) {
     if (!zox_has(trigger_entity, Children)) {
         return;
     }
@@ -20,11 +21,12 @@ void button_event_clicked_inspepctor(ecs_world_t *world,
         buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string##_##type(c));\
     }
 
-void get_component_label(ecs_world_t *world,
+void get_component_label(
+    ecs_world_t *world,
     const ecs_entity_t e,
     const ecs_entity_t component,
-    char *buffer)
-{
+    char *buffer
+) {
     const int size_of_buffer = inspector_component_size_buffer;
     int buffer_index = 0;
     ecs_id_t id = component & ECS_COMPONENT_MASK;
@@ -34,7 +36,7 @@ void get_component_label(ecs_world_t *world,
     else zox_dynamic_component_label(byte2, TextPadding)
     else zox_dynamic_component_label(int, ID)
     else zox_dynamic_component_label(int2, DraggingDelta)
-    else zox_dynamic_component_label(int3, Int3Stub)
+    else zox_dynamic_component_label(int3, int3_stub)
     else zox_dynamic_component_label(int4, DraggableLimits)
     else zox_dynamic_component_label(long_int, Seed)
     else zox_dynamic_component_label(float, Brightness)
@@ -60,7 +62,11 @@ void get_component_label(ecs_world_t *world,
 }
 
 // sets inspector ui compponents, the inspector ui
-void set_inspector_element(ecs_world_t *world, const ecs_entity_t window, const ecs_entity_t e) {
+void set_inspector_element(
+    ecs_world_t *world,
+    const ecs_entity_t window,
+    const ecs_entity_t e
+) {
     if (!zox_valid(window) || !zox_valid(e)) {
         return;
     }

@@ -41,4 +41,4 @@ void FadeoutSystem(ecs_iter_t *it) {
         else if (animation_time > 1) animation_time = 1;
         alpha->value = float_lerp(1, 0, animation_time);
     }*/
-} zox_declare_system(FadeoutSystem)
+} zoxd_system(FadeoutSystem)

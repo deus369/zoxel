@@ -15,8 +15,8 @@ zox_increment_system_with_reset(TriggerActionB, zox_dirty_end);
 
 zox_begin_module(Triggers)
     define_components_triggers(world);
-    zox_define_increment_system(TriggerActionA);
-    zox_define_increment_system(TriggerActionB);
+    zoxd_system_increment(TriggerActionA);
+    zoxd_system_increment(TriggerActionB);
 zox_end_module(Triggers)
 
 #endif

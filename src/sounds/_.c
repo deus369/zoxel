@@ -22,8 +22,7 @@ zox_begin_module(Sounds)
     zox_module_dispose(dispose_sounds)
     add_hook_terminal_command(process_arguments_sounds);
     add_hook_files_load(load_files_sounds);
-    // prefabs
-    spawn_prefabs_sounds(world);
+    add_hook_spawn_prefabs(spawn_prefabs_sounds);
 zox_end_module(Sounds)
 
 #endif

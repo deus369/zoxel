@@ -7,6 +7,8 @@ byte block_vox_render_at_lod = 0;
 #include "systems/_.c"
 
 void module_dispose_vodes3(ecs *world, void *ctx) {
+    (void) world;
+    (void) ctx;
     dispose_hook_spawned_block();
 }
 

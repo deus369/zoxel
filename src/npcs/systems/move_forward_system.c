@@ -84,4 +84,4 @@ void MoveForwardSystem(ecs_iter_t *it) {
         float3 movement_force = float3_scale(forward, moveSpeed->value * slowdown);
         acceleration->value = float3_add(acceleration->value, movement_force);
     }
-} zox_declare_system(MoveForwardSystem)
+} zoxd_system(MoveForwardSystem)

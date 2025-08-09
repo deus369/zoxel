@@ -25,4 +25,4 @@ void ElementDragSystem(iter *it) {
             drag_element(world, dragged_entity, draggingDelta->value);
         }
     }
-} zox_declare_system(ElementDragSystem)
+} zoxd_system(ElementDragSystem)

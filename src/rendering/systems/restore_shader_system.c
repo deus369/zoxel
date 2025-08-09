@@ -13,4 +13,4 @@ void ShaderRestoreSystem(iter *it) {
         zox_log(" + restoring [%s] [%i] gpu [%ix%i]\n", zox_get_name(it->entities[i]), shaderSourceIndex->value, shaderGPULink->value.x, shaderGPULink->value.y)
 #endif
     }
-} zox_declare_system(ShaderRestoreSystem)
+} zoxd_system(ShaderRestoreSystem)

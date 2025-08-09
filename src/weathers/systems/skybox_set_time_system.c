@@ -12,4 +12,4 @@ void SkyboxSetTimeSystem(ecs_iter_t *it) {
         zox_gpu_float(attribute_time, (float) zox_current_time);
         zox_gpu_material(0);
     }
-} zox_declare_system(SkyboxSetTimeSystem)
+} zoxd_system(SkyboxSetTimeSystem)

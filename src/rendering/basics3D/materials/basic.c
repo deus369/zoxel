@@ -8,7 +8,7 @@ typedef struct {
     uint fog_data;
     uint brightness;
 } MaterialBasic3D;
-zox_custom_component(MaterialBasic3D)
+zoxc_custom(MaterialBasic3D);
 
 MaterialBasic3D create_MaterialBasic3D(const uint material) {
     return (MaterialBasic3D) {

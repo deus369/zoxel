@@ -43,4 +43,4 @@ void LevelUpSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(LevelUpSystem)
+} zoxd_system(LevelUpSystem)

@@ -50,4 +50,4 @@ void Elementbar2DSystem(iter *it) {
             // zox_log("> elementbar updated %ix%i - position x %i percentage %f\n", front_pixel_size.x, front_pixel_size.y, offset_x, percentage)
         }
     }
-} zox_declare_system(Elementbar2DSystem)
+} zoxd_system(Elementbar2DSystem)

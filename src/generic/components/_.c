@@ -1,21 +1,21 @@
-#include "component_byte.c"
-#include "component_byte2.c"
-#include "component_byte3.c"
-#include "component_long_int.c"
-#include "component_double.c"
-#include "component_int.c"
-#include "component_int2.c"
-#include "component_int3.c"
-#include "component_int4.c"
-#include "component_float.c"
-#include "component_float2.c"
-#include "component_float3.c"
-#include "component_float4.c"
-#include "component_float6.c"
-#include "component_entity.c"
-#include "component_color.c"
-#include "component_color_rgb.c"
-#include "component_zext.c"
+#include "byte.c"
+#include "byte2.c"
+#include "byte3.c"
+#include "long_int.c"
+#include "double.c"
+#include "int.c"
+#include "int2.c"
+#include "int3.c"
+#include "int4.c"
+#include "float.c"
+#include "float2.c"
+#include "float3.c"
+#include "float4.c"
+#include "float6.c"
+#include "entity.c"
+#include "color.c"
+#include "color_rgb.c"
+#include "zext.c"
 
 #define zox_component_string(type) zox_component_string##_##type(component##_##type)
 
@@ -62,49 +62,47 @@ void dispose_component_ids() {
 }
 
 // identitys
-zox_component_int(ID)
-zox_component_long_int(Seed)
-zox_component_zext(ZoxName)
+zoxc_int(ID);
+zoxc_long_int(Seed);
+zoxc_text(ZoxName)
 // time events
-zox_declare_tag(DestroyInFrame)
-zox_component_double(EventTime)
-zox_component_entity(EventInput)
-zox_function_component(TimedEvent, void, ecs_world_t*, const ecs_entity_t)
+zox_tag(DestroyInFrame);
+zoxc_double(EventTime);
+zoxc_entity(EventInput);
+zoxc_function(TimedEvent, void, ecs_world_t*, const ecs_entity_t);
 // used for physics
-zox_component_float3(Bounds3D)
-zox_component_float6(Position3DBounds)
+zoxc_float3(Bounds3D);
+zoxc_float6(Position3DBounds);
 // used for editor
-zox_component_byte(EntityDirty)
-zox_component_entity(EntityTarget)
-zox_component_entity(ComponentTarget)
+zoxc_byte(EntityDirty);
+zoxc_entity(EntityTarget);
+zoxc_entity(ComponentTarget);
 // unsorted
-zox_component_byte(GenericEvent)
-zox_component_byte(EntityInitialize)
-zox_component_int2(ScreenDimensions)
-zox_component_byte(SpawnChance)
-zox_entities_component(EntityLinks) // rename to ChunkEntities - used for characters atm
+zoxc_byte(GenericEvent);
+zoxc_byte(EntityInitialize);
+zoxc_int2(ScreenDimensions);
+zoxc_byte(SpawnChance);
 
 void define_components_generic(ecs_world_t *world) {
     // ids
-    zox_define_component_int(ID)
-    zox_define_component_long_int(Seed)
-    zox_define_component_zext(ZoxName)
+    zox_define_component_int(ID);
+    zox_define_component_long_int(Seed);
+    zox_define_component_zext(ZoxName);
     // timed
-    zox_define_tag(DestroyInFrame)
-    zox_define_component_double(EventTime)
-    zox_define_component_entity(EventInput)
-    zox_define_component(TimedEvent)
+    zox_define_tag(DestroyInFrame);
+    zox_define_component_double(EventTime);
+    zox_define_component_entity(EventInput);
+    zox_define_component(TimedEvent);
     // physics
-    zox_define_component_float3(Bounds3D)
-    zox_define_component_float6(Position3DBounds)
+    zox_define_component_float3(Bounds3D);
+    zox_define_component_float6(Position3DBounds);
     // editor
-    zox_define_component_byte(EntityDirty)
-    zox_define_component_entity(EntityTarget)
-    zox_define_component_entity(ComponentTarget)
+    zox_define_component_byte(EntityDirty);
+    zox_define_component_entity(EntityTarget);
+    zox_define_component_entity(ComponentTarget);
     // unsorted
-    zox_define_component_byte(GenericEvent)
-    zox_define_component_byte(EntityInitialize)
-    zox_define_component_int2(ScreenDimensions)
-    zox_define_component_byte(SpawnChance)
-    zox_define_entities_component(EntityLinks)
+    zox_define_component_byte(GenericEvent);
+    zox_define_component_byte(EntityInitialize);
+    zox_define_component_int2(ScreenDimensions);
+    zox_define_component_byte(SpawnChance);
 }

@@ -5,4 +5,4 @@ void ColorsGPULinkRestoreSystem(iter *it) {
         zox_sys_o(ColorsGPULink, colorsGPULink)
         colorsGPULink->value = spawn_gpu_generic_buffer();
     }
-} zox_declare_system(ColorsGPULinkRestoreSystem)
+} zoxd_system(ColorsGPULinkRestoreSystem)

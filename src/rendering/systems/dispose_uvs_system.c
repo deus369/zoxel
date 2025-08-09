@@ -7,4 +7,4 @@ void MeshUvsGPUDisposeSystem(iter *it) {
             glDeleteBuffers(1, &uvsGPULink->value);
         }
     }
-} zox_declare_system(MeshUvsGPUDisposeSystem)
+} zoxd_system(MeshUvsGPUDisposeSystem)

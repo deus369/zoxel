@@ -11,10 +11,10 @@ void define_systems_characters3_terrain(ecs_world_t* world) {
         [in] rendering.RenderDistanceDirty,
         [in] CharacterSpawnZone,
         [out] CharactersSpawned,
-        [out] generic.EntityLinks,
+        [out] chunks3.ChunkEntities,
         [none] terrain.TerrainChunk)
     // NOTE: Writes to VoxelNode
-    zox_system_1(Characters3SpawnSystem, zoxp_read_voxels,
+    zox_system_1(Characters3SpawnSystem, zoxp_voxels_read,
         [in] rendering.RenderDistanceDirty,
         [in] chunks3.VoxelNode,
         [in] chunks3.NodeDepth,
@@ -25,6 +25,6 @@ void define_systems_characters3_terrain(ecs_world_t* world) {
         [in] chunks3.ChunkNeighbors,
         [out] CharactersSpawned,
         [out] CharactersEverSpawned,
-        [out] generic.EntityLinks,
+        [out] chunks3.ChunkEntities,
         [none] terrain.TerrainChunk)
 }

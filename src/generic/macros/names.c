@@ -37,30 +37,30 @@ void zox_set_entity_name(ecs_world_t *world, const ecs_entity_t e, const char* n
     free(name_plus_id);
 }
 
-void zox_debug_spawn(ecs_world_t *world,
+void zox_set_name_spawned(
+    ecs_world_t *world,
     const ecs_entity_t e,
-    const char* name,
-    const char* entity_type)
-{
-#ifdef zox_debug_spawning
-    zox_log(" + spawned %s [%s] [%lu] [%s]\n", entity_type, name, e, zox_get_name(e))
-#endif
+    const char* name
+) {
 #ifndef zox_disable_names
     zox_set_entity_name(world, e, name);
+#endif
+#ifdef zox_debug_spawning
+    zox_log(" + spawned %s [%lu] [%s]\n", name, e, zox_get_name(e))
 #endif
 }
 
 #define zox_prefab_name2(label, label2)\
-    zox_debug_spawn(world, e, label2 label, "prefab");
+    zox_set_name_spawned(world, e, label2 label);
 
 #define zox_prefab_name(label)\
     zox_prefab_name2(label, "prefab_")
 
 #define zox_name(label)\
-    zox_debug_spawn(world, e, label, "instance");
+    zox_set_name_spawned(world, e, label);
 
 #define zox_set_unique_name(e, name)\
-    zox_set_entity_name(world, e, name);
+    zox_set_entity_name(world, e, name)
 
 #define zox_set_name_e(e, name)\
     zox_set_entity_name(world, e, name);

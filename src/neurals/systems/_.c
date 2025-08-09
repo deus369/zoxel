@@ -18,10 +18,10 @@ void define_systems_neurals(ecs_world_t* world) {
         [none] !OutputNeuron)
 
 #ifdef zox_render_brain
-    zox_system_1(NeuronRenderSystem, zox_pip_mainthread,
+    zox_system_1(NeuronRenderSystem, zoxp_mainthread,
         [in] transforms2.Position2D,
         [none] Neuron)
-    zox_system_1(ConnectionRenderSystem, zox_pip_mainthread,
+    zox_system_1(ConnectionRenderSystem, zoxp_mainthread,
         [in] ConnectionData,
         [in] Weight,
         [in] Signal,

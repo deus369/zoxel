@@ -16,4 +16,4 @@ void ClickSoundSystem(iter *it) {
             spawn_sound_generated(world, prefab_sound_generated, instrument_flute, note_frequencies[frequency], length, volume);
         }
     }
-} zox_declare_system(ClickSoundSystem)
+} zoxd_system(ClickSoundSystem)

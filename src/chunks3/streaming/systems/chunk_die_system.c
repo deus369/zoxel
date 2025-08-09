@@ -44,4 +44,4 @@ void ChunkDieSystem(iter *it) {
             #endif*/
         }
     }
-} zox_declare_system(ChunkDieSystem)
+} zoxd_system(ChunkDieSystem)

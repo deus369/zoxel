@@ -27,4 +27,4 @@ void SoundPlayRefSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(SoundPlayRefSystem)
+} zoxd_system(SoundPlayRefSystem)

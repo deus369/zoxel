@@ -24,7 +24,8 @@ CC      	:= gcc
 CFLAGS      	:= -fPIC -O3 -march=native -flto=auto -DNDEBUG -Dzox_debug
 
 # 🐛 Debug build — for truth and stacktraces
-CFLAGS_DEV 	:= -fPIC -O0 -g -Wall -ggdb3 -Dzox_debug \
+#	-g3 -g
+CFLAGS_DEV 	:= -fPIC -O0 -g3 -Wall -ggdb3 -Dzox_debug \
 			-Wextra -Wpedantic # -Werror
 
 CFLAGS_DEV2  	:= -Dzox_debug -O0 -fPIC -g3 -Wall -Wextra -Werror \

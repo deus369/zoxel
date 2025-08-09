@@ -12,6 +12,8 @@ void button_event_menu_main(ecs_world_t *world, const ClickEventData *event) {
 }
 
 void button_event_volume_increase(ecs_world_t *world, const ClickEventData *event) {
+    (void) world;
+    (void) event;
     if (master_volume < 1.0f) {
         master_volume += master_volume_increment;
         zox_log(" > increased the volume to [%f]", master_volume)
@@ -19,6 +21,8 @@ void button_event_volume_increase(ecs_world_t *world, const ClickEventData *even
 }
 
 void button_event_volume_decrease(ecs_world_t *world, const ClickEventData *event) {
+    (void) world;
+    (void) event;
     if (master_volume > 0) {
         master_volume -= master_volume_increment;
         zox_log(" > decreased the volume to [%f]", master_volume)

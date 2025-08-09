@@ -100,7 +100,7 @@ void vulkan_synchronize() {
     vkResetFences(vk_device, 1, &vk_fence);
 
     // present info
-    VkPresentInfoKHR presentInfo = { };
+    VkPresentInfoKHR presentInfo = { 0 };
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.swapchainCount = 1;
     presentInfo.pSwapchains = swapChains;
@@ -121,11 +121,11 @@ void vulkan_begin_render_pass(VkClearValue clear_color) {
     // clearValues[1].depthStencil = (VkClearDepthStencilValue) {1.0f, 0};
     // VkClearValue clearColor2 = (VkClearValue) {{{ 1.0f, 0.0f, 0.0f, 1.0f }}};
     // Begin Command Buffer
-    VkCommandBufferBeginInfo beginInfo = { };
+    VkCommandBufferBeginInfo beginInfo = { 0 };
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     vkBeginCommandBuffer(vk_command_buffer, &beginInfo);
     // Begin Render Pass
-    VkRenderPassBeginInfo renderPassInfo = { };
+    VkRenderPassBeginInfo renderPassInfo = { 0 };
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     renderPassInfo.renderPass = vk_render_pass;
     renderPassInfo.framebuffer = vk_frame_buffers[vk_image_index];
@@ -251,18 +251,18 @@ byte vulkan_create_device() {
     }
 
     // queue
-    VkDeviceQueueCreateInfo queueCreateInfo = { };
+    VkDeviceQueueCreateInfo queueCreateInfo = { 0 };
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
     queueCreateInfo.queueFamilyIndex = queue_family_index;
     queueCreateInfo.queueCount = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
     // device creation
-    VkDeviceCreateInfo deviceCreateInfo = { };
+    VkDeviceCreateInfo deviceCreateInfo = { 0 };
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
     deviceCreateInfo.queueCreateInfoCount = 1;
-    VkPhysicalDeviceFeatures deviceFeatures = { };
+    VkPhysicalDeviceFeatures deviceFeatures = { 0 };
     deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions;
     deviceCreateInfo.enabledExtensionCount = deviceExtensionCount;
@@ -305,7 +305,7 @@ byte vulkan_create_command_buffer() {
 }
 
 unsigned create_vulkan_render_pass() {
-    VkAttachmentDescription colorAttachment = { };
+    VkAttachmentDescription colorAttachment = { 0 };
     colorAttachment.format = VK_FORMAT_B8G8R8A8_UNORM;
     colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
     colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // automatic clearing for color
@@ -315,7 +315,7 @@ unsigned create_vulkan_render_pass() {
     colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     // Subpass description
-    VkSubpassDescription subpass = { };
+    VkSubpassDescription subpass = { 0 };
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     subpass.colorAttachmentCount = 1;
     VkAttachmentReference colorAttachmentRef = { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
@@ -329,7 +329,7 @@ unsigned create_vulkan_render_pass() {
     dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
     // Render pass creation
-    VkRenderPassCreateInfo renderPassInfo = { };
+    VkRenderPassCreateInfo renderPassInfo = { 0 };
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     renderPassInfo.attachmentCount = 1;
     renderPassInfo.pAttachments = &colorAttachment;
@@ -440,7 +440,7 @@ byte create_vulkan_swap_chain() {
     VkPresentModeKHR present_mode = choose_swap_present_mode(vk_physical_device, *vk_surface);
     VkSurfaceFormatKHR surface_format = choose_surface_format(vk_physical_device, *vk_surface);
     // create swap chain here
-    VkSwapchainCreateInfoKHR createInfo = { };
+    VkSwapchainCreateInfoKHR createInfo = { 0 };
     createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     createInfo.imageArrayLayers = 1;
     createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
@@ -598,7 +598,7 @@ byte create_vulkan_pipeline(ecs_world_t *world, VkInstance* vk_instance, VkSurfa
     if (create_vulkan_frame_buffer(vk_image_views) == EXIT_FAILURE) return EXIT_FAILURE;
     zox_log_vulkan(" > success creating vulkan frame_buffer\n")
 
-    VkSemaphoreCreateInfo semaphoreInfo = { };
+    VkSemaphoreCreateInfo semaphoreInfo = { 0 };
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     VkResult sepaphoreResult = vkCreateSemaphore(vk_device, &semaphoreInfo, NULL, &vk_semaphore);
     if (sepaphoreResult != VK_SUCCESS) {

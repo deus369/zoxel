@@ -11,7 +11,7 @@ ecs_entity_t spawn_menu_game_touch(
     const byte button_padding = 20;
     const byte bottom_padding = 60;
 
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
 #ifndef zox_disable_touch_buttons
     // left side - pause - switch weapon
     const int2 position_pause = (int2) {

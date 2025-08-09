@@ -57,4 +57,4 @@ void BoneIndexGenerateSystem(iter *it) {
             //else boneIndexes->value[j] = 0;
         }
     }
-} zox_declare_system(BoneIndexGenerateSystem)
+} zoxd_system(BoneIndexGenerateSystem)

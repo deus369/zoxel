@@ -7,4 +7,4 @@ void MeshColorsGPUDisposeSystem(iter *it) {
             glDeleteBuffers(1, &colorsGPULink->value);
         }
     }
-} zox_declare_system(MeshColorsGPUDisposeSystem)
+} zoxd_system(MeshColorsGPUDisposeSystem)

@@ -17,7 +17,7 @@ void toggle_debug_character_bounds(ecs_world_t *world) {
         uint checks = 0;
         while (pair != NULL && checks < max_safety_checks_hashmap) {
             ecs_entity_t chunk = pair->value;
-            zox_geter(chunk, EntityLinks, entityLinks)
+            zox_geter(chunk, ChunkEntities, entityLinks)
             for (int j = 0; j < entityLinks->length; j++) {
                 ecs_entity_t e2 = entityLinks->value[j];
                 zox_set(e2, DebugCubeLines, { mode })

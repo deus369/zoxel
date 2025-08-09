@@ -153,4 +153,4 @@ void HierarchyRefreshSystem(ecs_iter_t *it) {
         dispose_entity_array_d(entities);
         hierarchyUIDirty->value = 0;
     }
-} zox_declare_system(HierarchyRefreshSystem)
+} zoxd_system(HierarchyRefreshSystem)

@@ -1,4 +1,4 @@
-zox_component(ShaderGPULink, uint2)
+zoxc(ShaderGPULink, uint2);
 
 void add_gpu_shader(ecs *world, const entity e) {
     if (!headless) zox_prefab_set(e, ShaderGPULink, { { 0, 0 } })

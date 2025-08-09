@@ -16,4 +16,4 @@ void RayDebugSystem(ecs_iter_t *it) {
         render_line3D(world, origin->value, float3_add(origin->value, end_point), debug_color);
         render_line3D(world, origin->value, float3_add(origin->value, end_point2), debug_color2);
     }
-} zox_declare_system(RayDebugSystem)
+} zoxd_system(RayDebugSystem)

@@ -25,4 +25,4 @@ void LodInstanceSystem(iter *it) {
             }*/
         }
     }
-} zox_declare_system(LodInstanceSystem)
+} zoxd_system(LodInstanceSystem)

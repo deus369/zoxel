@@ -8,4 +8,4 @@ void Velocity3System(iter *it) { //! Veloco Rapters!
         zox_sys_o(Position3D, position)
         position->value = float3_add(position->value, float3_scale(velocity->value, delta_time));
     }
-} zox_declare_system(Velocity3System)
+} zoxd_system(Velocity3System)

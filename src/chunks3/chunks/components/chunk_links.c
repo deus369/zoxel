@@ -1,5 +1,5 @@
 zox_hashmap_component(ChunkLinks, int3)
-/*zox_component(ChunkLinks, int3_hashmap*)
+/*zoxc(ChunkLinks, int3_hashmap*)
 
 void dispose_hashmap_int3(ecs *world, int3_hashmap* hashmap) {
     if (!hashmap || !hashmap->data || !hashmap->size) {

@@ -52,4 +52,4 @@ void MeshUpdateCharacters3DSystem(iter *it) {
         zox_log(" + character mesh gpu uploaded [%ix%i:%i] -> indicies [%i]\n", meshGPULink->value.x, meshGPULink->value.y, colorsGPULink->value, meshIndicies->length);
 #endif
     }
-} zox_declare_system(MeshUpdateCharacters3DSystem)
+} zoxd_system(MeshUpdateCharacters3DSystem)

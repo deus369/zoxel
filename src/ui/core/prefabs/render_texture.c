@@ -9,7 +9,7 @@ entity spawn_prefab_render_texture(ecs *world, const entity prefab) {
     const float scale1 = 1.01f;
     zox_set(e, Scale1D, { scale1 })
     // no 2D matrix system yet
-    // zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    // zox_prefab_set(e, TransformMatrix, { float4x4_identity })
     zox_prefab_set(e, TransformMatrix, { float4x4_transform_scale(float3_zero, quaternion_identity, scale1) })
     return e;
 }

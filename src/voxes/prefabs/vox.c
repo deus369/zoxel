@@ -14,7 +14,7 @@ entity spawn_prefab_vox(
     zox_prefab_set(e, Scale1D, { 1 });
     zox_prefab_set(e, MeshDirty, { 0 });
     zox_prefab_set(e, RenderDisabled, { 0 });
-    // zox_prefab_set(e, TransformMatrix, { float4x4_identity() })
+    // zox_prefab_set(e, TransformMatrix, { float4x4_identity })
     // vox
     zox_prefab_set(e, VoxScale, { vox_model_scale });
     zox_prefab_set(e, GenerateChunk, { 0 });
@@ -23,14 +23,19 @@ entity spawn_prefab_vox(
     return e;
 }
 
+// grass/rubble - generated atm
 entity spawn_vox_basic(
     ecs *world,
     const entity prefab,
+    byte max_depth,
     byte node_depth
 ) {
     zox_instance(prefab);
     spawn_gpu_mesh(world, e);
     spawn_gpu_colors(world, e);
     zox_set(e, NodeDepth, { node_depth });
+    byte ddepth = max_depth - node_depth + 1;
+    zox_set(e, VoxScale, { ((float) ddepth) / 64.0f });
+    zox_set(e, ChunkSize, { int3_single(powers_of_two[node_depth]) });
     return e;
 }

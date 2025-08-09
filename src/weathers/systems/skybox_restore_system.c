@@ -25,4 +25,4 @@ void SkyboxRestoreSystem(ecs_iter_t *it) {
             zox_log(" - color [%ix%ix%i] secondary [%ix%ix%i]", color->value.r, color->value.g, color->value.b, secondaryColor->value.r, secondaryColor->value.g, secondaryColor->value.b)
         }
     }
-} zox_declare_system(SkyboxRestoreSystem)
+} zoxd_system(SkyboxRestoreSystem)

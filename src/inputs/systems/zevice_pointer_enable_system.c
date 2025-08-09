@@ -11,4 +11,4 @@ void ZevicePointerEnableSystem(iter *it) {
         const byte has_input = devices_get_is_pressed(zevicePointer->value);
         if (!has_input) zeviceDisabled->value = 0;
     }
-} zox_declare_system(ZevicePointerEnableSystem)
+} zoxd_system(ZevicePointerEnableSystem)

@@ -81,7 +81,7 @@ ecs_entity_t spawn_taskbar(
         };
         const ecs_entity_t frame = spawn_element(world, &spawn_frame_data);
 
-        Children frame_children = (Children) { };
+        Children frame_children = (Children) { 0 };
         initialize_Children(&frame_children, 1);
         spawn_icon_data.parent.e = frame;
         spawn_icon_data.parent.position = spawn_frame_data.element.position;

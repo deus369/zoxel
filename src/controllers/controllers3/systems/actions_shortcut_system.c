@@ -78,6 +78,6 @@ void ActionsShortcutSystem(ecs_iter_t *it) {
             player_action_ui_move(world, e, 1);
         }
     }
-} zox_declare_system(ActionsShortcutSystem)
+} zoxd_system(ActionsShortcutSystem)
 
 #endif

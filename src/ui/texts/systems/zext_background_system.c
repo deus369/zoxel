@@ -38,4 +38,4 @@ void ZextBackgroundSystem(iter *it) {
         meshDirty->value = mesh_state_trigger;
         generateTexture->value = zox_generate_texture_trigger;
     }
-} zox_declare_system(ZextBackgroundSystem)
+} zoxd_system(ZextBackgroundSystem)

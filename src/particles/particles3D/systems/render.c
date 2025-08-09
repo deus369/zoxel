@@ -71,7 +71,7 @@ void Particle3DRenderSystem(ecs_iter_t *it) {
 #endif
     zox_disable_material();
     zox_gpu_blend_disable();
-} zox_declare_system(Particle3DRenderSystem)
+} zoxd_system(Particle3DRenderSystem)
 
 // const Rotation3D *rotation3D = &rotation3Ds[i];
 // const Scale1D *scale1D = &scale1Ds[i];

@@ -1,11 +1,11 @@
-#define zox_custom_component(name)\
-    ECS_COMPONENT_DECLARE(name);
+#define zoxc_custom(name)\
+    ECS_COMPONENT_DECLARE(name)
 
-#define zox_component(name, type)\
+#define zoxc(name, type)\
     typedef struct {\
         type value;\
     } name;\
-    zox_custom_component(name)
+    zoxc_custom(name)
 
 #define zox_define_component(name)\
     ECS_COMPONENT_DEFINE(world, name);\
@@ -16,11 +16,11 @@
         return_type (*value)(__VA_ARGS__);\
     } name;
 
-#define zox_function_component(name, return_type, ...)\
+#define zoxc_function(name, return_type, ...)\
     typedef struct {\
         return_type (*value)(__VA_ARGS__);\
     } name;\
-    zox_custom_component(name)
+    zoxc_custom(name)
 
 #define zox_define_component_w_dest(name)\
     zox_define_component(name)\

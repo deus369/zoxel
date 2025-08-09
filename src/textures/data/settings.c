@@ -23,4 +23,4 @@
 byte terrain_texture_outline_type = zox_outline_type_full;
 const double noise_animation_speed = 0.5;
 byte texture_mode = 0;
-int2 voxel_texture_size = (int2) { 32, 32 }; // 16 | 32 | 64
+int2 voxel_texture_size = { 32, 32 }; // 16 | 32 | 64

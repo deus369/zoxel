@@ -2,9 +2,9 @@
 #define zoxm_space
 
 // one day we will actually make this abuot space
-zox_declare_tag(Planet);
-zox_declare_tag(Asteroid);
-zox_declare_tag(Star);
+zox_tag(Planet);
+zox_tag(Asteroid);
+zox_tag(Star);
 #include "util/_.c"
 #include "game/_.c"
 

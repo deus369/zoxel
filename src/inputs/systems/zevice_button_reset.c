@@ -6,4 +6,4 @@ void ZeviceButtonResetSystem(iter *it) {
         zox_sys_o(ZeviceButton, zeviceButton)
         reset_device_button(zeviceButton);
     }
-} zox_declare_system(ZeviceButtonResetSystem)
+} zoxd_system(ZeviceButtonResetSystem)

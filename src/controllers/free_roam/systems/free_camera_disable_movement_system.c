@@ -23,5 +23,5 @@
             zox_log(" > disable movement Toggled [%s]\n", disableMovement->value ? "true" : "false")
         }
     }
-} zox_declare_system(FreeCameraDisableMovementSystem)
+} zoxd_system(FreeCameraDisableMovementSystem)
 */

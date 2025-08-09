@@ -18,4 +18,4 @@ void NoiseVoxelNodeSystem(iter *it) {
         generateChunk->value = 0;
         chunkDirty->value = 1;
     }
-} zox_declare_system(NoiseVoxelNodeSystem)
+} zoxd_system(NoiseVoxelNodeSystem)

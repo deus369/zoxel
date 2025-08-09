@@ -161,4 +161,4 @@ void MeleeSystem(ecs_iter_t *it) {
             spawn_sound_generated(world, prefab_sound_generated, instrument_violin, note_frequencies[44], 0.3, volume);
         }
     }
-} zox_declare_system(MeleeSystem)
+} zoxd_system(MeleeSystem)

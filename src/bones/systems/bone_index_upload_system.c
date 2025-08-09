@@ -28,4 +28,4 @@ void BoneIndexUploadSystem(iter *it) {
         glBufferData(GL_ARRAY_BUFFER, boneIndexes->length * sizeof(byte), boneIndexes->value, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
-} zox_declare_system(BoneIndexUploadSystem)
+} zoxd_system(BoneIndexUploadSystem)

@@ -74,4 +74,4 @@ void Chunk3RenderSystem(ecs_iter_t *it) {
         opengl_disable_texture(0);
         zox_disable_material();
     }
-} zox_declare_system(Chunk3RenderSystem)
+} zoxd_system(Chunk3RenderSystem)

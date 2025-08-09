@@ -40,7 +40,7 @@ setting zoxs_get(const char *name) {
             return setting;
         }
     }
-    return (setting) { };
+    return (setting) { 0 };
 }
 
 #include "util/_.c"

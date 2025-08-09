@@ -19,4 +19,4 @@ void ElementSelectedSystem(iter *it) {
             brightness->value = ui_default_brightness;
         }
     }
-} zox_declare_system(ElementSelectedSystem)
+} zoxd_system(ElementSelectedSystem)

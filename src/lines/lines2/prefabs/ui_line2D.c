@@ -102,7 +102,7 @@ ecs_entity_t spawn_ui_line2D(ecs_world_t *world,
         zox_set(e, DestroyInTime, { life_time })
     }
 
-    LineData2D line_data = (LineData2D) { };
+    LineData2D line_data = (LineData2D) { 0 };
     set_ui_line_position(&line_data, line_position2D, canvas_size_f, aspect_ratio);
     zox_set_ptr(e, LineData2D, line_data);
 

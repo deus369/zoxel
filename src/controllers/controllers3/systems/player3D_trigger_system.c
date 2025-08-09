@@ -76,4 +76,4 @@ void Player3DTriggerSystem(ecs_iter_t *it) {
             zox_set(character, TriggerActionA, { zox_dirty_trigger });
         }
     }
-} zox_declare_system(Player3DTriggerSystem)
+} zoxd_system(Player3DTriggerSystem)

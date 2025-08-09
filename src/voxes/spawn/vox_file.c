@@ -1,5 +1,3 @@
-
-
 define_fun_stopwatch(time_set_vox, 0);
 
 void set_colors_from_vox_file(
@@ -164,15 +162,16 @@ entity spawn_vox_file(
     zox_neww(model)
     char name[128];
     sprintf(name, "vox_file_%s", filename);
-    zox_set_unique_name(model, name); // "file_model");
+    zox_set_unique_name(model, name);
 
     // ox_log("Generating Model Lods for [%s]", filename);
     ModelLods modelLods;
     for (int i = 0; i < max_vox_file_lods; i++) {
+        byte render_lod = 0; // i;
         zox_instance(prefab);
-        zox_set(e, RenderLod, { i });
         zox_set(e, ChunkMeshDirty, { chunk_dirty_state_trigger });
-        set_vox_file(world, e, data, i);
+        zox_set(e, RenderLod, { i });
+        set_vox_file(world, e, data, render_lod);
         modelLods.value[i] = e;
     }
     // zox_log("Generating Complete [%s]", filename);

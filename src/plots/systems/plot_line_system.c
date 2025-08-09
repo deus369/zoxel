@@ -32,4 +32,4 @@ void PlotLineSystem(ecs_iter_t *it) {
         value /= line_max;
         lineLocalPosition2D->value.w = (int) (value * parent_size.y);
     }
-} zox_declare_system(PlotLineSystem)
+} zoxd_system(PlotLineSystem)

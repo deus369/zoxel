@@ -11,7 +11,7 @@ void dispose_shader2D_instance_material() {
     glDeleteProgram(square2DMaterial);
 }
 
-void initialize_mesh(uint material) {
+void initialize_mesh() {
     glGenBuffers(1, &squareMesh.x);
     glGenBuffers(1, &squareMesh.y);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, squareMesh.x);
@@ -22,9 +22,6 @@ void initialize_mesh(uint material) {
     glEnableVertexAttribArray(material2D.vertex_position);
     glVertexAttribPointer(material2D.vertex_position, 2, GL_FLOAT, GL_FALSE, 8, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-#ifdef zoxel_catch_opengl_errors
-    check_opengl_error("initialize_mesh");
-#endif
 }
 
 int load_instance2D_material(ecs *world) {
@@ -41,7 +38,7 @@ int load_instance2D_material(ecs *world) {
         return EXIT_FAILURE;
     }
     initialize_material2D_properties(&material2D, square2DMaterial);
-    initialize_mesh(square2DMaterial);
+    initialize_mesh();
     return EXIT_SUCCESS;
 }
 

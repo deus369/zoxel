@@ -84,4 +84,4 @@ void MusicGenerateSystem(ecs_iter_t *it) {
         generateMusic->value = 0;
     }
 }
-zox_declare_system(MusicGenerateSystem)
+zoxd_system(MusicGenerateSystem)

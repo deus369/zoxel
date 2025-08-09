@@ -1,4 +1,4 @@
-void initialize_sounds(ecs_world_t *world) {
+void initialize_sounds() {
     if (initialize_sdl_mixer(channel_sample_rate, channels_count) == EXIT_SUCCESS) {
         audio_enabled = 1;
         zox_log_sounds("> initialize_sdl_mixer success")
@@ -8,6 +8,8 @@ void initialize_sounds(ecs_world_t *world) {
 }
 
 void dispose_sounds(ecs_world_t *world, void *ctx) {
+    (void) world;
+    (void) ctx;
     dispose_files_sounds();
     close_audio_sdl();
 }

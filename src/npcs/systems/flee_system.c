@@ -65,4 +65,4 @@ void FleeSystem(ecs_iter_t *it) {
             debug_linec(world, start, float3_add(start, (float3){0,debug_length,0}), color_rgb_green);*/
         }
     }
-} zox_declare_system(FleeSystem)
+} zoxd_system(FleeSystem)

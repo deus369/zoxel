@@ -60,7 +60,7 @@ ecs_entity_t spawn_menu_game_stats(
     };
     const ecs_entity_t panel = spawn_element(world, &body_data);
     add_to_Children(children, panel);
-    Children panel_children = { };
+    Children grand_children = { 0 };
 
     for (int i = 0; i < stats->length; i++) {
         const ecs_entity_t stat = stats->value[i];
@@ -70,7 +70,6 @@ ecs_entity_t spawn_menu_game_stats(
                 world,
                 canvas,
                 panel,
-                player,
                 (entity2) {
                     character, stat
                 },
@@ -80,26 +79,10 @@ ecs_entity_t spawn_menu_game_stats(
                 bar_size,
                 bar_position
             );
-            add_to_Children(&panel_children, statbar);
+            add_to_Children(&grand_children, statbar);
             bar_position.y -= bar_size.y + bar_padding;
         }
     }
-    zox_set_ptr(panel, Children, panel_children);
+    zox_set_ptr(panel, Children, grand_children);
     return panel;
 }
-        /*if (!has_created_soul_ui && ) {
-        /    has_created_soul_ui = 1;
-            zox_geter_value(stat, ColorRGB, color_rgb, c)
-            const ecs_entity_t statbar = spawn_statbar2(
-                world,
-                canvas,
-                parent,
-                player,
-                (entity2) {
-                    character,
-                    stat
-                },
-                c,
-                j++);
-            add_to_Children(&body_children, statbar);
-        }*/

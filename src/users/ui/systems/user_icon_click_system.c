@@ -97,4 +97,4 @@ void UserIconClickSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(UserIconClickSystem)
+} zoxd_system(UserIconClickSystem)

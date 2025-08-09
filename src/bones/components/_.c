@@ -1,11 +1,11 @@
-zox_declare_tag(Bone)
-zox_declare_tag(Skeleton)
-zox_declare_tag(PaintedSkeleton)
-zox_declare_tag(HeadBone)
-zox_component_float3(BonePosition)
-zox_component_float3(BoneSize)
-zox_memory_component(BoneIndexes, byte)
-zox_memory_component(BoneLinks, entity)
+zox_tag(Bone);
+zox_tag(Skeleton);
+zox_tag(PaintedSkeleton);
+zox_tag(HeadBone);
+zoxc_float3(BonePosition);
+zoxc_float3(BoneSize);
+zoxc_arrayd(BoneIndexes, byte)
+zoxc_arrayd(BoneLinks, entity)
 #include "bone_index.c"
 
 void define_components_bones(ecs *world) {

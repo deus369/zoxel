@@ -5,8 +5,8 @@ ecs_entity_t prefab_skybox;
 ecs_entity_t shader_skybox; // shaders global
 ecs_entity_t skybox; // remove this, link to realm/game
 #include "data/settings.c"
-zox_declare_tag(Weather)
-zox_declare_tag(Skybox)
+zox_tag(Weather);
+zox_tag(Skybox);
 #include "shaders/skybox.c"
 #include "prefabs/prefabs.c"
 #include "systems/skybox_restore_system.c"
@@ -21,17 +21,17 @@ void on_boot_weathers(ecs_world_t* world, ecs_entity_t app) {
 }
 
 zox_begin_module(Weathers)
-    zox_define_tag(Weather)
-    zox_define_tag(Skybox)
+    zox_define_tag(Weather);
+    zox_define_tag(Skybox);
     if (!headless) {
         zox_gpu_restore_system(SkyboxRestoreSystem,
             [in] rendering.MaterialGPULink,
             [in] colorz.ColorRGB,
             [in] colorz.SecondaryColorRGB,
-            [none] Skybox)
+            [none] Skybox);
         zox_system_1(SkyboxSetTimeSystem, EcsOnUpdate,
             [in] rendering.MaterialGPULink,
-            [none] Skybox)
+            [none] Skybox);
     }
     // hooks
     add_hook_load_shader(&spawn_shaders_weather);

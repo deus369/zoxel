@@ -27,7 +27,7 @@ void define_systems_bones(ecs *world) {
             [in] BoneIndexes,
             [out] rendering.MeshColorRGBs,
             [none] PaintedSkeleton)
-        zox_system_1(BoneIndexUploadSystem, zox_pip_mainthread,
+        zox_system_1(BoneIndexUploadSystem, zoxp_mainthread,
             [in] rendering.MeshDirty,
             [in] BoneIndexes,
             [out] BoneIndexGPULink)

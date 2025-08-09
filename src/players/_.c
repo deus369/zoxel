@@ -4,13 +4,13 @@
 // todo: move based functionality into here
 #include "states/_.c"
 #include "settings/_.c"
-zox_declare_tag(Player)
-zox_declare_tag(PlayerCharacter)
-zox_component_byte(PlayerState)
-zox_component_double(PlayerRespawn)
-zox_component_entity(PlayerLink)
-zox_memory_component(PlayerLinks, ecs_entity_t)
-zox_component_entity(PlayerPauseEvent)
+zox_tag(Player);
+zox_tag(PlayerCharacter);
+zoxc_byte(PlayerState);
+zoxc_double(PlayerRespawn);
+zoxc_entity(PlayerLink);
+zoxc_arrayd(PlayerLinks, ecs_entity_t)
+zoxc_entity(PlayerPauseEvent);
 #include "prefabs/_.c"
 #include "spawn/_.c"
 #include "systems/_.c"
@@ -62,16 +62,16 @@ void on_boot_players(ecs_world_t *world, ecs_entity_t app) {
 }
 
 zox_begin_module(Players)
-    zox_define_tag(Player)
-    zox_define_tag(PlayerCharacter)
-    zox_define_component_byte(PlayerState)
-    zox_define_component_double(PlayerRespawn)
-    zox_define_component_entity(PlayerLink)
-    zox_define_memory_component(PlayerLinks)
-    zox_define_component_entity(PlayerPauseEvent)
+    zox_define_tag(Player);
+    zox_define_tag(PlayerCharacter);
+    zox_define_component_byte(PlayerState);
+    zox_define_component_double(PlayerRespawn);
+    zox_define_component_entity(PlayerLink);
+    zox_define_memory_component(PlayerLinks);
+    zox_define_component_entity(PlayerPauseEvent);
     define_systems_players(world);
     add_hook_on_boot(on_boot_players);
-    spawn_prefabs_players(world);
+    add_hook_spawn_prefabs(spawn_prefabs_players);
 zox_end_module(Players)
 
 #endif

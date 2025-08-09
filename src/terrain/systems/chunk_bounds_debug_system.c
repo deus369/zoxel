@@ -28,4 +28,4 @@ void ChunkBoundsDrawSystem(ecs_iter_t *it) {
         render_line3D(world, float3_add(chunk_bounds.center, (float3) { 0, 0, -chunk_bounds.extents.z}), float3_add(chunk_bounds.center, (float3) { 0, 0, chunk_bounds.extents.z}), line_color);
         render_line3D(world, float3_add(chunk_bounds.center, (float3) { -chunk_bounds.extents.x, 0, 0 }), float3_add(chunk_bounds.center, (float3) { chunk_bounds.extents.x, 0, 0 }), line_color);
     }
-} zox_declare_system(ChunkBoundsDrawSystem)
+} zoxd_system(ChunkBoundsDrawSystem)

@@ -1,6 +1,5 @@
-#define zox_declare_component_entities_child(name, parent_name)\
-\
-zox_component_entity(name)\
+#define zoxc_child(name, parent_name)\
+zoxc_entity(name);\
 \
 void on_destroyed_##name(ecs_iter_t *it) {\
     zox_sys_world()\

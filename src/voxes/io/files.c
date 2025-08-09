@@ -35,7 +35,8 @@ void load_files_voxes(ecs *world) {
     free_files(&files);
 }
 
-void dispose_files_voxes(ecs *world) {
+void dispose_files_voxes(ecs* world) {
+    (void) world;
     zox_log_io(" > disposing [%i] [voxes]", files_hashmap_voxes->size)
     string_hashmap_dispose(files_hashmap_voxes);
     files_hashmap_voxes = NULL;

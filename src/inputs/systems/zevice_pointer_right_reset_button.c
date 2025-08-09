@@ -5,4 +5,4 @@ void ZevicePointerRightResetSystem(iter *it) {
         zox_sys_o(ZevicePointerRight, zevicePointerRight)
         zevicePointerRight->value = reset_button_state(zevicePointerRight->value);
     }
-} zox_declare_system(ZevicePointerRightResetSystem)
+} zoxd_system(ZevicePointerRightResetSystem)

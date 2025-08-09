@@ -19,4 +19,4 @@ void BonePaintSystem(iter *it) {
             meshColorRGBs->value[j] = bone_color;
         }
     }
-} zox_declare_system(BonePaintSystem)
+} zoxd_system(BonePaintSystem)

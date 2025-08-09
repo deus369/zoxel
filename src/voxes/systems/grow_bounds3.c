@@ -13,4 +13,4 @@ void Bounds3GrowSystem(iter *it) {
             bounds3D->value = calculate_vox_bounds(chunkSize->value, voxScale->value);
         }
     }
-} zox_declare_system(Bounds3GrowSystem)
+} zoxd_system(Bounds3GrowSystem)

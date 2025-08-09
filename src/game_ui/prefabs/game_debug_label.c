@@ -1,5 +1,5 @@
-const color debug_color_outline = (color) { 0, 255, 0, 255 }; // { 76, 66, 133, 255 };
-const color debug_color_fill = (color) { 0, 255, 0, 255 }; // { 132, 177, 212, 255 };
+const color debug_color_outline = { 0, 255, 0, 255 }; // { 76, 66, 133, 255 };
+const color debug_color_fill = { 0, 255, 0, 255 }; // { 132, 177, 212, 255 };
 
 // sets update function
 void set_prefab_debug_label(ecs_world_t *world, DebugLabelEvent value) {

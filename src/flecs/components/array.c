@@ -1,21 +1,21 @@
-#define zox_component_array(name, type, length)\
+#define zoxc_array(name, type, length)\
     const byte name##_length = length;\
     typedef struct {\
         type value[length];\
     } name;\
-    zox_custom_component(name)
+    zoxc_custom(name)
 
 // placeholder for later
 #define zox_define_component_array(name)\
     zox_define_component(name)
 
-#define zox_component_array_l(name, type, capacity) \
+#define zoxc_array_l(name, type, capacity) \
     const ulong name##_length = capacity; \
     typedef struct { \
         ulong length; \
         type value[capacity]; \
     } name; \
-    zox_custom_component(name)
+    zoxc_custom(name)
 
 // placeholder for later
 #define zox_define_component_array_l(name)\

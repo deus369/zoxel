@@ -7,9 +7,9 @@ ecs_entity_t spawn_block_soil_grass(
 ) {
     // vox
     const ecs_entity_t v = spawn_vox_generated_invisible(world, prefab_vox_generated, top_color);
-    zox_set(v, VoxType, { vox_type_blended })
-    zox_set(v, SecondaryColor, { bottom_color }) // bottom half
-    zox_set_unique_name(v, "block_soil_grass")
+    zox_set(v, VoxType, { vox_type_blended });
+    zox_set(v, SecondaryColor, { bottom_color });
+    zox_set_unique_name(v, "block_soil_grass");
     zox_set(v, VRegions, { 0 });
     // use instanced mesh prefab
     SpawnBlock data = {

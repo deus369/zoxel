@@ -1,5 +1,5 @@
-const int cube2_indicies_length = 36;
-const int cube2_indicies[] = {
+static const int cube2_indicies_length = 36;
+static const int cube2_indicies[] = {
     0, 1, 2, 2, 3, 0,         // Left
     4, 7, 6, 6, 5, 4,         // Right (reversed order)
     8, 11, 10, 10, 9, 8,       // Bottom (reversed order)
@@ -9,8 +9,8 @@ const int cube2_indicies[] = {
 };
 
 // 24 unique vertices (4 per face)
-const int cube2_vertices_length = 24;
-const float3 cube2_vertices[] = {
+static const int cube2_vertices_length = 24;
+static const float3 cube2_vertices[] = {
     // Left
     {-default_cube_size, -default_cube_size,  default_cube_size },
     {-default_cube_size,  default_cube_size,  default_cube_size },
@@ -49,8 +49,8 @@ const float3 cube2_vertices[] = {
 };
 
 // 24 UV coordinates
-const int cube2_uvs_length = 24;
-const float2 cube2_uvs[] = {
+static const int cube2_uvs_length = 24;
+static const float2 cube2_uvs[] = {
     {0, 0}, {1, 0}, {1, 1}, {0, 1}, // Left
     {0, 0}, {1, 0}, {1, 1}, {0, 1}, // Right
     {0, 0}, {1, 0}, {1, 1}, {0, 1}, // Bottom

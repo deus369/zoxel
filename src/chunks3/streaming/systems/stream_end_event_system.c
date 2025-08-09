@@ -17,7 +17,7 @@ void StreamEndEventSystem(iter *it) {
         }
         // check all chunkLinks chunks if chunks are dirty
         byte is_skip = 0;
-        for (int j = 0; j < chunkLinks->value->size; j++) {
+        for (size_t j = 0; j < chunkLinks->value->size; j++) {
             int3_hashmap_pair* pair = chunkLinks->value->data[j];
             uint checks = 0;
             while (pair != NULL && checks < max_safety_checks_hashmap) {
@@ -64,4 +64,4 @@ void StreamEndEventSystem(iter *it) {
             event->value = NULL;
         }
     }
-} zox_declare_system(StreamEndEventSystem)
+} zoxd_system(StreamEndEventSystem)

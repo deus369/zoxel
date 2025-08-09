@@ -19,4 +19,4 @@ void BakeVoxSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(BakeVoxSystem)
+} zoxd_system(BakeVoxSystem)

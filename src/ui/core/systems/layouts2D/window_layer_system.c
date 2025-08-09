@@ -28,4 +28,4 @@ void WindowLayerSystem(iter *it) {
             set_element_layers(world, child, layer2D->value);
         }
     }
-} zox_declare_system(WindowLayerSystem)
+} zoxd_system(WindowLayerSystem)

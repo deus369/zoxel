@@ -38,4 +38,4 @@ void ChunkFindNeighborSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ChunkFindNeighborSystem)
+} zoxd_system(ChunkFindNeighborSystem)

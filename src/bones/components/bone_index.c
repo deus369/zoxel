@@ -1,4 +1,4 @@
-zox_component(BoneIndexGPULink, uint)
+zoxc(BoneIndexGPULink, uint);
 
 void add_gpu_bone_index(ecs *world, entity e) {
     if (!headless) zox_prefab_set(e, BoneIndexGPULink, { 0 })

@@ -33,4 +33,4 @@ void MouseConstrainSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(MouseConstrainSystem)
+} zoxd_system(MouseConstrainSystem)

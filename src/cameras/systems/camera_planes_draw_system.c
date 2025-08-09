@@ -8,4 +8,4 @@ void CameraPlanesDrawSystem(iter *it) {
         zox_sys_i(CameraPlanes, cameraPlanes)
         draw_planes(world, cameraPlanes->value, 6);
     }
-} zox_declare_system(CameraPlanesDrawSystem)
+} zoxd_system(CameraPlanesDrawSystem)

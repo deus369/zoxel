@@ -23,4 +23,4 @@ void PlotLimitSystem(ecs_iter_t *it) {
         min->value = min_;
         max->value = max_;
     }
-} zox_declare_system(PlotLimitSystem)
+} zoxd_system(PlotLimitSystem)

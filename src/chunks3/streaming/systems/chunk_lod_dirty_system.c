@@ -17,4 +17,4 @@ void ChunkLodDirtySystem(iter *it) {
             }
         }*/
     }
-} zox_declare_system(ChunkLodDirtySystem)
+} zoxd_system(ChunkLodDirtySystem)

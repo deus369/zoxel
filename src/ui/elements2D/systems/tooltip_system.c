@@ -33,4 +33,4 @@ void TooltipSystem(iter *it) {
             // hmm need to rethink this
         }
     }
-} zox_declare_system(TooltipSystem)
+} zoxd_system(TooltipSystem)

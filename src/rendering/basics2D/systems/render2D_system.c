@@ -55,4 +55,4 @@ void RenderMaterial2DSystem(iter *it) {
         }
 #endif
     }
-} zox_declare_system(RenderMaterial2DSystem)
+} zoxd_system(RenderMaterial2DSystem)

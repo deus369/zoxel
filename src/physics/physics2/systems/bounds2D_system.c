@@ -11,4 +11,4 @@ void Bounds2DSystem(iter *it) {
         if (position2D->value.y > bounds2D->value.y) position2D->value.y = bounds2D->value.y;
         else if (position2D->value.y < -bounds2D->value.y) position2D->value.y = -bounds2D->value.y;
     }
-} zox_declare_system(Bounds2DSystem)
+} zoxd_system(Bounds2DSystem)

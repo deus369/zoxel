@@ -68,4 +68,4 @@ void KeyboardResetSystem(iter *it) {
         zox_sys_o(Keyboard, keyboard)
         reset_keyboard(keyboard);
     }
-} zox_declare_system(KeyboardResetSystem)
+} zoxd_system(KeyboardResetSystem)

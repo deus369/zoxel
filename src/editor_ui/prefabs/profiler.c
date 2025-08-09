@@ -51,7 +51,7 @@ ecs_entity_t spawn_profiler(
         canvas_position);
     set_window_bounds_to_canvas(world, e, canvas_size, size, anchor);
 
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
     initialize_Children(&children, children_count);
 
     if (is_header) {

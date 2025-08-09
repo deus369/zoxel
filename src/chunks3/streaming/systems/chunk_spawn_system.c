@@ -92,4 +92,4 @@ void ChunkSpawnSystem(iter *it) {
     if (spawned_chunks > 0) {
         zox_log_streaming(" + [%i] spawned [%i]", ecs_run_count, spawned_chunks)
     }
-} zox_declare_system(ChunkSpawnSystem)
+} zoxd_system(ChunkSpawnSystem)

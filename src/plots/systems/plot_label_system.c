@@ -26,4 +26,4 @@ void PlotLabelSystem(ecs_iter_t *it) {
             zextDirty->value = 1;
         }
     }
-} zox_declare_system(PlotLabelSystem)
+} zoxd_system(PlotLabelSystem)

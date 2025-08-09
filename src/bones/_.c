@@ -14,7 +14,7 @@ zox_begin_module(Bones)
     define_components_bones(world);
     define_systems_bones(world);
     add_hook_load_shader(&spawn_shaders_bones);
-    spawn_prefabs_bones(world);
+    add_hook_spawn_prefabs(spawn_prefabs_bones);
 zox_end_module(Bones)
 
 #endif

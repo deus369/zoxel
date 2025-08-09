@@ -33,4 +33,4 @@ void SlideEventSystem(iter *it) {
         };
         (*slideEvent->value)(world, &event_data);
     }
-} zox_declare_system(SlideEventSystem)
+} zoxd_system(SlideEventSystem)

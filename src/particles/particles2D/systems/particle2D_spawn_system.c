@@ -67,7 +67,7 @@ void Particle2DSpawnSystem(ecs_world_t *world, float2 bobPosition, int spawnCoun
     free(scale1Ds);
     free(brightnesses);
     free(destroyInTimes);
-} zox_declare_system(Particle2DSpawnSystem)
+} zoxd_system(Particle2DSpawnSystem)
 
     /*cs_filter_t *filter = ecs_filter(world, {
         .terms = {{ id }} // by default matches owned & inherited components

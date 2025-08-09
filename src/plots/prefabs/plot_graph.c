@@ -29,7 +29,7 @@ ecs_entity_t spawn_plot_graph(
     const float2 positionf = get_element_position(positiong, canvas_size);
 
     // zox_instance(prefab)
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
     initialize_Children(&children, lines_count + is_label);
     ecs_entity_t e = spawn_layout2(world,
             prefab,
@@ -42,7 +42,7 @@ ecs_entity_t spawn_plot_graph(
             parent_position,
             parent_size);
 
-    PlotDataDouble data = (PlotDataDouble) { };
+    PlotDataDouble data = (PlotDataDouble) { 0 };
     initialize_PlotDataDouble(&data, points_count);
     for (int i = 0; i < points_count; i++) {
         data.value[i] = start_value;

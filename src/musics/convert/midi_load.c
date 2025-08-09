@@ -10,8 +10,8 @@ int load_notes_from_file(MidiNote *notes, const char *filename) {
         return -1;
     }
     // Read the number of notes
-    int note_count;
-    size_t items_read = fread(&note_count, sizeof(int), 1, file);
+    size_t note_count;
+    size_t items_read = fread(&note_count, sizeof(size_t), 1, file);
     // Check for fread errors
     if (items_read < 1) {
         if (ferror(file)) {

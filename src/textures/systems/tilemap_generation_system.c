@@ -110,4 +110,4 @@ void TilemapGenerationSystem(ecs_iter_t *it) {
         }
         textureDirty->value = 1;
     }
-} zox_declare_system(TilemapGenerationSystem)
+} zoxd_system(TilemapGenerationSystem)

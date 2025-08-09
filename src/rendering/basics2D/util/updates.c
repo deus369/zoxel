@@ -1,7 +1,12 @@
 // const byte isDebugRenderMaterial2DSystem = 0;
 
-void set_gpu_mesh2D(uint2 mesh, uint material, const int *indicies, int indicies_length, const float2 *verts, int verts_length) {
-    // Material3D material3D = spawn_material3D_properties(material);
+void set_gpu_mesh2D(
+    uint2 mesh,
+    const int *indicies,
+    int indicies_length,
+    const float2 *verts,
+    int verts_length
+) {
     GLint vertex_shader_index = 0;
     int float_per_data = 2;
     int floats_length = verts_length * float_per_data;

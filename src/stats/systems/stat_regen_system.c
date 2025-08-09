@@ -25,4 +25,4 @@ void StatRegenSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(StatRegenSystem)
+} zoxd_system(StatRegenSystem)

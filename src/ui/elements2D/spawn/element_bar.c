@@ -50,7 +50,7 @@ entity2 spawn_elementbar2D(ecs *world,
         front_bar_layer,
         render_disabled,
         front_color);
-    zox_set_unique_name(front_bar, "element2D_frontbar")
+    zox_set_unique_name(front_bar, "element2D_frontbar");
     children->value[0] = front_bar;
     // text
     SpawnZext zextSpawnData = {
@@ -82,7 +82,7 @@ entity2 spawn_elementbar2D(ecs *world,
     };
     const entity text = spawn_zext(world, &zextSpawnData);
     children->value[1] = text;
-    zox_set_unique_name(text, "element2D_text")
+    zox_set_unique_name(text, "element2D_text");
     // finish
     zox_set(e, Children, { children->length, children->value })
     return (entity2) { e, text };

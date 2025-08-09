@@ -46,4 +46,4 @@ void StatTextSystem(ecs_iter_t *it) {
             zextDirty->value = zext_update_start;
         }
     }
-} zox_declare_system(StatTextSystem)
+} zoxd_system(StatTextSystem)

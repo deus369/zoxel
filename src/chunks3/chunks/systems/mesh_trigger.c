@@ -13,4 +13,4 @@ void Chunk3MeshTriggerSystem(iter *it) {
             chunkMeshDirty->value = chunk_dirty_state_trigger;
         }
     }
-} zox_declare_system(Chunk3MeshTriggerSystem)
+} zoxd_system(Chunk3MeshTriggerSystem)

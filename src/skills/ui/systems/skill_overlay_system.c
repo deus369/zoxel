@@ -24,4 +24,4 @@ void SkillOverlaySystem(ecs_iter_t *it) {
             zox_set(overlay, RenderDisabled, { new_render_disabled })
         }
     }
-} zox_declare_system(SkillOverlaySystem)
+} zoxd_system(SkillOverlaySystem)

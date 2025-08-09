@@ -11,4 +11,4 @@ void TransformMatrixScaleSystem(iter *it) {
         zox_sys_o(TransformMatrix, transformMatrix)
         transformMatrix->value = float4x4_transform_scale(position3D->value, rotation3D->value, scale1D->value);
     }
-} zox_declare_system(TransformMatrixScaleSystem)
+} zoxd_system(TransformMatrixScaleSystem)

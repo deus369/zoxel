@@ -1,6 +1,7 @@
-ecs_entity_t spawn_character3_player(ecs_world_t *world,
-    spawn_character3D_data spawn_data)
-{
+ecs_entity_t spawn_character3_player(
+    ecs_world_t *world,
+    spawn_character3D_data spawn_data
+) {
     spawn_data.prefab = prefab_character3_player;
     spawn_data.scale = vox_model_scale;
     // spawn_data.lod = character_lod;

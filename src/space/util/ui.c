@@ -70,12 +70,11 @@ void spawn_players_cameras_canvases(
         return;
     }
 #if defined(zoxm_players) && defined(zoxm_ui)
-    set_camera_mode_pre_defined(world, vox_model_scale);
     set_main_cameras((int) players_playing);
     float3 camera_position = float3_zero;
     float4 camera_rotation = quaternion_identity;
     zox_geter_value(app, WindowSize, int2, screen_size)
-    CameraLinks cameras = { };
+    CameraLinks cameras = { 0 };
     for (int i = 0; i < players_playing; i++) {
         const entity player = zox_players[i];
         set_camera_transform_to_main_menu(&camera_position, &camera_rotation, terrain_depth);
@@ -85,6 +84,7 @@ void spawn_players_cameras_canvases(
         const int2 game_viewport_size = scale_viewport(viewport_size);
         const entity2 spawned_cameras = spawn_player_camera(world,
             player,
+            zox_game_camera_mode,
             camera_position,
             camera_rotation,
             screen_to_canvas,
@@ -93,6 +93,8 @@ void spawn_players_cameras_canvases(
             viewport_size);
         add_to_CameraLinks(&cameras, spawned_cameras.x);
         add_to_CameraLinks(&cameras, spawned_cameras.y);
+        set_camera_mode(world, spawned_cameras.x, zox_game_camera_mode);
+
         const entity canvas = spawn_default_ui(world,
             spawned_cameras.y,
             viewport_size,

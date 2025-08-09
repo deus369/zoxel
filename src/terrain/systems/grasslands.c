@@ -70,11 +70,13 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     // uint update_count = 0;
     // int stage_id = get_thread_index();
     // double time_start = get_time_ms();
+    zox_sys_world();
     zox_sys_begin();
     zox_sys_in(ChunkPosition);
     zox_sys_in(RenderLod);
     zox_sys_in(RenderDistanceDirty);
     zox_sys_in(VoxelNodeLoaded);
+    zox_sys_in(VoxLink);
     zox_sys_out(VoxelNode);
     zox_sys_out(NodeDepth);
     zox_sys_out(VoxelNodeDirty);
@@ -99,16 +101,18 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         zox_sys_i(ChunkPosition, chunkPosition);
         zox_sys_i(RenderDistanceDirty, renderDistanceDirty);
         zox_sys_i(VoxelNodeLoaded, loaded);
+        zox_sys_i(VoxLink, voxLink);
         zox_sys_o(NodeDepth, nodeDepth);
-        zox_sys_o(VoxelNode, voxelNode);
-        zox_sys_o(VoxelNodeDirty, voxelNodeDirty);
+        zox_sys_o(VoxelNode, node);
+        zox_sys_o(VoxelNodeDirty, nodeDirty);
         // todo: remember if has generated yet, keep a generated LOD state!
         //      - better yet just increase NodeDepth - and compare with terrain's one when increasing
         if (renderDistanceDirty->value != zox_dirty_active || loaded->value) {
             continue;
         }
 
-        byte depth = optimize_generation_lods ?  terrain_lod_to_node_depth(renderLod->value, terrain_depth) : terrain_depth;
+        zox_geter_value(voxLink->value, NodeDepth, byte, terrain_depth);
+        byte depth = optimize_generation_lods ? terrain_lod_to_node_depth(renderLod->value, terrain_depth) : terrain_depth;
         if (boost_generation_hack && depth < terrain_depth) {
             depth++;
         }
@@ -132,6 +136,10 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
         const int chunk_position_y = (int) (chunk_position_float3.y * chunk_voxel_length);
         byte3 voxel_position;
         // For each XZ position
+
+
+        write_lock_VoxelNode(node);
+
         for (voxel_position.x = 0; voxel_position.x < chunk_voxel_length; voxel_position.x++) {
             for (voxel_position.z = 0; voxel_position.z < chunk_voxel_length; voxel_position.z++) {
 
@@ -207,7 +215,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                             value = zox_block_stone;
                         }
                         set_voxelt(
-                            voxelNode,
+                            node,
                             nodeDepth->value,
                             voxel_position,
                             value,
@@ -230,7 +238,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                     if (place_grass) {
                         voxel_position.y = local_height_raw + 1;
                         set_voxelt(
-                            voxelNode,
+                            node,
                             nodeDepth->value,
                             voxel_position,
                             zox_block_vox_grass,
@@ -239,9 +247,11 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
                 }
             }
         }
+        write_unlock_VoxelNode(node);
+
         tapwatch(time_grassy_plains, "mass set_voxels");
 
-        voxelNodeDirty->value = zox_dirty_trigger;
+        nodeDirty->value = zox_dirty_trigger;
         /*chunkMeshDirty->value = chunk_dirty_state_trigger;
         for (byte axis = 0; axis < chunk_neighbors_length; axis++) {
             ecs_entity_t neighbor = neighbors->value[axis];
@@ -252,7 +262,7 @@ void GrassyPlainsSystem(ecs_iter_t *it) {
     }
     endwatch(time_grassy_plains, "grassy_plains");
     zox_ts_end(grassy_plains, 5, zox_profile_system_grassy_plains);
-} zox_declare_system(GrassyPlainsSystem)
+} zoxd_system(GrassyPlainsSystem)
 
 
 
@@ -293,7 +303,7 @@ if (rando <= block_spawn_chance_grass + block_spawn_chance_flower + block_spawn_
     for (voxel_position.y = 0; voxel_position.y <= obsidian_height; voxel_position.y++) {
         // set_voxel(setter_obsidian, data);
         set_voxelt(
-            voxelNode,
+            node,
             node_depth,
             voxel_position,
             zox_block_obsidian,

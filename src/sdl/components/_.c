@@ -1,6 +1,6 @@
-zox_component(SDLWindow, SDL_Window*)
-zox_component(Renderer, SDL_Renderer*)
-zox_component(Context, SDL_GLContext*)
+zoxc(SDLWindow, SDL_Window*);
+zoxc(Renderer, SDL_Renderer*);
+zoxc(Context, SDL_GLContext*);
 
 ECS_DTOR(SDLWindow, ptr, {
     if (ptr->value != 0) {
@@ -23,8 +23,8 @@ ECS_DTOR(Context, ptr, {
 #include "mix_chunk.c"
 
 void define_components_sdl(ecs_world_t *world) {
-    zox_define_component_w_dest(SDLWindow)
-    zox_define_component_w_dest(Context)
-    zox_define_component_w_dest(Renderer)
-    zox_define_component_w_dest(SDLMixChunk)
+    zox_define_component_w_dest(SDLWindow);
+    zox_define_component_w_dest(Context);
+    zox_define_component_w_dest(Renderer);
+    zox_define_component_w_dest(SDLMixChunk);
 }

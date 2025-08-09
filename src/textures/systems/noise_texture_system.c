@@ -35,4 +35,4 @@ void NoiseTextureSystem(ecs_iter_t *it) {
         // generateTexture->value = 0;
         textureDirty->value = 1; // remember: this only gets uploaded if has GPUTextureLink!
     }
-} zox_declare_system(NoiseTextureSystem)
+} zoxd_system(NoiseTextureSystem)

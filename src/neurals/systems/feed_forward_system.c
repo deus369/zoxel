@@ -41,4 +41,4 @@ void LinkFeedForwardSystem(ecs_iter_t *it) {
             zox_set(brainLink->value, BrainDirty, { 1 })
         }
     }
-} zox_declare_system(LinkFeedForwardSystem)
+} zoxd_system(LinkFeedForwardSystem)

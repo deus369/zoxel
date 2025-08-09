@@ -5,8 +5,12 @@ ecs_entity_t spawn_realm_block_rubble(
     const color block_color
 ) {
     // vox
-    const ecs_entity_t v = spawn_vox_basic(world, prefab_vox, block_vox_depth);
-    zox_set_unique_name(v, "block_rubble")
+    const ecs_entity_t v = spawn_vox_basic(
+        world,
+        prefab_vox,
+        block_vox_depth,
+        block_vox_depth);
+    zox_set_unique_name(v, "block_rubble");
     //  zox_set(v, VoxType, { vox_type_rubble })
     zox_set(v, VoxType, { vox_type_flowers })
     zox_set(v, Color, { block_color })

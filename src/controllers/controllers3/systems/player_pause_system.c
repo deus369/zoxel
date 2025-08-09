@@ -42,4 +42,4 @@ void PlayerPauseSystem(ecs_iter_t *it) {
     if (did_toggle_pause) {
         toggle_pause_ui(world, triggering_player);
     }
-} zox_declare_system(PlayerPauseSystem)
+} zoxd_system(PlayerPauseSystem)

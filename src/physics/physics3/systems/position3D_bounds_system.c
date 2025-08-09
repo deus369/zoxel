@@ -20,4 +20,4 @@ void Position3DBoundsSystem(iter *it) {
         if (position3D->value.z - bounds3D->value.z < bounds.u) position3D->value.z = bounds.u + teleport_force;
         else if (position3D->value.z + bounds3D->value.z > bounds.v) position3D->value.z = bounds.v - teleport_force;
     }
-} zox_declare_system(Position3DBoundsSystem)
+} zoxd_system(Position3DBoundsSystem)

@@ -32,4 +32,4 @@ void VodesRemoveSystem(iter *it) {
             write_unlock_VoxelNode(node);
         }
     }
-} zox_declare_system(VodesRemoveSystem)
+} zoxd_system(VodesRemoveSystem)

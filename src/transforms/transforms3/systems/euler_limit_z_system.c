@@ -8,4 +8,4 @@ void EulerLimitZSystem(iter *it) {
         if (euler->value.z < eulerLimitZ->value.x) euler->value.z = eulerLimitZ->value.x;
         else if (euler->value.z > eulerLimitZ->value.y) euler->value.z = eulerLimitZ->value.y;
     }
-} zox_declare_system(EulerLimitZSystem)
+} zoxd_system(EulerLimitZSystem)

@@ -1,11 +1,12 @@
 // event called when terrain spawned
 void on_spawned_terrain(ecs *world, const entity player) {
-    zox_geter_value(player, CharacterLink, entity, character)
-    zox_set(character, DisableGravity, { 0 })
-    zox_set(character, DisableMovement, { 0 })
-    const entity game = zox_get_value(player, GameLink)
-    const entity realm = zox_get_value(game, RealmLink)
+    zox_geter_value(player, CharacterLink, entity, character);
+    const entity game = zox_get_value(player, GameLink);
+    const entity realm = zox_get_value(game, RealmLink);
     play_playlist(world, realm, 1);
+    // actually we need to do this on loaded player model for bounds
+    // zox_set(character, DisableGravity, { 0 });
+    // zox_set(character, DisableMovement, { 0 });
 }
 
 // this connects to terrain end stream event and triggers streaming
@@ -40,25 +41,23 @@ void link_camera_to_terrain(ecs *world, const entity player) {
 #endif
         // entity character;
         if (!is_new_game) {
+
             game_start_player_load(world, player);
-            delay_event(world, &load_player_e, player, 0.5f);
-            delay_event(world, &spawn_player_game_ui, player, 0.01);
+
         } else {
             game_start_player_new(world, player);
         }
-        //zox_set(character, DisableGravity, { 1 })
-        //zox_set(character, DisableMovement, { 1 })
-        zox_set(player, PlayerState, { zox_player_state_playing })
+        zox_set(player, PlayerState, { zox_player_state_playing });
     } else {
         set_camera_free(world, camera, 1);
     }
-    zox_set(camera, StreamPoint, { terrain_position })
-    zox_set(camera, VoxLink, { terrain })
-    zox_set(camera, StreamDirty, { zox_general_state_trigger })
-    zox_set(terrain, EventInput, { player })
-    zox_set(terrain, StreamEndEvent, { on_spawned_terrain })
+    zox_set(camera, StreamPoint, { terrain_position });
+    zox_set(camera, VoxLink, { terrain });
+    zox_set(camera, StreamDirty, { zox_general_state_trigger });
+    zox_set(terrain, EventInput, { player });
+    zox_set(terrain, StreamEndEvent, { on_spawned_terrain });
     if (is_log_streaming) {
-        zox_log("+ terrain spawning started at [%f]", zox_current_time)
+        zox_log("+ terrain spawning started at [%f]", zox_current_time);
     }
 }
 

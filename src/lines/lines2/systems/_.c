@@ -2,7 +2,7 @@
 #include "line2D_render_system.c"
 
 void define_systems_line2D(ecs_world_t *world) {
-    zox_system(Line2DElementSystem, zox_pipelines_pre_render,
+    zox_system(Line2DElementSystem, zoxp_transforms,
         [in] LinePosition2D,
         [in] elements.core.CanvasLink,
         [out] LineData2D,

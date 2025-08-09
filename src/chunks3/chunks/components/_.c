@@ -1,28 +1,29 @@
-zox_declare_tag(Chunk);
-zox_declare_tag(NoiseChunk);
-zox_declare_tag(ChunkDebugger);
-zox_declare_tag(ColorChunk);
-zox_declare_tag(ChunkTextured);
-zox_declare_tag(LinkChunk);
-zox_declare_tag(DisableReverseLinkChunk);
-zox_component_byte(ChunkDirty);
-zox_component_byte(ChunkMeshDirty);
-zox_component_byte(ChunkLodDirty);
-zox_component_byte(GenerateChunk);
-zox_component_int3(ChunkPosition);
-zox_component_int3(ChunkSize);
-zox_component_byte(BlocksSpawned);
-zox_component_link(ChunkLink, entity, EntityLinks);
-zox_component_byte(NodeDepth);
-zox_component_node(VoxelNode, byte, 0);
-zox_node_add_link(VoxelNode);
-zox_component_node_helper(VoxelNode, byte);
-zox_component_byte(VoxelNodeDirty);
-zox_component_byte(VoxelNodeEdited);
-zox_component_byte(VoxelNodeLoaded);
-zox_component_float(RaycastRange);
+zox_tag(Chunk);
+zox_tag(NoiseChunk);
+zox_tag(ChunkDebugger);
+zox_tag(ColorChunk);
+zox_tag(ChunkTextured);
+zox_tag(LinkChunk);
+zox_tag(DisableReverseLinkChunk);
+zoxc_byte(ChunkDirty);
+zoxc_byte(ChunkMeshDirty);
+zoxc_byte(ChunkLodDirty);
+zoxc_byte(GenerateChunk);
+zoxc_int3(ChunkPosition);
+zoxc_int3(ChunkSize);
+zoxc_byte(BlocksSpawned);
+zoxc_byte(NodeDepth);
+zoxc_byte(VoxelNodeDirty);
+zoxc_byte(VoxelNodeEdited);
+zoxc_byte(VoxelNodeLoaded);
+zoxc_float(RaycastRange);
 #include "neighbors.c"
 #include "chunk_links.c"
+
+zoxc_link(ChunkLink, entity, ChunkEntities)
+zoxc_node(VoxelNode, byte, 0)
+zox_node_add_link(VoxelNode)
+zoxc_node_helper(VoxelNode, byte)
 
 void define_components_chunks(ecs *world) {
     zox_define_tag(Chunk);

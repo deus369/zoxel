@@ -35,4 +35,4 @@ void BillboardSystem(iter *it) {
         spawn_line3D(world, position3D->value, float3_add(position3D->value, normal), 2, 1);
 #endif
     }
-} zox_declare_system(BillboardSystem)
+} zoxd_system(BillboardSystem)

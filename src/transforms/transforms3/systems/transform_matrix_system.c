@@ -10,4 +10,4 @@ void TransformMatrixSystem(iter *it) {
         zox_sys_o(TransformMatrix, transformMatrix)
         transformMatrix->value = float4x4_transform(position3D->value, rotation3D->value);
     }
-} zox_declare_system(TransformMatrixSystem)
+} zoxd_system(TransformMatrixSystem)

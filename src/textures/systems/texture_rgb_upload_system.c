@@ -26,4 +26,4 @@ void TextureRGBUpdateSystem(ecs_iter_t *it) {
         textureDirty->value = 0;
         // zox_log_error("+ uploaded [%s] size [%ix%i]", zox_get_name(e), textureSize->value.x, textureSize->value.y)
     }
-} zox_declare_system(TextureRGBUpdateSystem)
+} zoxd_system(TextureRGBUpdateSystem)

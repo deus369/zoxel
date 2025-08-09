@@ -36,4 +36,4 @@ void ItemDropSystem(ecs_iter_t *it) {
         // destroy voxel sound
         // spawn_sound_generated(world, prefab_sound_generated, instrument_piano, note_frequencies[24 + rand() % 6], 0.4, 1.2f * get_volume_sfx());
     }
-} zox_declare_system(ItemDropSystem)
+} zoxd_system(ItemDropSystem)

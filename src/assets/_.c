@@ -9,10 +9,10 @@
 #define zoxm_assets
 
 // used for file io functions
-zox_declare_tag(Asset)
+zox_tag(Asset);
 
 zox_begin_module(Assets)
-    zox_define_tag(Asset)
+    zox_define_tag(Asset);
 zox_end_module(Assets)
 
 #endif

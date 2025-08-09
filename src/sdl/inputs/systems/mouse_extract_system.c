@@ -74,4 +74,4 @@ void MouseExtractSystem(ecs_iter_t *it) {
             }
         }
     }
-} zox_declare_system(MouseExtractSystem)
+} zoxd_system(MouseExtractSystem)

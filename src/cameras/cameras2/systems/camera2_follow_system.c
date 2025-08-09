@@ -26,4 +26,4 @@ void Camera2FollowSystem(iter *it) {
         }
         rotation3D->value = float4_identity;
     }
-} zox_declare_system(Camera2FollowSystem)
+} zoxd_system(Camera2FollowSystem)

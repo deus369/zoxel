@@ -18,4 +18,4 @@ void DeathCleanSystem(ecs_iter_t *it) {
             zox_delete(e)
         }
     }
-} zox_declare_system(DeathCleanSystem)
+} zoxd_system(DeathCleanSystem)

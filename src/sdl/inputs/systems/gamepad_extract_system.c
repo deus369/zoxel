@@ -11,5 +11,5 @@ void GamepadExtractSystem(ecs_iter_t *it) {
             sdl_extract_gamepad(sdlGamepad->value, world, children);
         }
     }
-} zox_declare_system(GamepadExtractSystem)
+} zoxd_system(GamepadExtractSystem)
 #endif

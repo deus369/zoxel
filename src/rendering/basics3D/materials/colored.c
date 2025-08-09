@@ -9,7 +9,7 @@ typedef struct {
     uint brightness;
     uint fog_data;
 } MaterialColored3D;
-zox_custom_component(MaterialColored3D)
+zoxc_custom(MaterialColored3D);
 
 MaterialColored3D create_MaterialColored3D(const uint material) {
     return (MaterialColored3D) {

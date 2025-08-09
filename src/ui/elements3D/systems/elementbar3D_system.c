@@ -41,4 +41,4 @@ void Elementbar3DSystem(iter *it) {
             // zox_log_elements3D("+ updated frontbar [%lu]", it->entities[i])
         }
     }
-} zox_declare_system(Elementbar3DSystem)
+} zoxd_system(Elementbar3DSystem)

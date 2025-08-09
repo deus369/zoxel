@@ -67,4 +67,4 @@ void HealthbarSpawnerSystem(ecs_iter_t *it) {
 
         add_to_ElementLinks(elementLinks, healthbar.x);
     }
-} zox_declare_system(HealthbarSpawnerSystem)
+} zoxd_system(HealthbarSpawnerSystem)

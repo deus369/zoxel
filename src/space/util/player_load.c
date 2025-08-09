@@ -82,18 +82,22 @@ entity game_start_player_load(
     const entity e = spawn_character3_player(world, spawn_data);
     // assuming we just spawned it
     if (spawned_first_chunk) {
-        EntityLinks entities = (EntityLinks) { };
-        add_to_EntityLinks(&entities, e);
-        zox_set_ptr(spawn_place.chunk, EntityLinks, entities);
+        ChunkEntities entities = (ChunkEntities) { 0 };
+        add_to_ChunkEntities(&entities, e);
+        zox_set_ptr(spawn_place.chunk, ChunkEntities, entities);
     } else {
         if (zox_valid(spawn_place.chunk)) {
-            zox_mut_begin(spawn_place.chunk, EntityLinks, entityLinks)
-            if (add_to_EntityLinks(entityLinks, e)) {
-                zox_mut_end(spawn_place.chunk, EntityLinks)
+            zox_mut_begin(spawn_place.chunk, ChunkEntities, entityLinks)
+            if (add_to_ChunkEntities(entityLinks, e)) {
+                zox_mut_end(spawn_place.chunk, ChunkEntities)
             }
         }
     }
 
-    delay_event(world, &load_player_e, player, 0.5f);
+    // TODO: LoadCharacterSystem - States
+    delay_event(world, &load_player_e, player, 2.5f);
+    // TODO: Remove use of time, and make a LoadedCharacter Event Hook for this!
+    delay_event(world, &spawn_player_game_ui, player, 2.51);
+
     return e;
 }

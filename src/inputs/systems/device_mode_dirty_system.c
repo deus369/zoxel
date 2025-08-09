@@ -18,4 +18,4 @@ void DeviceModeDirtySystem(iter *it) {
         zox_log("     > devicemode dirty [%i]\n", deviceMode->value)
 #endif
     }
-} zox_declare_system(DeviceModeDirtySystem)
+} zoxd_system(DeviceModeDirtySystem)

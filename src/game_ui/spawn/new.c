@@ -73,7 +73,7 @@ ecs_entity_t spawn_menu_new_realm(
         .is_scrollbar = 0,
     };
 
-    Children children = (Children) { };
+    Children children = (Children) { 0 };
     window_data.children = &children;
     const ecs_entity_t e = spawn_window2(world,
         canvas_data,

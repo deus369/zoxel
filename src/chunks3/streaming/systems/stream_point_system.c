@@ -36,4 +36,4 @@ void StreamPointSystem(iter *it) {
         streamPoint->value = stream_point;
         streamDirty->value = zox_general_state_trigger;
     }
-} zox_declare_system(StreamPointSystem)
+} zoxd_system(StreamPointSystem)

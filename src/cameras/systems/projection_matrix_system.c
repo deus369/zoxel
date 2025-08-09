@@ -51,4 +51,4 @@ void ProjectionMatrixSystem(iter *it) {
         }
 #endif
     }
-} zox_declare_system(ProjectionMatrixSystem)
+} zoxd_system(ProjectionMatrixSystem)

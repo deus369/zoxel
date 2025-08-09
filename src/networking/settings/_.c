@@ -10,6 +10,7 @@ byte zox_is_networking = 0;
 byte server_mode = 0;
 
 void process_arguments_networking(ecs_world_t *world, char* args[], int count) {
+    (void) world;
     for (int i = 1; i < count; i++) {
         if (strcmp(args[i], "-x") == 0 || strcmp(args[i], "--server") == 0) {
             server_mode = 1;

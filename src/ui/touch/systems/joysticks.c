@@ -117,5 +117,5 @@ void VirtualJoystickSystem(iter *it) {
         const entity virtual_joystick = virtualZeviceLink->value;
         handle_touch_drag(world, canvas, e, virtual_joystick, is_game_state_playing);
     }
-} zox_declare_system(VirtualJoystickSystem)
+} zoxd_system(VirtualJoystickSystem)
 

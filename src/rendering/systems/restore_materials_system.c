@@ -21,4 +21,4 @@ void MaterialRestoreSystem(iter *it) {
         }
         materialGPULink->value = spawn_gpu_material_program(shader);
     }
-} zox_declare_system(MaterialRestoreSystem)
+} zoxd_system(MaterialRestoreSystem)

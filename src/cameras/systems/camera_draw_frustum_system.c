@@ -7,4 +7,4 @@ void FrustumDrawSystem(iter *it) {
         // need a double3 version now
         // draw_frustum(world, frustumCorners->value, debug_color);
     }*/
-} zox_declare_system(FrustumDrawSystem)
+} zoxd_system(FrustumDrawSystem)

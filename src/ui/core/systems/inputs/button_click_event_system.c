@@ -17,4 +17,4 @@ void ButtonClickEventSystem(iter *it) {
             (*clickEvent->value)(world, &event_data);
         }
     }
-} zox_declare_system(ButtonClickEventSystem)
+} zoxd_system(ButtonClickEventSystem)

@@ -36,4 +36,4 @@ void ElementPositionSystem(iter *it) {
             }
         }
     }
-} zox_declare_system(ElementPositionSystem)
+} zoxd_system(ElementPositionSystem)

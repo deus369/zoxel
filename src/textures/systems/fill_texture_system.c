@@ -19,4 +19,4 @@ void FillTextureSystem(ecs_iter_t *it) {
         generate_texture_fill(textureData->value, textureSize->value, fill_color->value);
         textureDirty->value = 1; // actually this only gets uploaded if has GPUTextureLink!
     }
-} zox_declare_system(FillTextureSystem)
+} zoxd_system(FillTextureSystem)

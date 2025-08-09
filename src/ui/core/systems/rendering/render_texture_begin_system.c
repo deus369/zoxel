@@ -31,4 +31,4 @@ void RenderTextureBeginSystem(iter *it) {
             set_render_buffer_size(rbo, textureSize->value);
         }
     }
-} zox_declare_system(RenderTextureBeginSystem)
+} zoxd_system(RenderTextureBeginSystem)

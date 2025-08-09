@@ -1,6 +1,7 @@
-entity spawn_prefab_block_vox_instanced(ecs *world,
-    const entity prefab)
-{
+entity spawn_prefab_block_vox_instanced(
+    ecs *world,
+    const entity prefab
+) {
     zox_prefab_child(prefab)
     // add block stuff onto our vox instanced
     zox_prefab_name("block_vox_instanced")
@@ -16,9 +17,10 @@ entity spawn_prefab_block_vox_instanced(ecs *world,
     return e;
 }
 
-entity spawn_block_vox_instanced(ecs *world,
-    const SpawnBlockVox *data)
-{
+entity spawn_block_vox_instanced(
+    ecs *world,
+    const SpawnBlockVox *data
+) {
     zox_instance(data->prefab)
     zox_name("block_vox_instanced")
     zox_set(e, BlockIndex, { data->block_index })

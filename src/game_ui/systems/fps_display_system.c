@@ -40,4 +40,4 @@ void FpsDisplaySystem(ecs_iter_t *it) {
             zextDirty->value = 1;
         }
     }
-} zox_declare_system(FpsDisplaySystem)
+} zoxd_system(FpsDisplaySystem)

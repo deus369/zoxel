@@ -25,4 +25,4 @@ void AnimateTextSystem(iter *it) {
         }
     }
     if (!changed) zox_skip()
-} zox_declare_system(AnimateTextSystem)
+} zoxd_system(AnimateTextSystem)

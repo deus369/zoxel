@@ -12,4 +12,4 @@ void JumpSoundSystem(ecs_iter_t *it) {
             spawn_sound_generated(world, prefab_sound_generated, instrument, note_frequencies[frequency], length, volume);
         }
     }
-} zox_declare_system(JumpSoundSystem)
+} zoxd_system(JumpSoundSystem)

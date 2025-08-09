@@ -104,4 +104,4 @@ void ElementNavigationSystem(iter *it) {
             else navigatorTimer->value += ui_navigation_timing;
         }
     }
-} zox_declare_system(ElementNavigationSystem)
+} zoxd_system(ElementNavigationSystem)

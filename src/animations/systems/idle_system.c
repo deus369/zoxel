@@ -18,4 +18,4 @@ void IdleSystem(ecs_iter_t *it) {
         const double animation_time = time - animationStart->value;
         scale1D->value = idle_default_scale + idle_scale_addition * sin(animation_time * idle_animation_speed);
     }
-} zox_declare_system(IdleSystem)
+} zoxd_system(IdleSystem)

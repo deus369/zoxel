@@ -252,7 +252,7 @@ void build_voxel_mesh_final(
         // get anode at the current dig depth
         const VoxelNode* anode = get_adjacentn_VoxelNode(
             data.neighbors,
-            data.ndepths,
+            // data.ndepths,
             data.root,
             dig.position,
             dig.depth,
@@ -262,15 +262,6 @@ void build_voxel_mesh_final(
         // but this assume the adjacent node is rendering at max level!
         //  it checks for all sub nodes..!
         byte ddepth = adepth - dig.depth < 0 ? 0 : adepth - dig.depth;
-        // byte ddepth = data.render_depth - dig.depth < 0 ? 0 : data.render_depth - dig.depth;
-        // Handle Chunk Seems
-        /*if (data.render_depth != adepth) {
-            if (adepth > data.render_depth) {
-                ddepth += 1;
-            } else if (ddepth) {
-                ddepth -= 1;
-            }
-        }*/
 
         // we need to know how far to check, using anodes depth
         byte adjacent_solid = get_node_sides_all_solid(
@@ -587,7 +578,7 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
         fetch_neightbor_chunk_data(
             world,
             chunkNeighbors,
-            node_depth,
+            terrain_depth, // node_depth,
             neighbors,
             ndepths);
 
@@ -618,4 +609,4 @@ void Chunk3BuildSystem(ecs_iter_t *it) {
     }
     endwatch(time_chunk3_build, "ending");
     zox_ts_end(chunk3_builder, 3, zox_profile_system_chunk3_builder);
-} zox_declare_system(Chunk3BuildSystem)
+} zoxd_system(Chunk3BuildSystem)

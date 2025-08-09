@@ -39,4 +39,4 @@ void VodesDespawnSystem(iter *it) {
         write_unlock_VoxelNode(node);
         blocksSpawned->value = 0;
     }
-} zox_declare_system(VodesDespawnSystem)
+} zoxd_system(VodesDespawnSystem)

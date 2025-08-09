@@ -1,6 +1,6 @@
-color hit_terrain_color = (color) { 2, 145, 145, 55 };
-color hit_character_color = (color) { 155, 45, 45, 65 };
-color hit_block_vox_color = (color) { 55, 185, 145, 45 };
+color hit_terrain_color = { 2, 145, 145, 55 };
+color hit_character_color = { 155, 45, 45, 65 };
+color hit_block_vox_color = { 55, 185, 145, 45 };
 
 extern entity local_crosshair;
 extern void crosshair_set_type(ecs*, entity, byte);
@@ -84,4 +84,4 @@ void RaycastGizmoSystem(iter *it) {
         crosshair_set_type(world, local_crosshair, data->result);
         create_raycast_gizmo(world, data);
     }
-} zox_declare_system(RaycastGizmoSystem)
+} zoxd_system(RaycastGizmoSystem)
