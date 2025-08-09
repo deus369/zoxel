@@ -1,12 +1,30 @@
-void prefab_add_cube_lines(ecs_world_t *world,
+void prefab_add_cube_lines_shrink(
+    ecs_world_t *world,
     const ecs_entity_t e,
-    const color lines_color,
-    const byte is_active)
-{
-    zox_add_tag(e, CubeLines)
-    zox_prefab_set(e, DebugCubeLines, { is_active })
-    zox_prefab_set(e, CubeLinesThickness, { 1 })
-    zox_prefab_set(e, Color, { lines_color })
+    const color c,
+    const byte active,
+    float shrink
+) {
+    zox_add_tag(e, CubeLines);
+    zox_prefab_set(e, DebugCubeLines, { active });
+    zox_prefab_set(e, CubeLinesThickness, { 1 });
+    zox_prefab_set(e, Color, { c });
+    if (shrink > 0) {
+        zox_prefab_set(e, DebugCubeShrink, { shrink });
+        zox_add_tag(e, DebugCubeCorner);
+    }
+}
+
+void prefab_add_cube_lines(
+    ecs_world_t *world,
+    const ecs_entity_t e,
+    const color c,
+    const byte active
+) {
+    zox_add_tag(e, CubeLines);
+    zox_prefab_set(e, DebugCubeLines, { active });
+    zox_prefab_set(e, CubeLinesThickness, { 1 });
+    zox_prefab_set(e, Color, { c });
 }
 
 ecs_entity_t spawn_prefab_cube_lines(ecs_world_t *world) {
@@ -21,7 +39,14 @@ ecs_entity_t spawn_prefab_cube_lines(ecs_world_t *world) {
     return e;
 }
 
-ecs_entity_t spawn_cube_lines(ecs_world_t *world, const float3 center, const float3 extents, const float thickness, const double life_time, const color_rgb line_color) {
+ecs_entity_t spawn_cube_lines(
+    ecs_world_t *world,
+    const float3 center,
+    const float3 extents,
+    const float thickness,
+    const double life_time,
+    const color_rgb line_color
+) {
     zox_instance(prefab_cube_lines)
     // zox_name("cube_lines")
     zox_set(e, Position3D, { center })

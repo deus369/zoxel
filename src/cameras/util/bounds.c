@@ -1,16 +1,3 @@
-void calculate_frustum_bounds_d3(const double3 *corners, float6 *bounds) {
-    bounds->x = bounds->z = bounds->u = FLT_MAX;
-    bounds->y = bounds->w = bounds->v = -FLT_MAX;
-    for (int i = 0; i < 8; i++) {
-        if (corners[i].x < bounds->x) bounds->x = corners[i].x;
-        if (corners[i].x > bounds->y) bounds->y = corners[i].x;
-        if (corners[i].y < bounds->z) bounds->z = corners[i].y;
-        if (corners[i].y > bounds->w) bounds->w = corners[i].y;
-        if (corners[i].z < bounds->u) bounds->u = corners[i].z;
-        if (corners[i].z > bounds->v) bounds->v = corners[i].z;
-    }
-}
-
 byte is_bounds_in_position_bounds(const float6 limits, const bounds b) {
     const float3 min_b = float3_subtract(b.center, b.extents);
     const float3 max_b = float3_add(b.center, b.extents);

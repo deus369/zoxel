@@ -31,12 +31,16 @@
 
 
 // Rendering Pipelines
-#define zoxp_physics EcsOnValidate          // EcsOnUpdate
-#define zoxp_transforms EcsPostUpdate       // for Transforms
-#define zoxp_cameras EcsPreStore            // builds our camera planes, also camera transforms get updated, needs to be post transforms
-#define zoxp_pre_render EcsPreStore         // culls renderers basedon those
-#define zoxp_rendering EcsOnStore
+// Also breaks if transforms isnt after physics pipeline
+// Builds our CameraPlanes, matrix, etc
+// builds our camera planes, also camera transforms get updated, needs to be post transforms
+// NOTE: Bugs out of we dont update AFTER zoxp_transforms
+// #define zoxp_pre_render EcsPreStore         // culls renderers basedon those
 
+#define zoxp_physics EcsPostUpdate          // Core
+#define zoxp_transforms zoxp_physics + 1    // Transforms
+#define zoxp_cameras zoxp_transforms + 1    // CameraPlanes/Matrix
+#define zoxp_rendering zoxp_cameras + 1     // doesnt seem to mind if its in same frame as zoxp_cameras
 
 
 // the idea is to move the element before the ui is raycasted

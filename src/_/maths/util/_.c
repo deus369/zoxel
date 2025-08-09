@@ -4,6 +4,7 @@
 #include "float2.c"
 #include "float3.c"
 #include "float4.c"
+#include "float6.c"
 #include "float3x3.c"
 #include "float4x4.c"
 #include "int.c"

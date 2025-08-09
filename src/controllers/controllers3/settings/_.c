@@ -6,6 +6,8 @@ byte auto_player = 0;
 // shit remove this atm, it doubles up for coop
 double run_speed = 1.8;
 double run_accceleration = 2.2;
+double fly_run_speed = 3.2;
+double fly_run_acc = 5.2;
 float backwards_multiplier = 0.8f;
 float2 player_movement_power = { 17, 19 };
 float2 max_velocity3D = { 1.24f, 1.4f };

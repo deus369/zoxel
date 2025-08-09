@@ -31,12 +31,16 @@ static inline float3 float3_single(const float input) {
     return (float3) { input, input, input };
 }
 
-static inline float3 float3_scale(const float3 input, const float mul) {
-    return (float3) { input.x * mul, input.y * mul, input.z * mul };
+static inline float3 float3_scale(const float3 v, const float u) {
+    return (float3) { v.x * u, v.y * u, v.z * u };
 }
 
-static inline float3 float3_add(const float3 inputA, const float3 inputB) {
-    return (float3) { inputA.x + inputB.x, inputA.y + inputB.y, inputA.z + inputB.z };
+static inline float3 float3_add(const float3 a, const float3 b) {
+    return (float3) { a.x + b.x, a.y + b.y, a.z + b.z };
+}
+
+static inline float3 float3_sub(const float3 a, const float3 b) {
+    return (float3) { a.x - b.x, a.y - b.y, a.z - b.z };
 }
 
 static inline float3 float3_subtract(const float3 inputA, const float3 inputB) {

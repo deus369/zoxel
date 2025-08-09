@@ -57,7 +57,7 @@ void UnstuckSystem(iter *it) {
         }
         if (float3_equals(lastUnstuck3->value, float3_zero)) {
             position3->value = float3_add(position3->value, unstuck_push);
-            zox_logw("Character never unstuck v[%ix%ix%i] l[%ix%ix%i]", voxel_position.x, voxel_position.y, voxel_position.z, voxel_position_local.x, voxel_position_local.y,  voxel_position_local.z);
+            // zox_logw("Character never unstuck v[%ix%ix%i] l[%ix%ix%i]", voxel_position.x, voxel_position.y, voxel_position.z, voxel_position_local.x, voxel_position_local.y,  voxel_position_local.z);
             continue; // hasn't been unstuck
         }
         // float3 reverse_point = float3_subtract(lastUnstuck3->value, (float3) { 0, bounds3->value.y / 2.0f, 0 });

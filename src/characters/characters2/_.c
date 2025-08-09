@@ -11,7 +11,7 @@ zoxc_entity(Character2DLink);
 #include "systems/bob_spawn_system.c"
 
 void spawn_prefabs_characters2D(ecs_world_t *world) {
-    prefab_character2D = spawn_prefab_character2D(world, character2DTextureSize);
+    prefab_character2D = spawn_prefab_character2D(world);
 }
 
 zox_begin_module(Characters2)

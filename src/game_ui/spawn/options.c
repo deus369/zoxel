@@ -10,8 +10,8 @@ ecs_entity_t spawn_menu_options(
     const ecs_entity_t player,
     const ecs_entity_t canvas,
     const int2 position,
-    const float2 anchor)
-{
+    const float2 anchor
+) {
     // more data
     const char* header_label = "Ponder";
     const int max_labels = max_settings;
@@ -29,9 +29,9 @@ ecs_entity_t spawn_menu_options(
     };
     ElementSpawnData window_element_data = {
         .prefab = prefab_window,
-        .position = (int2) { 0, 0 },
+        .position = position,
         .size = (int2) { 520, 580 },
-        .anchor = float2_half,
+        .anchor = anchor, // float2_half,
         .layer = layer,
     };
     ParentSpawnData window_parent_data = {

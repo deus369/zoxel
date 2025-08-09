@@ -116,8 +116,13 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         }
         float3 movement = { left_stick.x * player_movement_power.x, 0, left_stick.y * player_movement_power.y };
         if (is_running) {
-            movement.x *= run_accceleration;
-            movement.y *= run_accceleration;
+            if (!zox_gett_value(character, FlyMode)) {
+                movement.x *= run_accceleration;
+                movement.y *= run_accceleration;
+            } else {
+                movement.x *= fly_run_acc;
+                movement.y *= fly_run_acc;
+            }
         }
 
         zox_geter(character, CameraLink, cameraLink)
@@ -163,8 +168,13 @@ void Player3DMoveSystem(ecs_iter_t *it) {
         // (although we dont know delta_time next frame)
         float2 max_speed = max_velocity3D;
         if (is_running) {
-            max_speed.x *= run_speed;
-            max_speed.y *= run_speed;
+            if (!zox_gett_value(character, FlyMode)) {
+                max_speed.x *= run_speed;
+                max_speed.y *= run_speed;
+            } else {
+                max_speed.x *= fly_run_speed;
+                max_speed.y *= fly_run_speed;
+            }
         }
 
         float3 movement_real_z = float4_rotate_float3(movement_rotation, (float3) { 0, 0, movement.z });

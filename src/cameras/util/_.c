@@ -4,6 +4,7 @@
 #include "bounds.c"
 #include "camera.c"
 #include "frustum.c"
+#include "frustum_d3.c"
 #include "planes.c"
 #include "debug.c"
 // #include "player.c"

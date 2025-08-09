@@ -1,8 +1,8 @@
 #define jump_cooldown_state 253
 #define cooldown_start_landing 251
+// byte can_jump_delay = 15;
 
 void CanJumpSystem(ecs_iter_t *it) {
-    byte can_jump_delay = 15;
     zox_sys_begin()
     zox_sys_in(Grounded)
     zox_sys_in(JumpState)

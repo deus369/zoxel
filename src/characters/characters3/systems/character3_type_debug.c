@@ -25,4 +25,4 @@ void Character3TypeDebugSystem(iter *it) {
         }
         colorr->value = color_rgb_to_color(output);
     }
-} zoxd_system(Character3TypeDebugSystem)
+} zoxd_system(Character3TypeDebugSystem);

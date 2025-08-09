@@ -26,7 +26,6 @@ const float penetration_amplifier = 1.0f; // 1.01f
     }
 
 void CollisionResponseSystem(iter *it) {
-    zox_sys_world();
     zox_sys_begin();
     zox_sys_in(VoxLink)
     zox_sys_in(CollisionDistance)
@@ -50,8 +49,8 @@ void CollisionResponseSystem(iter *it) {
             continue;
         }
         // zox_geter_value(voxLink->value, VoxScale, float, terrain_scale);
-        const float3 position_last = lastPosition3D->value;
-        const float3 position_new = position3D->value;
+        // const float3 position_last = lastPosition3D->value;
+        // const float3 position_new = position3D->value;
         const float3 collision_distance = collisionDistance->value;
         // Unpacking:
         byte did_collide_x = (collision->value >> 0) & 0x3;

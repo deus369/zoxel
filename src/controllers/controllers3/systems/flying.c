@@ -33,8 +33,8 @@ void PlayerFlySystem(ecs_iter_t *it) {
             }
             if (deviceMode->value == zox_device_mode_keyboardmouse && zox_has(device, Keyboard)) {
                 zox_geter(device, Keyboard, keyboard)
-                if (keyboard->q.is_pressed) input -= 1;
-                if (keyboard->e.is_pressed) input += 1;
+                if (keyboard->q.is_pressed) input -= fly_run_acc;
+                if (keyboard->e.is_pressed) input += fly_run_acc;
             }
         }
 

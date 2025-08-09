@@ -1,15 +1,24 @@
-void add_debug_cube(ecs_world_t* world, const ecs_entity_t e, const float3 size) {
-    zox_prefab_set(e, DebugCubeLines, { 1 })
-    zox_add_tag(e, CubeLines)
-    zox_prefab_set(e, CubeLinesThickness, { 4 })
-    zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }})
-    zox_prefab_set(e, Bounds3D, { size })
-    zox_prefab_set(e, RenderLod, { 0 })
-    zox_prefab_set(e, RenderDisabled, { 0 })
+void add_debug_cube(
+    ecs_world_t* world,
+    const ecs_entity_t e,
+    const float3 size
+) {
+    zox_prefab_set(e, DebugCubeLines, { 1 });
+    zox_add_tag(e, CubeLines);
+    zox_prefab_set(e, CubeLinesThickness, { 4 });
+    zox_prefab_set(e, ColorRGB, {{ 0, 255, 255 }});
+    zox_prefab_set(e, Bounds3D, { size });
+    zox_prefab_set(e, RenderLod, { 0 });
+    zox_prefab_set(e, RenderDisabled, { 0 });
     zox_prefab_set(e, MeshIndicies, { 0, NULL });
 }
 
-void debug_cubec(ecs_world_t* world, const float3 p, const float3 s, color_rgb c) {
+void debug_cubec(
+    ecs_world_t* world,
+    const float3 p,
+    const float3 s,
+    color_rgb c
+) {
     // Calculate the min and max corners
     float3 min = {
         p.x - s.x * 0.5f,

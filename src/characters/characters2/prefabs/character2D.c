@@ -1,6 +1,6 @@
-ecs_entity_t spawn_prefab_character2D(ecs_world_t *world,
-    const int2 textureSize)
-{
+ecs_entity_t spawn_prefab_character2D(
+    ecs *world
+) {
     zox_prefab();
     zox_add_tag(e, Character2D);
     zox_add_tag(e, Frictioned);

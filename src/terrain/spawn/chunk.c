@@ -24,6 +24,7 @@ ecs_entity_t spawn_chunk_terrain(
         float3_from_int3(position),
         chunk_scale
     );
+    zox_set(e, ChunkSize, { int3_single(terrain_length) });
     // zox_log("placing: chunk_scale [%f] voxscale [%f] terrain_length [%i]", chunk_scale, scale, terrain_length);
 
     zox_set(e, Position3D, { positionf })

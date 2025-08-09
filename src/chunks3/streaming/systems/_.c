@@ -21,10 +21,10 @@ void define_systems_streaming(ecs *world) {
         [in] generic.Position3DBounds,
         [in] cameras.CameraPlanes,
         [none] cameras.Camera3D)
-    zox_system_ctx(ChunkFrustumSystem, zoxp_pre_render, // zoxp_voxels_read,
+    zox_system_ctx(ChunkFrustumSystem, zoxp_voxels_read,
         filter_cameras,
         [in] transforms3.Position3D,
-        [in] chunks3.ChunkSize,
+        [in] generic.Bounds3D,
         [in] blocks.VoxScale,
         [in] chunks3.ChunkEntities,
         [in] chunks3.VoxelNode,

@@ -9,6 +9,22 @@
 // #define zox_enable_log_ui
 // #define zox_enable_log_shader
 
+// TODO: Just add these in systems onto the DEBUG UI hook - TOggle Between key
+void zoxel_on_spawn_prefabs(ecs_world_t* world) {
+    // get_debug_label_app
+    set_prefab_debug_label(world, &debug_label_chunk_link);
+    // set_prefab_debug_label(world, &get_label_realm_colors);
+    // set_prefab_debug_label(world, &get_label_player_element_links);
+    // set_prefab_debug_label(world, &get_label_player_stats);
+    // set_prefab_debug_label(world, &get_label_player_items);
+    // set_prefab_debug_label(world, &get_label_player_skills);
+    // set_prefab_debug_label(world, &get_label_player_actions);
+    // set_prefab_debug_label(world, &get_label_player_quests);
+    // set_prefab_debug_label(world, &debug_label_lods);
+    // set_prefab_debug_label(world, &debug_label_collisions);
+    // set_prefab_debug_label(world, &debug_label_app);
+}
+
 void zoxel_set_debug(ecs_world_t* world) {
     // zox_profile_system_none
     // zox_profile_system_grassy_plains
@@ -25,19 +41,6 @@ void zoxel_set_debug(ecs_world_t* world) {
     test_actions_skills = 0;
     test_items_blocks = 1;
     test_all_skills = 1;
-
-    // get_debug_label_app
-    // set_prefab_debug_label(world, &debug_label_chunk_link);
-    // set_prefab_debug_label(world, &get_label_realm_colors);
-    // set_prefab_debug_label(world, &get_label_player_element_links);
-    // set_prefab_debug_label(world, &get_label_player_stats);
-    // set_prefab_debug_label(world, &get_label_player_items);
-    // set_prefab_debug_label(world, &get_label_player_skills);
-    // set_prefab_debug_label(world, &get_label_player_actions);
-    // set_prefab_debug_label(world, &get_label_player_quests);
-    // set_prefab_debug_label(world, &debug_label_lods);
-    // set_prefab_debug_label(world, &debug_label_collisions);
-    // set_prefab_debug_label(world, &debug_label_app);
 }
 
 void zoxel_settings_npcs() {
@@ -104,15 +107,6 @@ void zoxel_settings_uis() {
 
     default_fill_color = header_fill;
     default_outline_color = header_outline;
-    // set them again for now
-    /*zox_set(prefab_ui_list, Color, { window_fill })
-    zox_set(prefab_ui_list, OutlineColor, { window_outline })
-    zox_set(prefab_header, Color, { header_fill })
-    zox_set(prefab_header, OutlineColor, { header_outline })
-    zox_set(prefab_slider, Color, { header_fill })
-    zox_set(prefab_slider, OutlineColor, { header_outline })
-    zox_set(prefab_handle, Color, { button_font_fill })
-    zox_set(prefab_handle, OutlineColor, { button_font_outline })*/
     // nothing_font_color = debug_color; // debug font texture
     // fades
     is_start_game_delays = 1;
@@ -155,10 +149,15 @@ void zox_set_terrain_settings() {
 zox_begin_module(ZoxGame)
 
     game_name = "Zoxel";
-    vsync = 0;
-    // disable_npcs = 1;
-    // disable_frustum_culling = 1;
+    add_hook_spawn_prefabs(zoxel_on_spawn_prefabs);
+    // vsync = 0;
     // auto_player = 1;
+
+
+    // disable until fixed
+    // disable_frustum_culling = 1;
+
+    // disable_npcs = 1;
     // disable_bone_rendering = 1;
     // disable_block_voxes = 1;
     // is_debug_collisions = 1;

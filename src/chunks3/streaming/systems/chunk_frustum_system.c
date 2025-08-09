@@ -1,11 +1,14 @@
-const float fudge_frustum_extents = 2.0f;
 
 // Note: uses zox_set here for children setting
 
 // note: I may need to thread lock/unlock ChunkEntities when reading
 
 // block spawn delve function
-void set_chunk_block_spawns_render_disabled(ecs *world, const VoxelNode *node, const byte state) {
+void set_chunk_block_spawns_render_disabled(
+    ecs *world,
+    const VoxelNode *node,
+    const byte state
+) {
     if (is_closed_VoxelNode(node)) {
         return;
     } else if (is_linked_VoxelNode(node)) {
@@ -23,29 +26,34 @@ void set_chunk_block_spawns_render_disabled(ecs *world, const VoxelNode *node, c
 
 // this sets RenderDisabled for chunks and their children
 void ChunkFrustumSystem(iter *it) {
-    zox_sys_query()
-    zox_sys_world()
-    zox_sys_begin()
-    zox_sys_in(Position3D)
-    zox_sys_in(ChunkSize)
-    zox_sys_in(VoxScale)
-    zox_sys_in(ChunkEntities)
-    zox_sys_in(VoxelNode)
-    zox_sys_out(RenderDisabled)
+    zox_sys_query();
+    zox_sys_world();
+    zox_sys_begin();
+    zox_sys_in(Position3D);
+    zox_sys_in(Bounds3D);
+    zox_sys_in(VoxScale);
+    zox_sys_in(ChunkEntities);
+    zox_sys_in(VoxelNode);
+    zox_sys_out(RenderDisabled);
     for (int i = 0; i < it->count; i++) {
-        zox_sys_e()
-        zox_sys_i(Position3D, position3D)
-        zox_sys_i(ChunkSize, chunkSize)
-        zox_sys_i(VoxScale, voxScale)
-        zox_sys_i(ChunkEntities, entityLinks)
-        zox_sys_i(VoxelNode, voxelNode)
-        zox_sys_o(RenderDisabled, renderDisabled)
-        bounds chunk_bounds = calculate_chunk_bounds(
-            position3D->value,
+        zox_sys_e();
+        zox_sys_i(Position3D, position);
+        zox_sys_i(Bounds3D, bounds3);
+        zox_sys_i(VoxScale, voxScale);
+        zox_sys_i(ChunkEntities, entityLinks);
+        zox_sys_i(VoxelNode, voxelNode);
+        zox_sys_o(RenderDisabled, renderDisabled);
+        // scale is off for terrain chunks? or the calc? oh the size?
+        bounds chunk_bounds = {
+            .center = float3_add(position->value, bounds3->value),
+            .extents = bounds3->value
+        };
+        /*calculate_chunk_bounds(
+            position->value,
             chunkSize->value,
-            voxScale->value * 0.5f);
+            voxScale->value);*/
         float3_scale_p(&chunk_bounds.extents, fudge_frustum_extents);
-        zox_sys_query_begin()
+        zox_sys_query_begin();
         byte is_viewed = disable_frustum_culling;
         while (zox_sys_query_loop()) {
             if (is_viewed) {
@@ -55,18 +63,23 @@ void ChunkFrustumSystem(iter *it) {
             zox_sys_in_2(Position3DBounds)
             zox_sys_in_2(CameraPlanes)
             for (int j = 0; j < it2.count; j++) {
-                zox_sys_i_2(Position3DBounds, position3DBounds)
-                zox_sys_i_2(CameraPlanes, cameraPlanes)
-                is_viewed = is_bounds_in_position_bounds(position3DBounds->value, chunk_bounds);
-                if (is_viewed) {
-                    is_viewed = is_in_frustum(cameraPlanes->value, chunk_bounds);
-                }
+                zox_sys_i_2(Position3DBounds, camera_bounds)
+                zox_sys_i_2(CameraPlanes, planes)
+                /*is_viewed = is_bounds_in_position_bounds(
+                        camera_bounds->value,
+                        chunk_bounds) &&
+                    is_in_frustum(
+                        planes->value,
+                        chunk_bounds);*/
+                is_viewed = is_in_frustum(
+                    planes->value,
+                    chunk_bounds);
                 if (is_viewed) {
                     break;
                 }
             }
         }
-        zox_sys_query_end()
+        zox_sys_query_end();
         if (renderDisabled->value != !is_viewed) {
             renderDisabled->value = !is_viewed;
             // -=- Block Spawns -=-

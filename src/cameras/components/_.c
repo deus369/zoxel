@@ -17,7 +17,7 @@ zoxc_float4(ScreenToCanvas);
 zoxc(ProjectionMatrix, float4x4);
 zoxc(ViewMatrix, float4x4); // todo: rename to ViewProjectionMatrix
 zoxc_array(CameraPlanes, plane, 6);
-zoxc_array(FrustumCorners, double3, 8);
+zoxc_array(FrustumCorners, double3, 8); // double3 | float3
 // Render Cameras
 zox_tag(RenderCamera);
 zox_tag(RenderTexture);

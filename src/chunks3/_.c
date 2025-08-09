@@ -1,7 +1,7 @@
 #ifndef zoxm_chunks3
 #define zoxm_chunks3
 /**
- *  Zox Voxels
+ *  Zox Chunks3(D)
  *
  *      - core voxel code
  *      - octree node, goes down n levels
