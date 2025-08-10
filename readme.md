@@ -93,8 +93,8 @@ sudo apk add git gcc make ibc-dev sdl2-dev sdl2_image-dev sdl2_mixer-dev glew-de
   - [ twitter ](https://twitter.com/deusxyz) — Whisper to the void
   - [ mastodon ](https://mastodon.gamedev.place/@deus) — The distant signal
   - [ youtube ](https://www.youtube.com/watch?v=Hseq5iPIJ6s) — See the shadows dance
-  - [_github_](https://github.com/deus369/zoxel) — Peer into the abyss
   - [ codeberg ](https://codeberg.org/deus/zoxel) — The cryptic archive
+  - [_github_](https://github.com/deus369/zoxel) — Will no longer be updated
 
 ---
 
