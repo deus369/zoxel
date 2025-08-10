@@ -5,8 +5,8 @@ ecs_entity_t spawn_menu_paused(
     // getters
     zox_geter_value(player, CanvasLink, ecs_entity_t, canvas)
     // settings
-    const byte font_size = 48;
-    const byte header_font_size = 60;
+    const byte font_size = 32;
+    const byte header_font_size = 42;
     const float2 anchor = (float2) { 0.0f, 1.0f };
     const int2 position = (int2) { 200, -200 };
     const byte layer = pause_ui_overlay_layer + 3;
@@ -39,7 +39,9 @@ ecs_entity_t spawn_menu_paused(
         font_size,
         layer,
         0,
-        player);
+        player,
+        int2_zero
+    );
     zox_add_tag(e, MenuPaused)
     zox_name("menu_paused")
     return e;

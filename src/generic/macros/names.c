@@ -3,7 +3,7 @@
 // #define zox_debug_spawning
 // extern void set_new_zox_name(ecs_world_t *world, const ecs_entity_t e, const char* text);
 
-char *long_int_itoa(char *str, long int num) {
+char *lint_itoa(char *str, long int num) {
     if (str == NULL) return NULL;
     sprintf(str, "%lu", num);
     return str;
@@ -13,7 +13,7 @@ char *long_int_itoa(char *str, long int num) {
 char* get_entity_string(const ecs_entity_t e, const char* name) {
     if (!e || !name) return NULL;
     static char e_string[e_string_length];
-    long_int_itoa(e_string, (long int) e); // (long int) (rand() % 100000));   //
+    lint_itoa(e_string, (long int) e); // (long int) (rand() % 100000));   //
     int entity_name_length = strlen(name) + 1 + e_string_length + 1;
     char* entity_name = malloc(entity_name_length);
     for (int i = 0; i < entity_name_length; i++) {

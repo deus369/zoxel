@@ -13,10 +13,10 @@ zoxc_double(SoundLength);       //! The length of a sound
 
 void define_components_sounds(ecs_world_t *world) {
     zox_define_tag(Sound);;
-    zox_define_component_byte(InstrumentType);;
-    zox_define_component_byte(TriggerSound);;
-    zox_define_component_byte(GenerateSound);;
-    zox_define_component_byte(ProcessSound);;
+    zoxd_byte(InstrumentType);;
+    zoxd_byte(TriggerSound);;
+    zoxd_byte(GenerateSound);;
+    zoxd_byte(ProcessSound);;
     zox_define_component_double(SoundLength);;
     zox_define_component_float(SoundFrequency);;
     zox_define_component_float(SoundVolume);;

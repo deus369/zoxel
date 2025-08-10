@@ -19,11 +19,11 @@ static inline byte get_character_can_jump(ecs_world_t *world, ecs_entity_t c) {
 
 zox_begin_module(Jumps)
     zox_define_tag(SilentJumper);
-    zox_define_component_byte(CanJump);
-    zox_define_component_byte(JumpState);
-    zox_define_component_byte(LandState);
+    zoxd_byte(CanJump);
+    zoxd_byte(JumpState);
+    zoxd_byte(LandState);
     zox_define_component_double(Jump);
-    zox_define_component_byte(FlyMode);
+    zoxd_byte(FlyMode);
     define_systems_jump(world);
 zox_end_module(Jumps)
 

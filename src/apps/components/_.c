@@ -11,10 +11,10 @@ zoxc_entity(AppLink);
 
 void define_components_apps(ecs_world_t *world) {
     zox_define_tag(App);
-    zox_define_component_byte(WindowSizeDirty);
-    zox_define_component_byte(WindowFullscreen);
-    zox_define_component_byte(WindowMaximized);
-    zox_define_component_byte(WindowMonitor);
+    zoxd_byte(WindowSizeDirty);
+    zoxd_byte(WindowFullscreen);
+    zoxd_byte(WindowMaximized);
+    zoxd_byte(WindowMonitor);
     zox_define_component_int2(WindowSize);
     zox_define_component_int2(WindowPosition);
     zox_define_component_int2(WindowSizeRestore);

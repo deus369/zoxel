@@ -2,8 +2,15 @@ typedef unsigned char byte;
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef unsigned long ulong;
+typedef long int lint;
 // typedef uint32_t uint;
 // typedef uint64_t ulong;
+
+// base type, watch out for name conflicts tho
+typedef struct {
+    int length;
+    byte* value;
+} text;
 
 typedef struct {
     byte x, y;

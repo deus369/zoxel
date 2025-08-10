@@ -16,15 +16,15 @@ void dispose_render_loop() {
     dispose_int_array_d(render3D_plus_systems);
 }
 
-void add_to_render3D_loop(long int id) {
+void add_to_render3D_loop(lint id) {
     add_to_int_array_d(render3D_systems, id);
 }
 
-void add_to_render3D_plus_loop(long int id) {
+void add_to_render3D_plus_loop(lint id) {
     add_to_int_array_d(render3D_plus_systems, id);
 }
 
-void add_to_render2D_loop(long int id) {
+void add_to_render2D_loop(lint id) {
     add_to_int_array_d(render2D_systems, id);
 }
 

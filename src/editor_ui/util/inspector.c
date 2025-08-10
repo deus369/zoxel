@@ -15,11 +15,13 @@ void button_event_clicked_inspepctor(
     // editor_select_entity(world, target);
 }
 
-#define zox_dynamic_component_label(type, component)\
-    if (is_component_type##_##type(id)) {\
-        const component *c = ((const component*) ecs_get_id(world, e, id));\
-        buffer_index += snprintf(buffer + buffer_index, size_of_buffer, zox_component_string##_##type(c));\
-    }
+/*#define zox_dynamic_component_label(type, component)\
+    if (is_component_type_##type(id)) { \
+        const component* c = ((const component*) ecs_get_id(world, e, id));\
+        if (c) { \
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, zox_component_string##_##type(c)); \
+        } \
+    }*/
 
 void get_component_label(
     ecs_world_t *world,
@@ -27,18 +29,55 @@ void get_component_label(
     const ecs_entity_t component,
     char *buffer
 ) {
-    const int size_of_buffer = inspector_component_size_buffer;
+    if (!zox_valid(e) || !zox_valid(component)) {
+        zox_logw("invalid e or c in inspector label");
+        return;
+    }
+    const int buffer_size = inspector_component_size_buffer;
     int buffer_index = 0;
     ecs_id_t id = component & ECS_COMPONENT_MASK;
     // ecs_entity_t comp = id & ECS_COMPONENT_MASK;
-    buffer_index += snprintf(buffer + buffer_index, size_of_buffer, "%s", ecs_get_name(world, component));
-    zox_dynamic_component_label(byte, EntityDirty)
+    buffer_index += snprintf(buffer + buffer_index, buffer_size, "%s", ecs_get_name(world, component));
+
+    #define add_component_label(T)\
+        else if (is_component_type_##T(id)) { \
+            buffer_index = get_type_label_##T(world, e, id, buffer, buffer_size, buffer_index); \
+        }
+
+    if (is_component_type_byte(id)) {
+        buffer_index = get_type_label_byte(world, e, id, buffer, buffer_size, buffer_index);
+    }
+    add_component_label(byte)
+    add_component_label(byte2)
+    add_component_label(byte3)
+    add_component_label(int)
+    add_component_label(int2)
+    add_component_label(int3)
+    add_component_label(int4)
+    add_component_label(float)
+    add_component_label(float2)
+    add_component_label(float3)
+    add_component_label(float4)
+    add_component_label(float6)
+    add_component_label(double)
+    add_component_label(lint)
+    add_component_label(entity)
+    add_component_label(color)
+    add_component_label(color_rgb)
+    add_component_label(text)
+    /*else if (is_component_type_int3(id)) {
+        buffer_index = get_type_label_int3(world, e, buffer, buffer_size, buffer_index);
+    }
+    else if (is_component_type_text(id)) {
+        buffer_index = get_type_label_text(world, e, buffer, buffer_size, buffer_index);
+    }
+    // zox_dynamic_component_label(byte, EntityDirty)
     else zox_dynamic_component_label(byte2, TextPadding)
     else zox_dynamic_component_label(int, ID)
     else zox_dynamic_component_label(int2, DraggingDelta)
-    else zox_dynamic_component_label(int3, int3_stub)
+    // else zox_dynamic_component_label(int3, int3_stub)
     else zox_dynamic_component_label(int4, DraggableLimits)
-    else zox_dynamic_component_label(long_int, Seed)
+    else zox_dynamic_component_label(lint, Seed)
     else zox_dynamic_component_label(float, Brightness)
     else zox_dynamic_component_label(float2, Position2D)
     else zox_dynamic_component_label(float3, Position3D)
@@ -48,71 +87,115 @@ void get_component_label(
     else zox_dynamic_component_label(entity, CanvasLink)
     else zox_dynamic_component_label(color, Color)
     else zox_dynamic_component_label(color_rgb, ColorRGB)
-    else zox_dynamic_component_label(zext, ZoxName)
+    // else zox_dynamic_component_label(zext, ZoxName)*/
     else {
-        const EcsComponent* ecsComponent = (EcsComponent*) ecs_get(world, id, EcsComponent);
-        unsigned int component_size = ecsComponent !=  NULL ? ecsComponent->size : 0;
+        const EcsComponent* c = (EcsComponent*) ecs_get(world, id, EcsComponent);
+        unsigned int component_size = c !=  NULL ? c->size : 0;
         if (!component_size) {
-            buffer_index += snprintf(buffer + buffer_index, size_of_buffer, " [tag]");
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, " [tag]");
         } else {
-            buffer_index += snprintf(buffer + buffer_index, size_of_buffer, " [?]");
+            buffer_index += snprintf(buffer + buffer_index, buffer_size, " [?]");
         }
     }
     // zox_log("   c [%lu] %s\n", component, buffer)
 }
 
+// Recreates our list elements
 // sets inspector ui compponents, the inspector ui
 void set_inspector_element(
-    ecs_world_t *world,
-    const ecs_entity_t window,
-    const ecs_entity_t e
+    ecs *world,
+    const entity window,
+    const entity e
 ) {
     if (!zox_valid(window) || !zox_valid(e)) {
         return;
     }
-    const ecs_type_t *type = ecs_get_type(world, e);
-    const ecs_id_t *type_ids = type->array;
+
+
+    const ecs_type_t* type = ecs_get_type(world, e);
+    const ecs_id_t* type_ids = type->array;
     const int components_count = type->count; // int32_t
     const byte is_entity_name_label = 1;
     const byte is_header = 1;
     const byte is_scrollbar = 1;
     const byte list_start = is_header + is_scrollbar;
-    zox_get_muter(window, Children, children)
-    const ecs_entity_t scrollbar = children->value[1];
+
+
     const int elements_visible = zox_get_value(window, ListUIMax)
-    const int font_size = zox_ui_scale * zox_get_value(window, ElementFontSize)
+    const int font_size = zox_gett_value(window, ElementFontSize);
+
     const byte button_layer = 1 + zox_get_value(window, Layer2D)
     zox_geter_value(window, CanvasPosition, int2, layout_position)
     zox_geter_value(window, PixelSize, int2, parent_size)
     zox_geter_value(window, CanvasLink, ecs_entity_t, canvas)
     zox_geter_value(canvas, PixelSize, int2, canvas_size)
+
+    // destroy previous ones
+    zox_get_muter(window, Children, children)
+    const ecs_entity_t scrollbar = children->value[1];
+    for (int j = list_start; j < children->length; j++) {
+        if (children->value[j]) {
+            zox_delete(children->value[j])
+        }
+    }
+
     const int scrollbar_margins = zox_gett_value(scrollbar, ElementMargins).x;
     const int scrollbar_width = zox_gett_value(scrollbar, PixelSize).x;
-    const byte2 button_padding = (byte2) { (int) (font_size * 0.46f), (int) (font_size * 0.3f) };
+    const byte2 button_padding = (byte2) {
+        (int) (font_size * 1.46f),
+        (int) (font_size * 0.5f)
+    };
     const int2 list_margins = (int2) { (int) (font_size * 0.8f), (int) (font_size * 0.8f) };
     const int button_inner_margins = (int) (font_size * 0.5f);
-    // destroy previous ones
-    for (int j = list_start; j < children->length; j++) if (children->value[j]) zox_delete(children->value[j])
+
     // set new elements size
     const int labels_count = components_count + is_entity_name_label;
     const int childrens_length = list_start + labels_count;
     resize_memory_component(Children, children, ecs_entity_t, childrens_length)
     resize_window_scrollbar(world, children, parent_size, canvas_size, elements_visible, labels_count);
+
+
     if (is_entity_name_label) {
         const int list_index = 0;
         const int child_index = list_start + list_index;
         const byte render_disabled = 0;
-        zox_geter(e, ZoxName, zoxName)
+        zox_geter(e, ZoxName, zoxName);
         char *text;
         byte did_allocate_text = 0;
         if (zoxName) {
             text = convert_zext_to_text(zoxName->value, zoxName->length);
-            did_allocate_text = 1;
+            if (text) {
+                did_allocate_text = 1;
+            } else {
+                text = "failure";
+            }
         } else {
             text = "no name";
         }
-        const int2 label_position = get_element_label_position(list_index, font_size, button_padding, button_inner_margins, parent_size, list_margins, is_scrollbar, scrollbar_width, scrollbar_margins);
-        const ecs_entity_t list_element = spawn_button_old(world, window, canvas, label_position, button_padding, float2_half, text, font_size, button_layer, layout_position, parent_size, canvas_size, render_disabled);
+        const int2 label_position = get_element_label_position(
+            list_index,
+            font_size,
+            button_padding,
+            button_inner_margins,
+            parent_size,
+            list_margins,
+            is_scrollbar,
+            scrollbar_width,
+            scrollbar_margins);
+        const ecs_entity_t list_element = spawn_button_old(
+            world,
+            window,
+            canvas,
+            label_position,
+            button_padding,
+            float2_half,
+            text,
+            font_size,
+            button_layer,
+            layout_position,
+            parent_size,
+            canvas_size,
+            render_disabled);
         if (did_allocate_text) {
             free(text);
         }

@@ -22,9 +22,9 @@ void spawn_prefabs_characters3_terrain(ecs* world) {
 }
 
 zox_begin_module(Characters3Terrain)
-    zox_define_component_byte(CharactersSpawned);
-    zox_define_component_byte(CharactersEverSpawned);
-    zox_define_component_byte(CharacterSpawnZone);
+    zoxd_byte(CharactersSpawned);
+    zoxd_byte(CharactersEverSpawned);
+    zoxd_byte(CharacterSpawnZone);
     define_systems_characters3_terrain(world);
     add_hook_spawn_prefabs(spawn_prefabs_characters3_terrain);
 zox_end_module(Characters3Terrain)

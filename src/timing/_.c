@@ -15,7 +15,7 @@ zox_begin_module(Timing)
     zox_define_component_double(DestroyInTime);
     zox_define_component_double(TimerTime);
     zox_define_component_double(TimerRate);
-    zox_define_component_byte(TimerState);
+    zoxd_byte(TimerState);
     zox_system(TimerSystem, EcsOnUpdate,
         [in] TimerRate,
         [out] TimerState,

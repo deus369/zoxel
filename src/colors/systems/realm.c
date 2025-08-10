@@ -1,6 +1,6 @@
 extern double terrain_frequency;
 
-void generate_colors(long int seed, Colors *colors) {
+void generate_colors(lint seed, Colors *colors) {
 
     srand((unsigned int) seed);
 

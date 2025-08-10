@@ -1,5 +1,3 @@
-component_id_list(float6)
-
 #define zoxc_float6(name) \
     zoxc(name, float6)
 
@@ -9,3 +7,5 @@ component_id_list(float6)
 
 #define zox_component_string_float6(component) \
     " f6 [%.2fx%.2fx%.2fx%.2fx%.2fx%.2f]", component->value.x, component->value.y, component->value.z, component->value.w, component->value.u, component->value.v
+
+zox_base_type(float6)

@@ -3,12 +3,15 @@
 #include "billboard_system.c"
 #include "viewport_resize_system.c"
 
-// #include "frustum_f3.c"
-#include "frustum_d3.c"
+#ifdef frustumdouble
+    #include "frustum_d3.c"
+#else
+    #include "frustum_f3.c"
+#endif
 
 // #include "camera_debug_system.c"
-//#include "camera_draw_frustum_system.c"
-//#include "camera_planes_draw_system.c"
+// #include "camera_draw_frustum_system.c"
+// #include "camera_planes_draw_system.c"
 
 void define_systems_cameras(ecs *world) {
     zox_system(ViewMatrixSystem, zoxp_cameras,

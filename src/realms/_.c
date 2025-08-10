@@ -11,7 +11,7 @@ zox_increment_system_with_reset(GenerateRealm, zox_generate_realm_end);
 
 zox_begin_module(Realms)
     zox_define_tag(Realm);
-    zox_define_component_byte(GenerateRealm);
+    zoxd_byte(GenerateRealm);
     zox_define_component_entity(RealmLink);
     zoxd_system_increment(GenerateRealm, [none] Realm);
     add_hook_spawn_prefabs(spawn_prefabs_realms);

@@ -151,7 +151,7 @@ zox_begin_module(ZoxGame)
     game_name = "Zoxel";
     add_hook_spawn_prefabs(zoxel_on_spawn_prefabs);
     // vsync = 0;
-    // auto_player = 1;
+    auto_player = 1;
 
 
     // disable until fixed

@@ -4,3 +4,4 @@
 #include "hashmap.c"
 #include "link.c"
 #include "array.c"
+#include "lookups.c"

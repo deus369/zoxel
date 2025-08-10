@@ -67,7 +67,9 @@ void CameraDebugSystem(iter *it) {
         //else zox_log(" - looking away from bounds\n")
         for (int j = 0; j < num_bounds; j++) {
             color_rgb cube_color = miss_color;
-            if (is_in_frustum(cameraPlanes->value, test_bounds[j])) cube_color = hit_color;
+            if (is_in_frustum(cameraPlanes->value, test_bounds[j], 1)) {
+                cube_color = hit_color;
+            }
             spawn_cube_lines(world, test_bounds[j].center, test_bounds[j].extents, 12, spawn_life_time, cube_color);
         }
     }

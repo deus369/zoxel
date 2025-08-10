@@ -187,7 +187,7 @@ void fake_plane_data(plane *planes) {
 }*/
 
 // test function for is_in_frustum
-void test_is_in_frustum(char *label) {
+/*void test_is_in_frustum(char *label) {
     zox_log(" > test fake_planes [%s]\n", label)
     plane planes[6];
     fake_plane_data(planes);
@@ -224,7 +224,7 @@ void test_is_in_frustum(char *label) {
     zox_log("   - result bounds_d: %s\n", result_d ? "Inside Frustum" : "Outside Frustum");
     zox_log("   - result bounds_e: %s\n", result_e ? "Inside Frustum" : "Outside Frustum");
     zox_log("   - result bounds_f: %s\n", result_f ? "Inside Frustum" : "Outside Frustum");
-}
+}*/
 
 // Testing float4x4_inverse function
 void test_float4x4_inverse() {

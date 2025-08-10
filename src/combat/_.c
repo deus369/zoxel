@@ -12,7 +12,7 @@ zoxc_double(DiedTime);
 #include "util/_.c"
 
 zox_begin_module(Combat)
-    zox_define_component_byte(Dead);
+    zoxd_byte(Dead);
     zox_define_component_double(DiedTime);
     zox_define_component_double(LastCombatTime);
     zox_define_component_entity(CombatState);

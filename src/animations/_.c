@@ -36,7 +36,7 @@ zox_begin_module(Animations)
     zox_define_component_float3(OscillateStartPosition3D);
     zox_define_component_float3(OscillateDeltaPosition3D);
     // old
-    zox_define_component_byte(AnimationState);
+    zoxd_byte(AnimationState);
     zox_define_component_double(AnimationDelay);
     zox_define_component_float4(EternalRotation);
     // single anim
@@ -45,7 +45,7 @@ zox_begin_module(Animations)
     zox_define_component_float(AnimateSourceFloat);
     zox_define_component_float(AnimateTargetFloat);
     // sequencing
-    zox_define_component_byte(AnimationIndex);
+    zoxd_byte(AnimationIndex);
     zox_define_memory_component(AnimationSequence);
     zox_define_memory_component(AnimationTimes);
     zox_define_memory_component(AnimationTargets);

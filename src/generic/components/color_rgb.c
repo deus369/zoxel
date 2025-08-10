@@ -1,5 +1,3 @@
-component_id_list(color_rgb)
-
 #define zoxc_color_rgb(name) \
     zoxc(name, color_rgb)
 
@@ -9,3 +7,5 @@ component_id_list(color_rgb)
 
 #define zox_component_string_color_rgb(component)\
     " c[%i.%i.%i]", component->value.r, component->value.g, component->value.b
+
+zox_base_type(color_rgb)

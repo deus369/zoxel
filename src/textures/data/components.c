@@ -42,9 +42,9 @@ void define_components_textures(ecs_world_t *world) {
     zox_define_tag(TextureAddNoise);
     zox_define_tag(VoxTexture);
     zox_define_tag(TextureRGB);
-    zox_define_component_byte(GenerateTexture);
-    zox_define_component_byte(OutlineThickness);
-    zox_define_component_byte(FrameCorner);
+    zoxd_byte(GenerateTexture);
+    zoxd_byte(OutlineThickness);
+    zoxd_byte(FrameCorner);
     zox_define_component_float(IconRadius);
     zox_define_component_int2(TilemapSize);
     zox_define_component_double(AnimateTexture);

@@ -12,7 +12,7 @@ zoxc_byte(DungeonWallType);
 zox_begin_module(Dungeons)
     zox_define_tag(Dungeon);
     zox_define_tag(DungeonCore);
-    zox_define_component_byte(DungeonWallType);
+    zoxd_byte(DungeonWallType);
     // main thread as it spawns currently
     zox_system_1(DungeonBlockSystem, EcsOnUpdate,
             [in] timing.TimerState,

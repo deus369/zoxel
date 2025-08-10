@@ -1,7 +1,7 @@
 ecs_entity_t spawn_model_grass(
     ecs_world_t* world,
     color c,
-    const long int seed
+    const lint seed
 ) {
     srand(seed);
     c = color_mutate(c, 40);

@@ -1,5 +1,3 @@
-component_id_list(int2)
-
 #define zoxc_int2(name) \
     zoxc(name, int2)
 
@@ -9,3 +7,5 @@ component_id_list(int2)
 
 #define zox_component_string_int2(component) \
     " i2 [%ix%i]", component->value.x, component->value.y
+
+zox_base_type(int2)

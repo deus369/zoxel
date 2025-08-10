@@ -9,6 +9,7 @@ zox_tag(HierarchyUI);
 zox_tag(InspectorLabel);
 zoxc_byte(HierarchyUIDirty);
 #include "prefabs/_.c"
+#include "spawn/_.c"
 #include "util/_.c"
 #include "systems/_.c"
 #include "debug/_.c"

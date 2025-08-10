@@ -24,7 +24,7 @@ typedef struct {
 } BiomeData;
 
 
-BiomeData pick_biome(long int seed) {
+BiomeData pick_biome(lint seed) {
 
     const BiomeData bcr_earthy = {
         .name = "Earthy Forest",

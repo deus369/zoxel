@@ -26,8 +26,8 @@ void dispose_games(ecs_world_t *world, void *ctx) {
 
 zox_begin_module(Games)
     zox_define_tag(Game);
-    zox_define_component_byte(GameState);
-    zox_define_component_byte(GameStateTarget);
+    zoxd_byte(GameState);
+    zoxd_byte(GameStateTarget);
     zox_define_component_entity(GameLink);
     zox_system_1(GameStateSystem, EcsPreStore,
         realms.RealmLink,

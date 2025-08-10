@@ -23,7 +23,7 @@ void define_components_neurals(ecs* world) {
     zox_define_component_float(Signal);
     zox_define_component_float(Transfer);
     zox_define_component(ConnectionData);
-    zox_define_component_byte(BrainDirty);
+    zoxd_byte(BrainDirty);
     zox_define_component_entity(BrainLink);
     zox_define_memory_component(BrainInputs);
     zox_define_memory_component(BrainOutputs);

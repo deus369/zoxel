@@ -21,7 +21,7 @@ zoxc_float3(RaycastNormal);
 
 zox_begin_module(Raycasts)
     zox_define_component_int2(Raycaster);
-    zox_define_component_byte(RaycasterResult);
+    zoxd_byte(RaycasterResult);
     zox_define_component_entity(RaycasterTarget);
     zox_define_component_float3(RaycastOrigin);
     zox_define_component_float3(RaycastNormal);

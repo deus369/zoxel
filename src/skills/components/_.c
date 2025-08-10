@@ -18,6 +18,6 @@ void define_components_skills(ecs_world_t *world) {
     zox_define_component_float(SkillDamageMax);
     zox_define_component_float(SkillRange);
     zox_define_component_float(SkillCost);
-    zox_define_component_byte(SkillActive);
+    zoxd_byte(SkillActive);
     zox_define_component_entity(SkillResourceLink);
 }

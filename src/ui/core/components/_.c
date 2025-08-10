@@ -76,8 +76,8 @@ void define_components_elements_core(ecs *world) {
     zox_define_tag(MouseElement);
     zox_define_tag(IgnoreWindowLayering);
     zox_define_tag(Tooltip);
-    zox_define_component_byte(Layer2D);
-    zox_define_component_byte(ElementFontSize);
+    zoxd_byte(Layer2D);
+    zoxd_byte(ElementFontSize);
     zox_define_component_float(ElementBar);
     zox_define_component_int2(CanvasPosition);
     zox_define_component_int2(ElementMargins);
@@ -86,16 +86,16 @@ void define_components_elements_core(ecs *world) {
     zox_define_component_float2(ElementBarSize);
     zox_define_component(NavigatorTimer);
     zox_define_component_entity(CanvasLink);
-    zox_define_component_byte(HeaderHeight);
+    zoxd_byte(HeaderHeight);
     zox_define_component_entity(WindowRaycasted);
     zox_define_component_entity(WindowTarget);
     zox_define_component_entity(WindowToTop);
-    zox_define_component_byte(WindowsLayers);
-    zox_define_component_byte(WindowsCount);
-    zox_define_component_byte(SetWindowLayer);
-    zox_define_component_byte(WindowLayer);
-    zox_define_component_byte(ElementLayer);
-    zox_define_component_byte(InitializeElement);
+    zoxd_byte(WindowsLayers);
+    zoxd_byte(WindowsCount);
+    zoxd_byte(SetWindowLayer);
+    zoxd_byte(WindowLayer);
+    zoxd_byte(ElementLayer);
+    zoxd_byte(InitializeElement);
     zox_define_tag(ClickMakeSound);
     zox_define_tag(Selectable);
     zox_define_tag(Clickable);
@@ -107,7 +107,7 @@ void define_components_elements_core(ecs *world) {
     zox_define_component_int4(DraggableLimits);
     zox_define_component_entity(DraggerLink);
     zox_define_component_entity(DraggedLink);
-    zox_define_component_zext(TooltipText);
+    zoxd_text(TooltipText);
     zox_define_component(UIHolderLink);
     zox_define_entities_component(ElementLinks);
     zox_define_component_entities_child(ElementHolder);
@@ -116,10 +116,10 @@ void define_components_elements_core(ecs *world) {
     zox_define_component(SlideEvent);
 
     // States
-    zox_define_component_byte(DraggableState);
-    zox_define_component_byte(NavigatorState);
-    zox_define_component_byte(SelectState);
-    zox_define_component_byte(ActiveState);
-    zox_define_component_byte(ClickState);
-    zox_define_component_byte(ActiveStateDirty);
+    zoxd_byte(DraggableState);
+    zoxd_byte(NavigatorState);
+    zoxd_byte(SelectState);
+    zoxd_byte(ActiveState);
+    zoxd_byte(ClickState);
+    zoxd_byte(ActiveStateDirty);
 }

@@ -34,18 +34,18 @@ void define_components_chunks(ecs *world) {
     zox_define_tag(DisableReverseLinkChunk);
     zox_define_tag(ChunkDebugger);
     zox_define_component_int3(ChunkPosition);
-    zox_define_component_byte(ChunkDirty);
-    zox_define_component_byte(ChunkMeshDirty);
-    zox_define_component_byte(ChunkLodDirty);
+    zoxd_byte(ChunkDirty);
+    zoxd_byte(ChunkMeshDirty);
+    zoxd_byte(ChunkLodDirty);
     zox_define_component_int3(ChunkSize);
-    zox_define_component_byte(GenerateChunk);
-    zox_define_component_byte(BlocksSpawned);
+    zoxd_byte(GenerateChunk);
+    zoxd_byte(BlocksSpawned);
     zox_define_component(ChunkNeighbors);
     zox_define_links_component(ChunkLink);
-    zox_define_component_byte(NodeDepth);
+    zoxd_byte(NodeDepth);
     zox_define_component_node(VoxelNode);
-    zox_define_component_byte(VoxelNodeDirty);
-    zox_define_component_byte(VoxelNodeEdited);
-    zox_define_component_byte(VoxelNodeLoaded);
+    zoxd_byte(VoxelNodeDirty);
+    zoxd_byte(VoxelNodeEdited);
+    zoxd_byte(VoxelNodeLoaded);
     zox_define_hashmap_component(ChunkLinks);
 }

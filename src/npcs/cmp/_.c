@@ -16,10 +16,10 @@ void define_components_npcs(ecs* world) {
     zox_define_tag(Jumper);
     zox_define_tag(Wanderer);
     zox_define_tag(Coward);
-    zox_define_component_byte(Behaviour);
-    zox_define_component_byte(DefaultBehaviour);
-    zox_define_component_byte(MoveForwards);
-    zox_define_component_byte(RotateTowards);
+    zoxd_byte(Behaviour);
+    zoxd_byte(DefaultBehaviour);
+    zoxd_byte(MoveForwards);
+    zoxd_byte(RotateTowards);
     zox_define_component_float(MoveSpeed);
     zox_define_component_float3(TargetPosition);
     zox_define_component_float3(ThreatPosition);

@@ -64,7 +64,7 @@ void on_boot_players(ecs_world_t *world, ecs_entity_t app) {
 zox_begin_module(Players)
     zox_define_tag(Player);
     zox_define_tag(PlayerCharacter);
-    zox_define_component_byte(PlayerState);
+    zoxd_byte(PlayerState);
     zox_define_component_double(PlayerRespawn);
     zox_define_component_entity(PlayerLink);
     zox_define_memory_component(PlayerLinks);

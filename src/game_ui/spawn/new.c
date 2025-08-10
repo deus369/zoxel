@@ -39,7 +39,7 @@ void on_cancelled_new_realm(
 ecs_entity_t spawn_menu_new_realm(
     ecs_world_t *world,
     const ecs_entity_t player,
-    long int seed
+    lint seed
 ) {
     zox_geter_value(player, CanvasLink, ecs_entity_t, canvas);
 
@@ -163,7 +163,7 @@ void button_event_new_game(
     }
     zox_geter_value(player, GameLink, ecs_entity_t, game);
     zox_geter_value(game, RealmLink, ecs_entity_t, realm);
-    long int seed = get_unique_time_seed();
+    lint seed = get_unique_time_seed();
     set_noise_seed(seed);
     zox_set(realm, Seed, { seed });
     spawn_menu_new_realm(world, player, seed);

@@ -31,7 +31,9 @@ ecs_entity_t spawn_menu_start(
         font_size,
         layer,
         0,
-        player);
+        player,
+        int2_zero
+    );
     zox_name("main_start")
     return e;
 }

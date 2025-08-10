@@ -114,10 +114,10 @@ void zox_print_entity(ecs_world_t *world, ecs_entity_t e) {
                 if (byte_component) {
                     zox_log(" b [%i]", byte_component->value)
                 }
-            } else if (is_component_type_long_int(id)) {
-                const Seed *long_int_component = ((const Seed*) ecs_get_id(world, e, id));
-                if (long_int_component) {
-                    zox_log(" lu [%lu]", long_int_component->value)
+            } else if (is_component_type_lint(id)) {
+                const Seed *c = ((const Seed*) ecs_get_id(world, e, id));
+                if (c) {
+                    zox_log(" lu [%lu]", c->value)
                 }
             } else if (is_component_type_int2(id)) {
                 const DraggingDelta *int2_component = ((const DraggingDelta*) ecs_get_id(world, e, id));

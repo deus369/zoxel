@@ -1,17 +1,18 @@
 #if !defined(zoxm_cameras) && defined(zoxm_transforms)
 #define zoxm_cameras
 
-#include "data/_.c"
-#include "settings/_.c"
-#include "components/_.c"
-#include "util/_.c"
-#include "prefabs/_.c"
-#include "systems/_.c"
-#include "tests/planes_tests.c"
+#define frustumdouble
+
+#include "dat/_.c"
+#include "set/_.c"
+#include "cmp/_.c"
+#include "fun/_.c"
+#include "pre/_.c"
+#include "sys/_.c"
 #include "cameras2/_.c"
 #include "cameras3/_.c"
-#include "util/player.c"
-#include "debug/_.c"
+#include "fun/player.c"
+#include "dbg/_.c"
 
 zox_begin_module(Cameras)
     define_components_cameras(world);

@@ -18,7 +18,7 @@ zoxc(DebugLabelData, DebugLabelEvent);
 // #include "debug_label_data.c"
 
 void define_components_game_ui(ecs_world_t *world) {
-    zox_define_component_byte(MenuType);
+    zoxd_byte(MenuType);
     zox_define_tag(MenuMain);
     zox_define_tag(MenuOptions);
     zox_define_tag(MenuPaused);
@@ -31,7 +31,7 @@ void define_components_game_ui(ecs_world_t *world) {
     zox_define_tag(Profiler);
     zox_define_tag(Taskbar);
     zox_define_tag(MenuNewRealm);;
-    zox_define_component_byte(HitType);
+    zoxd_byte(HitType);
     zox_define_component_int(QuadsCount);
     zox_define_component_double(FPSDisplayTicker);
     zox_define_component(DebugLabelData);

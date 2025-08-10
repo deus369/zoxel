@@ -17,7 +17,11 @@ zoxc_float4(ScreenToCanvas);
 zoxc(ProjectionMatrix, float4x4);
 zoxc(ViewMatrix, float4x4); // todo: rename to ViewProjectionMatrix
 zoxc_array(CameraPlanes, plane, 6);
-zoxc_array(FrustumCorners, double3, 8); // double3 | float3
+#ifdef frustumdouble
+    zoxc_array(FrustumCorners, double3, 8);
+#else
+    zoxc_array(FrustumCorners, float3, 8);
+#endif
 // Render Cameras
 zox_tag(RenderCamera);
 zox_tag(RenderTexture);
@@ -32,9 +36,9 @@ void define_components_cameras(ecs *world) {
     zox_define_tag(FirstPersonCamera);
     zox_define_tag(CameraUI);
     zox_define_tag(ElementBillboard);
-    zox_define_component_byte(CanRoam);
-    zox_define_component_byte(CameraMode);
-    zox_define_component_byte(CameraViewing);
+    zoxd_byte(CanRoam);
+    zoxd_byte(CameraMode);
+    zoxd_byte(CameraViewing);
     zox_define_component_float(FieldOfView);
     zox_define_component_float(CameraNearDistance);
     zox_define_component_int2(ScreenPosition);

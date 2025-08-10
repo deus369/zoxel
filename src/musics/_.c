@@ -65,21 +65,21 @@ zox_begin_module(Musics)
     zox_define_tag(Music);
     zox_define_tag(Looping);
     // Music
-    zox_define_component_byte(MusicNote);
-    zox_define_component_byte(GenerateMusic);
-    zox_define_component_byte(MusicEnabled);
+    zoxd_byte(MusicNote);
+    zoxd_byte(GenerateMusic);
+    zoxd_byte(MusicEnabled);
     zox_define_component_double(MusicTime);
     zox_define_component_double(MusicSpeed);
     zox_define_component_double(MusicLength);
     zox_define_entities_component(NoteLinks);
     // playlist
     zox_define_tag(Playlist);
-    zox_define_component_byte(PlaylistEnabled);
-    zox_define_component_byte(MusicPlaying);
+    zoxd_byte(PlaylistEnabled);
+    zoxd_byte(MusicPlaying);
     zox_define_entities_component(MusicLinks);
     // realm
-    zox_define_component_byte(PlaylistPlaying);
-    zox_define_component_byte(PlaylistMode);
+    zoxd_byte(PlaylistPlaying);
+    zoxd_byte(PlaylistMode);
     zox_define_entities_component(PlaylistLinks);
     zox_define_component_entity(PlaylistLink);
 

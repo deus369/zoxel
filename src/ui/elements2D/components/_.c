@@ -30,9 +30,9 @@ void define_components_elements2D(ecs *world) {
     zox_define_tag(Scrollbar);
     zox_define_tag(ScrollbarButton);
     zox_define_tag(Elementbar2D);
-    zox_define_component_byte(IconType);
-    zox_define_component_byte(ListUIMax);
-    zox_define_component_byte(IconIndex);
+    zoxd_byte(IconType);
+    zoxd_byte(ListUIMax);
+    zoxd_byte(IconIndex);
     zox_define_component_entity(FramePrefabLink);
     zox_define_component_float2(SlideBounds);
     zox_define_component(SliderLabel);

@@ -1,5 +1,3 @@
-component_id_list(int3)
-
 #define zoxc_int3(name) \
     zoxc(name, int3)
 
@@ -10,4 +8,4 @@ component_id_list(int3)
 #define zox_component_string_int3(component) \
     " i3 [%ix%ix%i]", component->value.x, component->value.y, component->value.z
 
-zoxc_int3(int3_stub);
+zox_base_type(int3)

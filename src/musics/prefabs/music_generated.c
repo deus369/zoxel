@@ -11,7 +11,7 @@ ecs_entity_t spawn_prefab_music_generated(ecs_world_t *world, const ecs_entity_t
 ecs_entity_t spawn_music_generated(
     ecs_world_t *world,
     const ecs_entity_t prefab,
-    long int seed,
+    lint seed,
     byte instrument,
     float2 speed_range
 ) {

@@ -9,7 +9,7 @@ static inline float3 float3_reverse(const float3 value) {
 }
 
 float4x4 float4x4_inverse(const float4x4 matrix) {
-    float4x4 inv = float4x4_identity; // Initialize the result matrix with the identity matrix
+    float4x4 inv = float4x4_identity;
 
     float* inv_ptr = (float*)&inv;
     float* matrix_ptr = (float*)&matrix;

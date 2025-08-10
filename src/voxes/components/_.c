@@ -10,12 +10,12 @@ zoxc_entity(CloneVoxLink);
 
 void define_components_voxes(ecs *world) {
     zox_define_tag(Vox);
-    zox_define_component_byte(VoxType);
-    zox_define_component_byte(RubbleHeight);
-    zox_define_component_byte(GenerateVox);
-    zox_define_component_byte(ChunkLod);
-    zox_define_component_byte(CloneVox);
-    zox_define_component_byte(VRegions);
+    zoxd_byte(VoxType);
+    zoxd_byte(RubbleHeight);
+    zoxd_byte(GenerateVox);
+    zoxd_byte(ChunkLod);
+    zoxd_byte(CloneVox);
+    zoxd_byte(VRegions);
     zox_define_component_int(RubbleCount);
     zox_define_component_entity(CloneVoxLink);
 }

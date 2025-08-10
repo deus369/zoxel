@@ -17,9 +17,9 @@ void define_components_zigels(ecs *world) {
     zox_define_tag(Font);
     zox_define_tag(FontTexture);
     zox_define_tag(Zigel);
-    zox_define_component_byte(FontThickness);
-    zox_define_component_byte(FontOutlineThickness);
-    zox_define_component_byte(ZigelIndex);
+    zoxd_byte(FontThickness);
+    zoxd_byte(FontOutlineThickness);
+    zoxd_byte(ZigelIndex);
     zox_define_component_color(FontFillColor);
     zox_define_component_color(FontOutlineColor);
     zox_define_memory_component(FontData);
